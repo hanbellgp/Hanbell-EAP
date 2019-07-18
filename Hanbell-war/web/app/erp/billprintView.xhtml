@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="billprint" icon="ui-icon-restore"/>
+                    <p:commandButton id="btnPrev" value="向前" actionListener="#{billPrintManagedBean.toPrev()}" icon="ui-icon-carat-1-w"
+                                     process="@this" update="formOne"
+                                     rendered="#{billPrintManagedBean.hasPrev}"/>
+                    <p:commandButton id="btnNext" value="向后" actionListener="#{billPrintManagedBean.toNext()}" icon="ui-icon-carat-1-e"
+                                     process="@this" update="formOne"
+                                     rendered="#{billPrintManagedBean.hasNext}"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnPrint" value="打印" actionListener="#{billPrintManagedBean.print()}" icon="ui-icon-print"
+                                     process="@this" rendered="#{billPrintManagedBean.doPrt}"/>
+                    <p:commandButton id="btnVerify" value="签收" action="#{billPrintManagedBean.verify()}" icon="ui-icon-check"
+                                     process="@this" rendered="#{billPrintManagedBean.doCfm}" update="toolbar">
+                        <p:confirm header="系统提示" message="签收吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUnverify" value="还原" actionListener="#{billPrintManagedBean.unverify()}" icon="ui-icon-lock-open"
+                                     process="@this" rendered="#{billPrintManagedBean.doUnCfm}"  update="toolbar">
+                        <p:confirm header="系统提示" message="还原吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">发票回执－查看</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="回执单号"  /></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="formid" value="#{billPrintManagedBean.currentEntity.formid}" title="Formid"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="单据日期"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="formdate" value="#{billPrintManagedBean.currentEntity.formdate}" title="Formdate">
+                            <f:convertDateTime pattern="yyyy/MM/dd"/>
+                        </h:outputText>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="客户全称"/></p:column>
+                    <p:column colspan="3">
+                        <h:outputText id="customer" value="#{billPrintManagedBean.currentEntity.customer}" title="customer" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="快递单号"/></p:column>
+                    <p:column>
+                        <h:outputText id="remark" value="#{billPrintManagedBean.currentEntity.remark}" title="remark" />
+                    </p:column>
+                    <p:column><h:outputText value="联系人"/></p:column>
+                    <p:column>
+                        <h:outputText id="contacter" value="#{billPrintManagedBean.currentEntity.contacter}" title="contacter" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="领取人"/></p:column>
+                    <p:column>
+                        <h:outputText id="creator" value="#{billPrintManagedBean.currentEntity.creator}" title="creator" />
+                    </p:column>
+                    <p:column><h:outputText value="状态"/></p:column>
+                    <p:column>
+                        <h:outputText id="status" value="#{billPrintManagedBean.currentEntity.status}" title="Status" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:tabView id="tabView" styleClass="tabView">
+                <p:tab title="发票明细">
+                    <p:dataTable id="tableList" value="#{billPrintManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{billPrintManagedBean.currentDetail}" rowKey="#{item.billno}" >
+                        <p:ajax event="rowSelect"  update="" oncomplete="" />
+                        <p:ajax event="rowUnselect"  update="" oncomplete="" />
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="发票编号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.billno}"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="发票日期"/>
+                            </f:facet>
+                            <h:outputText value="#{item.billdate}">
+                                <f:convertDateTime pattern="yyyy/MM/dd"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column styleClass="Wid30" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="金额"/>
+                            </f:facet>
+                            <h:outputText value="#{item.amts}"/>
+                        </p:column>
+                        <p:column styleClass="Wid30">
+                            <f:facet name="header">
+                                <h:outputText value="备注"/>
+                            </f:facet>
+                            <h:outputText value="#{item.remark}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnPrint,btnVerify,btnUnverify">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

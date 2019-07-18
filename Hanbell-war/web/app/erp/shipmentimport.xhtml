@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
+            <p:panelGrid id="plgQuery" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">查询条件</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputLabel value="客户编号" for="queryFormId" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="queryFormId" value="#{shipmentImportManagedBean.queryFormId}" title="客户编号" styleClass="inputWithButton"
+                                     required="true" requiredMessage="请输入客户编号"/>
+                        <p:commandButton id="btnCdrcusSelect" actionListener="#{shipmentImportManagedBean.openDialog('cdrcusSelect')}" icon="ui-icon-extlink"
+                                         process="@this" >
+                            <p:ajax event="dialogReturn" listener="#{shipmentImportManagedBean.handleDialogReturnWhenNew}"
+                                    update="queryFormId,queryName" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputLabel value="客户简称" for="queryName" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="queryName" value="#{shipmentImportManagedBean.queryName}" title="客户简称" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="出货日期" for="queryDateBegin" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateBegin" value="#{shipmentImportManagedBean.queryDateBegin}" title="出货日期" pattern="yyyy/MM/dd"
+                                    required="true" requiredMessage="请输出货日期"/>
+                    </p:column>
+                    <p:column><h:outputLabel value="截止日期" for="queryDateEnd" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateEnd" value="#{shipmentImportManagedBean.queryDateEnd}" title="结束日期" pattern="yyyy/MM/dd"
+                                    required="true" requiredMessage="请输入截至日期"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="只含整机" for="queryNoParts" /></p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox id="queryNoParts" value="#{shipmentImportManagedBean.queryNoParts}" title="只含整机" />
+                    </p:column>
+                    <p:column><h:outputLabel value="机型" for="queryModel" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryModel" value="#{shipmentImportManagedBean.queryModel}" title="机型" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{shipmentImportManagedBean.init()}"  icon="ui-icon-search"  update=":formList"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnPrint" value="打印" actionListener="#{shipmentImportManagedBean.print()}" icon="ui-icon-print">
+                        <p:confirm header="系统提示" message="打印吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnImport" value="导入" actionListener="#{shipmentImportManagedBean.verify()}" icon="ui-icon-save"
+                                     update=":formList">
+                        <p:confirm header="系统提示" message="导入吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{shipmentImportManagedBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{shipmentImportManagedBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable value="#{shipmentImportManagedBean.cdrhadList}" var="item"  tableStyleClass="tableList"
+                         selection="#{shipmentImportManagedBean.cdrhadSelected}" rowKey="#{item.cdrhadPK.shpno}" >
+                <f:facet name="header">
+                    销货明细导入
+                </f:facet>
+                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                <p:ajax event="rowSelect"  update=":formList:toolbar" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="出货编号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cdrhadPK.shpno}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="出货日期"/>
+                    </f:facet>
+                    <h:outputText value="#{item.shpdate}">
+                        <f:convertDateTime pattern="yyyy/MM/dd" />
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="客户编号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cdrcus.cusno}"/>
+                </p:column>
+                <p:column styleClass="Wid30">
+                    <f:facet name="header">
+                        <h:outputText value="客户全称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cdrcus.cusds}"/>
+                </p:column>
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="业务部门"/>
+                    </f:facet>
+                    <h:outputText value="#{item.depno}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="负责业务"/>
+                    </f:facet>
+                    <h:outputText value="#{item.secuser.username}"/>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnQuery,btnImport">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

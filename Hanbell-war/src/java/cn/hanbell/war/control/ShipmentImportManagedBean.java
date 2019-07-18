@@ -1,0 +1,294 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package cn.hanbell.war.control;
+
+import cn.hanbell.eap.ejb.DepartmentBean;
+import cn.hanbell.eap.entity.Department;
+import cn.hanbell.eap.entity.Shipment;
+import cn.hanbell.eap.entity.ShipmentDetail;
+import cn.hanbell.erp.ejb.CdrcitnbrBean;
+import cn.hanbell.erp.ejb.CdrhadBean;
+import cn.hanbell.erp.entity.Cdrhad;
+import cn.hanbell.erp.entity.Cdrcus;
+import cn.hanbell.erp.entity.Cdrlot;
+import com.lightshell.comm.BaseLib;
+import com.lowagie.text.pdf.PdfCopyFields;
+import com.lowagie.text.pdf.PdfReader;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import org.primefaces.event.SelectEvent;
+
+/**
+ *
+ * @author C0160
+ */
+@ManagedBean(name = "shipmentImportManagedBean")
+@SessionScoped
+public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
+
+    @EJB
+    private CdrcitnbrBean cdrcitnbrBean;
+    @EJB
+    private CdrhadBean cdrhadBean;
+    @EJB
+    private DepartmentBean departmentBean;
+
+    private List<Cdrhad> cdrhadList;
+    private List<Cdrhad> cdrhadSelected;
+    private HashMap<String, Object> filters;
+
+    private boolean queryNoParts;
+    private String queryModel;
+
+    public ShipmentImportManagedBean() {
+    }
+
+    @Override
+    public void handleDialogReturnWhenNew(SelectEvent event) {
+        if (event.getObject() != null) {
+            Cdrcus c = (Cdrcus) event.getObject();
+            this.queryFormId = c.getCusno();
+            this.queryName = c.getCusds();
+        }
+    }
+
+    @Override
+    public void init() {
+        cdrhadList = new ArrayList<>();
+        cdrhadSelected = new ArrayList<>();
+        filters = new HashMap<>();
+        super.init();
+    }
+
+    @Override
+    public void print() throws Exception {
+        if (currentPrgGrant == null || cdrhadSelected == null || cdrhadSelected.isEmpty()) {
+            return;
+        }
+        String reportName, outputName, reportFormat, f;
+        //设置报表名称
+        reportName = reportPath + currentPrgGrant.getSysprg().getRptdesign();
+        //设置导出文件名称
+        fileName = "CdrhadBarcode" + BaseLib.formatDate("yyyyMMddHHmmss", getDate()) + ".pdf";
+        outputName = reportOutputPath + fileName;
+        OutputStream os = new FileOutputStream(outputName);
+        if (this.currentPrgGrant != null && this.currentPrgGrant.getSysprg().getRptclazz() != null) {
+            reportClassLoader = Class.forName(this.currentPrgGrant.getSysprg().getRptclazz()).getClassLoader();
+        }
+        PdfCopyFields pdfCopy = new PdfCopyFields(os);
+        HashMap<String, Object> reportParams = new HashMap<>();
+        ByteArrayOutputStream baos;
+        for (Cdrhad c : cdrhadSelected) {
+            f = this.getAppResPath() + c.getCdrhadPK().getShpno() + ".png";
+            this.generateCode128(c.getCdrhadPK().getShpno(), 1.5f, 8d, f);
+            this.generateQRCode(c.getCdrhadPK().getShpno(), 300, 300, this.getAppResPath(), "QR" + c.getCdrhadPK().getShpno() + ".png");
+            //设置报表参数
+            baos = new ByteArrayOutputStream();
+            reportParams.put("company", userManagedBean.getCurrentCompany().getCompany());
+            reportParams.put("companyFullName", userManagedBean.getCurrentCompany().getFullname());
+            reportParams.put("tel", userManagedBean.getCurrentCompany().getTel());
+            reportParams.put("fax", userManagedBean.getCurrentCompany().getFax());
+            reportParams.put("id", c.getCdrhadPK().getShpno());
+            reportParams.put("formid", c.getCdrhadPK().getShpno());
+            reportParams.put("JNDIName", currentPrgGrant.getSysprg().getRptjndi());
+            try {
+                //初始配置
+                this.reportInitAndConfig();
+                //生成报表
+                this.reportRunAndOutput(reportName, reportParams, null, "pdf", baos);
+            } catch (Exception ex) {
+                throw ex;
+            } finally {
+                reportParams.clear();
+            }
+            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+        }
+        pdfCopy.close();
+        this.reportViewPath = reportViewContext + fileName;
+        this.preview();
+    }
+
+    @Override
+    public void query() {
+        cdrhadList.clear();
+        filters.clear();
+        filters.put("cusno", queryFormId);
+        filters.put("shpdateBegin", queryDateBegin);
+        filters.put("shpdateEnd", queryDateEnd);
+        cdrhadBean.setCompany(this.userManagedBean.getCompany());
+        cdrhadList = cdrhadBean.findByFilters(filters);
+    }
+
+    @Override
+    public void verify() {
+        if (cdrhadSelected == null || cdrhadSelected.isEmpty()) {
+            showWarnMsg("Warn", "没有选择任何单据");
+            return;
+        }
+        String formid;
+        List<String> shpnoList = new ArrayList<>();
+        int seq = 0;
+        ShipmentDetail sd;
+        List<ShipmentDetail> shipmentDetails = new ArrayList<>();
+
+        Cdrhad a = cdrhadSelected.get(0);
+        Department dept = departmentBean.findByDeptno(a.getDepno());
+
+        Shipment s = new Shipment();
+        s.setCompany(a.getCdrhadPK().getFacno());
+        s.setFormdate(getDate());
+        s.setCustomerno(a.getCusno());
+        s.setCustomer(a.getCdrcus().getCusna());
+        s.setCustomerFullName(a.getCdrcus().getCusds());
+        s.setDeptno(a.getDepno());
+        if (dept != null) {
+            s.setDeptname(dept.getDept());
+        }
+        s.setUserno(a.getSecuser().getUserno() + "_" + a.getSecuser().getUsername());
+        s.setStatus("N");
+        s.setCreator(this.userManagedBean.getCurrentUser().getUsername());
+        s.setCredate(getDate());
+        //获取明细
+        List<Cdrlot> cdrlotList;
+        cdrhadBean.setCompany(this.userManagedBean.getCompany());
+        for (Cdrhad h : cdrhadSelected) {
+            this.fileName = this.getAppResPath() + h.getCdrhadPK().getShpno() + ".png";
+            this.generateCode128(h.getCdrhadPK().getShpno(), 1.5f, 8d, this.fileName);
+            this.generateQRCode(h.getCdrhadPK().getShpno(), 300, 300, this.getAppResPath(), "QR" + h.getCdrhadPK().getShpno() + ".png");
+            cdrlotList = cdrhadBean.findCdrlotList(h.getCdrhadPK().getFacno(), h.getCdrhadPK().getShpno());
+            if (cdrlotList != null && !cdrlotList.isEmpty()) {
+                shpnoList.add(h.getCdrhadPK().getShpno());
+                for (Cdrlot l : cdrlotList) {
+                    if (queryNoParts) {
+                        if (l.getVarnr() == null || "".equals(l.getVarnr())) {
+                            continue;
+                        }
+                    }
+                    if (queryModel != null && !"".equals(queryModel)) {
+                        if (!l.getCdrdta().getItnbrcus().contains(queryModel)) {
+                            continue;
+                        }
+                    }
+                    seq++;
+                    sd = new ShipmentDetail();
+                    sd.setSeq(seq);
+                    sd.setShpno(h.getCdrhadPK().getShpno());
+                    sd.setShpdate(h.getShpdate());
+                    sd.setShpseq(l.getCdrlotPK().getTrseq());
+                    sd.setItemno(l.getCdrdta().getItnbr());
+                    if (sd.getItemno() != null) {
+                        this.fileName = this.getAppResPath() + sd.getItemno() + ".png";
+                        this.generateCode128(sd.getItemno(), 1.5f, 8d, fileName);
+                        this.generateQRCode(sd.getItemno(), 300, 300, this.getAppResPath(), "QR" + sd.getItemno() + ".png");
+                    }
+                    sd.setItemDesc(l.getCdrdta().getItdsc());
+                    sd.setItemModel(l.getCdrdta().getItnbrcus());
+                    sd.setCustomerItem(l.getCdrdta().getMatecode());
+                    sd.setCustomerItemDesc(l.getCdrdta().getCuslable());
+                    if (sd.getCustomerItem() != null && !"".equals(sd.getCustomerItem())) {
+                        //客户条码的文件名
+                        this.fileName = this.getAppResPath() + h.getCusno() + sd.getCustomerItem() + ".png";
+                        this.generateCode128(sd.getCustomerItem(), 1.5f, 8d, fileName);
+                        this.generateQRCode(sd.getCustomerItem(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + sd.getCustomerItem() + ".png");
+                        if (h.getCusno().equals("SSD00103") && sd.getItemModel() != null && l.getVarnr() != null) {
+                            //海达瑞专属二维码
+                            StringBuilder content = new StringBuilder();
+                            content.append(sd.getItemModel()).append(".").append(sd.getCustomerItem()).append(".").append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc());
+                            this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + l.getVarnr() + ".png");
+                        }
+                    }
+                    sd.setLotseq(l.getCdrlotPK().getSeq());
+                    sd.setVarnr(l.getVarnr());
+                    if (l.getVarnr() != null) {
+                        this.fileName = this.getAppResPath() + l.getVarnr() + ".png";
+                        this.generateCode128(l.getVarnr(), 1.5f, 8d, fileName);
+                        this.generateQRCode(l.getVarnr(), 300, 300, this.getAppResPath(), "QR" + l.getVarnr() + ".png");
+                        //this.generateZXingCode128(l.getVarnr(), 300, 70, this.getAppResPath(), "ZXing" + l.getVarnr() + ".png");
+                    }
+                    sd.setFixnr(l.getFixnr());
+                    sd.setWareh(l.getWareh());
+                    sd.setQty(l.getShpqy1());
+                    //加入明细新增列表
+                    shipmentDetails.add(sd);
+                }
+            }
+        }
+        if (!shipmentDetails.isEmpty()) {
+            try {
+                s.setRemark(shpnoList.toString());
+                formid = shipmentBean.initData(s, shipmentDetails);
+                if (formid != null) {
+                    this.cdrhadSelected.clear();
+                    this.cdrhadList.clear();
+                    showInfoMsg("Info", "成功生成出货明细" + formid);
+                } else {
+                    showErrorMsg("Error", "产生出货明细失败");
+                }
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.getMessage());
+            }
+        } else {
+            showErrorMsg("Error", "没有对应库存信息");
+        }
+    }
+
+    /**
+     * @return the cdrhadList
+     */
+    public List<Cdrhad> getCdrhadList() {
+        return cdrhadList;
+    }
+
+    /**
+     * @return the cdrhadSelected
+     */
+    public List<Cdrhad> getCdrhadSelected() {
+        return cdrhadSelected;
+    }
+
+    /**
+     * @param armbilSelected the cdrhadSelected to set
+     */
+    public void setCdrhadSelected(List<Cdrhad> armbilSelected) {
+        this.cdrhadSelected = armbilSelected;
+    }
+
+    /**
+     * @return the queryNoParts
+     */
+    public boolean isQueryNoParts() {
+        return queryNoParts;
+    }
+
+    /**
+     * @param queryNoParts the queryNoParts to set
+     */
+    public void setQueryNoParts(boolean queryNoParts) {
+        this.queryNoParts = queryNoParts;
+    }
+
+    /**
+     * @return the sortBy
+     */
+    public String getQueryModel() {
+        return queryModel;
+    }
+
+    /**
+     * @param queryModel the sortBy to set
+     */
+    public void setQueryModel(String queryModel) {
+        this.queryModel = queryModel;
+    }
+
+}

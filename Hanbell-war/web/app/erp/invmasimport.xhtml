@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <h:form id="formList">
+            <p:panelGrid id="plgQuery" columns="4" columnClasses="Wid20,Wid30,Wid20,Wid30" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    导入品号
+                </f:facet>
+                <p:fileUpload id="fileUpload" fileUploadListener="#{invmasImportManagedBean.handleFileUploadWhenNew}" styleClass="fileUpload"
+                              allowTypes="/(\.|\/)(xls)$/" sizeLimit="5000000" label="选择" uploadLabel="上传" cancelLabel="还原"
+                              process="@this" update="formList"/>
+            </p:panelGrid>
+            <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="right">
+                    <p:commandButton id="btnSave" value="保存" action="#{invmasImportManagedBean.persist()}" icon="ui-icon-plus"
+                                     process="@this" rendered="#{invmasImportManagedBean.doAdd}"  update="formList"/>
+                    <p:commandButton id="btnDelete" value="删除" actionListener="#{invmasImportManagedBean.delete()}" icon="ui-icon-trash"
+                                     rendered="#{invmasImportManagedBean.doDel}" update=":formList">
+                        <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnVerify" value="抛转" actionListener="#{invmasImportManagedBean.verify()}" icon="ui-icon-check"
+                                     rendered="#{invmasImportManagedBean.doCfm}"  update="formList">
+                        <p:confirm header="系统提示" message="抛转吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{invmasImportManagedBean.reset()}"  icon="ui-icon-refresh"
+                                     process="@this" update="formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable id="tabelList" value="#{invmasImportManagedBean.model}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="150"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="150,300,450"  lazy="true" rendered="#{invmasImportManagedBean.fileName==null}"
+                         selection="#{invmasImportManagedBean.entityList}" rowKey="#{item.id}" >
+                <f:facet name="header">
+                    品号申请导入明细
+                </f:facet>
+                <p:column selectionMode="multiple" style="width: 26px;text-align: center;"/>
+                <p:ajax event="rowSelect"  update=":formList:toolbar" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="大类"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itcls}"/>
+                </p:column>
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="品号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itnbr}"/>
+                </p:column>
+                <p:column styleClass="Wid30">
+                    <f:facet name="header">
+                        <h:outputText value="品名"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itdsc}"/>
+                </p:column>
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="规格"/>
+                    </f:facet>
+                    <h:outputText value="#{item.spdsc}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="单位"/>
+                    </f:facet>
+                    <h:outputText value="#{item.unmsr1}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="类别"/>
+                    </f:facet>
+                    <h:outputText value="#{item.kind}"/>
+                </p:column>
+            </p:dataTable>
+            <p:dataTable id="tableImport" value="#{invmasImportManagedBean.addedList}" var="item"  tableStyleClass="tableList"
+                         rendered="#{invmasImportManagedBean.fileName!=null}"
+                         selectionMode="single" selection="#{invmasImportManagedBean.currentEntity}" rowKey="#{item.itnbr}" >
+                <f:facet name="header">
+                    导入明细
+                </f:facet>
+                <p:ajax event="rowSelect"  update=":formList:toolbar" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="大类"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itcls}"/>
+                </p:column>
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="品号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itnbr}"/>
+                </p:column>
+                <p:column styleClass="Wid30">
+                    <f:facet name="header">
+                        <h:outputText value="品名"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itdsc}"/>
+                </p:column>
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="规格"/>
+                    </f:facet>
+                    <h:outputText value="#{item.spdsc}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="单位"/>
+                    </f:facet>
+                    <h:outputText value="#{item.unmsr1}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="类别"/>
+                    </f:facet>
+                    <h:outputText value="#{item.kind}"/>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnSave,btnDelete,btnVerify">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="sentinel-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

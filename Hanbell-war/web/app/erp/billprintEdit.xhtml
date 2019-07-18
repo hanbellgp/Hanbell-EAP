@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="billprint" icon="ui-icon-restore"/>
+                    <p:commandButton id="btnPrev" value="向前" actionListener="#{billPrintManagedBean.toPrev()}" icon="ui-icon-carat-1-w"
+                                     process="@this" update="formOne"
+                                     rendered="#{billPrintManagedBean.hasPrev}"/>
+                    <p:commandButton id="btnNext" value="向后" actionListener="#{billPrintManagedBean.toNext()}" icon="ui-icon-carat-1-e"
+                                     process="@this" update="formOne"
+                                     rendered="#{billPrintManagedBean.hasNext}"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnSave" value="保存" actionListener="#{billPrintManagedBean.update()}" icon="ui-icon-save"
+                                     process="@this,plgHead" update="formOne"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">发票回执－修改</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"> <h:outputText value="回执单号"  /></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="formid" value="#{billPrintManagedBean.currentEntity.formid}" title="Formid"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="单据日期"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:calendar id="formdate" value="#{billPrintManagedBean.currentEntity.formdate}" title="Formdate"
+                                    pattern="yyyy/MM/dd" required="true" requiredMessage="请输入单据日期"/>
+                    </p:column>
+                </p:row> <p:row>
+                    <p:column><h:outputText value="客户全称"/></p:column>
+                    <p:column colspan="3">
+                        <h:outputText id="customer" value="#{billPrintManagedBean.currentEntity.customer}" title="customer" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="快递单号" for="remark" /></p:column>
+                    <p:column>
+                        <p:inputText id="remark" value="#{billPrintManagedBean.currentEntity.remark}" title="Remark" />
+                    </p:column>
+                    <p:column><p:outputLabel value="联系人" for="contacter"/></p:column>
+                    <p:column>
+                        <p:inputText id="contacter" value="#{billPrintManagedBean.currentEntity.contacter}" title="contacter" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="领取人"/></p:column>
+                    <p:column>
+                        <h:outputText id="creator" value="#{billPrintManagedBean.currentEntity.creator}" title="creator" />
+                    </p:column>
+                    <p:column><h:outputText value="状态"/></p:column>
+                    <p:column>
+                        <h:outputText id="status" value="#{billPrintManagedBean.currentEntity.status}" title="Status" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:tabView id="tabView" styleClass="tabView">
+                <p:tab title="发票明细">
+                    <p:toolbar id="detailToolbar" styleClass="detailToolbar">
+                        <f:facet name="left">
+                            <p:commandButton id="btnAddDetail" widgetVar="btnAddDetail" value="添加" actionListener="#{billPrintManagedBean.createDetail()}" icon="ui-icon-plus"
+                                             oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').enable();"
+                                             process="@this" update=":formOne:tabView:plgDetail"/>
+                            <p:commandButton id="btnDeleteDetail" widgetVar="btnDeleteDetail" value="删除" actionListener="#{billPrintManagedBean.deleteDetail()}" icon="ui-icon-trash"
+                                             oncomplete="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
+                                             process="@this" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" />
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton id="btnSaveDetail" widgetVar="btnSaveDetail" value="确定" actionListener="#{billPrintManagedBean.doConfirmDetail()}" icon="ui-icon-check"
+                                             onsuccess="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
+                                             process="@this,:formOne:tabView:plgDetail" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList"/>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:panelGrid id="plgDetail"  styleClass="plgDetail Wid100">
+                        <p:row>
+                            <p:column><h:outputText value="发票编号" /></p:column>
+                            <p:column>
+                                <p:inputText id="billno" value="#{billPrintManagedBean.currentDetail.billno}" title="billno"
+                                             required="true" requiredMessage="请输入发票编号" />
+                            </p:column>
+                            <p:column><h:outputText value="发票日期"/></p:column>
+                            <p:column>
+                                <p:calendar id="billdate" value="#{billPrintManagedBean.currentDetail.billdate}" title="billdate"
+                                            pattern="yyyy/MM/dd" required="true" requiredMessage="请输入发票日期"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="发票金额" /></p:column>
+                            <p:column>
+                                <p:inputText id="extaxes" value="#{billPrintManagedBean.currentDetail.extaxes}" title="extaxes"
+                                             required="true" requiredMessage="请输入发票金额" />
+                            </p:column>
+                            <p:column><h:outputText value="发票税额"/></p:column>
+                            <p:column>
+                                <p:inputText id="taxes" value="#{billPrintManagedBean.currentDetail.taxes}" title="taxes"
+                                             required="true" requiredMessage="请输入发票税额" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="发票总额" for="amts" /></p:column>
+                            <p:column>
+                                <p:inputText id="amts" value="#{billPrintManagedBean.currentDetail.amts}" title="amts"
+                                             required="true" requiredMessage="请输入发票总额" />
+                            </p:column>
+                            <p:column><p:outputLabel value="备注" for="dremark" /></p:column>
+                            <p:column>
+                                <p:inputText id="dremark" value="#{billPrintManagedBean.currentDetail.remark}" title="dremark" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:dataTable id="tableList" value="#{billPrintManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{billPrintManagedBean.currentDetail}" rowKey="#{item.billno}" >
+                        <p:ajax event="rowSelect"  update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
+                        <p:ajax event="rowUnselect"  update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" oncomplete="" />
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="发票编号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.billno}"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="发票日期"/>
+                            </f:facet>
+                            <h:outputText value="#{item.billdate}">
+                                <f:convertDateTime pattern="yyyy/MM/dd"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column styleClass="Wid30" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="金额"/>
+                            </f:facet>
+                            <h:outputText value="#{item.amts}"/>
+                        </p:column>
+                        <p:column styleClass="Wid30">
+                            <f:facet name="header">
+                                <h:outputText value="备注"/>
+                            </f:facet>
+                            <h:outputText value="#{item.remark}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnSave">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

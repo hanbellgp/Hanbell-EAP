@@ -1,0 +1,1670 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.5.0.v201506092134 Build &lt;@BUILD@></property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">fixed layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">72</property>
+    <parameters>
+        <scalar-parameter name="JNDIName" id="455">
+            <property name="hidden">true</property>
+            <text-property name="promptText">JNDI</text-property>
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="formid" id="570">
+            <property name="hidden">true</property>
+            <text-property name="promptText">单号</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant"></value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <script-data-source name="scriptDS" id="225"/>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="dataDetail" id="226">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">hdncreator</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">hdnloanDept</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">SerialNumber</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">prePayDate</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">traffic</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">deptPeriod</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">deptYear</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">loanProperty</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">preLocation</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">preCustomer</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">reason</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">coin</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">people</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">preAccname</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">preAccno</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">ratio</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">days</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">loanTotal</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">totalRMB</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">amount</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">trafficfee</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">accommodation</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">23</property>
+                    <property name="name">allowance</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">24</property>
+                    <property name="name">entertain</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">25</property>
+                    <property name="name">other</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">26</property>
+                    <property name="name">arrears</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">27</property>
+                    <property name="name">loanDate</property>
+                    <property name="dataType">date</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">hdncreator</property>
+                </structure>
+                <structure>
+                    <property name="columnName">hdnloanDept</property>
+                </structure>
+                <structure>
+                    <property name="columnName">SerialNumber</property>
+                </structure>
+                <structure>
+                    <property name="columnName">prePayDate</property>
+                </structure>
+                <structure>
+                    <property name="columnName">traffic</property>
+                </structure>
+                <structure>
+                    <property name="columnName">deptPeriod</property>
+                </structure>
+                <structure>
+                    <property name="columnName">deptYear</property>
+                </structure>
+                <structure>
+                    <property name="columnName">loanProperty</property>
+                </structure>
+                <structure>
+                    <property name="columnName">preLocation</property>
+                </structure>
+                <structure>
+                    <property name="columnName">preCustomer</property>
+                </structure>
+                <structure>
+                    <property name="columnName">reason</property>
+                </structure>
+                <structure>
+                    <property name="columnName">coin</property>
+                </structure>
+                <structure>
+                    <property name="columnName">people</property>
+                </structure>
+                <structure>
+                    <property name="columnName">preAccname</property>
+                </structure>
+                <structure>
+                    <property name="columnName">preAccno</property>
+                </structure>
+                <structure>
+                    <property name="columnName">ratio</property>
+                </structure>
+                <structure>
+                    <property name="columnName">days</property>
+                </structure>
+                <structure>
+                    <property name="columnName">loanTotal</property>
+                </structure>
+                <structure>
+                    <property name="columnName">totalRMB</property>
+                </structure>
+                <structure>
+                    <property name="columnName">amount</property>
+                </structure>
+                <structure>
+                    <property name="columnName">trafficfee</property>
+                </structure>
+                <structure>
+                    <property name="columnName">accommodation</property>
+                </structure>
+                <structure>
+                    <property name="columnName">allowance</property>
+                </structure>
+                <structure>
+                    <property name="columnName">entertain</property>
+                </structure>
+                <structure>
+                    <property name="columnName">other</property>
+                </structure>
+                <structure>
+                    <property name="columnName">arrears</property>
+                </structure>
+                <structure>
+                    <property name="columnName">loanDate</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">hdncreator</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">hdnloanDept</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">SerialNumber</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">prePayDate</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">traffic</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">deptPeriod</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">deptYear</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">loanProperty</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">preLocation</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">preCustomer</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">reason</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">coin</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">people</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">preAccname</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">preAccno</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">ratio</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">days</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">loanTotal</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">totalRMB</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">amount</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">trafficfee</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">accommodation</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">allowance</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">24</property>
+                        <property name="name">entertain</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
+                        <property name="name">other</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">26</property>
+                        <property name="name">arrears</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">27</property>
+                        <property name="name">loanDate</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">scriptDS</property>
+            <method name="open"><![CDATA[importPackage(Packages.cn.hanbell.efgp.rpt);
+
+ejbClient = new HZCW017Report();
+ejbClient.setEJB(params["JNDIName"]);
+
+master = ejbClient.getEntity(params["formid"])
+
+count = 0]]></method>
+            <method name="fetch"><![CDATA[if(master==undefined || master==null){
+	return false;
+}
+
+if(count < 1){
+	dataSetRow["accommodation"] = master.getAccommodation();
+	dataSetRow["allowance"] = master.getAllowance();
+	dataSetRow["amount"] = master.getAmount();	
+	dataSetRow["arrears"] = master.getArrears();
+	dataSetRow["coin"] = master.getCoin();	
+	dataSetRow["days"] = master.getDays();
+	dataSetRow["deptPeriod"] = master.getDeptPeriod();
+	dataSetRow["deptYear"] = master.getDeptYear();
+	dataSetRow["entertain"] = master.getEntertain();	
+	dataSetRow["hdncreator"] = master.getHdncreator();
+	dataSetRow["hdnloanDept"] = master.getHdnloanDept();
+	dataSetRow["loanDate"] = master.getLoanDate();
+	dataSetRow["loanProperty"] = master.getLoanProperty();
+	dataSetRow["loanTotal"] = master.getLoanTotal();
+	dataSetRow["other"] = master.getOther();
+	dataSetRow["people"] = master.getPeople();
+	dataSetRow["preAccname"] = master.getPreAccname();
+	dataSetRow["preAccno"] = master.getPreAccno();
+	dataSetRow["preCustomer"] = master.getPreCustomer();
+	dataSetRow["preLocation"] = master.getPreLocation();	
+	dataSetRow["prePayDate"] = master.getPrePayDate();
+	dataSetRow["ratio"] = master.getRatio();
+	dataSetRow["reason"] = master.getReason();	
+	dataSetRow["SerialNumber"] = master.getSerialNumber();
+	dataSetRow["totalRMB"] = master.getTotalRMB();			
+	dataSetRow["traffic"] = master.getTraffic();	
+	dataSetRow["trafficfee"] = master.getTrafficfee();			
+	count++
+	return true;
+}
+return false;
+
+
+]]></method>
+            <method name="close"><![CDATA[ejbClient = null;]]></method>
+        </script-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">custom</property>
+            <property name="height">148mm</property>
+            <property name="width">210mm</property>
+            <property name="headerHeight">0in</property>
+            <page-footer>
+                <grid id="544">
+                    <property name="width">7.583333333333333in</property>
+                    <column id="545">
+                        <property name="width">2.5277777777777777in</property>
+                    </column>
+                    <column id="546">
+                        <property name="width">3.3472222222222223in</property>
+                    </column>
+                    <column id="547">
+                        <property name="width">1.7083333333333333in</property>
+                    </column>
+                    <row id="548">
+                        <cell id="549"/>
+                        <cell id="550"/>
+                        <cell id="551">
+                            <grid id="552">
+                                <property name="width">1.625in</property>
+                                <column id="564">
+                                    <property name="width">0.3333333333333333in</property>
+                                </column>
+                                <column id="553">
+                                    <property name="width">0.2361111111111111in</property>
+                                </column>
+                                <column id="554">
+                                    <property name="width">0.4in</property>
+                                </column>
+                                <column id="555">
+                                    <property name="width">0.2361111111111111in</property>
+                                </column>
+                                <column id="568">
+                                    <property name="width">0.3194444444444444in</property>
+                                </column>
+                                <row id="556">
+                                    <cell id="563">
+                                        <label id="565">
+                                            <property name="textAlign">right</property>
+                                            <text-property name="text">第</text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="557">
+                                        <auto-text id="558">
+                                            <property name="textAlign">center</property>
+                                            <property name="type">page-number</property>
+                                        </auto-text>
+                                    </cell>
+                                    <cell id="559">
+                                        <text id="560">
+                                            <property name="textAlign">center</property>
+                                            <property name="contentType">plain</property>
+                                            <text-property name="content"><![CDATA[页/共]]></text-property>
+                                        </text>
+                                    </cell>
+                                    <cell id="561">
+                                        <auto-text id="562">
+                                            <property name="textAlign">center</property>
+                                            <property name="type">total-page</property>
+                                        </auto-text>
+                                    </cell>
+                                    <cell id="567">
+                                        <label id="569">
+                                            <text-property name="text">页</text-property>
+                                        </label>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                    </row>
+                </grid>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="227">
+            <property name="fontSize">10pt</property>
+            <property name="height">4.604166666666667in</property>
+            <property name="width">7.666666666666667in</property>
+            <property name="dataSet">dataDetail</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">hdncreator</property>
+                    <text-property name="displayName">hdncreator</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["hdncreator"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">hdnloanDept</property>
+                    <text-property name="displayName">hdnloanDept</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["hdnloanDept"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">prePayDate</property>
+                    <text-property name="displayName">prePayDate</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["prePayDate"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">SerialNumber</property>
+                    <text-property name="displayName">SerialNumber</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["SerialNumber"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">deptPeriod</property>
+                    <text-property name="displayName">deptPeriod</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["deptPeriod"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">deptYear</property>
+                    <text-property name="displayName">deptYear</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["deptYear"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">reason</property>
+                    <text-property name="displayName">reason</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["reason"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">preLocation</property>
+                    <text-property name="displayName">preLocation</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["preLocation"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">preCustomer</property>
+                    <text-property name="displayName">preCustomer</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["preCustomer"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">coin</property>
+                    <text-property name="displayName">coin</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["coin"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">people</property>
+                    <text-property name="displayName">people</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["people"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">preAccno</property>
+                    <text-property name="displayName">preAccno</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["preAccno"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">preAccname</property>
+                    <text-property name="displayName">preAccname</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["preAccname"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ratio</property>
+                    <text-property name="displayName">ratio</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ratio"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">days</property>
+                    <text-property name="displayName">days</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["days"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">loanTotal</property>
+                    <text-property name="displayName">loanTotal</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["loanTotal"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">totalRMB</property>
+                    <text-property name="displayName">totalRMB</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["totalRMB"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">amount</property>
+                    <text-property name="displayName">amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["amount"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">other</property>
+                    <text-property name="displayName">other</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["other"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">entertain</property>
+                    <text-property name="displayName">entertain</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["entertain"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">accommodation</property>
+                    <text-property name="displayName">accommodation</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["accommodation"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">trafficfee</property>
+                    <text-property name="displayName">trafficfee</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["trafficfee"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">arrears</property>
+                    <text-property name="displayName">arrears</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["arrears"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">loan1</property>
+                    <expression name="expression" type="javascript">dataSetRow["loanProperty"]=="0"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">loan2</property>
+                    <expression name="expression" type="javascript">dataSetRow["loanProperty"]=="1"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">loan3</property>
+                    <expression name="expression" type="javascript">dataSetRow["loanProperty"]=="2"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">loan4</property>
+                    <expression name="expression" type="javascript">dataSetRow["loanProperty"]=="3"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">traffic1</property>
+                    <expression name="expression" type="javascript">dataSetRow["traffic"]=="0"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">traffic2</property>
+                    <expression name="expression" type="javascript">dataSetRow["traffic"]=="1"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">traffic3</property>
+                    <expression name="expression" type="javascript">dataSetRow["traffic"]=="2"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">traffic4</property>
+                    <expression name="expression" type="javascript">dataSetRow["traffic"]=="3"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">traffic5</property>
+                    <expression name="expression" type="javascript">dataSetRow["traffic"]=="4"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+            </list-property>
+            <column id="228">
+                <property name="width">1.4895833333333333in</property>
+            </column>
+            <column id="229">
+                <property name="width">1.25in</property>
+            </column>
+            <column id="230">
+                <property name="width">0.96875in</property>
+            </column>
+            <column id="639">
+                <property name="width">0.8333333333333334in</property>
+            </column>
+            <column id="1253">
+                <property name="width">0.5208333333333334in</property>
+            </column>
+            <column id="232">
+                <property name="width">0.8333333333333334in</property>
+            </column>
+            <column id="1234">
+                <property name="width">0.5208333333333334in</property>
+            </column>
+            <column id="646">
+                <property name="width">0.5729166666666666in</property>
+            </column>
+            <column id="233">
+                <property name="width">0.6770833333333334in</property>
+            </column>
+            <row id="620">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="height">0.375in</property>
+                <cell id="621">
+                    <property name="colSpan">9</property>
+                    <property name="rowSpan">1</property>
+                    <image id="1190">
+                        <property name="marginTop">0pt</property>
+                        <property name="height">0.3333333333333333in</property>
+                        <property name="width">2.1145833333333335in</property>
+                        <property name="source">file</property>
+                        <expression name="uri" type="constant">hanbell.jpg</expression>
+                    </image>
+                </cell>
+            </row>
+            <row id="376">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="377">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">2</property>
+                    <label id="630">
+                        <property name="fontSize">12pt</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="marginTop">3pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">汉 钟&#13;
+精 机</text-property>
+                    </label>
+                </cell>
+                <cell id="378">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="627">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">制定单位</text-property>
+                    </label>
+                </cell>
+                <cell id="379">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">2</property>
+                    <label id="383">
+                        <property name="fontFamily">"宋体"</property>
+                        <property name="fontSize">16pt</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="marginTop">10pt</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">借支单</text-property>
+                    </label>
+                </cell>
+                <cell id="634">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="631">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">填表日期</text-property>
+                    </label>
+                </cell>
+                <cell id="1238">
+                    <property name="colSpan">3</property>
+                    <property name="rowSpan">1</property>
+                    <data id="1188">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="zIndex">1000</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">loanDate</property>
+                                <text-property name="displayName">loanDate</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["loanDate"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">loanDate</property>
+                    </data>
+                </cell>
+                <cell id="641">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="789">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">版次</text-property>
+                    </label>
+                </cell>
+                <cell id="382">
+                    <label id="787">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">C0</text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="791">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="793">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="628">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">财 务 部</text-property>
+                    </label>
+                </cell>
+                <cell id="796">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="632">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">表单编号</text-property>
+                    </label>
+                </cell>
+                <cell id="797">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <label id="786">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">HZ-CW-017</text-property>
+                    </label>
+                </cell>
+                <cell id="798">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="790">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">页次</text-property>
+                    </label>
+                </cell>
+                <cell id="799">
+                    <label id="788">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                    </label>
+                </cell>
+            </row>
+            <row id="971">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="972">
+                    <label id="1126">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">申请人</text-property>
+                    </label>
+                </cell>
+                <cell id="973">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1193">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">hdncreator</property>
+                    </data>
+                </cell>
+                <cell id="974">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1128">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">申请部门</text-property>
+                    </label>
+                </cell>
+                <cell id="976">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1194">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">hdnloanDept</property>
+                    </data>
+                </cell>
+                <cell id="1260">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1129">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">借支单号</text-property>
+                    </label>
+                </cell>
+                <cell id="1221">
+                    <property name="colSpan">3</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <data id="1196">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="zIndex">1000</property>
+                        <property name="resultSetColumn">SerialNumber</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="980">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="981">
+                    <label id="1130">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">预订付款日</text-property>
+                    </label>
+                </cell>
+                <cell id="982">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1195">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">prePayDate</property>
+                    </data>
+                </cell>
+                <cell id="983">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1131">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">付款方式</text-property>
+                    </label>
+                </cell>
+                <cell id="985">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                </cell>
+                <cell id="1258">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1132">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">凭证字号</text-property>
+                    </label>
+                </cell>
+                <cell id="1235">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                </cell>
+            </row>
+            <row id="989">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="990">
+                    <label id="1133">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">部门本月余额</text-property>
+                    </label>
+                </cell>
+                <cell id="991">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1197">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">deptPeriod</property>
+                    </data>
+                </cell>
+                <cell id="994">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1134">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">部门本年余额</text-property>
+                    </label>
+                </cell>
+                <cell id="1254">
+                    <property name="colSpan">4</property>
+                    <property name="rowSpan">1</property>
+                    <data id="1198">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">deptYear</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="998">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="999">
+                    <label id="1135">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">借支性质</text-property>
+                    </label>
+                </cell>
+                <cell id="1000">
+                    <property name="colSpan">8</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <text id="808">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["loan1"]</VALUE-OF>'>□</span> 销售营业                          <span style='background-color:<VALUE-OF>row["loan2"]</VALUE-OF>'>□</span> 服务维修                         <span style='background-color:<VALUE-OF>row["loan3"]</VALUE-OF>'>□</span> 考察、实习、培训                          <span style='background-color:<VALUE-OF>row["loan4"]</VALUE-OF>'>□</span> 其他]]></text-property>
+                    </text>
+                </cell>
+            </row>
+            <row id="1007">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="1008">
+                    <label id="1136">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">交通工具</text-property>
+                    </label>
+                </cell>
+                <cell id="1009">
+                    <property name="colSpan">8</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <text id="1200">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["traffic4"]</VALUE-OF>'>□</span> 长途巴士                          <span style='background-color:<VALUE-OF>row["traffic2"]</VALUE-OF>'>□</span> 火车                          <span style='background-color:<VALUE-OF>row["traffic3"]</VALUE-OF>'>□</span> 飞机                         <span style='background-color:<VALUE-OF>row["traffic1"]</VALUE-OF>'>□</span> 公务                         <span style='background-color:<VALUE-OF>row["traffic5"]</VALUE-OF>'>□</span> 其他]]></text-property>
+                    </text>
+                </cell>
+            </row>
+            <row id="1016">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="1017">
+                    <label id="1137">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">预订地点</text-property>
+                    </label>
+                </cell>
+                <cell id="1018">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1202">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">preLocation</property>
+                    </data>
+                </cell>
+                <cell id="1021">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1138">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">预订客户</text-property>
+                    </label>
+                </cell>
+                <cell id="1022">
+                    <property name="colSpan">4</property>
+                    <property name="rowSpan">1</property>
+                    <data id="1203">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">preCustomer</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1025">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.5833333333333334in</property>
+                <cell id="1026">
+                    <property name="paddingTop">1pt</property>
+                    <label id="1139">
+                        <property name="marginTop">12pt</property>
+                        <text-property name="text">借支理由</text-property>
+                    </label>
+                </cell>
+                <cell id="1027">
+                    <property name="colSpan">8</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1201">
+                        <property name="marginTop">3pt</property>
+                        <property name="resultSetColumn">reason</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1034">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="1035">
+                    <label id="1140">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">币别</text-property>
+                    </label>
+                </cell>
+                <cell id="1036">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1204">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">coin</property>
+                    </data>
+                </cell>
+                <cell id="1037">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1141">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">人数</text-property>
+                    </label>
+                </cell>
+                <cell id="1039">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1205">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">people</property>
+                    </data>
+                </cell>
+                <cell id="1040">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1142">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">预算科目</text-property>
+                    </label>
+                </cell>
+                <cell id="1041">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1206">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">preAccno</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1043">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="1044">
+                    <label id="1143">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">汇率</text-property>
+                    </label>
+                </cell>
+                <cell id="1045">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1208">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">ratio</property>
+                    </data>
+                </cell>
+                <cell id="1046">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1147">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">天数</text-property>
+                    </label>
+                </cell>
+                <cell id="1048">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1209">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">days</property>
+                    </data>
+                </cell>
+                <cell id="1049">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1152">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">预算科目名称</text-property>
+                    </label>
+                    <label id="1153"/>
+                </cell>
+                <cell id="1050">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1207">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">preAccname</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1052">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="1053">
+                    <label id="1144">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">借款总金额原币</text-property>
+                    </label>
+                </cell>
+                <cell id="1054">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1210">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">loanTotal</property>
+                    </data>
+                </cell>
+                <cell id="1055">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1148">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">交通费</text-property>
+                    </label>
+                </cell>
+                <cell id="1057">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1216">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">trafficfee</property>
+                    </data>
+                </cell>
+                <cell id="1058">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1154">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">预算科目期间余额</text-property>
+                    </label>
+                </cell>
+                <cell id="1059">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                </cell>
+            </row>
+            <row id="1061">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="1062">
+                    <label id="1145">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">借款总金额人民币</text-property>
+                    </label>
+                </cell>
+                <cell id="1063">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1211">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">totalRMB</property>
+                    </data>
+                </cell>
+                <cell id="1064">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1149">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">住宿费</text-property>
+                    </label>
+                </cell>
+                <cell id="1066">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1215">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">accommodation</property>
+                    </data>
+                </cell>
+                <cell id="1067">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1155">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">预算科目本年余额</text-property>
+                    </label>
+                </cell>
+                <cell id="1068">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                </cell>
+            </row>
+            <row id="1070">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="1071">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">2</property>
+                    <label id="1146">
+                        <property name="marginTop">12pt</property>
+                        <text-property name="text">借款总金额人民币大写</text-property>
+                    </label>
+                </cell>
+                <cell id="1072">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">2</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1212">
+                        <property name="marginTop">3pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">amount</property>
+                    </data>
+                </cell>
+                <cell id="1073">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1150">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">招待费</text-property>
+                    </label>
+                </cell>
+                <cell id="1075">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1214">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">entertain</property>
+                    </data>
+                </cell>
+                <cell id="1076">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1156">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">未还金额</text-property>
+                    </label>
+                </cell>
+                <cell id="1077">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1217">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">arrears</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1079">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.2604166666666667in</property>
+                <cell id="1082">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1151">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">其他</text-property>
+                    </label>
+                </cell>
+                <cell id="1084">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1213">
+                        <property name="marginTop">2pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="resultSetColumn">other</property>
+                    </data>
+                </cell>
+                <cell id="1085">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <label id="1157">
+                        <property name="marginTop">2pt</property>
+                        <text-property name="text">预计归还日</text-property>
+                    </label>
+                </cell>
+                <cell id="1086">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                </cell>
+            </row>
+        </grid>
+        <text id="1115">
+            <property name="paddingTop">5pt</property>
+            <property name="contentType">auto</property>
+            <text-property name="content"><![CDATA[领款人：                                         出    纳：                                          财务核准：                                          会计审核：]]></text-property>
+        </text>
+    </body>
+</report>

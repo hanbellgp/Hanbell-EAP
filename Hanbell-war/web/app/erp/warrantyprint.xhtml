@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
+            <p:panelGrid id="plgQuery" columns="4" columnClasses="Wid20,Wid30,Wid20,Wid30" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    查询条件
+                </f:facet>
+                <h:outputLabel value="导入单号" for="queryFormId" />
+                <p:inputText id="queryFormId" value="#{warrentyPrintManagedBean.queryFormId}" title="回执单号" />
+                <h:outputLabel value="客户全称" for="queryName" />
+                <p:inputText id="queryName" value="#{warrentyPrintManagedBean.queryName}" title="客户全称" />
+                <h:outputLabel value="开始日期" for="queryDateBegin" />
+                <p:calendar id="queryDateBegin" value="#{warrentyPrintManagedBean.queryDateBegin}" title="开始日期" pattern="yyyy/MM/dd"/>
+                <h:outputLabel value="结束日期" for="queryDateEnd" />
+                <p:calendar id="queryDateEnd" value="#{warrentyPrintManagedBean.queryDateEnd}" title="结束日期" pattern="yyyy/MM/dd"/>
+                <h:outputLabel value="操作人" for="queryCreator" />
+                <p:inputText id="queryCreator" value="#{warrentyPrintManagedBean.queryCreator}" title="操作人" />
+                <h:outputLabel value="业务部门" for="queryDeptno" />
+                <p:inputText id="queryDeptno" value="#{warrentyPrintManagedBean.queryDeptno}" title="业务部门" />
+                <h:outputLabel value="状态" for="queryState" />
+                <p:selectOneMenu id="queryState" value="#{warrentyPrintManagedBean.queryState}" title="状态" >
+                    <f:selectItem itemLabel="全部" itemValue="ALL"/>
+                    <f:selectItem itemLabel="未打印" itemValue="N"/>
+                    <f:selectItem itemLabel="已审核" itemValue="V"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{warrentyPrintManagedBean.init()}"  icon="ui-icon-search"  update=":formList"/>
+                    <p:commandButton id="btnView" value="查看" action="#{warrentyPrintManagedBean.view('warrantyprintView')}"  icon="ui-icon-document"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:splitButton id="btnPrint" value="打印" icon="ui-icon-menu">
+                        <p:menuitem id="btnPrintCN" value="质保书中文" actionListener="#{warrentyPrintManagedBean.print('warrantyCN')}" icon="ui-icon-print"
+                                    rendered="#{warrentyPrintManagedBean.doPrt}"/>
+                        <p:menuitem id="btnPrintEN" value="质保书出口" actionListener="#{warrentyPrintManagedBean.print('warrantyEN')}" icon="ui-icon-print"
+                                    rendered="#{warrentyPrintManagedBean.doPrt}"/>
+                    </p:splitButton>
+                    <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
+                        <p:menuitem id="btnEdit" value="编辑" action="#{warrentyPrintManagedBean.edit('warrantyprintEdit')}" icon="ui-icon-pencil"
+                                    rendered="#{warrentyPrintManagedBean.doEdit}"/>
+                        <p:menuitem id="btnDelete" value="删除" actionListener="#{warrentyPrintManagedBean.delete()}" icon="ui-icon-trash"
+                                    rendered="#{warrentyPrintManagedBean.doDel}" update=":formList">
+                            <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
+                        </p:menuitem>
+                        <p:menuitem id="btnUnverify" value="还原" actionListener="#{warrentyPrintManagedBean.unverify()}" icon="ui-icon-lock-open"
+                                    rendered="#{warrentyPrintManagedBean.doUnCfm}"  update=":formList">
+                            <p:confirm header="系统提示" message="还原吗?" icon="ui-icon-alert" />
+                        </p:menuitem>
+                        <p:menuitem id="btnCreate" value="新增" action="#{warrentyPrintManagedBean.create('warrantyprintNew')}" icon="ui-icon-plus"
+                                    rendered="#{warrentyPrintManagedBean.doAdd}" process="@this" />
+                    </p:splitButton>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{warrentyPrintManagedBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{warrentyPrintManagedBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable value="#{warrentyPrintManagedBean.model}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="15,30,45"  lazy="true"  selection="#{warrentyPrintManagedBean.entityList}" rowKey="#{item.id}" >
+                <f:facet name="header">
+                    销货资料清单
+                </f:facet>
+                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                <p:ajax event="rowSelect"  update=":formList:toolbar" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="导入单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.formid}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="导入日期"/>
+                    </f:facet>
+                    <h:outputText value="#{item.formdate}">
+                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="客户编号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.customerno}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="客户简称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.customer}"/>
+                </p:column>
+                <p:column styleClass="Wid40">
+                    <f:facet name="header">
+                        <h:outputText value="备注"/>
+                    </f:facet>
+                    <h:outputText value="#{item.remark}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="状态"/>
+                    </f:facet>
+                    <h:outputText value="#{item.status}"/>
+                </p:column>
+                <p:column styleClass="Wid20  #{item.status}">
+                    <f:facet name="header">
+                        <h:outputText value="操作"/>
+                    </f:facet>
+                    <p:commandButton value="编辑" action="#{warrentyPrintManagedBean.edit('warrantyprintEdit')}" rendered="#{item.status!='V'}">
+                        <f:setPropertyActionListener value="#{item}" target="#{warrentyPrintManagedBean.currentEntity}" />
+                    </p:commandButton>
+                    <p:commandButton value="还原" action="#{warrentyPrintManagedBean.clearState()}" rendered="#{item.status=='P'}">
+                        <f:setPropertyActionListener value="#{item}" target="#{warrentyPrintManagedBean.currentEntity}" />
+                        <p:ajax update="formList"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnPrintCN,btnPrintEN,btnUnverify">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+            <style>
+                td.P{
+                    background-color: greenyellow;
+                }
+            </style>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

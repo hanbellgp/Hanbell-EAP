@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="warrantyprint" icon="ui-icon-restore"/>
+                    <p:commandButton id="btnPrev" value="向前" actionListener="#{warrentyPrintManagedBean.toPrev()}" icon="ui-icon-carat-1-w"
+                                     process="@this" update="formOne"
+                                     rendered="#{warrentyPrintManagedBean.hasPrev}"/>
+                    <p:commandButton id="btnNext" value="向后" actionListener="#{warrentyPrintManagedBean.toNext()}" icon="ui-icon-carat-1-e"
+                                     process="@this" update="formOne"
+                                     rendered="#{warrentyPrintManagedBean.hasNext}"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnSave" value="保存" actionListener="#{warrentyPrintManagedBean.update()}" icon="ui-icon-save"
+                                     process="@this,plgHead" update="formOne"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">出货条码－修改</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="导入单号"  /></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="formid" value="#{warrentyPrintManagedBean.currentEntity.formid}" title="Formid"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="单据日期"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:calendar id="formdate" value="#{warrentyPrintManagedBean.currentEntity.formdate}" title="Formdate"
+                                    pattern="yyyy/MM/dd" required="true" requiredMessage="请输入单据日期"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="客户编号"/></p:column>
+                    <p:column>
+                        <h:outputText id="customerno" value="#{warrentyPrintManagedBean.currentEntity.customerno}" title="customerno" />
+                    </p:column>
+                    <p:column><h:outputText value="客户名称"/></p:column>
+                    <p:column>
+                        <h:outputText id="customer" value="#{warrentyPrintManagedBean.currentEntity.customer}" title="customer" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="出货单号" for="remark" /></p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="remark" value="#{warrentyPrintManagedBean.currentEntity.remark}" title="Remark" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="操作人员"/></p:column>
+                    <p:column>
+                        <h:outputText id="creator" value="#{warrentyPrintManagedBean.currentEntity.creator}" title="creator" />
+                    </p:column>
+                    <p:column><h:outputText value="状态"/></p:column>
+                    <p:column>
+                        <h:outputText id="status" value="#{warrentyPrintManagedBean.currentEntity.status}" title="Status" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:tabView id="tabView" styleClass="tabView">
+                <p:tab title="出货明细">
+                    <p:toolbar id="detailToolbar" styleClass="detailToolbar">
+                        <f:facet name="left">
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton id="btnDeleteDetails" widgetVar="btnDeleteDetail" value="删除" actionListener="#{warrentyPrintManagedBean.deleteDetail()}" icon="ui-icon-trash"
+                                             update="formOne:tabView:tableList" />
+                        </f:facet>
+                    </p:toolbar>
+                    <p:dataTable id="tableList" value="#{warrentyPrintManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
+                                 selection="#{warrentyPrintManagedBean.detailSelected}" rowKey="#{item.id}" >
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                        <p:ajax event="rowSelect"  update="formOne:toolbar" />
+                        <p:ajax event="rowUnselect" update="formOne:toolbar" />
+                        <p:column styleClass="Wid10">
+                            <f:facet name="header">
+                                <h:outputText value="出货单号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.shpno}-#{item.shpseq}"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="出货品号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.itemno}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.itemModel}" styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="产品型号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.itemModel}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.varnr}" styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="SN"/>
+                            </f:facet>
+                            <h:outputText value="#{item.varnr}"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="客户品号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.customerItem}"/>
+                        </p:column>
+                        <p:column styleClass="Wid10" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="数量"/>
+                            </f:facet>
+                            <h:outputText value="#{item.qty}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnSave">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

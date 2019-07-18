@@ -1,0 +1,2491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT 设计器 V4.5.0.v201506092134 构建 &lt;@建立@></property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">fixed layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">72</property>
+    <parameters>
+        <scalar-parameter name="JNDIName" id="455">
+            <property name="hidden">true</property>
+            <text-property name="promptText">JNDI</text-property>
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="formid" id="570">
+            <property name="hidden">true</property>
+            <text-property name="promptText">单号</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant"></value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <script-data-source name="scriptDS" id="225"/>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="dataDetail" id="999">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">TB003</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">TB004</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">TB005</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">TB006</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">TB008</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">TB019</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">TB009</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">TB010</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">TB011</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">formid</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">TA001</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">TA002</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">TA003</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">TA004</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">TA033</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">TA031</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">TA009</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">TA010</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">TA040</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">TA030</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">TA034</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">TA041</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">23</property>
+                    <property name="name">TA035</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">24</property>
+                    <property name="name">TA036</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">25</property>
+                    <property name="name">TA038</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">26</property>
+                    <property name="name">TA005</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">27</property>
+                    <property name="name">TA012</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">28</property>
+                    <property name="name">TA012C</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">29</property>
+                    <property name="name">TA008</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">30</property>
+                    <property name="name">TA039</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">31</property>
+                    <property name="name">TA013</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">32</property>
+                    <property name="name">TA032</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">33</property>
+                    <property name="name">TA032C</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">34</property>
+                    <property name="name">TA014</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">35</property>
+                    <property name="name">TA200</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">36</property>
+                    <property name="name">TA043</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">37</property>
+                    <property name="name">TA043C</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">38</property>
+                    <property name="name">TA018</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">39</property>
+                    <property name="name">TA019</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">40</property>
+                    <property name="name">TA037</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">41</property>
+                    <property name="name">TA025</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">42</property>
+                    <property name="name">TA026</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">43</property>
+                    <property name="name">TA028</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">44</property>
+                    <property name="name">TA029</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">45</property>
+                    <property name="name">TA042</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">46</property>
+                    <property name="name">TA042C</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">TB003</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TB004</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TB005</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TB006</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TB008</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TB019</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TB009</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TB010</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TB011</property>
+                </structure>
+                <structure>
+                    <property name="columnName">formid</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA001</property>
+                    <text-property name="displayName">单别</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA002</property>
+                    <text-property name="displayName">单号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA003</property>
+                    <text-property name="displayName">异动日期</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA004</property>
+                    <text-property name="displayName">部门编号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA033</property>
+                    <text-property name="displayName">产品品号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA031</property>
+                    <text-property name="displayName">区域别</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA009</property>
+                    <text-property name="displayName">单据日期</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA010</property>
+                    <text-property name="displayName">审核者</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA040</property>
+                    <text-property name="displayName">维修单别</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA030</property>
+                    <text-property name="displayName">产品别</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA034</property>
+                    <text-property name="displayName">产品品名</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA041</property>
+                    <text-property name="displayName">维修单号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA035</property>
+                    <text-property name="displayName">产品规格</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA036</property>
+                    <text-property name="displayName">产品序号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA038</property>
+                    <text-property name="displayName">订单单号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA005</property>
+                    <text-property name="displayName">备注</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA012</property>
+                    <text-property name="displayName">领料人员</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA012C</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA008</property>
+                    <text-property name="displayName">总数量</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA039</property>
+                    <text-property name="displayName">案件编号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA013</property>
+                    <text-property name="displayName">项目编号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA032</property>
+                    <text-property name="displayName">客户代号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA032C</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA014</property>
+                    <text-property name="displayName">工厂编号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA200</property>
+                    <text-property name="displayName">签核状况码</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA043</property>
+                    <text-property name="displayName">借出归还原因</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA043C</property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA018</property>
+                    <text-property name="displayName">确认备注</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA019</property>
+                    <text-property name="displayName">取消确认备注</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA037</property>
+                    <text-property name="displayName">问题描述</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA025</property>
+                    <text-property name="displayName">ERP领料单号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA026</property>
+                    <text-property name="displayName">ERP退料单号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA028</property>
+                    <text-property name="displayName">ERP借出单号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA029</property>
+                    <text-property name="displayName">ERP归还单号</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA042</property>
+                    <text-property name="displayName">交易原因</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TA042C</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">TB003</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">TB004</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">TB005</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">TB006</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">TB008</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">TB019</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">TB009</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">TB010</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">TB011</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">formid</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">TA001</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">TA002</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">TA003</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">TA004</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">TA033</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">TA031</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">TA009</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">TA010</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">TA040</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">TA030</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">TA034</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">TA041</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">TA035</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">24</property>
+                        <property name="name">TA036</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
+                        <property name="name">TA038</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">26</property>
+                        <property name="name">TA005</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">27</property>
+                        <property name="name">TA012</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">28</property>
+                        <property name="name">TA012C</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">29</property>
+                        <property name="name">TA008</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">30</property>
+                        <property name="name">TA039</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">31</property>
+                        <property name="name">TA013</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">32</property>
+                        <property name="name">TA032</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">33</property>
+                        <property name="name">TA032C</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">34</property>
+                        <property name="name">TA014</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">35</property>
+                        <property name="name">TA200</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">36</property>
+                        <property name="name">TA043</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">37</property>
+                        <property name="name">TA043C</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">38</property>
+                        <property name="name">TA018</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">39</property>
+                        <property name="name">TA019</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">40</property>
+                        <property name="name">TA037</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">41</property>
+                        <property name="name">TA025</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">42</property>
+                        <property name="name">TA026</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">43</property>
+                        <property name="name">TA028</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">44</property>
+                        <property name="name">TA029</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">45</property>
+                        <property name="name">TA042</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">46</property>
+                        <property name="name">TA042C</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">scriptDS</property>
+            <method name="open"><![CDATA[importPackage(Packages.cn.hanbell.efgp.rpt);
+
+ejbClient = new WARMI05Report();
+ejbClient.setEJB(params["JNDIName"]);
+
+master = ejbClient.getEntity(params["formid"]);
+
+if(master!=null){
+	detail = ejbClient.getDetail(master.getFormSerialNumber());
+}
+
+currentRow = 0;]]></method>
+            <method name="fetch"><![CDATA[if (detail == undefined || detail == null) {
+    return false;
+}
+
+if (currentRow < detail.size()) {
+    dataSetRow["formid"] = master.getFormSerialNumber();
+    //表头的资料
+    if (master.getTa001() == "0") {
+        dataSetRow["TA001"] = "";//单别
+    }
+    else if (master.getTa001() == "FWLL") {
+        dataSetRow["TA001"] = "服务领料单";
+    }
+    else if (master.getTa001() == "JCDX") {
+        dataSetRow["TA001"] = "借出单(新机)";
+    }
+    else if (master.getTa001() == "JCDF") {
+        dataSetRow["TA001"] = "借出单(服务机)";
+    }
+    else if (master.getTa001() == "CXLL") {
+        dataSetRow["TA001"] = "拆修领料单";
+    }
+    else if (master.getTa001() == "CXTL") {
+        dataSetRow["TA001"] = "拆修退料单";
+    }
+
+    dataSetRow["TA002"] = master.getTa002();//单号	
+    dataSetRow["TA003"] = master.getTa003();//异动日期	
+    dataSetRow["TA004"] = master.getTa004();//部门编号	
+    dataSetRow["TA009"] = master.getTa009();//单据日期	
+    dataSetRow["TA010"] = master.getTa010();//审核者	
+    dataSetRow["TA005"] = master.getTa005();//备注	
+    dataSetRow["TA030"] = master.getTa030();//产品别	
+    dataSetRow["TA033"] = master.getTa033();//产品品号	
+    dataSetRow["TA031"] = master.getTa031();//区域别	
+    dataSetRow["TA034"] = master.getTa034();//产品品名	
+    dataSetRow["TA040"] = master.getTa040();//维修单别	
+    dataSetRow["TA035"] = master.getTa035();//产品规格	
+    dataSetRow["TA036"] = master.getTa036();//产品序号	
+    dataSetRow["TA041"] = master.getTa041();//维修单号	
+    dataSetRow["TA038"] = master.getTa038();//订单编号
+    dataSetRow["TA039"] = master.getTa039();//客户案件编号
+    dataSetRow["TA008"] = master.getTa008();//总数量
+    dataSetRow["TA012"] = master.getTa012();//领料人员
+    if (master.getTa012c() == "") {
+        dataSetRow["TA012C"] = "";//领料人员
+    } else {
+        dataSetRow["TA012C"] = master.getTa012c();//领料人员
+    }
+    dataSetRow["TA013"] = master.getTa013();//项目编号
+    //dataSetRow["TA023"] = master.getTa023();
+
+    //工厂编号需判断赋值
+    if (master.getTa014() == "0") {
+        dataSetRow["TA014"] = "";
+    }
+    else if (master.getTa014() == "C") {
+        dataSetRow["TA014"] = "上海汉钟";
+    }
+    else if (master.getTa014() == "N") {
+        dataSetRow["TA014"] = "南京分公司";
+    }
+    else if (master.getTa014() == "G") {
+        dataSetRow["TA014"] = "广州分公司";
+    }
+    else if (master.getTa014() == "J") {
+        dataSetRow["TA014"] = "济南分公司";
+    }
+    else if (master.getTa014() == "K") {
+        dataSetRow["TA014"] = "上海柯茂";
+    }
+    else if (master.getTa014() == "C4") {
+        dataSetRow["TA014"] = "重庆分公司";
+    }
+
+    dataSetRow["TA200"] = master.getTa200();//签核状况码
+    dataSetRow["TA032"] = master.getTa032();//客户代号
+    dataSetRow["TA032C"] = master.getTa032c();//客户代号	
+    dataSetRow["TA043"] = master.getTa043();//借出归还原因	
+    dataSetRow["TA043C"] = master.getTa043c();//借出归还原因	
+    dataSetRow["TA018"] = master.getTa018();//确认备注	
+    dataSetRow["TA019"] = master.getTa019();//取消确认备注	
+    dataSetRow["TA037"] = master.getTa037();//问题描述	
+    dataSetRow["TA025"] = master.getTa025();//ERP领料单号	
+    dataSetRow["TA026"] = master.getTa026();//ERP退料单号	
+    dataSetRow["TA028"] = master.getTa028();//ERP借出单号	
+    dataSetRow["TA029"] = master.getTa029();//ERP归还单号
+    dataSetRow["TA042"] = master.getTa042();//交易原因	
+    dataSetRow["TA042C"] = master.getTa042c();//交易原因			
+
+    dataSetRow["TB003"] = detail.get(currentRow).getTb003();
+    dataSetRow["TB004"] = detail.get(currentRow).getTb004();
+    dataSetRow["TB005"] = detail.get(currentRow).getTb005();
+    dataSetRow["TB006"] = detail.get(currentRow).getTb006();
+
+    dataSetRow["TB019"] = detail.get(currentRow).getTb019();
+    dataSetRow["TB008"] = detail.get(currentRow).getTb008();
+    dataSetRow["TB009"] = detail.get(currentRow).getTb009();
+    dataSetRow["TB010"] = detail.get(currentRow).getTb010();
+    dataSetRow["TB011"] = detail.get(currentRow).getTb011();
+    currentRow++;
+    return true;
+}
+return false;
+]]></method>
+            <method name="close"><![CDATA[ejbClient = null;]]></method>
+        </script-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">a4</property>
+            <property name="height">148mm</property>
+            <property name="width">210mm</property>
+            <property name="headerHeight">0in</property>
+            <page-footer>
+                <grid id="544">
+                    <property name="width">7.583333333333333in</property>
+                    <column id="545">
+                        <property name="width">2.5277777777777777in</property>
+                    </column>
+                    <column id="546">
+                        <property name="width">3.3472222222222223in</property>
+                    </column>
+                    <column id="547">
+                        <property name="width">1.7083333333333333in</property>
+                    </column>
+                    <row id="548">
+                        <cell id="549"/>
+                        <cell id="550"/>
+                        <cell id="551">
+                            <grid id="552">
+                                <property name="width">1.625in</property>
+                                <column id="564">
+                                    <property name="width">0.3333333333333333in</property>
+                                </column>
+                                <column id="553">
+                                    <property name="width">0.2361111111111111in</property>
+                                </column>
+                                <column id="554">
+                                    <property name="width">0.4in</property>
+                                </column>
+                                <column id="555">
+                                    <property name="width">0.2361111111111111in</property>
+                                </column>
+                                <column id="568">
+                                    <property name="width">0.3194444444444444in</property>
+                                </column>
+                                <row id="556">
+                                    <cell id="563">
+                                        <label id="565">
+                                            <property name="textAlign">right</property>
+                                            <text-property name="text">第</text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="557">
+                                        <auto-text id="558">
+                                            <property name="textAlign">center</property>
+                                            <property name="type">page-number</property>
+                                        </auto-text>
+                                    </cell>
+                                    <cell id="559">
+                                        <text id="560">
+                                            <property name="textAlign">center</property>
+                                            <property name="contentType">plain</property>
+                                            <text-property name="content"><![CDATA[页/共]]></text-property>
+                                        </text>
+                                    </cell>
+                                    <cell id="561">
+                                        <auto-text id="562">
+                                            <property name="textAlign">center</property>
+                                            <property name="type">total-page</property>
+                                        </auto-text>
+                                    </cell>
+                                    <cell id="567">
+                                        <label id="569">
+                                            <text-property name="text">页</text-property>
+                                        </label>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                    </row>
+                </grid>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="227">
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="width">7.739583333333333in</property>
+            <column id="228">
+                <property name="width">1in</property>
+            </column>
+            <column id="229">
+                <property name="width">1.3020833333333333in</property>
+            </column>
+            <column id="230">
+                <property name="width">1.3020833333333333in</property>
+            </column>
+            <column id="231">
+                <property name="width">1.3020833333333333in</property>
+            </column>
+            <column id="639">
+                <property name="width">0.7708333333333334in</property>
+            </column>
+            <column id="232">
+                <property name="width">1.0208333333333333in</property>
+            </column>
+            <column id="646">
+                <property name="width">0.5in</property>
+            </column>
+            <column id="233">
+                <property name="width">0.5416666666666666in</property>
+            </column>
+            <row id="620">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="height">0.4in</property>
+                <cell id="621">
+                    <property name="colSpan">8</property>
+                    <property name="rowSpan">1</property>
+                    <image id="1461">
+                        <property name="height">0.3229166666666667in</property>
+                        <property name="width">2.1145833333333335in</property>
+                        <property name="source">embed</property>
+                        <property name="imageName">HANBELL.jpg</property>
+                    </image>
+                    <image id="1460"/>
+                </cell>
+            </row>
+            <row id="376">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="377">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">2</property>
+                    <label id="630">
+                        <property name="fontSize">12pt</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">汉 钟&#13;
+精 机</text-property>
+                    </label>
+                </cell>
+                <cell id="378">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="627">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">制定单位</text-property>
+                    </label>
+                </cell>
+                <cell id="379">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">2</property>
+                    <label id="383">
+                        <property name="fontFamily">"宋体"</property>
+                        <property name="fontSize">16pt</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="marginTop">6pt</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">录入库存交易单</text-property>
+                    </label>
+                </cell>
+                <cell id="634">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="631">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">制表日期</text-property>
+                    </label>
+                </cell>
+                <cell id="381">
+                    <label id="785">
+                        <property name="textAlign">center</property>
+                    </label>
+                </cell>
+                <cell id="641">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="789">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">版次</text-property>
+                    </label>
+                </cell>
+                <cell id="382">
+                    <label id="787">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">B0</text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="791">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="793">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="628">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">服 务 部</text-property>
+                    </label>
+                </cell>
+                <cell id="796">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="632">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">表单编号</text-property>
+                    </label>
+                </cell>
+                <cell id="797">
+                    <data id="1075">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">formid</property>
+                                <text-property name="displayName">formid</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["formid"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">formid</property>
+                    </data>
+                </cell>
+                <cell id="798">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="790">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">页次</text-property>
+                    </label>
+                </cell>
+                <cell id="799">
+                    <label id="788">
+                        <property name="textAlign">center</property>
+                    </label>
+                </cell>
+            </row>
+        </grid>
+        <grid id="1157">
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="width">7.739583333333333in</property>
+            <column id="1158">
+                <property name="width">0.96875in</property>
+            </column>
+            <column id="1159">
+                <property name="width">1.6145833333333333in</property>
+            </column>
+            <column id="1160">
+                <property name="width">0.8541666666666666in</property>
+            </column>
+            <column id="1161">
+                <property name="width">1.7291666666666667in</property>
+            </column>
+            <column id="1162">
+                <property name="width">0.8020833333333334in</property>
+            </column>
+            <column id="1163">
+                <property name="width">1.7708333333333333in</property>
+            </column>
+            <row id="1164">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="1165">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1234">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">单          别</text-property>
+                    </label>
+                </cell>
+                <cell id="1166">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1402">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA001</property>
+                                <text-property name="displayName">单别</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA001"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA001</property>
+                    </data>
+                </cell>
+                <cell id="1167">
+                    <label id="1237">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">部门编号</text-property>
+                    </label>
+                </cell>
+                <cell id="1168">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1404">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA004</property>
+                                <text-property name="displayName">部门编号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA004"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA004</property>
+                    </data>
+                </cell>
+                <cell id="1169">
+                    <label id="1240">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">产   品   别</text-property>
+                    </label>
+                </cell>
+                <cell id="1170">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <data id="1405">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA030</property>
+                                <text-property name="displayName">产品别</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA030"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA030</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1171">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="1172">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1235">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">单           号</text-property>
+                    </label>
+                </cell>
+                <cell id="1173">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1403">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA002</property>
+                                <text-property name="displayName">单号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA002"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA002</property>
+                    </data>
+                </cell>
+                <cell id="1174">
+                    <label id="1238">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">异动日期</text-property>
+                    </label>
+                </cell>
+                <cell id="1175">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1406">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA003</property>
+                                <text-property name="displayName">异动日期</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA003"]</expression>
+                                <property name="dataType">string</property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA003</property>
+                    </data>
+                </cell>
+                <cell id="1176">
+                    <label id="1241">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">区   域   别</text-property>
+                    </label>
+                </cell>
+                <cell id="1177">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <data id="1407">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA031</property>
+                                <text-property name="displayName">区域别</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA031"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA031</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1178">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="1179">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1236">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">单据日期</text-property>
+                    </label>
+                </cell>
+                <cell id="1180">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1408">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA009</property>
+                                <text-property name="displayName">单据日期</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA009"]</expression>
+                                <property name="dataType">string</property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA009</property>
+                    </data>
+                </cell>
+                <cell id="1181">
+                    <label id="1239">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">审    核  者</text-property>
+                    </label>
+                </cell>
+                <cell id="1182">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1409">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA010</property>
+                                <text-property name="displayName">审核者</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA010"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA010</property>
+                    </data>
+                </cell>
+                <cell id="1183">
+                    <label id="1242">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">维修单别</text-property>
+                    </label>
+                </cell>
+                <cell id="1184">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <data id="1410">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA040</property>
+                                <text-property name="displayName">维修单别</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA040"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA040</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1185">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="1186">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1244">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">产品品号</text-property>
+                    </label>
+                </cell>
+                <cell id="1187">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1411">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA033</property>
+                                <text-property name="displayName">产品品号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA033"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA033</property>
+                    </data>
+                </cell>
+                <cell id="1188">
+                    <label id="1245">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">产品品名</text-property>
+                    </label>
+                </cell>
+                <cell id="1189">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1412">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA034</property>
+                                <text-property name="displayName">产品品名</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA034"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA034</property>
+                    </data>
+                </cell>
+                <cell id="1190">
+                    <label id="1243">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">维修单号</text-property>
+                    </label>
+                </cell>
+                <cell id="1191">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <data id="1413">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA041</property>
+                                <text-property name="displayName">维修单号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA041"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA041</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1192">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="1193">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1246">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">产品规格</text-property>
+                    </label>
+                </cell>
+                <cell id="1194">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1414">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA035</property>
+                                <text-property name="displayName">产品规格</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA035"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA035</property>
+                    </data>
+                </cell>
+                <cell id="1195">
+                    <label id="1247">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">产品序号</text-property>
+                    </label>
+                </cell>
+                <cell id="1196">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1415">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA036</property>
+                                <text-property name="displayName">产品序号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA036"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA036</property>
+                    </data>
+                </cell>
+                <cell id="1197">
+                    <label id="1249">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">订单单号</text-property>
+                    </label>
+                </cell>
+                <cell id="1198">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <data id="1416">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA038</property>
+                                <text-property name="displayName">订单单号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA038"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA038</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1199">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="1200">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1250">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">备注</text-property>
+                    </label>
+                </cell>
+                <cell id="1201">
+                    <property name="colSpan">5</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <data id="1417">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA005</property>
+                                <text-property name="displayName">备注</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA005"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA005</property>
+                    </data>
+                </cell>
+            </row>
+        </grid>
+        <grid id="1295">
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="width">7.739583333333333in</property>
+            <column id="1296">
+                <property name="width">0.96875in</property>
+            </column>
+            <column id="1297">
+                <property name="width">0.8229166666666666in</property>
+            </column>
+            <column id="1298">
+                <property name="width">0.7916666666666666in</property>
+            </column>
+            <column id="1299">
+                <property name="width">0.8541666666666666in</property>
+            </column>
+            <column id="1300">
+                <property name="width">0.8125in</property>
+            </column>
+            <column id="1301">
+                <property name="width">0.9479166666666666in</property>
+            </column>
+            <column id="1302">
+                <property name="width">1in</property>
+            </column>
+            <column id="1532"/>
+            <row id="1303">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="1304">
+                    <label id="1327">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">领料人员</text-property>
+                    </label>
+                </cell>
+                <cell id="1305">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1418">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA012</property>
+                                <expression name="expression" type="javascript">dataSetRow["TA012"]</expression>
+                                <property name="dataType">string</property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA012</property>
+                    </data>
+                </cell>
+                <cell id="1306">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1427">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA012C</property>
+                                <text-property name="displayName">TA012C</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA012C"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA012C</property>
+                    </data>
+                </cell>
+                <cell id="1307">
+                    <label id="1328">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">总数量</text-property>
+                    </label>
+                </cell>
+                <cell id="1308">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1419">
+                        <property name="textAlign">left</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA008</property>
+                                <text-property name="displayName">总数量</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA008"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA008</property>
+                    </data>
+                </cell>
+                <cell id="1309">
+                    <label id="1329">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">案件编号</text-property>
+                    </label>
+                </cell>
+                <cell id="1310">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1420">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA039</property>
+                                <text-property name="displayName">案件编号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA039"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA039</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1311">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="1312">
+                    <label id="1330">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">项目编号</text-property>
+                    </label>
+                </cell>
+                <cell id="1313">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1421">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA013</property>
+                                <text-property name="displayName">项目编号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA013"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA013</property>
+                    </data>
+                </cell>
+                <cell id="1315">
+                    <label id="1331">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">总金额</text-property>
+                    </label>
+                </cell>
+                <cell id="1316">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1526">
+                        <text-property name="text">无法查看</text-property>
+                    </label>
+                </cell>
+                <cell id="1317">
+                    <label id="1332">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">客户代号</text-property>
+                    </label>
+                </cell>
+                <cell id="1318">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1452">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA032</property>
+                                <text-property name="displayName">客户代号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA032"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA032</property>
+                    </data>
+                </cell>
+                <cell id="1530">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1453">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA032C</property>
+                                <text-property name="displayName">TA032C</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA032C"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA032C</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1319">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="1320">
+                    <label id="1333">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">工厂编号</text-property>
+                    </label>
+                </cell>
+                <cell id="1321">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1422">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA014</property>
+                                <text-property name="displayName">工厂编号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA014"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA014</property>
+                    </data>
+                </cell>
+                <cell id="1323">
+                    <label id="1334">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">签核状况</text-property>
+                    </label>
+                </cell>
+                <cell id="1324">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1425">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA200</property>
+                                <expression name="expression" type="javascript">dataSetRow["TA200"]</expression>
+                                <property name="dataType">string</property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA200</property>
+                    </data>
+                </cell>
+                <cell id="1325">
+                    <label id="1335">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">归还原因</text-property>
+                    </label>
+                </cell>
+                <cell id="1326">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1444">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA043</property>
+                                <text-property name="displayName">借还原因</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA043"]</expression>
+                                <property name="dataType">string</property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA043</property>
+                    </data>
+                </cell>
+                <cell id="1531">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1445">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA043C</property>
+                                <text-property name="displayName">TA043C</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA043C"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA043C</property>
+                    </data>
+                </cell>
+            </row>
+        </grid>
+        <grid id="1336">
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="height">1.2083333333333333in</property>
+            <property name="width">7.739583333333333in</property>
+            <column id="1337">
+                <property name="width">0.96875in</property>
+            </column>
+            <column id="1338">
+                <property name="width">0.96875in</property>
+            </column>
+            <column id="1339">
+                <property name="width">0.96875in</property>
+            </column>
+            <column id="1340">
+                <property name="width">0.96875in</property>
+            </column>
+            <column id="1341">
+                <property name="width">0.96875in</property>
+            </column>
+            <column id="1342">
+                <property name="width">0.96875in</property>
+            </column>
+            <column id="1343">
+                <property name="width">0.96875in</property>
+            </column>
+            <column id="1344">
+                <property name="width">0.9583333333333334in</property>
+            </column>
+            <row id="1345">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.45in</property>
+                <cell id="1346">
+                    <label id="1372">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">确认备注</text-property>
+                    </label>
+                </cell>
+                <cell id="1347">
+                    <property name="colSpan">7</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <data id="1429">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA018</property>
+                                <text-property name="displayName">确认备注</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA018"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA018</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1354">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.45in</property>
+                <cell id="1355">
+                    <label id="1373">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">取消备注</text-property>
+                    </label>
+                </cell>
+                <cell id="1356">
+                    <property name="colSpan">7</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <data id="1430">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA019</property>
+                                <text-property name="displayName">取消确认备注</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA019"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA019</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1363">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <property name="height">0.45in</property>
+                <cell id="1364">
+                    <label id="1374">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">问题描述</text-property>
+                    </label>
+                </cell>
+                <cell id="1365">
+                    <property name="colSpan">7</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <data id="1431">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA037</property>
+                                <text-property name="displayName">问题描述</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA037"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA037</property>
+                    </data>
+                </cell>
+            </row>
+        </grid>
+        <grid id="1376">
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="width">7.739583333333333in</property>
+            <column id="1377">
+                <property name="width">1.05in</property>
+            </column>
+            <column id="1378"/>
+            <column id="1379">
+                <property name="width">1.05in</property>
+            </column>
+            <column id="1380"/>
+            <column id="1381">
+                <property name="width">1.05in</property>
+            </column>
+            <column id="1382"/>
+            <row id="1383">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="1384">
+                    <label id="1397">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">ERP领料单号</text-property>
+                    </label>
+                </cell>
+                <cell id="1385">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1432">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA025</property>
+                                <text-property name="displayName">ERP领料单号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA025"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA025</property>
+                    </data>
+                </cell>
+                <cell id="1386">
+                    <label id="1398">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">ERP退料单号</text-property>
+                    </label>
+                </cell>
+                <cell id="1387">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1433">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA026</property>
+                                <text-property name="displayName">ERP退料单号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA026"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA026</property>
+                    </data>
+                </cell>
+                <cell id="1388">
+                    <label id="1399">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">ERP借出单号</text-property>
+                    </label>
+                </cell>
+                <cell id="1389">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <data id="1434">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA028</property>
+                                <text-property name="displayName">ERP借出单号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA028"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA028</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="1390">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <property name="borderLeftStyle">solid</property>
+                <property name="borderLeftWidth">thin</property>
+                <property name="borderRightStyle">solid</property>
+                <property name="borderRightWidth">thin</property>
+                <property name="borderTopStyle">solid</property>
+                <property name="borderTopWidth">thin</property>
+                <cell id="1391">
+                    <label id="1400">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">ERP归还单号</text-property>
+                    </label>
+                </cell>
+                <cell id="1392">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1435">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA029</property>
+                                <text-property name="displayName">ERP归还单号</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA029"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA029</property>
+                    </data>
+                </cell>
+                <cell id="1393">
+                    <label id="1401">
+                        <property name="textAlign">center</property>
+                        <text-property name="text">交易原因</text-property>
+                    </label>
+                </cell>
+                <cell id="1394">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <data id="1436">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA042</property>
+                                <text-property name="displayName">交易原因</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA042"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA042</property>
+                    </data>
+                </cell>
+                <cell id="1395">
+                    <data id="1437">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">TA042C</property>
+                                <text-property name="displayName">TA042C</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["TA042C"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">TA042C</property>
+                    </data>
+                </cell>
+                <cell id="1396">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <grid id="1446">
+                        <column id="1447"/>
+                        <column id="1448"/>
+                        <row id="1449">
+                            <cell id="1450"/>
+                            <cell id="1451">
+                                <property name="borderLeftStyle">solid</property>
+                                <property name="borderLeftWidth">thin</property>
+                            </cell>
+                        </row>
+                    </grid>
+                </cell>
+            </row>
+        </grid>
+        <table id="1468">
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="width">7.739583333333333in</property>
+            <property name="dataSet">dataDetail</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">TB003</property>
+                    <text-property name="displayName">TB003</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TB003"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">TB004</property>
+                    <text-property name="displayName">TB004</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TB004"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">TB005</property>
+                    <text-property name="displayName">TB005</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TB005"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">TB006</property>
+                    <text-property name="displayName">TB006</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TB006"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">TB019</property>
+                    <text-property name="displayName">TB019</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TB019"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">TB008</property>
+                    <text-property name="displayName">TB008</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TB008"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">TB009</property>
+                    <text-property name="displayName">TB009</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TB009"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">TB010</property>
+                    <text-property name="displayName">TB010</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TB010"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">TB011</property>
+                    <text-property name="displayName">TB011</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TB011"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="1499">
+                <property name="width">0.4583333333333333in</property>
+            </column>
+            <column id="1500">
+                <property name="width">1.1354166666666667in</property>
+            </column>
+            <column id="1501">
+                <property name="width">1.1979166666666667in</property>
+            </column>
+            <column id="1502">
+                <property name="width">1.1770833333333333in</property>
+            </column>
+            <column id="1503">
+                <property name="width">0.90625in</property>
+            </column>
+            <column id="1504">
+                <property name="width">0.4479166666666667in</property>
+            </column>
+            <column id="1505">
+                <property name="width">0.6458333333333334in</property>
+            </column>
+            <column id="1506">
+                <property name="width">0.8645833333333334in</property>
+            </column>
+            <column id="1507">
+                <property name="width">0.90625in</property>
+            </column>
+            <header>
+                <row id="1469">
+                    <cell id="1470">
+                        <label id="1508">
+                            <text-property name="text">项次</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1471">
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <label id="1509">
+                            <text-property name="text">产品品号</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1472">
+                        <label id="1510">
+                            <text-property name="text">产品品名</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1473">
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <label id="1511">
+                            <text-property name="text">产品规格</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1474">
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <label id="1512">
+                            <text-property name="text">产品序号</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1475">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <label id="1513">
+                            <text-property name="text">单位</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1476">
+                        <label id="1514">
+                            <text-property name="text">数量</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1477">
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <label id="1515">
+                            <text-property name="text">仓库</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1478">
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <label id="1516">
+                            <text-property name="text">储位</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="1479">
+                    <property name="height">0.3645833333333333in</property>
+                    <cell id="1480">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1517">
+                            <property name="textAlign">right</property>
+                            <property name="resultSetColumn">TB003</property>
+                        </data>
+                    </cell>
+                    <cell id="1481">
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1518">
+                            <property name="resultSetColumn">TB004</property>
+                        </data>
+                    </cell>
+                    <cell id="1482">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1519">
+                            <property name="resultSetColumn">TB005</property>
+                        </data>
+                    </cell>
+                    <cell id="1483">
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1520">
+                            <property name="resultSetColumn">TB006</property>
+                        </data>
+                    </cell>
+                    <cell id="1484">
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1521">
+                            <property name="resultSetColumn">TB019</property>
+                        </data>
+                    </cell>
+                    <cell id="1485">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1522">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">TB008</property>
+                        </data>
+                    </cell>
+                    <cell id="1486">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1523">
+                            <property name="textAlign">right</property>
+                            <property name="resultSetColumn">TB009</property>
+                        </data>
+                    </cell>
+                    <cell id="1487">
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1524">
+                            <property name="textAlign">left</property>
+                            <property name="resultSetColumn">TB010</property>
+                        </data>
+                    </cell>
+                    <cell id="1488">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1525">
+                            <property name="textAlign">right</property>
+                            <property name="resultSetColumn">TB011</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+    </body>
+    <list-property name="images">
+        <structure>
+            <property name="name">HANBELL.jpg</property>
+            <property name="data">
+                /9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwg
+                JC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIy
+                MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAfAMsDASIAAhEBAxEB/8QA
+                HwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIh
+                MUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVW
+                V1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXG
+                x8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQF
+                BgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAV
+                YnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+                hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq
+                8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCf4pfEDxP4c8aS2Gl6iLe2EUbBPIVuSBnkisXwt42+JHi7WBp2
+                na1CsgjMkkklvGFjUdz8vuKp/G//AJKLP/1xi/8AQRWl8AonbxhqDqPlWyIJ9MuMfyqepfQ2XvPignja
+                PwofFFj9se2+0iX7ONm3nj7uc8VieLfGHxL8G6smn6jrUDM6eZFJDBGVdendc9a9fk8M2r/EuHxKdTUX
+                UdkYBY4GSOfm657+leVftBRsPEejyEfK1o4B9w3P8xTEi98KvH/ifxJ4zGn6pqAntvs0kmzyFXkYxyBX
+                utfMvwM/5KKP+vOX+le++MdXGheDtV1InDw27bD/ALR4X9SKEJ7nF3Px08LWl3Pbtbak5hdoy0cKkHBx
+                kfN0rstQ8UWOmeEj4ju450tBAsxTaPNw2MDGcZ5HevkXThbPqtoL+by7UzL58mCcLn5jge2a9a+KvxG0
+                PxB4Xt9I0G6aUNOGm/dNGAqjgcj1x+VFx2O30j4zeHtd1i00qys9SNzdSeWm+FQAfU/P0r0gV82fAnR/
+                t3jWbUWXMdhbkg/9NG4H6bq9e+IvizTvDvh27tZtQFrqN3ayi0VQSxbGARjpyetAmtS1pvjzRdX8XXXh
+                yzeaS8t1JaQKPKJGMgHPJGR2rq6+UfhLffYfiXpLE8Ts0J99yn+uK+kfFupTaP4S1XUYEZ5oLZmjCLkh
+                scHHseaAascxYfGHwxe+IDpDG5t385oRNMgWIsDjrnjPvW34v8c6X4JtbWfU0nf7S5VFt1DHgZJ5I4rw
+                W6tbb4k6fJqOnQxweKbdN97ZRjC3yjrLEP8Anp6jvSaVrdp4w0mDwv4nuDDeW+U0vVJc/umPHlS/7JwB
+                ntRcdj3fwf4+0zxt9r/sy2vI0tdodriMKCTnAGCfSufvvjh4WsL+5tJYNQke3laJ2jhUqSDgkHdyKh8H
+                6Rc/Dj4X6teajGsV8pmmYZzyPlTn0OAfxrxv4d6fa6j4wS51RRJYWUUt7eb13AqozyO+SRQFkexr8ffC
+                Z6Wuq/8Afhf/AIqvQ9H1mw13TYdQ02dZ7aVcq6nPpwfQ+1fOHxC8Q+FvEg02y8KaTHBL5pMji2WAsTwq
+                17H4Y08/D74VFr1FjubW3lurgbgR5hycZ/IUA0UdT+NnhjS9UutPmt7+SW2laJ2iiUoSDg4O6qv/AAv7
+                wp/z6ap/35X/AOKr56hH2/UoxcTLH9omHmySHAXceSfzr6Shu/hRDCkXm+HH2KFyyRknHrxQDSRqWPxJ
+                0e/8IXvihILyOwtGKN5kYDOePujPPJArG0742+HNV1K10+1stTNxcyrFGDCuMk4/vVhfGm8sdJ8F6bou
+                lQwW8F7P52yBQq7FGc4HqSPyri/gro/9pfECK5ZQYrCJpzk/xfdX9T+lAWVrn0/XIeMPiFpHgiS0i1KO
+                5ke5DFVt1DEAYyTkj1rr+1fLfxm1j+1fiFdQq2YrGNbZfr1b9T+lDElc9v8ACHxH0jxpfXNtplveobeM
+                SO08YVeTgDgnn/Cu0ryX4C6OLPwld6m6gPfXGF/3U4H6k163TEfMnxpikn+JTwwozyvFEqqoyWJAwBXr
+                Hwq8FSeEPD7PeKv9pXxEk+OfLA+6g+nOfc1ieOvhl4g8QeNE8QaXf2Nt5QiMfnl9wdcHOACOoq2ND+L/
+                AG8VaN/34/8AtdIroJcD/jI20P8A1CG/rWv8UPBbeMfDWy2Uf2jZsZbYnjcccrn34/ECuTbwD8Sm8SJ4
+                g/4SDSP7USHyBL5Zxs9Nu3Hetb+w/i//ANDVo3/fj/7XQB538FYJrT4mPbXEbRTR20yOjDBUgjINdz8f
+                NX+zeF7HSkOGvbjc3+6gz/Mj8ql8D/DjxFoPjmfxDrGoWFw1xHL5vkbgSzEHOMAV1/ifwFoHiy6hutYg
+                lleFNibZmQAZz0FAX1PDPg54VsfEniS7fU7SO5sbS3yYpRlTIxwP5Gs34qQaTZeObnT9HsYLS2tEWJkh
+                XAaTGST+ePwr6N8MeDtF8JQ3EOj27RLOweTdIWJI6cmsXUPhH4Q1TUbm/u7O4e5uXMkjC6kGSeveiwX1
+                Oc+DsNt4b+G994gv2EMc8rTO5P8AyzTgfru/OsHwNNZfE7xr4hutesILndAhtY5Rn7OoJAA/MZ969Xvv
+                BWiXvhi38PTW8q6Xb42wpMy529MkHJ9ai8N+APD3hS9kvdGtZIppY/KZmmZwVyDjBPqKBXPlzSJm0Txf
+                YzMcPZ3y5/4C/NfQPxa8bXfhOy0n+z2Qzz3Bd0flZIlHKn2ORV+6+EHg6+vZr2Wwl86aUyuVuHALE5Jx
+                mtLxF8PvD3iie2l1W2lle3j8qICdkAX8KBto8H17SYGtofHXgqR4LZZA9zbxn95p03/xJp0+n2/xLtn1
+                DSoorbxPGAb6xX5Vux3mi/2vUV7/AOH/AAbofhrTrix0y02290xaVZGMnmcYwc9sdqyrD4VeEdK1WHVb
+                KxlguYJPNjZLh8A/TPT2osFzlvjHdDQfhtpmgpKxknaKEk8kxxAE/rtrmfhJpeijw5rV94iuLe3s79ls
+                FM03lCQAbmAOR7flXr/ijwJoXi2a3m1iGaQ26lYwkpQDPXgVQuPhb4VutGs9JkspjZ2bvJFGJ3HzN1JO
+                eaAvofO3jW30NfF01p4YVWsP3cUWxy4eTvgntmvX/ilcP4a+Eun6F5rNPcCK2Ysclgq5Y/mB+ddjoXw3
+                8K+HLwXdhpiC4/gklYyFfpnpVnxP4J0Pxa9sdZgklNuD5YWZkAz16fSiwXPm74d6Voeq+KNniO5gh02O
+                FpHE83liQ9AM598/hXsdn4J+E19eRW9kLCe5c/JFHfMxYjnpurRHwT8D/wDQPn/8CZP8a0dB+GPhfw5q
+                seqaZZSR3aAhXaZnAyMHgmgG7ninxs1YX/jxrKMjydOgWADsGPzH+YH4V0/wSvtC0PRtRvNS1aytbm6m
+                EaxzTKrBFHofUk/lXeah8I/COqahc393ZzvcXMhklYXMgyT171W/4Un4H/6B8/8A4Eyf40BdWsdRH4p0
+                S6s7y4s9TtLtbSEzTeRMH2qATk4+lfH+pXsup6ldX8pzLczNKc+pOa+q9N+HPhrR9J1HTrK0kitdRQJc
+                HzWLMozwDnI6ms3/AIUr4I/6B8//AIEyf40AmkWPCfiDwpoPhPS9M/4SDTA9vbqH/wBJT72Mt39Sa7K0
+                u4L61jurSRJ4JV3JJGwKsPUGuE/4Ul4H/wCgdP8A+BUn+NdzYWUOm6fb2NnGI7a3QRxrnoo4FMk//9k=
+</property>
+        </structure>
+    </list-property>
+</report>

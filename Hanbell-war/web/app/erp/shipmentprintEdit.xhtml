@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="shipmentprint" icon="ui-icon-restore"/>
+                    <p:commandButton id="btnPrev" value="向前" actionListener="#{shipmentPrintManagedBean.toPrev()}" icon="ui-icon-carat-1-w"
+                                     process="@this" update="formOne"
+                                     rendered="#{shipmentPrintManagedBean.hasPrev}"/>
+                    <p:commandButton id="btnNext" value="向后" actionListener="#{shipmentPrintManagedBean.toNext()}" icon="ui-icon-carat-1-e"
+                                     process="@this" update="formOne"
+                                     rendered="#{shipmentPrintManagedBean.hasNext}"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnSave" value="保存" actionListener="#{shipmentPrintManagedBean.update()}" icon="ui-icon-save"
+                                     process="@this,plgHead" update="formOne"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">出货条码－修改</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="导入单号"  /></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="formid" value="#{shipmentPrintManagedBean.currentEntity.formid}" title="Formid"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="单据日期"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:calendar id="formdate" value="#{shipmentPrintManagedBean.currentEntity.formdate}" title="Formdate"
+                                    pattern="yyyy/MM/dd" required="true" requiredMessage="请输入单据日期"/>
+                    </p:column>
+                </p:row> <p:row>
+                    <p:column><h:outputText value="客户编号"/></p:column>
+                    <p:column>
+                        <h:outputText id="customerno" value="#{shipmentPrintManagedBean.currentEntity.customerno}" title="customerno" />
+                    </p:column>
+                    <p:column><h:outputText value="客户简称"/></p:column>
+                    <p:column>
+                        <h:outputText id="customer" value="#{shipmentPrintManagedBean.currentEntity.customer}" title="customer" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="出货单号" for="remark" /></p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="remark" value="#{shipmentPrintManagedBean.currentEntity.remark}" title="Remark" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="操作人员"/></p:column>
+                    <p:column>
+                        <h:outputText id="creator" value="#{shipmentPrintManagedBean.currentEntity.creator}" title="creator" />
+                    </p:column>
+                    <p:column><h:outputText value="状态"/></p:column>
+                    <p:column>
+                        <h:outputText id="status" value="#{shipmentPrintManagedBean.currentEntity.status}" title="Status" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:tabView id="tabView" styleClass="tabView">
+                <p:tab title="出货明细">
+                    <p:toolbar id="detailToolbar" styleClass="detailToolbar">
+                        <f:facet name="left">
+                            <p:commandButton id="btnAddDetail" widgetVar="btnAddDetail" value="添加" actionListener="#{shipmentPrintManagedBean.createDetail()}" icon="ui-icon-plus"
+                                             oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').enable();"
+                                             process="@this" update=":formOne:tabView:plgDetail"/>
+                            <p:commandButton id="btnDeleteDetail" widgetVar="btnDeleteDetail" value="删除" actionListener="#{shipmentPrintManagedBean.deleteDetail()}" icon="ui-icon-trash"
+                                             oncomplete="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
+                                             process="@this" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" />
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton id="btnSaveDetail" widgetVar="btnSaveDetail" value="确定" actionListener="#{shipmentPrintManagedBean.doConfirmDetail()}" icon="ui-icon-check"
+                                             onsuccess="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
+                                             process="@this,:formOne:tabView:plgDetail" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList"/>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:panelGrid id="plgDetail"  styleClass="plgDetail Wid100">
+                        <p:row>
+                            <p:column class="Wid20"><p:outputLabel value="出货单号" for="shpno" /></p:column>
+                            <p:column class="Wid30">
+                                <p:inputText id="shpno" value="#{shipmentPrintManagedBean.currentDetail.shpno}" title="shpno"
+                                             required="true" requiredMessage="请输入出货单号"/>
+                            </p:column>
+                            <p:column class="Wid20"><p:outputLabel value="件号" for="itemno"/></p:column>
+                            <p:column class="Wid30">
+                                <p:inputText id="itemno" value="#{shipmentPrintManagedBean.currentDetail.itemno}" title="itemno"
+                                             required="true" requiredMessage="请输入件号"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="产品机型"  for="itemModel"/></p:column>
+                            <p:column>
+                                <p:inputText id="itemModel" value="#{shipmentPrintManagedBean.currentDetail.itemModel}" title="itemModel"
+                                             required="true" requiredMessage="请输入产品机型" />
+                            </p:column>
+                            <p:column><p:outputLabel value="SN"  for="varnr"/></p:column>
+                            <p:column>
+                                <p:inputText id="varnr" value="#{shipmentPrintManagedBean.currentDetail.varnr}" title="varnr"
+                                             required="true" requiredMessage="请输入产品机型" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="客户机型"  for="customerItemDesc"/></p:column>
+                            <p:column>
+                                <p:inputText id="customerItemDesc" value="#{shipmentPrintManagedBean.currentDetail.customerItemDesc}" title="customerItemDesc"/>
+                            </p:column>
+                            <p:column><p:outputLabel value="客户条码"  for="customerItem"/></p:column>
+                            <p:column>
+                                <p:inputText id="customerItem" value="#{shipmentPrintManagedBean.currentDetail.customerItem}" title="customerItem"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="数量"  for="qty"/></p:column>
+                            <p:column>
+                                <p:inputText id="qty" value="#{shipmentPrintManagedBean.currentDetail.qty}" title="qty"
+                                             required="true" requiredMessage="请输入数量" />
+                            </p:column>
+                            <p:column></p:column>
+                            <p:column>
+
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:dataTable id="tableList" value="#{shipmentPrintManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{shipmentPrintManagedBean.currentDetail}" rowKey="#{item.seq}" >
+                        <p:ajax event="rowSelect"  update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
+                        <p:ajax event="rowUnselect"  update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" oncomplete="" />
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="出货单号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.shpno}-#{item.shpseq}"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="出货品号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.itemno}"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="产品型号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.itemModel}"/>
+                        </p:column>
+                        <p:column styleClass="Wid10">
+                            <f:facet name="header">
+                                <h:outputText value="SN"/>
+                            </f:facet>
+                            <h:outputText value="#{item.varnr}"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="客户品号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.customerItem}"/>
+                        </p:column>
+                        <p:column styleClass="Wid10" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="数量"/>
+                            </f:facet>
+                            <h:outputText value="#{item.qty}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnSave">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

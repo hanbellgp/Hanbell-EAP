@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="proposal" icon="ui-icon-restore"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnSave" value="保存" actionListener="#{proposalManagedBean.persist()}" icon="ui-icon-save"
+                                     process="@this,plgHead" update="plgHead,formOne:tabView:tableList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead"  styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">提案改善－新增</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="提案编号" for="proposalid" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="proposalid" value="#{proposalManagedBean.newEntity.proposalid}" title="proposalid"
+                                     required="true" requiredMessage="请输入提案编号"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="提案名称" for="proposalna" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="proposalna" value="#{proposalManagedBean.newEntity.proposalna}" title="proposalna"
+                                     required="true" requiredMessage="请输入提案名称"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="提案单位" for="proposaldepno" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="proposaldepno" value="#{proposalManagedBean.newEntity.proposaldepno}" title="proposaldeptno"
+                                     required="true" requiredMessage="请输入提案单位代号" styleClass="inputWithButton"/>
+                        <p:commandButton id="btnProposalDeptSelect" actionListener="#{proposalManagedBean.openDialog('departmentSelect')}" icon="ui-icon-extlink"
+                                         process="@this" >
+                            <p:ajax event="dialogReturn" listener="#{proposalManagedBean.handDialogReturnDeptWhenNew}"
+                                    update="proposaldepno,proposaldept" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="提案单位" for="proposaldept" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="proposaldept" value="#{proposalManagedBean.newEntity.proposaldept}" title="proposaldept"
+                                     required="true" requiredMessage="请输入提案单位" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="提案人工号" for="proposaluserno" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="proposaluserno" value="#{proposalManagedBean.newEntity.proposaluserno}" title="proposaluserno"
+                                     required="true" requiredMessage="请输入提案人工号" styleClass="inputWithButton"/>
+                        <p:commandButton id="btnApplyUserSelect" actionListener="#{proposalManagedBean.openDialog('sysuserSelect')}" icon="ui-icon-extlink"
+                                         process="@this" >
+                            <p:ajax event="dialogReturn" listener="#{proposalManagedBean.handleDialogReturnWhenNew}"
+                                    update="proposaluserno,proposaluserna" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="提案人" for="proposaluserna" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="proposaluserna" value="#{proposalManagedBean.newEntity.proposaluserna}" title="proposaluserna"
+                                     required="true" requiredMessage="请输入提案人姓名" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="提案时间" for="proposaldate" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:calendar id="proposaldate" value="#{proposalManagedBean.newEntity.proposaldate}" title="proposaldate"
+                                    pattern="yyyy/MM/dd" required="true" requiredMessage="请输入提案日期"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="收件日期" for="receiptdate" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:calendar id="receiptdate" value="#{proposalManagedBean.newEntity.receiptdate}" title="receiptdate"
+                                    pattern="yyyy/MM/dd" required="true" requiredMessage="请输入收件日期"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="评审日期" for="reviewdate" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:calendar id="reviewdate" value="#{proposalManagedBean.newEntity.reviewdate}" title="reviewdate"
+                                    pattern="yyyy/MM/dd" required="true" requiredMessage="请输入评审日期"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="案件结论" for="conclusion" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:selectOneMenu id="conclusion" value="#{proposalManagedBean.newEntity.conclusion}" title="conclusion" >
+                            <f:selectItem itemLabel="未评审" itemValue="未评审"/>
+                            <f:selectItem itemLabel="采用" itemValue="采用"/>
+                            <f:selectItem itemLabel="不采用" itemValue="不采用"/>
+                            <f:selectItem itemLabel="保留" itemValue="保留"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="案件性质" for="proposalprop" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:selectOneMenu id="proposalprop" value="#{proposalManagedBean.newEntity.proposalprop}" title="proposalprop" >
+                            <f:selectItem itemLabel="未评" itemValue="未评"/>
+                            <f:selectItem itemLabel="一般改善" itemValue="一般改善"/>
+                            <f:selectItem itemLabel="专案改善" itemValue="专案改善"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="案件类型" for="casetype" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:selectOneMenu id="casetype" value="#{proposalManagedBean.newEntity.casetype}" title="casetype" >
+                            <f:selectItem itemLabel="未评审" itemValue="未评审"/>
+                            <f:selectItem itemLabel="建议类" itemValue="建议类"/>
+                            <f:selectItem itemLabel="工程变更类" itemValue="工程变更类"/>
+                            <f:selectItem itemLabel="普通类" itemValue="普通类"/>
+                            <f:selectItem itemLabel="其他" itemValue="其他"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="改善人" for="improveuser" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="improveuser" value="#{proposalManagedBean.newEntity.improveuser}"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="附件" for="attachment" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:outputLabel id="attachment" value="#{proposalManagedBean.newEntity.attachment}" title="attachment"/> 
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="改善人是否有奖励" for="rewarded" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="rewarded" value="#{proposalManagedBean.newEntity.rewarded}" title="rewarded"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="效益评审人" for="reviewer" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="reviewer" value="#{proposalManagedBean.newEntity.reviewer}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="预计完成时间" for="precompletedate" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:calendar id="precompletedate" value="#{proposalManagedBean.newEntity.precompletedate}" title="precompletedate"
+                                    pattern="yyyy/MM/dd" />
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="目前进度" for="progress" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="progress" value="#{proposalManagedBean.newEntity.progress}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="结案时间" for="enddate" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:calendar id="enddate" value="#{proposalManagedBean.newEntity.enddate}" title="enddate"
+                                    pattern="yyyy/MM/dd" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="提案人奖励" for="proporeward" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="proporeward" value="#{proposalManagedBean.newEntity.proporeward}"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="改善人奖励" for="improreward" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="improreward" value="#{proposalManagedBean.newEntity.improreward}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="审核确认时间" for="cfmdate" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="cfmdate" value="#{proposalManagedBean.newEntity.cfmdate}" title="cfmdate">
+                            <f:convertDateTime pattern="yyyy/MM/dd"></f:convertDateTime>
+                        </p:inputText>
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="状态" for="status" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="status" value="#{proposalManagedBean.newEntity.status}"/>
+                    </p:column>
+                </p:row>
+
+            </p:panelGrid>
+            <p:tabView id="tabView" styleClass="tabView">
+                <p:tab title="展示内容">
+                    <p:toolbar id="detailToolbar" styleClass="detailToolbar">
+                        <f:facet name="left">
+                            <p:commandButton id="btnAddDetail" widgetVar="btnAddDetail" value="添加" actionListener="#{proposalManagedBean.createDetail()}" icon="ui-icon-plus"
+                                             oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').enable();"
+                                             process="@this" update="tabView:tableList"/>
+                            <p:commandButton id="btnDeleteDetail" widgetVar="btnDeleteDetail" value="删除" actionListener="#{proposalManagedBean.deleteDetail()}" icon="ui-icon-trash"
+                                             oncomplete="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
+                                             process="@this" update="tableList"/>
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton id="btnSaveDetail" widgetVar="btnSaveDetail" value="确定" actionListener="#{proposalManagedBean.doConfirmDetail()}" icon="ui-icon-check"
+                                             onsuccess="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
+                                             process="@this" update="tableList"/>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:dataTable id="tableList" value="#{proposalManagedBean.detailList}" var="item" styleClass="tableList Wid100 Mtop10"
+                                 selectionMode="single" selection="#{proposalManagedBean.currentDetail}" rowKey="#{item.seq}" >
+                        <p:ajax event="rowSelect" oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
+                        <p:ajax event="rowUnselect"  oncomplete="" />
+                        <p:column styleClass="Wid10">
+                            <f:facet name="header">
+                                <h:outputText value="序号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.seq}"/>
+                        </p:column>
+                        <p:column styleClass="Wid30">
+                            <f:facet name="header">
+                                <h:outputText value="附件名称"/>
+                            </f:facet>
+                            <h:outputText value="#{item.resource}"/>
+                        </p:column>
+                        <p:column styleClass="Wid60">
+                            <f:facet name="header">
+                                <h:outputText value="摘要"/>
+                            </f:facet>
+                            <a href="../../resources/app/res/#{item.resource}">#{item.resource}</a>     
+                        </p:column>
+                    </p:dataTable>
+                    <p:fileUpload id="fileUploadDetail" fileUploadListener="#{proposalManagedBean.handleFileUploadWhenDetailEdit}"  styleClass="fileUpload"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|xls|xlsx)$/" sizeLimit="20000000"
+                                  label="选择" uploadLabel="上传" cancelLabel="取消" update="formOne:tabView:tableList"/>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
