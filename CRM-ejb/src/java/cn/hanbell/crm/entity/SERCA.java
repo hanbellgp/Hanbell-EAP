@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "SERCA.findByCa007", query = "SELECT s FROM SERCA s WHERE s.ca007 = :ca007")
     , @NamedQuery(name = "SERCA.findByCa008", query = "SELECT s FROM SERCA s WHERE s.ca008 = :ca008")
     , @NamedQuery(name = "SERCA.findByCa009", query = "SELECT s FROM SERCA s WHERE s.ca009 = :ca009")
-    , @NamedQuery(name = "SERCA.findByC001ToCa009", query = "SELECT s FROM SERCA s WHERE s.ca001 = :ca001")
+    , @NamedQuery(name = "SERCA.findByCa001ToCa009", query = "SELECT s FROM SERCA s WHERE s.sERCAPK.ca001 = :ca001")
     , @NamedQuery(name = "SERCA.findByCa010", query = "SELECT s FROM SERCA s WHERE s.ca010 = :ca010")
     , @NamedQuery(name = "SERCA.findByCa011", query = "SELECT s FROM SERCA s WHERE s.ca011 = :ca011")
     , @NamedQuery(name = "SERCA.findByCa012", query = "SELECT s FROM SERCA s WHERE s.ca012 = :ca012")
