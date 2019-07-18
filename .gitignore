@@ -21,3 +21,35 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Custom
+/nbproject/private
+/Hanbell-Admin/web/resources/prime*
+/Hanbell-Admin/web/resources/sass
+/Hanbell-Admin/web/resources/ulitma-layout
+/Hanbell-Admin/nbproject/private
+/CRM-ejb/nbproject/private
+/EAP-ejb/nbproject/private
+/EFGP-ejb/nbproject/private
+/EFNET-ejb/nbproject/private
+/ERP-ejb/nbproject/private
+/Hanbell-JRS/nbproject/private
+/Hanbell-JWS/nbproject/private
+/Hanbell-RPT/nbproject/private
+
+/dist
+/build
+/CRM-ejb/build
+/CRMSYS-ejb/build
+/EAP-ejb/build
+/EFGP-ejb/build
+/Hanbell-JRS/build
+/Hanbell-JWS/build
+/Hanbell-RPT/build
+/Hanbell-war/build
+/HRM-ejb/build
+/PLM-ejb/build
+/SHBERP-ejb/build
+/SHBMES-ejb/build
+/VHBERP-ejb/build
+/EAP-ejb/dist/
