@@ -24,7 +24,7 @@ public class SERCABean extends SuperEJBForCRM<SERCA>{
     }
 
     public String findByCa009(String kfno) {
-        Query query = getEntityManager().createNamedQuery("SERCA.findByC001ToCa009");
+        Query query = getEntityManager().createNamedQuery("SERCA.findByCa001ToCa009");
         query.setParameter("ca001", kfno);
         try {
             Object o = query.getSingleResult();
