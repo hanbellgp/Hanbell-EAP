@@ -3094,7 +3094,7 @@ public class EAPWebService {
             return "404";
         }
     }
-    
+
     @WebMethod(operationName = "createCuscomPlaintByEAP")
     public String createCuscomPlaintByEAP(@WebParam(name = "kfno") String kfno) {
         Boolean ret = false;
@@ -3203,7 +3203,7 @@ public class EAPWebService {
                         cpd.setItdsc(row[8] == null ? "null" : row[8].toString());
                         cpd.setTrnqy1(row[9] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
                         cpd.setUnmsr1(row[10] == null ? "null" : row[10].toString());
-                        cpd.setTramt(row[11] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[11].toString())));                
+                        cpd.setTramt(row[11] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[11].toString())));
                         clList.add(cpd);
                     }
                 }
@@ -3251,11 +3251,11 @@ public class EAPWebService {
                 if (!clList.isEmpty()) {
                     for (CustomerComplaintDetail cuscomPlaintDetail : clList) {
                         //IAF为服务领料 领料加项 IAG为服务退料 退料减项
-                        if(cuscomPlaintDetail.getTrtype().equals("IAF")){
+                        if (cuscomPlaintDetail.getTrtype().equals("IAF")) {
                             clcost = clcost.add(cuscomPlaintDetail.getTramt());
-                        }else{
+                        } else {
                             clcost = clcost.subtract(cuscomPlaintDetail.getTramt());
-                        }           
+                        }
                         customerComplaintDetailBean.persist(cuscomPlaintDetail);
                     }
                 }
@@ -3276,6 +3276,11 @@ public class EAPWebService {
             }
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "createCuscomPlaintByEAP", kfno), ex);
+            mailBean.getTo().clear();
+            mailBean.getTo().add("C1879@hanbell.com.cn");
+            mailBean.setMailSubject("客诉结案抛转详细失败——单号：" + kfno);
+            mailBean.setMailContent("客诉单号：" + kfno + "————————异常" + ex.toString());
+            mailBean.notify(new MailNotify());
         }
         if (ret) {
             return "200";
