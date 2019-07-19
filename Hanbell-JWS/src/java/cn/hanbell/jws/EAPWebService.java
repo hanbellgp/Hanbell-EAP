@@ -3095,8 +3095,8 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "createCuscomPlaintByEAP")
-    public String createCuscomPlaintByEAP(@WebParam(name = "kfno") String kfno) {
+    @WebMethod(operationName = "createCustomerComplaintByEAP")
+    public String createCustomerComplaintByEAP(@WebParam(name = "kfno") String kfno) {
         Boolean ret = false;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         BigDecimal clvcost = BigDecimal.ZERO;
@@ -3110,7 +3110,7 @@ public class EAPWebService {
         List<CustomerComplaintDetail> clList;
         try {
             if (kfno == null && "".equals(kfno)) {
-                throw new NullPointerException("createCuscomPlaintByEAP___结案客诉单号为空");
+                throw new NullPointerException("createCustomerComplaintByEAP___结案客诉单号为空");
             }
             SERI12 seri12 = seri12Bean.findByBq001(kfno);
             CustomerComplaint cp = new CustomerComplaint();
@@ -3275,7 +3275,7 @@ public class EAPWebService {
                 log4j.info("Info", kfno + "客诉结案抛转报表邮件发送成功");
             }
         } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "createCuscomPlaintByEAP", kfno), ex);
+            log4j.error(String.format("执行%s:参数%s时异常", "createCustomerComplaintByEAP", kfno), ex);
             mailBean.getTo().clear();
             mailBean.getTo().add("C1879@hanbell.com.cn");
             mailBean.setMailSubject("客诉结案抛转详细失败——单号：" + kfno);
