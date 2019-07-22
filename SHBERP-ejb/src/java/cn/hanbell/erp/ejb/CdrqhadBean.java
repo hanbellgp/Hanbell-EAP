@@ -139,7 +139,9 @@ public class CdrqhadBean extends SuperEJBForERP<Cdrqhad> {
                     REPPA ra = reppaBean.findByPK(pa001, pa002);
                     if (ra != null) {
                         ra.setPa027("N");
+                        ra.setPa026("N");
                         ra.setPa519("");
+                        ra.setPa521("");
                         ra.setPa518("4");
                         reppaBean.update(ra);
                     }

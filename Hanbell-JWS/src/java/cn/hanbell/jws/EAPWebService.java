@@ -1778,7 +1778,11 @@ public class EAPWebService {
                                     lb_checpoa = true;
                                     if (li_ulevelp > 1) {
                                         for (int i = li_ulevelp; i >= 1; i--) {
-                                            ldc_levelpri = BigDecimal.valueOf(Double.valueOf(prpl[10 + i].toString())); //prpl标准定价数组的顺序（数量）不能修改
+                                            if (i == 5) {                           //A5价空白
+                                                continue;
+                                            } else {
+                                                ldc_levelpri = BigDecimal.valueOf(Double.valueOf(prpl[10 + i].toString())); //prpl标准定价数组的顺序（数量）不能修改
+                                            }
                                             if (ldc_levelpri == null || ldc_levelpri.compareTo(BigDecimal.ZERO) < 1) {
                                                 log4j.error("出错，第" + i + "笔件号'" + itnbr + "'当前售价不符合价格权限表管控范围,请走特殊报价或联系mis'");
                                                 //dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
@@ -3094,7 +3098,7 @@ public class EAPWebService {
             return "404";
         }
     }
-    
+
     @WebMethod(operationName = "createCuscomPlaintByEAP")
     public String createCuscomPlaintByEAP(@WebParam(name = "kfno") String kfno) {
         Boolean ret = false;
@@ -3203,7 +3207,7 @@ public class EAPWebService {
                         cpd.setItdsc(row[8] == null ? "null" : row[8].toString());
                         cpd.setTrnqy1(row[9] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
                         cpd.setUnmsr1(row[10] == null ? "null" : row[10].toString());
-                        cpd.setTramt(row[11] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[11].toString())));                
+                        cpd.setTramt(row[11] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[11].toString())));
                         clList.add(cpd);
                     }
                 }
@@ -3251,11 +3255,11 @@ public class EAPWebService {
                 if (!clList.isEmpty()) {
                     for (CustomerComplaintDetail cuscomPlaintDetail : clList) {
                         //IAF为服务领料 领料加项 IAG为服务退料 退料减项
-                        if(cuscomPlaintDetail.getTrtype().equals("IAF")){
+                        if (cuscomPlaintDetail.getTrtype().equals("IAF")) {
                             clcost = clcost.add(cuscomPlaintDetail.getTramt());
-                        }else{
+                        } else {
                             clcost = clcost.subtract(cuscomPlaintDetail.getTramt());
-                        }           
+                        }
                         customerComplaintDetailBean.persist(cuscomPlaintDetail);
                     }
                 }
