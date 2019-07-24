@@ -52,7 +52,7 @@ public class CustomerComplaintSetManagedBean implements Serializable {
     @EJB
     private SERI12Bean seri12Bean;
     @EJB
-    private SERCABean sERCABean;
+    private SERCABean sercaBean;
     @EJB
     private HKFW005Bean hkfw005Bean;
     @EJB
@@ -108,11 +108,11 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                 list.add(seri12);
             }
         }
-        int count = createCuscomPlaintByEAP(list);
+        int count = createCustomerComplaintByEAP(list);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "info", "查询出数据共" + list.size() + "条，成功导入EAP数据库共计" + count + "条"));
     }
 
-    public int createCuscomPlaintByEAP(List<SERI12> list) {
+    public int createCustomerComplaintByEAP(List<SERI12> list) {
         int count = 0;
         BigDecimal clvcost, yscost, clcost;
         //差旅
@@ -129,7 +129,7 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                 clcost = BigDecimal.ZERO;
                 String kfno = seri12.getBq001();
                 CustomerComplaint cp = new CustomerComplaint();
-                String varnr = sERCABean.findCa009ByCa001(kfno) == null ? "" : sERCABean.findCa009ByCa001(kfno);
+                String varnr = sercaBean.findCa009ByCa001(kfno) == null ? "" : sercaBean.findCa009ByCa001(kfno);
                 cp.setKfno(seri12.getBq001());
                 cp.setCusno(seri12.getBq002() == null ? "null" : seri12.getBq002());
                 cp.setCusna(seri12.getBq002c() == null ? "null" : seri12.getBq002c());
@@ -251,26 +251,26 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                     customerComplaintDetailBean.delete(details);
                 }
                 if (!clvList.isEmpty()) {
-                    for (CustomerComplaintCost cuscomPlaintCost : clvList) {
-                        clvcost = clvcost.add(cuscomPlaintCost.getCost());
-                        customerComplaintCostBean.persist(cuscomPlaintCost);
+                    for (CustomerComplaintCost complaintCost : clvList) {
+                        clvcost = clvcost.add(complaintCost.getCost());
+                        customerComplaintCostBean.persist(complaintCost);
                     }
                 }
                 if (!ysList.isEmpty()) {
-                    for (CustomerComplaintCost cuscomPlaintCost : ysList) {
-                        yscost = yscost.add(cuscomPlaintCost.getCost());
-                        customerComplaintCostBean.persist(cuscomPlaintCost);
+                    for (CustomerComplaintCost complaintCost : ysList) {
+                        yscost = yscost.add(complaintCost.getCost());
+                        customerComplaintCostBean.persist(complaintCost);
                     }
                 }
                 if (!clList.isEmpty()) {
-                    for (CustomerComplaintDetail cuscomPlaintDetail : clList) {
+                    for (CustomerComplaintDetail complaintDetail : clList) {
                         //IAF为服务领料 领料加项 IAG为服务退料 退料减项
-                        if (cuscomPlaintDetail.getTrtype().equals("IAF")) {
-                            clcost = clcost.add(cuscomPlaintDetail.getTramt());
+                        if (complaintDetail.getTrtype().equals("IAF")) {
+                            clcost = clcost.add(complaintDetail.getTramt());
                         } else {
-                            clcost = clcost.subtract(cuscomPlaintDetail.getTramt());
+                            clcost = clcost.subtract(complaintDetail.getTramt());
                         }
-                        customerComplaintDetailBean.persist(cuscomPlaintDetail);
+                        customerComplaintDetailBean.persist(complaintDetail);
                     }
                 }
                 CustomerComplaint plaint = customerComplaintBean.findKfno(kfno);
