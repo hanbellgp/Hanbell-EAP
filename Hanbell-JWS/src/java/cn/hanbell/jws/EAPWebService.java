@@ -1778,7 +1778,7 @@ public class EAPWebService {
                                     lb_checpoa = true;
                                     if (li_ulevelp > 1) {
                                         for (int i = li_ulevelp; i >= 1; i--) {
-                                            if (i == 5) {                           //A5价空白
+                                            if (prpl[10 + i] == null) {             //无A价（权限价如A5）
                                                 continue;
                                             } else {
                                                 ldc_levelpri = BigDecimal.valueOf(Double.valueOf(prpl[10 + i].toString())); //prpl标准定价数组的顺序（数量）不能修改
