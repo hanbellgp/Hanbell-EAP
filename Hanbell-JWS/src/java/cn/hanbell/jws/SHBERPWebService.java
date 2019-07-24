@@ -17,8 +17,6 @@ import cn.hanbell.erp.ejb.InvhadBean;
 import cn.hanbell.erp.ejb.InvmasBean;
 import cn.hanbell.erp.ejb.PurhaskBean;
 import cn.hanbell.erp.ejb.PurvdrBean;
-import cn.hanbell.erp.ejb.SecgprgBean;
-import cn.hanbell.oa.ejb.HKCG007Bean;
 import cn.hanbell.oa.ejb.HZCW028Bean;
 import cn.hanbell.oa.ejb.HZCW033Bean;
 import java.math.BigDecimal;
@@ -40,13 +38,13 @@ import org.apache.logging.log4j.Logger;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class SHBERPWebService {
 
-    //EJBForEFGP
+    // EJBForEFGP
     @EJB
     private HZCW028Bean hzcw028Bean;
     @EJB
     private HZCW033Bean hzcw033Bean;
 
-    //EJBForERP
+    // EJBForERP
     @EJB
     private ApmpayBean apmpayBean;
     @EJB
@@ -199,7 +197,7 @@ public class SHBERPWebService {
         }
     }
 
-    //客户
+    // 客户
     @WebMethod(operationName = "createCustomerByOAHKJH003")
     public String createCustomerByOAHKJH003(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -245,7 +243,7 @@ public class SHBERPWebService {
         }
     }
 
-    @WebMethod(operationName = "createInvclsByOAHKJS007")                        //品号大类申请单
+    @WebMethod(operationName = "createInvclsByOAHKJS007") // 品号大类申请单
     public String createInvclsByOAHKJS007(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
         try {
@@ -350,7 +348,7 @@ public class SHBERPWebService {
         }
     }
 
-    //厂商
+    // 厂商
     @WebMethod(operationName = "createPurvdrByOAHKJH004")
     public String createPurvdrByOAHKJH004(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -367,7 +365,9 @@ public class SHBERPWebService {
     }
 
     @WebMethod(operationName = "isLessThenInvbal")
-    public String isLessThenInvbal(@WebParam(name = "facno") String facno, @WebParam(name = "prono") String prono, @WebParam(name = "itnbr") String itnbr, @WebParam(name = "wareh") String wareh, @WebParam(name = "qty") String qty) {
+    public String isLessThenInvbal(@WebParam(name = "facno") String facno, @WebParam(name = "prono") String prono,
+            @WebParam(name = "itnbr") String itnbr, @WebParam(name = "wareh") String wareh,
+            @WebParam(name = "qty") String qty) {
         Boolean ret;
         try {
             invbalBean.setCompany(facno);
@@ -384,11 +384,15 @@ public class SHBERPWebService {
     }
 
     @WebMethod(operationName = "isLessThenInvbat")
-    public String isLessThenInvbat(@WebParam(name = "facno") String facno, @WebParam(name = "prono") String prono, @WebParam(name = "itnbr") String itnbr, @WebParam(name = "wareh") String wareh, @WebParam(name = "fixnr") String fixnr, @WebParam(name = "varnr") String varnr, @WebParam(name = "qty") String qty) {
+    public String isLessThenInvbat(@WebParam(name = "facno") String facno, @WebParam(name = "prono") String prono,
+            @WebParam(name = "itnbr") String itnbr, @WebParam(name = "wareh") String wareh,
+            @WebParam(name = "fixnr") String fixnr, @WebParam(name = "varnr") String varnr,
+            @WebParam(name = "qty") String qty) {
         Boolean ret;
         try {
             invbatBean.setCompany(facno);
-            ret = invbatBean.isGreatThenInvbat(facno, prono, itnbr, wareh, fixnr, varnr, BigDecimal.valueOf(Double.valueOf(qty)));
+            ret = invbatBean.isGreatThenInvbat(facno, prono, itnbr, wareh, fixnr, varnr,
+                    BigDecimal.valueOf(Double.valueOf(qty)));
         } catch (Exception ex) {
             log4j.error("isLessThenInvbat时异常", ex);
             return "500";
@@ -401,7 +405,8 @@ public class SHBERPWebService {
     }
 
     @WebMethod(operationName = "subtractBudgetPlanByOABXD")
-    public String subtractBudgetPlanByOABXD(@WebParam(name = "psn") String psn, @WebParam(name = "isReject") String isReject) {
+    public String subtractBudgetPlanByOABXD(@WebParam(name = "psn") String psn,
+            @WebParam(name = "isReject") String isReject) {
         Boolean ret = false;
         try {
             if ("1".equals(isReject)) {
@@ -420,7 +425,8 @@ public class SHBERPWebService {
     }
 
     @WebMethod(operationName = "subtractBudgetPlanByOAJZD")
-    public String subtractBudgetPlanByOAJZD(@WebParam(name = "psn") String psn, @WebParam(name = "isReject") String isReject) {
+    public String subtractBudgetPlanByOAJZD(@WebParam(name = "psn") String psn,
+            @WebParam(name = "isReject") String isReject) {
         Boolean ret = false;
         try {
             if ("1".equals(isReject)) {
@@ -439,7 +445,8 @@ public class SHBERPWebService {
     }
 
     @WebMethod(operationName = "subtractBudgetPlanByOAJZGHD")
-    public String subtractBudgetPlanByOAJZGHD(@WebParam(name = "psn") String psn, @WebParam(name = "isReject") String isReject) {
+    public String subtractBudgetPlanByOAJZGHD(@WebParam(name = "psn") String psn,
+            @WebParam(name = "isReject") String isReject) {
         Boolean ret = false;
         try {
             if ("1".equals(isReject)) {
@@ -510,67 +517,6 @@ public class SHBERPWebService {
             ret = purvdrBean.updateByOAPSN(psn);
         } catch (Exception ex) {
             log4j.error("updatePUR120ByOAPSN时异常", ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    //<-------------------------------以下内容保持在最后,以后要删除------------------------------->
-    @WebMethod(operationName = "updateCRMPORMYByOABXD")
-    public String updateCRMPORMYByOABXD(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hzcw028Bean.updateCRMPORMY(psn);
-        } catch (Exception ex) {
-            log4j.error("updateCRMPORMYByOABXD时异常", ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "rollbackCRMPORMYByOABXD")
-    public String rollbackCRMPORMYByOABXD(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hzcw028Bean.rollbackCRMPORMY(psn);
-        } catch (Exception ex) {
-            log4j.error("rollbackCRMPORMYByOABXD时异常", ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "updateCRMPORMYByOAJZGHD")
-    public String updateCRMPORMYByOAJZGHD(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hzcw033Bean.updateCRMPORMY(psn);
-        } catch (Exception ex) {
-            log4j.error("updateCRMPORMYByOAJZGHD时异常", ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "rollbackCRMPORMYByOAJZGHD")
-    public String rollbackCRMPORMYByOAJZGHD(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hzcw033Bean.rollbackCRMPORMY(psn);
-        } catch (Exception ex) {
-            log4j.error("rollbackCRMPORMYByOAJZGHD时异常", ex);
         }
         if (ret) {
             return "200";
