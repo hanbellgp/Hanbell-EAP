@@ -129,7 +129,7 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                 clcost = BigDecimal.ZERO;
                 String kfno = seri12.getBq001();
                 CustomerComplaint cp = new CustomerComplaint();
-                String varnr = sERCABean.findByCa009(kfno) == null ? "" : sERCABean.findByCa009(kfno);
+                String varnr = sERCABean.findCa009ByCa001(kfno) == null ? "" : sERCABean.findCa009ByCa001(kfno);
                 cp.setKfno(seri12.getBq001());
                 cp.setCusno(seri12.getBq002() == null ? "null" : seri12.getBq002());
                 cp.setCusna(seri12.getBq002c() == null ? "null" : seri12.getBq002c());
@@ -146,7 +146,7 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                 //一、运输费
                 ysList = new ArrayList<>();
                 CustomerComplaintCost cost;
-                List<HKFW005> hkfw005s = hkfw005Bean.getCuscomPlaintCost(kfno);
+                List<HKFW005> hkfw005s = hkfw005Bean.getCustomerComPlaintCost(kfno);
                 if (hkfw005s != null && !hkfw005s.isEmpty()) {
                     for (HKFW005 hkfw005 : hkfw005s) {
                         cost = new CustomerComplaintCost();
@@ -158,7 +158,7 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                         ysList.add(cost);
                     }
                 }
-                List<HKFW006> hkfw006s = hkfw006Bean.getCuscomPlaintCost(kfno);
+                List<HKFW006> hkfw006s = hkfw006Bean.getCustomerComPlaintCost(kfno);
                 if (hkfw006s != null && !hkfw006s.isEmpty()) {
                     for (HKFW006 hkfw006 : hkfw006s) {
                         cost = new CustomerComplaintCost();
@@ -170,7 +170,7 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                         ysList.add(cost);
                     }
                 }
-                List cdrlnhadcost = cdrlnhadBean.getCuscomPlaintCost(kfno);
+                List cdrlnhadcost = cdrlnhadBean.getCustomerComPlaintCost(kfno);
                 if (cdrlnhadcost != null && !cdrlnhadcost.isEmpty()) {
                     for (int i = 0; i < cdrlnhadcost.size(); i++) {
                         Object[] row = (Object[]) cdrlnhadcost.get(i);
@@ -185,7 +185,7 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                 }
                 //二、差旅费
                 clvList = new ArrayList<>();
-                List reptcost = reptcBean.getCuscomPlaintCost(kfno);
+                List reptcost = reptcBean.getCustomerComPlaintCost(kfno);
                 if (reptcost != null && !reptcost.isEmpty()) {
                     for (int i = 0; i < reptcost.size(); i++) {
                         Object[] row = (Object[]) reptcost.get(i);
@@ -201,7 +201,7 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                 //三、材料费
                 clList = new ArrayList<>();
                 CustomerComplaintDetail cpd;
-                List invhadhs = invhadBean.getCuscomPlaintDetailh(kfno);
+                List invhadhs = invhadBean.getCustomerComPlaintDetailh(kfno);
                 if (invhadhs != null && !invhadhs.isEmpty()) {
                     for (int i = 0; i < invhadhs.size(); i++) {
                         Object[] row = (Object[]) invhadhs.get(i);
@@ -221,7 +221,7 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                         clList.add(cpd);
                     }
                 }
-                List invhads = invhadBean.getCuscomPlaintDetail(kfno);
+                List invhads = invhadBean.getCustomerComPlaintDetail(kfno);
                 if (invhads != null && !invhads.isEmpty()) {
                     for (int i = 0; i < invhads.size(); i++) {
                         Object[] row = (Object[]) invhads.get(i);

@@ -85,7 +85,7 @@ public class HKFW005Bean extends SuperEJBForEFGP<HKFW005> {
     * @param kfno
     * @return 工作支援单运费和快递费
     */
-    public List<HKFW005> getCuscomPlaintCost(String kfno) {
+    public List<HKFW005> getCustomerComPlaintCost(String kfno) {
         Query query = getEntityManager().createNamedQuery("HKFW005.findByKfno");
         query.setParameter("kfno", kfno);
         try {

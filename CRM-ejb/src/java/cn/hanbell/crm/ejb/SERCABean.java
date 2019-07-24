@@ -17,25 +17,24 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class SERCABean extends SuperEJBForCRM<SERCA>{
+public class SERCABean extends SuperEJBForCRM<SERCA> {
 
     public SERCABean() {
         super(SERCA.class);
     }
 
-    public String findByCa009(String kfno) {
-        Query query = getEntityManager().createNamedQuery("SERCA.findByCa001ToCa009");
+    public String findCa009ByCa001(String kfno) {
+        Query query = getEntityManager().createNamedQuery("SERCA.findCa009ByCa001");
         query.setParameter("ca001", kfno);
         try {
             Object o = query.getSingleResult();
             if (o != null) {
                 SERCA sr = (SERCA) o;
-                return sr.getSERCAPK().getCa001();
+                return sr.getCa009();
             }
-            return null;
         } catch (Exception ex) {
-            return null;
         }
+        return null;
 
     }
 }

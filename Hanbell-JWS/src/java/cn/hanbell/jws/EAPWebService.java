@@ -57,12 +57,14 @@ import cn.hanbell.eap.ejb.CustomerComplaintBean;
 import cn.hanbell.eap.ejb.CustomerComplaintCostBean;
 import cn.hanbell.eap.ejb.CustomerComplaintDetailBean;
 import cn.hanbell.eap.ejb.DepartmentBean;
+import cn.hanbell.eap.ejb.EmailRecipientBean;
 import cn.hanbell.eap.ejb.MailNotificationBean;
 import cn.hanbell.eap.ejb.SystemUserBean;
 import cn.hanbell.eap.entity.CustomerComplaint;
 import cn.hanbell.eap.entity.CustomerComplaintCost;
 import cn.hanbell.eap.entity.CustomerComplaintDetail;
 import cn.hanbell.eap.entity.Department;
+import cn.hanbell.eap.entity.EmailRecipient;
 import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.ecpur.ejb.ECPurvdrBean;
 import cn.hanbell.erp.ejb.ApmaphBean;
@@ -221,8 +223,6 @@ public class EAPWebService {
     private CRMGGBean crmggBean;
     @EJB
     private SyncCRMBean syncCRMBean;
-    @EJB
-    private SERCABean sERCABean;
 
     //EJBForEAP
     @EJB
@@ -231,6 +231,8 @@ public class EAPWebService {
     private SystemUserBean systemUserBean;
     @EJB
     private MailNotificationBean mailBean;
+    @EJB
+    private EmailRecipientBean emailRecipientBean;
     @EJB
     private CustomerComplaintBean customerComplaintBean;
     @EJB
@@ -3114,7 +3116,7 @@ public class EAPWebService {
             }
             SERI12 seri12 = seri12Bean.findByBq001(kfno);
             CustomerComplaint cp = new CustomerComplaint();
-            String varnr = sERCABean.findByCa009(kfno) == null ? "" : sERCABean.findByCa009(kfno);
+            String varnr = sercaBean.findCa009ByCa001(kfno) == null ? "" : sercaBean.findCa009ByCa001(kfno);
             if (seri12 != null) {
                 cp.setKfno(seri12.getBq001());
                 cp.setCusno(seri12.getBq002() == null ? "null" : seri12.getBq002());
@@ -3132,7 +3134,7 @@ public class EAPWebService {
                 //一、运输费
                 ysList = new ArrayList<>();
                 CustomerComplaintCost cost;
-                List<HKFW005> hkfw005s = hkfw005Bean.getCuscomPlaintCost(kfno);
+                List<HKFW005> hkfw005s = hkfw005Bean.getCustomerComPlaintCost(kfno);
                 if (hkfw005s != null && !hkfw005s.isEmpty()) {
                     for (HKFW005 hkfw005 : hkfw005s) {
                         cost = new CustomerComplaintCost();
@@ -3144,7 +3146,7 @@ public class EAPWebService {
                         ysList.add(cost);
                     }
                 }
-                List<HKFW006> hkfw006s = hkfw006Bean.getCuscomPlaintCost(kfno);
+                List<HKFW006> hkfw006s = hkfw006Bean.getCustomerComPlaintCost(kfno);
                 if (hkfw006s != null && !hkfw006s.isEmpty()) {
                     for (HKFW006 hkfw006 : hkfw006s) {
                         cost = new CustomerComplaintCost();
@@ -3156,7 +3158,7 @@ public class EAPWebService {
                         ysList.add(cost);
                     }
                 }
-                List cdrlnhadcost = cdrlnhadBean.getCuscomPlaintCost(kfno);
+                List cdrlnhadcost = cdrlnhadBean.getCustomerComPlaintCost(kfno);
                 if (cdrlnhadcost != null && !cdrlnhadcost.isEmpty()) {
                     for (int i = 0; i < cdrlnhadcost.size(); i++) {
                         Object[] row = (Object[]) cdrlnhadcost.get(i);
@@ -3171,7 +3173,7 @@ public class EAPWebService {
                 }
                 //二、差旅费
                 clvList = new ArrayList<>();
-                List reptcost = reptcBean.getCuscomPlaintCost(kfno);
+                List reptcost = reptcBean.getCustomerComPlaintCost(kfno);
                 if (reptcost != null && !reptcost.isEmpty()) {
                     for (int i = 0; i < reptcost.size(); i++) {
                         Object[] row = (Object[]) reptcost.get(i);
@@ -3187,7 +3189,7 @@ public class EAPWebService {
                 //三、材料费
                 clList = new ArrayList<>();
                 CustomerComplaintDetail cpd;
-                List invhadhs = invhadBean.getCuscomPlaintDetailh(kfno);
+                List invhadhs = invhadBean.getCustomerComPlaintDetailh(kfno);
                 if (invhadhs != null && !invhadhs.isEmpty()) {
                     for (int i = 0; i < invhadhs.size(); i++) {
                         Object[] row = (Object[]) invhadhs.get(i);
@@ -3207,7 +3209,7 @@ public class EAPWebService {
                         clList.add(cpd);
                     }
                 }
-                List invhads = invhadBean.getCuscomPlaintDetail(kfno);
+                List invhads = invhadBean.getCustomerComPlaintDetail(kfno);
                 if (invhads != null && !invhads.isEmpty()) {
                     for (int i = 0; i < invhads.size(); i++) {
                         Object[] row = (Object[]) invhads.get(i);
@@ -3237,26 +3239,26 @@ public class EAPWebService {
                     customerComplaintDetailBean.delete(details);
                 }
                 if (!clvList.isEmpty()) {
-                    for (CustomerComplaintCost cuscomPlaintCost : clvList) {
-                        clvcost = clvcost.add(cuscomPlaintCost.getCost());
-                        customerComplaintCostBean.persist(cuscomPlaintCost);
+                    for (CustomerComplaintCost customerComplaintCost : clvList) {
+                        clvcost = clvcost.add(customerComplaintCost.getCost());
+                        customerComplaintCostBean.persist(customerComplaintCost);
                     }
                 }
                 if (!ysList.isEmpty()) {
-                    for (CustomerComplaintCost cuscomPlaintCost : ysList) {
-                        yscost = yscost.add(cuscomPlaintCost.getCost());
-                        customerComplaintCostBean.persist(cuscomPlaintCost);
+                    for (CustomerComplaintCost customerComplaintCost : ysList) {
+                        yscost = yscost.add(customerComplaintCost.getCost());
+                        customerComplaintCostBean.persist(customerComplaintCost);
                     }
                 }
                 if (!clList.isEmpty()) {
-                    for (CustomerComplaintDetail cuscomPlaintDetail : clList) {
+                    for (CustomerComplaintDetail customerComplaintDetail : clList) {
                         //IAF为服务领料 领料加项 IAG为服务退料 退料减项
-                        if (cuscomPlaintDetail.getTrtype().equals("IAF")) {
-                            clcost = clcost.add(cuscomPlaintDetail.getTramt());
+                        if (customerComplaintDetail.getTrtype().equals("IAF")) {
+                            clcost = clcost.add(customerComplaintDetail.getTramt());
                         } else {
-                            clcost = clcost.subtract(cuscomPlaintDetail.getTramt());
+                            clcost = clcost.subtract(customerComplaintDetail.getTramt());
                         }
-                        customerComplaintDetailBean.persist(cuscomPlaintDetail);
+                        customerComplaintDetailBean.persist(customerComplaintDetail);
                     }
                 }
                 CustomerComplaint plaint = customerComplaintBean.findKfno(kfno);
@@ -3267,8 +3269,20 @@ public class EAPWebService {
                 cp.setClvcost(clvcost);
                 cp.setYscost(yscost);
                 customerComplaintBean.persist(cp);
+                List<EmailRecipient> emailto = emailRecipientBean.findEmailnameByCodeAndEmailtype("客诉结案抛转详细", "to");
+                List<EmailRecipient> emailcc = emailRecipientBean.findEmailnameByCodeAndEmailtype("客诉结案抛转详细", "cc");
                 mailBean.getTo().clear();
-                mailBean.getTo().add("C1879@hanbell.com.cn");
+                mailBean.getCc().clear();
+                if (emailto != null && !emailto.isEmpty()) {
+                    for (EmailRecipient emailRecipient : emailto) {
+                        mailBean.getTo().add(emailRecipient.getEmailaddress());
+                    }
+                }
+                if (emailcc != null && !emailcc.isEmpty()) {
+                    for (EmailRecipient emailRecipient : emailcc) {
+                        mailBean.getCc().add(emailRecipient.getEmailaddress());
+                    }
+                }
                 mailBean.setMailSubject("客诉结案抛转详细");
                 mailBean.setMailContent(customerComplaintBean.getMail("客诉结案抛转详细", kfno));
                 mailBean.notify(new MailNotify());
