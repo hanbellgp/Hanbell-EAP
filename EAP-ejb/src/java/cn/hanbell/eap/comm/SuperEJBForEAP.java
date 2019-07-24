@@ -5,11 +5,11 @@
  */
 package cn.hanbell.eap.comm;
 
-
-
 import com.lightshell.comm.SuperEJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -20,6 +20,8 @@ public abstract class SuperEJBForEAP<T> extends SuperEJB<T> {
 
     @PersistenceContext(unitName = "EAP-ejbPU")
     private EntityManager em;
+
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.eap");
 
     public SuperEJBForEAP(Class<T> entityClass) {
         super(entityClass);

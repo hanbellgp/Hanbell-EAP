@@ -20,6 +20,8 @@ import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -44,6 +46,8 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
     protected Functions userFunction;
     protected OrganizationUnit organizationUnit;
     protected Title userTitle;
+
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.eap");
 
     public SuperEJBForEFGP(Class<T> entityClass) {
         super(entityClass);
