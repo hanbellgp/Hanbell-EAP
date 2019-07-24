@@ -482,7 +482,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
      * @param kfno
      * @return 退货通知单吊装费和运费
      */
-    public List<HKFW006> getCuscomPlaintCost(String kfno) {
+    public List<HKFW006> getCustomerComplaintCost(String kfno) {
         Query query = getEntityManager().createNamedQuery("HKFW006.findByKfno");
         query.setParameter("kfno", kfno);
         try {

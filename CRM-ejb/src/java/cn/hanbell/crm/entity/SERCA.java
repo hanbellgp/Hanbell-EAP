@@ -5,7 +5,6 @@
  */
 package cn.hanbell.crm.entity;
 
-import cn.hanbell.crm.entity.SERCAPK;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Column;
@@ -33,8 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "SERCA.findByModifier", query = "SELECT s FROM SERCA s WHERE s.modifier = :modifier")
     , @NamedQuery(name = "SERCA.findByModiDate", query = "SELECT s FROM SERCA s WHERE s.modiDate = :modiDate")
     , @NamedQuery(name = "SERCA.findByFlag", query = "SELECT s FROM SERCA s WHERE s.flag = :flag")
-    , @NamedQuery(name = "SERCA.findByCa001", query = "SELECT s FROM SERCA s WHERE s.sERCAPK.ca001 = :ca001")
-    , @NamedQuery(name = "SERCA.findByCa002", query = "SELECT s FROM SERCA s WHERE s.sERCAPK.ca002 = :ca002")
+    , @NamedQuery(name = "SERCA.findByCa001", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca001 = :ca001")
+    , @NamedQuery(name = "SERCA.findByCa002", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca002 = :ca002")
     , @NamedQuery(name = "SERCA.findByCa003", query = "SELECT s FROM SERCA s WHERE s.ca003 = :ca003")
     , @NamedQuery(name = "SERCA.findByCa004", query = "SELECT s FROM SERCA s WHERE s.ca004 = :ca004")
     , @NamedQuery(name = "SERCA.findByCa005", query = "SELECT s FROM SERCA s WHERE s.ca005 = :ca005")
@@ -42,7 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "SERCA.findByCa007", query = "SELECT s FROM SERCA s WHERE s.ca007 = :ca007")
     , @NamedQuery(name = "SERCA.findByCa008", query = "SELECT s FROM SERCA s WHERE s.ca008 = :ca008")
     , @NamedQuery(name = "SERCA.findByCa009", query = "SELECT s FROM SERCA s WHERE s.ca009 = :ca009")
-    , @NamedQuery(name = "SERCA.findByCa001ToCa009", query = "SELECT s FROM SERCA s WHERE s.sERCAPK.ca001 = :ca001")
+    , @NamedQuery(name = "SERCA.findCa009ByCa001", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca001 = :ca001")
     , @NamedQuery(name = "SERCA.findByCa010", query = "SELECT s FROM SERCA s WHERE s.ca010 = :ca010")
     , @NamedQuery(name = "SERCA.findByCa011", query = "SELECT s FROM SERCA s WHERE s.ca011 = :ca011")
     , @NamedQuery(name = "SERCA.findByCa012", query = "SELECT s FROM SERCA s WHERE s.ca012 = :ca012")
@@ -85,7 +84,7 @@ public class SERCA implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected SERCAPK sERCAPK;
+    protected SERCAPK sercaPK;
     @Size(max = 20)
     @Column(name = "COMPANY")
     private String company;
@@ -244,20 +243,20 @@ public class SERCA implements Serializable {
     public SERCA() {
     }
 
-    public SERCA(SERCAPK sERCAPK) {
-        this.sERCAPK = sERCAPK;
+    public SERCA(SERCAPK sercaPK) {
+        this.sercaPK = sercaPK;
     }
 
     public SERCA(String ca001, String ca002) {
-        this.sERCAPK = new SERCAPK(ca001, ca002);
+        this.sercaPK = new SERCAPK(ca001, ca002);
     }
 
     public SERCAPK getSERCAPK() {
-        return sERCAPK;
+        return sercaPK;
     }
 
-    public void setSERCAPK(SERCAPK sERCAPK) {
-        this.sERCAPK = sERCAPK;
+    public void setSERCAPK(SERCAPK sercaPK) {
+        this.sercaPK = sercaPK;
     }
 
     public String getCompany() {
@@ -679,7 +678,7 @@ public class SERCA implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (sERCAPK != null ? sERCAPK.hashCode() : 0);
+        hash += (sercaPK != null ? sercaPK.hashCode() : 0);
         return hash;
     }
 
@@ -690,7 +689,7 @@ public class SERCA implements Serializable {
             return false;
         }
         SERCA other = (SERCA) object;
-        if ((this.sERCAPK == null && other.sERCAPK != null) || (this.sERCAPK != null && !this.sERCAPK.equals(other.sERCAPK))) {
+        if ((this.sercaPK == null && other.sercaPK != null) || (this.sercaPK != null && !this.sercaPK.equals(other.sercaPK))) {
             return false;
         }
         return true;
@@ -698,7 +697,7 @@ public class SERCA implements Serializable {
 
     @Override
     public String toString() {
-        return "cn.hanbell.crm.ejb.SERCA[ sERCAPK=" + sERCAPK + " ]";
+        return "cn.hanbell.crm.ejb.SERCA[ sERCAPK=" + sercaPK + " ]";
     }
     
 }

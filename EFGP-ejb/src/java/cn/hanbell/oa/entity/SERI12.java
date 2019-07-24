@@ -143,7 +143,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     ,
     @NamedQuery(name = "SERI12.findByBq094", query = "SELECT s FROM SERI12 s WHERE s.bq094 = :bq094")
     ,
-    @NamedQuery(name = "SERI12.findByBq037", query = "SELECT s FROM SERI12 s WHERE s.bq037 = :bq037")
+    @NamedQuery(name = "SERI12.findByBq037", query = "SELECT s FROM SERI12 s WHERE s.bq035h = 'Y' AND s.bq110 = 'Y' AND  s.bq037 BETWEEN :begin and :end")
     ,
     @NamedQuery(name = "SERI12.findByBq038", query = "SELECT s FROM SERI12 s WHERE s.bq038 = :bq038")
     ,
