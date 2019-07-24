@@ -41,7 +41,7 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
      * @param kfno
      * @return CRM 差旅费
      */
-    public List getCustomerComPlaintCost(String kfno) {
+    public List getCustomerComplaintCost(String kfno) {
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT t.TC054,(LC001+LC002),sum(l.LC007) FROM REPLC l LEFT JOIN REPTC t ON t.TC001=l.LC001  ");
         sb.append("  AND t.TC002=l.LC002 WHERE t.TC054='${kfno}' GROUP BY t.TC054,LC001,LC002 ");
