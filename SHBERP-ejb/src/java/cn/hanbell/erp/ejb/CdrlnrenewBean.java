@@ -16,10 +16,10 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class CdrlnrenewBean extends SuperEJBForERP{
-    
+public class CdrlnrenewBean extends SuperEJBForERP {
+
     public CdrlnrenewBean() {
         super(Cdrlnrenew.class);
     }
-    
+
 }

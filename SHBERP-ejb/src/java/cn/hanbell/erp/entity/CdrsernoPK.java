@@ -99,5 +99,5 @@ public class CdrsernoPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.ejb.CdrsernoPK[ facno=" + facno + ", difcode=" + difcode + ", keyformat=" + keyformat + " ]";
     }
-    
+
 }

@@ -82,5 +82,5 @@ public class SecuprgPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.SecuprgPK[ prgno=" + prgno + ", userno=" + userno + " ]";
     }
-    
+
 }

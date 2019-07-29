@@ -26,7 +26,7 @@ public class ItemMaster implements Serializable {
 
     }
 
-    public ItemMaster(String model,String itemno) {
+    public ItemMaster(String model, String itemno) {
         this.itnbr = model;
         this.itdsc = itemno;
     }

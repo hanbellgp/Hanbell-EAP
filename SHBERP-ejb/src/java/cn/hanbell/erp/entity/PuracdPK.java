@@ -117,5 +117,5 @@ public class PuracdPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.PuracdPK[ facno=" + facno + ", prono=" + prono + ", acceptno=" + acceptno + ", trseq=" + trseq + " ]";
     }
-    
+
 }

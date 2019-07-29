@@ -29,22 +29,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrsys")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrsys.findAll", query = "SELECT c FROM Cdrsys c")
-    , @NamedQuery(name = "Cdrsys.findByFacno", query = "SELECT c FROM Cdrsys c WHERE c.facno = :facno")
-    , @NamedQuery(name = "Cdrsys.findByLpyn", query = "SELECT c FROM Cdrsys c WHERE c.lpyn = :lpyn")
-    , @NamedQuery(name = "Cdrsys.findByItnbry", query = "SELECT c FROM Cdrsys c WHERE c.itnbry = :itnbry")
-    , @NamedQuery(name = "Cdrsys.findByIndate", query = "SELECT c FROM Cdrsys c WHERE c.indate = :indate")
-    , @NamedQuery(name = "Cdrsys.findByUserno", query = "SELECT c FROM Cdrsys c WHERE c.userno = :userno")
-    , @NamedQuery(name = "Cdrsys.findByPrepctl", query = "SELECT c FROM Cdrsys c WHERE c.prepctl = :prepctl")
-    , @NamedQuery(name = "Cdrsys.findByCnmgn", query = "SELECT c FROM Cdrsys c WHERE c.cnmgn = :cnmgn")
-    , @NamedQuery(name = "Cdrsys.findByResetpris", query = "SELECT c FROM Cdrsys c WHERE c.resetpris = :resetpris")
-    , @NamedQuery(name = "Cdrsys.findByAloulate", query = "SELECT c FROM Cdrsys c WHERE c.aloulate = :aloulate")
-    , @NamedQuery(name = "Cdrsys.findByPackckind", query = "SELECT c FROM Cdrsys c WHERE c.packckind = :packckind")
-    , @NamedQuery(name = "Cdrsys.findByDirshp", query = "SELECT c FROM Cdrsys c WHERE c.dirshp = :dirshp")
-    , @NamedQuery(name = "Cdrsys.findByPridcode", query = "SELECT c FROM Cdrsys c WHERE c.pridcode = :pridcode")
-    , @NamedQuery(name = "Cdrsys.findByTryrunyn", query = "SELECT c FROM Cdrsys c WHERE c.tryrunyn = :tryrunyn")
-    , @NamedQuery(name = "Cdrsys.findByVdrno", query = "SELECT c FROM Cdrsys c WHERE c.vdrno = :vdrno")
-    , @NamedQuery(name = "Cdrsys.findByIsquouse", query = "SELECT c FROM Cdrsys c WHERE c.isquouse = :isquouse")})
+    @NamedQuery(name = "Cdrsys.findAll", query = "SELECT c FROM Cdrsys c"),
+    @NamedQuery(name = "Cdrsys.findByFacno", query = "SELECT c FROM Cdrsys c WHERE c.facno = :facno"),
+    @NamedQuery(name = "Cdrsys.findByLpyn", query = "SELECT c FROM Cdrsys c WHERE c.lpyn = :lpyn"),
+    @NamedQuery(name = "Cdrsys.findByItnbry", query = "SELECT c FROM Cdrsys c WHERE c.itnbry = :itnbry"),
+    @NamedQuery(name = "Cdrsys.findByIndate", query = "SELECT c FROM Cdrsys c WHERE c.indate = :indate"),
+    @NamedQuery(name = "Cdrsys.findByUserno", query = "SELECT c FROM Cdrsys c WHERE c.userno = :userno"),
+    @NamedQuery(name = "Cdrsys.findByPrepctl", query = "SELECT c FROM Cdrsys c WHERE c.prepctl = :prepctl"),
+    @NamedQuery(name = "Cdrsys.findByCnmgn", query = "SELECT c FROM Cdrsys c WHERE c.cnmgn = :cnmgn"),
+    @NamedQuery(name = "Cdrsys.findByResetpris", query = "SELECT c FROM Cdrsys c WHERE c.resetpris = :resetpris"),
+    @NamedQuery(name = "Cdrsys.findByAloulate", query = "SELECT c FROM Cdrsys c WHERE c.aloulate = :aloulate"),
+    @NamedQuery(name = "Cdrsys.findByPackckind", query = "SELECT c FROM Cdrsys c WHERE c.packckind = :packckind"),
+    @NamedQuery(name = "Cdrsys.findByDirshp", query = "SELECT c FROM Cdrsys c WHERE c.dirshp = :dirshp"),
+    @NamedQuery(name = "Cdrsys.findByPridcode", query = "SELECT c FROM Cdrsys c WHERE c.pridcode = :pridcode"),
+    @NamedQuery(name = "Cdrsys.findByTryrunyn", query = "SELECT c FROM Cdrsys c WHERE c.tryrunyn = :tryrunyn"),
+    @NamedQuery(name = "Cdrsys.findByVdrno", query = "SELECT c FROM Cdrsys c WHERE c.vdrno = :vdrno"),
+    @NamedQuery(name = "Cdrsys.findByIsquouse", query = "SELECT c FROM Cdrsys c WHERE c.isquouse = :isquouse")})
 public class Cdrsys implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -1203,5 +1203,5 @@ public class Cdrsys implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrsys[ facno=" + facno + " ]";
     }
-    
+
 }

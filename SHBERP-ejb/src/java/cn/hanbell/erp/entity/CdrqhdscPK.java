@@ -82,5 +82,5 @@ public class CdrqhdscPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.ejb.CdrqhdscPK[ facno=" + facno + ", quono=" + quono + " ]";
     }
-    
+
 }

@@ -100,5 +100,5 @@ public class PurvdrBuyerPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.PurvdrBuyerPK[ facno=" + facno + ", prono=" + prono + ", vdrno=" + vdrno + " ]";
     }
-    
+
 }

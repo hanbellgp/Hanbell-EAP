@@ -172,5 +172,5 @@ public class CdrhpriPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrhpriPK[ cusno=" + cusno + ", facno=" + facno + ", itnbr=" + itnbr + ", coin=" + coin + ", unpris=" + unpris + ", trno=" + trno + ", trseq=" + trseq + " ]";
     }
-    
+
 }

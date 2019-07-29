@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Invserno.findByFacno", query = "SELECT i FROM Invserno i WHERE i.invsernoPK.facno = :facno"),
     @NamedQuery(name = "Invserno.findByTrtype", query = "SELECT i FROM Invserno i WHERE i.invsernoPK.trtype = :trtype"),
     @NamedQuery(name = "Invserno.findByKeyformat", query = "SELECT i FROM Invserno i WHERE i.invsernoPK.keyformat = :keyformat"),
-     @NamedQuery(name = "Invserno.findByPK", query = "SELECT i FROM Invserno i WHERE i.invsernoPK.facno = :facno AND i.invsernoPK.trtype = :trtype AND i.invsernoPK.keyformat = :keyformat"),
+    @NamedQuery(name = "Invserno.findByPK", query = "SELECT i FROM Invserno i WHERE i.invsernoPK.facno = :facno AND i.invsernoPK.trtype = :trtype AND i.invsernoPK.keyformat = :keyformat"),
     @NamedQuery(name = "Invserno.findByMaxserno", query = "SELECT i FROM Invserno i WHERE i.maxserno = :maxserno")})
 public class Invserno implements Serializable {
 
@@ -96,5 +96,5 @@ public class Invserno implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Invserno[ invsernoPK=" + invsernoPK + " ]";
     }
-    
+
 }

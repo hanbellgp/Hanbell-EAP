@@ -204,20 +204,23 @@ public class CdrqhadBean extends SuperEJBForERP<Cdrqhad> {
                 for (Cdrqhad h : cdrqhads) {
                     if (null == h.getHquosta()) {
                         ret = "404";
-                    } else switch (h.getHquosta()) {
-                        case 'R':
-                        case 'Y':
-                        case 'N':
-                            h.setHquosta('W');
-                            break;
-                        case 'O':
-                            HKYX009 oah = hkyx009Bean.findByQuono(h.getCdrqhadPK().getQuono());
-                            if (oah != null) {
-                                ret = "报价单已抛转OA，请至OA撤销！ 单号：" + oah.getProcessSerialNumber();
-                            }   break;
-                        default:
-                            ret = "404";
-                            break;
+                    } else {
+                        switch (h.getHquosta()) {
+                            case 'R':
+                            case 'Y':
+                            case 'N':
+                                h.setHquosta('W');
+                                break;
+                            case 'O':
+                                HKYX009 oah = hkyx009Bean.findByQuono(h.getCdrqhadPK().getQuono());
+                                if (oah != null) {
+                                    ret = "报价单已抛转OA，请至OA撤销！ 单号：" + oah.getProcessSerialNumber();
+                                }
+                                break;
+                            default:
+                                ret = "404";
+                                break;
+                        }
                     }
                 }
             }

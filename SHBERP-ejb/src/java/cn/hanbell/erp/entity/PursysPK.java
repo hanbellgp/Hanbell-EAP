@@ -82,5 +82,5 @@ public class PursysPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.PursysPK[ facno=" + facno + ", prono=" + prono + " ]";
     }
-    
+
 }

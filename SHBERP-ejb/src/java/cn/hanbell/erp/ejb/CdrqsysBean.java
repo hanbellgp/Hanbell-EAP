@@ -26,11 +26,11 @@ public class CdrqsysBean extends SuperEJBForERP<Cdrqsys> {
 
     @EJB
     private CdrsernoBean cdrsernoBean;
-    
+
     public CdrqsysBean() {
         super(Cdrqsys.class);
     }
-    
+
     public Cdrqsys getByFacno(String facno) {
         Query query = this.getEntityManager().createNamedQuery("Cdrqsys.findByFacno");
         query.setParameter("facno", facno);
@@ -40,7 +40,7 @@ public class CdrqsysBean extends SuperEJBForERP<Cdrqsys> {
             return null;
         }
     }
-    
+
     public String getSerialno(String facno, Date quodate, Character decode, boolean b, String curprgcode) {
         int li_ordno;
         int li_max = 0;
@@ -66,7 +66,7 @@ public class CdrqsysBean extends SuperEJBForERP<Cdrqsys> {
                 }
                 ls_difcode = '1';
         }
-        
+
         li_ordno = Integer.parseInt(ls_nofmt.substring(5));
         ls_trno = getStaticno(facno, autochar, quodate, decode, ls_nofmt);
         li_max = getMaxno(facno, ls_trno, ls_difcode);
@@ -92,12 +92,12 @@ public class CdrqsysBean extends SuperEJBForERP<Cdrqsys> {
                 cdrsernoBean.setCompany(facno);
                 Cdrserno cdrserno = cdrsernoBean.findByPK(facno, ls_difcode, ls_trno);
                 cdrserno.setMaxserno((short) li_max);
-                cdrsernoBean.update(cdrserno);  
+                cdrsernoBean.update(cdrserno);
             }
-        }    
+        }
         return ls_serial;
     }
-    
+
     private String getStaticno(String facno, String autochar, Date quoDate, Character decode, String ls_nofmt) {
         int li_month = 0;
         String ls_no;
@@ -150,11 +150,11 @@ public class CdrqsysBean extends SuperEJBForERP<Cdrqsys> {
         }
         return ls_no;
     }
-    
+
     private int getMaxno(String facno, String serno, Character difcode) {
         int li_maxno;
         cdrsernoBean.setCompany(facno);
-        Cdrserno cdrserno = cdrsernoBean.findByPK(facno, difcode, serno);    
+        Cdrserno cdrserno = cdrsernoBean.findByPK(facno, difcode, serno);
         try {
             li_maxno = cdrserno.getMaxserno();
         } catch (Exception ex) {
@@ -162,5 +162,5 @@ public class CdrqsysBean extends SuperEJBForERP<Cdrqsys> {
         }
         return li_maxno;
     }
-    
+
 }

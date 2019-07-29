@@ -18,6 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Embeddable
 public class CdrdtaPK implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 3)
@@ -98,5 +99,5 @@ public class CdrdtaPK implements Serializable {
     public String toString() {
         return "shberp.entity.CdrdtaPK[ facno=" + facno + ", shpno=" + shpno + ", trseq=" + trseq + " ]";
     }
-    
+
 }

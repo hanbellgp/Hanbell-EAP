@@ -150,7 +150,7 @@ public class CdrbrhadBean extends SuperEJBForERP<Cdrbrhad> {
                 if (m == null) {
                     throw new RuntimeException(cdrbrdta.getItnbr() + "ERP中不存在");
                 }
-                 //按ERP逻辑重新设置批号
+                //按ERP逻辑重新设置批号
                 switch (m.getInvcls().getNrcode()) {
                     case '0':
                         cdrbrdta.setFixnr("");
@@ -169,7 +169,7 @@ public class CdrbrhadBean extends SuperEJBForERP<Cdrbrhad> {
                     default:
                         break;
                 }
-                
+
                 cdrbrdtaBean.setCompany(facno);
                 cdrbrdtaBean.persist(cdrbrdta);
 

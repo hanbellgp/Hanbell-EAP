@@ -118,5 +118,5 @@ public class CdrdpopsfkPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrdpopsfkPK[ facno=" + facno + ", sfktrno=" + sfktrno + ", parts=" + parts + ", sorts=" + sorts + " ]";
     }
-    
+
 }

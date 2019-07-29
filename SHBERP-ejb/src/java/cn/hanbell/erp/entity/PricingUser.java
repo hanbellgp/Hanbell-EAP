@@ -27,11 +27,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "pricinguser")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PricingUser.findAll", query = "SELECT p FROM PricingUser p")
-    , @NamedQuery(name = "PricingUser.findByGroupid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.groupid = :groupid")
-    , @NamedQuery(name = "PricingUser.findByPricingtype", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.pricingtype = :pricingtype")
-    , @NamedQuery(name = "PricingUser.findByUserid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.userid = :userid")
-    , @NamedQuery(name = "PricingUser.findByFacno", query = "SELECT p FROM PricingUser p WHERE p.facno = :facno")})
+    @NamedQuery(name = "PricingUser.findAll", query = "SELECT p FROM PricingUser p"),
+    @NamedQuery(name = "PricingUser.findByGroupid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.groupid = :groupid"),
+    @NamedQuery(name = "PricingUser.findByPricingtype", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.pricingtype = :pricingtype"),
+    @NamedQuery(name = "PricingUser.findByUserid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.userid = :userid"),
+    @NamedQuery(name = "PricingUser.findByFacno", query = "SELECT p FROM PricingUser p WHERE p.facno = :facno")})
 public class PricingUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,7 +46,7 @@ public class PricingUser implements Serializable {
     @JoinColumn(name = "pricingtype", referencedColumnName = "pricingtype", insertable = false, updatable = false)
     @ManyToOne(optional = true)
     private PricingGroup pricingGroup;
-    
+
     public PricingUser() {
     }
 
@@ -111,5 +111,5 @@ public class PricingUser implements Serializable {
     public void setPricingGroup(PricingGroup pricingGroup) {
         this.pricingGroup = pricingGroup;
     }
-    
+
 }

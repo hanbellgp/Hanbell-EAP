@@ -85,5 +85,5 @@ public class AccrnoPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.AccrnoPK[ facno=" + facno + ", finvdate=" + finvdate + " ]";
     }
-    
+
 }

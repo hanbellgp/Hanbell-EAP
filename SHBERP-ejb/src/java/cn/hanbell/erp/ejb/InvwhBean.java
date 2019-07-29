@@ -28,6 +28,7 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class InvwhBean extends SuperEJBForERP<Invwh> {
+
     @EJB
     private SHBERPINV150Bean shberpinv150Bean;
     @EJB
@@ -108,7 +109,7 @@ public class InvwhBean extends SuperEJBForERP<Invwh> {
                         wc.setMainyn('Y');
                         wc.setUserno(userno);
                         invwhclkBean.persist(wc);
-            
+
                     }
                 }
                 return true;

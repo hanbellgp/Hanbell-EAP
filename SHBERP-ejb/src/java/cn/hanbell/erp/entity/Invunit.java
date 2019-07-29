@@ -25,10 +25,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "invunit")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Invunit.findAll", query = "SELECT i FROM Invunit i")
-    , @NamedQuery(name = "Invunit.findByUnitcode", query = "SELECT i FROM Invunit i WHERE i.unitcode = :unitcode")
-    , @NamedQuery(name = "Invunit.findByUnitcodsc", query = "SELECT i FROM Invunit i WHERE i.unitcodsc = :unitcodsc")
-    , @NamedQuery(name = "Invunit.findByUnitcodsce", query = "SELECT i FROM Invunit i WHERE i.unitcodsce = :unitcodsce")})
+    @NamedQuery(name = "Invunit.findAll", query = "SELECT i FROM Invunit i"),
+    @NamedQuery(name = "Invunit.findByUnitcode", query = "SELECT i FROM Invunit i WHERE i.unitcode = :unitcode"),
+    @NamedQuery(name = "Invunit.findByUnitcodsc", query = "SELECT i FROM Invunit i WHERE i.unitcodsc = :unitcodsc"),
+    @NamedQuery(name = "Invunit.findByUnitcodsce", query = "SELECT i FROM Invunit i WHERE i.unitcodsce = :unitcodsce")})
 public class Invunit implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -107,5 +107,5 @@ public class Invunit implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Invunit[ unitcode=" + unitcode + " ]";
     }
-    
+
 }

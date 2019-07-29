@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class CdrqhdscBean extends SuperEJBForERP<Cdrqhdsc>{
+public class CdrqhdscBean extends SuperEJBForERP<Cdrqhdsc> {
 
     public CdrqhdscBean() {
         super(Cdrqhdsc.class);

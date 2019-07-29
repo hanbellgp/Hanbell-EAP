@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PricingPolicy.findByDeptid", query = "SELECT p FROM PricingPolicy p WHERE p.deptid = :deptid"),
     @NamedQuery(name = "PricingPolicy.findByStatus", query = "SELECT p FROM PricingPolicy p WHERE p.status = :status")})
 public class PricingPolicy implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -288,5 +289,5 @@ public class PricingPolicy implements Serializable {
     public String toString() {
         return "cn.hanbell.shb.erp.PricingPolicy[ pricingid=" + pricingid + " ]";
     }
-    
+
 }

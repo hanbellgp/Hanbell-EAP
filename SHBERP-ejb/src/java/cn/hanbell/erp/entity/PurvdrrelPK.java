@@ -81,5 +81,5 @@ public class PurvdrrelPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.PurvdrrelPK[ vdrno=" + vdrno + ", trseq=" + trseq + " ]";
     }
-    
+
 }

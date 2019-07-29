@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrdmmodel.findByCmcspdsc", query = "SELECT c FROM Cdrdmmodel c WHERE c.cmcspdsc = :cmcspdsc"),
     @NamedQuery(name = "Cdrdmmodel.findByKind", query = "SELECT c FROM Cdrdmmodel c WHERE c.kind = :kind")})
 public class Cdrdmmodel implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CdrdmmodelPK cdrdmmodelPK;
@@ -135,5 +136,5 @@ public class Cdrdmmodel implements Serializable {
     public String toString() {
         return "cn.hanbell.shb.erp.Cdrdmmodel[ cdrdmmodelPK=" + cdrdmmodelPK + " ]";
     }
-    
+
 }

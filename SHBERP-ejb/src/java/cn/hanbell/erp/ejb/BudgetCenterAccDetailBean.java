@@ -17,8 +17,8 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class BudgetCenterAccDetailBean extends SuperEJBForERP<BudgetCenterAccDetail>{
-        
+public class BudgetCenterAccDetailBean extends SuperEJBForERP<BudgetCenterAccDetail> {
+
     public BudgetCenterAccDetailBean() {
         super(BudgetCenterAccDetail.class);
     }

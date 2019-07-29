@@ -99,5 +99,5 @@ public class CdrivoPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrivoPK[ cusno=" + cusno + ", trseq=" + trseq + ", ivocusno=" + ivocusno + " ]";
     }
-    
+
 }

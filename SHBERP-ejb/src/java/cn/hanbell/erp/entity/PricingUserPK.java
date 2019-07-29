@@ -100,5 +100,5 @@ public class PricingUserPK implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.ejb.PricingUserPK[ groupid=" + groupid + ", pricingtype=" + pricingtype + ", userid=" + userid + " ]";
     }
-    
+
 }

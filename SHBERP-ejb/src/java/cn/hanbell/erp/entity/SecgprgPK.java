@@ -118,5 +118,5 @@ public class SecgprgPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.SecgprgPK[ prgno=" + prgno + ", sysno=" + sysno + ", groupno=" + groupno + ", gtype=" + gtype + " ]";
     }
-    
+
 }

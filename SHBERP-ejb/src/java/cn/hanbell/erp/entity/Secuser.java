@@ -5,8 +5,6 @@ package cn.hanbell.erp.entity;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;

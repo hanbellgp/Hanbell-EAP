@@ -22,12 +22,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrsfkrno")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrsfkrno.findAll", query = "SELECT c FROM Cdrsfkrno c")
-    , @NamedQuery(name = "Cdrsfkrno.findByFacno", query = "SELECT c FROM Cdrsfkrno c WHERE c.cdrsfkrnoPK.facno = :facno")
-    , @NamedQuery(name = "Cdrsfkrno.findByTrtype", query = "SELECT c FROM Cdrsfkrno c WHERE c.cdrsfkrnoPK.trtype = :trtype")
-    , @NamedQuery(name = "Cdrsfkrno.findByKeyformat", query = "SELECT c FROM Cdrsfkrno c WHERE c.cdrsfkrnoPK.keyformat = :keyformat")
-    , @NamedQuery(name = "Cdrsfkrno.findByPK", query = "SELECT c FROM Cdrsfkrno c WHERE c.cdrsfkrnoPK.facno = :facno AND c.cdrsfkrnoPK.trtype = :trtype AND c.cdrsfkrnoPK.keyformat = :keyformat")
-    , @NamedQuery(name = "Cdrsfkrno.findByMaxseq", query = "SELECT c FROM Cdrsfkrno c WHERE c.maxseq = :maxseq")})
+    @NamedQuery(name = "Cdrsfkrno.findAll", query = "SELECT c FROM Cdrsfkrno c"),
+    @NamedQuery(name = "Cdrsfkrno.findByFacno", query = "SELECT c FROM Cdrsfkrno c WHERE c.cdrsfkrnoPK.facno = :facno"),
+    @NamedQuery(name = "Cdrsfkrno.findByTrtype", query = "SELECT c FROM Cdrsfkrno c WHERE c.cdrsfkrnoPK.trtype = :trtype"),
+    @NamedQuery(name = "Cdrsfkrno.findByKeyformat", query = "SELECT c FROM Cdrsfkrno c WHERE c.cdrsfkrnoPK.keyformat = :keyformat"),
+    @NamedQuery(name = "Cdrsfkrno.findByPK", query = "SELECT c FROM Cdrsfkrno c WHERE c.cdrsfkrnoPK.facno = :facno AND c.cdrsfkrnoPK.trtype = :trtype AND c.cdrsfkrnoPK.keyformat = :keyformat"),
+    @NamedQuery(name = "Cdrsfkrno.findByMaxseq", query = "SELECT c FROM Cdrsfkrno c WHERE c.maxseq = :maxseq")})
 public class Cdrsfkrno implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -87,5 +87,5 @@ public class Cdrsfkrno implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrsfkrno[ cdrsfkrnoPK=" + cdrsfkrnoPK + " ]";
     }
-    
+
 }

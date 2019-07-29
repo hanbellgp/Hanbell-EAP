@@ -17,13 +17,13 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class CdrsfkpartBean extends SuperEJBForERP<Cdrsfkpart>{
+public class CdrsfkpartBean extends SuperEJBForERP<Cdrsfkpart> {
 
     public CdrsfkpartBean() {
         super(Cdrsfkpart.class);
     }
-    
-    public Cdrsfkpart findByPK(String facno, String parts){
+
+    public Cdrsfkpart findByPK(String facno, String parts) {
         Query query = this.getEntityManager().createNamedQuery("Cdrsfkpart.findByPK");
         query.setParameter("facno", facno);
         query.setParameter("parts", parts);
@@ -33,5 +33,5 @@ public class CdrsfkpartBean extends SuperEJBForERP<Cdrsfkpart>{
             return null;
         }
     }
- 
+
 }

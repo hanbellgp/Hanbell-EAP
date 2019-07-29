@@ -25,14 +25,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "secmemb")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Secmemb.findAll", query = "SELECT s FROM Secmemb s")
-    ,
-    @NamedQuery(name = "Secmemb.findByFacno", query = "SELECT s FROM Secmemb s WHERE s.secmembPK.facno = :facno")
-    ,
-    @NamedQuery(name = "Secmemb.findByDepno", query = "SELECT s FROM Secmemb s WHERE s.secmembPK.depno = :depno")
-    ,
-    @NamedQuery(name = "Secmemb.findByUserno", query = "SELECT s FROM Secmemb s WHERE s.secmembPK.userno = :userno")
-    ,
+    @NamedQuery(name = "Secmemb.findAll", query = "SELECT s FROM Secmemb s"),
+    @NamedQuery(name = "Secmemb.findByFacno", query = "SELECT s FROM Secmemb s WHERE s.secmembPK.facno = :facno"),
+    @NamedQuery(name = "Secmemb.findByDepno", query = "SELECT s FROM Secmemb s WHERE s.secmembPK.depno = :depno"),
+    @NamedQuery(name = "Secmemb.findByUserno", query = "SELECT s FROM Secmemb s WHERE s.secmembPK.userno = :userno"),
     @NamedQuery(name = "Secmemb.findByPK", query = "SELECT s FROM Secmemb s WHERE s.secmembPK.facno = :facno AND s.secmembPK.depno = :depno AND s.secmembPK.userno = :userno")})
 public class Secmemb implements Serializable {
 

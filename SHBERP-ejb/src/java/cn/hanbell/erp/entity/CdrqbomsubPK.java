@@ -99,5 +99,5 @@ public class CdrqbomsubPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrqbomsubPK[ facno=" + facno + ", cdrno=" + cdrno + ", trseq=" + trseq + " ]";
     }
-    
+
 }

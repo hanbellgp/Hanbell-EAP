@@ -17,14 +17,14 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class CdrqbomsubBean extends SuperEJBForERP<Cdrqbomsub>{
+public class CdrqbomsubBean extends SuperEJBForERP<Cdrqbomsub> {
 
     public CdrqbomsubBean() {
         super(Cdrqbomsub.class);
     }
-   
-    public Cdrqbomsub findByItnbrfAndCdrno(String facno ,String itnbrf ,String cdrno){
-         Query query = this.getEntityManager().createNamedQuery("Cdrqbomsub.findByItnbrfAndCdrno");
+
+    public Cdrqbomsub findByItnbrfAndCdrno(String facno, String itnbrf, String cdrno) {
+        Query query = this.getEntityManager().createNamedQuery("Cdrqbomsub.findByItnbrfAndCdrno");
         query.setParameter("facno", facno);
         query.setParameter("itnbrf", itnbrf);
         query.setParameter("cdrno", cdrno);
@@ -34,5 +34,5 @@ public class CdrqbomsubBean extends SuperEJBForERP<Cdrqbomsub>{
             return null;
         }
     }
-    
+
 }

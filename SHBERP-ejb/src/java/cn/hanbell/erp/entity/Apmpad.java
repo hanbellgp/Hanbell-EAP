@@ -118,7 +118,7 @@ public class Apmpad implements Serializable {
     @Size(max = 2)
     @Column(name = "trntype")
     private String trntype;
-    
+
     public Apmpad() {
     }
 
@@ -302,5 +302,5 @@ public class Apmpad implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Apmpad[ apmpadPK=" + apmpadPK + " ]";
     }
-    
+
 }

@@ -23,7 +23,7 @@ public class SyncNJBean extends SuperSyncBean {
     private EntityManager em;
 
     public SyncNJBean() {
-       
+
     }
 
     @Override

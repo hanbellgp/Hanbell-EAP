@@ -35,7 +35,7 @@ public class BudgetCenterAccDetail implements Serializable {
         @JoinColumn(name = "budgetacc", referencedColumnName = "accno", insertable = false, updatable = false)
     })
     private BudgetAcc budgetAccount;
-    
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected BudgetCenterAccDetailPK budgetcenteraccdetailPK;

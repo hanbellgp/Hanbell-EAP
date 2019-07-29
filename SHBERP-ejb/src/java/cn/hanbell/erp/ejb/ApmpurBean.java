@@ -16,10 +16,10 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class ApmpurBean extends SuperEJBForERP<Apmpur>{
-    
+public class ApmpurBean extends SuperEJBForERP<Apmpur> {
+
     public ApmpurBean() {
         super(Apmpur.class);
     }
-    
+
 }

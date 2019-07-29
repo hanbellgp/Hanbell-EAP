@@ -304,5 +304,5 @@ public class Scminvmas implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Scminvmas[ itnbr=" + itnbr + " ]";
     }
-    
+
 }

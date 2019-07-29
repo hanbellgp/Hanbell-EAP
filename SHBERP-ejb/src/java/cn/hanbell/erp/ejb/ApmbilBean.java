@@ -287,7 +287,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                                     apmpyh.setAivoamt(apmpyh.getAivoamt().subtract(ldc_thamt));
                                 }
                                 //防止重复执行，判断目前申请立账金额
-                                if(apmpyh.getAivoamt().compareTo(BigDecimal.ZERO) <0){
+                                if (apmpyh.getAivoamt().compareTo(BigDecimal.ZERO) < 0) {
                                     throw new RuntimeException("目前申请立账金额小于0！请查看！");
                                 }
                                 apmpyhBean.update(apmpyh);

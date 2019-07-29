@@ -28,13 +28,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrbomsub_default")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CdrbomsubDefault.findAll", query = "SELECT c FROM CdrbomsubDefault c")
-    , @NamedQuery(name = "CdrbomsubDefault.findByFacno", query = "SELECT c FROM CdrbomsubDefault c WHERE c.cdrbomsubDefaultPK.facno = :facno")
-    , @NamedQuery(name = "CdrbomsubDefault.findByItnbrf", query = "SELECT c FROM CdrbomsubDefault c WHERE c.cdrbomsubDefaultPK.itnbrf = :itnbrf")
-    , @NamedQuery(name = "CdrbomsubDefault.findByItemtyp", query = "SELECT c FROM CdrbomsubDefault c WHERE c.cdrbomsubDefaultPK.itemtyp = :itemtyp")
-    , @NamedQuery(name = "CdrbomsubDefault.findBySpcode", query = "SELECT c FROM CdrbomsubDefault c WHERE c.spcode = :spcode")
-    , @NamedQuery(name = "CdrbomsubDefault.findBySpdesc", query = "SELECT c FROM CdrbomsubDefault c WHERE c.spdesc = :spdesc")
-    , @NamedQuery(name = "CdrbomsubDefault.findByPK", query = "SELECT c FROM CdrbomsubDefault c WHERE c.cdrbomsubDefaultPK.facno = :facno and c.cdrbomsubDefaultPK.itnbrf = :itnbrf and c.cdrbomsubDefaultPK.itemtyp = :itemtyp")})
+    @NamedQuery(name = "CdrbomsubDefault.findAll", query = "SELECT c FROM CdrbomsubDefault c"),
+    @NamedQuery(name = "CdrbomsubDefault.findByFacno", query = "SELECT c FROM CdrbomsubDefault c WHERE c.cdrbomsubDefaultPK.facno = :facno"),
+    @NamedQuery(name = "CdrbomsubDefault.findByItnbrf", query = "SELECT c FROM CdrbomsubDefault c WHERE c.cdrbomsubDefaultPK.itnbrf = :itnbrf"),
+    @NamedQuery(name = "CdrbomsubDefault.findByItemtyp", query = "SELECT c FROM CdrbomsubDefault c WHERE c.cdrbomsubDefaultPK.itemtyp = :itemtyp"),
+    @NamedQuery(name = "CdrbomsubDefault.findBySpcode", query = "SELECT c FROM CdrbomsubDefault c WHERE c.spcode = :spcode"),
+    @NamedQuery(name = "CdrbomsubDefault.findBySpdesc", query = "SELECT c FROM CdrbomsubDefault c WHERE c.spdesc = :spdesc"),
+    @NamedQuery(name = "CdrbomsubDefault.findByPK", query = "SELECT c FROM CdrbomsubDefault c WHERE c.cdrbomsubDefaultPK.facno = :facno and c.cdrbomsubDefaultPK.itnbrf = :itnbrf and c.cdrbomsubDefaultPK.itemtyp = :itemtyp")})
 public class CdrbomsubDefault implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -117,5 +117,5 @@ public class PurdaskdscPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.PurdaskdscPK[ facno=" + facno + ", prono=" + prono + ", prno=" + prno + ", trseq=" + trseq + " ]";
     }
-    
+
 }

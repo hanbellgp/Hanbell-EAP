@@ -272,5 +272,5 @@ public class Invsys implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Invsys[ facno=" + facno + " ]";
     }
-    
+
 }

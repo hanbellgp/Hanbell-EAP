@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class InvdtaBean extends SuperEJBForERP<Invdta>{
+public class InvdtaBean extends SuperEJBForERP<Invdta> {
 
     public InvdtaBean() {
         super(Invdta.class);

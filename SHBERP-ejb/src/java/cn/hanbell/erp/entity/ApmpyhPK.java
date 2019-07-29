@@ -82,5 +82,5 @@ public class ApmpyhPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.ApmpyhPK[ facno=" + facno + ", acpno=" + acpno + " ]";
     }
-    
+
 }

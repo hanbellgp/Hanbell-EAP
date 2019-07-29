@@ -25,12 +25,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrsfkpart")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrsfkpart.findAll", query = "SELECT c FROM Cdrsfkpart c")
-    , @NamedQuery(name = "Cdrsfkpart.findByFacno", query = "SELECT c FROM Cdrsfkpart c WHERE c.cdrsfkpartPK.facno = :facno")
-    , @NamedQuery(name = "Cdrsfkpart.findByParts", query = "SELECT c FROM Cdrsfkpart c WHERE c.cdrsfkpartPK.parts = :parts")
-    , @NamedQuery(name = "Cdrsfkpart.findByPK", query = "SELECT c FROM Cdrsfkpart c WHERE c.cdrsfkpartPK.facno = :facno AND c.cdrsfkpartPK.parts = :parts")
-    , @NamedQuery(name = "Cdrsfkpart.findByPartsdesc", query = "SELECT c FROM Cdrsfkpart c WHERE c.partsdesc = :partsdesc")
-    , @NamedQuery(name = "Cdrsfkpart.findByPx", query = "SELECT c FROM Cdrsfkpart c WHERE c.px = :px")})
+    @NamedQuery(name = "Cdrsfkpart.findAll", query = "SELECT c FROM Cdrsfkpart c"),
+    @NamedQuery(name = "Cdrsfkpart.findByFacno", query = "SELECT c FROM Cdrsfkpart c WHERE c.cdrsfkpartPK.facno = :facno"),
+    @NamedQuery(name = "Cdrsfkpart.findByParts", query = "SELECT c FROM Cdrsfkpart c WHERE c.cdrsfkpartPK.parts = :parts"),
+    @NamedQuery(name = "Cdrsfkpart.findByPK", query = "SELECT c FROM Cdrsfkpart c WHERE c.cdrsfkpartPK.facno = :facno AND c.cdrsfkpartPK.parts = :parts"),
+    @NamedQuery(name = "Cdrsfkpart.findByPartsdesc", query = "SELECT c FROM Cdrsfkpart c WHERE c.partsdesc = :partsdesc"),
+    @NamedQuery(name = "Cdrsfkpart.findByPx", query = "SELECT c FROM Cdrsfkpart c WHERE c.px = :px")})
 public class Cdrsfkpart implements Serializable {
 
     private static final long serialVersionUID = 1L;

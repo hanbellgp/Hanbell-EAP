@@ -25,13 +25,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrsfkspec")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrsfkspec.findAll", query = "SELECT c FROM Cdrsfkspec c")
-    , @NamedQuery(name = "Cdrsfkspec.findByFacno", query = "SELECT c FROM Cdrsfkspec c WHERE c.cdrsfkspecPK.facno = :facno")
-    , @NamedQuery(name = "Cdrsfkspec.findByParts", query = "SELECT c FROM Cdrsfkspec c WHERE c.cdrsfkspecPK.parts = :parts")
-    , @NamedQuery(name = "Cdrsfkspec.findBySorts", query = "SELECT c FROM Cdrsfkspec c WHERE c.cdrsfkspecPK.sorts = :sorts")
-    , @NamedQuery(name = "Cdrsfkspec.findBySpecifit", query = "SELECT c FROM Cdrsfkspec c WHERE c.cdrsfkspecPK.specifit = :specifit")
-    , @NamedQuery(name = "Cdrsfkspec.findByPK", query = "SELECT c FROM Cdrsfkspec c WHERE c.cdrsfkspecPK.facno = :facno AND c.cdrsfkspecPK.parts = :parts AND c.cdrsfkspecPK.sorts = :sorts AND c.cdrsfkspecPK.specifit = :specifit")
-    , @NamedQuery(name = "Cdrsfkspec.findBySpecifitesc", query = "SELECT c FROM Cdrsfkspec c WHERE c.specifitesc = :specifitesc")})
+    @NamedQuery(name = "Cdrsfkspec.findAll", query = "SELECT c FROM Cdrsfkspec c"),
+    @NamedQuery(name = "Cdrsfkspec.findByFacno", query = "SELECT c FROM Cdrsfkspec c WHERE c.cdrsfkspecPK.facno = :facno"),
+    @NamedQuery(name = "Cdrsfkspec.findByParts", query = "SELECT c FROM Cdrsfkspec c WHERE c.cdrsfkspecPK.parts = :parts"),
+    @NamedQuery(name = "Cdrsfkspec.findBySorts", query = "SELECT c FROM Cdrsfkspec c WHERE c.cdrsfkspecPK.sorts = :sorts"),
+    @NamedQuery(name = "Cdrsfkspec.findBySpecifit", query = "SELECT c FROM Cdrsfkspec c WHERE c.cdrsfkspecPK.specifit = :specifit"),
+    @NamedQuery(name = "Cdrsfkspec.findByPK", query = "SELECT c FROM Cdrsfkspec c WHERE c.cdrsfkspecPK.facno = :facno AND c.cdrsfkspecPK.parts = :parts AND c.cdrsfkspecPK.sorts = :sorts AND c.cdrsfkspecPK.specifit = :specifit"),
+    @NamedQuery(name = "Cdrsfkspec.findBySpecifitesc", query = "SELECT c FROM Cdrsfkspec c WHERE c.specifitesc = :specifitesc")})
 public class Cdrsfkspec implements Serializable {
 
     private static final long serialVersionUID = 1L;

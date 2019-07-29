@@ -118,5 +118,5 @@ public class InvwhclkPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.InvwhclkPK[ facno=" + facno + ", prono=" + prono + ", wareh=" + wareh + ", wclerk=" + wclerk + " ]";
     }
-    
+
 }

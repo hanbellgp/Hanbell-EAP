@@ -99,5 +99,5 @@ public class CdrlndtaPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrlndtaPK[ facno=" + facno + ", trno=" + trno + ", trseq=" + trseq + " ]";
     }
-    
+
 }

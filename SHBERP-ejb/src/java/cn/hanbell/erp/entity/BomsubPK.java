@@ -136,5 +136,5 @@ public class BomsubPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.ejb.BomsubPK[ itnbrf=" + itnbrf + ", optkind=" + optkind + ", optvalue=" + optvalue + ", itnbr=" + itnbr + ", itnbrs=" + itnbrs + " ]";
     }
-    
+
 }

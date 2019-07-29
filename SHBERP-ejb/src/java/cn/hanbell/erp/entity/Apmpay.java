@@ -110,7 +110,7 @@ public class Apmpay implements Serializable {
     @Size(max = 18)
     @Column(name = "srcno")
     private String srcno;
-    
+
     public Apmpay() {
     }
 
@@ -286,7 +286,6 @@ public class Apmpay implements Serializable {
         this.srcno = srcno;
     }
 
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -311,5 +310,5 @@ public class Apmpay implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Apmpay[ apmpayPK=" + apmpayPK + " ]";
     }
-    
+
 }

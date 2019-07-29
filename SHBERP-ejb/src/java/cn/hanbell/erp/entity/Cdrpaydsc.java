@@ -25,11 +25,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrpaydsc")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrpaydsc.findAll", query = "SELECT c FROM Cdrpaydsc c")
-    , @NamedQuery(name = "Cdrpaydsc.findByDifcode", query = "SELECT c FROM Cdrpaydsc c WHERE c.cdrpaydscPK.difcode = :difcode")
-    , @NamedQuery(name = "Cdrpaydsc.findByAllcode", query = "SELECT c FROM Cdrpaydsc c WHERE c.cdrpaydscPK.allcode = :allcode")
-    , @NamedQuery(name = "Cdrpaydsc.findByPK", query = "SELECT c FROM Cdrpaydsc c WHERE c.cdrpaydscPK.difcode = :difcode AND c.cdrpaydscPK.allcode = :allcode")    
-    , @NamedQuery(name = "Cdrpaydsc.findByAllcodedsc", query = "SELECT c FROM Cdrpaydsc c WHERE c.allcodedsc = :allcodedsc")})
+    @NamedQuery(name = "Cdrpaydsc.findAll", query = "SELECT c FROM Cdrpaydsc c"),
+    @NamedQuery(name = "Cdrpaydsc.findByDifcode", query = "SELECT c FROM Cdrpaydsc c WHERE c.cdrpaydscPK.difcode = :difcode"),
+    @NamedQuery(name = "Cdrpaydsc.findByAllcode", query = "SELECT c FROM Cdrpaydsc c WHERE c.cdrpaydscPK.allcode = :allcode"),
+    @NamedQuery(name = "Cdrpaydsc.findByPK", query = "SELECT c FROM Cdrpaydsc c WHERE c.cdrpaydscPK.difcode = :difcode AND c.cdrpaydscPK.allcode = :allcode"),
+    @NamedQuery(name = "Cdrpaydsc.findByAllcodedsc", query = "SELECT c FROM Cdrpaydsc c WHERE c.allcodedsc = :allcodedsc")})
 public class Cdrpaydsc implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -97,5 +97,5 @@ public class Cdrpaydsc implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrpaydsc[ cdrpaydscPK=" + cdrpaydscPK + " ]";
     }
-    
+
 }

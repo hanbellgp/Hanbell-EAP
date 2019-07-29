@@ -100,5 +100,5 @@ public class SecmembPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.SecmembPK[ facno=" + facno + ", depno=" + depno + ", userno=" + userno + " ]";
     }
-    
+
 }

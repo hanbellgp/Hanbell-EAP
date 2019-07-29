@@ -32,7 +32,7 @@ public class PurhadBean extends SuperEJBForERP<Purhad> {
         super(Purhad.class);
     }
 
-    public List<Purhad> findNeedThrowByVdrno(String vdrno,Date podate) {
+    public List<Purhad> findNeedThrowByVdrno(String vdrno, Date podate) {
         Query query = getEntityManager().createNamedQuery("Purhad.findNeedThrowByVdrno").setFirstResult(0).setMaxResults(1);
         query.setParameter("vdrno", vdrno);
         query.setParameter("podate", podate);

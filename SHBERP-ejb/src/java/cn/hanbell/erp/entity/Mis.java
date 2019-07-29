@@ -335,5 +335,5 @@ public class Mis implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Mis[ company=" + company + " ]";
     }
-    
+
 }

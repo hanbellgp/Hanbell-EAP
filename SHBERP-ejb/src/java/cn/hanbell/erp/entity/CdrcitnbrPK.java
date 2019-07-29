@@ -100,5 +100,5 @@ public class CdrcitnbrPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrcitnbrPK[ cusno=" + cusno + ", itnbr=" + itnbr + ", itnbrcus=" + itnbrcus + " ]";
     }
-    
+
 }

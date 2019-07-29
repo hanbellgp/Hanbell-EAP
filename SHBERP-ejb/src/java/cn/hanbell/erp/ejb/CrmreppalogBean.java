@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class CrmreppalogBean extends SuperEJBForERP<Crmreppalog>{
+public class CrmreppalogBean extends SuperEJBForERP<Crmreppalog> {
 
     public CrmreppalogBean() {
         super(Crmreppalog.class);

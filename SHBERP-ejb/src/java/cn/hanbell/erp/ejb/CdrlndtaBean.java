@@ -27,7 +27,7 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class CdrlndtaBean extends SuperEJBForERP<Cdrlndta> { 
+public class CdrlndtaBean extends SuperEJBForERP<Cdrlndta> {
 
     @EJB
     private CdrlnrenewBean cdrlnrenewBean;

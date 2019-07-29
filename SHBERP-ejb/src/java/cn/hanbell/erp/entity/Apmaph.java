@@ -28,52 +28,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "apmaph")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Apmaph.findAll", query = "SELECT a FROM Apmaph a")
-    ,
-    @NamedQuery(name = "Apmaph.findByFacno", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.facno = :facno")
-    ,
-    @NamedQuery(name = "Apmaph.findByApno", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.apno = :apno")
-    ,
-    @NamedQuery(name = "Apmaph.findByAptyp", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.aptyp = :aptyp")
-    ,
-    @NamedQuery(name = "Apmaph.findByApsta", query = "SELECT a FROM Apmaph a WHERE a.apsta = :apsta")
-    ,
-    @NamedQuery(name = "Apmaph.findByDepno", query = "SELECT a FROM Apmaph a WHERE a.depno = :depno")
-    ,
-    @NamedQuery(name = "Apmaph.findByApusrno", query = "SELECT a FROM Apmaph a WHERE a.apusrno = :apusrno")
-    ,
-    @NamedQuery(name = "Apmaph.findByApdate", query = "SELECT a FROM Apmaph a WHERE a.apdate = :apdate")
-    ,
-    @NamedQuery(name = "Apmaph.findByVdrno", query = "SELECT a FROM Apmaph a WHERE a.vdrno = :vdrno")
-    ,
-    @NamedQuery(name = "Apmaph.findByVdrna", query = "SELECT a FROM Apmaph a WHERE a.vdrna = :vdrna")
-    ,
-    @NamedQuery(name = "Apmaph.findByPaytn", query = "SELECT a FROM Apmaph a WHERE a.paytn = :paytn")
-    ,
-    @NamedQuery(name = "Apmaph.findByPayda", query = "SELECT a FROM Apmaph a WHERE a.payda = :payda")
-    ,
-    @NamedQuery(name = "Apmaph.findByTerda", query = "SELECT a FROM Apmaph a WHERE a.terda = :terda")
-    ,
-    @NamedQuery(name = "Apmaph.findByIndate", query = "SELECT a FROM Apmaph a WHERE a.indate = :indate")
-    ,
-    @NamedQuery(name = "Apmaph.findByUserno", query = "SELECT a FROM Apmaph a WHERE a.userno = :userno")
-    ,
-    @NamedQuery(name = "Apmaph.findByCfmdate", query = "SELECT a FROM Apmaph a WHERE a.cfmdate = :cfmdate")
-    ,
-    @NamedQuery(name = "Apmaph.findByCfmusrno", query = "SELECT a FROM Apmaph a WHERE a.cfmusrno = :cfmusrno")
-    ,
-    @NamedQuery(name = "Apmaph.findByHmark", query = "SELECT a FROM Apmaph a WHERE a.hmark = :hmark")
-    ,
-    @NamedQuery(name = "Apmaph.findByRefno", query = "SELECT a FROM Apmaph a WHERE a.refno = :refno")
-    ,
-    @NamedQuery(name = "Apmaph.findByPyhyn", query = "SELECT a FROM Apmaph a WHERE a.pyhyn = :pyhyn")
-    ,
-    @NamedQuery(name = "Apmaph.findByPK", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.facno = :facno AND a.apmaphPK.apno = :apno AND a.apmaphPK.aptyp = :aptyp")
-    ,
-    @NamedQuery(name = "Apmaph.findByOano", query = "SELECT a FROM Apmaph a WHERE a.oano = :oano")
-    ,
-    @NamedQuery(name = "Apmaph.findByPzsta", query = "SELECT a FROM Apmaph a WHERE a.pzsta = :pzsta")
-    ,
+    @NamedQuery(name = "Apmaph.findAll", query = "SELECT a FROM Apmaph a"),
+    @NamedQuery(name = "Apmaph.findByFacno", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.facno = :facno"),
+    @NamedQuery(name = "Apmaph.findByApno", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.apno = :apno"),
+    @NamedQuery(name = "Apmaph.findByAptyp", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.aptyp = :aptyp"),
+    @NamedQuery(name = "Apmaph.findByApsta", query = "SELECT a FROM Apmaph a WHERE a.apsta = :apsta"),
+    @NamedQuery(name = "Apmaph.findByDepno", query = "SELECT a FROM Apmaph a WHERE a.depno = :depno"),
+    @NamedQuery(name = "Apmaph.findByApusrno", query = "SELECT a FROM Apmaph a WHERE a.apusrno = :apusrno"),
+    @NamedQuery(name = "Apmaph.findByApdate", query = "SELECT a FROM Apmaph a WHERE a.apdate = :apdate"),
+    @NamedQuery(name = "Apmaph.findByVdrno", query = "SELECT a FROM Apmaph a WHERE a.vdrno = :vdrno"),
+    @NamedQuery(name = "Apmaph.findByVdrna", query = "SELECT a FROM Apmaph a WHERE a.vdrna = :vdrna"),
+    @NamedQuery(name = "Apmaph.findByPaytn", query = "SELECT a FROM Apmaph a WHERE a.paytn = :paytn"),
+    @NamedQuery(name = "Apmaph.findByPayda", query = "SELECT a FROM Apmaph a WHERE a.payda = :payda"),
+    @NamedQuery(name = "Apmaph.findByTerda", query = "SELECT a FROM Apmaph a WHERE a.terda = :terda"),
+    @NamedQuery(name = "Apmaph.findByIndate", query = "SELECT a FROM Apmaph a WHERE a.indate = :indate"),
+    @NamedQuery(name = "Apmaph.findByUserno", query = "SELECT a FROM Apmaph a WHERE a.userno = :userno"),
+    @NamedQuery(name = "Apmaph.findByCfmdate", query = "SELECT a FROM Apmaph a WHERE a.cfmdate = :cfmdate"),
+    @NamedQuery(name = "Apmaph.findByCfmusrno", query = "SELECT a FROM Apmaph a WHERE a.cfmusrno = :cfmusrno"),
+    @NamedQuery(name = "Apmaph.findByHmark", query = "SELECT a FROM Apmaph a WHERE a.hmark = :hmark"),
+    @NamedQuery(name = "Apmaph.findByRefno", query = "SELECT a FROM Apmaph a WHERE a.refno = :refno"),
+    @NamedQuery(name = "Apmaph.findByPyhyn", query = "SELECT a FROM Apmaph a WHERE a.pyhyn = :pyhyn"),
+    @NamedQuery(name = "Apmaph.findByPK", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.facno = :facno AND a.apmaphPK.apno = :apno AND a.apmaphPK.aptyp = :aptyp"),
+    @NamedQuery(name = "Apmaph.findByOano", query = "SELECT a FROM Apmaph a WHERE a.oano = :oano"),
+    @NamedQuery(name = "Apmaph.findByPzsta", query = "SELECT a FROM Apmaph a WHERE a.pzsta = :pzsta"),
     @NamedQuery(name = "Apmaph.findNeedThrow", query = "SELECT a FROM Apmaph a WHERE a.apsta = '20' and a.pzsta = 'Y' and (a.oano is null or a.oano = '') ORDER BY a.apmaphPK.facno ,a.apmaphPK.apno,a.apmaphPK.aptyp")})
 public class Apmaph implements Serializable {
 

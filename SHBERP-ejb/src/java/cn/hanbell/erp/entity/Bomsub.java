@@ -29,25 +29,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "bomsub")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Bomsub.findAll", query = "SELECT b FROM Bomsub b")
-    , @NamedQuery(name = "Bomsub.findByItnbrf", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.itnbrf = :itnbrf")
-    , @NamedQuery(name = "Bomsub.findByOptkind", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.optkind = :optkind")
-    , @NamedQuery(name = "Bomsub.findByOptvalue", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.optvalue = :optvalue")
-    , @NamedQuery(name = "Bomsub.findByItnbr", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.itnbr = :itnbr")
-    , @NamedQuery(name = "Bomsub.findByItnbrs", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.itnbrs = :itnbrs")
-    , @NamedQuery(name = "Bomsub.findByPKItnbrs", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.itnbrf = :itnbrf AND b.bomsubPK.itnbr = :itnbr AND b.bomsubPK.itnbrs = :itnbrs")
-    , @NamedQuery(name = "Bomsub.findByItem", query = "SELECT b FROM Bomsub b WHERE b.item = :item")
-    , @NamedQuery(name = "Bomsub.findBySeqnr", query = "SELECT b FROM Bomsub b WHERE b.seqnr = :seqnr")
-    , @NamedQuery(name = "Bomsub.findByStdqty", query = "SELECT b FROM Bomsub b WHERE b.stdqty = :stdqty")
-    , @NamedQuery(name = "Bomsub.findByStdpar", query = "SELECT b FROM Bomsub b WHERE b.stdpar = :stdpar")
-    , @NamedQuery(name = "Bomsub.findByBadrat", query = "SELECT b FROM Bomsub b WHERE b.badrat = :badrat")
-    , @NamedQuery(name = "Bomsub.findBySparecode", query = "SELECT b FROM Bomsub b WHERE b.sparecode = :sparecode")
-    , @NamedQuery(name = "Bomsub.findByValiddate", query = "SELECT b FROM Bomsub b WHERE b.validdate = :validdate")
-    , @NamedQuery(name = "Bomsub.findByInvaldate", query = "SELECT b FROM Bomsub b WHERE b.invaldate = :invaldate")
-    , @NamedQuery(name = "Bomsub.findByRemark1", query = "SELECT b FROM Bomsub b WHERE b.remark1 = :remark1")
-    , @NamedQuery(name = "Bomsub.findBySaftycode", query = "SELECT b FROM Bomsub b WHERE b.saftycode = :saftycode")
-    , @NamedQuery(name = "Bomsub.findByOldcode", query = "SELECT b FROM Bomsub b WHERE b.oldcode = :oldcode")
-    , @NamedQuery(name = "Bomsub.findBySitdsc", query = "SELECT b FROM Bomsub b WHERE b.sitdsc = :sitdsc")})
+    @NamedQuery(name = "Bomsub.findAll", query = "SELECT b FROM Bomsub b"),
+    @NamedQuery(name = "Bomsub.findByItnbrf", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.itnbrf = :itnbrf"),
+    @NamedQuery(name = "Bomsub.findByOptkind", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.optkind = :optkind"),
+    @NamedQuery(name = "Bomsub.findByOptvalue", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.optvalue = :optvalue"),
+    @NamedQuery(name = "Bomsub.findByItnbr", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.itnbr = :itnbr"),
+    @NamedQuery(name = "Bomsub.findByItnbrs", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.itnbrs = :itnbrs"),
+    @NamedQuery(name = "Bomsub.findByPKItnbrs", query = "SELECT b FROM Bomsub b WHERE b.bomsubPK.itnbrf = :itnbrf AND b.bomsubPK.itnbr = :itnbr AND b.bomsubPK.itnbrs = :itnbrs"),
+    @NamedQuery(name = "Bomsub.findByItem", query = "SELECT b FROM Bomsub b WHERE b.item = :item"),
+    @NamedQuery(name = "Bomsub.findBySeqnr", query = "SELECT b FROM Bomsub b WHERE b.seqnr = :seqnr"),
+    @NamedQuery(name = "Bomsub.findByStdqty", query = "SELECT b FROM Bomsub b WHERE b.stdqty = :stdqty"),
+    @NamedQuery(name = "Bomsub.findByStdpar", query = "SELECT b FROM Bomsub b WHERE b.stdpar = :stdpar"),
+    @NamedQuery(name = "Bomsub.findByBadrat", query = "SELECT b FROM Bomsub b WHERE b.badrat = :badrat"),
+    @NamedQuery(name = "Bomsub.findBySparecode", query = "SELECT b FROM Bomsub b WHERE b.sparecode = :sparecode"),
+    @NamedQuery(name = "Bomsub.findByValiddate", query = "SELECT b FROM Bomsub b WHERE b.validdate = :validdate"),
+    @NamedQuery(name = "Bomsub.findByInvaldate", query = "SELECT b FROM Bomsub b WHERE b.invaldate = :invaldate"),
+    @NamedQuery(name = "Bomsub.findByRemark1", query = "SELECT b FROM Bomsub b WHERE b.remark1 = :remark1"),
+    @NamedQuery(name = "Bomsub.findBySaftycode", query = "SELECT b FROM Bomsub b WHERE b.saftycode = :saftycode"),
+    @NamedQuery(name = "Bomsub.findByOldcode", query = "SELECT b FROM Bomsub b WHERE b.oldcode = :oldcode"),
+    @NamedQuery(name = "Bomsub.findBySitdsc", query = "SELECT b FROM Bomsub b WHERE b.sitdsc = :sitdsc")})
 public class Bomsub implements Serializable {
 
     private static final long serialVersionUID = 1L;

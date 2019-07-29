@@ -100,5 +100,5 @@ public class InvpriPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.InvpriPK[ yearmon=" + yearmon + ", itnbr=" + itnbr + ", facno=" + facno + " ]";
     }
-    
+
 }

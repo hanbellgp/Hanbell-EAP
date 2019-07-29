@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class CdrdpopsfkBean extends SuperEJBForERP<Cdrdpopsfk>{
+public class CdrdpopsfkBean extends SuperEJBForERP<Cdrdpopsfk> {
 
     public CdrdpopsfkBean() {
         super(Cdrdpopsfk.class);

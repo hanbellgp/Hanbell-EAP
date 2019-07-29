@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrcorman")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrcorman.findAll", query = "SELECT c FROM Cdrcorman c")
-    , @NamedQuery(name = "Cdrcorman.findByItcls", query = "SELECT c FROM Cdrcorman c WHERE c.itcls = :itcls")})
+    @NamedQuery(name = "Cdrcorman.findAll", query = "SELECT c FROM Cdrcorman c"),
+    @NamedQuery(name = "Cdrcorman.findByItcls", query = "SELECT c FROM Cdrcorman c WHERE c.itcls = :itcls")})
 public class Cdrcorman implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -76,5 +76,5 @@ public class Cdrcorman implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrcorman[ itcls=" + itcls + " ]";
     }
-    
+
 }

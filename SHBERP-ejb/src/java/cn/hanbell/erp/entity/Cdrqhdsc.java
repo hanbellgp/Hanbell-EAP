@@ -23,13 +23,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrqhdsc")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrqhdsc.findAll", query = "SELECT c FROM Cdrqhdsc c")
-    , @NamedQuery(name = "Cdrqhdsc.findByFacno", query = "SELECT c FROM Cdrqhdsc c WHERE c.cdrqhdscPK.facno = :facno")
-    , @NamedQuery(name = "Cdrqhdsc.findByQuono", query = "SELECT c FROM Cdrqhdsc c WHERE c.cdrqhdscPK.quono = :quono")
-    , @NamedQuery(name = "Cdrqhdsc.findByMark1", query = "SELECT c FROM Cdrqhdsc c WHERE c.mark1 = :mark1")
-    , @NamedQuery(name = "Cdrqhdsc.findByMark2", query = "SELECT c FROM Cdrqhdsc c WHERE c.mark2 = :mark2")
-    , @NamedQuery(name = "Cdrqhdsc.findByMark3", query = "SELECT c FROM Cdrqhdsc c WHERE c.mark3 = :mark3")
-    , @NamedQuery(name = "Cdrqhdsc.findByMark4", query = "SELECT c FROM Cdrqhdsc c WHERE c.mark4 = :mark4")})
+    @NamedQuery(name = "Cdrqhdsc.findAll", query = "SELECT c FROM Cdrqhdsc c"),
+    @NamedQuery(name = "Cdrqhdsc.findByFacno", query = "SELECT c FROM Cdrqhdsc c WHERE c.cdrqhdscPK.facno = :facno"),
+    @NamedQuery(name = "Cdrqhdsc.findByQuono", query = "SELECT c FROM Cdrqhdsc c WHERE c.cdrqhdscPK.quono = :quono"),
+    @NamedQuery(name = "Cdrqhdsc.findByMark1", query = "SELECT c FROM Cdrqhdsc c WHERE c.mark1 = :mark1"),
+    @NamedQuery(name = "Cdrqhdsc.findByMark2", query = "SELECT c FROM Cdrqhdsc c WHERE c.mark2 = :mark2"),
+    @NamedQuery(name = "Cdrqhdsc.findByMark3", query = "SELECT c FROM Cdrqhdsc c WHERE c.mark3 = :mark3"),
+    @NamedQuery(name = "Cdrqhdsc.findByMark4", query = "SELECT c FROM Cdrqhdsc c WHERE c.mark4 = :mark4")})
 public class Cdrqhdsc implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -123,5 +123,5 @@ public class Cdrqhdsc implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.ejb.Cdrqhdsc[ cdrqhdscPK=" + cdrqhdscPK + " ]";
     }
-    
+
 }

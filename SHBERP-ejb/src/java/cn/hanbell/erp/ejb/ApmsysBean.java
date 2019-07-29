@@ -130,8 +130,8 @@ public class ApmsysBean extends SuperEJBForERP<Apmsys> {
         return trno;
     }
 
-    public Apmsys findByFacno(String facno){
-         Query query = getEntityManager().createNamedQuery("Apmsys.findByFacno");
+    public Apmsys findByFacno(String facno) {
+        Query query = getEntityManager().createNamedQuery("Apmsys.findByFacno");
         query.setParameter("facno", facno);
         try {
             return (Apmsys) query.getSingleResult();

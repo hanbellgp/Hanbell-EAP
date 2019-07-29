@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class PurqnamBean extends  SuperEJBForERP<Purqnam>{
+public class PurqnamBean extends SuperEJBForERP<Purqnam> {
 
     public PurqnamBean() {
         super(Purqnam.class);

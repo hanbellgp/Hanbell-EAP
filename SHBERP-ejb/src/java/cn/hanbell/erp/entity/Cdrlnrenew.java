@@ -30,15 +30,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrlnrenew")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrlnrenew.findAll", query = "SELECT c FROM Cdrlnrenew c")
-    , @NamedQuery(name = "Cdrlnrenew.findById", query = "SELECT c FROM Cdrlnrenew c WHERE c.id = :id")
-    , @NamedQuery(name = "Cdrlnrenew.findByFacno", query = "SELECT c FROM Cdrlnrenew c WHERE c.facno = :facno")
-    , @NamedQuery(name = "Cdrlnrenew.findByTrno", query = "SELECT c FROM Cdrlnrenew c WHERE c.trno = :trno")
-    , @NamedQuery(name = "Cdrlnrenew.findByTrseq", query = "SELECT c FROM Cdrlnrenew c WHERE c.trseq = :trseq")
-    , @NamedQuery(name = "Cdrlnrenew.findBySheetno", query = "SELECT c FROM Cdrlnrenew c WHERE c.sheetno = :sheetno")
-    , @NamedQuery(name = "Cdrlnrenew.findByBkdate", query = "SELECT c FROM Cdrlnrenew c WHERE c.bkdate = :bkdate")
-    , @NamedQuery(name = "Cdrlnrenew.findByCreatedate", query = "SELECT c FROM Cdrlnrenew c WHERE c.createdate = :createdate")
-    , @NamedQuery(name = "Cdrlnrenew.findByCreator", query = "SELECT c FROM Cdrlnrenew c WHERE c.creator = :creator")})
+    @NamedQuery(name = "Cdrlnrenew.findAll", query = "SELECT c FROM Cdrlnrenew c"),
+    @NamedQuery(name = "Cdrlnrenew.findById", query = "SELECT c FROM Cdrlnrenew c WHERE c.id = :id"),
+    @NamedQuery(name = "Cdrlnrenew.findByFacno", query = "SELECT c FROM Cdrlnrenew c WHERE c.facno = :facno"),
+    @NamedQuery(name = "Cdrlnrenew.findByTrno", query = "SELECT c FROM Cdrlnrenew c WHERE c.trno = :trno"),
+    @NamedQuery(name = "Cdrlnrenew.findByTrseq", query = "SELECT c FROM Cdrlnrenew c WHERE c.trseq = :trseq"),
+    @NamedQuery(name = "Cdrlnrenew.findBySheetno", query = "SELECT c FROM Cdrlnrenew c WHERE c.sheetno = :sheetno"),
+    @NamedQuery(name = "Cdrlnrenew.findByBkdate", query = "SELECT c FROM Cdrlnrenew c WHERE c.bkdate = :bkdate"),
+    @NamedQuery(name = "Cdrlnrenew.findByCreatedate", query = "SELECT c FROM Cdrlnrenew c WHERE c.createdate = :createdate"),
+    @NamedQuery(name = "Cdrlnrenew.findByCreator", query = "SELECT c FROM Cdrlnrenew c WHERE c.creator = :creator")})
 public class Cdrlnrenew implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -188,5 +188,5 @@ public class Cdrlnrenew implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrlnrenew[ id=" + id + " ]";
     }
-    
+
 }

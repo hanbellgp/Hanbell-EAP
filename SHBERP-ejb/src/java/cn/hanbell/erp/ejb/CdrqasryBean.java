@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class CdrqasryBean extends SuperEJBForERP<Cdrqasry>{
+public class CdrqasryBean extends SuperEJBForERP<Cdrqasry> {
 
     public CdrqasryBean() {
         super(Cdrqasry.class);

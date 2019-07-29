@@ -134,5 +134,5 @@ public class CdrqasryPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrqasryPK[ facno=" + facno + ", quono=" + quono + ", trseq=" + trseq + ", seq=" + seq + ", cmccode=" + cmccode + " ]";
     }
-    
+
 }

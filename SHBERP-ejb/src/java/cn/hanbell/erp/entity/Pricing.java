@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Pricing.findByItemno", query = "SELECT p FROM Pricing p WHERE p.pricingPK.itemno = :itemno"),
     @NamedQuery(name = "Pricing.findByItnbrAndCategory", query = "SELECT p FROM Pricing p WHERE p.pricingPK.itnbr =:itnbr AND p.itemdesc = :category")})
 public class Pricing implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PricingPK pricingPK;
@@ -212,5 +213,5 @@ public class Pricing implements Serializable {
     public String toString() {
         return "cn.hanbell.shb.erp.Pricing[ pricingPK=" + pricingPK + " ]";
     }
-    
+
 }

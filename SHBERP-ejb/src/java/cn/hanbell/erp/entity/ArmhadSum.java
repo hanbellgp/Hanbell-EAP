@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 public class ArmhadSum implements Serializable {
-    
+
     @Id
     private String cusno;
     private String cusna;
@@ -155,5 +155,5 @@ public class ArmhadSum implements Serializable {
     public void setCoin(String coin) {
         this.coin = coin;
     }
- 
+
 }

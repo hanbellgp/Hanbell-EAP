@@ -81,5 +81,5 @@ public class CdrscusPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrscusPK[ cusno=" + cusno + ", trseq=" + trseq + " ]";
     }
-    
+
 }

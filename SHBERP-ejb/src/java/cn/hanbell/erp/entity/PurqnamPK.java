@@ -117,5 +117,5 @@ public class PurqnamPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.PurqnamPK[ facno=" + facno + ", prono=" + prono + ", prno=" + prno + ", trseq=" + trseq + " ]";
     }
-    
+
 }
