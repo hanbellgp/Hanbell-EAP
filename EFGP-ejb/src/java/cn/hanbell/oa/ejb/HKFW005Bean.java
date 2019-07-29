@@ -79,22 +79,48 @@ public class HKFW005Bean extends SuperEJBForEFGP<HKFW005> {
             return false;
         }
     }
-    
+
+    //运输方式
+    public String getYsStyleName(String ysstyle) {
+        switch (ysstyle) {
+            case "1":
+                return "快递";
+            case "2":
+                return "服务部货运";
+            case "3":
+                return "资材部货运";
+            case "4":
+                return "自提";
+            case "5":
+                return "专车";
+            default:
+                return "";
+        }
+    }
+
     /**
-    * 
-    * @param kfno
-    * @return 工作支援单运费和快递费
-    */
-    public List<HKFW005> getCustomerComplaintCost(String kfno) {
-        Query query = getEntityManager().createNamedQuery("HKFW005.findByKfno");
-        query.setParameter("kfno", kfno);
+     *
+     * @param kfno
+     * @return 工作支援单运费和快递费
+     */
+    public List getTansportExpense(String kfno) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT 'tansportexpense' as type ,'OA服务支援单' as  sources,kfno,fwno,applyuser as userno,userName as userna  ");
+        sb.append("  ,applydept as deptno,organizationUnitName as deptna, CONVERT(varchar(100), shpdate, 112) as occurdate, ");
+        sb.append(" (CASE type WHEN '1' THEN '零件支援' WHEN '2' THEN '整机支援'WHEN '1' THEN '维修支援'WHEN '1' THEN '提货' ELSE '' END ) as expensetype, ");
+        sb.append(" ysstyle as custom1,cusno as custom2,cusna as custom3, shpno as custom4,isnull(total,0) as 'expense' , ");
+        sb.append("  mark as remark1,SerialNumber as sourcesno FROM HK_FW005 fw LEFT OUTER JOIN Users s on s.id=applyuser ");
+        sb.append("  LEFT OUTER JOIN OrganizationUnit o on o.id=applydept WHERE kfno = '${kfno}' ");
         try {
-            return query.getResultList();
-        } catch (Exception ex) {
+            String sql = sb.toString().replace("${kfno}", kfno);
+            Query query = getEntityManager().createNativeQuery(sql);
+            List list = query.getResultList();
+            return list;
+        } catch (Exception e) {
             return null;
         }
     }
-    
+
     @Override
     public void setDetail(Object value) {
         this.detailList = hkfw005DetailBean.findByFSN(value); //To change body of generated methods, choose Tools | Templates.

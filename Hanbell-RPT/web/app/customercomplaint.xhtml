@@ -218,59 +218,176 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-                <p:dataTable  value="#{customerComplaintManagedBean.cpdlList}" var="cpd" styleClass="tableList Mtop10" scrollable="true" scrollHeight="255" >
-                    <f:facet name="header">
-                        客诉领退料明细
-                    </f:facet>
-                    <p:column styleClass="Wid15">
-                        <f:facet name="header">
-                            <h:outputText value="服务单号"/>
-                        </f:facet>
-                        <h:outputText value="#{cpd.fwno}"/>
-                    </p:column>
-                    <p:column styleClass="Wid10">
-                        <f:facet name="header">
-                            <h:outputText value="类型"/>
-                        </f:facet>
-                        <h:outputText value="#{cpd.typedsc}"/>
-                    </p:column>
-                    <p:column styleClass="Wid15">
-                        <f:facet name="header">
-                            <h:outputText value="领退料号"/>
-                        </f:facet>
-                        <h:outputText value="#{cpd.trno}"/>
-                    </p:column>
-                    <p:column styleClass="Wid15">
-                        <f:facet name="header">
-                            <h:outputText value="品号"/>
-                        </f:facet>
-                        <h:outputText value="#{cpd.itnbr}"/>
-                    </p:column>
-                    <p:column styleClass="Wid25">
-                        <f:facet name="header">
-                            <h:outputText value="品名"/>
-                        </f:facet>
-                        <h:outputText value="#{cpd.itdsc}"/>
-                    </p:column>
-                    <p:column styleClass="Wid5">
-                        <f:facet name="header">
-                            <h:outputText value="数量"/>
-                        </f:facet>
-                        <h:outputText value="#{cpd.trnqy1}"/>
-                    </p:column>
-                    <p:column styleClass="Wid5">
-                        <f:facet name="header">
-                            <h:outputText value="单位"/>
-                        </f:facet>
-                        <h:outputText value="#{cpd.unmsr1}"/>
-                    </p:column>
-                    <p:column styleClass="Wid10">
-                        <f:facet name="header">
-                            <h:outputText value="总金额"/>
-                        </f:facet>
-                        <h:outputText value="#{cpd.tramt}"/>
-                    </p:column>
-                </p:dataTable>
+                <p:tabView id="tabView" styleClass="tabView">
+                    <p:tab title="领退料明细">
+                        <p:dataTable  value="#{customerComplaintManagedBean.materialList}" var="item" styleClass="tableList Mtop10" scrollable="true" scrollHeight="255" >
+                            <p:column styleClass="Wid15">
+                                <f:facet name="header">
+                                    <h:outputText value="服务单号"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fwno}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="类型"/>
+                                </f:facet>
+                                <h:outputText value="#{item.typedsc}"/>
+                            </p:column>
+                            <p:column styleClass="Wid15">
+                                <f:facet name="header">
+                                    <h:outputText value="领退料号"/>
+                                </f:facet>
+                                <h:outputText value="#{item.trno}"/>
+                            </p:column>
+                            <p:column styleClass="Wid15">
+                                <f:facet name="header">
+                                    <h:outputText value="品号"/>
+                                </f:facet>
+                                <h:outputText value="#{item.itnbr}"/>
+                            </p:column>
+                            <p:column styleClass="Wid25">
+                                <f:facet name="header">
+                                    <h:outputText value="品名"/>
+                                </f:facet>
+                                <h:outputText value="#{item.itdsc}"/>
+                            </p:column>
+                            <p:column styleClass="Wid5">
+                                <f:facet name="header">
+                                    <h:outputText value="数量"/>
+                                </f:facet>
+                                <h:outputText value="#{item.trnqy1}"/>
+                            </p:column>
+                            <p:column styleClass="Wid5">
+                                <f:facet name="header">
+                                    <h:outputText value="单位"/>
+                                </f:facet>
+                                <h:outputText value="#{item.unmsr1}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="总金额"/>
+                                </f:facet>
+                                <h:outputText value="#{item.tramt}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                    <p:tab title="差旅费明细">
+                        <p:dataTable  value="#{customerComplaintManagedBean.travelList}" var="item" styleClass="tableList Mtop10" scrollable="true" scrollHeight="255" >
+                            <p:column styleClass="Wid15">
+                                <f:facet name="header">
+                                    <h:outputText value="服务单号"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fwno}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="申请人"/>
+                                </f:facet>
+                                <h:outputText value="#{item.userna}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="所属部门"/>
+                                </f:facet>
+                                <h:outputText value="#{item.deptna}"/>
+                            </p:column>
+                            <p:column styleClass="Wid5">
+                                <f:facet name="header">
+                                    <h:outputText value="序号"/>
+                                </f:facet>
+                                <h:outputText value="#{item.serialno}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="费用类型"/>
+                                </f:facet>
+                                <h:outputText value="#{item.expensetype}" title="#{item.oano}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="发生日期"/>
+                                </f:facet>
+                                <h:outputText value="#{item.occurdate}"/>
+                            </p:column>
+                            <p:column styleClass="Wid15">
+                                <f:facet name="header">
+                                    <h:outputText value="地点"/>
+                                </f:facet>
+                                <h:outputText value="#{item.custom1}—#{item.custom2}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="费用"/>
+                                </f:facet>
+                                <h:outputText value="#{item.expense}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="备注"/>
+                                </f:facet>
+                                <h:outputText value="备注" title="#{item.remark1}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                    <p:tab title="运费明细">
+                        <p:dataTable  value="#{customerComplaintManagedBean.tansportList}" var="item" styleClass="tableList Mtop10" scrollable="true" scrollHeight="255" >
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="数据来源"/>
+                                </f:facet>
+                                <h:outputText value="#{item.sources}" title="#{item.sourcesno}"/>
+                            </p:column>
+                            <p:column styleClass="Wid15">
+                                <f:facet name="header">
+                                    <h:outputText value="服务单号"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fwno}"/>
+                            </p:column>
+                             <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="申请人"/>
+                                </f:facet>
+                                <h:outputText value="#{item.userna}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="所属部门"/>
+                                </f:facet>
+                                <h:outputText value="#{item.deptna}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="费用类型"/>
+                                </f:facet>
+                                <h:outputText value="#{item.expensetype}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="日期"/>
+                                </f:facet>
+                                <h:outputText value="#{item.occurdate}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="客户"/>
+                                </f:facet>
+                                <h:outputText value="#{item.custom3}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="费用"/>
+                                </f:facet>
+                                <h:outputText value="#{item.expense}"/>
+                            </p:column>
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="备注"/>
+                                </f:facet>
+                                <h:outputText value="备注" title="#{item.remark1}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
             </p:dialog>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

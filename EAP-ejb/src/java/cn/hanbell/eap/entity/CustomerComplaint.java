@@ -81,18 +81,20 @@ public class CustomerComplaint extends BaseEntity {
     @Column(name = "badwhy")
     private String badwhy;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "clcost")
-    private BigDecimal clcost;
-    @Column(name = "rgcost")
-    private BigDecimal rgcost;
-    @Column(name = "yscost")
-    private BigDecimal yscost;
-    @Column(name = "clvcost")
-    private BigDecimal clvcost;
-    @Column(name = "reparations")
-    private BigDecimal reparations;
-    @Column(name = "other")
-    private BigDecimal other;
+    @Column(name = "materialcost")
+    private BigDecimal materialcost;
+    @Column(name = "labourcost")
+    private BigDecimal labourcost;
+    @Column(name = "tansportexpense")
+    private BigDecimal tansportexpense;
+    @Column(name = "travelexpense")
+    private BigDecimal travelexpense;
+    @Column(name = "claimamount")
+    private BigDecimal claimamount;
+    @Column(name = "othercost")
+    private BigDecimal othercost;
+    @Column(name = "totalamount")
+    private BigDecimal totalamount;
     @Size(max = 45)
     @Column(name = "remark1")
     private String remark1;
@@ -104,12 +106,13 @@ public class CustomerComplaint extends BaseEntity {
     private String remark3;
 
     public CustomerComplaint() {
-        this.clcost = BigDecimal.ZERO;
-        this.rgcost = BigDecimal.ZERO;
-        this.yscost = BigDecimal.ZERO;
-        this.clvcost = BigDecimal.ZERO;
-        this.reparations = BigDecimal.ZERO;
-        this.other = BigDecimal.ZERO;
+        this.materialcost = BigDecimal.ZERO;
+        this.labourcost = BigDecimal.ZERO;
+        this.tansportexpense = BigDecimal.ZERO;
+        this.travelexpense = BigDecimal.ZERO;
+        this.claimamount = BigDecimal.ZERO;
+        this.othercost = BigDecimal.ZERO;
+        this.totalamount = BigDecimal.ZERO;
     }
 
     public CustomerComplaint(Integer id) {
@@ -227,52 +230,66 @@ public class CustomerComplaint extends BaseEntity {
         this.badwhy = badwhy;
     }
 
-    public BigDecimal getClcost() {
-        return clcost;
+    public BigDecimal getMaterialcost() {
+        return materialcost;
     }
 
-    public void setClcost(BigDecimal clcost) {
-        this.clcost = clcost;
+    public void setMaterialcost(BigDecimal materialcost) {
+        this.materialcost = materialcost;
+        addAll();
     }
 
-    public BigDecimal getRgcost() {
-        return rgcost;
+    public BigDecimal getLabourcost() {
+        return labourcost;
     }
 
-    public void setRgcost(BigDecimal rgcost) {
-        this.rgcost = rgcost;
+    public void setLabourcost(BigDecimal labourcost) {
+        this.labourcost = labourcost;
+        addAll();
     }
 
-    public BigDecimal getYscost() {
-        return yscost;
+    public BigDecimal getTansportexpense() {
+        return tansportexpense;
     }
 
-    public void setYscost(BigDecimal yscost) {
-        this.yscost = yscost;
+    public void setTansportexpense(BigDecimal tansportexpense) {
+        this.tansportexpense = tansportexpense;
+        addAll();
     }
 
-    public BigDecimal getClvcost() {
-        return clvcost;
+    public BigDecimal getTravelexpense() {
+        return travelexpense;
     }
 
-    public void setClvcost(BigDecimal clvcost) {
-        this.clvcost = clvcost;
+    public void setTravelexpense(BigDecimal travelexpense) {
+        this.travelexpense = travelexpense;
+        addAll();
     }
 
-    public BigDecimal getReparations() {
-        return reparations;
+    public BigDecimal getClaimamount() {
+        return claimamount;
     }
 
-    public void setReparations(BigDecimal reparations) {
-        this.reparations = reparations;
+    public void setClaimamount(BigDecimal claimamount) {
+        this.claimamount = claimamount;
+        addAll();
     }
 
-    public BigDecimal getOther() {
-        return other;
+    public BigDecimal getOthercost() {
+        return othercost;
     }
 
-    public void setOther(BigDecimal other) {
-        this.other = other;
+    public void setOthercost(BigDecimal othercost) {
+        this.othercost = othercost;
+        addAll();
+    }
+
+    public BigDecimal getTotalamount() {
+        return totalamount;
+    }
+
+    public void setTotalamount(BigDecimal totalamount) {
+        this.totalamount = totalamount;
     }
 
     public String getRemark1() {
@@ -321,7 +338,11 @@ public class CustomerComplaint extends BaseEntity {
 
     @Override
     public String toString() {
-        return "cn.hanbell.eap.entity.CuscomPlaint[ id=" + id + " ]";
+        return "cn.hanbell.eap.entity.CustomerComplaint[ id=" + id + " ]";
+    }
+    
+    public BigDecimal addAll(){
+        return this.materialcost.add(this.tansportexpense).add(this.travelexpense).add(this.othercost).add(this.labourcost).add(this.claimamount);
     }
 
 }

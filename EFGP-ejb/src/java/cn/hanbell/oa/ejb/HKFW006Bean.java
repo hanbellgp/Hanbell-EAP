@@ -84,7 +84,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                     //判断回退数量 by C1491 2019/06/20
                     td.setTd500(BigDecimal.ONE);                                    //整机退货一台
                     td.setTd502(h.getFormSerialNumber());                           //退货OA单号
-                td.setTd047("Y");
+                    td.setTd047("Y");
                 } else if ("3".equals(status)) {
                     td.setTd501(h.getPzno());
                 }
@@ -115,7 +115,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                         }
                         //判断退货数量VS实领数量
                         if (td.getTd500().compareTo(td.getTd020()) > -1) {
-                    td.setTd047("Y");
+                            td.setTd047("Y");
                         }
                     } else if ("3".equals(status)) {
                         //OA流程结案抛转ERP后，写入CRM中ERP单号
@@ -482,12 +482,20 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
      * @param kfno
      * @return 退货通知单吊装费和运费
      */
-    public List<HKFW006> getCustomerComplaintCost(String kfno) {
-        Query query = getEntityManager().createNamedQuery("HKFW006.findByKfno");
-        query.setParameter("kfno", kfno);
+    public List getTansportExpense(String kfno) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT 'tansportexpense' as type ,'OA退货通知单' as  sources,kfno,fwno,applyuser as userno,userName as userna  ");
+        sb.append("  ,applydept as deptno,organizationUnitName as deptna,CONVERT(varchar(100), returndate, 112) as occurdate, ");
+        sb.append(" (CASE rettype WHEN '1' THEN N'零件退货' WHEN '2' THEN N'整机退货' ELSE '' END ) as expensetype ");
+        sb.append("  ,cptype as custom1,cusno as custom2,cusna as custom3,CRMNO as custom4, (isnull(yf,0)+isnull(dzf,0)) as 'expense' , ");
+        sb.append("  (CASE WHEN mark!='' THEN (mark+'; '+yymark)ELSE yymark END ) as remark1,SerialNumber as sourcesno FROM HK_FW005 fw LEFT OUTER JOIN Users s on s.id=applyuser ");
+        sb.append("  LEFT OUTER JOIN OrganizationUnit o on o.id=applydept WHERE kfno = '${kfno}' ");
         try {
-            return query.getResultList();
-        } catch (Exception ex) {
+            String sql = sb.toString().replace("${kfno}", kfno);
+            Query query = getEntityManager().createNativeQuery(sql);
+            List list = query.getResultList();
+            return list;
+        } catch (Exception e) {
             return null;
         }
     }
