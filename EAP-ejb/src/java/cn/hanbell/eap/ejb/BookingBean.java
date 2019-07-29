@@ -12,8 +12,6 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.inject.Named;
@@ -45,7 +43,7 @@ public class BookingBean extends SuperEJBForEAP<Booking> {
             query.setParameter("starttime", t);
             return query.getResultList();
         } catch (ParseException ex) {
-            Logger.getLogger(BookingBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
             return null;
         }
     }
