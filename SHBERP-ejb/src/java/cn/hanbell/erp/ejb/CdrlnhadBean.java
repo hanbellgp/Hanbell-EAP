@@ -216,7 +216,7 @@ public class CdrlnhadBean extends SuperEJBForERP<Cdrlnhad> {
      * @param kfno
      * @return CDRN20借出归还单运费
      */
-    public List getCuscomPlaintCost(String kfno) {
+    public List getCustomerComplaintCost(String kfno) {
         StringBuilder sb = new StringBuilder();
         sb.append(" select h.kfno,h.fwno,h.trno,sum(c.freight) from cdrlnhad h LEFT JOIN cdrfre c on c.shpno = h.trno and c.facno = h.facno ");
         sb.append(" where   h.status ='Y' and  h.resno = '03' and c.freight> 0 AND h.kfno='${kfno}' ");

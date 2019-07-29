@@ -5,7 +5,6 @@
  */
 package cn.hanbell.crm.entity;
 
-import cn.hanbell.crm.entity.SERCAPK;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Column;
@@ -33,8 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "SERCA.findByModifier", query = "SELECT s FROM SERCA s WHERE s.modifier = :modifier")
     , @NamedQuery(name = "SERCA.findByModiDate", query = "SELECT s FROM SERCA s WHERE s.modiDate = :modiDate")
     , @NamedQuery(name = "SERCA.findByFlag", query = "SELECT s FROM SERCA s WHERE s.flag = :flag")
-    , @NamedQuery(name = "SERCA.findByCa001", query = "SELECT s FROM SERCA s WHERE s.sERCAPK.ca001 = :ca001")
-    , @NamedQuery(name = "SERCA.findByCa002", query = "SELECT s FROM SERCA s WHERE s.sERCAPK.ca002 = :ca002")
+    , @NamedQuery(name = "SERCA.findByCa001", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca001 = :ca001")
+    , @NamedQuery(name = "SERCA.findByCa002", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca002 = :ca002")
     , @NamedQuery(name = "SERCA.findByCa003", query = "SELECT s FROM SERCA s WHERE s.ca003 = :ca003")
     , @NamedQuery(name = "SERCA.findByCa004", query = "SELECT s FROM SERCA s WHERE s.ca004 = :ca004")
     , @NamedQuery(name = "SERCA.findByCa005", query = "SELECT s FROM SERCA s WHERE s.ca005 = :ca005")
@@ -42,7 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "SERCA.findByCa007", query = "SELECT s FROM SERCA s WHERE s.ca007 = :ca007")
     , @NamedQuery(name = "SERCA.findByCa008", query = "SELECT s FROM SERCA s WHERE s.ca008 = :ca008")
     , @NamedQuery(name = "SERCA.findByCa009", query = "SELECT s FROM SERCA s WHERE s.ca009 = :ca009")
-    , @NamedQuery(name = "SERCA.findByCa001ToCa009", query = "SELECT s FROM SERCA s WHERE s.sERCAPK.ca001 = :ca001")
+    , @NamedQuery(name = "SERCA.findCa009ByCa001", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca001 = :ca001")
     , @NamedQuery(name = "SERCA.findByCa010", query = "SELECT s FROM SERCA s WHERE s.ca010 = :ca010")
     , @NamedQuery(name = "SERCA.findByCa011", query = "SELECT s FROM SERCA s WHERE s.ca011 = :ca011")
     , @NamedQuery(name = "SERCA.findByCa012", query = "SELECT s FROM SERCA s WHERE s.ca012 = :ca012")
@@ -58,26 +57,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "SERCA.findByRegion", query = "SELECT s FROM SERCA s WHERE s.region = :region")
     , @NamedQuery(name = "SERCA.findByDealer", query = "SELECT s FROM SERCA s WHERE s.dealer = :dealer")
     , @NamedQuery(name = "SERCA.findByCa020", query = "SELECT s FROM SERCA s WHERE s.ca020 = :ca020")
-    , @NamedQuery(name = "SERCA.findBySerca01", query = "SELECT s FROM SERCA s WHERE s.serca01 = :serca01")
-    , @NamedQuery(name = "SERCA.findBySerca02", query = "SELECT s FROM SERCA s WHERE s.serca02 = :serca02")
-    , @NamedQuery(name = "SERCA.findBySerca03", query = "SELECT s FROM SERCA s WHERE s.serca03 = :serca03")
-    , @NamedQuery(name = "SERCA.findBySerca04", query = "SELECT s FROM SERCA s WHERE s.serca04 = :serca04")
-    , @NamedQuery(name = "SERCA.findBySerca05", query = "SELECT s FROM SERCA s WHERE s.serca05 = :serca05")
-    , @NamedQuery(name = "SERCA.findBySerca06", query = "SELECT s FROM SERCA s WHERE s.serca06 = :serca06")
-    , @NamedQuery(name = "SERCA.findBySerca07", query = "SELECT s FROM SERCA s WHERE s.serca07 = :serca07")
-    , @NamedQuery(name = "SERCA.findBySerca08", query = "SELECT s FROM SERCA s WHERE s.serca08 = :serca08")
-    , @NamedQuery(name = "SERCA.findBySerca09", query = "SELECT s FROM SERCA s WHERE s.serca09 = :serca09")
-    , @NamedQuery(name = "SERCA.findBySerca10", query = "SELECT s FROM SERCA s WHERE s.serca10 = :serca10")
-    , @NamedQuery(name = "SERCA.findBySerca11", query = "SELECT s FROM SERCA s WHERE s.serca11 = :serca11")
-    , @NamedQuery(name = "SERCA.findBySerca12", query = "SELECT s FROM SERCA s WHERE s.serca12 = :serca12")
-    , @NamedQuery(name = "SERCA.findBySerca13", query = "SELECT s FROM SERCA s WHERE s.serca13 = :serca13")
-    , @NamedQuery(name = "SERCA.findBySerca14", query = "SELECT s FROM SERCA s WHERE s.serca14 = :serca14")
-    , @NamedQuery(name = "SERCA.findBySerca15", query = "SELECT s FROM SERCA s WHERE s.serca15 = :serca15")
-    , @NamedQuery(name = "SERCA.findBySerca16", query = "SELECT s FROM SERCA s WHERE s.serca16 = :serca16")
-    , @NamedQuery(name = "SERCA.findBySerca17", query = "SELECT s FROM SERCA s WHERE s.serca17 = :serca17")
-    , @NamedQuery(name = "SERCA.findBySerca18", query = "SELECT s FROM SERCA s WHERE s.serca18 = :serca18")
-    , @NamedQuery(name = "SERCA.findBySerca19", query = "SELECT s FROM SERCA s WHERE s.serca19 = :serca19")
-    , @NamedQuery(name = "SERCA.findBySerca20", query = "SELECT s FROM SERCA s WHERE s.serca20 = :serca20")
     , @NamedQuery(name = "SERCA.findByCa021", query = "SELECT s FROM SERCA s WHERE s.ca021 = :ca021")
     , @NamedQuery(name = "SERCA.findByCa500", query = "SELECT s FROM SERCA s WHERE s.ca500 = :ca500")
     , @NamedQuery(name = "SERCA.findByCa022", query = "SELECT s FROM SERCA s WHERE s.ca022 = :ca022")})
@@ -85,7 +64,7 @@ public class SERCA implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected SERCAPK sERCAPK;
+    protected SERCAPK sercaPK;
     @Size(max = 20)
     @Column(name = "COMPANY")
     private String company;
@@ -244,20 +223,20 @@ public class SERCA implements Serializable {
     public SERCA() {
     }
 
-    public SERCA(SERCAPK sERCAPK) {
-        this.sERCAPK = sERCAPK;
+    public SERCA(SERCAPK sercaPK) {
+        this.sercaPK = sercaPK;
     }
 
     public SERCA(String ca001, String ca002) {
-        this.sERCAPK = new SERCAPK(ca001, ca002);
+        this.sercaPK = new SERCAPK(ca001, ca002);
     }
 
     public SERCAPK getSERCAPK() {
-        return sERCAPK;
+        return sercaPK;
     }
 
-    public void setSERCAPK(SERCAPK sERCAPK) {
-        this.sERCAPK = sERCAPK;
+    public void setSERCAPK(SERCAPK sercaPK) {
+        this.sercaPK = sercaPK;
     }
 
     public String getCompany() {
@@ -679,7 +658,7 @@ public class SERCA implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (sERCAPK != null ? sERCAPK.hashCode() : 0);
+        hash += (sercaPK != null ? sercaPK.hashCode() : 0);
         return hash;
     }
 
@@ -690,7 +669,7 @@ public class SERCA implements Serializable {
             return false;
         }
         SERCA other = (SERCA) object;
-        if ((this.sERCAPK == null && other.sERCAPK != null) || (this.sERCAPK != null && !this.sERCAPK.equals(other.sERCAPK))) {
+        if ((this.sercaPK == null && other.sercaPK != null) || (this.sercaPK != null && !this.sercaPK.equals(other.sercaPK))) {
             return false;
         }
         return true;
@@ -698,7 +677,7 @@ public class SERCA implements Serializable {
 
     @Override
     public String toString() {
-        return "cn.hanbell.crm.ejb.SERCA[ sERCAPK=" + sERCAPK + " ]";
+        return "cn.hanbell.crm.ejb.SERCA[ sERCAPK=" + sercaPK + " ]";
     }
-    
+
 }

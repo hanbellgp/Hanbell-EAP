@@ -959,7 +959,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
      * @param kfno
      * @return 得出历史档材料明细
      */
-    public List getCuscomPlaintDetailh(String kfno) {
+    public List getCustomerComplaintDetailh(String kfno) {
         StringBuilder sb = new StringBuilder();
         sb.append(" select a.kfno,a.fwno,a.trtype,a.typedsc,t.trno,a.trdate,a.trseq,t.itnbr,a.itdsc,t.trnqy1,t.unmsr1,t.tramt FROM (SELECT * FROM invhadh h ");
         sb.append(" LEFT JOIN invdtah d on h.trno=d.trno AND  h.facno=d.facno AND h.prono=d.prono  LEFT JOIN invmas v on d.itnbr = v.itnbr ");
@@ -1005,7 +1005,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
      * @param kfno
      * @return 得出材料明细
      */
-    public List getCuscomPlaintDetail(String kfno) {
+    public List getCustomerComplaintDetail(String kfno) {
         StringBuilder sb = new StringBuilder();
         sb.append(" select a.kfno,a.fwno,a.trtype,a.typedsc,t.trno,a.trdate,a.trseq,t.itnbr,a.itdsc,t.trnqy1,t.unmsr1,t.tramt FROM (SELECT * FROM invhad h ");
         sb.append(" LEFT JOIN invdta d on h.trno=d.trno AND  h.facno=d.facno AND h.prono=d.prono  LEFT JOIN invmas v on d.itnbr = v.itnbr ");

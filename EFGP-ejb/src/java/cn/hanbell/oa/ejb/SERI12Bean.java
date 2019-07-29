@@ -355,5 +355,16 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
             return null;
         }
     }
+    
+     public List<SERI12> findByBq037(String begin,String end) {
+        Query query = getEntityManager().createNamedQuery("SERI12.findByBq037");
+        query.setParameter("begin", begin);
+        query.setParameter("end", end);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 
 }
