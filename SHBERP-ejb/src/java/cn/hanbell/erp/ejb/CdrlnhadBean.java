@@ -216,11 +216,14 @@ public class CdrlnhadBean extends SuperEJBForERP<Cdrlnhad> {
      * @param kfno
      * @return CDRN20借出归还单运费
      */
-    public List getCustomerComplaintCost(String kfno) {
+    public List getCustomerComplaintExpense(String kfno) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" select h.kfno,h.fwno,h.trno,sum(c.freight) from cdrlnhad h LEFT JOIN cdrfre c on c.shpno = h.trno and c.facno = h.facno ");
-        sb.append(" where   h.status ='Y' and  h.resno = '03' and c.freight> 0 AND h.kfno='${kfno}' ");
-        sb.append(" GROUP BY h.kfno,h.fwno,h.trno ");
+        sb.append(" select 'tansportexpense' as type ,N'ERP借出归还单' as  sources,kfno,fwno,mancode AS userno,e.cdesc as userna, ");
+        sb.append(" h.depno,m.depname AS deptna,CONVERT(varchar(100), trdate, 112) as occurdate,(CASE cdrobtype WHEN 'AOF' THEN '不良借出单' WHEN 'AOG' THEN '借出单'");
+        sb.append(" WHEN 'AOT' THEN '拖工借出单'END ) as expensetype ,(SELECT miscode.cdesc FROM miscode WHERE miscode.ckind='IL' and miscode.code=h.resno ) as custom1, ");
+        sb.append(" h.cusno as custom2, s.cusna as custom3,h.trno as sourcesno,isnull(c.freight,0) AS expense ,bugdsc as remark1 ");
+        sb.append(" from cdrlnhad h LEFT JOIN cdrfre c on c.shpno = h.trno and c.facno = h.facno LEFT JOIN miscode e ON  e.code=h.mancode LEFT JOIN cdrcus s on s.cusno=h.cusno ");
+        sb.append(" LEFT JOIN misdept m on m.depno=h.depno where  h.status ='Y' and ckind ='9E' AND h.kfno='${kfno}' ");
         try {
             String sql = sb.toString().replace("${kfno}", kfno);
             setCompany("C");

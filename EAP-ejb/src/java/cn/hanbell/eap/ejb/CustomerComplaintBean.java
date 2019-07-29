@@ -7,7 +7,7 @@ package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
 import cn.hanbell.eap.entity.CustomerComplaint;
-import cn.hanbell.eap.entity.CustomerComplaintDetail;
+import cn.hanbell.eap.entity.CustomerComplaintMaterial;
 import com.lightshell.comm.BaseLib;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,7 +26,7 @@ import javax.persistence.Query;
 public class CustomerComplaintBean extends SuperEJBForEAP<CustomerComplaint> {
 
     @EJB
-    protected CustomerComplaintDetailBean customerComplaintDetailBean;
+    protected CustomerComplaintMaterialBean customerComplaintMaterialBean;
 
     protected String css = "<style type='text/css'>body{font-size:14px;}div.content{margin:auto;text-align:center;}div.tbl{margin-bottom:20px;}table{margin:auto;border-spacing:0px;border:1px solid #A2C0DA;}th,td{padding:5px;border-collapse:collapse;}th{background:#B0D0FC;border:1px solid #000000;text-align:center;font-weight:bold;}td{background:#D3E5FD;border:1px solid #000000;}.title{font-size:14px;font-weight:bold;}.foot{font-size:14px;color:Red;}.divFoot{text-align:right;height:20px;width:100%;}div.tableTitle{float:left;font-size:14px;font-weight:bold;text-align:left;}</style>";
 
@@ -107,32 +107,33 @@ public class CustomerComplaintBean extends SuperEJBForEAP<CustomerComplaint> {
     }
 
     protected String getHtmlTable(CustomerComplaint plaint) {
-        List<CustomerComplaintDetail> plaintDetailList = customerComplaintDetailBean.findKfno(plaint.getKfno());
+        List<CustomerComplaintMaterial> plaintDetailList = customerComplaintMaterialBean.findKfno(plaint.getKfno());
         StringBuilder sb = new StringBuilder();
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\" style=\"text-align:center\">");
             sb.append("<tr><th width=\"6%\">产品别</th><th width=\"10%\">客诉单号</th><th width=\"6%\">客户名称</th><th width=\"20%\">不良原因</th><th width=\"6%\">责任单位</th>");
-            sb.append("<th width=\"6%\">责任判断比率</th><th width=\"6%\">材料费</th><th width=\"6%\">人工费</th><th width=\"6%\">运输费(含空运、吊装费)</th>");
-            sb.append("<th width=\"6%\">差旅费</th><th width=\"6%\">不良导致索赔款</th><th width=\"6%\">其他</th><th width=\"10%\">结案时间</th></tr>");
+            sb.append("<th width=\"6%\">责任判断比率</th><th width=\"5%\">材料费</th><th width=\"5%\">人工费</th><th width=\"5%\">运输费(含空运、吊装费)</th>");
+            sb.append("<th width=\"5%\">差旅费</th><th width=\"5%\">不良导致索赔款</th><th width=\"5%\">其他</th><th width=\"6%\">费用合计</th><th width=\"10%\">结案时间</th></tr>");
             sb.append("<tr><td>").append(plaint.getNcodeDC()).append("</td>");
             sb.append("<td>").append(plaint.getKfno()).append("</td>");
             sb.append("<td>").append(plaint.getCusna()).append("</td>");
             sb.append("<td>").append(plaint.getBadwhy()).append("</td>");
             sb.append("<td>").append(plaint.getDutydeptna()).append("</td>");
             sb.append("<td>").append(plaint.getDutyrate()).append("</td>");
-            sb.append("<td>").append(plaint.getClcost().toString()).append("</td>");
-            sb.append("<td>").append(plaint.getRgcost().toString()).append("</td>");
-            sb.append("<td>").append(plaint.getYscost().toString()).append("</td>");
-            sb.append("<td>").append(plaint.getClvcost().toString()).append("</td>");
-            sb.append("<td>").append(plaint.getReparations().toString()).append("</td>");
-            sb.append("<td>").append(plaint.getOther().toString()).append("</td>");
+            sb.append("<td>").append(plaint.getMaterialcost().toString()).append("</td>");
+            sb.append("<td>").append(plaint.getLabourcost().toString()).append("</td>");
+            sb.append("<td>").append(plaint.getTansportexpense().toString()).append("</td>");
+            sb.append("<td>").append(plaint.getTravelexpense().toString()).append("</td>");
+            sb.append("<td>").append(plaint.getClaimamount().toString()).append("</td>");
+            sb.append("<td>").append(plaint.getOthercost().toString()).append("</td>");
+            sb.append("<td>").append(plaint.getTotalamount().toString()).append("</td>");
             sb.append("<td>").append(BaseLib.formatDate("yyyy/MM/dd HH:mm", plaint.getOverdate())).append("</td>");
             sb.append("</tr></table></div>");
             sb.append("<div style=\"text-align:center;width:100%\" class=\"title\">服务领退材料明细</div>");
             sb.append("<div class=\"tbl\"><table style=\"text-align:center\" width=\"100%\">");
-            sb.append("<tr><th>客诉单号</th><th>服务单号</th><th>类型</th><th>领退料单号</th><th>品号</th><th>品名</th><th>数量</th><th>单位</th><th>总金额</th></tr>");
+            sb.append("<tr><th>客诉单号</th><th>服务单号</th><th>类型</th><th>领退料单号</th><th>品号</th><th>品名</th><th>数量</th><th>单位</th><th>金额</th></tr>");
             if (plaintDetailList != null && !plaintDetailList.isEmpty()) {
-                for (CustomerComplaintDetail cpd : plaintDetailList) {
+                for (CustomerComplaintMaterial cpd : plaintDetailList) {
                     sb.append(getHtmlTableRow(cpd));
                 }
             } else {
@@ -145,7 +146,7 @@ public class CustomerComplaintBean extends SuperEJBForEAP<CustomerComplaint> {
         return sb.toString();
     }
 
-    protected String getHtmlTableRow(CustomerComplaintDetail cpd) {
+    protected String getHtmlTableRow(CustomerComplaintMaterial cpd) {
         //获取需要取值栏位
         StringBuilder sb = new StringBuilder();
         sb.append("<tr><td>").append(cpd.getKfno()).append("</td>");

@@ -9,19 +9,17 @@ import cn.hanbell.crm.ejb.REPTCBean;
 import cn.hanbell.crm.ejb.SERCABean;
 import cn.hanbell.eap.comm.MailNotify;
 import cn.hanbell.eap.ejb.CustomerComplaintBean;
-import cn.hanbell.eap.ejb.CustomerComplaintCostBean;
-import cn.hanbell.eap.ejb.CustomerComplaintDetailBean;
+import cn.hanbell.eap.ejb.CustomerComplaintExpenseBean;
+import cn.hanbell.eap.ejb.CustomerComplaintMaterialBean;
 import cn.hanbell.eap.ejb.MailNotificationBean;
 import cn.hanbell.eap.entity.CustomerComplaint;
-import cn.hanbell.eap.entity.CustomerComplaintCost;
-import cn.hanbell.eap.entity.CustomerComplaintDetail;
+import cn.hanbell.eap.entity.CustomerComplaintExpense;
+import cn.hanbell.eap.entity.CustomerComplaintMaterial;
 import cn.hanbell.erp.ejb.CdrlnhadBean;
 import cn.hanbell.erp.ejb.InvhadBean;
 import cn.hanbell.oa.ejb.HKFW005Bean;
 import cn.hanbell.oa.ejb.HKFW006Bean;
 import cn.hanbell.oa.ejb.SERI12Bean;
-import cn.hanbell.oa.entity.HKFW005;
-import cn.hanbell.oa.entity.HKFW006;
 import cn.hanbell.oa.entity.SERI12;
 import com.lightshell.comm.BaseLib;
 import java.io.Serializable;
@@ -46,9 +44,9 @@ public class CustomerComplaintSetManagedBean implements Serializable {
     @EJB
     private CustomerComplaintBean customerComplaintBean;
     @EJB
-    private CustomerComplaintDetailBean customerComplaintDetailBean;
+    private CustomerComplaintExpenseBean complaintExpenseBean;
     @EJB
-    private CustomerComplaintCostBean customerComplaintCostBean;
+    private CustomerComplaintMaterialBean complaintMaterialBean;
     @EJB
     private SERI12Bean seri12Bean;
     @EJB
@@ -114,19 +112,19 @@ public class CustomerComplaintSetManagedBean implements Serializable {
 
     public int createCustomerComplaintByEAP(List<SERI12> list) {
         int count = 0;
-        BigDecimal clvcost, yscost, clcost;
+        BigDecimal travel, tansport, material;
         //差旅
-        List<CustomerComplaintCost> clvList;
+        List<CustomerComplaintExpense> travelList;
         //运费
-        List<CustomerComplaintCost> ysList;
+        List<CustomerComplaintExpense> tansportList;
         //材料
-        List<CustomerComplaintDetail> clList;
+        List<CustomerComplaintMaterial> materialList;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         try {
             for (SERI12 seri12 : list) {
-                clvcost = BigDecimal.ZERO;
-                yscost = BigDecimal.ZERO;
-                clcost = BigDecimal.ZERO;
+                travel = BigDecimal.ZERO;
+                tansport = BigDecimal.ZERO;
+                material = BigDecimal.ZERO;
                 String kfno = seri12.getBq001();
                 CustomerComplaint cp = new CustomerComplaint();
                 String varnr = sercaBean.findCa009ByCa001(kfno) == null ? "" : sercaBean.findCa009ByCa001(kfno);
@@ -144,68 +142,118 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                 cp.setOverdate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq037()));
                 cp.setBadwhy(seri12.getBq503() == null ? "null" : seri12.getBq503());
                 //一、运输费
-                ysList = new ArrayList<>();
-                CustomerComplaintCost cost;
-                List<HKFW005> hkfw005s = hkfw005Bean.getCustomerComplaintCost(kfno);
+                tansportList = new ArrayList<>();
+                CustomerComplaintExpense cce;
+                List hkfw005s = hkfw005Bean.getTansportExpense(kfno);
                 if (hkfw005s != null && !hkfw005s.isEmpty()) {
-                    for (HKFW005 hkfw005 : hkfw005s) {
-                        cost = new CustomerComplaintCost();
-                        cost.setKfno(hkfw005.getKfno());
-                        cost.setFwno(hkfw005.getFwno() == null ? "null" : hkfw005.getFwno());
-                        cost.setCostno(hkfw005.getSerialNumber());
-                        cost.setType("HK_FW005_工作支援单运费和快递费");
-                        cost.setCost(hkfw005.getTotal() == null ? BigDecimal.ZERO : BigDecimal.valueOf(hkfw005.getTotal()));
-                        ysList.add(cost);
+                    for (int i = 0; i < hkfw005s.size(); i++) {
+                        Object[] row = (Object[]) hkfw005s.get(i);
+                        cce = new CustomerComplaintExpense();
+                        cce.setType(row[0].toString());
+                        cce.setSources(row[1].toString());
+                        cce.setKfno(row[2].toString());
+                        cce.setFwno(row[3] == null ? "null" : row[3].toString());
+                        cce.setUserno(row[4] == null ? "null" : row[4].toString());
+                        cce.setUserna(row[5] == null ? "null" : row[5].toString());
+                        cce.setDeptno(row[6] == null ? "null" : row[6].toString());
+                        cce.setDeptna(row[7] == null ? "null" : row[7].toString());
+                        cce.setOccurdate(row[8] == null ? "null" : row[8].toString());
+                        cce.setExpensetype(row[9] == null ? "null" : row[9].toString());
+                        cce.setCustom1(hkfw005Bean.getYsStyleName(row[10].toString()));
+                        cce.setCustom2(row[11] == null ? "null" : row[11].toString());
+                        cce.setCustom3(row[12] == null ? "null" : row[12].toString());
+                        cce.setCustom4(row[13] == null ? "null" : row[13].toString());
+                        cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
+                        cce.setRemark1(row[15] == null ? "null" : row[15].toString());
+                        cce.setSourcesno(row[16] == null ? "null" : row[16].toString());
+                        tansportList.add(cce);
                     }
                 }
-                List<HKFW006> hkfw006s = hkfw006Bean.getCustomerComplaintCost(kfno);
+                List hkfw006s = hkfw006Bean.getTansportExpense(kfno);
                 if (hkfw006s != null && !hkfw006s.isEmpty()) {
-                    for (HKFW006 hkfw006 : hkfw006s) {
-                        cost = new CustomerComplaintCost();
-                        cost.setKfno(hkfw006.getKfno());
-                        cost.setFwno(hkfw006.getFwno() == null ? "null" : hkfw006.getFwno());
-                        cost.setCostno(hkfw006.getFormSerialNumber());
-                        cost.setType("HK_FW006_退货通知单吊装费和运费");
-                        cost.setCost(hkfw006.getYf() == null ? BigDecimal.ZERO : BigDecimal.valueOf(hkfw006.getYf()));
-                        ysList.add(cost);
+                    for (int i = 0; i < hkfw006s.size(); i++) {
+                        Object[] row = (Object[]) hkfw006s.get(i);
+                        cce = new CustomerComplaintExpense();
+                        cce.setType(row[0].toString());
+                        cce.setSources(row[1].toString());
+                        cce.setKfno(row[2].toString());
+                        cce.setFwno(row[3] == null ? "null" : row[3].toString());
+                        cce.setUserno(row[4] == null ? "null" : row[4].toString());
+                        cce.setUserna(row[5] == null ? "null" : row[5].toString());
+                        cce.setDeptno(row[6] == null ? "null" : row[6].toString());
+                        cce.setDeptna(row[7] == null ? "null" : row[7].toString());
+                        cce.setOccurdate(row[8] == null ? "null" : row[8].toString());
+                        cce.setExpensetype(row[9] == null ? "null" : row[9].toString());
+                        cce.setCustom1(row[10] == null ? "null" : row[10].toString());
+                        cce.setCustom2(row[11] == null ? "null" : row[11].toString());
+                        cce.setCustom3(row[12] == null ? "null" : row[12].toString());
+                        cce.setCustom4(row[13] == null ? "null" : row[13].toString());
+                        cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
+                        cce.setRemark1(row[15] == null ? "null" : row[15].toString());
+                        cce.setSourcesno(row[16] == null ? "null" : row[16].toString());
+                        tansportList.add(cce);
                     }
                 }
-                List cdrlnhadcost = cdrlnhadBean.getCustomerComplaintCost(kfno);
-                if (cdrlnhadcost != null && !cdrlnhadcost.isEmpty()) {
-                    for (int i = 0; i < cdrlnhadcost.size(); i++) {
-                        Object[] row = (Object[]) cdrlnhadcost.get(i);
-                        cost = new CustomerComplaintCost();
-                        cost.setKfno(row[0].toString());
-                        cost.setFwno(row[1] == null ? "null" : row[1].toString());
-                        cost.setCostno(row[2] == null ? "null" : row[2].toString());
-                        cost.setType("CDRN20_借出单据运费");
-                        cost.setCost(row[3] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[3].toString())));
-                        ysList.add(cost);
+                List cdrlnhads = cdrlnhadBean.getCustomerComplaintExpense(kfno);
+                if (cdrlnhads != null && !cdrlnhads.isEmpty()) {
+                    for (int i = 0; i < cdrlnhads.size(); i++) {
+                        Object[] row = (Object[]) cdrlnhads.get(i);
+                        cce = new CustomerComplaintExpense();
+                        cce.setType(row[0].toString());
+                        cce.setSources(row[1].toString());
+                        cce.setKfno(row[2].toString());
+                        cce.setFwno(row[3] == null ? "null" : row[3].toString());
+                        cce.setUserno(row[4] == null ? "null" : row[4].toString());
+                        cce.setUserna(row[5] == null ? "null" : row[5].toString());
+                        cce.setDeptno(row[6] == null ? "null" : row[6].toString());
+                        cce.setDeptna(row[7] == null ? "null" : row[7].toString());
+                        cce.setOccurdate(row[8] == null ? "null" : row[8].toString());
+                        cce.setExpensetype(row[9] == null ? "null" : row[9].toString());
+                        cce.setCustom1(row[10] == null ? "null" : row[10].toString());
+                        cce.setCustom2(row[11] == null ? "null" : row[11].toString());
+                        cce.setCustom3(row[12] == null ? "null" : row[12].toString());
+                        cce.setCustom4("null");
+                        cce.setSourcesno(row[13] == null ? "null" : row[13].toString());
+                        cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
+                        cce.setRemark1(row[15] == null ? "null" : row[15].toString());
+                        tansportList.add(cce);
                     }
                 }
                 //二、差旅费
-                clvList = new ArrayList<>();
-                List reptcost = reptcBean.getCustomerComplaintCost(kfno);
-                if (reptcost != null && !reptcost.isEmpty()) {
-                    for (int i = 0; i < reptcost.size(); i++) {
-                        Object[] row = (Object[]) reptcost.get(i);
-                        cost = new CustomerComplaintCost();
-                        cost.setKfno(row[0].toString());
-                        cost.setFwno(row[1] == null ? "null" : row[1].toString());
-                        cost.setCostno("null");
-                        cost.setType("REPLC_差旅费");
-                        cost.setCost(row[2] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[2].toString())));
-                        clvList.add(cost);
+                travelList = new ArrayList<>();
+                List repts = reptcBean.getCustomerComplaintExpense(kfno);
+                if (repts != null && !repts.isEmpty()) {
+                    for (int i = 0; i < repts.size(); i++) {
+                        Object[] row = (Object[]) repts.get(i);
+                        cce = new CustomerComplaintExpense();
+                        cce.setType(row[0].toString());
+                        cce.setSources(row[1].toString());
+                        cce.setKfno(row[2].toString());
+                        cce.setFwno(row[3] == null ? "null" : row[3].toString());
+                        cce.setUserno(row[4] == null ? "null" : row[4].toString());
+                        cce.setUserna(row[5] == null ? "null" : row[5].toString());
+                        cce.setDeptno(row[6] == null ? "null" : row[6].toString());
+                        cce.setDeptna(row[7] == null ? "null" : row[7].toString());
+                        cce.setSerialno(row[8] == null ? "null" : row[8].toString());
+                        cce.setOccurdate(row[9] == null ? "null" : row[9].toString());
+                        cce.setExpensetype(row[10] == null ? "null" : row[10].toString());
+                        cce.setCustom1(row[11] == null ? "null" : row[11].toString());
+                        cce.setCustom2(row[12] == null ? "null" : row[12].toString());
+                        cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[13].toString())));
+                        cce.setRemark1(row[14] == null ? "null" : row[14].toString());
+                        cce.setSourcesno(row[15] == null ? "null" : row[15].toString());
+                        cce.setSourcesdate(row[16] == null ? "null" : row[16].toString());
+                        tansportList.add(cce);
                     }
                 }
                 //三、材料费
-                clList = new ArrayList<>();
-                CustomerComplaintDetail cpd;
-                List invhadhs = invhadBean.getCustomerComplaintDetailh(kfno);
+                materialList = new ArrayList<>();
+                CustomerComplaintMaterial cpd;
+                List invhadhs = invhadBean.getCustomerComplaintMaterial(kfno);
                 if (invhadhs != null && !invhadhs.isEmpty()) {
                     for (int i = 0; i < invhadhs.size(); i++) {
                         Object[] row = (Object[]) invhadhs.get(i);
-                        cpd = new CustomerComplaintDetail();
+                        cpd = new CustomerComplaintMaterial();
                         cpd.setKfno(row[0].toString());
                         cpd.setFwno(row[1] == null ? "null" : row[1].toString());
                         cpd.setTrtype(row[2] == null ? "null" : row[2].toString());
@@ -218,68 +266,68 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                         cpd.setTrnqy1(row[9] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
                         cpd.setUnmsr1(row[10] == null ? "null" : row[10].toString());
                         cpd.setTramt(row[11] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[11].toString())));
-                        clList.add(cpd);
+                        materialList.add(cpd);
                     }
                 }
-                List invhads = invhadBean.getCustomerComplaintDetail(kfno);
+                List invhads = invhadBean.getCustomerComplaintMaterial(kfno);
                 if (invhads != null && !invhads.isEmpty()) {
                     for (int i = 0; i < invhads.size(); i++) {
                         Object[] row = (Object[]) invhads.get(i);
-                        cpd = new CustomerComplaintDetail();
+                        cpd = new CustomerComplaintMaterial();
                         cpd.setKfno(row[0].toString());
                         cpd.setFwno(row[1] == null ? "null" : row[1].toString());
                         cpd.setTrtype(row[2] == null ? "null" : row[2].toString());
                         cpd.setTypedsc(row[3] == null ? "null" : row[3].toString());
                         cpd.setTrno(row[4] == null ? "null" : row[4].toString());
-                        cpd.setTrdate(BaseLib.getDate("yyyy/MM/dd", row[5].toString()));
+                        cpd.setTrdate(df.parse(row[5].toString()));
                         cpd.setTrseq(row[6] == null ? 0 : Integer.parseInt(row[6].toString()));
                         cpd.setItnbr(row[7] == null ? "null" : row[7].toString());
                         cpd.setItdsc(row[8] == null ? "null" : row[8].toString());
                         cpd.setTrnqy1(row[9] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
                         cpd.setUnmsr1(row[10] == null ? "null" : row[10].toString());
                         cpd.setTramt(row[11] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[11].toString())));
-                        clList.add(cpd);
+                        materialList.add(cpd);
                     }
                 }
                 //资料更新
-                List<CustomerComplaintCost> costs = customerComplaintCostBean.findKfno(kfno);
-                if (costs != null && !costs.isEmpty()) {
-                    customerComplaintCostBean.delete(costs);
+                List<CustomerComplaintExpense> expenses = complaintExpenseBean.findKfno(kfno);
+                if (expenses != null && !expenses.isEmpty()) {
+                    complaintExpenseBean.delete(expenses);
                 }
-                List<CustomerComplaintDetail> details = customerComplaintDetailBean.findKfno(kfno);
-                if (details != null && !details.isEmpty()) {
-                    customerComplaintDetailBean.delete(details);
+                List<CustomerComplaintMaterial> materials = complaintMaterialBean.findKfno(kfno);
+                if (materials != null && !materials.isEmpty()) {
+                    complaintMaterialBean.delete(materials);
                 }
-                if (!clvList.isEmpty()) {
-                    for (CustomerComplaintCost complaintCost : clvList) {
-                        clvcost = clvcost.add(complaintCost.getCost());
-                        customerComplaintCostBean.persist(complaintCost);
+                if (!travelList.isEmpty()) {
+                    for (CustomerComplaintExpense complaintExpense : travelList) {
+                        travel = travel.add(complaintExpense.getExpense());
+                        complaintExpenseBean.persist(complaintExpense);
                     }
                 }
-                if (!ysList.isEmpty()) {
-                    for (CustomerComplaintCost complaintCost : ysList) {
-                        yscost = yscost.add(complaintCost.getCost());
-                        customerComplaintCostBean.persist(complaintCost);
+                if (!tansportList.isEmpty()) {
+                    for (CustomerComplaintExpense complaintExpense : tansportList) {
+                        tansport = tansport.add(complaintExpense.getExpense());
+                        complaintExpenseBean.persist(complaintExpense);
                     }
                 }
-                if (!clList.isEmpty()) {
-                    for (CustomerComplaintDetail complaintDetail : clList) {
+                if (!materialList.isEmpty()) {
+                    for (CustomerComplaintMaterial complaintMaterial : materialList) {
                         //IAF为服务领料 领料加项 IAG为服务退料 退料减项
-                        if (complaintDetail.getTrtype().equals("IAF")) {
-                            clcost = clcost.add(complaintDetail.getTramt());
+                        if (complaintMaterial.getTrtype().equals("IAF")) {
+                            material = material.add(complaintMaterial.getTramt());
                         } else {
-                            clcost = clcost.subtract(complaintDetail.getTramt());
+                            material = material.subtract(complaintMaterial.getTramt());
                         }
-                        customerComplaintDetailBean.persist(complaintDetail);
+                        complaintMaterialBean.persist(complaintMaterial);
                     }
                 }
                 CustomerComplaint plaint = customerComplaintBean.findKfno(kfno);
                 if (plaint != null) {
                     customerComplaintBean.delete(plaint);
                 }
-                cp.setClcost(clcost);
-                cp.setClvcost(clvcost);
-                cp.setYscost(yscost);
+                cp.setMaterialcost(material);
+                cp.setTravelexpense(travel);
+                cp.setTansportexpense(tansport);
                 customerComplaintBean.persist(cp);
                 count++;
             }

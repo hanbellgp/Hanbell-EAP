@@ -41,10 +41,14 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
      * @param kfno
      * @return CRM 差旅费
      */
-    public List getCustomerComplaintCost(String kfno) {
+    public List getCustomerComplaintExpense(String kfno) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT t.TC054,(LC001+LC002),sum(l.LC007) FROM REPLC l LEFT JOIN REPTC t ON t.TC001=l.LC001  ");
-        sb.append("  AND t.TC002=l.LC002 WHERE t.TC054='${kfno}' GROUP BY t.TC054,LC001,LC002 ");
+        sb.append(" SELECT 'travelexpense' as type ,'CRM' as sources,TC054 as kfno,(MZ005+MZ006) as fwno,rtrim(MY005) as userno,(MV002) as userna,  ");
+        sb.append(" MY004 as deptno,ME002 as deptna,MZ007 as serialno,MZ008 as occurdate,GA003 as expensetype,MZ031 as custom1 ,MZ032 as custom2, ");
+        sb.append(" MZ017 as 'expense',MZ020 as remark1,MY025 as oano,MY024 as oadate FROM PORMZ z LEFT OUTER JOIN PORMY y ON z.MZ001=y.MY001  ");
+        sb.append(" AND  z.MZ002=y.MY002 LEFT OUTER JOIN CMSME e on e.ME001=y.MY004 LEFT OUTER JOIN CMSMV v on v.MV001=y.MY005 ");
+        sb.append(" LEFT OUTER JOIN  CRMGA a ON a.GA002=z.MZ009 LEFT OUTER JOIN  REPTC t ON t.TC001= z.MZ005 AND t.TC002=z.MZ006 ");
+        sb.append("  WHERE (GA001='3C') AND TC054='${kfno}' ");
         try {
             String sql = sb.toString().replace("${kfno}", kfno);
             Query query = getEntityManager().createNativeQuery(sql);

@@ -679,5 +679,5 @@ public class SERCA implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.ejb.SERCA[ sERCAPK=" + sercaPK + " ]";
     }
-    
+
 }

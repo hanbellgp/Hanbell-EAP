@@ -6,7 +6,7 @@
 package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
-import cn.hanbell.eap.entity.CustomerComplaintDetail;
+import cn.hanbell.eap.entity.CustomerComplaintMaterial;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -18,14 +18,14 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class CustomerComplaintDetailBean extends SuperEJBForEAP<CustomerComplaintDetail> {
+public class CustomerComplaintMaterialBean extends SuperEJBForEAP<CustomerComplaintMaterial> {
 
-    public CustomerComplaintDetailBean() {
-        super(CustomerComplaintDetail.class);
+    public CustomerComplaintMaterialBean() {
+        super(CustomerComplaintMaterial.class);
     }
 
-    public List<CustomerComplaintDetail> findKfno(String kfno) {
-        Query query = getEntityManager().createNamedQuery("CustomerComplaintDetail.findKfno");
+    public List<CustomerComplaintMaterial> findKfno(String kfno) {
+        Query query = getEntityManager().createNamedQuery("CustomerComplaintMaterial.findKfno");
         query.setParameter("kfno", kfno);
         try {
             return query.getResultList();

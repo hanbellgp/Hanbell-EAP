@@ -25,16 +25,15 @@ import javax.validation.constraints.Size;
 /**
  *
  * @author C1879
- * 客诉成本领退料明细
  */
 @Entity
-@Table(name = "customercomplaintdetail")
+@Table(name = "customercomplaintmaterial")
 @NamedQueries({
-    @NamedQuery(name = "CustomerComplaintDetail.findAll", query = "SELECT c FROM CustomerComplaintDetail c")
+    @NamedQuery(name = "CustomerComplaintMaterial.findAll", query = "SELECT c FROM CustomerComplaintMaterial c")
     ,
-    @NamedQuery(name = "CustomerComplaintDetail.findKfno", query = "SELECT c FROM CustomerComplaintDetail c WHERE c.kfno = :kfno")
+    @NamedQuery(name = "CustomerComplaintMaterial.findKfno", query = "SELECT c FROM CustomerComplaintMaterial c WHERE c.kfno = :kfno")
 })
-public class CustomerComplaintDetail implements Serializable {
+public class CustomerComplaintMaterial implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -85,15 +84,15 @@ public class CustomerComplaintDetail implements Serializable {
     @Column(name = "remark2")
     private String remark2;
 
-    public CustomerComplaintDetail() {
-        this.tramt = BigDecimal.ZERO;
+    public CustomerComplaintMaterial() {
+         this.tramt = BigDecimal.ZERO;
     }
 
-    public CustomerComplaintDetail(Integer id) {
+    public CustomerComplaintMaterial(Integer id) {
         this.id = id;
     }
 
-    public CustomerComplaintDetail(Integer id, String kfno) {
+    public CustomerComplaintMaterial(Integer id, String kfno) {
         this.id = id;
         this.kfno = kfno;
     }
@@ -228,10 +227,10 @@ public class CustomerComplaintDetail implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CustomerComplaintDetail)) {
+        if (!(object instanceof CustomerComplaintMaterial)) {
             return false;
         }
-        CustomerComplaintDetail other = (CustomerComplaintDetail) object;
+        CustomerComplaintMaterial other = (CustomerComplaintMaterial) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -240,7 +239,7 @@ public class CustomerComplaintDetail implements Serializable {
 
     @Override
     public String toString() {
-        return "cn.hanbell.eap.entity.CuscomPlaintDetail[ id=" + id + " ]";
+        return "cn.hanbell.eap.entity.CustomerComplaintMaterial[ id=" + id + " ]";
     }
-
+    
 }

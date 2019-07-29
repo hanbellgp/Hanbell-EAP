@@ -6,9 +6,11 @@
 package cn.hanbell.rpt.control;
 
 import cn.hanbell.eap.ejb.CustomerComplaintBean;
-import cn.hanbell.eap.ejb.CustomerComplaintDetailBean;
+import cn.hanbell.eap.ejb.CustomerComplaintExpenseBean;
+import cn.hanbell.eap.ejb.CustomerComplaintMaterialBean;
 import cn.hanbell.eap.entity.CustomerComplaint;
-import cn.hanbell.eap.entity.CustomerComplaintDetail;
+import cn.hanbell.eap.entity.CustomerComplaintExpense;
+import cn.hanbell.eap.entity.CustomerComplaintMaterial;
 import cn.hanbell.rpt.lazy.CustomerComplaintModel;
 import cn.hanbell.rpt.web.SuperQueryBean;
 import com.lightshell.comm.BaseLib;
@@ -43,13 +45,19 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
 
     @EJB
     private CustomerComplaintBean customerComplaintBean;
-
     @EJB
-    private CustomerComplaintDetailBean customerComplaintDetailBean;
+    private CustomerComplaintExpenseBean customerComplaintExpenseBean;
+    @EJB
+    private CustomerComplaintMaterialBean customerComplaintMaterialBean;
 
     protected String queryKfno;
     protected String queryNcodeDC;
-    protected List<CustomerComplaintDetail> cpdlList;
+    //材料
+    private List<CustomerComplaintMaterial> materialList;
+    //差旅
+    private List<CustomerComplaintExpense> travelList;
+    //运费
+    private List<CustomerComplaintExpense> tansportList;
 
     /**
      * Creates a new instance of HKFW005QueryBean
@@ -68,9 +76,13 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
 
     @Override
     public void setCurrentEntity(CustomerComplaint currentEntity) {
-        cpdlList = new ArrayList<>();
+        materialList = new ArrayList<>();
+        travelList = new ArrayList<>();
+        tansportList = new ArrayList<>();
         if (currentEntity != null) {
-            cpdlList = customerComplaintDetailBean.findKfno(currentEntity.getKfno());
+            materialList = customerComplaintMaterialBean.findKfno(currentEntity.getKfno());
+            travelList = customerComplaintExpenseBean.findKfnoAndType(currentEntity.getKfno(), "travelexpense");
+            tansportList = customerComplaintExpenseBean.findKfnoAndType(currentEntity.getKfno(), "tansportexpense");
         }
         super.setCurrentEntity(currentEntity); //To change body of generated methods, choose Tools | Templates.
     }
@@ -109,10 +121,10 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
             cell.setCellStyle(style.get("head"));
             cell.setCellValue(title1[i]);
         }
-        List<CustomerComplaintDetail> plaintDetailLis = new ArrayList<>();
+        List<CustomerComplaintMaterial> plaintMaterialLis = new ArrayList<>();
         int j = 1;
         for (CustomerComplaint cp : entityList) {
-            plaintDetailLis.addAll(customerComplaintDetailBean.findKfno(cp.getKfno()));
+            plaintMaterialLis.addAll(customerComplaintMaterialBean.findKfno(cp.getKfno()));
             row = sheet1.createRow(j);
             j++;
             row.setHeight((short) 400);
@@ -136,25 +148,28 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
             cell5.setCellValue(cp.getDutyrate() != null ? cp.getDutyrate() : "");
             Cell cell6 = row.createCell(6);
             cell6.setCellStyle(style.get("cell"));
-            cell6.setCellValue(cp.getClcost().toString());
+            cell6.setCellValue(cp.getMaterialcost().toString());
             Cell cell7 = row.createCell(7);
             cell7.setCellStyle(style.get("cell"));
-            cell7.setCellValue(cp.getRgcost().toString());
+            cell7.setCellValue(cp.getLabourcost().toString());
             Cell cell8 = row.createCell(8);
             cell8.setCellStyle(style.get("cell"));
-            cell8.setCellValue(cp.getYscost().toString());
+            cell8.setCellValue(cp.getTansportexpense().toString());
             Cell cell9 = row.createCell(9);
             cell9.setCellStyle(style.get("cell"));
-            cell9.setCellValue(cp.getClvcost().toString());
+            cell9.setCellValue(cp.getTravelexpense().toString());
             Cell cell10 = row.createCell(10);
             cell10.setCellStyle(style.get("cell"));
-            cell10.setCellValue(cp.getReparations() != null ? cp.getReparations().toString() : "");
+            cell10.setCellValue(cp.getClaimamount().toString());
             Cell cell11 = row.createCell(11);
             cell11.setCellStyle(style.get("cell"));
-            cell11.setCellValue(cp.getOther() != null ? cp.getOther().toString() : "");
+            cell11.setCellValue(cp.getOthercost().toString());
             Cell cell12 = row.createCell(12);
             cell12.setCellStyle(style.get("cell"));
-            cell12.setCellValue(cp.getOverdate() != null ? BaseLib.formatDate("yyyy-MM-dd HH:mm", cp.getOverdate()) : "");
+            cell12.setCellValue(cp.getTotalamount().toString());
+            Cell cell13 = row.createCell(13);
+            cell13.setCellStyle(style.get("cell"));
+            cell13.setCellValue(cp.getOverdate() != null ? BaseLib.formatDate("yyyy-MM-dd HH:mm", cp.getOverdate()) : "");
         }
         //表格二
         String[] title2 = getCuscomPlaintDetailTitle();
@@ -165,8 +180,8 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
             cell.setCellStyle(style.get("head"));
             cell.setCellValue(title2[i]);
         }
-        for (int i = 0; i < plaintDetailLis.size(); i++) {
-            CustomerComplaintDetail cpd = plaintDetailLis.get(i);
+        for (int i = 0; i < plaintMaterialLis.size(); i++) {
+            CustomerComplaintMaterial cpd = plaintMaterialLis.get(i);
             row = sheet2.createRow(i + 1);
             row.setHeight((short) 400);
             Cell cell0 = row.createCell(0);
@@ -219,15 +234,15 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
     }
 
     public String[] getCuscomPlaintTitle() {
-        return new String[]{"产品别", "客诉单号", "客户名称", "不良原因", "责任单位", "责任判断比率", "材料费", "人工费", "运输费(含空运、吊装费)", "差旅费", "不良导致索赔款", "其他", "结案时间"};
+        return new String[]{"产品别", "客诉单号", "客户名称", "不良原因", "责任单位", "责任判断比率", "材料费", "人工费", "运输费(含空运、吊装费)", "差旅费", "不良导致索赔款", "其他", "费用合计", "结案时间"};
     }
 
     public String[] getCuscomPlaintDetailTitle() {
-        return new String[]{"客诉单号", "服务单号", "类型", "领退料单号", "品号", "品名", "数量", "单位", "总金额"};
+        return new String[]{"客诉单号", "服务单号", "类型", "领退料单号", "品号", "品名", "数量", "单位", "金额"};
     }
 
     private int[] getCuscomPlaintWidth() {
-        return new int[]{10, 20, 15, 60, 15, 15, 15, 15, 15, 15, 15, 15, 20};
+        return new int[]{10, 20, 15, 60, 15, 15, 15, 15, 15, 15, 15, 15, 15, 20};
     }
 
     private int[] getCuscomPlaintDetailWidth() {
@@ -292,8 +307,8 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
                 model.getFilterFields().put("ncodeDC", queryNcodeDC);
             }
             if (queryDateBegin != null && queryDateEnd != null) {
-                model.getFilterFields().put("overdateBegin",queryDateBegin);
-                model.getFilterFields().put("overdateEnd",queryDateEnd);
+                model.getFilterFields().put("overdateBegin", queryDateBegin);
+                model.getFilterFields().put("overdateEnd", queryDateEnd);
             }
         }
     }
@@ -327,17 +342,45 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
     }
 
     /**
-     * @return the cpdlList
+     * @return the materialList
      */
-    public List<CustomerComplaintDetail> getCpdlList() {
-        return cpdlList;
+    public List<CustomerComplaintMaterial> getMaterialList() {
+        return materialList;
     }
 
     /**
-     * @param cpdlList the cpdlList to set
+     * @param materialList the materialList to set
      */
-    public void setCpdlList(List<CustomerComplaintDetail> cpdlList) {
-        this.cpdlList = cpdlList;
+    public void setMaterialList(List<CustomerComplaintMaterial> materialList) {
+        this.materialList = materialList;
+    }
+
+    /**
+     * @return the travelList
+     */
+    public List<CustomerComplaintExpense> getTravelList() {
+        return travelList;
+    }
+
+    /**
+     * @param travelList the travelList to set
+     */
+    public void setTravelList(List<CustomerComplaintExpense> travelList) {
+        this.travelList = travelList;
+    }
+
+    /**
+     * @return the tansportList
+     */
+    public List<CustomerComplaintExpense> getTansportList() {
+        return tansportList;
+    }
+
+    /**
+     * @param tansportList the tansportList to set
+     */
+    public void setTansportList(List<CustomerComplaintExpense> tansportList) {
+        this.tansportList = tansportList;
     }
 
 }
