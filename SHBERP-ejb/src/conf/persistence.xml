@@ -114,12 +114,4 @@
       <property name="eclipselink.canonicalmodel.subpackage" value="thb"/>
     </properties>
   </persistence-unit>
-  <persistence-unit name="Exchage-ejbPU" transaction-type="JTA">
-    <jta-data-source>jdbc/thbexch</jta-data-source>
-    <class>cn.hanbell.erp.entity.Purdta</class>
-    <class>cn.hanbell.erp.entity.Purhad</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
-    <shared-cache-mode>NONE</shared-cache-mode>
-    <properties/>
-  </persistence-unit>
 </persistence>
