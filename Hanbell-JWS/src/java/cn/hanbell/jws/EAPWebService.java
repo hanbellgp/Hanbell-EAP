@@ -200,7 +200,7 @@ public class EAPWebService {
 
     private final Logger log4j = LogManager.getLogger();
 
-    //EJBForCRM
+    // EJBForCRM
     @EJB
     private REPPABean reppaBean;
     @EJB
@@ -222,7 +222,7 @@ public class EAPWebService {
     @EJB
     private SyncCRMBean syncCRMBean;
 
-    //EJBForEAP
+    // EJBForEAP
     @EJB
     private DepartmentBean departmentBean;
     @EJB
@@ -238,7 +238,7 @@ public class EAPWebService {
     @EJB
     private CustomerComplaintMaterialBean complaintMaterialBean;
 
-    //EJBForEAM
+    // EJBForEAM
     @EJB
     private AssetAcceptanceBean assetAcceptanceBean;
     @EJB
@@ -258,7 +258,7 @@ public class EAPWebService {
     @EJB
     private WarehouseBean warehouseBean;
 
-    //EJBForEFGP
+    // EJBForEFGP
     @EJB
     private WorkFlowBean workFlowBean;
     @EJB
@@ -308,7 +308,7 @@ public class EAPWebService {
     @EJB
     private cn.hanbell.oa.ejb.PLMProjectBean efgpPLMProjectBean;
 
-    //EJBForERP
+    // EJBForERP
     @EJB
     private InvclswahBean invclswahBean;
     @EJB
@@ -372,10 +372,10 @@ public class EAPWebService {
     private ECPurvdrBean ecpurvdrBean;
     @EJB
     private HKNG001Bean hkng001Bean;
-    //@EJB
-    //private RootCloudBean rootCloudBean;
+    // @EJB
+    // private RootCloudBean rootCloudBean;
 
-    //EJBForPLM
+    // EJBForPLM
     @EJB
     private cn.hanbell.plm.ejb.PLMProjectBean plmPLMProjectBean;
     @EJB
@@ -463,7 +463,7 @@ public class EAPWebService {
             bq.setBq095("");
             bq.setBq096("1");
             bq.setBq107("N");
-            //bq.setBq110(h.getBq110() == null ? "" : h.getBq110());
+            // bq.setBq110(h.getBq110() == null ? "" : h.getBq110());
             bq.setBq116("1");
             bq.setBq121("");
             bq.setBq122(BigDecimal.ZERO);
@@ -493,15 +493,15 @@ public class EAPWebService {
             SERCA ca = new SERCA();
             SERCAPK capk = new SERCAPK();
             capk.setCa001(bq001);
-            capk.setCa002("0001");   //手机端发单明细只有1笔资料
+            capk.setCa002("0001"); // 手机端发单明细只有1笔资料
             ca.setSERCAPK(capk);
             ca.setCa003(h.getCa003());
             ca.setCa004(h.getCa004());
             ca.setCa005(h.getCa005());
             ca.setCa009(h.getCa009());
-            ca.setCa010(h.getCa010());   //叫修单单别
+            ca.setCa010(h.getCa010()); // 叫修单单别
             String ca011 = reptaBean.getTA002ByTA001AndDate(h.getCa010(), BaseLib.getDate());
-            ca.setCa011(ca011);   //叫修单单号（派工单号）
+            ca.setCa011(ca011); // 叫修单单号（派工单号）
             ca.setCa012("");
             ca.setCa013(BigDecimal.ZERO);
             ca.setCa014("");
@@ -510,7 +510,7 @@ public class EAPWebService {
             ca.setCa021(h.getBq023());
             ca.setCa500(h.getCa500());
             ca.setFlag((short) 0);
-            //产生叫修单
+            // 产生叫修单
             REPTA ta = new REPTA();
             REPTAPK tapk = new REPTAPK();
             ta.setCompany("SHAHANBELL");
@@ -521,30 +521,30 @@ public class EAPWebService {
             tapk.setTa002(ca011);
             ta.setREPTAPK(tapk);
             ta.setTa003(bq.getCreateDate());
-            ta.setTa004(h.getBq002());                                          //客户代号
-            ta.setTa005(h.getCa003());                                          //产品品号
-            ta.setTa006(h.getCa004());                                          //产品品名
-            ta.setTa007(h.getCa005());                                          //产品规格
-            //ta.setTa008(bq.getCreateDate());                                  //合约代号
-            ta.setTa009(h.getBq016());                                          //接单人员
-            ta.setTa010(h.getBq023c());                                         //问题描述
-            ta.setTa071(h.getBq023());                                          //问题代号
+            ta.setTa004(h.getBq002()); // 客户代号
+            ta.setTa005(h.getCa003()); // 产品品号
+            ta.setTa006(h.getCa004()); // 产品品名
+            ta.setTa007(h.getCa005()); // 产品规格
+            // ta.setTa008(bq.getCreateDate()); //合约代号
+            ta.setTa009(h.getBq016()); // 接单人员
+            ta.setTa010(h.getBq023c()); // 问题描述
+            ta.setTa071(h.getBq023()); // 问题代号
             ta.setTa062("RMB");
             ta.setTa063(BigDecimal.ONE);
-            ta.setTa197(h.getBq197());                                          //产品别
-            ta.setTa198(h.getBq198());                                          //区域别
-            //交货资料
+            ta.setTa197(h.getBq197()); // 产品别
+            ta.setTa198(h.getBq198()); // 区域别
+            // 交货资料
             CRMGG gg = crmggBean.findByGG001(ta.getTa004());
             if (gg != null) {
-                ta.setTa034(gg.getGg027());                                     //传真
+                ta.setTa034(gg.getGg027()); // 传真
             }
             if (crmggBean.getDetaiList(ta.getTa004()) != null) {
                 if (crmggBean.getDetaiList(ta.getTa004()).size() > 0) {
                     CRMGD gd = crmggBean.getDetaiList(ta.getTa004()).get(0);
-                    ta.setTa020(gd.getGd005());                                  //联络人
-                    ta.setTa087(gd.getGd012());                                  //移动电话
-                    ta.setTa026(gd.getGd008());                                  //地址
-                    ta.setTa025(gd.getGd025() + gd.getGd007());                   //电话
+                    ta.setTa020(gd.getGd005()); // 联络人
+                    ta.setTa087(gd.getGd012()); // 移动电话
+                    ta.setTa026(gd.getGd008()); // 地址
+                    ta.setTa025(gd.getGd025() + gd.getGd007()); // 电话
                 }
 
             }
@@ -552,7 +552,7 @@ public class EAPWebService {
             serbqBean.getEntityManager().flush();
             sercaBean.persist(ca);
             reptaBean.persist(ta);
-            //回写OA客诉单单号,派工单号
+            // 回写OA客诉单单号,派工单号
             h.setBq001(bq001);
             h.setCa011(ca011);
             shbcrmseri12Bean.update(h);
@@ -574,18 +574,18 @@ public class EAPWebService {
         List<HZJS034Detail> details = hzjs034Bean.getDetailList();
         try {
 
-            //表身循环
+            // 表身循环
             for (int i = 0; i < details.size(); i++) {
                 HZJS034Detail detail = details.get(i);
                 if (null == warmbBean.findByMB001(detail.getItnbr())) {
                     WARMB m = new WARMB();
                     m.setCompany(h.getFacno());
                     m.setCreator(h.getEmpl());
-                    m.setMb001(detail.getItnbr());                                  //设置件号
-                    m.setMb008(detail.getItcls());                                  //设置品号大类
-                    m.setMb002(detail.getItdsc());                                  //设置中文品名
-                    m.setMb003(detail.getSpdsc());                                  //设置中文规格
-                    m.setMb004(detail.getUnmsr1());                                 //设置单位一
+                    m.setMb001(detail.getItnbr()); // 设置件号
+                    m.setMb008(detail.getItcls()); // 设置品号大类
+                    m.setMb002(detail.getItdsc()); // 设置中文品名
+                    m.setMb003(detail.getSpdsc()); // 设置中文规格
+                    m.setMb004(detail.getUnmsr1()); // 设置单位一
                     m.setMb029(detail.getEitdsc());
                     m.setMb030(detail.getEspdsc());
                     if (null != detail.getMorpcode()) {
@@ -600,19 +600,19 @@ public class EAPWebService {
                                 m.setMb010("S");
                                 break;
                             default:
-                                m.setMb010(detail.getMorpcode());                   //设置自制采购码
+                                m.setMb010(detail.getMorpcode()); // 设置自制采购码
                                 break;
                         }
                     }
-                    m.setMb028("Y");                                                //设置产品序号管理
-                    m.setMb050("Y");                                                //设置需核销
+                    m.setMb028("Y"); // 设置产品序号管理
+                    m.setMb050("Y"); // 设置需核销
                     invclswahBean.setCompany(h.getFacno());
                     Invclswah invclswah = invclswahBean.findByInvclswahPK(h.getFacno(), "1", detail.getItcls());
                     if (invclswah != null) {
                         m.setMb011(invclswah.getDefwah());
                     }
                     m.setMb033(detail.getItnbr());
-                    m.setMb057(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));  //设置生效日期日期
+                    m.setMb057(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate())); // 设置生效日期日期
                     warmbBean.persist(m);
                 }
             }
@@ -638,18 +638,18 @@ public class EAPWebService {
         if ("C".equals(h.getFacno2()) || "K".equals(h.getFacno2())) {
             List<SHBERPINV140Detail> details = shbinv140Bean.getDetailList(h.getFormSerialNumber());
             try {
-                //表身循环
+                // 表身循环
                 for (int i = 0; i < details.size(); i++) {
                     SHBERPINV140Detail detail = details.get(i);
                     if (null == warmbBean.findByMB001(detail.getItnbr())) {
                         WARMB m = new WARMB();
                         m.setCompany(h.getFacno2());
                         m.setCreator(h.getApplyuser());
-                        m.setMb001(detail.getItnbr());                                  //设置件号
-                        m.setMb008(detail.getItcls());                                  //设置品号大类
-                        m.setMb002(detail.getItdsc());                                  //设置中文品名
-                        m.setMb003(detail.getSpdsc());                                  //设置中文规格
-                        m.setMb004(detail.getUnmsr1());                                 //设置单位一
+                        m.setMb001(detail.getItnbr()); // 设置件号
+                        m.setMb008(detail.getItcls()); // 设置品号大类
+                        m.setMb002(detail.getItdsc()); // 设置中文品名
+                        m.setMb003(detail.getSpdsc()); // 设置中文规格
+                        m.setMb004(detail.getUnmsr1()); // 设置单位一
                         m.setMb029(detail.getEitdsc());
                         m.setMb030(detail.getEspdsc());
                         if (null != detail.getMorpcode()) {
@@ -664,19 +664,19 @@ public class EAPWebService {
                                     m.setMb010("S");
                                     break;
                                 default:
-                                    m.setMb010(detail.getMorpcode());                   //设置自制采购码
+                                    m.setMb010(detail.getMorpcode()); // 设置自制采购码
                                     break;
                             }
                         }
-                        m.setMb028("Y");                                                //设置产品序号管理
-                        m.setMb050("Y");                                                //设置需核销
+                        m.setMb028("Y"); // 设置产品序号管理
+                        m.setMb050("Y"); // 设置需核销
                         invclswahBean.setCompany(h.getFacno2());
                         Invclswah invclswah = invclswahBean.findByInvclswahPK(h.getFacno2(), "1", detail.getItcls());
                         if (invclswah != null) {
                             m.setMb011(invclswah.getDefwah());
                         }
                         m.setMb033(detail.getItnbr());
-                        m.setMb057(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));  //设置生效日期日期
+                        m.setMb057(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate())); // 设置生效日期日期
                         warmbBean.persist(m);
                     }
                 }
@@ -698,20 +698,20 @@ public class EAPWebService {
     @WebMethod(operationName = "createEAMAssetAcceptanceByOAHKCW002")
     public String createEAMAssetAcceptanceByOAHKCW002(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
-        //将ERP资产验收同步到EAM资产入库
+        // 将ERP资产验收同步到EAM资产入库
         List<HKCW002Detail> hkcw002Details;
         HKCW002 e = hkcw002Bean.findNotAcceptance(psn);
         if (e != null) {
             String[] acceptno;
             boolean flag;
-            //用于更新资产明细
+            // 用于更新资产明细
             List<HKCW002Detail> editedHKCW002Detail = new ArrayList<>();
             HashMap<SuperEJB, List<?>> hkcw002DetailEdited = new HashMap<>();
             hkcw002DetailEdited.put(hkcw002Bean, editedHKCW002Detail);
 
             purhaskBean.setCompany(e.getFacno());
             purachBean.setCompany(e.getFacno());
-            //HKCG007抛转PUR210时截取了流程序号,省略了PKG_
+            // HKCG007抛转PUR210时截取了流程序号,省略了PKG_
             Purhask prh = purhaskBean.findBySrcno(e.getHkcg007().substring(4));
             if (prh != null) {
 
@@ -719,20 +719,18 @@ public class EAPWebService {
                     flag = true;
                     int i;
                     BigDecimal qty;
-                    //EAM相关对象
+                    // EAM相关对象
                     AssetItem ai;
                     List<AssetAcceptanceDetail> addedDetail = new ArrayList();
-                    //ERP相关对象
+                    // ERP相关对象
                     Purach purach;
                     List<Puracd> puracdList;
-                    //EFGP相关对象
+                    // EFGP相关对象
                     hkcw002Bean.setDetail(e.getFormSerialNumber());
                     hkcw002Details = hkcw002Bean.getDetailList();
 
                     if (hkcw002Details != null && !hkcw002Details.isEmpty()) {
-
                         for (HKCW002Detail d : hkcw002Details) {
-
                             if (d.getPurqty() == null || "".equals(d.getPurqty())) {
                                 continue;
                             }
@@ -742,65 +740,65 @@ public class EAPWebService {
                                     continue;
                                 }
                             }
-                            //得到验收单号数组
+                            // 得到验收单号数组
                             acceptno = purachBean.findByPrnoAndItnbr(prh.getPurhaskPK().getPrno(), d.getItemno());
                             if (acceptno != null) {
-
                                 qty = BigDecimal.ZERO;
                                 for (String n : acceptno) {
                                     purach = purachBean.findByAcceptno(n);
                                     puracdList = purachBean.findByAcceptnoAndItnbr(n, d.getItemno());
-                                    //删除与此笔申请明细无关的同品号验收明细，解决同品号不同采购单合并验收问题
+                                    // 删除与此笔申请明细无关的同品号验收明细，解决同品号不同采购单合并验收问题
                                     if (puracdList != null && !puracdList.isEmpty() && puracdList.size() > 1) {
                                         for (int x = 0; x < puracdList.size(); x++) {
                                             Puracd acd = puracdList.get(x);
-                                            if (!purachBean.isRelationAcceptance(prh.getPurhaskPK().getPrno(), acd.getPono(), acd.getPonotrseq())) {
+                                            if (!purachBean.isRelationAcceptance(prh.getPurhaskPK().getPrno(), acd.getPono(),
+                                                    acd.getPonotrseq())) {
                                                 puracdList.remove(acd);
                                                 x--;
                                             }
                                         }
                                     }
                                     if (puracdList != null && !puracdList.isEmpty()) {
-                                        //ERP每一笔验收产生一笔EAM资产入库
+                                        // ERP每一笔验收产生一笔EAM资产入库
                                         i = 0;
-                                        addedDetail.clear();//清空之前列表
-                                        //计算累计验收数量
+                                        addedDetail.clear();// 清空之前列表
+                                        // 计算累计验收数量
                                         for (Puracd acd : puracdList) {
                                             if (acd.getOkqy1().compareTo(BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) >= 0) {
-                                                //多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
+                                                // 多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
                                                 qty = qty.add(BigDecimal.valueOf(Double.parseDouble(d.getPurqty())));
                                             } else {
                                                 qty = qty.add(acd.getOkqy1());
                                             }
                                         }
                                         for (Puracd acd : puracdList) {
-                                            //判断验收记录，处理多次验收逻辑
+                                            // 判断验收记录，处理多次验收逻辑
                                             if (d.getRelno() == null) {
                                                 d.setRelno("");
                                             }
                                             if (d.getRelno().compareTo(n) < 0) {
-                                                //新的验收记录，产生EAM入库
+                                                // 新的验收记录，产生EAM入库
                                                 i++;
                                                 AssetAcceptanceDetail aad = new AssetAcceptanceDetail();
-                                                //aad.setPid("");
+                                                // aad.setPid("");
                                                 aad.setSeq(i);
                                                 aad.setAcceptdate(acd.getAcceptdate());
                                                 aad.setAcceptDeptno(acd.getDepno());
                                                 aad.setAcceptUserno(acd.getUserno());
                                                 ai = assetItemBean.findByItemno(acd.getItnbr());
                                                 aad.setAssetItem(ai);
-                                                //aad.setQty(acd.getAccqy1());
+                                                // aad.setQty(acd.getAccqy1());
                                                 if (acd.getAccqy1().compareTo(BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) >= 0) {
-                                                    //多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
+                                                    // 多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
                                                     aad.setQty(BigDecimal.valueOf(Double.parseDouble(d.getPurqty())));
                                                 } else {
                                                     aad.setQty(acd.getAccqy1());
                                                 }
                                                 aad.setUnit(ai.getUnit());
                                                 aad.setQcpass(false);
-                                                //aad.setQcqty(acd.getOkqy1());
+                                                // aad.setQcqty(acd.getOkqy1());
                                                 if (acd.getOkqy1().compareTo(BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) >= 0) {
-                                                    //多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
+                                                    // 多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
                                                     aad.setQcqty(BigDecimal.valueOf(Double.parseDouble(d.getPurqty())));
                                                 } else {
                                                     aad.setQcqty(acd.getOkqy1());
@@ -821,7 +819,7 @@ public class EAPWebService {
 
                                                 addedDetail.add(aad);
 
-                                                //更新资产申请明细关联单号
+                                                // 更新资产申请明细关联单号
                                                 d.setRelno(n);
                                                 d.setRelseq(String.valueOf(acd.getPuracdPK().getTrseq()));
                                                 d.setRelqty(String.valueOf(qty));
@@ -838,7 +836,7 @@ public class EAPWebService {
                                             aa.setDeptno(purach.getDepno());
                                             aa.setRemark(e.getProcessSerialNumber() + "_" + purach.getPurachPK().getAcceptno());
                                             aa.setStatus("N");
-                                            //产生EAM资产入库
+                                            // 产生EAM资产入库
                                             assetAcceptanceBean.initAssetAcceptance(aa, addedDetail);
                                         }
                                     }
@@ -846,7 +844,7 @@ public class EAPWebService {
                             }
                         }
                         if (editedHKCW002Detail.size() > 0) {
-                            //判断整张资产申请是否全部验收
+                            // 判断整张资产申请是否全部验收
                             for (HKCW002Detail d : hkcw002Details) {
                                 if (d.getPurqty() == null || "".equals(d.getPurqty())) {
                                     continue;
@@ -861,7 +859,7 @@ public class EAPWebService {
                                 }
                             }
                             if (flag) {
-                                //全部验收完成
+                                // 全部验收完成
                                 acceptno = purachBean.findByPrno(prh.getPurhaskPK().getPrno());
                                 e.setRelformid(Arrays.toString(acceptno));
                             }
@@ -900,7 +898,7 @@ public class EAPWebService {
                 detailList = hkcw002Bean.getDetailList();
 
                 if (detailList != null && !detailList.isEmpty()) {
-                    //EAM资产申请主档
+                    // EAM资产申请主档
                     aa = new AssetApply();
                     aa.setCompany(e.getFacno());
                     aa.setFormdate(e.getFormdate());
@@ -945,7 +943,7 @@ public class EAPWebService {
                     aa.setStatusToNew();
                     aa.setCreator(e.getProcessSerialNumber());
                     aa.setCredateToNow();
-                    //EAM资产申请明细
+                    // EAM资产申请明细
                     int i = 0;
                     for (HKCW002Detail d : detailList) {
                         i++;
@@ -983,14 +981,14 @@ public class EAPWebService {
                         aad.setDistributed(false);
                         aad.setPurchased(Boolean.valueOf(e.getPurchase()));
                         aad.setStatus("10");
-                        //添加到明细列表
+                        // 添加到明细列表
                         aadList.add(aad);
                     }
-                    //新增到EAM
+                    // 新增到EAM
                     String formid = assetApplyBean.initAssetApply(aa, aadList);
                     if (formid != null && !"".equals(formid)) {
                         e.setSrcformid(formid);
-                        hkcw002Bean.update(e);//记录EAM单号
+                        hkcw002Bean.update(e);// 记录EAM单号
                     }
                 }
                 ret = true;
@@ -1033,11 +1031,11 @@ public class EAPWebService {
                 add = new AssetDisposeDetail();
                 add.setSeq(i);
                 if (d.getAssetItem().getCategory().getNoauto()) {
-                    //资产编号
+                    // 资产编号
                     add.setAssetCard(d.getAssetCard());
                     add.setAssetno(d.getAssetno());
                 } else {
-                    //单据编号
+                    // 单据编号
                     assetno = d.getPid() + "-" + BaseLib.formatString("0000", String.valueOf(d.getSeq()));
                     AssetCard ac = assetCardBean.findByAssetno(assetno);
                     if (ac == null) {
@@ -1073,9 +1071,9 @@ public class EAPWebService {
             ad.setFormdate(BaseLib.getDate());
             ad.setDeptno(as.getDeptno());
             ad.setDeptname(as.getDeptname());
-            //处置总额
+            // 处置总额
             ad.setTotalAmts(BigDecimal.ZERO);
-            //残值总额
+            // 残值总额
             ad.setSurplusValue(BigDecimal.ZERO);
             ad.setReason(as.getReason());
             ad.setRemark(as.getRemark());
@@ -1085,7 +1083,7 @@ public class EAPWebService {
             String id = assetDisposeBean.initAssetDispose(ad, addList);
             if (id != null && !"".equals(id)) {
                 ad.setStatus("V");
-                assetDisposeBean.verify(ad);//抛转后直接确认
+                assetDisposeBean.verify(ad);// 抛转后直接确认
                 ret = true;
             } else {
                 ret = false;
@@ -1133,11 +1131,11 @@ public class EAPWebService {
                 add = new AssetDisposeDetail();
                 add.setSeq(i);
                 if (d.getAssetItem().getCategory().getNoauto()) {
-                    //资产编号
+                    // 资产编号
                     add.setAssetCard(d.getAssetCard());
                     add.setAssetno(d.getAssetno());
                 } else {
-                    //单据编号
+                    // 单据编号
                     assetno = d.getPid() + "-" + BaseLib.formatString("0000", String.valueOf(d.getSeq()));
                     AssetCard ac = assetCardBean.findByAssetno(assetno);
                     if (ac == null) {
@@ -1173,9 +1171,9 @@ public class EAPWebService {
             ad.setFormdate(BaseLib.getDate());
             ad.setDeptno(as.getDeptno());
             ad.setDeptname(as.getDeptname());
-            //处置总额
+            // 处置总额
             ad.setTotalAmts(BigDecimal.ZERO);
-            //残值总额
+            // 残值总额
             ad.setSurplusValue(BigDecimal.ZERO);
             ad.setReason(as.getReason());
             ad.setRemark(as.getRemark());
@@ -1185,9 +1183,9 @@ public class EAPWebService {
             String formid = assetDisposeBean.initAssetDispose(ad, addList);
             if (formid != null && !"".equals(formid)) {
                 e.setDisposeno(formid);
-                hzcw034Bean.update(e);//记录EAM单号
+                hzcw034Bean.update(e);// 记录EAM单号
                 ad.setStatus("V");
-                assetDisposeBean.verify(ad);//抛转后直接确认
+                assetDisposeBean.verify(ad);// 抛转后直接确认
                 ret = true;
             } else {
                 ret = false;
@@ -1338,9 +1336,9 @@ public class EAPWebService {
             String formid = assetScrapBean.initAssetScrap(as, asdList);
             if (formid != null && !"".equals(formid)) {
                 e.setSourceno(formid);
-                hzcw034Bean.update(e);//记录EAM单号
+                hzcw034Bean.update(e);// 记录EAM单号
                 as.setStatus("V");
-                assetScrapBean.verify(as);//抛转后直接确认
+                assetScrapBean.verify(as);// 抛转后直接确认
                 ret = true;
             } else {
                 ret = false;
@@ -1422,7 +1420,7 @@ public class EAPWebService {
             String formid = stationeryDistributeBean.initStationeryDistribute(ad, addList);
             if (formid != null && !"".equals(formid)) {
                 e.setRelformid(formid);
-                hkgl060Bean.update(e);//记录EAM单号
+                hkgl060Bean.update(e);// 记录EAM单号
                 ret = true;
             } else {
                 ret = false;
@@ -1455,7 +1453,8 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "createERPQuoteByCRMREPPA")
-    public String createERPQuoteByCRMREPPA(@WebParam(name = "pa001") String pa001, @WebParam(name = "pa002") String pa002) {
+    public String createERPQuoteByCRMREPPA(@WebParam(name = "pa001") String pa001,
+            @WebParam(name = "pa002") String pa002) {
         String facno;
         String pricelevel;
         String ls_levelp;
@@ -1482,7 +1481,7 @@ public class EAPWebService {
         REPPA ra = reppaBean.findByPK(pa001, pa002);
         Crmreppalog logreppa = new Crmreppalog();
         if (ra != null) {
-            //记录抛转次数，超过3次不轮询
+            // 记录抛转次数，超过3次不轮询
             if (ra.getPa518() == null || "".equals(ra.getPa518())) {
                 ra.setPa518("1");
             } else {
@@ -1506,13 +1505,14 @@ public class EAPWebService {
                     logreppa.setErrdescription("找不到对应的公司别资料!");
                     throw new NullPointerException("找不到对应的公司别资料！");
                 }
-                Date quodate = com.lightshell.comm.BaseLib.getDate("yyyy/MM/dd", com.lightshell.comm.BaseLib.formatDate("yyyy/MM/dd", com.lightshell.comm.BaseLib.getDate()));
+                Date quodate = com.lightshell.comm.BaseLib.getDate("yyyy/MM/dd",
+                        com.lightshell.comm.BaseLib.formatDate("yyyy/MM/dd", com.lightshell.comm.BaseLib.getDate()));
                 logreppa.setIndate(com.lightshell.comm.BaseLib.getDate());
-                pricingtype = ra.getPa509();                                //报价类别
+                pricingtype = ra.getPa509(); // 报价类别
                 if (ra.getPa508().equals("")) {
                     decode = '1';
                 } else {
-                    decode = ra.getPa508().charAt(0);                       //国内外码
+                    decode = ra.getPa508().charAt(0); // 国内外码
                 }
                 cdrsysBean.setCompany(facno);
                 cdrqsysBean.setCompany(facno);
@@ -1523,7 +1523,7 @@ public class EAPWebService {
                 cdrqhadBean.setCompany(facno);
                 reppbList = reppaBean.getDetailList(pa001, pa002);
                 if (reppbList != null && !reppbList.isEmpty()) {
-                    //表头资料
+                    // 表头资料
                     Cdrqhad qh = new Cdrqhad();
                     CdrqhadPK qhpk = new CdrqhadPK();
                     qhpk.setFacno(facno);
@@ -1539,26 +1539,28 @@ public class EAPWebService {
                     }
                     qh.setDepno(ra.getPa507());
                     qh.setQuodate(quodate);
-                    String pa029 = ra.getPa029().substring(0, 4) + "/" + ra.getPa029().substring(4, 6) + "/" + ra.getPa029().substring(6);
-                    String pa030 = ra.getPa030().substring(0, 4) + "/" + ra.getPa030().substring(4, 6) + "/" + ra.getPa030().substring(6);
+                    String pa029 = ra.getPa029().substring(0, 4) + "/" + ra.getPa029().substring(4, 6) + "/"
+                            + ra.getPa029().substring(6);
+                    String pa030 = ra.getPa030().substring(0, 4) + "/" + ra.getPa030().substring(4, 6) + "/"
+                            + ra.getPa030().substring(6);
                     qh.setFromdate(com.lightshell.comm.BaseLib.getDate("yyyy/MM/dd", pa029));
                     qh.setEeffdate(com.lightshell.comm.BaseLib.getDate("yyyy/MM/dd", pa030));
                     long tt = qh.getEeffdate().getTime() - qh.getFromdate().getTime();
                     long tdays = (tt / 1000 / 60 / 60 / 24);
-                    qh.setEffdays((short) tdays);                           //有效天数
-                    qh.setDecode(decode);                                   //国内国外
+                    qh.setEffdays((short) tdays); // 有效天数
+                    qh.setDecode(decode); // 国内国外
                     if (ra.getPa517() == null || "".equals(ra.getPa517())) {
                         qh.setShptrseq((short) 1);
                     } else {
-                        qh.setShptrseq(Short.valueOf(ra.getPa517()));       //指配客户代号
+                        qh.setShptrseq(Short.valueOf(ra.getPa517())); // 指配客户代号
                     }
-                    qh.setIvotrseq(cs.getIvotrseq());                       //发票客户代号
-                    qh.setIsspecial(ra.getPa515());                         //是否特殊报价
+                    qh.setIvotrseq(cs.getIvotrseq()); // 发票客户代号
+                    qh.setIsspecial(ra.getPa515()); // 是否特殊报价
                     if (pa001.trim().equals("DD")) {
                         qh.setQuotype('1');
                         qh.setHquosta('Y');
                     } else {
-                        qh.setQuotype('2');                                 //单对单/合约报价
+                        qh.setQuotype('2'); // 单对单/合约报价
                         if ("Y".equals(qh.getIsspecial())) {
                             qh.setHquosta('R');
                         } else {
@@ -1566,21 +1568,21 @@ public class EAPWebService {
                         }
                     }
 
-                    qh.setTax(ra.getPa036().charAt(0));                     //税别
+                    qh.setTax(ra.getPa036().charAt(0)); // 税别
                     qh.setTaxrate(ra.getPa028());
                     qh.setCoin(ra.getPa010());
                     qh.setRatio(ra.getPa018());
-                    qh.setSndcode(cs.getSndcode());                         //交货条件
-                    qh.setPaycode(ra.getPa012());                           //付款条件
-                    qh.setTermcode(cs.getTermcode());                       //交易条件
+                    qh.setSndcode(cs.getSndcode()); // 交货条件
+                    qh.setPaycode(ra.getPa012()); // 付款条件
+                    qh.setTermcode(cs.getTermcode()); // 交易条件
                     if (qh.getDecode().equals('1')) {
                         Miscode mis1 = miscodeBean.findByPK("GD", qh.getSndcode());
                         if (mis1 != null) {
-                            qh.setSndcodedsc(mis1.getCdesc());              //交货条件叙述
+                            qh.setSndcodedsc(mis1.getCdesc()); // 交货条件叙述
                         }
                         Miscode mis2 = miscodeBean.findByPK("GH", qh.getTermcode());
                         if (mis2 != null) {
-                            qh.setTermcodedsc(mis2.getCdesc());             //交易条件叙述
+                            qh.setTermcodedsc(mis2.getCdesc()); // 交易条件叙述
                         }
 
                     } else {
@@ -1593,13 +1595,13 @@ public class EAPWebService {
                             qh.setTermcodedsc(cdrpaydsc2.getAllcodedsc());
                         }
                     }
-                    qh.setPaycodedsc(cs.getSkfs());                         //付款条件叙述
-                    qh.setPaysepcode(cs.getPaysepcode());                   //付款内容区分
-                    qh.setSeldate1(cs.getSeldate1());                       //付款截止日（每月几号）
+                    qh.setPaycodedsc(cs.getSkfs()); // 付款条件叙述
+                    qh.setPaysepcode(cs.getPaysepcode()); // 付款内容区分
+                    qh.setSeldate1(cs.getSeldate1()); // 付款截止日（每月几号）
                     qh.setSeldate2(cs.getSeldate2());
                     qh.setSeldate3(cs.getSeldate3());
                     qh.setSeldate4(cs.getSeldate4());
-                    qh.setHandays1(cs.getHandays1());                       //整账所需天数
+                    qh.setHandays1(cs.getHandays1()); // 整账所需天数
                     qh.setHandays2(cs.getHandays2());
                     qh.setHandays3(cs.getHandays3());
                     qh.setHandays4(cs.getHandays4());
@@ -1607,7 +1609,7 @@ public class EAPWebService {
                     qh.setSacode(cs.getSacode());
                     qh.setAreacode(cs.getAreacode());
                     qh.setCuycode(cs.getCuycode());
-                    //业务员取CRM
+                    // 业务员取CRM
                     if (ra.getPa005() != null) {
                         qh.setMancode(ra.getPa005());
                     } else {
@@ -1623,43 +1625,44 @@ public class EAPWebService {
                     qh.setTramts(ra.getPa020());
                     qh.setTaxamts(ra.getPa021());
                     qh.setTotamts(ra.getPa019());
-                    //qh.setHmark1("");                                     表头备注一
-                    //qh.setHmark2("");
-                    //qh.setHmark3("");
-                    //qh.setHmark4(pa001 + pa002);
+                    // qh.setHmark1(""); 表头备注一
+                    // qh.setHmark2("");
+                    // qh.setHmark3("");
+                    // qh.setHmark4(pa001 + pa002);
                     qh.setPrtcnt((short) 0);
                     qh.setPiprtcnt((short) 0);
-                    qh.setBcdrno("");                                       //抛转订单编号
+                    qh.setBcdrno(""); // 抛转订单编号
                     qh.setIndate(com.lightshell.comm.BaseLib.getDate());
                     qh.setUserno(ra.getPa005());
-                    logreppa.setCreator(ra.getPa005());                     //记录日志
-                    qh.setCfmuserno(ra.getPa025());                         //审核者（设定成业务助理）
+                    logreppa.setCreator(ra.getPa005()); // 记录日志
+                    qh.setCfmuserno(ra.getPa025()); // 审核者（设定成业务助理）
                     if (ra.getPa024().equals("")) {
                         qh.setCfmdate(BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())));
                     } else {
-                        String pa024 = ra.getPa024().substring(0, 4) + "/" + ra.getPa024().substring(4, 6) + "/" + ra.getPa024().substring(6);
+                        String pa024 = ra.getPa024().substring(0, 4) + "/" + ra.getPa024().substring(4, 6) + "/"
+                                + ra.getPa024().substring(6);
                         qh.setCfmdate(com.lightshell.comm.BaseLib.getDate("yyyy/MM/dd", pa024));
                     }
-                    //qh.setTrnuserno("");                                  //抛转订单人员
-                    //qh.setTrndate("");                                    //抛转订单日期
-                    qh.setPino("N");                                        //列印PI否
-                    qh.setCopyquono(pa001 + pa002);                         //原报价单号（copy前）//记录CRM来源单号
+                    // qh.setTrnuserno(""); //抛转订单人员
+                    // qh.setTrndate(""); //抛转订单日期
+                    qh.setPino("N"); // 列印PI否
+                    qh.setCopyquono(pa001 + pa002); // 原报价单号（copy前）//记录CRM来源单号
                     qh.setSelpricode('1');
                     qh.setContactman(cs.getContactman());
                     qh.setPricingtype(pricingtype);
                     if (ra.getPa515() == null || "".equals(ra.getPa515())) {
                         throw new NullPointerException("是否特殊报价资料错误！");
                     }
-                    //qh.setSpcode();
+                    // qh.setSpcode();
                     pricelevel = cdrqhadBean.getUserPricelevel(pricingtype, qh.getMancode());
-                    li_ulevelp = Integer.parseInt(pricelevel.substring(6)); //"price09"截取数字
+                    li_ulevelp = Integer.parseInt(pricelevel.substring(6)); // "price09"截取数字
                     ls_levelpo = qh.getLevelp();
 
-                    //表身资料
+                    // 表身资料
                     int trseq = 0;
-                    List<REPPB> reppbasry = new ArrayList<>();             //接收赠品
+                    List<REPPB> reppbasry = new ArrayList<>(); // 接收赠品
                     for (REPPB rb : reppbList) {
-                        //去除赠品，取赠品数量等于0
+                        // 去除赠品，取赠品数量等于0
                         if (rb.getPb010().compareTo(BigDecimal.ZERO) == 0) {
                             trseq++;
                             String itnbr = rb.getPb004();
@@ -1669,34 +1672,35 @@ public class EAPWebService {
                             qdpk.setQuono(lsquono);
                             qdpk.setTrseq((short) trseq);
                             qd.setCdrqdtaPK(qdpk);
-                            qd.setItnbr(itnbr);                              //品号
-                            qd.setItnbrcus("");                              //客户品号(零件无)
-                            qd.setProno("1");                                //默认第一生产地
-                            qd.setShptrseq(qh.getShptrseq());                //指配代号
+                            qd.setItnbr(itnbr); // 品号
+                            qd.setItnbrcus(""); // 客户品号(零件无)
+                            qd.setProno("1"); // 默认第一生产地
+                            qd.setShptrseq(qh.getShptrseq()); // 指配代号
                             qd.setQuaqy1(rb.getPb009());
                             qd.setQuaqy2(BigDecimal.ZERO);
-                            qd.setArmqy(rb.getPb009());                      //应收数量
+                            qd.setArmqy(rb.getPb009()); // 应收数量
                             qd.setUnpris(rb.getPb011());
-                            qd.setUnprisrccode('0');                         //单价来源
+                            qd.setUnprisrccode('0'); // 单价来源
                             qd.setTramts(rb.getPb013());
                             if (ra.getPa503() == null || "".equals(ra.getPa503())) {
                                 logreppa.setErrdescription("预计交期未填写！");
                             } else {
-                                String pa503 = ra.getPa503().substring(0, 4) + "/" + ra.getPa503().substring(4, 6) + "/" + ra.getPa503().substring(6);
-                                qd.setCdrdate(com.lightshell.comm.BaseLib.getDate("yyyy/MM/dd", pa503));  //预计交期
+                                String pa503 = ra.getPa503().substring(0, 4) + "/" + ra.getPa503().substring(4, 6) + "/"
+                                        + ra.getPa503().substring(6);
+                                qd.setCdrdate(com.lightshell.comm.BaseLib.getDate("yyyy/MM/dd", pa503)); // 预计交期
                             }
-                            qd.setDmark1(rb.getPb517());                     //表身备注1(冷媒机型)
-                            qd.setDmark2("");                                //表身备注2（齿数比）
+                            qd.setDmark1(rb.getPb517()); // 表身备注1(冷媒机型)
+                            qd.setDmark2(""); // 表身备注2（齿数比）
                             qd.setDmark3("");
                             qd.setDmark4("");
-                            //qd.setTrnstatus();
+                            // qd.setTrnstatus();
                             if (rb.getPb011() == null || rb.getPb011().equals("")) {
                                 qd.setListunpri(BigDecimal.ZERO);
                             } else {
-                                qd.setListunpri(rb.getPb011());   //定价
+                                qd.setListunpri(rb.getPb011()); // 定价
                             }
-                            qd.setDiscnt((rb.getPb012().multiply(BigDecimal.valueOf(100))).shortValue());     //折扣数
-                            //qd.setDiscnt(Short.valueOf(rb.getPb012().toString()));
+                            qd.setDiscnt((rb.getPb012().multiply(BigDecimal.valueOf(100))).shortValue()); // 折扣数
+                            // qd.setDiscnt(Short.valueOf(rb.getPb012().toString()));
                             qd.setDispri0(BigDecimal.ZERO);
                             qd.setDisqy1(BigDecimal.ZERO);
                             qd.setDispri1(BigDecimal.ZERO);
@@ -1711,9 +1715,9 @@ public class EAPWebService {
                             if (rb.getPb505() == null || rb.getPb505().equals("")) {
                                 qd.setOldpri(BigDecimal.ZERO);
                             } else {
-                                qd.setOldpri(BigDecimal.valueOf(Double.parseDouble(rb.getPb505())));   //旧价
+                                qd.setOldpri(BigDecimal.valueOf(Double.parseDouble(rb.getPb505()))); // 旧价
                             }
-                            qd.setMorderqy(BigDecimal.ZERO);                //最小包装数量, 最小订购量
+                            qd.setMorderqy(BigDecimal.ZERO); // 最小包装数量, 最小订购量
                             cdrqbomsubBean.setCompany(facno);
                             Cdrqbomsub cbomsub = cdrqbomsubBean.findByItnbrfAndCdrno(facno, qd.getItnbr(), qdpk.getQuono());
                             if (cbomsub == null) {
@@ -1732,7 +1736,8 @@ public class EAPWebService {
                             if ("".equals(itemno)) {
                                 prpl = cdrqhadBean.getByPricingPolicy(qd.getItnbr(), pricingtype, qh.getQuodate(), qh.getCoin());
                             } else {
-                                prpl = cdrqhadBean.getByPricingPolicy(qd.getItnbr(), pricingtype, qh.getQuodate(), qh.getCoin(), itemno);
+                                prpl = cdrqhadBean.getByPricingPolicy(qd.getItnbr(), pricingtype, qh.getQuodate(), qh.getCoin(),
+                                        itemno);
                             }
                             if (prpl == null) {
                                 prpl = cdrqhadBean.getByPricingPolicy(qd.getItnbr(), pricingtype, qh.getQuodate(), "RMB");
@@ -1741,29 +1746,31 @@ public class EAPWebService {
                             if (prpl == null) {
                                 log4j.error(itnbr + " '未维护价格类别'" + pricingtype + "'对应的标准定价,请先维护CDR1P2!");
                                 logreppa.setErrdescription(itnbr + " '未维护价格类别'" + pricingtype + "'对应的标准定价,请先维护CDR1P2!");
-                                //如果是随整机销售零件 return 3
+                                // 如果是随整机销售零件 return 3
                                 if ("RC".equals(pricingtype)) {
                                     pricingtype = "RCS";
                                     pricelevel = "price03";
                                 } else {
                                     qh.setIsspecial("Y");
                                 }
-                                //dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
+                                // dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
                                 qd.setDqxjkind('D');
 
                             } else {
-                                //判断A9牌价
+                                // 判断A9牌价
                                 BigDecimal ldc_a9unpri = BigDecimal.valueOf(Double.valueOf(prpl[10 + li_ulevelp].toString()));
                                 if (ldc_a9unpri == null || ldc_a9unpri.compareTo(BigDecimal.ZERO) == 0) {
                                     log4j.info("此件号" + itnbr + "还未维护A9牌价");
                                     logreppa.setErrdescription("此件号" + itnbr + "还未维护A9牌价");
                                 }
-                                li_ulevelp = Integer.parseInt(pricelevel.substring(6));  //"price0X"截取数字
-                                ldc_stdprice = BigDecimal.valueOf(Double.valueOf(prpl[10 + li_ulevelp].toString())); //prpl标准定价数组的顺序（数量）不能修改
+                                li_ulevelp = Integer.parseInt(pricelevel.substring(6)); // "price0X"截取数字
+                                ldc_stdprice = BigDecimal.valueOf(Double.valueOf(prpl[10 + li_ulevelp].toString())); // prpl标准定价数组的顺序（数量）不能修改
                                 if (ldc_stdprice == null || ldc_stdprice.compareTo(BigDecimal.ZERO) < 1) {
-                                    log4j.error("错误'" + itnbr + "'的 '" + itemno + "'机型未维护价格类别'" + pricingtype + "'对应的标准定价,请先维护!");
-                                    //dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
-                                    logreppa.setErrdescription("错误'" + itnbr + "'的 '" + itemno + "'机型未维护价格类别'" + pricingtype + "'对应的标准定价,请先维护!");
+                                    log4j.error(
+                                            "错误'" + itnbr + "'的 '" + itemno + "'机型未维护价格类别'" + pricingtype + "'对应的标准定价,请先维护!");
+                                    // dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
+                                    logreppa.setErrdescription(
+                                            "错误'" + itnbr + "'的 '" + itemno + "'机型未维护价格类别'" + pricingtype + "'对应的标准定价,请先维护!");
                                     qh.setIsspecial("Y");
                                     qd.setDqxjkind('D');
                                 }
@@ -1772,17 +1779,22 @@ public class EAPWebService {
                                 if (ls_itemdesc == null || "".equals(ls_itemdesc)) {
                                     invmasBean.setCompany(facno);
                                     Invmas m = invmasBean.findByItnbr(ls_itnbr);
-                                    //ls_itemdesc = m.getItdsc();
+                                    // ls_itemdesc = m.getItdsc();
                                 }
                                 if (ldc_stdprice.compareTo(ldc_salesprice) > 0) {
                                     lb_checpoa = true;
                                     if (li_ulevelp > 1) {
                                         for (int i = li_ulevelp; i >= 1; i--) {
-                                            ldc_levelpri = BigDecimal.valueOf(Double.valueOf(prpl[10 + i].toString())); //prpl标准定价数组的顺序（数量）不能修改
+                                            if (prpl[10 + i] == null) {             //无A价（权限价如A5）
+                                                continue;
+                                            } else {
+                                                ldc_levelpri = BigDecimal.valueOf(Double.valueOf(prpl[10 + i].toString())); //prpl标准定价数组的顺序（数量）不能修改
+                                            }
                                             if (ldc_levelpri == null || ldc_levelpri.compareTo(BigDecimal.ZERO) < 1) {
                                                 log4j.error("出错，第" + i + "笔件号'" + itnbr + "'当前售价不符合价格权限表管控范围,请走特殊报价或联系mis'");
-                                                //dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
-                                                logreppa.setErrdescription("出错，第" + i + "笔件号'" + itnbr + "'当前售价不符合价格权限表管控范围,请走特殊报价或联系mis'");
+                                                // dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
+                                                logreppa.setErrdescription(
+                                                        "出错，第" + i + "笔件号'" + itnbr + "'当前售价不符合价格权限表管控范围,请走特殊报价或联系mis'");
                                                 qh.setIsspecial("Y");
                                                 continue;
                                             }
@@ -1801,26 +1813,27 @@ public class EAPWebService {
 
                                 }
                             }
-                            //单价为零且不算赠品配件（如油品）
+                            // 单价为零且不算赠品配件（如油品）
                             if (rb.getPb010().compareTo(BigDecimal.ZERO) == 0 && rb.getPb011().compareTo(BigDecimal.ZERO) == 0) {
                                 qd.setLevelp("A2");
                                 qh.setLevelp("A2");
                             }
-                            //qd.setContunpri(BigDecimal.ZERO);
-                            //qd.setNorm("");
-                            //qd.setIslableprt(Character.MIN_VALUE);
-                            //qd.setHisorders("");
-                            //qd.setContractno("");
-                            qd.setNcodeDA(rb.getPb513());  //事业部
-                            qd.setNcodeCD(rb.getPb515());  //区域别
-                            qd.setNcodeDC(rb.getPb514());  //产品别
-                            qd.setNcodeDD(rb.getPb516());  //整机或者零件
-                            //qd.setCuslable("");
-                            //CDR225确认--关于订单规格表判定
+                            // qd.setContunpri(BigDecimal.ZERO);
+                            // qd.setNorm("");
+                            // qd.setIslableprt(Character.MIN_VALUE);
+                            // qd.setHisorders("");
+                            // qd.setContractno("");
+                            qd.setNcodeDA(rb.getPb513()); // 事业部
+                            qd.setNcodeCD(rb.getPb515()); // 区域别
+                            qd.setNcodeDC(rb.getPb514()); // 产品别
+                            qd.setNcodeDD(rb.getPb516()); // 整机或者零件
+                            // qd.setCuslable("");
+                            // CDR225确认--关于订单规格表判定
 
                             ls_cdrbomsubyn = 'N';
                             ls_cdrothsfk = 'N';
-                            if ("J".equals(facno) || "N".equals(facno) || "G".equals(facno) || "C4".equals(facno) || "K".equals(facno)) {
+                            if ("J".equals(facno) || "N".equals(facno) || "G".equals(facno) || "C4".equals(facno)
+                                    || "K".equals(facno)) {
                                 facno = "C";
                             }
                             Invmas invmas = invmasBean.findByItnbr(itnbr);
@@ -1828,13 +1841,13 @@ public class EAPWebService {
                             if (ls_cdrbomsubyn == null) {
                                 ls_cdrbomsubyn = 'N';
                             }
-                            //==> C0583 2014.9.11  订单规格不管控，但仍需维护身份卡之品号大类
+                            // ==> C0583 2014.9.11 订单规格不管控，但仍需维护身份卡之品号大类
                             if (ls_cdrbomsubyn.equals('N')) {
                                 if (cdrqhadBean.findByItcls(facno, invmas.getItcls()) != null) {
                                     ls_cdrothsfk = 'Y';
                                 }
                             }
-                            //维护身份卡信息 cb_sfkn 可见 ==< DDGA
+                            // 维护身份卡信息 cb_sfkn 可见 ==< DDGA
                             DDGA ddga = ddgaBean.findByREPPB(pa001, pa002, rb.getREPPBPK().getPb003());
                             if (ddga != null) {
                                 if (ls_cdrbomsubyn.equals('Y') || ls_cdrothsfk.equals('Y')) {
@@ -1857,14 +1870,14 @@ public class EAPWebService {
                                     sfkh.setQuono(lsquono);
                                     sfkh.setQtrseq(qdpk.getTrseq());
                                     sfkh.setCdrno("");
-                                    //sfkh.setManno("");
+                                    // sfkh.setManno("");
                                     sfkh.setCdrno("");
                                     sfkh.setSpdesc(ddga.getGa010());
                                     sfkh.setCrtprg("CDR220");
                                     sfkh.setKeyindate(quodate);
                                     sfkh.setVarnr("");
                                     sfkh.setMatcode("");
-                                    //身份卡表身
+                                    // 身份卡表身
                                     List<DDGB> ddgbList = ddgaBean.getDetailList(ddga.getDDGAPK().getGa004());
                                     if (ddgbList.size() > 0) {
                                         for (DDGB ddgb : ddgbList) {
@@ -1886,7 +1899,8 @@ public class EAPWebService {
                                                 sfkd.setSortsdesc(sfksort.getSortsdesc());
                                             }
                                             sfkd.setSpecifit(ddgb.getGb005());
-                                            Cdrsfkspec sfkspec = cdrsfkspecBean.findByPK(facno, ddgb.getGb003(), ddgb.getGb004(), ddgb.getGb005());
+                                            Cdrsfkspec sfkspec = cdrsfkspecBean.findByPK(facno, ddgb.getGb003(), ddgb.getGb004(),
+                                                    ddgb.getGb005());
                                             if (sfkspec != null) {
                                                 sfkd.setSpecifitesc(sfkspec.getSpecifitesc());
                                             }
@@ -1894,17 +1908,17 @@ public class EAPWebService {
                                         }
                                     }
                                     sfkhadd.add(sfkh);
-                                    //cdrhpopsfkBean.persist(sfkh);
-                                    //cdrhpopsfkBean.persistDetailList(facno, sfkdList);
+                                    // cdrhpopsfkBean.persist(sfkh);
+                                    // cdrhpopsfkBean.persistDetailList(facno, sfkdList);
                                 }
                             }
-                            //订单规格表维护
+                            // 订单规格表维护
                             if (wi_s_cdrbomsubyn.equals('Y')) {
                                 if (ls_cdrbomsubyn.equals('Y') && "0".equals(li_cdrbomsubitem)) {
                                     DDGC ddgc = ddgcBean.findByREPPB(pa001, pa002, rb.getREPPBPK().getPb003());
                                     BigDecimal ldc_price = BigDecimal.ZERO;
-                                    //String ls_contractno = qd.getContractno();
-                                    //short li_contseq = qd.getContrseq();
+                                    // String ls_contractno = qd.getContractno();
+                                    // short li_contseq = qd.getContrseq();
                                     if (ddgc != null) {
                                         cdrqbomsubBean.setCompany(facno);
                                         Cdrqbomsub cqbomsub = new Cdrqbomsub();
@@ -1916,22 +1930,26 @@ public class EAPWebService {
                                         cqbomsub.setItnbrf(ddgc.getGc006());
                                         cqbomsub.setSpcode(ddgc.getGc008().charAt(0));
                                         cqbomsub.setSpdesc(ddgc.getGc009());
-                                        //cqbomsub.setSpdesc2("");              //规格说明2
-                                        //规格明细
+                                        // cqbomsub.setSpdesc2(""); //规格说明2
+                                        // 规格明细
                                         List<DDGD> ddgdList = ddgcBean.getDetailList(ddgc.getDDGCPK().getGc004());
                                         if (ddgdList.size() > 0) {
                                             for (int i = 0; i < ddgdList.size(); i++) {
                                                 String ls_defsubitnbrs = "";
-                                                Method setMethod1 = cqbomsub.getClass().getDeclaredMethod("set" + "Itdesc" + (i + 1), String.class);
+                                                Method setMethod1 = cqbomsub.getClass().getDeclaredMethod("set" + "Itdesc" + (i + 1),
+                                                        String.class);
                                                 setMethod1.invoke(cqbomsub, ddgdList.get(i).getGd003());
-                                                Method setMethod2 = cqbomsub.getClass().getDeclaredMethod("set" + "Itnbr" + (i + 1), String.class);
+                                                Method setMethod2 = cqbomsub.getClass().getDeclaredMethod("set" + "Itnbr" + (i + 1),
+                                                        String.class);
                                                 setMethod2.invoke(cqbomsub, ddgdList.get(i).getGd007());
-                                                Method setMethod3 = cqbomsub.getClass().getDeclaredMethod("set" + "Itscode" + (i + 1), String.class);
+                                                Method setMethod3 = cqbomsub.getClass().getDeclaredMethod("set" + "Itscode" + (i + 1),
+                                                        String.class);
                                                 String itscode = "";
                                                 if (ddgdList.get(i).getGd003().equals(ddgdList.get(i).getGd005())) {
-                                                    itscode = "00";         //标准
+                                                    itscode = "00"; // 标准
                                                 } else {
-                                                    Bomsub bomsub = bomsubBean.findByPKItnbrs(ddgc.getGc006(), ddgdList.get(i).getGd007(), ddgdList.get(i).getGd005());
+                                                    Bomsub bomsub = bomsubBean.findByPKItnbrs(ddgc.getGc006(), ddgdList.get(i).getGd007(),
+                                                            ddgdList.get(i).getGd005());
                                                     if (null != bomsub) {
                                                         if (bomsub.getSeqnr() < 10) {
                                                             itscode = "0" + bomsub.getSeqnr();
@@ -1944,17 +1962,20 @@ public class EAPWebService {
                                                     }
                                                 }
                                                 setMethod3.invoke(cqbomsub, itscode);
-                                                //setMethod3.invoke(cqbomsub, ddgdList.get(i).getGd004());
-                                                Method setMethod4 = cqbomsub.getClass().getDeclaredMethod("set" + "Itsdesc" + (i + 1), String.class);
+                                                // setMethod3.invoke(cqbomsub, ddgdList.get(i).getGd004());
+                                                Method setMethod4 = cqbomsub.getClass().getDeclaredMethod("set" + "Itsdesc" + (i + 1),
+                                                        String.class);
                                                 setMethod4.invoke(cqbomsub, ddgdList.get(i).getGd004());
-                                                Method setMethod5 = cqbomsub.getClass().getDeclaredMethod("set" + "Itnbrs" + (i + 1), String.class);
+                                                Method setMethod5 = cqbomsub.getClass().getDeclaredMethod("set" + "Itnbrs" + (i + 1),
+                                                        String.class);
                                                 setMethod4.invoke(cqbomsub, ddgdList.get(i).getGd005());
-                                                //获得规格表的标准定价（确认）
+                                                // 获得规格表的标准定价（确认）
                                                 BigDecimal ldc_stdqty2 = BigDecimal.ZERO;
                                                 BigDecimal ldc_stdqty = BigDecimal.ZERO;
                                                 BigDecimal ldc_price02 = BigDecimal.ZERO;
                                                 BigDecimal ldc_price01 = BigDecimal.ZERO;
-                                                CdrbomsubDefault cbdefault = cdrbomsubDefaultBean.findByPK(facno, qd.getItnbr(), qd.getDmark1());
+                                                CdrbomsubDefault cbdefault = cdrbomsubDefaultBean.findByPK(facno, qd.getItnbr(),
+                                                        qd.getDmark1());
                                                 if (null != cbdefault) {
                                                     for (int ll_defrow = 1; ll_defrow <= 25; ll_defrow++) {
                                                         Field f = cbdefault.getClass().getDeclaredField("itnbr" + ll_defrow);
@@ -1973,61 +1994,67 @@ public class EAPWebService {
                                                         }
 
                                                     }
-                                                    Bomsub bs = bomsubBean.findByPKItnbrs(ddgc.getGc006(), ddgdList.get(i).getGd007(), ddgdList.get(i).getGd005());
+                                                    Bomsub bs = bomsubBean.findByPKItnbrs(ddgc.getGc006(), ddgdList.get(i).getGd007(),
+                                                            ddgdList.get(i).getGd005());
                                                     if (null != bs) {
                                                         ldc_stdqty = bs.getStdqty();
                                                     }
-                                                    //ls_pricingtype='01' //C0583 订单规格差别取固定定价类别'00'，且价格级别为A1价
-                                                    Object[] bompri = cdrqhadBean.getByPricingPolicy(ddgdList.get(i).getGd005(), "01", quodate, "RMB");
-                                                    //取price02 价格
+                                                    // ls_pricingtype='01' //C0583 订单规格差别取固定定价类别'00'，且价格级别为A1价
+                                                    Object[] bompri = cdrqhadBean.getByPricingPolicy(ddgdList.get(i).getGd005(), "01", quodate,
+                                                            "RMB");
+                                                    // 取price02 价格
                                                     ldc_price02 = BigDecimal.valueOf(Double.valueOf(bompri[12].toString()));
                                                     ldc_price = ldc_price.add(ldc_stdqty.multiply(ldc_price02));
 
-                                                    Bomsub bs2 = bomsubBean.findByPKItnbrs(ddgc.getGc006(), ddgdList.get(i).getGd007(), ls_defsubitnbrs);
+                                                    Bomsub bs2 = bomsubBean.findByPKItnbrs(ddgc.getGc006(), ddgdList.get(i).getGd007(),
+                                                            ls_defsubitnbrs);
                                                     if (null != bs2) {
                                                         ldc_stdqty2 = bs2.getStdqty();
                                                     }
                                                     Object[] bompri2 = cdrqhadBean.getByPricingPolicy(ls_defsubitnbrs, "01", quodate, "RMB");
-                                                    //取price01价格
+                                                    // 取price01价格
                                                     ldc_price01 = BigDecimal.valueOf(Double.valueOf(bompri2[11].toString()));
                                                     ldc_subdiffprice = ldc_price.subtract(ldc_stdqty2.multiply(ldc_price01));
-                                                    //wf_get_standpricing1
+                                                    // wf_get_standpricing1
                                                     String ls_difpriclev = cdrqhadBean.getDeflevel(pricingtype);
                                                     int priclev = Integer.parseInt(ls_difpriclev.substring(6));
-                                                    BigDecimal ldc_deflevpricen = BigDecimal.valueOf(Double.valueOf(prpl[10 + priclev].toString()));
+                                                    BigDecimal ldc_deflevpricen = BigDecimal
+                                                            .valueOf(Double.valueOf(prpl[10 + priclev].toString()));
                                                     qd.setDeflevprice(ldc_deflevpricen);
-                                                    double ldc_qxb = (qd.getUnpris().subtract(ldc_deflevpricen).subtract(ldc_subdiffprice)).doubleValue() * 100 / (ldc_deflevpricen).doubleValue();
+                                                    double ldc_qxb = (qd.getUnpris().subtract(ldc_deflevpricen).subtract(ldc_subdiffprice))
+                                                            .doubleValue() * 100 / (ldc_deflevpricen).doubleValue();
                                                     String ls_qxb = BigDecimal.valueOf(ldc_qxb).setScale(2, BigDecimal.ROUND_HALF_UP) + "%";
                                                     qd.setQxb(ls_qxb);
-                                                    //扣减规格差异价格
-                                                    //ldc_unpris = ldc_unpris.subtract(ldc_subdiffprice);
+                                                    // 扣减规格差异价格
+                                                    // ldc_unpris = ldc_unpris.subtract(ldc_subdiffprice);
                                                 }
 
                                             }
 
                                         }
-                                        //cdrqbomsubBean.persist(cqbomsub);
+                                        // cdrqbomsubBean.persist(cqbomsub);
                                         cqbomsubadd.add(cqbomsub);
-                                        //throw new RuntimeException("第" + qdpk.getTrseq() + "笔订单规格表尚未维护不可确认!");
+                                        // throw new RuntimeException("第" + qdpk.getTrseq() +
+                                        // 笔订单规格表尚未维护不可确认!");
                                     }
                                 }
                             }
-//                                BigDecimal ldc_contunpri = qd.getContunpri();
-//                                if (ldc_contunpri.compareTo(BigDecimal.ZERO) > 0) {
-//                                    if (ldc_unpris.compareTo(ldc_contunpri.add(ldc_subdiffprice)) >= 0) {
-//                                        continue;
-//                                    }
-//                                }
+                            // BigDecimal ldc_contunpri = qd.getContunpri();
+                            // if (ldc_contunpri.compareTo(BigDecimal.ZERO) > 0) {
+                            // if (ldc_unpris.compareTo(ldc_contunpri.add(ldc_subdiffprice)) >= 0) {
+                            // continue;
+                            // }
+                            // }
 
                             addedDetail.add(qd);
                         } else if (rb.getPb010().compareTo(BigDecimal.ZERO) > 0) {
                             reppbasry.add(rb);
                         }
                     }
-                    //维护订单配件
+                    // 维护订单配件
                     List<Cdrqasry> cqasryadd = new ArrayList();
                     if (wi_s_acesoryyn == 'Y') {
-                        //获取CRM表身明细中的赠品配件，根据品号分组
+                        // 获取CRM表身明细中的赠品配件，根据品号分组
                         if (reppbasry.size() > 0) {
                             for (Cdrqdta qdadd : addedDetail) {
                                 int k = 0;
@@ -2038,8 +2065,8 @@ public class EAPWebService {
                                         CdrqasryPK cqasrypk = new CdrqasryPK();
                                         cqasrypk.setFacno(facno);
                                         cqasrypk.setQuono(lsquono);
-                                        cqasrypk.setTrseq(qdadd.getCdrqdtaPK().getTrseq());             //报价单身序号
-                                        cqasrypk.setSeq((short) k);                                     //配件表身序号
+                                        cqasrypk.setTrseq(qdadd.getCdrqdtaPK().getTrseq()); // 报价单身序号
+                                        cqasrypk.setSeq((short) k); // 配件表身序号
                                         String ls_dmark = "";
                                         if (qdadd.getDmark1() == null || "".equals(qdadd.getDmark1())) {
                                             if (qdadd.getDmark2() == null || "".equals(qdadd.getDmark2())) {
@@ -2061,30 +2088,30 @@ public class EAPWebService {
                                         cqasry.setStdpar((short) 1);
                                         cqasry.setBadrat(BigDecimal.ZERO);
                                         cqasryadd.add(cqasry);
-                                        //cdrqasryBean.persist(cqasry);
+                                        // cdrqasryBean.persist(cqasry);
                                     }
                                 }
                             }
                         }
                     }
-                    //qh.setOacfuser("");
-                    //qh.setCuspono();
-                    qh.setApprresno(ra.getPa520());                         //审批原因
-                    //qh.setWarranty(Short.MAX_VALUE);
-                    //qh.setNewcusna(facno);
+                    // qh.setOacfuser("");
+                    // qh.setCuspono();
+                    qh.setApprresno(ra.getPa520()); // 审批原因
+                    // qh.setWarranty(Short.MAX_VALUE);
+                    // qh.setNewcusna(facno);
 
                     String quono = cdrqsysBean.getSerialno(facno, quodate, decode, true, "CDR225");
                     if (!quono.equals(lsquono)) {
                         throw new RuntimeException("报价单号产生错误，请确认");
                     }
-                    qhpk.setQuono(quono);   //报价单号
+                    qhpk.setQuono(quono); // 报价单号
                     qh.setCdrqhadPK(qhpk);
                     if ("A1".equals(qh.getLevelp())) {
                         qh.setIsspecial("Y");
                     }
                     if ("Y".equals(wi_s_isquouse)) {
                         if ("Y".equals(qh.getIsspecial()) || lb_checpoa == true) {
-                            qh.setHquosta('R');//抛转OA
+                            qh.setHquosta('R');// 抛转OA
                         }
                     }
                     try {
@@ -2126,7 +2153,8 @@ public class EAPWebService {
                         mailBean.getTo().add("C1491@hanbell.com.cn");
                         mailBean.getTo().add("C1497@hanbell.com.cn");
                         mailBean.setMailSubject("CRM估价单抛转成功");
-                        mailBean.setMailContent("报价单号：" + logreppa.getPa001() + logreppa.getPa002() + "抛转成功，生成ERP单号：" + quono);
+                        mailBean
+                                .setMailContent("报价单号：" + logreppa.getPa001() + logreppa.getPa002() + "抛转成功，生成ERP单号：" + quono);
                         mailBean.notify(new MailNotify());
                         log4j.info("Info", "报表邮件发送成功");
                     } catch (Exception ex) {
@@ -2139,7 +2167,8 @@ public class EAPWebService {
             log4j.info("CRM估计单抛转");
             return "404--读取资料错误";
 
-        } catch (IllegalAccessException | NoSuchFieldException | NoSuchMethodException | RuntimeException | InvocationTargetException | ParseException ex) {
+        } catch (IllegalAccessException | NoSuchFieldException | NoSuchMethodException | RuntimeException
+                | InvocationTargetException | ParseException ex) {
             logreppa.setErrdescription(ex.toString());
             crmreppalogBean.setCompany("C");
             crmreppalogBean.persist(logreppa);
@@ -2149,10 +2178,11 @@ public class EAPWebService {
             mailBean.getTo().add("C1491@hanbell.com.cn");
             mailBean.getTo().add("C1497@hanbell.com.cn");
             mailBean.setMailSubject("CRM估价单抛转失败");
-            mailBean.setMailContent("报价单号：" + logreppa.getPa001() + logreppa.getPa002() + "抛转失败,异常：" + logreppa.getErrdescription());
+            mailBean.setMailContent(
+                    "报价单号：" + logreppa.getPa001() + logreppa.getPa002() + "抛转失败,异常：" + logreppa.getErrdescription());
             mailBean.notify(new MailNotify());
             log4j.info("Info", "报表邮件发送失败");
-            return String.format("执行%s:参数%s时异常%s:", "createERPQuoteByCRMREPPA", pa001 + pa002, "******" + logreppa.getErrdescription());
+            return String.format("执行%s:参数%s时异常%s:", "createERPQuoteByCRMREPPA", pa001 + pa002, "*****" + logreppa.getErrdescription());
         }
 
     }
@@ -2311,7 +2341,7 @@ public class EAPWebService {
                 pt.setIndate(BaseLib.getDate());
                 teamList.add(pt);
             }
-            //需要重设项目编号
+            // 需要重设项目编号
             pp = new cn.hanbell.plm.entity.PLMProject(ep.getProjno(), ep.getProjname());
             pp.setProjman(ep.getProjman());
             pp.setSeries(ep.getProduction());
@@ -2322,7 +2352,7 @@ public class EAPWebService {
             pp.setProjtype(ep.getProjtype());
             pp.setExestatus("N");
             pp.setIndate(BaseLib.getDate());
-            //保存数据
+            // 保存数据
             plmPLMProjectBean.persist(pp, detailAdded, null, null);
             efgpPLMProjectBean.update(ep);
             ret = true;
@@ -2554,7 +2584,8 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "updateCRMPORMYByOAHZCW033")
-    public String updateCRMPORMYByOAHZCW033(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+    public String updateCRMPORMYByOAHZCW033(@WebParam(name = "psn") String psn,
+            @WebParam(name = "status") String status) {
         Boolean ret = false;
         try {
             ret = hzcw033Bean.updateCRMPORMY(psn, status);
@@ -2749,7 +2780,7 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "updateERPPUR120ByOAHKCG006")//-----by C1749 2018/3/28
+    @WebMethod(operationName = "updateERPPUR120ByOAHKCG006") // -----by C1749 2018/3/28
     public String updateERPPUR120ByOAHKCG006(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
         try {
@@ -2861,7 +2892,8 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "updateRootCloudDeviceAlarmStatus")
-    public String updateRootCloudDeviceAlarmStatus(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+    public String updateRootCloudDeviceAlarmStatus(@WebParam(name = "psn") String psn,
+            @WebParam(name = "status") String status) {
         Boolean ret = false;
         try {
             SERI12 e = seri12Bean.findByPSN(psn);
@@ -2872,8 +2904,8 @@ public class EAPWebService {
             if (devices == null || devices.isEmpty()) {
                 throw new NullPointerException("updateRootCloudDeviceAlarmStatus找不到设备信息:" + psn);
             }
-            SERI12grid2SERI12 d = devices.get(0);//云端产生的客诉只有一台设备
-            String response = "";//rootCloudBean.updateAlarmStatus(d.getCa009(), e.getBq508(), status);
+            SERI12grid2SERI12 d = devices.get(0);// 云端产生的客诉只有一台设备
+            String response = "";// rootCloudBean.updateAlarmStatus(d.getCa009(), e.getBq508(), status);
             if (response == null || "".equals(response)) {
                 ret = false;
             } else {
@@ -2933,8 +2965,8 @@ public class EAPWebService {
             if (p == null) {
                 throw new NullPointerException("updateECNGByOAHKNG001找不到流程序号:" + psn);
             }
-            //status: 1代表撤销/终止 ，3代表完成
-            //String url = "http://172.16.80.104:8090/api/EFBK/EFSup";
+            // status: 1代表撤销/终止 ，3代表完成
+            // String url = "http://172.16.80.104:8090/api/EFBK/EFSup";
             String url = p.getBackUrl();
             String tag = p.getTag();
             JSONObject jsonObject = new JSONObject();
@@ -2961,15 +2993,16 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "updateEProcurementByOAHKCG016")
-    public String updateEProcurementByOAHKCG016(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+    public String updateEProcurementByOAHKCG016(@WebParam(name = "psn") String psn,
+            @WebParam(name = "status") String status) {
         Boolean ret = false;
         try {
             HKCG016 p = hkcg016Bean.findByPSN(psn);
             if (p == null) {
                 throw new NullPointerException("updateEProcurementByOAHKCG016找不到流程序号:" + psn);
             }
-            //status: 1代表撤销/终止 ，3代表完成
-            //String url = "http://172.16.80.104:8090/api/EFBK/EFSup";
+            // status: 1代表撤销/终止 ，3代表完成
+            // String url = "http://172.16.80.104:8090/api/EFBK/EFSup";
             String url = p.getBackUrl();
             String tag = p.getTag();
             JSONObject jsonObject = new JSONObject();
@@ -2987,7 +3020,8 @@ public class EAPWebService {
                 data1.put("Facno", p.getFacno());
                 data1.put("Vdrno", p.getVdrno());
                 jsonarr.put(0, data1);
-                if ("G".equals(p.getFacno()) || "N".equals(p.getFacno()) || "J".equals(p.getFacno()) || "C4".equals(p.getFacno())) {
+                if ("G".equals(p.getFacno()) || "N".equals(p.getFacno()) || "J".equals(p.getFacno())
+                        || "C4".equals(p.getFacno())) {
                     JSONObject data2 = new JSONObject();
                     data2.put("Facno", "C");
                     data2.put("Vdrno", p.getVdrno());
@@ -3008,7 +3042,8 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "rollbackERPCdrqhadByCRMREPPA")
-    public String rollbackERPCdrqhadByCRMREPPA(@WebParam(name = "facno") String facno, @WebParam(name = "pa001") String pa001, @WebParam(name = "pa002") String pa002) {
+    public String rollbackERPCdrqhadByCRMREPPA(@WebParam(name = "facno") String facno,
+            @WebParam(name = "pa001") String pa001, @WebParam(name = "pa002") String pa002) {
         String ret = "404";
         try {
             ret = cdrqhadBean.rollbackFromCRMREPPA(facno, pa001, pa002);
@@ -3081,7 +3116,8 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "updateCRMREPTDFromOAHKFW006")
-    public String updateCRMREPTDFromOAHKFW006(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+    public String updateCRMREPTDFromOAHKFW006(@WebParam(name = "psn") String psn,
+            @WebParam(name = "status") String status) {
         Boolean ret = false;
         try {
             ret = hkfw006Bean.updateReptdByOAHKFW006(psn, status);
