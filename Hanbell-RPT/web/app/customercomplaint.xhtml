@@ -43,7 +43,7 @@
                     <p:commandButton id="btnLoad" value="刷新" actionListener="#{customerComplaintManagedBean.init()}"  icon="ui-icon-search"  update=":formList"/>
                 </f:facet>
                 <f:facet name="right">
-                    <p:commandButton id="btnPrint" value="导出" actionListener="#{customerComplaintManagedBean.print()}" icon="ui-icon-print"/>
+                    <p:commandButton id="btnPrint" value="导出" actionListener="#{customerComplaintManagedBean.print()}" icon="ui-icon-print" update=":formList"/>
                     <p:commandButton id="btnReset" value="重置" actionListener="#{customerComplaintManagedBean.reset()}" icon="ui-icon-refresh"
                                      update=":formList"/>
                     <p:commandButton id="btnQuery" value="查询" actionListener="#{customerComplaintManagedBean.query()}" icon="ui-icon-search"
@@ -154,9 +154,9 @@
                         <p:column>
                             <h:outputText id="varnr" value="#{customerComplaintManagedBean.currentEntity.varnr}" title="varnr"/>
                         </p:column>
-                        <p:column styleClass="Wid20"><h:outputText value="产品别"/></p:column>
+                        <p:column styleClass="Wid20"><h:outputText value="机型"/></p:column>
                         <p:column styleClass="Wid30">
-                            <h:outputText id="ncodeCD" value="#{customerComplaintManagedBean.currentEntity.ncodeDC}" title="ncodeCD" />
+                            <h:outputText id="ncodeDD" value="#{customerComplaintManagedBean.currentEntity.ncodeDD}" title="ncodeDD" />
                         </p:column>
                     </p:row>
                     <p:row>
@@ -188,33 +188,43 @@
                         </p:column>
                     </p:row>
                     <p:row>
+                        <p:column><h:outputText value="费用合计"/></p:column>
+                        <p:column>
+                            <h:outputText   value="#{customerComplaintManagedBean.currentEntity.totalamount}"/>
+                        </p:column>
+                        <p:column styleClass="Wid20"><h:outputText value="产品别"/></p:column>
+                        <p:column styleClass="Wid30">
+                            <h:outputText id="ncodeCD" value="#{customerComplaintManagedBean.currentEntity.ncodeDC}" title="ncodeCD" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
                         <p:column><h:outputText value="材料费"/></p:column>
                         <p:column>
-                            <h:outputText id="clcost" value="#{customerComplaintManagedBean.currentEntity.clcost}" title="clcost"/>
+                            <h:outputText id="clcost" value="#{customerComplaintManagedBean.currentEntity.materialcost}" title="materialcost"/>
                         </p:column>
                         <p:column><h:outputText value="人工费"/></p:column>
                         <p:column>
-                            <h:outputText id="rgcost" value="#{customerComplaintManagedBean.currentEntity.rgcost}" title="rgcost"/>
+                            <h:outputText id="rgcost" value="#{customerComplaintManagedBean.currentEntity.labourcost}" title="labourcost"/>
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column><h:outputText value="差旅费"/></p:column>
                         <p:column>
-                            <h:outputText id="clvcost" value="#{customerComplaintManagedBean.currentEntity.clvcost}" title="clvcost"/>
+                            <h:outputText id="clvcost" value="#{customerComplaintManagedBean.currentEntity.travelexpense}" title="travelexpense"/>
                         </p:column>
                         <p:column><h:outputText value="其他"/></p:column>
                         <p:column>
-                            <h:outputText id="other" value="#{customerComplaintManagedBean.currentEntity.other}" title="other"/>
+                            <h:outputText id="other" value="#{customerComplaintManagedBean.currentEntity.othercost}" title="othercost"/>
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column><h:outputText value="运输费（含空运、吊装费）"/></p:column>
                         <p:column>
-                            <h:outputText id="yscost" value="#{customerComplaintManagedBean.currentEntity.yscost}" title="yscost"/>
+                            <h:outputText id="yscost" value="#{customerComplaintManagedBean.currentEntity.tansportexpense}" title="tansportexpense"/>
                         </p:column>
                         <p:column><h:outputText value="不良导致索赔款"/></p:column>
                         <p:column>
-                            <h:outputText id="reparations" value="#{customerComplaintManagedBean.currentEntity.reparations}" title="reparations"/>
+                            <h:outputText id="reparations" value="#{customerComplaintManagedBean.currentEntity.claimamount}" title="claimamount"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
@@ -295,13 +305,13 @@
                                 <f:facet name="header">
                                     <h:outputText value="序号"/>
                                 </f:facet>
-                                <h:outputText value="#{item.serialno}"/>
+                                <h:outputText value="#{item.serialno}" style="cursor:pointer" title="OA流程单号：#{item.sourcesno}"/>
                             </p:column>
                             <p:column styleClass="Wid10">
                                 <f:facet name="header">
                                     <h:outputText value="费用类型"/>
                                 </f:facet>
-                                <h:outputText value="#{item.expensetype}" title="#{item.oano}"/>
+                                <h:outputText value="#{item.expensetype}" />
                             </p:column>
                             <p:column styleClass="Wid10">
                                 <f:facet name="header">
@@ -325,7 +335,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="备注"/>
                                 </f:facet>
-                                <h:outputText value="备注" title="#{item.remark1}" />
+                                <h:outputText value="备注" style="cursor:pointer" title="#{item.remark1==''? 'NULL': item.remark1 }" />
                             </p:column>
                         </p:dataTable>
                     </p:tab>
@@ -335,7 +345,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="数据来源"/>
                                 </f:facet>
-                                <h:outputText value="#{item.sources}" title="#{item.sourcesno}"/>
+                                <h:outputText value="#{item.sources}" style="cursor:pointer" title="数据源单号：#{item.sourcesno}"/>
                             </p:column>
                             <p:column styleClass="Wid15">
                                 <f:facet name="header">
@@ -343,7 +353,7 @@
                                 </f:facet>
                                 <h:outputText value="#{item.fwno}"/>
                             </p:column>
-                             <p:column styleClass="Wid10">
+                            <p:column styleClass="Wid10">
                                 <f:facet name="header">
                                     <h:outputText value="申请人"/>
                                 </f:facet>
@@ -383,7 +393,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="备注"/>
                                 </f:facet>
-                                <h:outputText value="备注" title="#{item.remark1}" />
+                                <h:outputText value="备注" style="cursor:pointer" title="#{item.remark1 ==''? 'NULL': item.remark1 }" />
                             </p:column>
                         </p:dataTable>
                     </p:tab>

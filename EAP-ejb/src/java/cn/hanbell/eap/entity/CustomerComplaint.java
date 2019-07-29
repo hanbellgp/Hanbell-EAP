@@ -341,8 +341,8 @@ public class CustomerComplaint extends BaseEntity {
         return "cn.hanbell.eap.entity.CustomerComplaint[ id=" + id + " ]";
     }
     
-    public BigDecimal addAll(){
-        return this.materialcost.add(this.tansportexpense).add(this.travelexpense).add(this.othercost).add(this.labourcost).add(this.claimamount);
+    public void addAll(){
+        this.totalamount= this.materialcost.add(this.tansportexpense).add(this.travelexpense).add(this.othercost).add(this.labourcost).add(this.claimamount);
     }
 
 }

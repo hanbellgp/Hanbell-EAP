@@ -112,8 +112,8 @@ public class CustomerComplaintBean extends SuperEJBForEAP<CustomerComplaint> {
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\" style=\"text-align:center\">");
             sb.append("<tr><th width=\"6%\">产品别</th><th width=\"10%\">客诉单号</th><th width=\"6%\">客户名称</th><th width=\"20%\">不良原因</th><th width=\"6%\">责任单位</th>");
-            sb.append("<th width=\"6%\">责任判断比率</th><th width=\"6%\">材料费</th><th width=\"6%\">人工费</th><th width=\"6%\">运输费(含空运、吊装费)</th>");
-            sb.append("<th width=\"6%\">差旅费</th><th width=\"6%\">不良导致索赔款</th><th width=\"6%\">其他</th><th width=\"10%\">结案时间</th></tr>");
+            sb.append("<th width=\"6%\">责任判断比率</th><th width=\"5%\">材料费</th><th width=\"5%\">人工费</th><th width=\"5%\">运输费(含空运、吊装费)</th>");
+            sb.append("<th width=\"5%\">差旅费</th><th width=\"5%\">不良导致索赔款</th><th width=\"5%\">其他</th><th width=\"6%\">费用合计</th><th width=\"10%\">结案时间</th></tr>");
             sb.append("<tr><td>").append(plaint.getNcodeDC()).append("</td>");
             sb.append("<td>").append(plaint.getKfno()).append("</td>");
             sb.append("<td>").append(plaint.getCusna()).append("</td>");
@@ -126,11 +126,12 @@ public class CustomerComplaintBean extends SuperEJBForEAP<CustomerComplaint> {
             sb.append("<td>").append(plaint.getTravelexpense().toString()).append("</td>");
             sb.append("<td>").append(plaint.getClaimamount().toString()).append("</td>");
             sb.append("<td>").append(plaint.getOthercost().toString()).append("</td>");
+            sb.append("<td>").append(plaint.getTotalamount().toString()).append("</td>");
             sb.append("<td>").append(BaseLib.formatDate("yyyy/MM/dd HH:mm", plaint.getOverdate())).append("</td>");
             sb.append("</tr></table></div>");
             sb.append("<div style=\"text-align:center;width:100%\" class=\"title\">服务领退材料明细</div>");
             sb.append("<div class=\"tbl\"><table style=\"text-align:center\" width=\"100%\">");
-            sb.append("<tr><th>客诉单号</th><th>服务单号</th><th>类型</th><th>领退料单号</th><th>品号</th><th>品名</th><th>数量</th><th>单位</th><th>总金额</th></tr>");
+            sb.append("<tr><th>客诉单号</th><th>服务单号</th><th>类型</th><th>领退料单号</th><th>品号</th><th>品名</th><th>数量</th><th>单位</th><th>金额</th></tr>");
             if (plaintDetailList != null && !plaintDetailList.isEmpty()) {
                 for (CustomerComplaintMaterial cpd : plaintDetailList) {
                     sb.append(getHtmlTableRow(cpd));

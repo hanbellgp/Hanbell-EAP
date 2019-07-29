@@ -209,10 +209,11 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                         cce.setDeptna(row[7] == null ? "null" : row[7].toString());
                         cce.setOccurdate(row[8] == null ? "null" : row[8].toString());
                         cce.setExpensetype(row[9] == null ? "null" : row[9].toString());
-                        cce.setCustom1(row[10] == null ? "null" : row[11].toString());
-                        cce.setCustom2(row[11] == null ? "null" : row[12].toString());
+                        cce.setCustom1(row[10] == null ? "null" : row[10].toString());
+                        cce.setCustom2(row[11] == null ? "null" : row[11].toString());
                         cce.setCustom3(row[12] == null ? "null" : row[12].toString());
-                        cce.setCustom4(row[13] == null ? "null" : row[13].toString());
+                        cce.setCustom4("null");
+                        cce.setSourcesno(row[13] == null ? "null" : row[13].toString());
                         cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
                         cce.setRemark1(row[15] == null ? "null" : row[15].toString());
                         tansportList.add(cce);
@@ -289,7 +290,6 @@ public class CustomerComplaintSetManagedBean implements Serializable {
                     }
                 }
                 //资料更新
-//资料更新
                 List<CustomerComplaintExpense> expenses = complaintExpenseBean.findKfno(kfno);
                 if (expenses != null && !expenses.isEmpty()) {
                     complaintExpenseBean.delete(expenses);

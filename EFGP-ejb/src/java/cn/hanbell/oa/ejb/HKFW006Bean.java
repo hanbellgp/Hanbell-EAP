@@ -484,11 +484,11 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
      */
     public List getTansportExpense(String kfno) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT 'tansportexpense' as type ,'OA退货通知单' as  sources,kfno,fwno,applyuser as userno,userName as userna  ");
+        sb.append(" SELECT 'tansportexpense' as type ,N'OA退货通知单' as  sources,kfno,fwno,applyuser as userno,userName as userna  ");
         sb.append("  ,applydept as deptno,organizationUnitName as deptna,CONVERT(varchar(100), returndate, 112) as occurdate, ");
         sb.append(" (CASE rettype WHEN '1' THEN N'零件退货' WHEN '2' THEN N'整机退货' ELSE '' END ) as expensetype ");
         sb.append("  ,cptype as custom1,cusno as custom2,cusna as custom3,CRMNO as custom4, (isnull(yf,0)+isnull(dzf,0)) as 'expense' , ");
-        sb.append("  (CASE WHEN mark!='' THEN (mark+'; '+yymark)ELSE yymark END ) as remark1,SerialNumber as sourcesno FROM HK_FW005 fw LEFT OUTER JOIN Users s on s.id=applyuser ");
+        sb.append("  (CASE WHEN mark!='' THEN (mark+'; '+yymark)ELSE yymark END ) as remark1,SerialNumber as sourcesno FROM HK_FW006 fw LEFT OUTER JOIN Users s on s.id=applyuser ");
         sb.append("  LEFT OUTER JOIN OrganizationUnit o on o.id=applydept WHERE kfno = '${kfno}' ");
         try {
             String sql = sb.toString().replace("${kfno}", kfno);

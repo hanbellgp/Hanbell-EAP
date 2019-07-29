@@ -105,7 +105,7 @@ public class HKFW005Bean extends SuperEJBForEFGP<HKFW005> {
      */
     public List getTansportExpense(String kfno) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT 'tansportexpense' as type ,'OA服务支援单' as  sources,kfno,fwno,applyuser as userno,userName as userna  ");
+        sb.append(" SELECT 'tansportexpense' as type ,N'OA服务支援单' as  sources,kfno,fwno,applyuser as userno,userName as userna  ");
         sb.append("  ,applydept as deptno,organizationUnitName as deptna, CONVERT(varchar(100), shpdate, 112) as occurdate, ");
         sb.append(" (CASE type WHEN '1' THEN '零件支援' WHEN '2' THEN '整机支援'WHEN '1' THEN '维修支援'WHEN '1' THEN '提货' ELSE '' END ) as expensetype, ");
         sb.append(" ysstyle as custom1,cusno as custom2,cusna as custom3, shpno as custom4,isnull(total,0) as 'expense' , ");

@@ -166,7 +166,10 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
             cell11.setCellValue(cp.getOthercost().toString());
             Cell cell12 = row.createCell(12);
             cell12.setCellStyle(style.get("cell"));
-            cell12.setCellValue(cp.getOverdate() != null ? BaseLib.formatDate("yyyy-MM-dd HH:mm", cp.getOverdate()) : "");
+            cell12.setCellValue(cp.getTotalamount().toString());
+            Cell cell13 = row.createCell(13);
+            cell13.setCellStyle(style.get("cell"));
+            cell13.setCellValue(cp.getOverdate() != null ? BaseLib.formatDate("yyyy-MM-dd HH:mm", cp.getOverdate()) : "");
         }
         //表格二
         String[] title2 = getCuscomPlaintDetailTitle();
@@ -231,15 +234,15 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
     }
 
     public String[] getCuscomPlaintTitle() {
-        return new String[]{"产品别", "客诉单号", "客户名称", "不良原因", "责任单位", "责任判断比率", "材料费", "人工费", "运输费(含空运、吊装费)", "差旅费", "不良导致索赔款", "其他", "结案时间"};
+        return new String[]{"产品别", "客诉单号", "客户名称", "不良原因", "责任单位", "责任判断比率", "材料费", "人工费", "运输费(含空运、吊装费)", "差旅费", "不良导致索赔款", "其他", "费用合计", "结案时间"};
     }
 
     public String[] getCuscomPlaintDetailTitle() {
-        return new String[]{"客诉单号", "服务单号", "类型", "领退料单号", "品号", "品名", "数量", "单位", "总金额"};
+        return new String[]{"客诉单号", "服务单号", "类型", "领退料单号", "品号", "品名", "数量", "单位", "金额"};
     }
 
     private int[] getCuscomPlaintWidth() {
-        return new int[]{10, 20, 15, 60, 15, 15, 15, 15, 15, 15, 15, 15, 20};
+        return new int[]{10, 20, 15, 60, 15, 15, 15, 15, 15, 15, 15, 15, 15, 20};
     }
 
     private int[] getCuscomPlaintDetailWidth() {
