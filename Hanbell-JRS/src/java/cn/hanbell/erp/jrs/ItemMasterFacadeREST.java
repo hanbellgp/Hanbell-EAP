@@ -52,5 +52,4 @@ public class ItemMasterFacadeREST extends SuperRESTForERP<ItemMaster> {
 //    public List<ItemMaster> findByModelAndCategory(@PathParam("model") String model, @PathParam("category") String category, @PathParam("offset") int offset, @PathParam("pageSize") int pageSize) {
 //        return itemMasterBean.findByModelAndCategory(model, category, offset, pageSize);
 //    }
-
 }

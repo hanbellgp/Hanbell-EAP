@@ -39,7 +39,7 @@ public class LoanPropertyFacadeREST extends SuperRESTForEFGP<KV> {
                 dataList.add(new KV("0", "销售营业"));
                 dataList.add(new KV("1", "服务维修"));
                 dataList.add(new KV("2", "考察、实习、培训"));
-                dataList.add(new KV("3", "其他"));            
+                dataList.add(new KV("3", "其他"));
                 return dataList;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
