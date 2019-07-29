@@ -28,29 +28,70 @@ import javax.ws.rs.core.PathSegment;
 @javax.enterprise.context.RequestScoped
 public class OrganizationUnitFacadeREST extends SuperRESTForEFGP<OrganizationUnit> {
 
-    @EJB
-    private OrganizationUnitBean organizationUnitBean;
+  @EJB
+  private OrganizationUnitBean organizationUnitBean;
 
-    @Override
-    protected SuperEJBForEFGP getSuperEJB() {
-        return organizationUnitBean;
-    }
+  @Override
+  protected SuperEJBForEFGP getSuperEJB() {
+    return organizationUnitBean;
+  }
 
-    public OrganizationUnitFacadeREST() {
-        super(OrganizationUnit.class);
-    }
+  public OrganizationUnitFacadeREST() {
+    super(OrganizationUnit.class);
+  }
 
-    @GET
-    @Path("{filters}/{sorts}/{offset}/{pageSize}/size")
-    @Produces({MediaType.APPLICATION_JSON})
-    public OrganizationUnitResponseResult findByFiltersWithSize(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-        data = super.findWithSize(filters, sorts, offset, pageSize, appid, token);
-        OrganizationUnitResponseResult r = new OrganizationUnitResponseResult();
-        for (Map.Entry<Integer, List<OrganizationUnit>> entrySet : data.entrySet()) {
-            r.setSize(entrySet.getKey());
-            r.setResult(entrySet.getValue());
-        }
-        return r;
+  @GET
+  @Path("{filters}/{sorts}/{offset}/{pageSize}/size")
+  @Produces({ MediaType.APPLICATION_JSON })
+  public OrganizationUnitResponseResult findByFiltersWithSize(@PathParam("filters") PathSegment filters,
+      @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset,
+      @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    data = super.findWithSize(filters, sorts, offset, pageSize, appid, token);
+    OrganizationUnitResponseResult r = new OrganizationUnitResponseResult();
+    for (Map.Entry<Integer, List<OrganizationUnit>> entrySet : data.entrySet()) {
+      r.setSize(entrySet.getKey());
+      r.setResult(entrySet.getValue());
     }
+    return r;
+  }
+
+}
+
+class OrganizationUnitResponseResult {
+
+  private Integer size;
+  private List<OrganizationUnit> result;
+
+  public OrganizationUnitResponseResult() {
+
+  }
+
+  /**
+   * @return the size
+   */
+  public Integer getSize() {
+    return size;
+  }
+
+  /**
+   * @param size the size to set
+   */
+  public void setSize(Integer size) {
+    this.size = size;
+  }
+
+  /**
+   * @return the result
+   */
+  public List<OrganizationUnit> getResult() {
+    return result;
+  }
+
+  /**
+   * @param result the result to set
+   */
+  public void setResult(List<OrganizationUnit> result) {
+    this.result = result;
+  }
 
 }
