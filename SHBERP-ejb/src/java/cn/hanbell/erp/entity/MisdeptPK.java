@@ -82,5 +82,5 @@ public class MisdeptPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.MisdeptPK[ facno=" + facno + ", depno=" + depno + " ]";
     }
-    
+
 }

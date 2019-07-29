@@ -99,5 +99,5 @@ public class ApmpayPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.ApmpayPK[ facno=" + facno + ", paycode=" + paycode + ", payno=" + payno + " ]";
     }
-    
+
 }

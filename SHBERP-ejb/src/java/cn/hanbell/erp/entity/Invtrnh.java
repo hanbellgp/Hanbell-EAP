@@ -76,7 +76,7 @@ public class Invtrnh implements Serializable {
     @Size(max = 8)
     @Column(name = "hmark2")
     private String hmark2;
-      @Basic(optional = false)
+    @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 12)
     @Column(name = "wareh")

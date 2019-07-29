@@ -17,19 +17,19 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class ApmpyhBean  extends  SuperEJBForERP<Apmpyh>{
-    
+public class ApmpyhBean extends SuperEJBForERP<Apmpyh> {
+
     public ApmpyhBean() {
         super(Apmpyh.class);
     }
 
-    public  Apmpyh findByPK(String facno ,String acpno){
-       Query query = getEntityManager().createNamedQuery("Apmpyh.findByPK");
+    public Apmpyh findByPK(String facno, String acpno) {
+        Query query = getEntityManager().createNamedQuery("Apmpyh.findByPK");
         query.setParameter("facno", facno);
         query.setParameter("acpno", acpno);
         try {
             Apmpyh apmpyh = (Apmpyh) query.getSingleResult();
-            return apmpyh ;
+            return apmpyh;
         } catch (Exception ex) {
             return null;
         }

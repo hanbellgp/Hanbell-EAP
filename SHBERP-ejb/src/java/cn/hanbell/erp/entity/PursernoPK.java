@@ -117,5 +117,5 @@ public class PursernoPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.PursernoPK[ facno=" + facno + ", prono=" + prono + ", difcode=" + difcode + ", keyformat=" + keyformat + " ]";
     }
-    
+
 }

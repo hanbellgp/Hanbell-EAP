@@ -100,5 +100,5 @@ public class InvclswahPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.InvclswahPK[ itcls=" + itcls + ", facno=" + facno + ", prono=" + prono + " ]";
     }
-    
+
 }

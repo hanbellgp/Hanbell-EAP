@@ -198,5 +198,5 @@ public class Invwh implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Invwh[ wareh=" + wareh + " ]";
     }
-    
+
 }

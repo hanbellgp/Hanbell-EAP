@@ -29,18 +29,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "bomasry")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Bomasry.findAll", query = "SELECT b FROM Bomasry b")
-    , @NamedQuery(name = "Bomasry.findByItnbrf", query = "SELECT b FROM Bomasry b WHERE b.bomasryPK.itnbrf = :itnbrf")
-    , @NamedQuery(name = "Bomasry.findByItnbr", query = "SELECT b FROM Bomasry b WHERE b.bomasryPK.itnbr = :itnbr")
-    , @NamedQuery(name = "Bomasry.findByItnbrfAndCmccode", query = "SELECT b FROM Bomasry b WHERE b.bomasryPK.itnbrf = :itnbrf AND b.bomasryPK.cmccode = :cmccode")
-    , @NamedQuery(name = "Bomasry.findBySeqnr", query = "SELECT b FROM Bomasry b WHERE b.seqnr = :seqnr")
-    , @NamedQuery(name = "Bomasry.findByProsscode", query = "SELECT b FROM Bomasry b WHERE b.prosscode = :prosscode")
-    , @NamedQuery(name = "Bomasry.findByStdqty", query = "SELECT b FROM Bomasry b WHERE b.stdqty = :stdqty")
-    , @NamedQuery(name = "Bomasry.findByStdpar", query = "SELECT b FROM Bomasry b WHERE b.stdpar = :stdpar")
-    , @NamedQuery(name = "Bomasry.findByBadrat", query = "SELECT b FROM Bomasry b WHERE b.badrat = :badrat")
-    , @NamedQuery(name = "Bomasry.findByUserno", query = "SELECT b FROM Bomasry b WHERE b.userno = :userno")
-    , @NamedQuery(name = "Bomasry.findByIndate", query = "SELECT b FROM Bomasry b WHERE b.indate = :indate")
-    , @NamedQuery(name = "Bomasry.findByCmccode", query = "SELECT b FROM Bomasry b WHERE b.bomasryPK.cmccode = :cmccode")})
+    @NamedQuery(name = "Bomasry.findAll", query = "SELECT b FROM Bomasry b"),
+    @NamedQuery(name = "Bomasry.findByItnbrf", query = "SELECT b FROM Bomasry b WHERE b.bomasryPK.itnbrf = :itnbrf"),
+    @NamedQuery(name = "Bomasry.findByItnbr", query = "SELECT b FROM Bomasry b WHERE b.bomasryPK.itnbr = :itnbr"),
+    @NamedQuery(name = "Bomasry.findByItnbrfAndCmccode", query = "SELECT b FROM Bomasry b WHERE b.bomasryPK.itnbrf = :itnbrf AND b.bomasryPK.cmccode = :cmccode"),
+    @NamedQuery(name = "Bomasry.findBySeqnr", query = "SELECT b FROM Bomasry b WHERE b.seqnr = :seqnr"),
+    @NamedQuery(name = "Bomasry.findByProsscode", query = "SELECT b FROM Bomasry b WHERE b.prosscode = :prosscode"),
+    @NamedQuery(name = "Bomasry.findByStdqty", query = "SELECT b FROM Bomasry b WHERE b.stdqty = :stdqty"),
+    @NamedQuery(name = "Bomasry.findByStdpar", query = "SELECT b FROM Bomasry b WHERE b.stdpar = :stdpar"),
+    @NamedQuery(name = "Bomasry.findByBadrat", query = "SELECT b FROM Bomasry b WHERE b.badrat = :badrat"),
+    @NamedQuery(name = "Bomasry.findByUserno", query = "SELECT b FROM Bomasry b WHERE b.userno = :userno"),
+    @NamedQuery(name = "Bomasry.findByIndate", query = "SELECT b FROM Bomasry b WHERE b.indate = :indate"),
+    @NamedQuery(name = "Bomasry.findByCmccode", query = "SELECT b FROM Bomasry b WHERE b.bomasryPK.cmccode = :cmccode")})
 public class Bomasry implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -18,6 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Embeddable
 public class PricingPK implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -99,5 +100,5 @@ public class PricingPK implements Serializable {
     public String toString() {
         return "cn.hanbell.shb.erp.PricingPK[ pricingid=" + pricingid + ", itnbr=" + itnbr + ", itemno=" + itemno + " ]";
     }
-    
+
 }

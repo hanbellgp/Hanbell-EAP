@@ -35,10 +35,10 @@ public class CdrsfkrnoBean extends SuperEJBForERP<Cdrsfkrno> {
         }
     }
 
-     public int getMaxno(String facno, String trtype, String keyformat) {
-        int li_maxno =0;
+    public int getMaxno(String facno, String trtype, String keyformat) {
+        int li_maxno = 0;
         this.setCompany(facno);
-        Cdrsfkrno cdrsfkrno = findByPK(facno, trtype, keyformat);    
+        Cdrsfkrno cdrsfkrno = findByPK(facno, trtype, keyformat);
         try {
             li_maxno = cdrsfkrno.getMaxseq();
         } catch (Exception ex) {
@@ -46,5 +46,5 @@ public class CdrsfkrnoBean extends SuperEJBForERP<Cdrsfkrno> {
         }
         return li_maxno;
     }
-    
+
 }

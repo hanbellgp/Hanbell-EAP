@@ -272,7 +272,7 @@ public class Purvdr implements Serializable {
     private String fkfs;
 
     public Purvdr() {
-        this.shr="mis";
+        this.shr = "mis";
         this.shzt = "Y";
     }
 
@@ -752,5 +752,5 @@ public class Purvdr implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Purvdr[ vdrno=" + vdrno + " ]";
     }
-    
+
 }

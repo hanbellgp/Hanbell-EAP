@@ -26,18 +26,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrqsys")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrqsys.findAll", query = "SELECT c FROM Cdrqsys c")
-    , @NamedQuery(name = "Cdrqsys.findByFacno", query = "SELECT c FROM Cdrqsys c WHERE c.facno = :facno")
-    , @NamedQuery(name = "Cdrqsys.findByHmark1", query = "SELECT c FROM Cdrqsys c WHERE c.hmark1 = :hmark1")
-    , @NamedQuery(name = "Cdrqsys.findByHmark1kind", query = "SELECT c FROM Cdrqsys c WHERE c.hmark1kind = :hmark1kind")
-    , @NamedQuery(name = "Cdrqsys.findByHmark2", query = "SELECT c FROM Cdrqsys c WHERE c.hmark2 = :hmark2")
-    , @NamedQuery(name = "Cdrqsys.findByAutono", query = "SELECT c FROM Cdrqsys c WHERE c.autono = :autono")
-    , @NamedQuery(name = "Cdrqsys.findByAutochar", query = "SELECT c FROM Cdrqsys c WHERE c.autochar = :autochar")
-    , @NamedQuery(name = "Cdrqsys.findByNofmt", query = "SELECT c FROM Cdrqsys c WHERE c.nofmt = :nofmt")
-    , @NamedQuery(name = "Cdrqsys.findByCntype", query = "SELECT c FROM Cdrqsys c WHERE c.cntype = :cntype")
-    , @NamedQuery(name = "Cdrqsys.findByRepeattrn", query = "SELECT c FROM Cdrqsys c WHERE c.repeattrn = :repeattrn")
-    , @NamedQuery(name = "Cdrqsys.findByCnmgn", query = "SELECT c FROM Cdrqsys c WHERE c.cnmgn = :cnmgn")
-    , @NamedQuery(name = "Cdrqsys.findByKvalue", query = "SELECT c FROM Cdrqsys c WHERE c.kvalue = :kvalue")})
+    @NamedQuery(name = "Cdrqsys.findAll", query = "SELECT c FROM Cdrqsys c"),
+    @NamedQuery(name = "Cdrqsys.findByFacno", query = "SELECT c FROM Cdrqsys c WHERE c.facno = :facno"),
+    @NamedQuery(name = "Cdrqsys.findByHmark1", query = "SELECT c FROM Cdrqsys c WHERE c.hmark1 = :hmark1"),
+    @NamedQuery(name = "Cdrqsys.findByHmark1kind", query = "SELECT c FROM Cdrqsys c WHERE c.hmark1kind = :hmark1kind"),
+    @NamedQuery(name = "Cdrqsys.findByHmark2", query = "SELECT c FROM Cdrqsys c WHERE c.hmark2 = :hmark2"),
+    @NamedQuery(name = "Cdrqsys.findByAutono", query = "SELECT c FROM Cdrqsys c WHERE c.autono = :autono"),
+    @NamedQuery(name = "Cdrqsys.findByAutochar", query = "SELECT c FROM Cdrqsys c WHERE c.autochar = :autochar"),
+    @NamedQuery(name = "Cdrqsys.findByNofmt", query = "SELECT c FROM Cdrqsys c WHERE c.nofmt = :nofmt"),
+    @NamedQuery(name = "Cdrqsys.findByCntype", query = "SELECT c FROM Cdrqsys c WHERE c.cntype = :cntype"),
+    @NamedQuery(name = "Cdrqsys.findByRepeattrn", query = "SELECT c FROM Cdrqsys c WHERE c.repeattrn = :repeattrn"),
+    @NamedQuery(name = "Cdrqsys.findByCnmgn", query = "SELECT c FROM Cdrqsys c WHERE c.cnmgn = :cnmgn"),
+    @NamedQuery(name = "Cdrqsys.findByKvalue", query = "SELECT c FROM Cdrqsys c WHERE c.kvalue = :kvalue")})
 public class Cdrqsys implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -347,5 +347,5 @@ public class Cdrqsys implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrqsys[ facno=" + facno + " ]";
     }
-    
+
 }

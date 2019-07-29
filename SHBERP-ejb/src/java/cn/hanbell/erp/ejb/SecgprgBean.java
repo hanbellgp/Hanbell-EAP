@@ -114,7 +114,7 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
         this.setCompany(h.getFacno());
         try {
             String prgno, sysno, groupno;
-            //表身循环
+            // 表身循环
             for (int i = 0; i < details.size(); i++) {
 
                 SHBERPMIS226Detail detail = details.get(i);
@@ -466,25 +466,26 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
                         erpuser.setDuedate(BaseLib.getDate());
                         erpuser.setGtype(gtype);
                         erpuser.setStatuspass("0132");
-                        //预设空密码登录时修改
+                        // 预设空密码登录时修改
                         secuserBean.persist(erpuser);
 
-                        //加入miscode类别9E中
+                        // 加入miscode类别9E中
                         miscodeBean.setCompany(h.getFacno());
                         miscodeBean.persistIfNotExist("9E", erpuser.getUserno(), erpuser.getUsername(), 'N');
-
+                        // 增加部门
                         misdeptBean.setCompany(h.getFacno());
                         Misdept dept = misdeptBean.findByDepno(h.getDept());
                         if (dept == null) {
-                            //增加部门
                             OrganizationUnit ou = organizationUnitBean.findById(h.getDept());
                             dept = new Misdept(h.getFacno(), h.getDept());
                             dept.setDepname(ou.getOrganizationUnitName());
                             dept.setUplevel("/");
                             dept.setChildren(0);
                             misdeptBean.persist(dept);
+                            // 加入miscode类别GE中
+                            miscodeBean.persistIfNotExist("GE", dept.getMisdeptPK().getDepno(), dept.getDepname(), 'N');
                         }
-                        //人员加入部门
+                        // 人员加入部门
                         Secmemb m = new Secmemb(h.getFacno(), h.getDept(), h.getApplyuser());
                         m.setSupvisor('N');
                         m.setAuth('N');
@@ -495,7 +496,7 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
                     secmembBean.setCompany(h.getFacno());
                     Secmemb m = secmembBean.findByPK(h.getFacno(), h.getDept(), h.getApplyuser());
                     if (m == null) {
-                        //人员加入部门
+                        // 人员加入部门
                         m = new Secmemb(h.getFacno(), h.getDept(), h.getApplyuser());
                         m.setSupvisor('N');
                         m.setAuth('N');
@@ -528,7 +529,7 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
                 }
 
             }
-            //生成仓管员
+            // 生成仓管员
             if (invwhclkList != null && !invwhclkList.isEmpty()) {
                 invwhclkBean.setCompany(h.getFacno());
                 char YN;

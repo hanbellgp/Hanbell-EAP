@@ -29,20 +29,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrhpri")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrhpri.findAll", query = "SELECT c FROM Cdrhpri c")
-    , @NamedQuery(name = "Cdrhpri.findByCusno", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.cusno = :cusno")
-    , @NamedQuery(name = "Cdrhpri.findByFacno", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.facno = :facno")
-    , @NamedQuery(name = "Cdrhpri.findByItnbr", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.itnbr = :itnbr")
-    , @NamedQuery(name = "Cdrhpri.findByCoin", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.coin = :coin")
-    , @NamedQuery(name = "Cdrhpri.findByUnpris", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.unpris = :unpris")
-    , @NamedQuery(name = "Cdrhpri.findByTrno", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.trno = :trno")
-    , @NamedQuery(name = "Cdrhpri.findByTrseq", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.trseq = :trseq")
-    , @NamedQuery(name = "Cdrhpri.findByTrdate", query = "SELECT c FROM Cdrhpri c WHERE c.trdate = :trdate")
-    , @NamedQuery(name = "Cdrhpri.findByRatio", query = "SELECT c FROM Cdrhpri c WHERE c.ratio = :ratio")
-    , @NamedQuery(name = "Cdrhpri.findBySndcode", query = "SELECT c FROM Cdrhpri c WHERE c.sndcode = :sndcode")
-    , @NamedQuery(name = "Cdrhpri.findByPaycode", query = "SELECT c FROM Cdrhpri c WHERE c.paycode = :paycode")
-    , @NamedQuery(name = "Cdrhpri.findByArmqy", query = "SELECT c FROM Cdrhpri c WHERE c.armqy = :armqy")
-    , @NamedQuery(name = "Cdrhpri.findByItnbrcus", query = "SELECT c FROM Cdrhpri c WHERE c.itnbrcus = :itnbrcus")})
+    @NamedQuery(name = "Cdrhpri.findAll", query = "SELECT c FROM Cdrhpri c"),
+    @NamedQuery(name = "Cdrhpri.findByCusno", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.cusno = :cusno"),
+    @NamedQuery(name = "Cdrhpri.findByFacno", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.facno = :facno"),
+    @NamedQuery(name = "Cdrhpri.findByItnbr", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.itnbr = :itnbr"),
+    @NamedQuery(name = "Cdrhpri.findByCoin", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.coin = :coin"),
+    @NamedQuery(name = "Cdrhpri.findByUnpris", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.unpris = :unpris"),
+    @NamedQuery(name = "Cdrhpri.findByTrno", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.trno = :trno"),
+    @NamedQuery(name = "Cdrhpri.findByTrseq", query = "SELECT c FROM Cdrhpri c WHERE c.cdrhpriPK.trseq = :trseq"),
+    @NamedQuery(name = "Cdrhpri.findByTrdate", query = "SELECT c FROM Cdrhpri c WHERE c.trdate = :trdate"),
+    @NamedQuery(name = "Cdrhpri.findByRatio", query = "SELECT c FROM Cdrhpri c WHERE c.ratio = :ratio"),
+    @NamedQuery(name = "Cdrhpri.findBySndcode", query = "SELECT c FROM Cdrhpri c WHERE c.sndcode = :sndcode"),
+    @NamedQuery(name = "Cdrhpri.findByPaycode", query = "SELECT c FROM Cdrhpri c WHERE c.paycode = :paycode"),
+    @NamedQuery(name = "Cdrhpri.findByArmqy", query = "SELECT c FROM Cdrhpri c WHERE c.armqy = :armqy"),
+    @NamedQuery(name = "Cdrhpri.findByItnbrcus", query = "SELECT c FROM Cdrhpri c WHERE c.itnbrcus = :itnbrcus")})
 public class Cdrhpri implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -172,5 +172,5 @@ public class Cdrhpri implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrhpri[ cdrhpriPK=" + cdrhpriPK + " ]";
     }
-    
+
 }

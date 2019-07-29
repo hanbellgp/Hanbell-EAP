@@ -116,5 +116,5 @@ public class CdrlotPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrlotPK[ facno=" + facno + ", shpno=" + shpno + ", trseq=" + trseq + ", seq=" + seq + " ]";
     }
-    
+
 }

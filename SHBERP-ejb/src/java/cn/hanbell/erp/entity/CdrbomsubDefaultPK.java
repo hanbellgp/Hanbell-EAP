@@ -100,5 +100,5 @@ public class CdrbomsubDefaultPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrbomsubDefaultPK[ facno=" + facno + ", itnbrf=" + itnbrf + ", itemtyp=" + itemtyp + " ]";
     }
-    
+
 }

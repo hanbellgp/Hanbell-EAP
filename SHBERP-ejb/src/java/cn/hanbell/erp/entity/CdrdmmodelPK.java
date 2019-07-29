@@ -18,6 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Embeddable
 public class CdrdmmodelPK implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 3)
@@ -99,5 +100,5 @@ public class CdrdmmodelPK implements Serializable {
     public String toString() {
         return "cn.hanbell.shb.erp.CdrdmmodelPK[ facno=" + facno + ", itnbr=" + itnbr + ", cmccode=" + cmccode + " ]";
     }
-    
+
 }

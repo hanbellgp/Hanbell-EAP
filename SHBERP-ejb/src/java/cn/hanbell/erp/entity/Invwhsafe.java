@@ -140,5 +140,5 @@ public class Invwhsafe implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Invwhsafe[ invwhsafePK=" + invwhsafePK + " ]";
     }
-    
+
 }

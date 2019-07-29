@@ -135,5 +135,5 @@ public class AccacrPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.AccacrPK[ facno=" + facno + ", sysno=" + sysno + ", kind=" + kind + ", rkd=" + rkd + ", accseq=" + accseq + " ]";
     }
-    
+
 }

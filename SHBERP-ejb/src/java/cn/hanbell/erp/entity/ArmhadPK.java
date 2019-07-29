@@ -18,6 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Embeddable
 public class ArmhadPK implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 3)
@@ -169,5 +170,5 @@ public class ArmhadPK implements Serializable {
     public String toString() {
         return "shberp.entity.ArmhadPK[ facno=" + facno + ", cusno=" + cusno + ", hadno=" + hadno + ", hadseq=" + hadseq + ", accno=" + accno + ", detno=" + detno + ", hseq=" + hseq + " ]";
     }
-    
+
 }

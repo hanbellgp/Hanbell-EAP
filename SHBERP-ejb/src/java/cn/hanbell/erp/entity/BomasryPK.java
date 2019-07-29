@@ -100,5 +100,5 @@ public class BomasryPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.BomasryPK[ itnbrf=" + itnbrf + ", itnbr=" + itnbr + ", cmccode=" + cmccode + " ]";
     }
-    
+
 }

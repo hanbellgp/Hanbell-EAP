@@ -16,10 +16,10 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class BudgetAccBean extends  SuperEJBForERP<BudgetAcc>{
+public class BudgetAccBean extends SuperEJBForERP<BudgetAcc> {
 
     public BudgetAccBean() {
         super(BudgetAcc.class);
     }
-    
+
 }

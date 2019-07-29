@@ -26,8 +26,6 @@ public class SecusysBean extends SuperEJBForERP<Secusys> {
         super(Secusys.class);
     }
 
-
-
     public Secusys findByPK(String sysno, String userno) {
         Query query = getEntityManager().createNamedQuery("Secusys.findByPK");
         query.setParameter("sysno", sysno);

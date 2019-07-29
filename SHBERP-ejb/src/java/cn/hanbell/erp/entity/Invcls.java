@@ -690,5 +690,5 @@ public class Invcls implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.comm.Invcls[ itcls=" + itcls + " ]";
     }
-    
+
 }

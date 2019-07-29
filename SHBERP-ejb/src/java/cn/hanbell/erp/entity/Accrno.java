@@ -95,5 +95,5 @@ public class Accrno implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Accrno[ accrnoPK=" + accrnoPK + " ]";
     }
-    
+
 }

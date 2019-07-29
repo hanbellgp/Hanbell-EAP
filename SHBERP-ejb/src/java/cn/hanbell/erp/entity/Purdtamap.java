@@ -126,5 +126,5 @@ public class Purdtamap implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Purdtamap[ purdtamapPK=" + purdtamapPK + " ]";
     }
-    
+
 }

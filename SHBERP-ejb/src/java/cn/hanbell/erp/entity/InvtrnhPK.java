@@ -135,5 +135,5 @@ public class InvtrnhPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.InvtrnhPK[ facno=" + facno + ", prono=" + prono + ", trtype=" + trtype + ", trno=" + trno + ", trseq=" + trseq + " ]";
     }
-    
+
 }

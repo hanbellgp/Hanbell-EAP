@@ -135,5 +135,5 @@ public class InvdtaPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.InvdtaPK[ itnbr=" + itnbr + ", facno=" + facno + ", prono=" + prono + ", trno=" + trno + ", trseq=" + trseq + " ]";
     }
-    
+
 }

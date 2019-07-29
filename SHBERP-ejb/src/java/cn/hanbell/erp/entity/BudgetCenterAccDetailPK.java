@@ -100,5 +100,5 @@ public class BudgetCenterAccDetailPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.BudgetcenteraccdetailPK[ facno=" + facno + ", centerid=" + centerid + ", budgetacc=" + budgetacc + " ]";
     }
-    
+
 }

@@ -100,5 +100,5 @@ public class CdrsfksortsPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrsfksortsPK[ facno=" + facno + ", parts=" + parts + ", sorts=" + sorts + " ]";
     }
-    
+
 }

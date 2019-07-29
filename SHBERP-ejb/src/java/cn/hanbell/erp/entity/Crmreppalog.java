@@ -30,16 +30,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "crmreppalog")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Crmreppalog.findAll", query = "SELECT c FROM Crmreppalog c")
-    , @NamedQuery(name = "Crmreppalog.findByPa001", query = "SELECT c FROM Crmreppalog c WHERE c.pa001 = :pa001")
-    , @NamedQuery(name = "Crmreppalog.findByPa002", query = "SELECT c FROM Crmreppalog c WHERE c.pa002 = :pa002")
-    , @NamedQuery(name = "Crmreppalog.findByIndate", query = "SELECT c FROM Crmreppalog c WHERE c.indate = :indate")
-    , @NamedQuery(name = "Crmreppalog.findByCreator", query = "SELECT c FROM Crmreppalog c WHERE c.creator = :creator")
-    , @NamedQuery(name = "Crmreppalog.findByMancode", query = "SELECT c FROM Crmreppalog c WHERE c.mancode = :mancode")
-    , @NamedQuery(name = "Crmreppalog.findByPzcnt", query = "SELECT c FROM Crmreppalog c WHERE c.pzcnt = :pzcnt")
-    , @NamedQuery(name = "Crmreppalog.findByErrdescription", query = "SELECT c FROM Crmreppalog c WHERE c.errdescription = :errdescription")
-    , @NamedQuery(name = "Crmreppalog.findByQuono", query = "SELECT c FROM Crmreppalog c WHERE c.quono = :quono")
-    , @NamedQuery(name = "Crmreppalog.findById", query = "SELECT c FROM Crmreppalog c WHERE c.id = :id")})
+    @NamedQuery(name = "Crmreppalog.findAll", query = "SELECT c FROM Crmreppalog c"),
+    @NamedQuery(name = "Crmreppalog.findByPa001", query = "SELECT c FROM Crmreppalog c WHERE c.pa001 = :pa001"),
+    @NamedQuery(name = "Crmreppalog.findByPa002", query = "SELECT c FROM Crmreppalog c WHERE c.pa002 = :pa002"),
+    @NamedQuery(name = "Crmreppalog.findByIndate", query = "SELECT c FROM Crmreppalog c WHERE c.indate = :indate"),
+    @NamedQuery(name = "Crmreppalog.findByCreator", query = "SELECT c FROM Crmreppalog c WHERE c.creator = :creator"),
+    @NamedQuery(name = "Crmreppalog.findByMancode", query = "SELECT c FROM Crmreppalog c WHERE c.mancode = :mancode"),
+    @NamedQuery(name = "Crmreppalog.findByPzcnt", query = "SELECT c FROM Crmreppalog c WHERE c.pzcnt = :pzcnt"),
+    @NamedQuery(name = "Crmreppalog.findByErrdescription", query = "SELECT c FROM Crmreppalog c WHERE c.errdescription = :errdescription"),
+    @NamedQuery(name = "Crmreppalog.findByQuono", query = "SELECT c FROM Crmreppalog c WHERE c.quono = :quono"),
+    @NamedQuery(name = "Crmreppalog.findById", query = "SELECT c FROM Crmreppalog c WHERE c.id = :id")})
 public class Crmreppalog implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -188,5 +188,5 @@ public class Crmreppalog implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Crmreppalog[ id=" + id + " ]";
     }
-    
+
 }

@@ -22,18 +22,18 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
-    
+
     @EJB
     private CdrdtaBean cdrdtaBean;
     @EJB
     private CdrlotBean cdrlotBean;
-    
+
     private List<Cdrdta> detailList;
-    
+
     public CdrhadBean() {
         super(Cdrhad.class);
     }
-    
+
     @Override
     public Cdrhad findById(Object value) {
         Query query = getEntityManager().createNamedQuery("Cdrhad.findByShpno");
@@ -45,17 +45,17 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
             return null;
         }
     }
-    
+
     public List<Cdrlot> findCdrlotList(String facno, String shpno) {
         cdrlotBean.setCompany(facno);
         return cdrlotBean.findByFacnoAndShpno(facno, shpno);
     }
-    
+
     @Override
     public void setDetail(Object value) {
         detailList = cdrdtaBean.findByShpno(value.toString());
     }
-    
+
     public List<Cdrdta> getDetail(String facno, Object o) {
         cdrdtaBean.setCompany(facno);
         return cdrdtaBean.findByShpno(o.toString());
@@ -67,5 +67,5 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
     public List<Cdrdta> getDetailList() {
         return detailList;
     }
-    
+
 }

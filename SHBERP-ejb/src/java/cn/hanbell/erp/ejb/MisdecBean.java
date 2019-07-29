@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class MisdecBean extends SuperEJBForERP<Misdec>{
+public class MisdecBean extends SuperEJBForERP<Misdec> {
 
     public MisdecBean() {
         super(Misdec.class);

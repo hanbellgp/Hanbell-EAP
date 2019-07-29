@@ -21,5 +21,5 @@ public class ApmpadBean extends SuperEJBForERP<Apmpad> {
     public ApmpadBean() {
         super(Apmpad.class);
     }
-    
+
 }

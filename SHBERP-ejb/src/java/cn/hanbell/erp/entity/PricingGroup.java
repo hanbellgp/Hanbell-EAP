@@ -218,5 +218,4 @@ public class PricingGroup implements Serializable {
         this.pricingtype = pricingtype;
     }
 
-
 }

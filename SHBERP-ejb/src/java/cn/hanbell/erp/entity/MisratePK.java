@@ -85,5 +85,5 @@ public class MisratePK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.MisratePK[ coin=" + coin + ", rateday=" + rateday + " ]";
     }
-    
+
 }

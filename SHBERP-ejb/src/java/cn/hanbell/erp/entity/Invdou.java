@@ -503,5 +503,5 @@ public class Invdou implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Invdou[ trtype=" + trtype + " ]";
     }
-    
+
 }

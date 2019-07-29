@@ -61,11 +61,11 @@ public class Cdrcus implements Serializable {
     private String cusdse;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cussta")//默认2
+    @Column(name = "cussta") // 默认2
     private Character cussta;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "decode")//国内外码
+    @Column(name = "decode") // 国内外码
     private Character decode;
     @Basic(optional = false)
     @NotNull
@@ -114,16 +114,16 @@ public class Cdrcus implements Serializable {
     private Character tax;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "shptrseq")//Default:1
+    @Column(name = "shptrseq") // Default:1
     private short shptrseq;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ivotrseq")//Default:1
+    @Column(name = "ivotrseq") // Default:1
     private short ivotrseq;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 8)
-    @Column(name = "sndcode")//Default:"001"
+    @Column(name = "sndcode") // Default:"001"
     private String sndcode;
     @Basic(optional = false)
     @NotNull
@@ -134,7 +134,7 @@ public class Cdrcus implements Serializable {
     @Size(min = 1, max = 8)
     @Column(name = "termcode")
     private String termcode;
-    @Column(name = "paysepcode")//Default:'1'
+    @Column(name = "paysepcode") // Default:'1'
     private Character paysepcode;
     @Column(name = "seldate1")
     private Short seldate1;
@@ -178,7 +178,9 @@ public class Cdrcus implements Serializable {
     @Size(max = 20)
     @Column(name = "tel1")
     private String tel1;
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="电话/传真格式无效, 应为 xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
+    // message="电话/传真格式无效, 应为 xxx-xxx-xxxx")//if the field contains phone or fax
+    // number consider using this annotation to enforce field validation
     @Size(max = 20)
     @Column(name = "fax")
     private String fax;
@@ -221,7 +223,8 @@ public class Cdrcus implements Serializable {
     @Size(max = 8)
     @Column(name = "shipfacno")
     private String shipfacno;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    // @Max(value=?) @Min(value=?)//if you know range of your decimal fields
+    // consider using these annotations to enforce field validation
     @Column(name = "commrate")
     private BigDecimal commrate;
     @Size(max = 8)
@@ -283,7 +286,9 @@ public class Cdrcus implements Serializable {
     private String cusnaprt;
     @Column(name = "fenyn")
     private Character fenyn;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="电子邮件无效")//if the field contains email address consider using this annotation to enforce field validation
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+    // message="电子邮件无效")//if the field contains email address consider using this
+    // annotation to enforce field validation
     @Size(max = 400)
     @Column(name = "email")
     private String email;

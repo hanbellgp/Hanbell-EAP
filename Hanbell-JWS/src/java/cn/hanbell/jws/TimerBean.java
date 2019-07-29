@@ -65,6 +65,7 @@ import cn.hanbell.erp.ejb.PurvdrBean;
 import cn.hanbell.erp.ejb.PurvdrrelBean;
 import cn.hanbell.erp.ejb.SecmembBean;
 import cn.hanbell.erp.ejb.SecuserBean;
+//import cn.hanbell.erp.ejb.SyncExchangeBean;
 import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
 import cn.hanbell.erp.entity.Apmtbil;
@@ -143,6 +144,7 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.TimerService;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -261,6 +263,8 @@ public class TimerBean {
     private SecuserBean secuserBean;
     @EJB
     private SecmembBean secmembBean;
+    // @EJB
+    // private SyncExchangeBean syncExchangeBean;
 
     // EJBForHRM
     @EJB
@@ -398,9 +402,10 @@ public class TimerBean {
                             }
                         }
                         // ERP
-                        secuserBean.setCompany(company);
+                        miscodeBean.setCompany(company);
                         misdeptBean.setCompany(company);
                         secmembBean.setCompany(company);
+                        secuserBean.setCompany(company);
                         Secuser erpuser = secuserBean.findByUserno(e.getCode());
                         Misdept erpdept = misdeptBean.findByDepno(e.getDepartment().getCode());
                         if (erpdept == null) {
@@ -410,6 +415,8 @@ public class TimerBean {
                             erpdept.setUplevel("/");
                             erpdept.setChildren(0);
                             misdeptBean.persist(erpdept);
+                            // 加入miscode类别GE中
+                            miscodeBean.persistIfNotExist("GE", erpdept.getMisdeptPK().getDepno(), erpdept.getDepname(), 'N');
                         }
                         if (erpuser != null) {
                             Secmemb secmemb = secmembBean.findByPK(company, e.getDepartment().getCode(), e.getCode());
@@ -579,7 +586,8 @@ public class TimerBean {
                                             for (Puracd acd : puracdList) {
                                                 ai = assetItemBean.findByItemno(acd.getItnbr());
                                                 if (ai == null) {
-                                                    log4j.error("执行createEAMAssetAcceptanceByERPPUR530时异常,找不到件号" + acd.getItnbr() + ",流程序号" + e.getProcessSerialNumber());
+                                                    log4j.error("执行createEAMAssetAcceptanceByERPPUR530时异常,找不到件号" + acd.getItnbr() + ",流程序号"
+                                                            + e.getProcessSerialNumber());
                                                     continue;
                                                 }
                                                 // 判断验收记录，处理多次验收逻辑
@@ -944,7 +952,8 @@ public class TimerBean {
             if (detailList.size() > 0) {
                 String formInstance = workFlowBean.buildXmlForEFGP("SHB_ERP_INV325", s, details);
                 String subject = "生产制程领料" + BaseLib.formatDate("yyyyMMdd", s.getCreatedate());
-                String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_SHB_ERP_INV325",formInstance, subject);
+                String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_SHB_ERP_INV325",
+                        formInstance, subject);
             }
         } catch (Exception ex) {
             log4j.info("发起生产制程领料时异常", ex);
@@ -952,11 +961,134 @@ public class TimerBean {
         log4j.info("发起生产制程领料轮询");
     }
 
-    @Schedule(minute = "*/3", hour = "7-23", persistent = false)
-    public void createOASHBERPAPM811ByERPAPM811() {
+    @Schedule(minute = "*/7", hour = "7-23", persistent = false)
+    public void createBPMProcessByERPTransaction() {
+        log4j.info("ERP-CDR220报价审批抛转EFGP签核轮询开始");
+        createOAHKYX009ByERPCDR220("C");
+        createOAHKYX009ByERPCDR220("G");
+        createOAHKYX009ByERPCDR220("J");
+        createOAHKYX009ByERPCDR220("N");
+        createOAHKYX009ByERPCDR220("C4");
+        createOAHKYX009ByERPCDR220("K");
+        log4j.info("ERP-CDR220报价审批抛转EFGP签核轮询结束");
+        log4j.info("ERP-APM811进货请款抛转EFGP签核轮询开始");
         createOASHBERPAPM811ByERPAPM811("C");
         createOASHBERPAPM811ByERPAPM811("K");
-        log4j.info("APM811抛转轮询");
+        log4j.info("ERP-APM811进货请款抛转EFGP签核轮询结束");
+    }
+
+    private void createOAHKYX009ByERPCDR220(String company) {
+        HKYX009Model hm;
+        HKYX009DetailModel dm;
+        List<HKYX009DetailModel> detailList = new ArrayList<>();
+        LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
+        details.put("Detail", detailList);
+        try {
+            cdrqhadBean.setCompany(company);
+            List<Cdrqhad> cdrqhadList = cdrqhadBean.findNeedThrow();
+            List<Cdrqdta> cdrqdtaList;
+            String facno;
+            String quono;
+            int i;
+            if (cdrqhadList != null && !cdrqhadList.isEmpty()) {
+                for (Cdrqhad h : cdrqhadList) {
+                    facno = h.getCdrqhadPK().getFacno();
+                    quono = h.getCdrqhadPK().getQuono();
+                    cdrqdtaList = cdrqhadBean.findNeedThrowDetail(facno, quono);
+                    cdrcusBean.setCompany(facno);
+                    invmasBean.setCompany(facno);
+                    miscodeBean.setCompany(facno);
+                    secuserBean.setCompany(facno);
+                    if (cdrqdtaList != null && !cdrqdtaList.isEmpty()) {
+                        detailList.clear();// 清除前面的资料
+                        i = 0;
+                        for (Cdrqdta d : cdrqdtaList) {
+                            i++;
+                            dm = new HKYX009DetailModel();
+                            dm.setSeq(String.valueOf(i));
+                            dm.setTrseq(String.valueOf(d.getCdrqdtaPK().getTrseq()));
+                            dm.setItnbr(d.getItnbr());
+                            dm.setItnbrcus(d.getItnbrcus());
+                            Invmas invmas = invmasBean.findByItnbr(d.getItnbr());
+                            dm.setItdsc(filterString(invmas.getItdsc()));
+                            dm.setQuaqy1(d.getQuaqy1().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            dm.setUnpris(d.getUnpris().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            dm.setLastunpri(d.getListunpri().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            if (d.getHisorders() != null) {
+                                dm.setOrderqty(d.getHisorders().toString());
+                            } else {
+                                dm.setOrderqty("0");
+                            }
+                            dm.setTramts(d.getTramts().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            if (d.getCdrdate() != null) {
+                                dm.setCdrdate(BaseLib.formatDate("yyyy/MM/dd", d.getCdrdate()));
+                            } else {
+                                dm.setCdrdate(BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
+                            }
+                            if (null == d.getQxb()) {
+                                dm.setPeratio("");
+                            } else {
+                                dm.setPeratio(d.getQxb());
+                            }
+                            dm.setRefmodel("");
+                            dm.setRefratio("");
+                            if (d.getDiffprice() != null) {
+                                dm.setDiffitting(d.getDiffprice().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            } else {
+                                dm.setDiffitting("0");
+                            }
+                            detailList.add(dm);
+                        }
+                        workFlowBean.initUserInfo(h.getUserno());
+                        hm = new HKYX009Model();
+                        hm.setFacno(facno);
+                        hm.setQuono(quono);
+                        hm.setQuodate(h.getQuodate());
+                        hm.setCfmdate(h.getCfmdate());
+                        hm.setIsspecial(h.getIsspecial());
+                        hm.setPricingtype(h.getPricingtype());
+
+                        Miscode miscode = miscodeBean.findByPK("1C", h.getPricingtype());
+                        hm.setPricingtypedsc(miscode.getCdesc());
+                        hm.setCoin(h.getCoin());
+                        hm.setRatio(h.getRatio().doubleValue());
+                        hm.setLevelp(h.getLevelp());
+                        hm.setCusno(h.getCusno());
+                        Cdrcus cdrcus = cdrcusBean.findByCusno(h.getCusno());
+                        hm.setCusna(cdrcus.getCusna());
+                        hm.setMancode(h.getMancode());
+
+                        Secuser secuser = secuserBean.findByUserno(h.getMancode());
+                        hm.setMancodesc(secuser.getUsername());
+                        // hm.setDepno(workFlowBean.getCurrentUser().getDeptno());
+                        hm.setDepno(h.getDepno()); // 报价部门
+                        hm.setCfmuser(h.getCfmuserno());
+                        // 设置审批原因
+                        hm.setApprresno(miscodeBean.findByPK("1O", h.getApprresno()).getCdesc());
+
+                        // 构建表单实例
+                        String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);
+                        String subject = "客户:" + hm.getCusna() + "申请原因： " + hm.getApprresno() + ".  业务员:" + hm.getMancode();
+                        String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_YX009",
+                                formInstance, subject);
+                        String[] rm = msg.split("\\$");
+                        if (rm != null) {
+                            log4j.info(h.getCdrqhadPK().getQuono());
+                            log4j.info(Arrays.toString(rm));
+                        }
+                        if (rm != null && rm.length == 2 && rm[0].equals("200")) {
+                            // 更新ERP CDR220状态
+                            h.setHquosta('O');
+                            cdrqhadBean.setCompany(facno);
+                            cdrqhadBean.update(h);
+                            cdrqhadBean.getEntityManager().flush();
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
     }
 
     private void createOASHBERPAPM811ByERPAPM811(String company) {
@@ -983,7 +1115,8 @@ public class TimerBean {
             double sumbilnum8;
             if (apmaphList != null && !apmaphList.isEmpty()) {
                 for (Apmaph h : apmaphList) {
-                    apmapdList = apmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),h.getApmaphPK().getAptyp());
+                    apmapdList = apmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),
+                            h.getApmaphPK().getAptyp());
                     if (apmapdList != null && !apmapdList.isEmpty()) {
                         detailList.clear();// 清除前面的资料
                         i = 0;
@@ -1114,132 +1247,6 @@ public class TimerBean {
                             h.setApsta("25");
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
-                        }
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            log4j.error(ex);
-        }
-    }
-
-    @Schedule(minute = "*/7", hour = "7-23", persistent = false)
-    public void createOAHKYX009ByERPCDR220() {
-        log4j.info("ERP-CDR220报价审批抛转EFGP签核轮询开始");
-        createOAHKYX009ByERPCDR220("C");
-        createOAHKYX009ByERPCDR220("G");
-        createOAHKYX009ByERPCDR220("J");
-        createOAHKYX009ByERPCDR220("N");
-        createOAHKYX009ByERPCDR220("C4");
-        createOAHKYX009ByERPCDR220("K");
-        log4j.info("ERP-CDR220报价审批抛转EFGP签核轮询结束");
-    }
-
-    private void createOAHKYX009ByERPCDR220(String company) {
-        HKYX009Model hm;
-        HKYX009DetailModel dm;
-        List<HKYX009DetailModel> detailList = new ArrayList<>();
-        LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
-        details.put("Detail", detailList);
-        try {
-            cdrqhadBean.setCompany(company);
-            List<Cdrqhad> cdrqhadList = cdrqhadBean.findNeedThrow();
-            List<Cdrqdta> cdrqdtaList;
-            String facno;
-            String quono;
-            int i;
-            if (cdrqhadList != null && !cdrqhadList.isEmpty()) {
-                for (Cdrqhad h : cdrqhadList) {
-                    facno = h.getCdrqhadPK().getFacno();
-                    quono = h.getCdrqhadPK().getQuono();
-                    cdrqdtaList = cdrqhadBean.findNeedThrowDetail(facno, quono);
-                    cdrcusBean.setCompany(facno);
-                    invmasBean.setCompany(facno);
-                    miscodeBean.setCompany(facno);
-                    secuserBean.setCompany(facno);
-                    if (cdrqdtaList != null && !cdrqdtaList.isEmpty()) {
-                        detailList.clear();// 清除前面的资料
-                        i = 0;
-                        for (Cdrqdta d : cdrqdtaList) {
-                            i++;
-                            dm = new HKYX009DetailModel();
-                            dm.setSeq(String.valueOf(i));
-                            dm.setTrseq(String.valueOf(d.getCdrqdtaPK().getTrseq()));
-                            dm.setItnbr(d.getItnbr());
-                            dm.setItnbrcus(d.getItnbrcus());
-                            Invmas invmas = invmasBean.findByItnbr(d.getItnbr());
-                            dm.setItdsc(filterString(invmas.getItdsc()));
-                            dm.setQuaqy1(d.getQuaqy1().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-                            dm.setUnpris(d.getUnpris().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-                            dm.setLastunpri(d.getListunpri().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-                            if (d.getHisorders() != null) {
-                                dm.setOrderqty(d.getHisorders().toString());
-                            } else {
-                                dm.setOrderqty("0");
-                            }
-                            dm.setTramts(d.getTramts().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-                            if (d.getCdrdate() != null) {
-                                dm.setCdrdate(BaseLib.formatDate("yyyy/MM/dd", d.getCdrdate()));
-                            } else {
-                                dm.setCdrdate(BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
-                            }
-                            if (null == d.getQxb()) {
-                                dm.setPeratio("");
-                            } else {
-                                dm.setPeratio(d.getQxb());
-                            }
-                            dm.setRefmodel("");
-                            dm.setRefratio("");
-                            if (d.getDiffprice() != null) {
-                                dm.setDiffitting(d.getDiffprice().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-                            } else {
-                                dm.setDiffitting("0");
-                            }
-                            detailList.add(dm);
-                        }
-                        workFlowBean.initUserInfo(h.getUserno());
-                        hm = new HKYX009Model();
-                        hm.setFacno(facno);
-                        hm.setQuono(quono);
-                        hm.setQuodate(h.getQuodate());
-                        hm.setCfmdate(h.getCfmdate());
-                        hm.setIsspecial(h.getIsspecial());
-                        hm.setPricingtype(h.getPricingtype());
-
-                        Miscode miscode = miscodeBean.findByPK("1C", h.getPricingtype());
-                        hm.setPricingtypedsc(miscode.getCdesc());
-                        hm.setCoin(h.getCoin());
-                        hm.setRatio(h.getRatio().doubleValue());
-                        hm.setLevelp(h.getLevelp());
-                        hm.setCusno(h.getCusno());
-                        Cdrcus cdrcus = cdrcusBean.findByCusno(h.getCusno());
-                        hm.setCusna(cdrcus.getCusna());
-                        hm.setMancode(h.getMancode());
-
-                        Secuser secuser = secuserBean.findByUserno(h.getMancode());
-                        hm.setMancodesc(secuser.getUsername());
-                        // hm.setDepno(workFlowBean.getCurrentUser().getDeptno());
-                        hm.setDepno(h.getDepno()); // 报价部门
-                        hm.setCfmuser(h.getCfmuserno());
-                        // 设置审批原因
-                        hm.setApprresno(miscodeBean.findByPK("1O", h.getApprresno()).getCdesc());
-
-                        // 构建表单实例
-                        String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);
-                        String subject = "客户:" + hm.getCusna() + "申请原因： " + hm.getApprresno() + ".  业务员:" + hm.getMancode();
-                        String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_YX009",
-                                formInstance, subject);
-                        String[] rm = msg.split("\\$");
-                        if (rm != null) {
-                            log4j.info(h.getCdrqhadPK().getQuono());
-                            log4j.info(Arrays.toString(rm));
-                        }
-                        if (rm != null && rm.length == 2 && rm[0].equals("200")) {
-                            // 更新ERP CDR220状态
-                            h.setHquosta('O');
-                            cdrqhadBean.setCompany(facno);
-                            cdrqhadBean.update(h);
-                            cdrqhadBean.getEntityManager().flush();
                         }
                     }
                 }
@@ -1532,8 +1539,7 @@ public class TimerBean {
                                     li_ulevelp = Integer.parseInt(pricelevel.substring(6)); // "price09"截取数字
                                     ldc_stdprice = BigDecimal.valueOf(Double.valueOf(prpl[10 + li_ulevelp].toString())); // prpl标准定价数组的顺序（数量）不能修改
                                     if (ldc_stdprice == null || ldc_stdprice.compareTo(BigDecimal.ZERO) < 1) {
-                                        log4j.error(
-                                                "错误'" + itnbr + "'的 '" + itemno + "'机型未维护价格类别'" + pricingtype + "'对应的标准定价,请先维护!");
+                                        log4j.error("错误'" + itnbr + "'的 '" + itemno + "'机型未维护价格类别'" + pricingtype + "'对应的标准定价,请先维护!");
                                         // dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
                                         qd.setDqxjkind('D');
                                     }
@@ -1822,9 +1828,12 @@ public class TimerBean {
     }
 
     @Schedule(minute = "*/11", hour = "7-23", persistent = false)
-    public void createERPCDR310ByERPPUR410() {
+    public void syncInterCompanyTransactions() {
         log4j.info("ERP集团内部交易互转轮询开始");
         this.createERPCDR310ByERPPUR410("H", "HSH00003", "C", "SZJ00065", "20190601");
+        // this.cloneERPPUR410ToExchange("C", "STW00007", "20190101");
+        // this.cloneERPPUR410ToExchange("C", "STW00035", "20190101");
+        // this.cloneERPPUR410ToExchange("C", "SXG00007", "20190101");
         log4j.info("ERP集团内部交易互转轮询结束");
     }
 
@@ -1908,7 +1917,8 @@ public class TimerBean {
                         if (pd.getDposta().equals("20") || pd.getDposta().equals("30")) {
                             item = invmasBean.findByItnbr(pd.getItnbr());
                             if (item == null) {
-                                errorBuilder.append("createERPCDR310ByERPPUR410遇到错误：").append(cc).append("公司ERP中").append(pd.getItnbr()).append("品号不存在").append("<br/>");
+                                errorBuilder.append("createERPCDR310ByERPPUR410遇到错误：").append(cc).append("公司ERP中").append(pd.getItnbr())
+                                        .append("品号不存在").append("<br/>");
                                 continue;
                             }
                             // judco = item.getJudco().substring(1, 1) + item.getJudco().substring(4);
@@ -2019,10 +2029,11 @@ public class TimerBean {
                         }
                         ph.setFromcdrno(cdrno);
                         purhadBean.update(ph);
-                        msgBuilder.append(String.format("执行%s成功：%s公司采购单%s抛转成%s公司订单%s", "createERPCDR310ByERPPUR410", pc, pono, cc,
-                                cdrno)).append("<br/>");
-                        msgBuilder.append("来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append(
-                                "笔明细").append("<br/>");
+                        msgBuilder
+                                .append(String.format("执行%s成功：%s公司采购单%s抛转成%s公司订单%s", "createERPCDR310ByERPPUR410", pc, pono, cc, cdrno))
+                                .append("<br/>");
+                        msgBuilder.append("来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细")
+                                .append("<br/>");
                     } else {
                         ph.setFromcdrno("PASS");
                         purhadBean.update(ph);
@@ -2042,6 +2053,54 @@ public class TimerBean {
         }
     }
 
+    // private void cloneERPPUR410ToExchange(String pc, String vdrno, String
+    // beginDate) {
+    // Date d;
+    // try {
+    // d = BaseLib.getDate("yyyyMMdd", beginDate);
+    // } catch (Exception ex) {
+    // d = BaseLib.getDate();
+    // }
+    // purvdrBean.setCompany(pc);
+    // purvdrrelBean.setCompany(pc);
+    // purhadBean.setCompany(pc);
+    // Purvdr purvdr = purvdrBean.findByVdrno(vdrno);
+    // if (purvdr == null) {
+    // return;
+    // }
+    // List<Purhad> purhadList = purhadBean.findNeedThrowByVdrno(vdrno, d);
+    // if (purhadList != null && !purhadList.isEmpty()) {
+    // StringBuilder msgBuilder = new StringBuilder();
+    // for (Purhad ph : purhadList) {
+    // try {
+    // msgBuilder.setLength(0);
+    // purhadBean.setDetail(ph.getPurhadPK().getPono());
+    // List<Purdta> purdtaList = purhadBean.getDetailList();
+    // if (purdtaList != null && !purdtaList.isEmpty()) {
+    // for (int x = 0; x < purdtaList.size() && purdtaList.size() > 0; x++) {
+    // Purdta pd = purdtaList.get(x);
+    // if (!pd.getDposta().equals("20") && !pd.getDposta().equals("30")) {
+    // purdtaList.remove(pd);
+    // x--;
+    // }
+    // }
+    // if (!purdtaList.isEmpty()) {
+    // syncExchangeBean.persist(ph, purdtaList);
+    // syncExchangeBean.getEntityManager().flush();
+    // syncExchangeBean.getEntityManager().clear();
+    // }
+    // ph.setFromcdrno(ph.getPurhadPK().getPono());
+    // purhadBean.update(ph);
+    // }
+    // msgBuilder.append(String.format("执行%s成功：%s公司厂商%s",
+    // "choneERPPUR410ToExchange", pc, vdrno));
+    // log4j.info(msgBuilder.toString());
+    // } catch (Exception ex) {
+    // log4j.error("choneERPPUR410ToExchange遇到错误", ex);
+    // }
+    // }
+    // }
+    // }
     // 优化抛转时件号相关字符问题
     public String filterString(String s) {
         if (s != null && !s.trim().equals("")) {

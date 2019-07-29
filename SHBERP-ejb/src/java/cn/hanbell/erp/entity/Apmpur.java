@@ -439,5 +439,5 @@ public class Apmpur implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Apmpur[ apmpurPK=" + apmpurPK + " ]";
     }
-    
+
 }

@@ -18,17 +18,17 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class CdrqdtaBean extends SuperEJBForERP<Cdrqdta>{
+public class CdrqdtaBean extends SuperEJBForERP<Cdrqdta> {
 
     public CdrqdtaBean() {
         super(Cdrqdta.class);
     }
-    
+
     public List<Cdrqdta> findNeedThrowDetail(String facno, String quono) {
         Query query = this.getEntityManager().createNamedQuery("Cdrqdta.findByNeedThrowDetail");
         query.setParameter("facno", facno);
         query.setParameter("quono", quono);
         return query.getResultList();
     }
-   
+
 }

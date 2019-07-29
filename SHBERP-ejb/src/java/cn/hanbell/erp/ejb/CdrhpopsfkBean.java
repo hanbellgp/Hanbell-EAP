@@ -91,7 +91,7 @@ public class CdrhpopsfkBean extends SuperEJBForERP<Cdrhpopsfk> {
             ls_no = ls_facno + ls_keyformat + a.substring(a.length() - 5);
             if (b) {
                 Cdrsfkrno sfkno = cdrsfkrnoBean.findByPK(ls_facno, ls_trnotype, ls_keyformat);
-                sfkno.setMaxseq((short)ll_max);
+                sfkno.setMaxseq((short) ll_max);
                 cdrsfkrnoBean.update(sfkno);
                 cdrsfkrnoBean.getEntityManager().flush();
             }

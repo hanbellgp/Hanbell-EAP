@@ -24,12 +24,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrserno")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrserno.findAll", query = "SELECT c FROM Cdrserno c")
-    , @NamedQuery(name = "Cdrserno.findByFacno", query = "SELECT c FROM Cdrserno c WHERE c.cdrsernoPK.facno = :facno")
-    , @NamedQuery(name = "Cdrserno.findByDifcode", query = "SELECT c FROM Cdrserno c WHERE c.cdrsernoPK.difcode = :difcode")
-    , @NamedQuery(name = "Cdrserno.findByKeyformat", query = "SELECT c FROM Cdrserno c WHERE c.cdrsernoPK.keyformat = :keyformat")
-    , @NamedQuery(name = "Cdrserno.findByPK", query = "SELECT c FROM Cdrserno c WHERE c.cdrsernoPK.facno = :facno AND c.cdrsernoPK.difcode = :difcode AND c.cdrsernoPK.keyformat = :keyformat")
-    , @NamedQuery(name = "Cdrserno.findByMaxserno", query = "SELECT c FROM Cdrserno c WHERE c.maxserno = :maxserno")})
+    @NamedQuery(name = "Cdrserno.findAll", query = "SELECT c FROM Cdrserno c"),
+    @NamedQuery(name = "Cdrserno.findByFacno", query = "SELECT c FROM Cdrserno c WHERE c.cdrsernoPK.facno = :facno"),
+    @NamedQuery(name = "Cdrserno.findByDifcode", query = "SELECT c FROM Cdrserno c WHERE c.cdrsernoPK.difcode = :difcode"),
+    @NamedQuery(name = "Cdrserno.findByKeyformat", query = "SELECT c FROM Cdrserno c WHERE c.cdrsernoPK.keyformat = :keyformat"),
+    @NamedQuery(name = "Cdrserno.findByPK", query = "SELECT c FROM Cdrserno c WHERE c.cdrsernoPK.facno = :facno AND c.cdrsernoPK.difcode = :difcode AND c.cdrsernoPK.keyformat = :keyformat"),
+    @NamedQuery(name = "Cdrserno.findByMaxserno", query = "SELECT c FROM Cdrserno c WHERE c.maxserno = :maxserno")})
 public class Cdrserno implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -137,5 +137,5 @@ public class Purqnam implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Purqnam[ purqnamPK=" + purqnamPK + " ]";
     }
-    
+
 }

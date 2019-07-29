@@ -26,7 +26,7 @@ public class ItemModel implements Serializable {
 
     }
 
-    public ItemModel(String model,String itemno) {
+    public ItemModel(String model, String itemno) {
         this.model = model;
         this.itemno = itemno;
     }

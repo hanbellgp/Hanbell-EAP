@@ -232,7 +232,7 @@ public class Apmapd implements Serializable {
         this.apmapdPK = new ApmapdPK(facno, apno, aptyp, trseq);
     }
 
-    public ApmapdPK getApmapdPK() { 
+    public ApmapdPK getApmapdPK() {
         return apmapdPK;
     }
 

@@ -100,5 +100,5 @@ public class InvhadPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.InvhadPK[ facno=" + facno + ", prono=" + prono + ", trno=" + trno + " ]";
     }
-    
+
 }

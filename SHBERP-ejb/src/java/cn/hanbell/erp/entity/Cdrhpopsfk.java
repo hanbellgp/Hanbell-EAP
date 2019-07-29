@@ -28,24 +28,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrhpopsfk")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrhpopsfk.findAll", query = "SELECT c FROM Cdrhpopsfk c")
-    , @NamedQuery(name = "Cdrhpopsfk.findByFacno", query = "SELECT c FROM Cdrhpopsfk c WHERE c.cdrhpopsfkPK.facno = :facno")
-    , @NamedQuery(name = "Cdrhpopsfk.findBySfktrno", query = "SELECT c FROM Cdrhpopsfk c WHERE c.cdrhpopsfkPK.sfktrno = :sfktrno")
-    , @NamedQuery(name = "Cdrhpopsfk.findByCusno", query = "SELECT c FROM Cdrhpopsfk c WHERE c.cusno = :cusno")
-    , @NamedQuery(name = "Cdrhpopsfk.findByItnbr", query = "SELECT c FROM Cdrhpopsfk c WHERE c.itnbr = :itnbr")
-    , @NamedQuery(name = "Cdrhpopsfk.findByItnbrcus", query = "SELECT c FROM Cdrhpopsfk c WHERE c.itnbrcus = :itnbrcus")
-    , @NamedQuery(name = "Cdrhpopsfk.findBySpcode", query = "SELECT c FROM Cdrhpopsfk c WHERE c.spcode = :spcode")
-    , @NamedQuery(name = "Cdrhpopsfk.findByVersion", query = "SELECT c FROM Cdrhpopsfk c WHERE c.version = :version")
-    , @NamedQuery(name = "Cdrhpopsfk.findByQuono", query = "SELECT c FROM Cdrhpopsfk c WHERE c.quono = :quono")
-    , @NamedQuery(name = "Cdrhpopsfk.findByQtrseq", query = "SELECT c FROM Cdrhpopsfk c WHERE c.qtrseq = :qtrseq")
-    , @NamedQuery(name = "Cdrhpopsfk.findByCdrno", query = "SELECT c FROM Cdrhpopsfk c WHERE c.cdrno = :cdrno")
-    , @NamedQuery(name = "Cdrhpopsfk.findByCtrseq", query = "SELECT c FROM Cdrhpopsfk c WHERE c.ctrseq = :ctrseq")
-    , @NamedQuery(name = "Cdrhpopsfk.findByManno", query = "SELECT c FROM Cdrhpopsfk c WHERE c.manno = :manno")
-    , @NamedQuery(name = "Cdrhpopsfk.findBySpdesc", query = "SELECT c FROM Cdrhpopsfk c WHERE c.spdesc = :spdesc")
-    , @NamedQuery(name = "Cdrhpopsfk.findByCrtprg", query = "SELECT c FROM Cdrhpopsfk c WHERE c.crtprg = :crtprg")
-    , @NamedQuery(name = "Cdrhpopsfk.findByKeyindate", query = "SELECT c FROM Cdrhpopsfk c WHERE c.keyindate = :keyindate")
-    , @NamedQuery(name = "Cdrhpopsfk.findByVarnr", query = "SELECT c FROM Cdrhpopsfk c WHERE c.varnr = :varnr")
-    , @NamedQuery(name = "Cdrhpopsfk.findByMatcode", query = "SELECT c FROM Cdrhpopsfk c WHERE c.matcode = :matcode")})
+    @NamedQuery(name = "Cdrhpopsfk.findAll", query = "SELECT c FROM Cdrhpopsfk c"),
+    @NamedQuery(name = "Cdrhpopsfk.findByFacno", query = "SELECT c FROM Cdrhpopsfk c WHERE c.cdrhpopsfkPK.facno = :facno"),
+    @NamedQuery(name = "Cdrhpopsfk.findBySfktrno", query = "SELECT c FROM Cdrhpopsfk c WHERE c.cdrhpopsfkPK.sfktrno = :sfktrno"),
+    @NamedQuery(name = "Cdrhpopsfk.findByCusno", query = "SELECT c FROM Cdrhpopsfk c WHERE c.cusno = :cusno"),
+    @NamedQuery(name = "Cdrhpopsfk.findByItnbr", query = "SELECT c FROM Cdrhpopsfk c WHERE c.itnbr = :itnbr"),
+    @NamedQuery(name = "Cdrhpopsfk.findByItnbrcus", query = "SELECT c FROM Cdrhpopsfk c WHERE c.itnbrcus = :itnbrcus"),
+    @NamedQuery(name = "Cdrhpopsfk.findBySpcode", query = "SELECT c FROM Cdrhpopsfk c WHERE c.spcode = :spcode"),
+    @NamedQuery(name = "Cdrhpopsfk.findByVersion", query = "SELECT c FROM Cdrhpopsfk c WHERE c.version = :version"),
+    @NamedQuery(name = "Cdrhpopsfk.findByQuono", query = "SELECT c FROM Cdrhpopsfk c WHERE c.quono = :quono"),
+    @NamedQuery(name = "Cdrhpopsfk.findByQtrseq", query = "SELECT c FROM Cdrhpopsfk c WHERE c.qtrseq = :qtrseq"),
+    @NamedQuery(name = "Cdrhpopsfk.findByCdrno", query = "SELECT c FROM Cdrhpopsfk c WHERE c.cdrno = :cdrno"),
+    @NamedQuery(name = "Cdrhpopsfk.findByCtrseq", query = "SELECT c FROM Cdrhpopsfk c WHERE c.ctrseq = :ctrseq"),
+    @NamedQuery(name = "Cdrhpopsfk.findByManno", query = "SELECT c FROM Cdrhpopsfk c WHERE c.manno = :manno"),
+    @NamedQuery(name = "Cdrhpopsfk.findBySpdesc", query = "SELECT c FROM Cdrhpopsfk c WHERE c.spdesc = :spdesc"),
+    @NamedQuery(name = "Cdrhpopsfk.findByCrtprg", query = "SELECT c FROM Cdrhpopsfk c WHERE c.crtprg = :crtprg"),
+    @NamedQuery(name = "Cdrhpopsfk.findByKeyindate", query = "SELECT c FROM Cdrhpopsfk c WHERE c.keyindate = :keyindate"),
+    @NamedQuery(name = "Cdrhpopsfk.findByVarnr", query = "SELECT c FROM Cdrhpopsfk c WHERE c.varnr = :varnr"),
+    @NamedQuery(name = "Cdrhpopsfk.findByMatcode", query = "SELECT c FROM Cdrhpopsfk c WHERE c.matcode = :matcode")})
 public class Cdrhpopsfk implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -273,5 +273,5 @@ public class Cdrhpopsfk implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrhpopsfk[ cdrhpopsfkPK=" + cdrhpopsfkPK + " ]";
     }
-    
+
 }

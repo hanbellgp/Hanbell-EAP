@@ -18,6 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Embeddable
 public class CdrschedulePK implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2)
@@ -81,5 +82,5 @@ public class CdrschedulePK implements Serializable {
     public String toString() {
         return "shberp.entity.CdrschedulePK[ facno=" + facno + ", cdrno=" + cdrno + " ]";
     }
-    
+
 }

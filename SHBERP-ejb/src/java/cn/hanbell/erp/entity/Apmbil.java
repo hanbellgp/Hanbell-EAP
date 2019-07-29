@@ -773,5 +773,5 @@ public class Apmbil implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.comm.Apmbil[ apmbilPK=" + apmbilPK + " ]";
     }
-    
+
 }

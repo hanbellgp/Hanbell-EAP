@@ -83,7 +83,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cdrqhad.findByNewcusna", query = "SELECT c FROM Cdrqhad c WHERE c.newcusna = :newcusna"),
     @NamedQuery(name = "Cdrqhad.findByFaultmc", query = "SELECT c FROM Cdrqhad c WHERE c.faultmc = :faultmc"),
     @NamedQuery(name = "Cdrqhad.findByIsuphis", query = "SELECT c FROM Cdrqhad c WHERE c.isuphis = :isuphis"),
-   @NamedQuery(name = "Cdrqhad.findNeedThrow", query = "SELECT c FROM Cdrqhad c WHERE c.hquosta = 'R'  ORDER BY c.cdrqhadPK.facno  ,c.cdrqhadPK.quono"),
+    @NamedQuery(name = "Cdrqhad.findNeedThrow", query = "SELECT c FROM Cdrqhad c WHERE c.hquosta = 'R'  ORDER BY c.cdrqhadPK.facno  ,c.cdrqhadPK.quono"),
     @NamedQuery(name = "Cdrqhad.findByRechkprice", query = "SELECT c FROM Cdrqhad c WHERE c.rechkprice = :rechkprice")})
 public class Cdrqhad implements Serializable {
 

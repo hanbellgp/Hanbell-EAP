@@ -81,5 +81,5 @@ public class CdrpaydscPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrpaydscPK[ difcode=" + difcode + ", allcode=" + allcode + " ]";
     }
-    
+
 }

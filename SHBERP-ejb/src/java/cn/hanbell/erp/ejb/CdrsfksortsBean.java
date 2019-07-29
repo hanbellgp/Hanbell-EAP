@@ -17,7 +17,7 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class CdrsfksortsBean extends SuperEJBForERP<Cdrsfksorts>{
+public class CdrsfksortsBean extends SuperEJBForERP<Cdrsfksorts> {
 
     public CdrsfksortsBean() {
         super(Cdrsfksorts.class);

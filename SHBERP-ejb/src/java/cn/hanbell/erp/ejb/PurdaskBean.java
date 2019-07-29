@@ -16,9 +16,9 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class PurdaskBean extends  SuperEJBForERP<Purdask>{
+public class PurdaskBean extends SuperEJBForERP<Purdask> {
 
-      public PurdaskBean(){
-       super(Purdask.class);
-      }
+    public PurdaskBean() {
+        super(Purdask.class);
+    }
 }

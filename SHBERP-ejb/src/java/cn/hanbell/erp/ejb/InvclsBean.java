@@ -128,11 +128,11 @@ public class InvclsBean extends SuperEJBForERP<Invcls> {
             invcls.setMakeyn(h.getMakeyn().charAt(0)); //设置自动生成制作码
             invcls.setModelyn(h.getModelyn().charAt(0)); //设置自动产生型号
             invcls.setMakeCode(h.getMakecode());  //设置产品别代码
-           
-            if(h.getMakelen() == null && " ".equals(h.getMakelen())){
+
+            if (h.getMakelen() == null && " ".equals(h.getMakelen())) {
                 invcls.setMakelen(null); //设置流水长度
-            }else{
-                 invcls.setMakelen(Integer.parseInt(h.getMakelen())); //设置流水长度
+            } else {
+                invcls.setMakelen(Integer.parseInt(h.getMakelen())); //设置流水长度
             }
             invcls.setItclscode(h.getItclscode().charAt(0));  //itclscode设置品号归类
             invcls.setGpitdscyn("Y".charAt(0));
@@ -168,7 +168,7 @@ public class InvclsBean extends SuperEJBForERP<Invcls> {
                 //香港
                 syncHKBean.persist(invcls, null);
                 syncHKBean.getEntityManager().flush();
-                
+
             }
             return true;
         } catch (Exception ex) {

@@ -106,7 +106,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
         try {
 
             //表身循环
-            for (int i = 0; i < details.size(); i++) {           
+            for (int i = 0; i < details.size(); i++) {
                 HZJS034Detail detail = details.get(i);
                 if (null == this.findByItnbr(detail.getItnbr())) {
                     Invmas m = new Invmas();
@@ -170,7 +170,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setDwt(BigDecimal.ZERO);
                     persist(m);
                     this.getEntityManager().flush();
-                    
+
                     //同步MES资料
                     if (h.getFacno().equals("C") || h.getFacno().equals("K")) {
                         Scminvmas scm = new Scminvmas();

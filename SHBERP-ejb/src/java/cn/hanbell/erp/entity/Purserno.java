@@ -99,5 +99,5 @@ public class Purserno implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Purserno[ pursernoPK=" + pursernoPK + " ]";
     }
-    
+
 }

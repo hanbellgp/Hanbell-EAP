@@ -26,7 +26,7 @@ public class ItemFault implements Serializable {
 
     }
 
-    public ItemFault(String fault,String name) {
+    public ItemFault(String fault, String name) {
         this.fault = fault;
         this.name = name;
     }

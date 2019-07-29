@@ -118,5 +118,5 @@ public class CdrsfkspecPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.CdrsfkspecPK[ facno=" + facno + ", parts=" + parts + ", sorts=" + sorts + ", specifit=" + specifit + " ]";
     }
-    
+
 }

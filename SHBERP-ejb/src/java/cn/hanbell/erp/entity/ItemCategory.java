@@ -26,7 +26,7 @@ public class ItemCategory implements Serializable {
 
     }
 
-    public ItemCategory(String model,String itemno) {
+    public ItemCategory(String model, String itemno) {
         this.category = model;
         this.name = itemno;
     }

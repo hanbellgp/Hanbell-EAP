@@ -72,5 +72,5 @@ public class Accsped implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Accsped[ accspedPK=" + accspedPK + " ]";
     }
-    
+
 }

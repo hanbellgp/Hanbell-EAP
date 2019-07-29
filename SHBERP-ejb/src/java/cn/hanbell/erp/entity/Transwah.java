@@ -99,5 +99,5 @@ public class Transwah implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Transwah[ transwahPK=" + transwahPK + " ]";
     }
-    
+
 }

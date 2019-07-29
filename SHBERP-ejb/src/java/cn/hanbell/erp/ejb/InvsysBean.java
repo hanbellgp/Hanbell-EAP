@@ -18,14 +18,14 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class InvsysBean extends SuperEJBForERP<Invsys>{
+public class InvsysBean extends SuperEJBForERP<Invsys> {
 
     public InvsysBean() {
         super(Invsys.class);
     }
 
-    public  Invsys findByFacno(String facno){
-       Query query = getEntityManager().createNamedQuery("Invsys.findByFacno");
+    public Invsys findByFacno(String facno) {
+        Query query = getEntityManager().createNamedQuery("Invsys.findByFacno");
         query.setParameter("facno", facno);
         try {
             Invsys invsys = (Invsys) query.getSingleResult();

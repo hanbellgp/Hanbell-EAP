@@ -25,12 +25,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrqbomsub")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrqbomsub.findAll", query = "SELECT c FROM Cdrqbomsub c")
-    , @NamedQuery(name = "Cdrqbomsub.findByFacno", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.facno = :facno")
-    , @NamedQuery(name = "Cdrqbomsub.findByCdrno", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.cdrno = :cdrno")
-    , @NamedQuery(name = "Cdrqbomsub.findByTrseq", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.trseq = :trseq")
-    , @NamedQuery(name = "Cdrqbomsub.findByItnbrf", query = "SELECT c FROM Cdrqbomsub c WHERE c.itnbrf = :itnbrf")
-    , @NamedQuery(name = "Cdrqbomsub.findByItnbrfAndCdrno", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.facno = :facno AND c.cdrqbomsubPK.cdrno = :cdrno AND c.itnbrf = :itnbrf")})
+    @NamedQuery(name = "Cdrqbomsub.findAll", query = "SELECT c FROM Cdrqbomsub c"),
+    @NamedQuery(name = "Cdrqbomsub.findByFacno", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.facno = :facno"),
+    @NamedQuery(name = "Cdrqbomsub.findByCdrno", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.cdrno = :cdrno"),
+    @NamedQuery(name = "Cdrqbomsub.findByTrseq", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.trseq = :trseq"),
+    @NamedQuery(name = "Cdrqbomsub.findByItnbrf", query = "SELECT c FROM Cdrqbomsub c WHERE c.itnbrf = :itnbrf"),
+    @NamedQuery(name = "Cdrqbomsub.findByItnbrfAndCdrno", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.facno = :facno AND c.cdrqbomsubPK.cdrno = :cdrno AND c.itnbrf = :itnbrf")})
 public class Cdrqbomsub implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -1508,5 +1508,5 @@ public class Cdrqbomsub implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrqbomsub[ cdrqbomsubPK=" + cdrqbomsubPK + " ]";
     }
-    
+
 }

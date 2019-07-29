@@ -100,5 +100,5 @@ public class ArmbilPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.ArmbilPK[ facno=" + facno + ", bilym=" + bilym + ", bilno=" + bilno + " ]";
     }
-    
+
 }

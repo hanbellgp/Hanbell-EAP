@@ -716,5 +716,5 @@ public class Cdrqdta implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrqdta[ cdrqdtaPK=" + cdrqdtaPK + " ]";
     }
-    
+
 }

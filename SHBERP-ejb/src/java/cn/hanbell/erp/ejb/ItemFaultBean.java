@@ -42,5 +42,5 @@ public class ItemFaultBean extends SuperEJBForERP<ItemFault> {
         }
         return dataList;
     }
-    
+
 }

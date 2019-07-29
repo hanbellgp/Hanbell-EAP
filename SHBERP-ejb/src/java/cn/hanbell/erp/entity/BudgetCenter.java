@@ -112,5 +112,5 @@ public class BudgetCenter implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.BudgetCenter[ budgetCenterPK=" + budgetCenterPK + " ]";
     }
-    
+
 }

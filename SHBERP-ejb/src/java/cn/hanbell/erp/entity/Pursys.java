@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Pursys.findByFacno", query = "SELECT p FROM Pursys p WHERE p.pursysPK.facno = :facno"),
     @NamedQuery(name = "Pursys.findByProno", query = "SELECT p FROM Pursys p WHERE p.pursysPK.prono = :prono"),
     @NamedQuery(name = "Pursys.findByHunprinum", query = "SELECT p FROM Pursys p WHERE p.hunprinum = :hunprinum"),
-    @NamedQuery(name = "Pursys.findByHagprinum", query = "SELECT p FROM Pursys p WHERE p.hagprinum = :hagprinum"),  
+    @NamedQuery(name = "Pursys.findByHagprinum", query = "SELECT p FROM Pursys p WHERE p.hagprinum = :hagprinum"),
     @NamedQuery(name = "Pursys.findByPK", query = "SELECT p FROM Pursys p WHERE p.pursysPK.facno = :facno AND p.pursysPK.prono = :prono")
 })
 public class Pursys implements Serializable {
@@ -1207,5 +1207,5 @@ public class Pursys implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Pursys[ pursysPK=" + pursysPK + " ]";
     }
-    
+
 }

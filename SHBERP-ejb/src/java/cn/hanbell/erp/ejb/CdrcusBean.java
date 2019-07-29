@@ -27,7 +27,6 @@ import cn.hanbell.oa.entity.HKJH003Detail;
 import cn.hanbell.oa.entity.HKYX006;
 import cn.hanbell.oa.entity.HKYX007;
 import cn.hanbell.util.BaseLib;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,8 +84,10 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
 
     private Cdrcus cdrcus;
     private final HashMap<SuperEJBForERP, List<?>> detailAdded = new HashMap<>();
-    //private final HashMap<SuperEJBForERP, List<?>> detailEdited = new HashMap<>();
-    //private final HashMap<SuperEJBForERP, List<?>> detailDeleted = new HashMap<>();
+    // private final HashMap<SuperEJBForERP, List<?>> detailEdited = new
+    // HashMap<>();
+    // private final HashMap<SuperEJBForERP, List<?>> detailDeleted = new
+    // HashMap<>();
 
     private final List<Cdrivo> cdrivoAdded = new ArrayList<>();
     private final List<Cdrscus> cdrscusAdded = new ArrayList<>();
@@ -145,7 +146,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
     }
 
     public boolean cloneByOAHKJH003(String psn) {
-        //表头
+        // 表头
         HKJH003 e = beanHKJH003.findByPSN(psn);
         if (e == null) {
             throw new NullPointerException(psn + "不存在");
@@ -185,7 +186,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                 cdrscusAdded.addAll(cdrscusBean.findByCusno(cusno));
                 cdrivoAdded.addAll(cdrivoBean.findByCusno(cusno));
 
-                Invwh invwh = invwhBean.findByWareh("JC" + cusno);//改
+                Invwh invwh = invwhBean.findByWareh("JC" + cusno);// 改
                 if (invwh != null) {
                     Invwh v = new Invwh();
                     v.setFacno(facno2);
@@ -198,7 +199,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                     v.setUserno(invwh.getUserno());
                     v.setIndate(invwh.getIndate());
                     invwhAdded.add(v);
-                    //仓管员
+                    // 仓管员
                     List<Invwhclk> invwhclks = invwhclkBean.findByWareh("JC" + cusno);
                     if (invwhclks != null && !invwhclks.isEmpty()) {
                         for (Invwhclk io : invwhclks) {
@@ -230,12 +231,12 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                         transwahAdded.add(th);
                     }
                 }
-                //客户代号
+                // 客户代号
                 Miscode code = miscodeBean.findByPK("CA", cusno);
                 if (code != null) {
                     miscodeAdded.add(code);
                 }
-                //集团代号
+                // 集团代号
                 Miscode group = miscodeBean.findByPK("CB", cdrcus.getCusgroup());
                 if (group != null) {
                     miscodeAdded.add(group);
@@ -282,12 +283,12 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             throw new NullPointerException();
         }
         CRMGG crmgg = beanCRMGG.findById(oa.getGg001());
-        //放开限制,允许无CRM资料就可以新增客户 C0160 2016/9/2
-        //if (crmgg == null) {
-        //    throw new NullPointerException();
-        //}
+        // 放开限制,允许无CRM资料就可以新增客户 C0160 2016/9/2
+        // if (crmgg == null) {
+        // throw new NullPointerException();
+        // }
         switch (oa.getFacno()) {
-            //SHB和分公司统一到SHB下
+            // SHB和分公司统一到SHB下
             case "C":
             case "G":
             case "J":
@@ -300,7 +301,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                 facno = oa.getFacno();
                 code = facno;
         }
-        //增加检查避免重复抛转
+        // 增加检查避免重复抛转
         setCompany(facno);
         Cdrcus e = this.findByCusds(oa.getGg004());
         if (e != null) {
@@ -368,12 +369,12 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         newcusno = getFormId(cdrcus.getIndate(), code + cdrcus.getCuycode(), null, 5, "cdrcus", "cusno");
         cdrcus.setCusno(newcusno);
         if (oa.getCusgroup() == null || "".equals(oa.getCusgroup())) {
-            cdrcus.setCusgroup(newcusno);//集团代号
+            cdrcus.setCusgroup(newcusno);// 集团代号
         } else {
             cdrcus.setCusgroup(oa.getCusgroup());
         }
 
-        //生成发票客户资料
+        // 生成发票客户资料
         Cdrivo i = new Cdrivo(newcusno, (short) 1, newcusno);
         i.setCusna(cdrcus.getCusna());
         i.setAddress1(cdrcus.getAddress1());
@@ -387,7 +388,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         i.setIndate(cdrcus.getIndate());
         i.setUserno(cdrcus.getUserno());
 
-        //生成指配客户资料
+        // 生成指配客户资料
         Cdrscus s = new Cdrscus(newcusno, (short) 1);
         s.setShpcusno(newcusno);
         s.setCusna(cdrcus.getCusna());
@@ -406,12 +407,12 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         s.setIndate(cdrcus.getIndate());
         s.setUserno(cdrcus.getUserno());
 
-        //生成负责业务
+        // 生成负责业务
         Cdrcusman m = new Cdrcusman(facno, newcusno);
         m.setMan(oa.getSalesman());
         m.setLatdate(cdrcus.getIndate());
 
-        //生成借客户仓
+        // 生成借客户仓
         Invwh w = new Invwh();
         w.setFacno(facno);
         w.setProno("1");
@@ -427,24 +428,24 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         w.setIndate(cdrcus.getIndate());
         w.setUserno("mis");
 
-        //生成仓管员
+        // 生成仓管员
         Invwhclk u = new Invwhclk(w.getFacno(), w.getProno(), w.getWareh(), w.getWclerk());
         u.setMainyn('Y');
         u.setIndate(cdrcus.getIndate());
         u.setUserno("mis");
 
-        //生成客户周转仓资料
+        // 生成客户周转仓资料
         Transwah t = new Transwah(w.getFacno(), w.getProno(), '2', newcusno, (short) 1);
         t.setWareh(w.getWareh());
 
-        //生成miscode资料
+        // 生成miscode资料
         Miscode c = new Miscode("CA", newcusno);
         c.setCdesc(cdrcus.getCusna());
         c.setStatus('Y');
         c.setMascreyn('Y');
         c.setCusds(cdrcus.getCusds());
 
-        //客户集团别如果不存在再新增
+        // 客户集团别如果不存在再新增
         Miscode g = miscodeBean.findByPK("CB", cdrcus.getCusgroup());
 
         cdrivoAdded.add(i);
@@ -463,13 +464,13 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             miscodeAdded.add(g);
         }
 
-        //放开限制,允许无CRM资料就可以新增客户 C0160 2016/9/2
+        // 放开限制,允许无CRM资料就可以新增客户 C0160 2016/9/2
         if (crmgg != null) {
             crmgg.setGg004(cdrcus.getCusds());
             crmgg.setGg008(cdrcus.getAreacode());
             crmgg.setGg009(cdrcus.getSacode());
-            //crmgg.setGg010(cdrcus.getCuycode());//不需要抛转2017/2/20
-            //crmgg.setGg011(cdrcus.getCuskind());
+            // crmgg.setGg010(cdrcus.getCuycode());//不需要抛转2017/2/20
+            // crmgg.setGg011(cdrcus.getCuskind());
             crmgg.setGg011(cdrcus.getSndcode());
             crmgg.setGg013(cdrcus.getCuskind());
             crmgg.setGg017(BaseLib.formatDate("yyyyMMdd", cdrcus.getBegdate()));
@@ -483,22 +484,22 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             crmgg.setGg036(oa.getGg036());
             crmgg.setGg043(newcusno);
             crmgg.setGg084(cdrcus.getCoin());
-            //ERP与CRM定义不同
+            // ERP与CRM定义不同
             switch (cdrcus.getTax()) {
-                //外加税
+                // 外加税
                 case '1':
                     crmgg.setGg089("A");
                     crmgg.setGg098("2");
                     crmgg.setGg109("S01");
-                //零税
+                // 零税
                 case '2':
                     crmgg.setGg089("A");
                     crmgg.setGg098("3");
                     crmgg.setGg109("S01");
                     break;
-                //免税
-                //case '3':
-                //内含
+                // 免税
+                // case '3':
+                // 内含
                 case '4':
                     crmgg.setGg089("A");
                     crmgg.setGg098("1");
@@ -506,31 +507,31 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                 default:
             }
             crmgg.setGg105(cdrcus.getCusdse());
-            //交易类别字段形态不符
-            //ERP与CRM定义不同
+            // 交易类别字段形态不符
+            // ERP与CRM定义不同
             switch (cdrcus.getPaycode()) {
                 case '1':
-                    //crmgg.setGg113('1');
+                    // crmgg.setGg113('1');
                     crmgg.setGg091("1");
                     break;
                 case '2':
-                    //crmgg.setGg113('3');
+                    // crmgg.setGg113('3');
                     crmgg.setGg091("3");
                     break;
                 case '3':
-                    //crmgg.setGg113('2');
+                    // crmgg.setGg113('2');
                     crmgg.setGg091("2");
                     break;
                 case '4':
                 case '5':
-                    //crmgg.setGg113('4');
+                    // crmgg.setGg113('4');
                     crmgg.setGg091("4");
                     break;
                 default:
-                    //crmgg.setGg113('1');
+                    // crmgg.setGg113('1');
                     crmgg.setGg091("1");
             }
-            //交易条件
+            // 交易条件
             switch (cdrcus.getTermcode()) {
                 case "C&F":
                     crmgg.setGg112("3");
@@ -544,7 +545,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                 default:
                     crmgg.setGg112("3");
             }
-            //回写更多内容
+            // 回写更多内容
         }
         try {
             persist(cdrcus, detailAdded);
@@ -560,25 +561,25 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
 
             switch (oa.getFacno()) {
                 case "G":
-                    //同步广州ERP
+                    // 同步广州ERP
                     resetFacno("G");
                     syncGZBean.persist(cdrcus, detailAdded);
                     syncGZBean.getEntityManager().flush();
                     break;
                 case "J":
-                    //同步济南ERP
+                    // 同步济南ERP
                     resetFacno("J");
                     syncJNBean.persist(cdrcus, detailAdded);
                     syncJNBean.getEntityManager().flush();
                     break;
                 case "N":
-                    //同步南京ERP
+                    // 同步南京ERP
                     resetFacno("N");
                     syncNJBean.persist(cdrcus, detailAdded);
                     syncNJBean.getEntityManager().flush();
                     break;
                 case "C4":
-                    //同步重庆ERP
+                    // 同步重庆ERP
                     resetFacno("C4");
                     syncCQBean.persist(cdrcus, detailAdded);
                     syncCQBean.getEntityManager().flush();
@@ -600,7 +601,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         String origman = "";
         String newman = "";
 
-        //获取OA客户修改资料
+        // 获取OA客户修改资料
         HKYX007 oa = beanHKYX007.findByPSN(psn);
         if (oa == null) {
             throw new NullPointerException();
@@ -608,14 +609,14 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
 
         facno = oa.getFacno();
 
-        //获取ERP客户资料
+        // 获取ERP客户资料
         this.setCompany(facno);
         cdrcus = this.findById(oa.getCusno());
         if (cdrcus == null) {
             throw new NullPointerException();
         }
 
-        //获取CRM客户资料
+        // 获取CRM客户资料
         CRMGG crmgg = beanCRMGG.findByERPCusno(oa.getCusno());
 
         detailAdded.clear();
@@ -679,7 +680,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         }
         if (Objects.equals(oa.getChkman(), "1") && (oa.getMan() != null) && !"".equals(oa.getMan())) {
             cdrcusmanBean.setCompany(facno);
-            //删除原来负责业务
+            // 删除原来负责业务
             Cdrcusman m;
             m = cdrcusmanBean.findByPK(facno, oa.getCusno());
             if (m != null) {
@@ -691,7 +692,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                     case "J":
                     case "N":
                     case "C4":
-                        //分公司发起,同步删除SHB_ERP中的负责业务信息
+                        // 分公司发起,同步删除SHB_ERP中的负责业务信息
                         cdrcusmanBean.setCompany("C");
                         m = cdrcusmanBean.findByPK("C", oa.getCusno());
                         if (m != null) {
@@ -703,7 +704,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                 }
             }
             cdrcusmanBean.setCompany(facno);
-            //创建新的负责业务
+            // 创建新的负责业务
             m = new Cdrcusman(facno, oa.getCusno());
             m.setMan(oa.getMan());
             m.setLatdate(BaseLib.getDate());
@@ -717,10 +718,10 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         }
 
         try {
-            //更新ERP客户资料
+            // 更新ERP客户资料
             updateForERP(cdrcus, detailAdded, null, null);
             if (!"".equals(origman) && !"".equals(newman)) {
-                //更新ERP-armhad对应的负责业务
+                // 更新ERP-armhad对应的负责业务
                 updateSalesManInArmhad(cdrcus.getCusno(), origman, newman);
             }
             getEntityManager().flush();
@@ -729,14 +730,14 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                 case "J":
                 case "N":
                 case "C4":
-                    //分公司发起,同步SHB_ERP
+                    // 分公司发起,同步SHB_ERP
                     resetFacno("C");
                     syncSHBBean.update(cdrcus, detailAdded, null, null);
                     syncSHBBean.getEntityManager().flush();
                     break;
                 default:
             }
-            //更新CRM客户资料
+            // 更新CRM客户资料
             if (crmgg != null) {
                 beanCRMGG.update(crmgg);
             }
@@ -793,9 +794,10 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         }
     }
 
-    //更新应收账款立账表中的负责业务
+    // 更新应收账款立账表中的负责业务
     public int updateSalesManInArmhad(String cusno, String origValue, String newValue) {
-        Query query = getEntityManager().createNativeQuery("update armhad set mancode = ?1 where mancode = ?2 and cusno = ?3 and (booamt - recamt > 0)");
+        Query query = getEntityManager().createNativeQuery(
+                "update armhad set mancode = ?1 where mancode = ?2 and cusno = ?3 and (booamt - recamt > 0)");
         query.setParameter(1, newValue);
         query.setParameter(2, origValue);
         query.setParameter(3, cusno);

@@ -23,22 +23,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrdpopsfk")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrdpopsfk.findAll", query = "SELECT c FROM Cdrdpopsfk c")
-    , @NamedQuery(name = "Cdrdpopsfk.findByFacno", query = "SELECT c FROM Cdrdpopsfk c WHERE c.cdrdpopsfkPK.facno = :facno")
-    , @NamedQuery(name = "Cdrdpopsfk.findBySfktrno", query = "SELECT c FROM Cdrdpopsfk c WHERE c.cdrdpopsfkPK.sfktrno = :sfktrno")
-    , @NamedQuery(name = "Cdrdpopsfk.findByParts", query = "SELECT c FROM Cdrdpopsfk c WHERE c.cdrdpopsfkPK.parts = :parts")
-    , @NamedQuery(name = "Cdrdpopsfk.findByPartdesc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.partdesc = :partdesc")
-    , @NamedQuery(name = "Cdrdpopsfk.findByPapx", query = "SELECT c FROM Cdrdpopsfk c WHERE c.papx = :papx")
-    , @NamedQuery(name = "Cdrdpopsfk.findBySorts", query = "SELECT c FROM Cdrdpopsfk c WHERE c.cdrdpopsfkPK.sorts = :sorts")
-    , @NamedQuery(name = "Cdrdpopsfk.findBySortsdesc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.sortsdesc = :sortsdesc")
-    , @NamedQuery(name = "Cdrdpopsfk.findBySpecifit", query = "SELECT c FROM Cdrdpopsfk c WHERE c.specifit = :specifit")
-    , @NamedQuery(name = "Cdrdpopsfk.findBySpecifitesc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.specifitesc = :specifitesc")
-    , @NamedQuery(name = "Cdrdpopsfk.findByReguation1", query = "SELECT c FROM Cdrdpopsfk c WHERE c.reguation1 = :reguation1")
-    , @NamedQuery(name = "Cdrdpopsfk.findByRegua1desc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.regua1desc = :regua1desc")
-    , @NamedQuery(name = "Cdrdpopsfk.findByReguation2", query = "SELECT c FROM Cdrdpopsfk c WHERE c.reguation2 = :reguation2")
-    , @NamedQuery(name = "Cdrdpopsfk.findByRegua2desc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.regua2desc = :regua2desc")
-    , @NamedQuery(name = "Cdrdpopsfk.findByReguation3", query = "SELECT c FROM Cdrdpopsfk c WHERE c.reguation3 = :reguation3")
-    , @NamedQuery(name = "Cdrdpopsfk.findByRegua3desc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.regua3desc = :regua3desc")})
+    @NamedQuery(name = "Cdrdpopsfk.findAll", query = "SELECT c FROM Cdrdpopsfk c"),
+    @NamedQuery(name = "Cdrdpopsfk.findByFacno", query = "SELECT c FROM Cdrdpopsfk c WHERE c.cdrdpopsfkPK.facno = :facno"),
+    @NamedQuery(name = "Cdrdpopsfk.findBySfktrno", query = "SELECT c FROM Cdrdpopsfk c WHERE c.cdrdpopsfkPK.sfktrno = :sfktrno"),
+    @NamedQuery(name = "Cdrdpopsfk.findByParts", query = "SELECT c FROM Cdrdpopsfk c WHERE c.cdrdpopsfkPK.parts = :parts"),
+    @NamedQuery(name = "Cdrdpopsfk.findByPartdesc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.partdesc = :partdesc"),
+    @NamedQuery(name = "Cdrdpopsfk.findByPapx", query = "SELECT c FROM Cdrdpopsfk c WHERE c.papx = :papx"),
+    @NamedQuery(name = "Cdrdpopsfk.findBySorts", query = "SELECT c FROM Cdrdpopsfk c WHERE c.cdrdpopsfkPK.sorts = :sorts"),
+    @NamedQuery(name = "Cdrdpopsfk.findBySortsdesc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.sortsdesc = :sortsdesc"),
+    @NamedQuery(name = "Cdrdpopsfk.findBySpecifit", query = "SELECT c FROM Cdrdpopsfk c WHERE c.specifit = :specifit"),
+    @NamedQuery(name = "Cdrdpopsfk.findBySpecifitesc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.specifitesc = :specifitesc"),
+    @NamedQuery(name = "Cdrdpopsfk.findByReguation1", query = "SELECT c FROM Cdrdpopsfk c WHERE c.reguation1 = :reguation1"),
+    @NamedQuery(name = "Cdrdpopsfk.findByRegua1desc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.regua1desc = :regua1desc"),
+    @NamedQuery(name = "Cdrdpopsfk.findByReguation2", query = "SELECT c FROM Cdrdpopsfk c WHERE c.reguation2 = :reguation2"),
+    @NamedQuery(name = "Cdrdpopsfk.findByRegua2desc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.regua2desc = :regua2desc"),
+    @NamedQuery(name = "Cdrdpopsfk.findByReguation3", query = "SELECT c FROM Cdrdpopsfk c WHERE c.reguation3 = :reguation3"),
+    @NamedQuery(name = "Cdrdpopsfk.findByRegua3desc", query = "SELECT c FROM Cdrdpopsfk c WHERE c.regua3desc = :regua3desc")})
 public class Cdrdpopsfk implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -209,5 +209,5 @@ public class Cdrdpopsfk implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrdpopsfk[ cdrdpopsfkPK=" + cdrdpopsfkPK + " ]";
     }
-    
+
 }

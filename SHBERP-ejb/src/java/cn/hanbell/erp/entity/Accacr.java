@@ -25,70 +25,38 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "accacr")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Accacr.findAll", query = "SELECT a FROM Accacr a")
-    ,
-    @NamedQuery(name = "Accacr.findByFacno", query = "SELECT a FROM Accacr a WHERE a.accacrPK.facno = :facno")
-    ,
-    @NamedQuery(name = "Accacr.findBySysno", query = "SELECT a FROM Accacr a WHERE a.accacrPK.sysno = :sysno")
-    ,
-    @NamedQuery(name = "Accacr.findByKind", query = "SELECT a FROM Accacr a WHERE a.accacrPK.kind = :kind")
-    ,
-    @NamedQuery(name = "Accacr.findByRkd", query = "SELECT a FROM Accacr a WHERE a.accacrPK.rkd = :rkd")
-    ,
-    @NamedQuery(name = "Accacr.findByAccseq", query = "SELECT a FROM Accacr a WHERE a.accacrPK.accseq = :accseq")
-    ,
-    @NamedQuery(name = "Accacr.findByAccno", query = "SELECT a FROM Accacr a WHERE a.accno = :accno")
-    ,
-    @NamedQuery(name = "Accacr.findByDcratr", query = "SELECT a FROM Accacr a WHERE a.dcratr = :dcratr")
-    ,
-    @NamedQuery(name = "Accacr.findByDetno1", query = "SELECT a FROM Accacr a WHERE a.detno1 = :detno1")
-    ,
-    @NamedQuery(name = "Accacr.findByDetno2", query = "SELECT a FROM Accacr a WHERE a.detno2 = :detno2")
-    ,
-    @NamedQuery(name = "Accacr.findByDetno3", query = "SELECT a FROM Accacr a WHERE a.detno3 = :detno3")
-    ,
-    @NamedQuery(name = "Accacr.findByDetno4", query = "SELECT a FROM Accacr a WHERE a.detno4 = :detno4")
-    ,
-    @NamedQuery(name = "Accacr.findByDetno5", query = "SELECT a FROM Accacr a WHERE a.detno5 = :detno5")
-    ,
-    @NamedQuery(name = "Accacr.findByDetno6", query = "SELECT a FROM Accacr a WHERE a.detno6 = :detno6")
-    ,
-    @NamedQuery(name = "Accacr.findBySumry1", query = "SELECT a FROM Accacr a WHERE a.sumry1 = :sumry1")
-    ,
-    @NamedQuery(name = "Accacr.findBySumry2", query = "SELECT a FROM Accacr a WHERE a.sumry2 = :sumry2")
-    ,
-    @NamedQuery(name = "Accacr.findBySumry3", query = "SELECT a FROM Accacr a WHERE a.sumry3 = :sumry3")
-    ,
-    @NamedQuery(name = "Accacr.findBySumry4", query = "SELECT a FROM Accacr a WHERE a.sumry4 = :sumry4")
-    ,
-    @NamedQuery(name = "Accacr.findBySumry5", query = "SELECT a FROM Accacr a WHERE a.sumry5 = :sumry5")
-    ,
-    @NamedQuery(name = "Accacr.findBySumln1", query = "SELECT a FROM Accacr a WHERE a.sumln1 = :sumln1")
-    ,
-    @NamedQuery(name = "Accacr.findBySumln2", query = "SELECT a FROM Accacr a WHERE a.sumln2 = :sumln2")
-    ,
-    @NamedQuery(name = "Accacr.findBySumln3", query = "SELECT a FROM Accacr a WHERE a.sumln3 = :sumln3")
-    ,
-    @NamedQuery(name = "Accacr.findBySumln4", query = "SELECT a FROM Accacr a WHERE a.sumln4 = :sumln4")
-    ,
-    @NamedQuery(name = "Accacr.findBySumln5", query = "SELECT a FROM Accacr a WHERE a.sumln5 = :sumln5")
-    ,
-    @NamedQuery(name = "Accacr.findByAmtcol", query = "SELECT a FROM Accacr a WHERE a.amtcol = :amtcol")
-    ,
-    @NamedQuery(name = "Accacr.findByAmtscol", query = "SELECT a FROM Accacr a WHERE a.amtscol = :amtscol")
-    ,
-    @NamedQuery(name = "Accacr.findByCoincol", query = "SELECT a FROM Accacr a WHERE a.coincol = :coincol")
-    ,
-    @NamedQuery(name = "Accacr.findByRatecol", query = "SELECT a FROM Accacr a WHERE a.ratecol = :ratecol")
-    ,
-    @NamedQuery(name = "Accacr.findByTrntype", query = "SELECT a FROM Accacr a WHERE a.trntype = :trntype")
-    ,
-    @NamedQuery(name = "Accacr.findByConfig", query = "SELECT a FROM Accacr a WHERE a.config = :config")
-    ,
-    @NamedQuery(name = "Accacr.findByTrndesc", query = "SELECT a FROM Accacr a WHERE a.trndesc = :trndesc")
-    ,
-    @NamedQuery(name = "Accacr.findBySysnoAndKindAndRkd", query = "SELECT a FROM Accacr a WHERE a.accacrPK.sysno = :sysno AND a.accacrPK.kind = :kind AND a.accacrPK.rkd = :rkd ")
-    ,
+    @NamedQuery(name = "Accacr.findAll", query = "SELECT a FROM Accacr a"),
+    @NamedQuery(name = "Accacr.findByFacno", query = "SELECT a FROM Accacr a WHERE a.accacrPK.facno = :facno"),
+    @NamedQuery(name = "Accacr.findBySysno", query = "SELECT a FROM Accacr a WHERE a.accacrPK.sysno = :sysno"),
+    @NamedQuery(name = "Accacr.findByKind", query = "SELECT a FROM Accacr a WHERE a.accacrPK.kind = :kind"),
+    @NamedQuery(name = "Accacr.findByRkd", query = "SELECT a FROM Accacr a WHERE a.accacrPK.rkd = :rkd"),
+    @NamedQuery(name = "Accacr.findByAccseq", query = "SELECT a FROM Accacr a WHERE a.accacrPK.accseq = :accseq"),
+    @NamedQuery(name = "Accacr.findByAccno", query = "SELECT a FROM Accacr a WHERE a.accno = :accno"),
+    @NamedQuery(name = "Accacr.findByDcratr", query = "SELECT a FROM Accacr a WHERE a.dcratr = :dcratr"),
+    @NamedQuery(name = "Accacr.findByDetno1", query = "SELECT a FROM Accacr a WHERE a.detno1 = :detno1"),
+    @NamedQuery(name = "Accacr.findByDetno2", query = "SELECT a FROM Accacr a WHERE a.detno2 = :detno2"),
+    @NamedQuery(name = "Accacr.findByDetno3", query = "SELECT a FROM Accacr a WHERE a.detno3 = :detno3"),
+    @NamedQuery(name = "Accacr.findByDetno4", query = "SELECT a FROM Accacr a WHERE a.detno4 = :detno4"),
+    @NamedQuery(name = "Accacr.findByDetno5", query = "SELECT a FROM Accacr a WHERE a.detno5 = :detno5"),
+    @NamedQuery(name = "Accacr.findByDetno6", query = "SELECT a FROM Accacr a WHERE a.detno6 = :detno6"),
+    @NamedQuery(name = "Accacr.findBySumry1", query = "SELECT a FROM Accacr a WHERE a.sumry1 = :sumry1"),
+    @NamedQuery(name = "Accacr.findBySumry2", query = "SELECT a FROM Accacr a WHERE a.sumry2 = :sumry2"),
+    @NamedQuery(name = "Accacr.findBySumry3", query = "SELECT a FROM Accacr a WHERE a.sumry3 = :sumry3"),
+    @NamedQuery(name = "Accacr.findBySumry4", query = "SELECT a FROM Accacr a WHERE a.sumry4 = :sumry4"),
+    @NamedQuery(name = "Accacr.findBySumry5", query = "SELECT a FROM Accacr a WHERE a.sumry5 = :sumry5"),
+    @NamedQuery(name = "Accacr.findBySumln1", query = "SELECT a FROM Accacr a WHERE a.sumln1 = :sumln1"),
+    @NamedQuery(name = "Accacr.findBySumln2", query = "SELECT a FROM Accacr a WHERE a.sumln2 = :sumln2"),
+    @NamedQuery(name = "Accacr.findBySumln3", query = "SELECT a FROM Accacr a WHERE a.sumln3 = :sumln3"),
+    @NamedQuery(name = "Accacr.findBySumln4", query = "SELECT a FROM Accacr a WHERE a.sumln4 = :sumln4"),
+    @NamedQuery(name = "Accacr.findBySumln5", query = "SELECT a FROM Accacr a WHERE a.sumln5 = :sumln5"),
+    @NamedQuery(name = "Accacr.findByAmtcol", query = "SELECT a FROM Accacr a WHERE a.amtcol = :amtcol"),
+    @NamedQuery(name = "Accacr.findByAmtscol", query = "SELECT a FROM Accacr a WHERE a.amtscol = :amtscol"),
+    @NamedQuery(name = "Accacr.findByCoincol", query = "SELECT a FROM Accacr a WHERE a.coincol = :coincol"),
+    @NamedQuery(name = "Accacr.findByRatecol", query = "SELECT a FROM Accacr a WHERE a.ratecol = :ratecol"),
+    @NamedQuery(name = "Accacr.findByTrntype", query = "SELECT a FROM Accacr a WHERE a.trntype = :trntype"),
+    @NamedQuery(name = "Accacr.findByConfig", query = "SELECT a FROM Accacr a WHERE a.config = :config"),
+    @NamedQuery(name = "Accacr.findByTrndesc", query = "SELECT a FROM Accacr a WHERE a.trndesc = :trndesc"),
+    @NamedQuery(name = "Accacr.findBySysnoAndKindAndRkd", query = "SELECT a FROM Accacr a WHERE a.accacrPK.sysno = :sysno AND a.accacrPK.kind = :kind AND a.accacrPK.rkd = :rkd "),
     @NamedQuery(name = "Accacr.findByPK", query = "SELECT a FROM Accacr a WHERE a.accacrPK.facno = :facno AND a.accacrPK.sysno = :sysno AND a.accacrPK.kind = :kind AND a.accacrPK.rkd = :rkd AND a.accno = :accno AND a.dcratr = :dcratr ")})
 public class Accacr implements Serializable {
 

@@ -100,12 +100,12 @@ public class MiscodeBean extends SuperEJBForERP<Miscode> {
         }
         return 0;
     }
-    
-    public List<Miscode> findByCkind(String ckind ,Character status ){
-       Query q = this.getEntityManager().createNamedQuery("Miscode.findByCkindAndStatus");
+
+    public List<Miscode> findByCkind(String ckind, Character status) {
+        Query q = this.getEntityManager().createNamedQuery("Miscode.findByCkindAndStatus");
         q.setParameter("ckind", ckind);
         q.setParameter("status", status);
-        try {             
+        try {
             return q.getResultList();
         } catch (Exception ex) {
             return null;

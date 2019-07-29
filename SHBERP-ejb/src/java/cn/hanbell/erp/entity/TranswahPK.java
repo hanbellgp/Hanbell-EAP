@@ -134,5 +134,5 @@ public class TranswahPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.TranswahPK[ facno=" + facno + ", prono=" + prono + ", custype=" + custype + ", cusno=" + cusno + ", trseq=" + trseq + " ]";
     }
-    
+
 }

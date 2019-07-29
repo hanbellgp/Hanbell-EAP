@@ -25,12 +25,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrsfksorts")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdrsfksorts.findAll", query = "SELECT c FROM Cdrsfksorts c")
-    , @NamedQuery(name = "Cdrsfksorts.findByFacno", query = "SELECT c FROM Cdrsfksorts c WHERE c.cdrsfksortsPK.facno = :facno")
-    , @NamedQuery(name = "Cdrsfksorts.findByParts", query = "SELECT c FROM Cdrsfksorts c WHERE c.cdrsfksortsPK.parts = :parts")
-    , @NamedQuery(name = "Cdrsfksorts.findBySorts", query = "SELECT c FROM Cdrsfksorts c WHERE c.cdrsfksortsPK.sorts = :sorts")
-    , @NamedQuery(name = "Cdrsfksorts.findByPK", query = "SELECT c FROM Cdrsfksorts c WHERE c.cdrsfksortsPK.facno = :facno AND c.cdrsfksortsPK.parts = :parts AND c.cdrsfksortsPK.sorts = :sorts")
-    , @NamedQuery(name = "Cdrsfksorts.findBySortsdesc", query = "SELECT c FROM Cdrsfksorts c WHERE c.sortsdesc = :sortsdesc")})
+    @NamedQuery(name = "Cdrsfksorts.findAll", query = "SELECT c FROM Cdrsfksorts c"),
+    @NamedQuery(name = "Cdrsfksorts.findByFacno", query = "SELECT c FROM Cdrsfksorts c WHERE c.cdrsfksortsPK.facno = :facno"),
+    @NamedQuery(name = "Cdrsfksorts.findByParts", query = "SELECT c FROM Cdrsfksorts c WHERE c.cdrsfksortsPK.parts = :parts"),
+    @NamedQuery(name = "Cdrsfksorts.findBySorts", query = "SELECT c FROM Cdrsfksorts c WHERE c.cdrsfksortsPK.sorts = :sorts"),
+    @NamedQuery(name = "Cdrsfksorts.findByPK", query = "SELECT c FROM Cdrsfksorts c WHERE c.cdrsfksortsPK.facno = :facno AND c.cdrsfksortsPK.parts = :parts AND c.cdrsfksortsPK.sorts = :sorts"),
+    @NamedQuery(name = "Cdrsfksorts.findBySortsdesc", query = "SELECT c FROM Cdrsfksorts c WHERE c.sortsdesc = :sortsdesc")})
 public class Cdrsfksorts implements Serializable {
 
     private static final long serialVersionUID = 1L;

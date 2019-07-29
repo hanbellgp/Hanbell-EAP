@@ -74,5 +74,5 @@ public class Secusys implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Secusys[ secusysPK=" + secusysPK + " ]";
     }
-    
+
 }

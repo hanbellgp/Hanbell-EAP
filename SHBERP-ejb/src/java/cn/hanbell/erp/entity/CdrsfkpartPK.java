@@ -82,5 +82,5 @@ public class CdrsfkpartPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.ejb.CdrsfkpartPK[ facno=" + facno + ", parts=" + parts + " ]";
     }
-    
+
 }
