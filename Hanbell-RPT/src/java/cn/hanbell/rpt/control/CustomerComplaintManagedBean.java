@@ -403,11 +403,11 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
                 material = BigDecimal.ZERO;
                 String kfno = seri12.getBq001();
                 CustomerComplaint cp = new CustomerComplaint();
-                String varnr = sercaBean.findCa009ByCa001(kfno) == null ? "" : sercaBean.findCa009ByCa001(kfno);
+                String varnr = sercaBean.findCa009ByCa001(kfno);
                 cp.setKfno(seri12.getBq001());
                 cp.setCusno(seri12.getBq002() == null ? "null" : seri12.getBq002());
                 cp.setCusna(seri12.getBq002c() == null ? "null" : seri12.getBq002c());
-                cp.setVarnr(varnr);
+                cp.setVarnr(varnr == null ? "null" : varnr);
                 cp.setNcodeDC(seri12.getBq197() == null ? "null" : seri12.getBq197());
                 cp.setNcodeCD(seri12.getBq198() == null ? "null" : seri12.getBq198());
                 cp.setNcodeDD(seri12.getBq003() == null ? "null" : seri12.getBq003());

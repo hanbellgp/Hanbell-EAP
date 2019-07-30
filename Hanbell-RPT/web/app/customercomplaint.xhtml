@@ -80,7 +80,7 @@
                 </p:column>
                 <p:column styleClass="Wid8">
                     <f:facet name="header">
-                        <h:outputText value="机型"/>
+                        <h:outputText value="类别"/>
                     </f:facet>
                     <h:outputText value="#{item.ncodeDD}"/>
                 </p:column>
@@ -151,12 +151,8 @@
                     </p:row>
                     <p:row>
                         <p:column><h:outputText value="制造号码"/></p:column>
-                        <p:column>
+                        <p:column colspan="3">
                             <h:outputText id="varnr" value="#{customerComplaintManagedBean.currentEntity.varnr}" title="varnr"/>
-                        </p:column>
-                        <p:column styleClass="Wid20"><h:outputText value="机型"/></p:column>
-                        <p:column styleClass="Wid30">
-                            <h:outputText id="ncodeDD" value="#{customerComplaintManagedBean.currentEntity.ncodeDD}" title="ncodeDD" />
                         </p:column>
                     </p:row>
                     <p:row>

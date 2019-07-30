@@ -46,7 +46,7 @@ public class CustomerComplaint extends BaseEntity {
     @Size(max = 20)
     @Column(name = "cusna")
     private String cusna;
-    @Size(max = 20)
+    @Size(max = 90)
     @Column(name = "varnr")
     private String varnr;
     @Size(max = 10)
