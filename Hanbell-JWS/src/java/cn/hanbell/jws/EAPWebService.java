@@ -3266,7 +3266,7 @@ public class EAPWebService {
                         cce.setRemark1(row[14] == null ? "null" : row[14].toString());
                         cce.setSourcesno(row[15] == null ? "null" : row[15].toString());
                         cce.setSourcesdate(row[16] == null ? "null" : row[16].toString());
-                        tansportList.add(cce);
+                        travelList.add(cce);
                     }
                 }
                 //三、材料费
