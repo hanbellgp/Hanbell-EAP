@@ -6,7 +6,7 @@
 package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
-import cn.hanbell.oa.entity.HKNG001;
+import cn.hanbell.oa.entity.HKCG019;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 
@@ -16,10 +16,10 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class HKNG001Bean extends SuperEJBForEFGP<HKNG001> {
+public class HKCG019Bean extends SuperEJBForEFGP<HKCG019> {
 
-    public HKNG001Bean() {
-        super(HKNG001.class);
+    public HKCG019Bean() {
+        super(HKCG019.class);
     }
 
 }

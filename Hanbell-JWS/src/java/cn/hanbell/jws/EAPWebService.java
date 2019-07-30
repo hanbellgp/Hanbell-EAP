@@ -140,7 +140,7 @@ import cn.hanbell.oa.ejb.HKFW005Bean;
 import cn.hanbell.oa.ejb.HKGC002Bean;
 import cn.hanbell.oa.ejb.HKGC003Bean;
 import cn.hanbell.oa.ejb.HKGL060Bean;
-import cn.hanbell.oa.ejb.HKNG001Bean;
+import cn.hanbell.oa.ejb.HKCG019Bean;
 import cn.hanbell.oa.ejb.SHBCRMREPI13Bean;
 import cn.hanbell.oa.ejb.SHBCRMSERI12Bean;
 import cn.hanbell.oa.ejb.SHBINV140Bean;
@@ -148,13 +148,13 @@ import cn.hanbell.oa.ejb.VHTV002Bean;
 import cn.hanbell.oa.ejb.WARMI05Bean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.oa.entity.HKCG016;
+import cn.hanbell.oa.entity.HKCG019;
 import cn.hanbell.oa.entity.HKCW002;
 import cn.hanbell.oa.entity.HKCW002Detail;
 import cn.hanbell.oa.entity.HKFW005;
 import cn.hanbell.oa.entity.HKFW006;
 import cn.hanbell.oa.entity.HKGL060;
 import cn.hanbell.oa.entity.HKGL060Detail;
-import cn.hanbell.oa.entity.HKNG001;
 import cn.hanbell.oa.entity.HZCW034;
 import cn.hanbell.oa.entity.HZCW034Detail;
 import cn.hanbell.oa.entity.HZJS034;
@@ -373,7 +373,7 @@ public class EAPWebService {
     @EJB
     private ECPurvdrBean ecpurvdrBean;
     @EJB
-    private HKNG001Bean hkng001Bean;
+    private HKCG019Bean hkcg019Bean;
     // @EJB
     // private RootCloudBean rootCloudBean;
 
@@ -2959,13 +2959,13 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "updateECNGByOAHKNG001")
-    public String updateECNGByOAHKNG001(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+    @WebMethod(operationName = "updateECNGByOAHKCG019")
+    public String updateECNGByOAHKCG019(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
         Boolean ret = false;
         try {
-            HKNG001 p = hkng001Bean.findByPSN(psn);
+            HKCG019 p = hkcg019Bean.findByPSN(psn);
             if (p == null) {
-                throw new NullPointerException("updateECNGByOAHKNG001找不到流程序号:" + psn);
+                throw new NullPointerException("updateECNGByOAHKCG019找不到流程序号:" + psn);
             }
             // status: 1代表撤销/终止 ，3代表完成
             // String url = "http://172.16.80.104:8090/api/EFBK/EFSup";
@@ -2985,7 +2985,7 @@ public class EAPWebService {
             String response = ecpurvdrBean.ECPostBack(url, jsonObject);
             ret = !(response == null || "".equals(response));
         } catch (NullPointerException | JSONException ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateECNGByOAHKNG001", psn), ex);
+            log4j.error(String.format("执行%s:参数%s时异常", "updateECNGByOAHKCG019", psn), ex);
         }
         if (ret) {
             return "200";
