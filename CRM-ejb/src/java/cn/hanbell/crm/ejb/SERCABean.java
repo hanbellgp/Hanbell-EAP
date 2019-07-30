@@ -7,6 +7,7 @@ package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
 import cn.hanbell.crm.entity.SERCA;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -24,17 +25,27 @@ public class SERCABean extends SuperEJBForCRM<SERCA> {
     }
 
     public String findCa009ByCa001(String kfno) {
+        String varnr = null;
         Query query = getEntityManager().createNamedQuery("SERCA.findCa009ByCa001");
         query.setParameter("ca001", kfno);
         try {
-            Object o = query.getSingleResult();
-            if (o != null) {
-                SERCA sr = (SERCA) o;
-                return sr.getCa009();
+            List<SERCA> list = query.getResultList();
+            if (list != null && !list.isEmpty()) {
+                int i = 1;
+                StringBuilder sb = new StringBuilder();
+                for (SERCA serca : list) {
+                    if (i == 1) {
+                        sb.append(serca.getCa009());
+                    } else {
+                        sb.append(",").append(serca.getCa009());
+                    }
+                    i++;
+                }
+                varnr = sb.toString();
             }
         } catch (Exception ex) {
         }
-        return null;
+        return varnr;
 
     }
 }

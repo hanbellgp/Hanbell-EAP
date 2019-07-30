@@ -3150,12 +3150,12 @@ public class EAPWebService {
             }
             SERI12 seri12 = seri12Bean.findByBq001(kfno);
             CustomerComplaint cp = new CustomerComplaint();
-            String varnr = sercaBean.findCa009ByCa001(kfno) == null ? "" : sercaBean.findCa009ByCa001(kfno);
+            String varnr = sercaBean.findCa009ByCa001(kfno);
             if (seri12 != null) {
                 cp.setKfno(seri12.getBq001());
                 cp.setCusno(seri12.getBq002() == null ? "null" : seri12.getBq002());
                 cp.setCusna(seri12.getBq002c() == null ? "null" : seri12.getBq002c());
-                cp.setVarnr(varnr);
+                cp.setVarnr(varnr == null ? "null" : varnr);
                 cp.setNcodeDC(seri12.getBq197() == null ? "null" : seri12.getBq197());
                 cp.setNcodeCD(seri12.getBq198() == null ? "null" : seri12.getBq198());
                 cp.setNcodeDD(seri12.getBq003() == null ? "null" : seri12.getBq003());
@@ -3266,7 +3266,7 @@ public class EAPWebService {
                         cce.setRemark1(row[14] == null ? "null" : row[14].toString());
                         cce.setSourcesno(row[15] == null ? "null" : row[15].toString());
                         cce.setSourcesdate(row[16] == null ? "null" : row[16].toString());
-                        tansportList.add(cce);
+                        travelList.add(cce);
                     }
                 }
                 //三、材料费
