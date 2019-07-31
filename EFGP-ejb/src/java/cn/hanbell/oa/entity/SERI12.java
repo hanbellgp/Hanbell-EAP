@@ -25,251 +25,119 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SERI12")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SERI12.findAll", query = "SELECT s FROM SERI12 s")
-    ,
-    @NamedQuery(name = "SERI12.findById", query = "SELECT s FROM SERI12 s WHERE s.bq001 = :bq001")
-    ,
-    @NamedQuery(name = "SERI12.findByBq044", query = "SELECT s FROM SERI12 s WHERE s.bq044 = :bq044")
-    ,
-    @NamedQuery(name = "SERI12.findByBq043", query = "SELECT s FROM SERI12 s WHERE s.bq043 = :bq043")
-    ,
-    @NamedQuery(name = "SERI12.findByBq046", query = "SELECT s FROM SERI12 s WHERE s.bq046 = :bq046")
-    ,
-    @NamedQuery(name = "SERI12.findByBq045", query = "SELECT s FROM SERI12 s WHERE s.bq045 = :bq045")
-    ,
-    @NamedQuery(name = "SERI12.findByBq048", query = "SELECT s FROM SERI12 s WHERE s.bq048 = :bq048")
-    ,
-    @NamedQuery(name = "SERI12.findByBq047", query = "SELECT s FROM SERI12 s WHERE s.bq047 = :bq047")
-    ,
-    @NamedQuery(name = "SERI12.findByBq052", query = "SELECT s FROM SERI12 s WHERE s.bq052 = :bq052")
-    ,
-    @NamedQuery(name = "SERI12.findByBq057", query = "SELECT s FROM SERI12 s WHERE s.bq057 = :bq057")
-    ,
-    @NamedQuery(name = "SERI12.findByBq056", query = "SELECT s FROM SERI12 s WHERE s.bq056 = :bq056")
-    ,
-    @NamedQuery(name = "SERI12.findByBq055", query = "SELECT s FROM SERI12 s WHERE s.bq055 = :bq055")
-    ,
-    @NamedQuery(name = "SERI12.findByBq054", query = "SELECT s FROM SERI12 s WHERE s.bq054 = :bq054")
-    ,
-    @NamedQuery(name = "SERI12.findByBq058", query = "SELECT s FROM SERI12 s WHERE s.bq058 = :bq058")
-    ,
-    @NamedQuery(name = "SERI12.findByBq060", query = "SELECT s FROM SERI12 s WHERE s.bq060 = :bq060")
-    ,
-    @NamedQuery(name = "SERI12.findByBq046c", query = "SELECT s FROM SERI12 s WHERE s.bq046c = :bq046c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq061", query = "SELECT s FROM SERI12 s WHERE s.bq061 = :bq061")
-    ,
-    @NamedQuery(name = "SERI12.findByBq017c", query = "SELECT s FROM SERI12 s WHERE s.bq017c = :bq017c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq014c1", query = "SELECT s FROM SERI12 s WHERE s.bq014c1 = :bq014c1")
-    ,
-    @NamedQuery(name = "SERI12.findByBq014c2", query = "SELECT s FROM SERI12 s WHERE s.bq014c2 = :bq014c2")
-    ,
-    @NamedQuery(name = "SERI12.findByBq027c", query = "SELECT s FROM SERI12 s WHERE s.bq027c = :bq027c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq110", query = "SELECT s FROM SERI12 s WHERE s.bq110 = :bq110")
-    ,
-    @NamedQuery(name = "SERI12.findByBq033c", query = "SELECT s FROM SERI12 s WHERE s.bq033c = :bq033c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq091c", query = "SELECT s FROM SERI12 s WHERE s.bq091c = :bq091c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq113", query = "SELECT s FROM SERI12 s WHERE s.bq113 = :bq113")
-    ,
-    @NamedQuery(name = "SERI12.findByEdBQ097", query = "SELECT s FROM SERI12 s WHERE s.edBQ097 = :edBQ097")
-    ,
-    @NamedQuery(name = "SERI12.findByPSN", query = "SELECT s FROM SERI12 s WHERE s.processSerialNumber = :psn")
-    ,
-    @NamedQuery(name = "SERI12.findByBq199c", query = "SELECT s FROM SERI12 s WHERE s.bq199c = :bq199c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq016c", query = "SELECT s FROM SERI12 s WHERE s.bq016c = :bq016c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq101", query = "SELECT s FROM SERI12 s WHERE s.bq101 = :bq101")
-    ,
-    @NamedQuery(name = "SERI12.findByBq100", query = "SELECT s FROM SERI12 s WHERE s.bq100 = :bq100")
-    ,
-    @NamedQuery(name = "SERI12.findByBq113c", query = "SELECT s FROM SERI12 s WHERE s.bq113c = :bq113c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq105", query = "SELECT s FROM SERI12 s WHERE s.bq105 = :bq105")
-    ,
-    @NamedQuery(name = "SERI12.findByBq104", query = "SELECT s FROM SERI12 s WHERE s.bq104 = :bq104")
-    ,
-    @NamedQuery(name = "SERI12.findByBq103", query = "SELECT s FROM SERI12 s WHERE s.bq103 = :bq103")
-    ,
-    @NamedQuery(name = "SERI12.findByBq102", query = "SELECT s FROM SERI12 s WHERE s.bq102 = :bq102")
-    ,
-    @NamedQuery(name = "SERI12.findByBq109", query = "SELECT s FROM SERI12 s WHERE s.bq109 = :bq109")
-    ,
-    @NamedQuery(name = "SERI12.findByBq108", query = "SELECT s FROM SERI12 s WHERE s.bq108 = :bq108")
-    ,
-    @NamedQuery(name = "SERI12.findByBq107", query = "SELECT s FROM SERI12 s WHERE s.bq107 = :bq107")
-    ,
-    @NamedQuery(name = "SERI12.findByBq106", query = "SELECT s FROM SERI12 s WHERE s.bq106 = :bq106")
-    ,
-    @NamedQuery(name = "SERI12.findByBq198c", query = "SELECT s FROM SERI12 s WHERE s.bq198c = :bq198c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq019c", query = "SELECT s FROM SERI12 s WHERE s.bq019c = :bq019c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq088", query = "SELECT s FROM SERI12 s WHERE s.bq088 = :bq088")
-    ,
-    @NamedQuery(name = "SERI12.findByBq089", query = "SELECT s FROM SERI12 s WHERE s.bq089 = :bq089")
-    ,
-    @NamedQuery(name = "SERI12.findByBq040", query = "SELECT s FROM SERI12 s WHERE s.bq040 = :bq040")
-    ,
-    @NamedQuery(name = "SERI12.findByBq042", query = "SELECT s FROM SERI12 s WHERE s.bq042 = :bq042")
-    ,
-    @NamedQuery(name = "SERI12.findByBq041", query = "SELECT s FROM SERI12 s WHERE s.bq041 = :bq041")
-    ,
-    @NamedQuery(name = "SERI12.findByBq091", query = "SELECT s FROM SERI12 s WHERE s.bq091 = :bq091")
-    ,
-    @NamedQuery(name = "SERI12.findByBq032", query = "SELECT s FROM SERI12 s WHERE s.bq032 = :bq032")
-    ,
-    @NamedQuery(name = "SERI12.findByBq090", query = "SELECT s FROM SERI12 s WHERE s.bq090 = :bq090")
-    ,
-    @NamedQuery(name = "SERI12.findByBq033", query = "SELECT s FROM SERI12 s WHERE s.bq033 = :bq033")
-    ,
-    @NamedQuery(name = "SERI12.findByBq093", query = "SELECT s FROM SERI12 s WHERE s.bq093 = :bq093")
-    ,
-    @NamedQuery(name = "SERI12.findByBq034", query = "SELECT s FROM SERI12 s WHERE s.bq034 = :bq034")
-    ,
-    @NamedQuery(name = "SERI12.findByBq092", query = "SELECT s FROM SERI12 s WHERE s.bq092 = :bq092")
-    ,
-    @NamedQuery(name = "SERI12.findByBq035", query = "SELECT s FROM SERI12 s WHERE s.bq035 = :bq035")
-    ,
-    @NamedQuery(name = "SERI12.findByBq095", query = "SELECT s FROM SERI12 s WHERE s.bq095 = :bq095")
-    ,
-    @NamedQuery(name = "SERI12.findByBq041c", query = "SELECT s FROM SERI12 s WHERE s.bq041c = :bq041c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq036", query = "SELECT s FROM SERI12 s WHERE s.bq036 = :bq036")
-    ,
-    @NamedQuery(name = "SERI12.findByBq094", query = "SELECT s FROM SERI12 s WHERE s.bq094 = :bq094")
-    ,
-    @NamedQuery(name = "SERI12.findByBq037", query = "SELECT s FROM SERI12 s WHERE s.bq035h = 'Y' AND s.bq110 = 'Y' AND  s.bq037 BETWEEN :begin and :end")
-    ,
-    @NamedQuery(name = "SERI12.findByBq038", query = "SELECT s FROM SERI12 s WHERE s.bq038 = :bq038")
-    ,
-    @NamedQuery(name = "SERI12.findByLbl002", query = "SELECT s FROM SERI12 s WHERE s.lbl002 = :lbl002")
-    ,
-    @NamedQuery(name = "SERI12.findByBq096", query = "SELECT s FROM SERI12 s WHERE s.bq096 = :bq096")
-    ,
-    @NamedQuery(name = "SERI12.findByBq039", query = "SELECT s FROM SERI12 s WHERE s.bq039 = :bq039")
-    ,
-    @NamedQuery(name = "SERI12.findByBq005c", query = "SELECT s FROM SERI12 s WHERE s.bq005c = :bq005c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq094c", query = "SELECT s FROM SERI12 s WHERE s.bq094c = :bq094c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq098", query = "SELECT s FROM SERI12 s WHERE s.bq098 = :bq098")
-    ,
-    @NamedQuery(name = "SERI12.findByBq099", query = "SELECT s FROM SERI12 s WHERE s.bq099 = :bq099")
-    ,
-    @NamedQuery(name = "SERI12.findByBq018c", query = "SELECT s FROM SERI12 s WHERE s.bq018c = :bq018c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq031", query = "SELECT s FROM SERI12 s WHERE s.bq031 = :bq031")
-    ,
-    @NamedQuery(name = "SERI12.findByBq023c", query = "SELECT s FROM SERI12 s WHERE s.bq023c = :bq023c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq023", query = "SELECT s FROM SERI12 s WHERE s.bq023 = :bq023")
-    ,
-    @NamedQuery(name = "SERI12.findByBq024", query = "SELECT s FROM SERI12 s WHERE s.bq024 = :bq024")
-    ,
-    @NamedQuery(name = "SERI12.findByBq021", query = "SELECT s FROM SERI12 s WHERE s.bq021 = :bq021")
-    ,
-    @NamedQuery(name = "SERI12.findByBq022", query = "SELECT s FROM SERI12 s WHERE s.bq022 = :bq022")
-    ,
-    @NamedQuery(name = "SERI12.findByBq027", query = "SELECT s FROM SERI12 s WHERE s.bq027 = :bq027")
-    ,
-    @NamedQuery(name = "SERI12.findByBq025", query = "SELECT s FROM SERI12 s WHERE s.bq025 = :bq025")
-    ,
-    @NamedQuery(name = "SERI12.findByBq026", query = "SELECT s FROM SERI12 s WHERE s.bq026 = :bq026")
-    ,
-    @NamedQuery(name = "SERI12.findByBq032c", query = "SELECT s FROM SERI12 s WHERE s.bq032c = :bq032c")
-    ,
-    @NamedQuery(name = "SERI12.findByOID", query = "SELECT s FROM SERI12 s WHERE s.oid = :oid")
-    ,
-    @NamedQuery(name = "SERI12.findByBq002c", query = "SELECT s FROM SERI12 s WHERE s.bq002c = :bq002c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq014", query = "SELECT s FROM SERI12 s WHERE s.bq014 = :bq014")
-    ,
-    @NamedQuery(name = "SERI12.findByBq016", query = "SELECT s FROM SERI12 s WHERE s.bq016 = :bq016")
-    ,
-    @NamedQuery(name = "SERI12.findByBq017", query = "SELECT s FROM SERI12 s WHERE s.bq017 = :bq017")
-    ,
-    @NamedQuery(name = "SERI12.findByBq010", query = "SELECT s FROM SERI12 s WHERE s.bq010 = :bq010")
-    ,
-    @NamedQuery(name = "SERI12.findByBq011", query = "SELECT s FROM SERI12 s WHERE s.bq011 = :bq011")
-    ,
-    @NamedQuery(name = "SERI12.findByBq012", query = "SELECT s FROM SERI12 s WHERE s.bq012 = :bq012")
-    ,
-    @NamedQuery(name = "SERI12.findByBq038c", query = "SELECT s FROM SERI12 s WHERE s.bq038c = :bq038c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq013", query = "SELECT s FROM SERI12 s WHERE s.bq013 = :bq013")
-    ,
-    @NamedQuery(name = "SERI12.findByBq197", query = "SELECT s FROM SERI12 s WHERE s.bq197 = :bq197")
-    ,
-    @NamedQuery(name = "SERI12.findByBq018", query = "SELECT s FROM SERI12 s WHERE s.bq018 = :bq018")
-    ,
-    @NamedQuery(name = "SERI12.findByBq003c", query = "SELECT s FROM SERI12 s WHERE s.bq003c = :bq003c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq198", query = "SELECT s FROM SERI12 s WHERE s.bq198 = :bq198")
-    ,
-    @NamedQuery(name = "SERI12.findByBq019", query = "SELECT s FROM SERI12 s WHERE s.bq019 = :bq019")
-    ,
-    @NamedQuery(name = "SERI12.findByBq199", query = "SELECT s FROM SERI12 s WHERE s.bq199 = :bq199")
-    ,
-    @NamedQuery(name = "SERI12.findByBq197c", query = "SELECT s FROM SERI12 s WHERE s.bq197c = :bq197c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq005", query = "SELECT s FROM SERI12 s WHERE s.bq005 = :bq005")
-    ,
-    @NamedQuery(name = "SERI12.findByBq006", query = "SELECT s FROM SERI12 s WHERE s.bq006 = :bq006")
-    ,
-    @NamedQuery(name = "SERI12.findByBq003", query = "SELECT s FROM SERI12 s WHERE s.bq003 = :bq003")
-    ,
-    @NamedQuery(name = "SERI12.findByBq039c", query = "SELECT s FROM SERI12 s WHERE s.bq039c = :bq039c")
-    ,
-    @NamedQuery(name = "SERI12.findByBq001", query = "SELECT s FROM SERI12 s WHERE s.bq035h = 'Y' AND s.bq110 = 'Y' AND  s.bq001 = :bq001")
-    ,
-    @NamedQuery(name = "SERI12.findByBq002", query = "SELECT s FROM SERI12 s WHERE s.bq002 = :bq002")
-    ,
-    @NamedQuery(name = "SERI12.findByBq009", query = "SELECT s FROM SERI12 s WHERE s.bq009 = :bq009")
-    ,
-    @NamedQuery(name = "SERI12.findByBq007", query = "SELECT s FROM SERI12 s WHERE s.bq007 = :bq007")
-    ,
-    @NamedQuery(name = "SERI12.findByFSN", query = "SELECT s FROM SERI12 s WHERE s.formSerialNumber = :fsn")
-    ,
-    @NamedQuery(name = "SERI12.findByBq008", query = "SELECT s FROM SERI12 s WHERE s.bq008 = :bq008")
-    ,
-    @NamedQuery(name = "SERI12.findByFacno", query = "SELECT s FROM SERI12 s WHERE s.facno = :facno")
-    ,
+    @NamedQuery(name = "SERI12.findAll", query = "SELECT s FROM SERI12 s"),
+    @NamedQuery(name = "SERI12.findById", query = "SELECT s FROM SERI12 s WHERE s.bq001 = :bq001"),
+    @NamedQuery(name = "SERI12.findByBq044", query = "SELECT s FROM SERI12 s WHERE s.bq044 = :bq044"),
+    @NamedQuery(name = "SERI12.findByBq043", query = "SELECT s FROM SERI12 s WHERE s.bq043 = :bq043"),
+    @NamedQuery(name = "SERI12.findByBq046", query = "SELECT s FROM SERI12 s WHERE s.bq046 = :bq046"),
+    @NamedQuery(name = "SERI12.findByBq045", query = "SELECT s FROM SERI12 s WHERE s.bq045 = :bq045"),
+    @NamedQuery(name = "SERI12.findByBq048", query = "SELECT s FROM SERI12 s WHERE s.bq048 = :bq048"),
+    @NamedQuery(name = "SERI12.findByBq047", query = "SELECT s FROM SERI12 s WHERE s.bq047 = :bq047"),
+    @NamedQuery(name = "SERI12.findByBq052", query = "SELECT s FROM SERI12 s WHERE s.bq052 = :bq052"),
+    @NamedQuery(name = "SERI12.findByBq057", query = "SELECT s FROM SERI12 s WHERE s.bq057 = :bq057"),
+    @NamedQuery(name = "SERI12.findByBq056", query = "SELECT s FROM SERI12 s WHERE s.bq056 = :bq056"),
+    @NamedQuery(name = "SERI12.findByBq055", query = "SELECT s FROM SERI12 s WHERE s.bq055 = :bq055"),
+    @NamedQuery(name = "SERI12.findByBq054", query = "SELECT s FROM SERI12 s WHERE s.bq054 = :bq054"),
+    @NamedQuery(name = "SERI12.findByBq058", query = "SELECT s FROM SERI12 s WHERE s.bq058 = :bq058"),
+    @NamedQuery(name = "SERI12.findByBq060", query = "SELECT s FROM SERI12 s WHERE s.bq060 = :bq060"),
+    @NamedQuery(name = "SERI12.findByBq046c", query = "SELECT s FROM SERI12 s WHERE s.bq046c = :bq046c"),
+    @NamedQuery(name = "SERI12.findByBq061", query = "SELECT s FROM SERI12 s WHERE s.bq061 = :bq061"),
+    @NamedQuery(name = "SERI12.findByBq017c", query = "SELECT s FROM SERI12 s WHERE s.bq017c = :bq017c"),
+    @NamedQuery(name = "SERI12.findByBq014c1", query = "SELECT s FROM SERI12 s WHERE s.bq014c1 = :bq014c1"),
+    @NamedQuery(name = "SERI12.findByBq014c2", query = "SELECT s FROM SERI12 s WHERE s.bq014c2 = :bq014c2"),
+    @NamedQuery(name = "SERI12.findByBq027c", query = "SELECT s FROM SERI12 s WHERE s.bq027c = :bq027c"),
+    @NamedQuery(name = "SERI12.findByBq110", query = "SELECT s FROM SERI12 s WHERE s.bq110 = :bq110"),
+    @NamedQuery(name = "SERI12.findByBq033c", query = "SELECT s FROM SERI12 s WHERE s.bq033c = :bq033c"),
+    @NamedQuery(name = "SERI12.findByBq091c", query = "SELECT s FROM SERI12 s WHERE s.bq091c = :bq091c"),
+    @NamedQuery(name = "SERI12.findByBq113", query = "SELECT s FROM SERI12 s WHERE s.bq113 = :bq113"),
+    @NamedQuery(name = "SERI12.findByEdBQ097", query = "SELECT s FROM SERI12 s WHERE s.edBQ097 = :edBQ097"),
+    @NamedQuery(name = "SERI12.findByPSN", query = "SELECT s FROM SERI12 s WHERE s.processSerialNumber = :psn"),
+    @NamedQuery(name = "SERI12.findByBq199c", query = "SELECT s FROM SERI12 s WHERE s.bq199c = :bq199c"),
+    @NamedQuery(name = "SERI12.findByBq016c", query = "SELECT s FROM SERI12 s WHERE s.bq016c = :bq016c"),
+    @NamedQuery(name = "SERI12.findByBq101", query = "SELECT s FROM SERI12 s WHERE s.bq101 = :bq101"),
+    @NamedQuery(name = "SERI12.findByBq100", query = "SELECT s FROM SERI12 s WHERE s.bq100 = :bq100"),
+    @NamedQuery(name = "SERI12.findByBq113c", query = "SELECT s FROM SERI12 s WHERE s.bq113c = :bq113c"),
+    @NamedQuery(name = "SERI12.findByBq105", query = "SELECT s FROM SERI12 s WHERE s.bq105 = :bq105"),
+    @NamedQuery(name = "SERI12.findByBq104", query = "SELECT s FROM SERI12 s WHERE s.bq104 = :bq104"),
+    @NamedQuery(name = "SERI12.findByBq103", query = "SELECT s FROM SERI12 s WHERE s.bq103 = :bq103"),
+    @NamedQuery(name = "SERI12.findByBq102", query = "SELECT s FROM SERI12 s WHERE s.bq102 = :bq102"),
+    @NamedQuery(name = "SERI12.findByBq109", query = "SELECT s FROM SERI12 s WHERE s.bq109 = :bq109"),
+    @NamedQuery(name = "SERI12.findByBq108", query = "SELECT s FROM SERI12 s WHERE s.bq108 = :bq108"),
+    @NamedQuery(name = "SERI12.findByBq107", query = "SELECT s FROM SERI12 s WHERE s.bq107 = :bq107"),
+    @NamedQuery(name = "SERI12.findByBq106", query = "SELECT s FROM SERI12 s WHERE s.bq106 = :bq106"),
+    @NamedQuery(name = "SERI12.findByBq198c", query = "SELECT s FROM SERI12 s WHERE s.bq198c = :bq198c"),
+    @NamedQuery(name = "SERI12.findByBq019c", query = "SELECT s FROM SERI12 s WHERE s.bq019c = :bq019c"),
+    @NamedQuery(name = "SERI12.findByBq088", query = "SELECT s FROM SERI12 s WHERE s.bq088 = :bq088"),
+    @NamedQuery(name = "SERI12.findByBq089", query = "SELECT s FROM SERI12 s WHERE s.bq089 = :bq089"),
+    @NamedQuery(name = "SERI12.findByBq040", query = "SELECT s FROM SERI12 s WHERE s.bq040 = :bq040"),
+    @NamedQuery(name = "SERI12.findByBq042", query = "SELECT s FROM SERI12 s WHERE s.bq042 = :bq042"),
+    @NamedQuery(name = "SERI12.findByBq041", query = "SELECT s FROM SERI12 s WHERE s.bq041 = :bq041"),
+    @NamedQuery(name = "SERI12.findByBq091", query = "SELECT s FROM SERI12 s WHERE s.bq091 = :bq091"),
+    @NamedQuery(name = "SERI12.findByBq032", query = "SELECT s FROM SERI12 s WHERE s.bq032 = :bq032"),
+    @NamedQuery(name = "SERI12.findByBq090", query = "SELECT s FROM SERI12 s WHERE s.bq090 = :bq090"),
+    @NamedQuery(name = "SERI12.findByBq033", query = "SELECT s FROM SERI12 s WHERE s.bq033 = :bq033"),
+    @NamedQuery(name = "SERI12.findByBq093", query = "SELECT s FROM SERI12 s WHERE s.bq093 = :bq093"),
+    @NamedQuery(name = "SERI12.findByBq034", query = "SELECT s FROM SERI12 s WHERE s.bq034 = :bq034"),
+    @NamedQuery(name = "SERI12.findByBq092", query = "SELECT s FROM SERI12 s WHERE s.bq092 = :bq092"),
+    @NamedQuery(name = "SERI12.findByBq035", query = "SELECT s FROM SERI12 s WHERE s.bq035 = :bq035"),
+    @NamedQuery(name = "SERI12.findByBq095", query = "SELECT s FROM SERI12 s WHERE s.bq095 = :bq095"),
+    @NamedQuery(name = "SERI12.findByBq041c", query = "SELECT s FROM SERI12 s WHERE s.bq041c = :bq041c"),
+    @NamedQuery(name = "SERI12.findByBq036", query = "SELECT s FROM SERI12 s WHERE s.bq036 = :bq036"),
+    @NamedQuery(name = "SERI12.findByBq094", query = "SELECT s FROM SERI12 s WHERE s.bq094 = :bq094"),
+    @NamedQuery(name = "SERI12.findByBq037", query = "SELECT s FROM SERI12 s WHERE s.bq035h = 'Y' AND s.bq110 = 'Y' AND  s.bq037 BETWEEN :begin and :end"),
+    @NamedQuery(name = "SERI12.findByBq038", query = "SELECT s FROM SERI12 s WHERE s.bq038 = :bq038"),
+    @NamedQuery(name = "SERI12.findByLbl002", query = "SELECT s FROM SERI12 s WHERE s.lbl002 = :lbl002"),
+    @NamedQuery(name = "SERI12.findByBq096", query = "SELECT s FROM SERI12 s WHERE s.bq096 = :bq096"),
+    @NamedQuery(name = "SERI12.findByBq039", query = "SELECT s FROM SERI12 s WHERE s.bq039 = :bq039"),
+    @NamedQuery(name = "SERI12.findByBq005c", query = "SELECT s FROM SERI12 s WHERE s.bq005c = :bq005c"),
+    @NamedQuery(name = "SERI12.findByBq094c", query = "SELECT s FROM SERI12 s WHERE s.bq094c = :bq094c"),
+    @NamedQuery(name = "SERI12.findByBq098", query = "SELECT s FROM SERI12 s WHERE s.bq098 = :bq098"),
+    @NamedQuery(name = "SERI12.findByBq099", query = "SELECT s FROM SERI12 s WHERE s.bq099 = :bq099"),
+    @NamedQuery(name = "SERI12.findByBq018c", query = "SELECT s FROM SERI12 s WHERE s.bq018c = :bq018c"),
+    @NamedQuery(name = "SERI12.findByBq031", query = "SELECT s FROM SERI12 s WHERE s.bq031 = :bq031"),
+    @NamedQuery(name = "SERI12.findByBq023c", query = "SELECT s FROM SERI12 s WHERE s.bq023c = :bq023c"),
+    @NamedQuery(name = "SERI12.findByBq023", query = "SELECT s FROM SERI12 s WHERE s.bq023 = :bq023"),
+    @NamedQuery(name = "SERI12.findByBq024", query = "SELECT s FROM SERI12 s WHERE s.bq024 = :bq024"),
+    @NamedQuery(name = "SERI12.findByBq021", query = "SELECT s FROM SERI12 s WHERE s.bq021 = :bq021"),
+    @NamedQuery(name = "SERI12.findByBq022", query = "SELECT s FROM SERI12 s WHERE s.bq022 = :bq022"),
+    @NamedQuery(name = "SERI12.findByBq027", query = "SELECT s FROM SERI12 s WHERE s.bq027 = :bq027"),
+    @NamedQuery(name = "SERI12.findByBq025", query = "SELECT s FROM SERI12 s WHERE s.bq025 = :bq025"),
+    @NamedQuery(name = "SERI12.findByBq026", query = "SELECT s FROM SERI12 s WHERE s.bq026 = :bq026"),
+    @NamedQuery(name = "SERI12.findByBq032c", query = "SELECT s FROM SERI12 s WHERE s.bq032c = :bq032c"),
+    @NamedQuery(name = "SERI12.findByOID", query = "SELECT s FROM SERI12 s WHERE s.oid = :oid"),
+    @NamedQuery(name = "SERI12.findByBq002c", query = "SELECT s FROM SERI12 s WHERE s.bq002c = :bq002c"),
+    @NamedQuery(name = "SERI12.findByBq014", query = "SELECT s FROM SERI12 s WHERE s.bq014 = :bq014"),
+    @NamedQuery(name = "SERI12.findByBq016", query = "SELECT s FROM SERI12 s WHERE s.bq016 = :bq016"),
+    @NamedQuery(name = "SERI12.findByBq017", query = "SELECT s FROM SERI12 s WHERE s.bq017 = :bq017"),
+    @NamedQuery(name = "SERI12.findByBq010", query = "SELECT s FROM SERI12 s WHERE s.bq010 = :bq010"),
+    @NamedQuery(name = "SERI12.findByBq011", query = "SELECT s FROM SERI12 s WHERE s.bq011 = :bq011"),
+    @NamedQuery(name = "SERI12.findByBq012", query = "SELECT s FROM SERI12 s WHERE s.bq012 = :bq012"),
+    @NamedQuery(name = "SERI12.findByBq038c", query = "SELECT s FROM SERI12 s WHERE s.bq038c = :bq038c"),
+    @NamedQuery(name = "SERI12.findByBq013", query = "SELECT s FROM SERI12 s WHERE s.bq013 = :bq013"),
+    @NamedQuery(name = "SERI12.findByBq197", query = "SELECT s FROM SERI12 s WHERE s.bq197 = :bq197"),
+    @NamedQuery(name = "SERI12.findByBq018", query = "SELECT s FROM SERI12 s WHERE s.bq018 = :bq018"),
+    @NamedQuery(name = "SERI12.findByBq003c", query = "SELECT s FROM SERI12 s WHERE s.bq003c = :bq003c"),
+    @NamedQuery(name = "SERI12.findByBq198", query = "SELECT s FROM SERI12 s WHERE s.bq198 = :bq198"),
+    @NamedQuery(name = "SERI12.findByBq019", query = "SELECT s FROM SERI12 s WHERE s.bq019 = :bq019"),
+    @NamedQuery(name = "SERI12.findByBq199", query = "SELECT s FROM SERI12 s WHERE s.bq199 = :bq199"),
+    @NamedQuery(name = "SERI12.findByBq197c", query = "SELECT s FROM SERI12 s WHERE s.bq197c = :bq197c"),
+    @NamedQuery(name = "SERI12.findByBq005", query = "SELECT s FROM SERI12 s WHERE s.bq005 = :bq005"),
+    @NamedQuery(name = "SERI12.findByBq006", query = "SELECT s FROM SERI12 s WHERE s.bq006 = :bq006"),
+    @NamedQuery(name = "SERI12.findByBq003", query = "SELECT s FROM SERI12 s WHERE s.bq003 = :bq003"),
+    @NamedQuery(name = "SERI12.findByBq039c", query = "SELECT s FROM SERI12 s WHERE s.bq039c = :bq039c"),
+    @NamedQuery(name = "SERI12.findByBq001", query = "SELECT s FROM SERI12 s WHERE s.bq035h = 'Y' AND s.bq110 = 'Y' AND  s.bq001 = :bq001"),
+    @NamedQuery(name = "SERI12.findByBq002", query = "SELECT s FROM SERI12 s WHERE s.bq002 = :bq002"),
+    @NamedQuery(name = "SERI12.findByBq009", query = "SELECT s FROM SERI12 s WHERE s.bq009 = :bq009"),
+    @NamedQuery(name = "SERI12.findByBq007", query = "SELECT s FROM SERI12 s WHERE s.bq007 = :bq007"),
+    @NamedQuery(name = "SERI12.findByFSN", query = "SELECT s FROM SERI12 s WHERE s.formSerialNumber = :fsn"),
+    @NamedQuery(name = "SERI12.findByBq008", query = "SELECT s FROM SERI12 s WHERE s.bq008 = :bq008"),
+    @NamedQuery(name = "SERI12.findByFacno", query = "SELECT s FROM SERI12 s WHERE s.facno = :facno"),
     @NamedQuery(name = "SERI12.findByBq035h", query = "SELECT s FROM SERI12 s WHERE s.bq035h = :bq035h")})
 public class SERI12 implements Serializable {
 
     @Size(max = 255)
-    @Column(name = "BQ136C")
-    private String bq136c;
-    @Size(max = 255)
-    @Column(name = "Listbox1")
-    private String listbox1;
-    @Size(max = 255)
-    @Column(name = "BQ129H")
-    private String bq129h;
-    @Size(max = 255)
-    @Column(name = "BQ129HH")
-    private String bq129hh;
-    @Size(max = 255)
-    @Column(name = "BQ133C")
-    private String bq133c;
-    @Size(max = 255)
-    @Column(name = "Dropdown0")
-    private String dropdown0;
-    @Size(max = 255)
     @Column(name = "propotion")
     private String propotion;
-    @Size(max = 255)
-    @Column(name = "hdTC031")
-    private String hdTC031;
-    @Size(max = 255)
-    @Column(name = "hdsta")
-    private String hdsta;
-
     @Size(max = 255)
     @Column(name = "BQ135C")
     private String bq135c;
@@ -1733,76 +1601,18 @@ public class SERI12 implements Serializable {
         this.bq508 = bq508;
     }
 
-    public String getBq136c() {
-        return bq136c;
-    }
-
-    public void setBq136c(String bq136c) {
-        this.bq136c = bq136c;
-    }
-
-    public String getListbox1() {
-        return listbox1;
-    }
-
-    public void setListbox1(String listbox1) {
-        this.listbox1 = listbox1;
-    }
-
-    public String getBq129h() {
-        return bq129h;
-    }
-
-    public void setBq129h(String bq129h) {
-        this.bq129h = bq129h;
-    }
-
-    public String getBq129hh() {
-        return bq129hh;
-    }
-
-    public void setBq129hh(String bq129hh) {
-        this.bq129hh = bq129hh;
-    }
-
-    public String getBq133c() {
-        return bq133c;
-    }
-
-    public void setBq133c(String bq133c) {
-        this.bq133c = bq133c;
-    }
-
-    public String getDropdown0() {
-        return dropdown0;
-    }
-
-    public void setDropdown0(String dropdown0) {
-        this.dropdown0 = dropdown0;
-    }
-
+    /**
+     * @return the propotion
+     */
     public String getPropotion() {
         return propotion;
     }
 
+    /**
+     * @param propotion the propotion to set
+     */
     public void setPropotion(String propotion) {
         this.propotion = propotion;
-    }
-
-    public String getHdTC031() {
-        return hdTC031;
-    }
-
-    public void setHdTC031(String hdTC031) {
-        this.hdTC031 = hdTC031;
-    }
-
-    public String getHdsta() {
-        return hdsta;
-    }
-
-    public void setHdsta(String hdsta) {
-        this.hdsta = hdsta;
     }
 
 }
