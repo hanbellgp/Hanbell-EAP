@@ -2635,7 +2635,7 @@ public class EAPWebService {
         try {
             ret = seri12Bean.updateSERBQ(psn);
         } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMSERBQByOASERI12", psn), ex);
+            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMSERBQFromOASERI12", psn), ex);
         }
         if (ret) {
             return "200";
