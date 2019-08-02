@@ -111,14 +111,15 @@ public class CustomerComplaintBean extends SuperEJBForEAP<CustomerComplaint> {
         StringBuilder sb = new StringBuilder();
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\" style=\"text-align:center\">");
-            sb.append("<tr><th width=\"6%\">产品别</th><th width=\"10%\">客诉单号</th><th width=\"6%\">客户名称</th><th width=\"20%\">不良原因</th><th width=\"6%\">责任单位</th>");
-            sb.append("<th width=\"6%\">责任判断比率</th><th width=\"5%\">材料费</th><th width=\"5%\">人工费</th><th width=\"5%\">运输费(含空运、吊装费)</th>");
-            sb.append("<th width=\"5%\">差旅费</th><th width=\"5%\">不良导致索赔款</th><th width=\"5%\">其他</th><th width=\"6%\">费用合计</th><th width=\"10%\">结案时间</th></tr>");
+            sb.append("<tr><th width=\"5%\">产品别</th><th width=\"8%\">客诉单号</th><th width=\"6%\">客户名称</th><th width=\"8%\">制造号码</th><th width=\"18%\">不良原因</th>");
+            sb.append("<th width=\"6%\">责任单位</th><th width=\"5%\">责任判断比率</th><th width=\"5%\">材料费</th><th width=\"5%\">人工费</th><th width=\"5%\">运输费(含空运、吊装费)</th>");
+            sb.append("<th width=\"5%\">差旅费</th><th width=\"5%\">不良导致索赔款</th><th width=\"5%\">其他</th><th width=\"6%\">费用合计</th><th width=\"8%\">结案时间</th></tr>");
             sb.append("<tr><td>").append(plaint.getNcodeDC()).append("</td>");
             sb.append("<td>").append(plaint.getKfno()).append("</td>");
             sb.append("<td>").append(plaint.getCusna()).append("</td>");
+            sb.append("<td>").append(plaint.getVarnr()).append("</td>");
             sb.append("<td>").append(plaint.getBadwhy()).append("</td>");
-            sb.append("<td>").append(plaint.getDutydeptna()).append("</td>");
+            sb.append("<td>").append(!"".equals(plaint.getDutydeptna()) ? plaint.getDutydeptna() : plaint.getDutydeptno()).append("</td>");
             sb.append("<td>").append(plaint.getDutyrate()).append("</td>");
             sb.append("<td>").append(plaint.getMaterialcost().toString()).append("</td>");
             sb.append("<td>").append(plaint.getLabourcost().toString()).append("</td>");

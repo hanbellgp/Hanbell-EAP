@@ -46,7 +46,7 @@ public class CustomerComplaint extends BaseEntity {
     @Size(max = 20)
     @Column(name = "cusna")
     private String cusna;
-    @Size(max = 90)
+    @Size(max = 400)
     @Column(name = "varnr")
     private String varnr;
     @Size(max = 10)
@@ -77,7 +77,7 @@ public class CustomerComplaint extends BaseEntity {
     @Column(name = "overdate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date overdate;
-    @Size(max = 400)
+    @Size(max = 1000)
     @Column(name = "badwhy")
     private String badwhy;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation

@@ -193,37 +193,40 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
             cell2.setCellValue(cp.getCusna() != null ? cp.getCusna() : "");
             Cell cell3 = row.createCell(3);
             cell3.setCellStyle(style.get("cell"));
-            cell3.setCellValue(cp.getBadwhy() != null ? cp.getBadwhy() : "");
+            cell3.setCellValue(cp.getVarnr());
             Cell cell4 = row.createCell(4);
             cell4.setCellStyle(style.get("cell"));
-            cell4.setCellValue(cp.getDutydeptna() != null ? cp.getDutydeptna() : "");
+            cell4.setCellValue(cp.getBadwhy() != null ? cp.getBadwhy() : "");
             Cell cell5 = row.createCell(5);
             cell5.setCellStyle(style.get("cell"));
-            cell5.setCellValue(cp.getDutyrate() != null ? cp.getDutyrate() : "");
+            cell5.setCellValue(!"".equals(cp.getDutydeptna()) ? cp.getDutydeptna() : cp.getDutydeptno());
             Cell cell6 = row.createCell(6);
             cell6.setCellStyle(style.get("cell"));
-            cell6.setCellValue(cp.getMaterialcost().toString());
+            cell6.setCellValue(cp.getDutyrate() != null ? cp.getDutyrate() : "");
             Cell cell7 = row.createCell(7);
             cell7.setCellStyle(style.get("cell"));
-            cell7.setCellValue(cp.getLabourcost().toString());
+            cell7.setCellValue(cp.getMaterialcost().toString());
             Cell cell8 = row.createCell(8);
             cell8.setCellStyle(style.get("cell"));
-            cell8.setCellValue(cp.getTansportexpense().toString());
+            cell8.setCellValue(cp.getLabourcost().toString());
             Cell cell9 = row.createCell(9);
             cell9.setCellStyle(style.get("cell"));
-            cell9.setCellValue(cp.getTravelexpense().toString());
+            cell9.setCellValue(cp.getTansportexpense().toString());
             Cell cell10 = row.createCell(10);
             cell10.setCellStyle(style.get("cell"));
-            cell10.setCellValue(cp.getClaimamount().toString());
+            cell10.setCellValue(cp.getTravelexpense().toString());
             Cell cell11 = row.createCell(11);
             cell11.setCellStyle(style.get("cell"));
-            cell11.setCellValue(cp.getOthercost().toString());
+            cell11.setCellValue(cp.getClaimamount().toString());
             Cell cell12 = row.createCell(12);
             cell12.setCellStyle(style.get("cell"));
-            cell12.setCellValue(cp.getTotalamount().toString());
+            cell12.setCellValue(cp.getOthercost().toString());
             Cell cell13 = row.createCell(13);
             cell13.setCellStyle(style.get("cell"));
-            cell13.setCellValue(cp.getOverdate() != null ? BaseLib.formatDate("yyyy-MM-dd HH:mm", cp.getOverdate()) : "");
+            cell13.setCellValue(cp.getTotalamount().toString());
+            Cell cell14 = row.createCell(14);
+            cell14.setCellStyle(style.get("cell"));
+            cell14.setCellValue(cp.getOverdate() != null ? BaseLib.formatDate("yyyy-MM-dd HH:mm", cp.getOverdate()) : "");
         }
         //表格二
         String[] title2 = getCustomerComplaintMaterialTitle();
@@ -288,7 +291,7 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
     }
 
     public String[] getCustomerComplaintTitle() {
-        return new String[]{"产品别", "客诉单号", "客户名称", "不良原因", "责任单位", "责任判断比率", "材料费", "人工费", "运输费(含空运、吊装费)", "差旅费", "不良导致索赔款", "其他", "费用合计", "结案时间"};
+        return new String[]{"产品别", "客诉单号", "客户名称", "制造号码", "不良原因", "责任单位", "责任判断比率", "材料费", "人工费", "运输费(含空运、吊装费)", "差旅费", "不良导致索赔款", "其他", "费用合计", "结案时间"};
     }
 
     public String[] getCustomerComplaintMaterialTitle() {
@@ -296,7 +299,7 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
     }
 
     private int[] getCustomerComplaintWidth() {
-        return new int[]{10, 20, 15, 60, 15, 15, 15, 15, 15, 15, 15, 15, 15, 20};
+        return new int[]{10, 20, 15, 20, 50, 15, 14, 14, 14, 14, 14, 14, 14, 15, 20};
     }
 
     private int[] getCustomerComplaintMaterialWidth() {
@@ -382,6 +385,7 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
 
     public void selectCreateCustomerComplaint() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        String kfno = null;
         List<SERI12> list = new ArrayList<>();
         if (!checked) {
             if (begin != null && end != null) {
@@ -397,11 +401,12 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
         BigDecimal travel, tansport, material;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
+            String badwhy, dutydeptno;
             for (SERI12 seri12 : list) {
                 travel = BigDecimal.ZERO;
                 tansport = BigDecimal.ZERO;
                 material = BigDecimal.ZERO;
-                String kfno = seri12.getBq001();
+                kfno = seri12.getBq001();
                 CustomerComplaint cp = new CustomerComplaint();
                 String varnr = sercaBean.findCa009ByCa001(kfno);
                 cp.setKfno(seri12.getBq001());
@@ -411,12 +416,24 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
                 cp.setNcodeDC(seri12.getBq197() == null ? "null" : seri12.getBq197());
                 cp.setNcodeCD(seri12.getBq198() == null ? "null" : seri12.getBq198());
                 cp.setNcodeDD(seri12.getBq003() == null ? "null" : seri12.getBq003());
-                cp.setDutydeptno(seri12.getBq504() == null ? "null" : seri12.getBq504());
+                dutydeptno = seri12.getBq504() == null ? "null" : seri12.getBq504();
+                //因OA版更栏位发生改变
+                if (!dutydeptno.equals("null") || !dutydeptno.equals("")) {
+                    cp.setDutydeptno(dutydeptno);
+                } else {
+                    cp.setDutydeptno(seri12.getBq133() == null ? "null" : seri12.getBq133());
+                }
                 cp.setDutydeptna(seri12.getBq504c() == null ? "null" : seri12.getBq504c());
                 cp.setDutyrate(seri12.getPropotion() == null ? "null" : seri12.getPropotion());
                 cp.setCredate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq021()));
                 cp.setOverdate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq037()));
-                cp.setBadwhy(seri12.getBq503() == null ? "null" : seri12.getBq503());
+                badwhy = seri12.getBq503() == null ? "null" : seri12.getBq503();
+                //因OA版更栏位发生改变
+                if (!badwhy.equals("null") || !badwhy.equals("")) {
+                    cp.setBadwhy(badwhy);
+                } else {
+                    cp.setBadwhy(seri12.getBq132() == null ? "null" : seri12.getBq132());
+                }
                 //一、运输费
                 tansportList = new ArrayList<>();
                 CustomerComplaintExpense cce;
@@ -608,7 +625,7 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
                 count++;
             }
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", ex.toString()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", kfno + ex.toString()));
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "info", "查询出数据共" + list.size() + "条，成功导入EAP数据库共计" + count + "条"));
     }

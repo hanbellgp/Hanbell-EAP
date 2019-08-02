@@ -3148,6 +3148,7 @@ public class EAPWebService {
             if (kfno == null && "".equals(kfno)) {
                 throw new NullPointerException("createCustomerComplaintByEAP___结案客诉单号为空");
             }
+            String badwhy, dutydeptno;
             SERI12 seri12 = seri12Bean.findByBq001(kfno);
             CustomerComplaint cp = new CustomerComplaint();
             String varnr = sercaBean.findCa009ByCa001(kfno);
@@ -3159,12 +3160,24 @@ public class EAPWebService {
                 cp.setNcodeDC(seri12.getBq197() == null ? "null" : seri12.getBq197());
                 cp.setNcodeCD(seri12.getBq198() == null ? "null" : seri12.getBq198());
                 cp.setNcodeDD(seri12.getBq003() == null ? "null" : seri12.getBq003());
-                cp.setDutydeptno(seri12.getBq504() == null ? "null" : seri12.getBq504());
+                dutydeptno = seri12.getBq504() == null ? "null" : seri12.getBq504();
+                //因OA版更栏位发生改变
+                if (!dutydeptno.equals("null") || !dutydeptno.equals("")) {
+                    cp.setDutydeptno(dutydeptno);
+                } else {
+                    cp.setDutydeptno(seri12.getBq133() == null ? "null" : seri12.getBq133());
+                }
                 cp.setDutydeptna(seri12.getBq504c() == null ? "null" : seri12.getBq504c());
                 cp.setDutyrate(seri12.getPropotion() == null ? "null" : seri12.getPropotion());
                 cp.setCredate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq021()));
                 cp.setOverdate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq037()));
-                cp.setBadwhy(seri12.getBq503() == null ? "null" : seri12.getBq503());
+                badwhy = seri12.getBq503() == null ? "null" : seri12.getBq503();
+                //因OA版更栏位发生改变
+                if (!badwhy.equals("null") || !badwhy.equals("")) {
+                    cp.setBadwhy(badwhy);
+                } else {
+                    cp.setBadwhy(seri12.getBq132() == null ? "null" : seri12.getBq132());
+                }
                 //一、运输费
                 tansportList = new ArrayList<>();
                 CustomerComplaintExpense cce;
