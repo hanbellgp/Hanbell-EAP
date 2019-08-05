@@ -48,51 +48,51 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
             throw new NullPointerException();
         }
         String BQ001;
-//      String BQ129;  //客诉类别不回写CRM
+        // String BQ129; //客诉类别不回写CRM
         String BQ130;
         String BQ131;
         String BQ132;
         String BQ133;
         String BQ134;
         String BQ035;
-        //反写CRM结案人员和时间
+        // 反写CRM结案人员和时间
         String BQ037;
         String BQ038;
-        //List<Seri12> seri12 = findByFSN(h.getFormSerialNumber());
+        // List<Seri12> seri12 = findByFSN(h.getFormSerialNumber());
         BQ001 = h.getBq001();
         BQ035 = h.getBq035();
-//        BQ129 = h.getBq129();
+        // BQ129 = h.getBq129();
 
-//        if (null != BQ129) {
-//            switch (BQ129) {
-//                case "客户投诉":
-//                    BQ129 = "1";
-//                    break;
-//                case "赠送":
-//                    BQ129 = "2";
-//                    break;
-//                case "技术支持":
-//                    BQ129 = "3";
-//                    break;
-//                case "统包服务":
-//                    BQ129 = "4";
-//                    break;
-//                case "例行巡检":
-//                    BQ129 = "5";
-//                    break;
-//                case "客户财产维修":
-//                    BQ129 = "6";
-//                    break;
-//                case "收费服务":
-//                    BQ129 = "7";
-//                    break;
-//                case "新机调试":
-//                    BQ129 = "8";
-//                    break;
-//                default:
-//                    return false;
-//            }
-//        }
+        // if (null != BQ129) {
+        // switch (BQ129) {
+        // case "客户投诉":
+        // BQ129 = "1";
+        // break;
+        // case "赠送":
+        // BQ129 = "2";
+        // break;
+        // case "技术支持":
+        // BQ129 = "3";
+        // break;
+        // case "统包服务":
+        // BQ129 = "4";
+        // break;
+        // case "例行巡检":
+        // BQ129 = "5";
+        // break;
+        // case "客户财产维修":
+        // BQ129 = "6";
+        // break;
+        // case "收费服务":
+        // BQ129 = "7";
+        // break;
+        // case "新机调试":
+        // BQ129 = "8";
+        // break;
+        // default:
+        // return false;
+        // }
+        // }
         BQ130 = h.getBq130();
         BQ131 = h.getBq131();
         if (null != BQ131) {
@@ -153,9 +153,9 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         if (BQ == null) {
             throw new NullPointerException();
         }
-        //BQ.setBq001(BQ001);
+        // BQ.setBq001(BQ001);
         BQ.setBq035(BQ035);
-//        BQ.setBq500(BQ129);
+        // BQ.setBq500(BQ129);
         BQ.setBq501(BQ130);
         BQ.setBq502(BQ131);
         BQ.setBq503(BQ132);
@@ -196,51 +196,51 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
             throw new NullPointerException();
         }
         String BQ001;
-        //String BQ500; //客诉类别不回写CRM20190422
+        // String BQ500; //客诉类别不回写CRM20190422
         String BQ501;
         String BQ502;
         String BQ503;
         String BQ504;
         String BQ505;
         String BQ035;
-        //反写CRM结案人员和时间
+        // 反写CRM结案人员和时间
         String BQ037;
         String BQ038;
-        //List<Seri12> seri12 = findByFSN(h.getFormSerialNumber());
+        // List<Seri12> seri12 = findByFSN(h.getFormSerialNumber());
         BQ001 = h.getBq001();
         BQ035 = h.getBq035();
-        //BQ500 = h.getBq500();
+        // BQ500 = h.getBq500();
 
-//        if (null != BQ500) {
-//            switch (BQ500) {
-//                case "客户投诉":
-//                    BQ500 = "1";
-//                    break;
-//                case "赠送":
-//                    BQ500 = "2";
-//                    break;
-//                case "技术支持":
-//                    BQ500 = "3";
-//                    break;
-//                case "统包服务":
-//                    BQ500 = "4";
-//                    break;
-//                case "例行巡检":
-//                    BQ500 = "5";
-//                    break;
-//                case "客户财产维修":
-//                    BQ500 = "6";
-//                    break;
-//                case "收费服务":
-//                    BQ500 = "7";
-//                    break;
-//                case "新机调试":
-//                    BQ500 = "8";
-//                    break;
-//                default:
-//                    return false;
-//            }
-//        }
+        // if (null != BQ500) {
+        // switch (BQ500) {
+        // case "客户投诉":
+        // BQ500 = "1";
+        // break;
+        // case "赠送":
+        // BQ500 = "2";
+        // break;
+        // case "技术支持":
+        // BQ500 = "3";
+        // break;
+        // case "统包服务":
+        // BQ500 = "4";
+        // break;
+        // case "例行巡检":
+        // BQ500 = "5";
+        // break;
+        // case "客户财产维修":
+        // BQ500 = "6";
+        // break;
+        // case "收费服务":
+        // BQ500 = "7";
+        // break;
+        // case "新机调试":
+        // BQ500 = "8";
+        // break;
+        // default:
+        // return false;
+        // }
+        // }
         BQ501 = h.getBq501();
         BQ502 = h.getBq502();
         if (null != BQ502) {
@@ -301,9 +301,9 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         if (BQ == null) {
             throw new NullPointerException();
         }
-        //BQ.setBq001(BQ001);
+        // BQ.setBq001(BQ001);
         BQ.setBq035(BQ035);
-        //BQ.setBq500(BQ500);
+        // BQ.setBq500(BQ500);
         BQ.setBq501(BQ501);
         BQ.setBq502(BQ502);
         BQ.setBq503(BQ503);
@@ -355,8 +355,8 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
             return null;
         }
     }
-    
-     public List<SERI12> findByBq037(String begin,String end) {
+
+    public List<SERI12> findByBq037(String begin, String end) {
         Query query = getEntityManager().createNamedQuery("SERI12.findByBq037");
         query.setParameter("begin", begin);
         query.setParameter("end", end);

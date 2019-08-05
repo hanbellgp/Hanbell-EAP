@@ -23,7 +23,6 @@ public class OvertimeApplicationDetail implements Serializable {
     private String seq;
     private Boolean lunch;
     private Boolean dinner;
-
     private String date1;
     private String time1;
     private String time2;

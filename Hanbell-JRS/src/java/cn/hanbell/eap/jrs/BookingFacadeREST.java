@@ -47,275 +47,275 @@ import javax.ws.rs.core.MediaType;
 @javax.enterprise.context.RequestScoped
 public class BookingFacadeREST extends SuperRESTForEAP<Booking> {
 
-  @EJB
-  private BookingKindBean bookingKindBean;
-  @EJB
-  private BookingBean bookingBean;
-  @EJB
-  private MeetingRoomBean meetingRoomBean;
-  @EJB
-  private MeetingScheduleBean meetingScheduleBean;
-  @EJB
-  private SystemProgramBean systemProgramBean;
+    @EJB
+    private BookingKindBean bookingKindBean;
+    @EJB
+    private BookingBean bookingBean;
+    @EJB
+    private MeetingRoomBean meetingRoomBean;
+    @EJB
+    private MeetingScheduleBean meetingScheduleBean;
+    @EJB
+    private SystemProgramBean systemProgramBean;
 
-  public BookingFacadeREST() {
-    super(Booking.class);
-  }
-
-  @Override
-  protected SuperEJB getSuperEJB() {
-    return bookingBean;
-  }
-
-  @Override
-  public ResponseMessage create(Booking entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-    SystemProgram p = systemProgramBean.findBySystemAndAPI("EAP", "booking");
-    String formid = bookingBean.getFormId(BaseLib.getDate(), p.getNolead(), p.getNoformat(), p.getNoseqlen());
-    entity.setFormid(formid);
-    entity.setFormdate(BaseLib.getDate());
-    entity.setCreator("EAP-JRS");
-    entity.setCredateToNow();
-    bookingBean.persist(entity);
-    return new ResponseMessage("200", "Code=200");
-  }
-
-  @POST
-  @Path("create/biztalk")
-  @Consumes({ MediaType.APPLICATION_JSON })
-  @Produces({ MediaType.APPLICATION_JSON })
-  public ResponseMessage createBizTalk(BizTalk entity) {
-    boolean flag;
-    MeetingRoom r;
-    String code, msg;
-    SystemProgram p = systemProgramBean.findBySystemAndAPI("EAP", "booking");
-    String formid = bookingBean.getFormId(BaseLib.getDate(), p.getNolead(), p.getNoformat(), p.getNoseqlen());
-    BookingKind bk = bookingKindBean.findByKind(entity.getFormid());
-    if (bk == null) {
-      return new ResponseMessage("404", "预约内容不存在");
+    public BookingFacadeREST() {
+        super(Booking.class);
     }
-    List<MeetingRoom> roomList = meetingRoomBean.findByKind(entity.getFormid());
-    if (roomList == null || roomList.isEmpty()) {
-      return new ResponseMessage("404", "预约会议室不存在");
+
+    @Override
+    protected SuperEJB getSuperEJB() {
+        return bookingBean;
     }
-    try {
-      Date talkDate = BaseLib.getDate("yyyy-MM-dd", entity.getStartDate());
 
-      Calendar st = Calendar.getInstance();
-      st.setTime(BaseLib.getDate("HH:mm", entity.getStartTime()));// 开始时间
+    @Override
+    public ResponseMessage create(Booking entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        SystemProgram p = systemProgramBean.findBySystemAndAPI("EAP", "booking");
+        String formid = bookingBean.getFormId(BaseLib.getDate(), p.getNolead(), p.getNoformat(), p.getNoseqlen());
+        entity.setFormid(formid);
+        entity.setFormdate(BaseLib.getDate());
+        entity.setCreator("EAP-JRS");
+        entity.setCredateToNow();
+        bookingBean.persist(entity);
+        return new ResponseMessage("200", "Code=200");
+    }
 
-      Calendar et = Calendar.getInstance();
-      et.setTime(BaseLib.getDate("HH:mm", entity.getStartTime()));
-      et.add(Calendar.MINUTE, entity.getMinutes() + 3);// 结束时间，预留出3分钟整理时间
-
-      r = null;
-      List<MeetingSchedule> scheduleList = meetingScheduleBean.findByKindAndTime(entity.getFormid(), talkDate,
-          st.getTime(), talkDate, et.getTime());
-      if (scheduleList == null || scheduleList.isEmpty()) {
-        r = roomList.get(0);
-      } else if (scheduleList.size() >= roomList.size()) {
-        return new ResponseMessage("401", "此时间段已约满");
-      } else {
-        for (MeetingRoom room : roomList) {
-          flag = true;
-          for (MeetingSchedule schedule : scheduleList) {
-            if (room.getId() == schedule.getPid()) {
-              flag = false;
-              break;
-            }
-          }
-          if (flag) {
-            r = room;
-            break;
-          }
+    @POST
+    @Path("create/biztalk")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseMessage createBizTalk(BizTalk entity) {
+        boolean flag;
+        MeetingRoom r;
+        String code, msg;
+        SystemProgram p = systemProgramBean.findBySystemAndAPI("EAP", "booking");
+        String formid = bookingBean.getFormId(BaseLib.getDate(), p.getNolead(), p.getNoformat(), p.getNoseqlen());
+        BookingKind bk = bookingKindBean.findByKind(entity.getFormid());
+        if (bk == null) {
+            return new ResponseMessage("404", "预约内容不存在");
         }
-      }
-      if (r == null) {
-        return new ResponseMessage("401", "此时间段已约满");
-      }
-      MeetingSchedule s = new MeetingSchedule();
-      s.setPid(r.getId());
-      s.setSeq(1);
-      s.setBookingid(formid);
-      s.setSubject(entity.getCompany());
-      s.setContent(entity.getRemark());
-      s.setStartDate(talkDate);
-      s.setStartTime(st.getTime());
-      s.setEndDate(talkDate);
-      s.setEndTime(et.getTime());
-      s.setMinutes(entity.getMinutes());
+        List<MeetingRoom> roomList = meetingRoomBean.findByKind(entity.getFormid());
+        if (roomList == null || roomList.isEmpty()) {
+            return new ResponseMessage("404", "预约会议室不存在");
+        }
+        try {
+            Date talkDate = BaseLib.getDate("yyyy-MM-dd", entity.getStartDate());
 
-      et.add(Calendar.MINUTE, -3);
-      Booking b = new Booking();
-      b.setBookingKind(bk);
-      b.setFormid(formid);
-      b.setFormdate(BaseLib.getDate());
-      b.setCreator("EAP-JRS");
-      b.setCredateToNow();
-      b.setName(entity.getName());
-      b.setGender(entity.getGender());
-      b.setMobile(entity.getMobile());
-      b.setEmail(entity.getEmail());
-      b.setCompany(entity.getCompany());
-      b.setTitle(entity.getTitle());
-      b.setStartDate(talkDate);
-      b.setStartTime(BaseLib.getDate("HH:mm", entity.getStartTime()));
-      b.setEndDate(talkDate);
-      b.setEndTime(BaseLib.getDate("HH:mm", BaseLib.formatDate("HH:mm", et.getTime())));
-      b.setContacter(entity.getContacter());
-      b.setRemark(entity.getRemark());
-      b.setRoom(r.getName());
-      b.setMsgNotify(bk.getMsgNotify());
-      b.setMsgNotified(bk.getMsgNotified());
-      meetingScheduleBean.persist(s);
-      bookingBean.persist(b);
-      code = "200";
-      msg = formid;
-    } catch (Exception ex) {
-      code = "500";
-      msg = ex.getMessage();
-    }
-    return new ResponseMessage(code, msg);
-  }
+            Calendar st = Calendar.getInstance();
+            st.setTime(BaseLib.getDate("HH:mm", entity.getStartTime()));// 开始时间
 
-  @POST
-  @Path("create/golf")
-  @Consumes({ MediaType.APPLICATION_JSON })
-  @Produces({ MediaType.APPLICATION_JSON })
-  public ResponseMessage createGolfGame(GolfGame entity) {
-    String code, msg;
-    SystemProgram p = systemProgramBean.findBySystemAndAPI("EAP", "booking");
-    String formid = bookingBean.getFormId(BaseLib.getDate(), p.getNolead(), p.getNoformat(), p.getNoseqlen());
-    BookingKind bk = bookingKindBean.findByKind(entity.getFormid());
-    if (bk == null) {
-      return new ResponseMessage("404", "预约内容不存在");
-    }
-    Booking b = new Booking();
-    b.setBookingKind(bk);
-    b.setFormid(formid);
-    b.setFormdate(BaseLib.getDate());
-    b.setStartDate(bk.getStartDate());
-    b.setStartTime(bk.getStartTime());
-    b.setEndDate(bk.getEndDate());
-    b.setEndTime(bk.getEndTime());
-    b.setMsgNotify(bk.getMsgNotify());
-    b.setMsgNotified(bk.getMsgNotified());
-    b.setCreator("EAP-JRS");
-    b.setCredateToNow();
-    b.setName(entity.getName());
-    b.setGender(entity.getGender());
-    b.setMobile(entity.getMobile());
-    b.setEmail(entity.getEmail());
-    b.setCompany(entity.getCompany());
-    b.setTitle(entity.getTitle());
-    b.setKey1(bk.getKey1());
-    b.setValue1(String.valueOf(entity.getValue1()));
-    b.setKey2(bk.getKey2());// 是否用晚餐
-    if (entity.getValue2()) {
-      b.setValue2("是");
-    } else {
-      b.setValue2("否");
-    }
-    b.setKey3(bk.getKey3());// 是否租球具
-    if (entity.getValue3()) {
-      b.setValue3("是");
-    } else {
-      b.setValue3("否");
-    }
-    b.setKey4(bk.getKey4());// 衣服尺码
-    b.setValue4(entity.getValue4());
-    b.setKey5(bk.getKey5());// 乘坐巴士
-    if (entity.getValue5()) {
-      b.setValue5("是");
-    } else {
-      b.setValue5("否");
-    }
-    b.setKey6(bk.getKey6());// 自行驾车
-    if (entity.getValue6()) {
-      b.setValue6("是");
-    } else {
-      b.setValue6("否");
-    }
-    b.setKey7(bk.getKey7());
-    b.setValue7(entity.getValue7());
-    b.setKey8(bk.getKey8());
-    b.setValue8(entity.getValue8());
-    b.setRemark(entity.getRemark());
-    try {
-      bookingBean.persist(b);
-      code = "200";
-      msg = formid;
-    } catch (Exception ex) {
-      code = "500";
-      msg = ex.getMessage();
-    }
-    return new ResponseMessage(code, msg);
-  }
+            Calendar et = Calendar.getInstance();
+            et.setTime(BaseLib.getDate("HH:mm", entity.getStartTime()));
+            et.add(Calendar.MINUTE, entity.getMinutes() + 3);// 结束时间，预留出3分钟整理时间
 
-  @POST
-  @Path("create/forum")
-  @Consumes({ MediaType.APPLICATION_JSON })
-  @Produces({ MediaType.APPLICATION_JSON })
-  public ResponseMessage createTechForum(TechForum entity) {
-    String code, msg;
-    SystemProgram p = systemProgramBean.findBySystemAndAPI("EAP", "booking");
-    String formid = bookingBean.getFormId(BaseLib.getDate(), p.getNolead(), p.getNoformat(), p.getNoseqlen());
-    BookingKind bk = bookingKindBean.findByKind(entity.getFormid());
-    if (bk == null) {
-      return new ResponseMessage("404", "预约内容不存在");
-    }
-    Booking b = new Booking();
-    b.setBookingKind(bk);
-    b.setFormid(formid);
-    b.setFormdate(BaseLib.getDate());
-    b.setStartDate(bk.getStartDate());
-    b.setStartTime(bk.getStartTime());
-    b.setEndDate(bk.getEndDate());
-    b.setEndTime(bk.getEndTime());
-    b.setMsgNotify(bk.getMsgNotify());
-    b.setMsgNotified(bk.getMsgNotified());
-    b.setCreator("EAP-JRS");
-    b.setCredateToNow();
-    b.setName(entity.getName());
-    b.setGender(entity.getGender());
-    b.setMobile(entity.getMobile());
-    b.setEmail(entity.getEmail());
-    b.setCompany(entity.getCompany());
-    b.setTitle(entity.getTitle());
-    b.setKey1(bk.getKey1());
-    b.setValue1(entity.getValue1());
-    b.setRemark(entity.getRemark());
-    try {
-      bookingBean.persist(b);
-      code = "200";
-      msg = formid;
-    } catch (Exception ex) {
-      code = "500";
-      msg = ex.getMessage();
-    }
-    return new ResponseMessage(code, msg);
-  }
+            r = null;
+            List<MeetingSchedule> scheduleList = meetingScheduleBean.findByKindAndTime(entity.getFormid(), talkDate,
+                    st.getTime(), talkDate, et.getTime());
+            if (scheduleList == null || scheduleList.isEmpty()) {
+                r = roomList.get(0);
+            } else if (scheduleList.size() >= roomList.size()) {
+                return new ResponseMessage("401", "此时间段已约满");
+            } else {
+                for (MeetingRoom room : roomList) {
+                    flag = true;
+                    for (MeetingSchedule schedule : scheduleList) {
+                        if (room.getId() == schedule.getPid()) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        r = room;
+                        break;
+                    }
+                }
+            }
+            if (r == null) {
+                return new ResponseMessage("401", "此时间段已约满");
+            }
+            MeetingSchedule s = new MeetingSchedule();
+            s.setPid(r.getId());
+            s.setSeq(1);
+            s.setBookingid(formid);
+            s.setSubject(entity.getCompany());
+            s.setContent(entity.getRemark());
+            s.setStartDate(talkDate);
+            s.setStartTime(st.getTime());
+            s.setEndDate(talkDate);
+            s.setEndTime(et.getTime());
+            s.setMinutes(entity.getMinutes());
 
-  @GET
-  @Path("list/schedule/idle/{bookingkind}/{date}/{minutes}")
-  @Produces({ "application/json" })
-  public List<ResponseMessage> findIdleTime(@PathParam("bookingkind") String kind, @PathParam("date") String date,
-      @PathParam("minutes") int minutes) {
-    List<ResponseMessage> repList = new ArrayList<>();
-    List<MeetingSchedule> idleList = null;
-    try {
-      idleList = meetingRoomBean.findIdleTime(kind, BaseLib.getDate("yyyy-MM-dd", date), minutes);
-    } catch (ParseException ex) {
-      Logger.getLogger(BookingFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            et.add(Calendar.MINUTE, -3);
+            Booking b = new Booking();
+            b.setBookingKind(bk);
+            b.setFormid(formid);
+            b.setFormdate(BaseLib.getDate());
+            b.setCreator("EAP-JRS");
+            b.setCredateToNow();
+            b.setName(entity.getName());
+            b.setGender(entity.getGender());
+            b.setMobile(entity.getMobile());
+            b.setEmail(entity.getEmail());
+            b.setCompany(entity.getCompany());
+            b.setTitle(entity.getTitle());
+            b.setStartDate(talkDate);
+            b.setStartTime(BaseLib.getDate("HH:mm", entity.getStartTime()));
+            b.setEndDate(talkDate);
+            b.setEndTime(BaseLib.getDate("HH:mm", BaseLib.formatDate("HH:mm", et.getTime())));
+            b.setContacter(entity.getContacter());
+            b.setRemark(entity.getRemark());
+            b.setRoom(r.getName());
+            b.setMsgNotify(bk.getMsgNotify());
+            b.setMsgNotified(bk.getMsgNotified());
+            meetingScheduleBean.persist(s);
+            bookingBean.persist(b);
+            code = "200";
+            msg = formid;
+        } catch (Exception ex) {
+            code = "500";
+            msg = ex.getMessage();
+        }
+        return new ResponseMessage(code, msg);
     }
-    if (idleList == null || idleList.isEmpty()) {
-      repList.add(new ResponseMessage("401", date + "已全部约满"));
-    } else {
-      for (MeetingSchedule ms : idleList) {
-        repList.add(new ResponseMessage("200", BaseLib.formatDate("HH:mm", ms.getStartTime()) + "-"
-            + BaseLib.formatDate("HH:mm", ms.getEndTime()) + "可以预约"));
-      }
+
+    @POST
+    @Path("create/golf")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseMessage createGolfGame(GolfGame entity) {
+        String code, msg;
+        SystemProgram p = systemProgramBean.findBySystemAndAPI("EAP", "booking");
+        String formid = bookingBean.getFormId(BaseLib.getDate(), p.getNolead(), p.getNoformat(), p.getNoseqlen());
+        BookingKind bk = bookingKindBean.findByKind(entity.getFormid());
+        if (bk == null) {
+            return new ResponseMessage("404", "预约内容不存在");
+        }
+        Booking b = new Booking();
+        b.setBookingKind(bk);
+        b.setFormid(formid);
+        b.setFormdate(BaseLib.getDate());
+        b.setStartDate(bk.getStartDate());
+        b.setStartTime(bk.getStartTime());
+        b.setEndDate(bk.getEndDate());
+        b.setEndTime(bk.getEndTime());
+        b.setMsgNotify(bk.getMsgNotify());
+        b.setMsgNotified(bk.getMsgNotified());
+        b.setCreator("EAP-JRS");
+        b.setCredateToNow();
+        b.setName(entity.getName());
+        b.setGender(entity.getGender());
+        b.setMobile(entity.getMobile());
+        b.setEmail(entity.getEmail());
+        b.setCompany(entity.getCompany());
+        b.setTitle(entity.getTitle());
+        b.setKey1(bk.getKey1());
+        b.setValue1(String.valueOf(entity.getValue1()));
+        b.setKey2(bk.getKey2());// 是否用晚餐
+        if (entity.getValue2()) {
+            b.setValue2("是");
+        } else {
+            b.setValue2("否");
+        }
+        b.setKey3(bk.getKey3());// 是否租球具
+        if (entity.getValue3()) {
+            b.setValue3("是");
+        } else {
+            b.setValue3("否");
+        }
+        b.setKey4(bk.getKey4());// 衣服尺码
+        b.setValue4(entity.getValue4());
+        b.setKey5(bk.getKey5());// 乘坐巴士
+        if (entity.getValue5()) {
+            b.setValue5("是");
+        } else {
+            b.setValue5("否");
+        }
+        b.setKey6(bk.getKey6());// 自行驾车
+        if (entity.getValue6()) {
+            b.setValue6("是");
+        } else {
+            b.setValue6("否");
+        }
+        b.setKey7(bk.getKey7());
+        b.setValue7(entity.getValue7());
+        b.setKey8(bk.getKey8());
+        b.setValue8(entity.getValue8());
+        b.setRemark(entity.getRemark());
+        try {
+            bookingBean.persist(b);
+            code = "200";
+            msg = formid;
+        } catch (Exception ex) {
+            code = "500";
+            msg = ex.getMessage();
+        }
+        return new ResponseMessage(code, msg);
     }
-    return repList;
-  }
+
+    @POST
+    @Path("create/forum")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseMessage createTechForum(TechForum entity) {
+        String code, msg;
+        SystemProgram p = systemProgramBean.findBySystemAndAPI("EAP", "booking");
+        String formid = bookingBean.getFormId(BaseLib.getDate(), p.getNolead(), p.getNoformat(), p.getNoseqlen());
+        BookingKind bk = bookingKindBean.findByKind(entity.getFormid());
+        if (bk == null) {
+            return new ResponseMessage("404", "预约内容不存在");
+        }
+        Booking b = new Booking();
+        b.setBookingKind(bk);
+        b.setFormid(formid);
+        b.setFormdate(BaseLib.getDate());
+        b.setStartDate(bk.getStartDate());
+        b.setStartTime(bk.getStartTime());
+        b.setEndDate(bk.getEndDate());
+        b.setEndTime(bk.getEndTime());
+        b.setMsgNotify(bk.getMsgNotify());
+        b.setMsgNotified(bk.getMsgNotified());
+        b.setCreator("EAP-JRS");
+        b.setCredateToNow();
+        b.setName(entity.getName());
+        b.setGender(entity.getGender());
+        b.setMobile(entity.getMobile());
+        b.setEmail(entity.getEmail());
+        b.setCompany(entity.getCompany());
+        b.setTitle(entity.getTitle());
+        b.setKey1(bk.getKey1());
+        b.setValue1(entity.getValue1());
+        b.setRemark(entity.getRemark());
+        try {
+            bookingBean.persist(b);
+            code = "200";
+            msg = formid;
+        } catch (Exception ex) {
+            code = "500";
+            msg = ex.getMessage();
+        }
+        return new ResponseMessage(code, msg);
+    }
+
+    @GET
+    @Path("list/schedule/idle/{bookingkind}/{date}/{minutes}")
+    @Produces({"application/json"})
+    public List<ResponseMessage> findIdleTime(@PathParam("bookingkind") String kind, @PathParam("date") String date,
+            @PathParam("minutes") int minutes) {
+        List<ResponseMessage> repList = new ArrayList<>();
+        List<MeetingSchedule> idleList = null;
+        try {
+            idleList = meetingRoomBean.findIdleTime(kind, BaseLib.getDate("yyyy-MM-dd", date), minutes);
+        } catch (ParseException ex) {
+            Logger.getLogger(BookingFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (idleList == null || idleList.isEmpty()) {
+            repList.add(new ResponseMessage("401", date + "已全部约满"));
+        } else {
+            for (MeetingSchedule ms : idleList) {
+                repList.add(new ResponseMessage("200", BaseLib.formatDate("HH:mm", ms.getStartTime()) + "-"
+                        + BaseLib.formatDate("HH:mm", ms.getEndTime()) + "可以预约"));
+            }
+        }
+        return repList;
+    }
 
 }

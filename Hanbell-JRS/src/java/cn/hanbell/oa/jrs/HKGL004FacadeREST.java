@@ -48,54 +48,58 @@ public class HKGL004FacadeREST extends SuperREST<HKGL004> {
     }
 
     @POST
-    @Path("create/wechat")
+    @Path("wechat")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public ResponseMessage create(LeaveApplication entity) {
-        if (entity == null) {
-            throw new WebApplicationException(Response.Status.BAD_REQUEST);
-        }
-        try {
-            workFlowBean.initUserInfo(entity.getEmployee());
-
-            HKGL004Model la = new HKGL004Model();
-            la.setApplyDate(BaseLib.getDate());
-            la.setApplyUser(workFlowBean.getCurrentUser().getId());
-            la.setHdn_applyUser(workFlowBean.getCurrentUser().getUserName());
-            la.setApplyDept(workFlowBean.getUserFunction().getOrganizationUnit().getId());
-            la.setHdn_applyDept(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
-            //根据部门编号代出公司编号
-            la.setFacno(workFlowBean.getCompanyByDeptId(la.getApplyDept()));
-            la.setHdn_facno(la.getFacno());
-            la.setLeana(entity.getFormType());
-            la.setHdn_leana(entity.getFormTypeDesc());
-            la.setLeano(entity.getFormKind());
-            la.setHdn_leano(entity.getFormKindDesc());
-            la.setLeatp(entity.getWorkType());
-            la.setHdn_leatp(entity.getWorkTypeDesc());
-            la.setEmployee(workFlowBean.getCurrentUser().getId());
-            la.setHdn_employee(workFlowBean.getCurrentUser().getUserName());
-            la.setDate1(BaseLib.getDate("yyyy-MM-dd", entity.getDate1()));
-            la.setTime1(entity.getTime1());
-            la.setDate2(BaseLib.getDate("yyyy-MM-dd", entity.getDate2()));
-            la.setTime2(entity.getTime2());
-            la.setLeaday1(entity.getLeaveDay());
-            la.setLeaday2(entity.getLeaveHour());
-            la.setLeaday3(entity.getLeaveMinute());
-            la.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
-            la.setReason(entity.getReason());
-
-            String formInstance = workFlowBean.buildXmlForEFGP("HK_GL004", la, null);
-            String subject = la.getHdn_employee() + entity.getDate1() + "开始请假" + entity.getLeaveDay() + "天" + entity.getLeaveHour() + "时" + entity.getLeaveMinute() + "分";
-            String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_GL004", formInstance, subject);
-            String[] rm = msg.split("\\$");
-            if (rm.length == 2) {
-                return new ResponseMessage(rm[0], rm[1]);
-            } else {
-                return new ResponseMessage("200", "Code=200");
+    public ResponseMessage create(LeaveApplication entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            if (entity == null) {
+                throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
-        } catch (Exception ex) {
-            return new ResponseMessage("500", "系统错误更新失败");
+            try {
+                workFlowBean.initUserInfo(entity.getEmployee());
+                HKGL004Model la = new HKGL004Model();
+                la.setApplyDate(BaseLib.getDate());
+                la.setApplyUser(workFlowBean.getCurrentUser().getId());
+                la.setHdn_applyUser(workFlowBean.getCurrentUser().getUserName());
+                la.setApplyDept(workFlowBean.getUserFunction().getOrganizationUnit().getId());
+                la.setHdn_applyDept(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
+                //根据部门编号代出公司编号
+                la.setFacno(workFlowBean.getCompanyByDeptId(la.getApplyDept()));
+                la.setHdn_facno(la.getFacno());
+                la.setLeana(entity.getFormType());
+                la.setHdn_leana(entity.getFormTypeDesc());
+                la.setLeano(entity.getFormKind());
+                la.setHdn_leano(entity.getFormKindDesc());
+                la.setLeatp(entity.getWorkType());
+                la.setHdn_leatp(entity.getWorkTypeDesc());
+                la.setEmployee(workFlowBean.getCurrentUser().getId());
+                la.setHdn_employee(workFlowBean.getCurrentUser().getUserName());
+                la.setDay("0");
+                la.setDate1(BaseLib.getDate("yyyy-MM-dd", entity.getDate1()));
+                la.setTime1(entity.getTime1());
+                la.setDate2(BaseLib.getDate("yyyy-MM-dd", entity.getDate2()));
+                la.setTime2(entity.getTime2());
+                la.setLeaday1(entity.getLeaveDay());
+                la.setLeaday2(entity.getLeaveHour());
+                la.setLeaday3(entity.getLeaveMinute());
+                la.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
+                la.setReason(entity.getReason());
+
+                String formInstance = workFlowBean.buildXmlForEFGP("HK_GL004", la, null);
+                String subject = la.getHdn_employee() + entity.getDate1() + "开始请假" + entity.getLeaveDay() + "天" + entity.getLeaveHour() + "时" + entity.getLeaveMinute() + "分";
+                String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_GL004", formInstance, subject);
+                String[] rm = msg.split("\\$");
+                if (rm.length == 2) {
+                    return new ResponseMessage(rm[0], rm[1]);
+                } else {
+                    return new ResponseMessage("200", "Code=200");
+                }
+            } catch (Exception ex) {
+                return new ResponseMessage("500", "系统错误更新失败");
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
 
