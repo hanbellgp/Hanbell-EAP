@@ -60,7 +60,7 @@
                     <p:commandButton id="btnReset" value="重置" actionListener="#{proposalManagedBean.reset()}" icon="ui-icon-refresh"
                                      update=":formList"/>
                     <p:commandButton id="btnQuery" value="查询" actionListener="#{proposalManagedBean.query()}" icon="ui-icon-search"
-                                   update=":formList"  />
+                                     update=":formList"  />
                 </f:facet>
             </p:toolbar>
             <p:dataTable  value="#{proposalManagedBean.model}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
