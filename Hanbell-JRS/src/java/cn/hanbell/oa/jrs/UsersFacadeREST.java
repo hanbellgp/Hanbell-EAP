@@ -74,13 +74,17 @@ public class UsersFacadeREST extends SuperRESTForEFGP<Users> {
     @Path("{filters}/{sorts}/{offset}/{pageSize}/size")
     @Produces({MediaType.APPLICATION_JSON})
     public UsersResponseResult findByFiltersWithSize(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-        data = super.findWithSize(filters, sorts, offset, pageSize, appid, token);
-        UsersResponseResult r = new UsersResponseResult();
-        for (Map.Entry<Integer, List<Users>> entrySet : data.entrySet()) {
-            r.setSize(entrySet.getKey());
-            r.setResult(entrySet.getValue());
+        if (isAuthorized(appid, token)) {
+            data = super.find(filters, sorts, offset, pageSize);
+            UsersResponseResult r = new UsersResponseResult();
+            for (Map.Entry<Integer, List<Users>> entrySet : data.entrySet()) {
+                r.setSize(entrySet.getKey());
+                r.setResult(entrySet.getValue());
+            }
+            return r;
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
-        return r;
     }
 
     @GET

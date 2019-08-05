@@ -50,7 +50,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
     }
 
     @POST
-    @Path("create/wechat")
+    @Path("wechat")
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public ResponseMessage create(OvertimeApplication entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
@@ -65,7 +65,6 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
             details.put("Detail", detailList);
             try {
                 workFlowBean.initUserInfo(entity.getEmployee());
-
                 m = new HKGL034Model();
                 m.setApplyDate(BaseLib.getDate());
                 m.setApplyUser(workFlowBean.getCurrentUser().getId());

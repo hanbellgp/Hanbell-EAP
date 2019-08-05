@@ -69,6 +69,37 @@ public abstract class SuperRESTForEFGP<T> {
         throw new WebApplicationException(Response.Status.NOT_IMPLEMENTED);
     }
 
+    public Map<Integer, List<T>> find(PathSegment filters, PathSegment sorts, Integer offset, Integer pageSize) {
+        try {
+            MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
+            MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
+            Map<String, Object> filterFields = new HashMap<>();
+            Map<String, String> sortFields = new HashMap<>();
+            String key, value;
+            if (filtersMM != null) {
+                for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
+                    key = entrySet.getKey();
+                    value = entrySet.getValue().get(0);
+                    filterFields.put(key, value);
+                }
+            }
+            if (sortsMM != null) {
+                for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
+                    key = entrySet.getKey();
+                    value = entrySet.getValue().get(0);
+                    sortFields.put(key, value);
+                }
+            }
+            int size = getSuperEJB().getRowCount(filterFields);
+            List<T> list = getSuperEJB().findByFilters(filterFields, offset, pageSize, sortFields);
+            Map<Integer, List<T>> map = new HashMap<>();
+            map.put(size, list);
+            return map;
+        } catch (Exception ex) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+    }
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<T> findAll(@QueryParam("appid") String appid, @QueryParam("token") String token) {
@@ -125,41 +156,6 @@ public abstract class SuperRESTForEFGP<T> {
                     }
                 }
                 return getSuperEJB().findByFilters(filterFields, offset, pageSize, sortFields);
-            } catch (Exception ex) {
-                throw new WebApplicationException(Response.Status.NOT_FOUND);
-            }
-        } else {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        }
-    }
-
-    public Map<Integer, List<T>> findWithSize(PathSegment filters, PathSegment sorts, Integer offset, Integer pageSize, String appid, String token) {
-        if (isAuthorized(appid, token)) {
-            try {
-                MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
-                MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
-                Map<String, Object> filterFields = new HashMap<>();
-                Map<String, String> sortFields = new HashMap<>();
-                String key, value;
-                if (filtersMM != null) {
-                    for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
-                        key = entrySet.getKey();
-                        value = entrySet.getValue().get(0);
-                        filterFields.put(key, value);
-                    }
-                }
-                if (sortsMM != null) {
-                    for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
-                        key = entrySet.getKey();
-                        value = entrySet.getValue().get(0);
-                        sortFields.put(key, value);
-                    }
-                }
-                int size = getSuperEJB().getRowCount(filterFields);
-                List<T> list = getSuperEJB().findByFilters(filterFields, offset, pageSize, sortFields);
-                Map<Integer, List<T>> map = new HashMap<>();
-                map.put(size, list);
-                return map;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

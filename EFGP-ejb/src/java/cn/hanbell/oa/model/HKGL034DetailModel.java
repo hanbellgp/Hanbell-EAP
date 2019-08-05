@@ -6,8 +6,6 @@
 package cn.hanbell.oa.model;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
