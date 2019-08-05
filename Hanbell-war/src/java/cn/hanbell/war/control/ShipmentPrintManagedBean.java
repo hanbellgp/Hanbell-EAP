@@ -67,7 +67,7 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
     public void clearState() {
         if (null != getCurrentEntity()) {
             try {
-                currentEntity.setStatus("N");//简化查询条件,此处不再提供修改状态(M)
+                currentEntity.setStatus("N");// 简化查询条件,此处不再提供修改状态(M)
                 currentEntity.setOptuser(getUserManagedBean().getCurrentUser().getUsername());
                 currentEntity.setOptdateToNow();
                 currentEntity.setCfmuser(null);
@@ -97,31 +97,35 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
             String f;
             for (ShipmentDetail sd : detailList) {
                 if (sd.getShpno() != null) {
-                    //汉钟出货单条码
+                    // 汉钟出货单条码
                     f = this.getAppResPath() + sd.getShpno() + ".png";
                     this.generateCode128(sd.getShpno(), 1.5f, 8d, f);
                     this.generateQRCode(sd.getShpno(), 300, 300, this.getAppResPath(), "QR" + sd.getShpno() + ".png");
                 }
                 if (sd.getItemno() != null) {
-                    //汉钟品号条码
+                    // 汉钟品号条码
                     f = this.getAppResPath() + sd.getItemno() + ".png";
                     this.generateCode128(sd.getItemno(), 1.5f, 8d, f);
                     this.generateQRCode(sd.getItemno(), 300, 300, this.getAppResPath(), "QR" + sd.getItemno() + ".png");
                 }
                 if (sd.getCustomerItem() != null && !sd.getCustomerItem().equals("")) {
-                    //客户品号条码
+                    // 客户品号条码
                     f = this.getAppResPath() + currentEntity.getCustomerno() + sd.getCustomerItem() + ".png";
                     this.generateCode128(sd.getCustomerItem(), 1.5f, 8d, f);
-                    this.generateQRCode(sd.getCustomerItem(), 300, 300, this.getAppResPath(), "QR" + currentEntity.getCustomerno() + sd.getCustomerItem() + ".png");
+                    this.generateQRCode(sd.getCustomerItem(), 300, 300, this.getAppResPath(),
+                            "QR" + currentEntity.getCustomerno() + sd.getCustomerItem() + ".png");
                     if (currentEntity.getCustomerno().equals("SSD00103") && sd.getItemModel() != null && sd.getVarnr() != null) {
-                        //海达瑞专属二维码
+                        // 海达瑞专属二维码
                         StringBuilder content = new StringBuilder();
-                        content.append(sd.getItemModel()).append(".").append(sd.getCustomerItem()).append(".").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(".").append(sd.getCustomerItemDesc());
-                        this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + currentEntity.getCustomerno() + sd.getVarnr() + ".png");
+                        content.append(sd.getItemModel()).append(".").append(sd.getCustomerItem()).append(".")
+                                .append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(".").append(sd.getCustomerItemDesc())
+                                .append(".").append(sd.getVarnr());
+                        this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(),
+                                "QR" + currentEntity.getCustomerno() + sd.getVarnr() + ".png");
                     }
                 }
                 if (sd.getVarnr() != null) {
-                    //汉钟物料条码
+                    // 汉钟物料条码
                     f = this.getAppResPath() + sd.getVarnr() + ".png";
                     this.generateCode128(sd.getVarnr(), 1.5f, 8d, f);
                     this.generateQRCode(sd.getVarnr(), 300, 300, this.getAppResPath(), "QR" + sd.getVarnr() + ".png");
@@ -150,9 +154,9 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
             return;
         }
         String reportName, outputName, reportFormat;
-        //设置报表名称
-        //reportName = reportPath + currentPrgGrant.getSysprg().getRptdesign();
-        //设置导出文件名称
+        // 设置报表名称
+        // reportName = reportPath + currentPrgGrant.getSysprg().getRptdesign();
+        // 设置导出文件名称
         fileName = "ShipmentPrint" + BaseLib.formatDate("yyyyMMddHHmmss", getDate()) + ".pdf";
         outputName = reportOutputPath + fileName;
         OutputStream os = new FileOutputStream(outputName);
@@ -163,7 +167,7 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
         HashMap<String, Object> reportParams = new HashMap<>();
         ByteArrayOutputStream baos;
         for (Shipment c : entityList) {
-            //设置报表参数
+            // 设置报表参数
             baos = new ByteArrayOutputStream();
             reportParams.put("company", userManagedBean.getCurrentCompany().getName());
             reportParams.put("companyFullName", userManagedBean.getCurrentCompany().getFullname());
@@ -173,11 +177,11 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
             reportParams.put("formid", c.getFormid());
             reportParams.put("JNDIName", currentPrgGrant.getSysprg().getRptjndi());
             try {
-                //按每个客户打印不同格式
+                // 按每个客户打印不同格式
                 reportName = reportPath + "shipmentBarcode.rptdesign";
-                //初始配置
+                // 初始配置
                 this.reportInitAndConfig();
-                //生成报表
+                // 生成报表
                 this.reportRunAndOutput(reportName, reportParams, null, "pdf", baos);
             } catch (Exception ex) {
                 throw ex;
@@ -199,9 +203,9 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
             return;
         }
         String reportName, outputName, reportFormat;
-        //设置报表名称
-        //reportName = reportPath + currentPrgGrant.getSysprg().getRptdesign();
-        //设置导出文件名称
+        // 设置报表名称
+        // reportName = reportPath + currentPrgGrant.getSysprg().getRptdesign();
+        // 设置导出文件名称
         fileName = "ShipmentPrint" + BaseLib.formatDate("yyyyMMddHHmmss", getDate()) + ".pdf";
         outputName = reportOutputPath + fileName;
         OutputStream os = new FileOutputStream(outputName);
@@ -212,7 +216,7 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
         HashMap<String, Object> reportParams = new HashMap<>();
         ByteArrayOutputStream baos;
         for (Shipment c : entityList) {
-            //设置报表参数
+            // 设置报表参数
             baos = new ByteArrayOutputStream();
             reportParams.put("company", userManagedBean.getCurrentCompany().getName());
             reportParams.put("companyFullName", userManagedBean.getCurrentCompany().getFullname());
@@ -222,11 +226,11 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
             reportParams.put("formid", c.getFormid());
             reportParams.put("JNDIName", currentPrgGrant.getSysprg().getRptjndi());
             try {
-                //按每个客户打印不同格式
+                // 按每个客户打印不同格式
                 reportName = reportPath + c.getCustomerno() + rptdesign + ".rptdesign";
-                //初始配置
+                // 初始配置
                 this.reportInitAndConfig();
-                //生成报表
+                // 生成报表
                 this.reportRunAndOutput(reportName, reportParams, null, "pdf", baos);
             } catch (Exception ex) {
                 throw ex;
@@ -315,23 +319,23 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
     public void generateCode128(String content, float widthSize, double height, String fullFileName) {
         try {
             Code128Bean bean = new Code128Bean();
-            //设置解析度
+            // 设置解析度
             final int dpi = 150;
-            //Configure the barcode generator
-            bean.setModuleWidth(UnitConv.in2mm(widthSize / dpi)); //makes the narrow bar
+            // Configure the barcode generator
+            bean.setModuleWidth(UnitConv.in2mm(widthSize / dpi)); // makes the narrow bar
             bean.setBarHeight(height);
             bean.setCodeset(Code128Constants.CODESET_A);
             bean.doQuietZone(false);
-            //产生Code128文件
+            // 产生Code128文件
             File outputFile = new File(fullFileName);
             OutputStream out = new FileOutputStream(outputFile);
             try {
-                //Set up the canvas provider
-                BitmapCanvasProvider canvas = new BitmapCanvasProvider(
-                        out, "image/png", dpi, BufferedImage.TYPE_BYTE_BINARY, false, 0);
-                //Generate the barcode
+                // Set up the canvas provider
+                BitmapCanvasProvider canvas = new BitmapCanvasProvider(out, "image/png", dpi, BufferedImage.TYPE_BYTE_BINARY,
+                        false, 0);
+                // Generate the barcode
                 bean.generateBarcode(canvas, content);
-                //Signal end of generation
+                // Signal end of generation
                 canvas.finish();
             } finally {
                 out.close();
@@ -359,7 +363,7 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
             Map hints = new HashMap();
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-            BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.CODE_128, width, height, hints);//这里是照片的大小
+            BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.CODE_128, width, height, hints);// 这里是大小
             Path path = FileSystems.getDefault().getPath(filePath, fileName);
             MatrixToImageWriter.writeToPath(bitMatrix, "png", path);
         } catch (WriterException | IOException ex) {

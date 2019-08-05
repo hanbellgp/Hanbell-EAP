@@ -40,16 +40,16 @@ public class ProposalManagedBean extends SuperMultiBean<Proposal, ProposalAttach
     public ProposalManagedBean() {
         super(Proposal.class, ProposalAttach.class);
     }
-//自动获取案件编号
-//    @Override
-//    protected boolean doBeforePersist() throws Exception {
-//        if (super.doBeforePersist()) {
-//            String fomrid = proposalBean.getFormId(BaseLib.getDate());
-//            newEntity.setProposalid(fomrid);
-//            return true;
-//        }
-//        return false;
-//    }
+    // 自动获取案件编号
+    // @Override
+    // protected boolean doBeforePersist() throws Exception {
+    // if (super.doBeforePersist()) {
+    // String fomrid = proposalBean.getFormId(BaseLib.getDate());
+    // newEntity.setProposalid(fomrid);
+    // return true;
+    // }
+    // return false;
+    // }
 
     @Override
     public void handleDialogReturnWhenNew(SelectEvent event) {
@@ -111,13 +111,13 @@ public class ProposalManagedBean extends SuperMultiBean<Proposal, ProposalAttach
             if (queryDateBegin != null) {
                 this.model.getFilterFields().put("proposaldateBegin", queryDateBegin);
             }
-             if (queryDateEnd != null) {
+            if (queryDateEnd != null) {
                 this.model.getFilterFields().put("proposaldateEnd", queryDateEnd);
             }
             if (queryState != null && !"".equals(queryState)) {
-                if(!"ALL".equals(queryState)){
-                     this.model.getFilterFields().put("conclusion", queryState);
-                }     
+                if (!"ALL".equals(queryState)) {
+                    this.model.getFilterFields().put("conclusion", queryState);
+                }
             }
         }
     }
@@ -147,7 +147,8 @@ public class ProposalManagedBean extends SuperMultiBean<Proposal, ProposalAttach
         if (this.fileName != null) {
             String path = this.getClass().getClassLoader().getResource("/").getPath().substring(1);
             path = java.net.URLDecoder.decode(path, "utf-8");
-            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext()
+                    .getResponse();
             response.setCharacterEncoding("GBK");
             if (newDetail == null) {
                 this.createDetail();

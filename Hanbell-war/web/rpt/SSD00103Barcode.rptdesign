@@ -322,7 +322,7 @@ return false;
                     <property name="marginRight">1pt</property>
                     <property name="pageBreakAfter">always</property>
                     <column id="177">
-                        <property name="width">1.2cm</property>
+                        <property name="width">1.45cm</property>
                     </column>
                     <column id="117"/>
                     <column id="152">
@@ -332,6 +332,8 @@ return false;
                         <cell id="173">
                             <property name="colSpan">3</property>
                             <property name="rowSpan">1</property>
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
                             <image id="171">
                                 <property name="source">url</property>
                                 <expression name="uri" type="javascript">row["varnrbarcode"]</expression>
@@ -342,16 +344,21 @@ return false;
                         <cell id="174">
                             <property name="colSpan">1</property>
                             <property name="rowSpan">2</property>
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
                             <image id="165">
-                                <property name="height">1.1cm</property>
-                                <property name="width">1.1cm</property>
+                                <property name="height">1.4cm</property>
+                                <property name="width">1.4cm</property>
                                 <property name="source">url</property>
                                 <expression name="uri" type="javascript">row["shpqrcode"]</expression>
                             </image>
                         </cell>
                         <cell id="158">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
                             <data id="163">
                                 <property name="fontWeight">bold</property>
+                                <property name="whiteSpace">nowrap</property>
                                 <property name="pageBreakAfter">avoid</property>
                                 <property name="resultSetColumn">customeritem</property>
                             </data>
@@ -359,6 +366,8 @@ return false;
                         <cell id="159">
                             <property name="colSpan">1</property>
                             <property name="rowSpan">1</property>
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
                             <data id="153">
                                 <property name="fontSize">10pt</property>
                                 <property name="fontWeight">bold</property>
@@ -373,14 +382,19 @@ return false;
                     </row>
                     <row id="166">
                         <cell id="167">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
                             <data id="148">
                                 <property name="fontSize">10pt</property>
                                 <property name="fontWeight">bold</property>
+                                <property name="whiteSpace">nowrap</property>
                                 <property name="pageBreakAfter">auto</property>
                                 <property name="resultSetColumn">itemmodel</property>
                             </data>
                         </cell>
                         <cell id="178">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
                             <data id="147">
                                 <property name="fontSize">10pt</property>
                                 <property name="fontWeight">bold</property>

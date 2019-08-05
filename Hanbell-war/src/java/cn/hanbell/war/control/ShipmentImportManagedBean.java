@@ -76,9 +76,9 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
             return;
         }
         String reportName, outputName, reportFormat, f;
-        //设置报表名称
+        // 设置报表名称
         reportName = reportPath + currentPrgGrant.getSysprg().getRptdesign();
-        //设置导出文件名称
+        // 设置导出文件名称
         fileName = "CdrhadBarcode" + BaseLib.formatDate("yyyyMMddHHmmss", getDate()) + ".pdf";
         outputName = reportOutputPath + fileName;
         OutputStream os = new FileOutputStream(outputName);
@@ -91,8 +91,9 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
         for (Cdrhad c : cdrhadSelected) {
             f = this.getAppResPath() + c.getCdrhadPK().getShpno() + ".png";
             this.generateCode128(c.getCdrhadPK().getShpno(), 1.5f, 8d, f);
-            this.generateQRCode(c.getCdrhadPK().getShpno(), 300, 300, this.getAppResPath(), "QR" + c.getCdrhadPK().getShpno() + ".png");
-            //设置报表参数
+            this.generateQRCode(c.getCdrhadPK().getShpno(), 300, 300, this.getAppResPath(),
+                    "QR" + c.getCdrhadPK().getShpno() + ".png");
+            // 设置报表参数
             baos = new ByteArrayOutputStream();
             reportParams.put("company", userManagedBean.getCurrentCompany().getCompany());
             reportParams.put("companyFullName", userManagedBean.getCurrentCompany().getFullname());
@@ -102,9 +103,9 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
             reportParams.put("formid", c.getCdrhadPK().getShpno());
             reportParams.put("JNDIName", currentPrgGrant.getSysprg().getRptjndi());
             try {
-                //初始配置
+                // 初始配置
                 this.reportInitAndConfig();
-                //生成报表
+                // 生成报表
                 this.reportRunAndOutput(reportName, reportParams, null, "pdf", baos);
             } catch (Exception ex) {
                 throw ex;
@@ -158,13 +159,14 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
         s.setStatus("N");
         s.setCreator(this.userManagedBean.getCurrentUser().getUsername());
         s.setCredate(getDate());
-        //获取明细
+        // 获取明细
         List<Cdrlot> cdrlotList;
         cdrhadBean.setCompany(this.userManagedBean.getCompany());
         for (Cdrhad h : cdrhadSelected) {
             this.fileName = this.getAppResPath() + h.getCdrhadPK().getShpno() + ".png";
             this.generateCode128(h.getCdrhadPK().getShpno(), 1.5f, 8d, this.fileName);
-            this.generateQRCode(h.getCdrhadPK().getShpno(), 300, 300, this.getAppResPath(), "QR" + h.getCdrhadPK().getShpno() + ".png");
+            this.generateQRCode(h.getCdrhadPK().getShpno(), 300, 300, this.getAppResPath(),
+                    "QR" + h.getCdrhadPK().getShpno() + ".png");
             cdrlotList = cdrhadBean.findCdrlotList(h.getCdrhadPK().getFacno(), h.getCdrhadPK().getShpno());
             if (cdrlotList != null && !cdrlotList.isEmpty()) {
                 shpnoList.add(h.getCdrhadPK().getShpno());
@@ -196,15 +198,19 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                     sd.setCustomerItem(l.getCdrdta().getMatecode());
                     sd.setCustomerItemDesc(l.getCdrdta().getCuslable());
                     if (sd.getCustomerItem() != null && !"".equals(sd.getCustomerItem())) {
-                        //客户条码的文件名
+                        // 客户条码的文件名
                         this.fileName = this.getAppResPath() + h.getCusno() + sd.getCustomerItem() + ".png";
                         this.generateCode128(sd.getCustomerItem(), 1.5f, 8d, fileName);
-                        this.generateQRCode(sd.getCustomerItem(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + sd.getCustomerItem() + ".png");
+                        this.generateQRCode(sd.getCustomerItem(), 300, 300, this.getAppResPath(),
+                                "QR" + h.getCusno() + sd.getCustomerItem() + ".png");
                         if (h.getCusno().equals("SSD00103") && sd.getItemModel() != null && l.getVarnr() != null) {
-                            //海达瑞专属二维码
+                            // 海达瑞专属二维码
                             StringBuilder content = new StringBuilder();
-                            content.append(sd.getItemModel()).append(".").append(sd.getCustomerItem()).append(".").append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc());
-                            this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + l.getVarnr() + ".png");
+                            content.append(sd.getItemModel()).append(".").append(sd.getCustomerItem()).append(".")
+                                    .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc())
+                                    .append(".").append(sd.getVarnr());
+                            this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(),
+                                    "QR" + h.getCusno() + l.getVarnr() + ".png");
                         }
                     }
                     sd.setLotseq(l.getCdrlotPK().getSeq());
@@ -213,12 +219,13 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                         this.fileName = this.getAppResPath() + l.getVarnr() + ".png";
                         this.generateCode128(l.getVarnr(), 1.5f, 8d, fileName);
                         this.generateQRCode(l.getVarnr(), 300, 300, this.getAppResPath(), "QR" + l.getVarnr() + ".png");
-                        //this.generateZXingCode128(l.getVarnr(), 300, 70, this.getAppResPath(), "ZXing" + l.getVarnr() + ".png");
+                        // this.generateZXingCode128(l.getVarnr(), 300, 70, this.getAppResPath(),
+                        // "ZXing" + l.getVarnr() + ".png");
                     }
                     sd.setFixnr(l.getFixnr());
                     sd.setWareh(l.getWareh());
                     sd.setQty(l.getShpqy1());
-                    //加入明细新增列表
+                    // 加入明细新增列表
                     shipmentDetails.add(sd);
                 }
             }
