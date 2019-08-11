@@ -3132,7 +3132,7 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "createCustomerComplaintByEAP")
-    public String createCustomerComplaintByEAP(@WebParam(name = "kfno") String kfno) {
+    public String createCustomerComplaintByEAP(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         BigDecimal travel = BigDecimal.ZERO;
@@ -3145,11 +3145,12 @@ public class EAPWebService {
         //材料
         List<CustomerComplaintMaterial> materialList;
         try {
-            if (kfno == null && "".equals(kfno)) {
+            SERI12 seri12 = seri12Bean.findByPSN(psn);
+            if (seri12.getBq001() == null && "".equals(seri12.getBq001())) {
                 throw new NullPointerException("createCustomerComplaintByEAP___结案客诉单号为空");
             }
             String badwhy, dutydeptno;
-            SERI12 seri12 = seri12Bean.findByBq001(kfno);
+            String kfno = seri12.getBq001();
             CustomerComplaint cp = new CustomerComplaint();
             String varnr = sercaBean.findCa009ByCa001(kfno);
             if (seri12 != null) {
@@ -3162,7 +3163,7 @@ public class EAPWebService {
                 cp.setNcodeDD(seri12.getBq003() == null ? "null" : seri12.getBq003());
                 dutydeptno = seri12.getBq504() == null ? "null" : seri12.getBq504();
                 //因OA版更栏位发生改变
-                if (!dutydeptno.equals("null") || !dutydeptno.equals("")) {
+                if (!dutydeptno.equals("null") && !dutydeptno.equals("")) {
                     cp.setDutydeptno(dutydeptno);
                 } else {
                     cp.setDutydeptno(seri12.getBq133() == null ? "null" : seri12.getBq133());
@@ -3173,7 +3174,7 @@ public class EAPWebService {
                 cp.setOverdate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq037()));
                 badwhy = seri12.getBq503() == null ? "null" : seri12.getBq503();
                 //因OA版更栏位发生改变
-                if (!badwhy.equals("null") || !badwhy.equals("")) {
+                if (!badwhy.equals("null") && !badwhy.equals("")) {
                     cp.setBadwhy(badwhy);
                 } else {
                     cp.setBadwhy(seri12.getBq132() == null ? "null" : seri12.getBq132());
@@ -3385,11 +3386,11 @@ public class EAPWebService {
                 log4j.info("Info", kfno + "客诉结案抛转报表邮件发送成功");
             }
         } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "createCustomerComplaintByEAP", kfno), ex);
+            log4j.error(String.format("执行%s:参数%s时异常", "createCustomerComplaintByEAP", psn), ex);
             mailBean.getTo().clear();
             mailBean.getTo().add("C1879@hanbell.com.cn");
-            mailBean.setMailSubject("客诉结案抛转详细失败——单号：" + kfno);
-            mailBean.setMailContent("客诉单号：" + kfno + "————————异常" + ex.toString());
+            mailBean.setMailSubject("客诉结案抛转详细失败");
+            mailBean.setMailContent("流程号：" + psn + "————————异常" + ex.toString());
             mailBean.notify(new MailNotify());
         }
         if (ret) {

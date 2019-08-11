@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="6">查询条件</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column><h:outputLabel value="公司" for="queryFacno" /></p:column>
+                    <p:column><p:selectOneMenu id="queryCurrency" value="#{erpinv555ManagedQueryBean.queryFacno}" style="width:100%;" title="公司" >
+                            <f:selectItem itemLabel="汉钟" itemValue="C"/>
+                            <f:selectItem itemLabel="广州" itemValue="G"/>
+                            <f:selectItem itemLabel="济南" itemValue="J"/>
+                            <f:selectItem itemLabel="南京" itemValue="N"/>
+                            <f:selectItem itemLabel="重庆" itemValue="C4"/>
+                            <f:selectItem itemLabel="柯茂" itemValue="K"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column><h:outputLabel value="* 单据日期" for="queryDateBegin" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateBegin" value="#{erpinv555ManagedQueryBean.queryDateBegin}" title="开始日期" pattern="yyyy/MM/dd"
+                                    required="true" requiredMessage="请输入单据日期"  />
+                    </p:column>
+                    <p:column><h:outputLabel value="* 结束日期" for="queryDateEnd" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateEnd" value="#{erpinv555ManagedQueryBean.queryDateEnd}" title="结束日期" pattern="yyyy/MM/dd"
+                                    required="true" requiredMessage="请输入结束日期"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="单据类别" for="queryTrtype" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryTrtype" value="#{erpinv555ManagedQueryBean.queryTrtype}" title="单据类别" />
+                    </p:column>
+                    <p:column><h:outputLabel value="部门代号" for="queryDepno" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryDepno" value="#{erpinv555ManagedQueryBean.queryDepno}" title="部门代号" />
+                    </p:column>
+                    <p:column><h:outputLabel value="录入人员" for="queryUserno" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryUserno" value="#{erpinv555ManagedQueryBean.queryUserno}" title="录入人员" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="仓库代号" for="queryWareh" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryWareh" value="#{erpinv555ManagedQueryBean.queryWareh}" title="仓库代号" />
+                    </p:column>
+                    <p:column colspan="2"></p:column>
+                </p:row>
+            </p:panelGrid>        
+            
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{erpinv555ManagedQueryBean.init()}"  icon="ui-icon-search"  update=":formList"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnPrint" value="导出" actionListener="#{erpinv555ManagedQueryBean.print()}" icon="ui-icon-print" update=":formList"/>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{erpinv555ManagedQueryBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{erpinv555ManagedQueryBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable id="datetable" value="#{erpinv555ManagedQueryBean.list}"  var="item"  tableStyleClass="tableList">
+                <f:facet name="header">
+                    库存交易明细
+                </f:facet>
+                <p:column styleClass="Wid5" >
+                    <f:facet name="header" >
+                        <h:outputText style="cursor:pointer" value="单据别" title="单据名称" />
+                    </f:facet>
+                    <h:outputText style="cursor:pointer" value="#{item[0]}" title="#{item[1]}" />
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText  value="生产地"/>
+                    </f:facet>
+                    <h:outputText value="#{item[3]}" />
+                </p:column>
+                <p:column styleClass="Wid5" >
+                    <f:facet name="header">
+                        <h:outputText style="cursor:pointer" value="部门别" title="部门名称" />
+                    </f:facet>
+                    <h:outputText style="cursor:pointer" value="#{item[4]}" title="#{item[5]}"/>
+                </p:column>
+                <p:column styleClass="Wid10" >
+                    <f:facet name="header">
+                        <h:outputText value="交易单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item[6]}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="交易日期"/>
+                    </f:facet>
+                    <h:outputText value="#{item[7]}"/>
+                </p:column>
+                <p:column styleClass="Wid5" >
+                    <f:facet name="header">
+                        <h:outputText value="序号"/>
+                    </f:facet>
+                    <h:outputText value="#{item[8]}"/>
+                </p:column>
+                <p:column styleClass="Wid15" >
+                    <f:facet name="header">
+                        <h:outputText style="cursor:pointer" value="件号" title="件号名称" />
+                    </f:facet>
+                    <h:outputText style="cursor:pointer" value="#{item[9]}" title="#{item[10]}" />
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText  value="物料归类"/>
+                    </f:facet>
+                    <h:outputText value="#{item[11]}" />
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText style="cursor:pointer" value="大类" title="大类名称" />
+                    </f:facet>
+                    <h:outputText style="cursor:pointer" value="#{item[12]}" title="#{item[13]}" />
+                </p:column>
+                <p:column styleClass="Wid5" >
+                    <f:facet name="header">
+                        <h:outputText style="cursor:pointer" value="库号" title="仓库名称" />
+                    </f:facet>
+                    <h:outputText style="cursor:pointer" value="#{item[14]}" title="#{item[15]}" />
+                </p:column>
+                <p:column styleClass="Wid5" >
+                    <f:facet name="header">
+                        <h:outputText value="数量"/>
+                    </f:facet>
+                    <h:outputText value="#{item[16]}"/>
+                </p:column>
+                <p:column styleClass="Wid5" >
+                    <f:facet name="header">
+                        <h:outputText value="单位"/>
+                    </f:facet>
+                    <h:outputText value="#{item[17]}"/>
+                </p:column>
+                <p:column styleClass="Wid5" >
+                    <f:facet name="header">
+                        <h:outputText value="金额"/>
+                    </f:facet>
+                    <h:outputText value="#{item[18]}"/>
+                </p:column>
+                <p:column styleClass="Wid5" >
+                    <f:facet name="header">
+                        <h:outputText value="录入人员"/>
+                    </f:facet>
+                    <h:outputText value="#{item[19]}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="出入库"/>
+                    </f:facet>
+                    <h:outputText value="#{item[20]}"/>
+                </p:column>
+                <p:column styleClass="Wid5" >
+                    <f:facet name="header">
+                        <h:outputText style="cursor:pointer" value="原因别" title="原因内容"/>
+                    </f:facet>
+                    <h:outputText style="cursor:pointer" value="#{item[22]}" title="#{item[23]}"  />
+                </p:column>
+                <f:facet name="footer" >
+                    <p:row >
+                        <h:outputText  value="(#{erpinv555ManagedQueryBean.nowpage} of #{erpinv555ManagedQueryBean.pages})    " />
+                        <p:commandButton value="首 页" update=":formList:datetable" action="#{erpinv555ManagedQueryBean.clickFirstPage()}" onclick="$('body').animate( {scrollTop: 190}, 500);"
+                                         disabled="#{erpinv555ManagedQueryBean.isFirstPage}" style="font-size: 0.9em;height: 32px;padding-top: 0 14;margin-left: 20px" />
+                        <p:commandButton value="上一页" update=":formList:datetable" action="#{erpinv555ManagedQueryBean.clickPreviousPage()}" onclick="$('body').animate( {scrollTop: 190}, 500);"
+                                         disabled="#{!erpinv555ManagedQueryBean.hasPreviousPage}" style="font-size: 0.9em;height: 32px;padding-top: 0 14;margin-left: 20px;margin-right: 10px" />
+                        <c:forEach items="#{erpinv555ManagedQueryBean.navigatePageNumbers}" var="item">
+                            <p:commandLink  update=":formList:datetable"  action="#{erpinv555ManagedQueryBean.clickNowPage()}" style="margin-left: 20px;" onclick="$('body').animate( {scrollTop: 190}, 500);" >
+                                <h:outputText  style="color: white;border-radius:8px;line-height: 32px;
+                                               background-color:#{erpinv555ManagedQueryBean.nowpage==item?'yellowgreen ':''}" value="#{item}" />
+                                <f:param name="nowpage" value="#{item}" />
+                            </p:commandLink>
+                        </c:forEach>
+                        <p:commandButton value="下一页" update=":formList:datetable" action="#{erpinv555ManagedQueryBean.clickNextPage()}" onclick="$('body').animate( {scrollTop: 190}, 500);"
+                                         disabled="#{!erpinv555ManagedQueryBean.hasNextPage}" style="font-size: 0.9em;height: 32px;padding-top: 0 14;margin-left: 30px" />
+                        <p:commandButton value="尾页" update=":formList:datetable" action="#{erpinv555ManagedQueryBean.clickLastPage()}" onclick="$('body').animate( {scrollTop: 190}, 500);"
+                                         disabled="#{erpinv555ManagedQueryBean.isLastPage}" style="font-size: 0.9em;height: 32px;padding-top: 0 14;margin-left: 20px" />
+                        <h:selectOneMenu id="pageSize" value="#{erpinv555ManagedQueryBean.pageSize}"  required="true" label="pageSize" style="margin-left: 20px;width: 50px;height: 22px;font-size: 15px" >
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="50" itemValue="50" />
+                            <f:selectItem itemLabel="100" itemValue="100" />
+                        </h:selectOneMenu>
+                    </p:row>
+                </f:facet>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnLoad,btnPrint,btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
