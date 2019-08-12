@@ -24,22 +24,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "company")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Company.getRowCount", query = "SELECT COUNT(c) FROM Company c")
-    ,
-    @NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c")
-    ,
-    @NamedQuery(name = "Company.findById", query = "SELECT c FROM Company c WHERE c.id = :id")
-    ,
-    @NamedQuery(name = "Company.findByCompany", query = "SELECT c FROM Company c WHERE c.company = :company")
-    ,
-    @NamedQuery(name = "Company.findByName", query = "SELECT c FROM Company c WHERE c.name = :name")
-    ,
-    @NamedQuery(name = "Company.findByFullname", query = "SELECT c FROM Company c WHERE c.fullname = :fullname")
-    ,
-    @NamedQuery(name = "Company.findByHasEAM", query = "SELECT c FROM Company c WHERE c.hasEAM = 1")
-    ,
-    @NamedQuery(name = "Company.findByHasKPI", query = "SELECT c FROM Company c WHERE c.hasKPI = 1")
-    ,
+    @NamedQuery(name = "Company.getRowCount", query = "SELECT COUNT(c) FROM Company c"),
+    @NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c"),
+    @NamedQuery(name = "Company.findById", query = "SELECT c FROM Company c WHERE c.id = :id"),
+    @NamedQuery(name = "Company.findByCompany", query = "SELECT c FROM Company c WHERE c.company = :company"),
+    @NamedQuery(name = "Company.findByName", query = "SELECT c FROM Company c WHERE c.name = :name"),
+    @NamedQuery(name = "Company.findByFullname", query = "SELECT c FROM Company c WHERE c.fullname = :fullname"),
+    @NamedQuery(name = "Company.findByHasEAM", query = "SELECT c FROM Company c WHERE c.hasEAM = 1"),
+    @NamedQuery(name = "Company.findByHasKPI", query = "SELECT c FROM Company c WHERE c.hasKPI = 1"),
     @NamedQuery(name = "Company.findByStatus", query = "SELECT c FROM Company c WHERE c.status = :status")})
 public class Company extends SuperEntity {
 

@@ -24,28 +24,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "shipment")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Shipment.findAll", query = "SELECT s FROM Shipment s")
-    ,
-    @NamedQuery(name = "Shipment.findById", query = "SELECT s FROM Shipment s WHERE s.id = :id")
-    ,
-    @NamedQuery(name = "Shipment.findByCompany", query = "SELECT s FROM Shipment s WHERE s.company = :company")
-    ,
-    @NamedQuery(name = "Shipment.findByFormid", query = "SELECT s FROM Shipment s WHERE s.formid = :formid")
-    ,
-    @NamedQuery(name = "Shipment.findByFormdate", query = "SELECT s FROM Shipment s WHERE s.formdate = :formdate")
-    ,
-    @NamedQuery(name = "Shipment.findByDeptno", query = "SELECT s FROM Shipment s WHERE s.deptno = :deptno")
-    ,
-    @NamedQuery(name = "Shipment.findByDeptname", query = "SELECT s FROM Shipment s WHERE s.deptname = :deptname")
-    ,
-    @NamedQuery(name = "Shipment.findByUserno", query = "SELECT s FROM Shipment s WHERE s.userno = :userno")
-    ,
-    @NamedQuery(name = "Shipment.findByUsername", query = "SELECT s FROM Shipment s WHERE s.username = :username")
-    ,
-    @NamedQuery(name = "Shipment.findByCustomerno", query = "SELECT s FROM Shipment s WHERE s.customerno = :customerno")
-    ,
-    @NamedQuery(name = "Shipment.findByCustomer", query = "SELECT s FROM Shipment s WHERE s.customer = :customer")
-    ,
+    @NamedQuery(name = "Shipment.findAll", query = "SELECT s FROM Shipment s"),
+    @NamedQuery(name = "Shipment.findById", query = "SELECT s FROM Shipment s WHERE s.id = :id"),
+    @NamedQuery(name = "Shipment.findByCompany", query = "SELECT s FROM Shipment s WHERE s.company = :company"),
+    @NamedQuery(name = "Shipment.findByFormid", query = "SELECT s FROM Shipment s WHERE s.formid = :formid"),
+    @NamedQuery(name = "Shipment.findByFormdate", query = "SELECT s FROM Shipment s WHERE s.formdate = :formdate"),
+    @NamedQuery(name = "Shipment.findByDeptno", query = "SELECT s FROM Shipment s WHERE s.deptno = :deptno"),
+    @NamedQuery(name = "Shipment.findByDeptname", query = "SELECT s FROM Shipment s WHERE s.deptname = :deptname"),
+    @NamedQuery(name = "Shipment.findByUserno", query = "SELECT s FROM Shipment s WHERE s.userno = :userno"),
+    @NamedQuery(name = "Shipment.findByUsername", query = "SELECT s FROM Shipment s WHERE s.username = :username"),
+    @NamedQuery(name = "Shipment.findByCustomerno", query = "SELECT s FROM Shipment s WHERE s.customerno = :customerno"),
+    @NamedQuery(name = "Shipment.findByCustomer", query = "SELECT s FROM Shipment s WHERE s.customer = :customer"),
     @NamedQuery(name = "Shipment.findByStatus", query = "SELECT s FROM Shipment s WHERE s.status = :status")})
 public class Shipment extends FormEntity {
 

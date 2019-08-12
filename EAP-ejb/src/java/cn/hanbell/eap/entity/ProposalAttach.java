@@ -22,14 +22,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "proposalattach")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ProposalAttach.findAll", query = "SELECT p FROM ProposalAttach p")
-    , @NamedQuery(name = "ProposalAttach.findById", query = "SELECT p FROM ProposalAttach p WHERE p.id = :id")
-    , @NamedQuery(name = "ProposalAttach.findByPId", query = "SELECT p FROM ProposalAttach p WHERE p.pid = :pid")
-    , @NamedQuery(name = "ProposalAttach.findBySeq", query = "SELECT p FROM ProposalAttach p WHERE p.seq = :seq")
-    , @NamedQuery(name = "ProposalAttach.findByProposalid", query = "SELECT p FROM ProposalAttach p WHERE p.proposalid = :proposalid")
-    , @NamedQuery(name = "ProposalAttach.findByContent", query = "SELECT p FROM ProposalAttach p WHERE p.content = :content")
-    , @NamedQuery(name = "ProposalAttach.findByResource", query = "SELECT p FROM ProposalAttach p WHERE p.resource = :resource")})
-public class ProposalAttach extends SuperDetailEntity  {
+    @NamedQuery(name = "ProposalAttach.findAll", query = "SELECT p FROM ProposalAttach p"),
+    @NamedQuery(name = "ProposalAttach.findById", query = "SELECT p FROM ProposalAttach p WHERE p.id = :id"),
+    @NamedQuery(name = "ProposalAttach.findByPId", query = "SELECT p FROM ProposalAttach p WHERE p.pid = :pid"),
+    @NamedQuery(name = "ProposalAttach.findBySeq", query = "SELECT p FROM ProposalAttach p WHERE p.seq = :seq"),
+    @NamedQuery(name = "ProposalAttach.findByProposalid", query = "SELECT p FROM ProposalAttach p WHERE p.proposalid = :proposalid"),
+    @NamedQuery(name = "ProposalAttach.findByContent", query = "SELECT p FROM ProposalAttach p WHERE p.content = :content"),
+    @NamedQuery(name = "ProposalAttach.findByResource", query = "SELECT p FROM ProposalAttach p WHERE p.resource = :resource")})
+public class ProposalAttach extends SuperDetailEntity {
 
     @Size(max = 20)
     @Column(name = "proposalid")
@@ -95,5 +95,5 @@ public class ProposalAttach extends SuperDetailEntity  {
     public String toString() {
         return "cn.hanbell.eap.entity.ProposalAttach[ id=" + id + " ]";
     }
-    
+
 }

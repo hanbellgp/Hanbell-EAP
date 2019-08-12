@@ -207,8 +207,6 @@ public class Armbill extends FormEntity {
         this.contacter = contacter;
     }
 
- 
-
     public String getRemark() {
         return remark;
     }

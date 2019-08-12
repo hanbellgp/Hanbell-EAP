@@ -111,7 +111,7 @@ public class Proposal extends SuperEntity {
     @Size(max = 255)
     @Column(name = "improreward")
     private String improreward;
-    
+
     public Proposal() {
     }
 

@@ -27,11 +27,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "emailrecipient")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "EmailRecipient.findAll", query = "SELECT e FROM EmailRecipient e")
-    , @NamedQuery(name = "EmailRecipient.findById", query = "SELECT e FROM EmailRecipient e WHERE e.id = :id")
-    , @NamedQuery(name = "EmailRecipient.findByCode", query = "SELECT e FROM EmailRecipient e WHERE e.code = :code")
-    , @NamedQuery(name = "EmailRecipient.findByEmailtype", query = "SELECT e FROM EmailRecipient e WHERE e.emailtype = :emailtype")
-    , @NamedQuery(name = "EmailRecipient.findEmailnameByCodeAndEmailtype", query = "SELECT e FROM EmailRecipient e WHERE e.code = :code AND e.emailtype = :emailtype ")
+    @NamedQuery(name = "EmailRecipient.findAll", query = "SELECT e FROM EmailRecipient e"),
+    @NamedQuery(name = "EmailRecipient.findById", query = "SELECT e FROM EmailRecipient e WHERE e.id = :id"),
+    @NamedQuery(name = "EmailRecipient.findByCode", query = "SELECT e FROM EmailRecipient e WHERE e.code = :code"),
+    @NamedQuery(name = "EmailRecipient.findByEmailtype", query = "SELECT e FROM EmailRecipient e WHERE e.emailtype = :emailtype"),
+    @NamedQuery(name = "EmailRecipient.findEmailnameByCodeAndEmailtype", query = "SELECT e FROM EmailRecipient e WHERE e.code = :code AND e.emailtype = :emailtype ")
 })
 public class EmailRecipient implements Serializable {
 
@@ -174,5 +174,5 @@ public class EmailRecipient implements Serializable {
     public String toString() {
         return "cn.hanbell.eap.entity.EmailRecipient[ id=" + id + " ]";
     }
-    
+
 }

@@ -27,20 +27,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "systemuser")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SystemUser.getRowCount", query = "SELECT COUNT(s) FROM SystemUser s")
-    ,
-    @NamedQuery(name = "SystemUser.findAll", query = "SELECT s FROM SystemUser s ORDER BY s.userid")
-    ,
-    @NamedQuery(name = "SystemUser.findById", query = "SELECT s FROM SystemUser s WHERE s.id = :id")
-    ,
-    @NamedQuery(name = "SystemUser.findByUserId", query = "SELECT s FROM SystemUser s WHERE s.userid = :userid")
-    ,
-    @NamedQuery(name = "SystemUser.findByUsername", query = "SELECT s FROM SystemUser s WHERE s.username = :username")
-    ,
-    @NamedQuery(name = "SystemUser.findByUserIdAndPwd", query = "SELECT s FROM SystemUser s WHERE (s.userid = :userid OR s.email =:email) AND s.password = :pwd")
-    ,
-    @NamedQuery(name = "SystemUser.findByLocked", query = "SELECT s FROM SystemUser s WHERE s.locked = :locked")
-    ,
+    @NamedQuery(name = "SystemUser.getRowCount", query = "SELECT COUNT(s) FROM SystemUser s"),
+    @NamedQuery(name = "SystemUser.findAll", query = "SELECT s FROM SystemUser s ORDER BY s.userid"),
+    @NamedQuery(name = "SystemUser.findById", query = "SELECT s FROM SystemUser s WHERE s.id = :id"),
+    @NamedQuery(name = "SystemUser.findByUserId", query = "SELECT s FROM SystemUser s WHERE s.userid = :userid"),
+    @NamedQuery(name = "SystemUser.findByUsername", query = "SELECT s FROM SystemUser s WHERE s.username = :username"),
+    @NamedQuery(name = "SystemUser.findByUserIdAndPwd", query = "SELECT s FROM SystemUser s WHERE (s.userid = :userid OR s.email =:email) AND s.password = :pwd"),
+    @NamedQuery(name = "SystemUser.findByLocked", query = "SELECT s FROM SystemUser s WHERE s.locked = :locked"),
     @NamedQuery(name = "SystemUser.findByStatus", query = "SELECT s FROM SystemUser s WHERE s.status = :status")})
 public class SystemUser extends SuperEntity {
 
@@ -70,6 +63,9 @@ public class SystemUser extends SuperEntity {
     @Size(max = 45)
     @Column(name = "email")
     private String email;
+    @Size(max = 20)
+    @Column(name = "deptno")
+    private String deptno;
     @Size(max = 45)
     @Column(name = "domainuser")
     private String domainuser;
@@ -143,6 +139,20 @@ public class SystemUser extends SuperEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return the deptno
+     */
+    public String getDeptno() {
+        return deptno;
+    }
+
+    /**
+     * @param deptno the deptno to set
+     */
+    public void setDeptno(String deptno) {
+        this.deptno = deptno;
     }
 
     public String getDomainuser() {
