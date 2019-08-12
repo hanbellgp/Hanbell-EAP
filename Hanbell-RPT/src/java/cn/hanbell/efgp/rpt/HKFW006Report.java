@@ -15,11 +15,11 @@ import java.util.List;
  *
  * @author Administrator
  */
-public class HKFW006Report extends SuperMultiReportBean<HKFW006Bean,HKFW006,HKFW006Detail>{
+public class HKFW006Report extends SuperMultiReportBean<HKFW006Bean, HKFW006, HKFW006Detail> {
 
-    
-    public HKFW006Report(){}
-    
+    public HKFW006Report() {
+    }
+
     @Override
     public List<HKFW006Detail> getDetail(Object o) throws Exception {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -32,7 +32,5 @@ public class HKFW006Report extends SuperMultiReportBean<HKFW006Bean,HKFW006,HKFW
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         return this.superEJB.findByPSN(o);
     }
-    
-    
-    
+
 }

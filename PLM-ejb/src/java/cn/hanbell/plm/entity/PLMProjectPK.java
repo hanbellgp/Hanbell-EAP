@@ -82,5 +82,5 @@ public class PLMProjectPK implements Serializable {
     public String toString() {
         return "cn.hanbell.plm.entity.PLMProjectPK[ projno=" + projno + ", projname=" + projname + " ]";
     }
-    
+
 }

@@ -23,15 +23,12 @@ public class ProcessCheckReport extends SuperSingleReportBean<ProcessCheckBean, 
 
     @Override
     public void setEJB(String JNDIName) throws NamingException {
-        super.setEJB(JNDIName); 
+        super.setEJB(JNDIName);
     }
-    
 
-   
     public List<ProcessCheck> getDetail(String serialNumber) throws Exception {
         return this.superEJB.findByPSN(serialNumber);
     }
-
 
     @Override
     public ProcessCheck getEntity(Object o) throws Exception {

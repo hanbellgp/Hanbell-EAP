@@ -727,6 +727,7 @@ public class Invmas implements Serializable {
     public void setGenre3(String genre3) {
         this.genre3 = genre3;
     }
+
     @Override
     public int hashCode() {
         int hash = 0;

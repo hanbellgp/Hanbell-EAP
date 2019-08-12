@@ -735,7 +735,6 @@ public class CRMHKFW006 implements Serializable {
         this.rettype = rettype;
     }
 
-
     public String getMark() {
         return mark;
     }
@@ -944,7 +943,6 @@ public class CRMHKFW006 implements Serializable {
         this.processSerialNumber = processSerialNumber;
     }
 
-
     public String getCusna() {
         return cusna;
     }
@@ -976,7 +974,6 @@ public class CRMHKFW006 implements Serializable {
     public void setSupportdept(String supportdept) {
         this.supportdept = supportdept;
     }
-
 
     public String getReturntype() {
         return returntype;

@@ -247,5 +247,5 @@ public class PLMItnbrDetailTemp implements Serializable {
     public String toString() {
         return "cn.hanbell.plm.entity.PLMItnbrDetailTemp[ id=" + id + " ]";
     }
-    
+
 }

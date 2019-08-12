@@ -99,12 +99,11 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     }
                 }
             }
-
             facno = q.getFacno();
             prono = q.getProno();
             date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
             pursysBean.setCompany(facno);
-            String prno = pursysBean.getFormId(facno, prono, date, Boolean.TRUE);
+            String prno = pursysBean.getNewPrno(facno, prono, date, Boolean.TRUE);
             Purhask p = new Purhask();
             PurhaskPK ppk = new PurhaskPK();
             ppk.setFacno(facno);

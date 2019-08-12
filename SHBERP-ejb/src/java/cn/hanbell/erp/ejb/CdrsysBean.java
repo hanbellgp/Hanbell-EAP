@@ -45,7 +45,7 @@ public class CdrsysBean extends SuperEJBForERP<Cdrsys> {
         }
     }
 
-    public String getSerialNumber(String facno, String depno, String cdrcode, Date cdrdate, Character decode, boolean b, String curprgcode) {
+    public String getSerialNumber(String facno, String depno, String cdrcode, Date cdrdate, Character decode, Boolean flag, String curprgcode) {
         Character autono;
         String autochar = "";
         String nofmt = "";
@@ -59,7 +59,6 @@ public class CdrsysBean extends SuperEJBForERP<Cdrsys> {
 
         //设置数据库链接
         setCompany(facno);
-        cdrsysfmtBean.setCompany(facno);
         Cdrsysfmt sysfmt = cdrsysfmtBean.getByFacno(facno);
         switch (curprgcode) {
             case "CDR310":
@@ -80,7 +79,7 @@ public class CdrsysBean extends SuperEJBForERP<Cdrsys> {
         if (li_max == 0) {
             String a = "00000000001";
             ls_serial = trno + a.substring(a.length() - li_ordno);
-            if (b) {
+            if (flag) {
                 Cdrserno cdrserno = new Cdrserno();
                 CdrsernoPK cdrsernoPK = new CdrsernoPK();
                 cdrsernoPK.setFacno(facno);
@@ -88,15 +87,13 @@ public class CdrsysBean extends SuperEJBForERP<Cdrsys> {
                 cdrsernoPK.setKeyformat(trno);
                 cdrserno.setMaxserno((short) 1);
                 cdrserno.setCdrsernoPK(cdrsernoPK);
-                cdrsernoBean.setCompany(facno);
                 cdrsernoBean.persist(cdrserno);
             }
         } else {
             li_max = li_max + 1;
             String a = "000000000" + li_max;
             ls_serial = trno + a.substring(a.length() - li_ordno);
-            if (b) {
-                cdrsernoBean.setCompany(facno);
+            if (flag) {
                 Cdrserno cdrserno = cdrsernoBean.findByPK(facno, difcode, trno);
                 cdrserno.setMaxserno((short) li_max);
                 cdrsernoBean.update(cdrserno);
@@ -114,7 +111,7 @@ public class CdrsysBean extends SuperEJBForERP<Cdrsys> {
             autochar = "";
         }
         ls_no = autochar;
-        for (int i = 0; i <= 4; i++) {
+        for (int i = 0; i < 5; i++) {
             ls_curno = nofmt.substring(i, i + 1);
             switch (ls_curno) {
                 case "1":

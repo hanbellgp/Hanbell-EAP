@@ -28,11 +28,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "Department")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Department.findAll", query = "SELECT d FROM Department d")
-    , @NamedQuery(name = "Department.findByDepartmentId", query = "SELECT d FROM Department d WHERE d.departmentId = :departmentId")
-    , @NamedQuery(name = "Department.findByCode", query = "SELECT d FROM Department d WHERE d.code = :code")
-    , @NamedQuery(name = "Department.findByName", query = "SELECT d FROM Department d WHERE d.name = :name")
-    , @NamedQuery(name = "Department.findByOwnerId", query = "SELECT d FROM Department d WHERE d.ownerId = :ownerId")})
+    @NamedQuery(name = "Department.findAll", query = "SELECT d FROM Department d"),
+    @NamedQuery(name = "Department.findByDepartmentId", query = "SELECT d FROM Department d WHERE d.departmentId = :departmentId"),
+    @NamedQuery(name = "Department.findByCode", query = "SELECT d FROM Department d WHERE d.code = :code"),
+    @NamedQuery(name = "Department.findByName", query = "SELECT d FROM Department d WHERE d.name = :name"),
+    @NamedQuery(name = "Department.findByOwnerId", query = "SELECT d FROM Department d WHERE d.ownerId = :ownerId")})
 public class Department implements Serializable {
 
     private static final long serialVersionUID = 1L;

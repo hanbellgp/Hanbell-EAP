@@ -245,5 +245,5 @@ public class MUser implements Serializable {
     public String toString() {
         return "cn.hanbell.mes.entity.MUser[ userid=" + userid + " ]";
     }
-    
+
 }
