@@ -21,20 +21,17 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author C1879
- * 客诉成本单
+ * @author C1879 客诉成本单
  */
 @Entity
 @Table(name = "customercomplaint")
 @NamedQueries({
-    @NamedQuery(name = "CustomerComplaint.findAll", query = "SELECT c FROM CustomerComplaint c")
-    ,
-    @NamedQuery(name = "CustomerComplaint.findKfno", query = "SELECT c FROM CustomerComplaint c WHERE c.kfno = :kfno ")
-    ,
+    @NamedQuery(name = "CustomerComplaint.findAll", query = "SELECT c FROM CustomerComplaint c"),
+    @NamedQuery(name = "CustomerComplaint.findKfno", query = "SELECT c FROM CustomerComplaint c WHERE c.kfno = :kfno "),
     @NamedQuery(name = "CustomerComplaint.findOverdate", query = "SELECT c FROM CustomerComplaint c WHERE c.overdate >= :begin AND  c.overdate <= :end ORDER BY c.overdate ASC  ")
 })
 public class CustomerComplaint extends BaseEntity {
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
@@ -340,9 +337,9 @@ public class CustomerComplaint extends BaseEntity {
     public String toString() {
         return "cn.hanbell.eap.entity.CustomerComplaint[ id=" + id + " ]";
     }
-    
-    public void addAll(){
-        this.totalamount= this.materialcost.add(this.tansportexpense).add(this.travelexpense).add(this.othercost).add(this.labourcost).add(this.claimamount);
+
+    public void addAll() {
+        this.totalamount = this.materialcost.add(this.tansportexpense).add(this.travelexpense).add(this.othercost).add(this.labourcost).add(this.claimamount);
     }
 
 }

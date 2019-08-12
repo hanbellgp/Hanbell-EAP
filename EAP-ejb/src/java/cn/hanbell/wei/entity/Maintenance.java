@@ -81,8 +81,6 @@ public class Maintenance extends SuperEntity {
         this.category = category;
     }
 
-
-
     public String getTitle() {
         return title;
     }

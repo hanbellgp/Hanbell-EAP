@@ -65,7 +65,6 @@ import cn.hanbell.erp.ejb.PurvdrBean;
 import cn.hanbell.erp.ejb.PurvdrrelBean;
 import cn.hanbell.erp.ejb.SecmembBean;
 import cn.hanbell.erp.ejb.SecuserBean;
-import cn.hanbell.erp.ejb.ExchangeSHBBean;
 import cn.hanbell.erp.ejb.InvclsBean;
 import cn.hanbell.erp.ejb.PurdtaBean;
 import cn.hanbell.erp.ejb.PursysBean;

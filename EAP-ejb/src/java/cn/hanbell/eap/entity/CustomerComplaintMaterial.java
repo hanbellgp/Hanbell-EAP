@@ -29,8 +29,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "customercomplaintmaterial")
 @NamedQueries({
-    @NamedQuery(name = "CustomerComplaintMaterial.findAll", query = "SELECT c FROM CustomerComplaintMaterial c")
-    ,
+    @NamedQuery(name = "CustomerComplaintMaterial.findAll", query = "SELECT c FROM CustomerComplaintMaterial c"),
     @NamedQuery(name = "CustomerComplaintMaterial.findKfno", query = "SELECT c FROM CustomerComplaintMaterial c WHERE c.kfno = :kfno")
 })
 public class CustomerComplaintMaterial implements Serializable {
@@ -85,7 +84,7 @@ public class CustomerComplaintMaterial implements Serializable {
     private String remark2;
 
     public CustomerComplaintMaterial() {
-         this.tramt = BigDecimal.ZERO;
+        this.tramt = BigDecimal.ZERO;
     }
 
     public CustomerComplaintMaterial(Integer id) {
@@ -241,5 +240,5 @@ public class CustomerComplaintMaterial implements Serializable {
     public String toString() {
         return "cn.hanbell.eap.entity.CustomerComplaintMaterial[ id=" + id + " ]";
     }
-    
+
 }

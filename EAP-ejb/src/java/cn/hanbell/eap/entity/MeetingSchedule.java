@@ -29,16 +29,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "meetingschedule")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "MeetingSchedule.findAll", query = "SELECT m FROM MeetingSchedule m")
-    ,
-    @NamedQuery(name = "MeetingSchedule.findById", query = "SELECT m FROM MeetingSchedule m WHERE m.id = :id")
-    ,
-    @NamedQuery(name = "MeetingSchedule.findByPId", query = "SELECT m FROM MeetingSchedule m WHERE m.pid = :pid ORDER BY m.startDate DESC,m.endDate DESC,m.endTime DESC")
-    ,
-    @NamedQuery(name = "MeetingSchedule.findByPIdAndTime", query = "SELECT m FROM MeetingSchedule m WHERE m.pid = :pid AND m.endDate >=:startDate AND m.endTime >:startTime AND m.startDate <= :endDate AND m.startTime <:endTime ORDER BY m.startDate,m.endDate,m.endTime")
-    ,
-    @NamedQuery(name = "MeetingSchedule.findByBookingId", query = "SELECT m FROM MeetingSchedule m WHERE m.bookingid = :bookingid")
-    ,
+    @NamedQuery(name = "MeetingSchedule.findAll", query = "SELECT m FROM MeetingSchedule m"),
+    @NamedQuery(name = "MeetingSchedule.findById", query = "SELECT m FROM MeetingSchedule m WHERE m.id = :id"),
+    @NamedQuery(name = "MeetingSchedule.findByPId", query = "SELECT m FROM MeetingSchedule m WHERE m.pid = :pid ORDER BY m.startDate DESC,m.endDate DESC,m.endTime DESC"),
+    @NamedQuery(name = "MeetingSchedule.findByPIdAndTime", query = "SELECT m FROM MeetingSchedule m WHERE m.pid = :pid AND m.endDate >=:startDate AND m.endTime >:startTime AND m.startDate <= :endDate AND m.startTime <:endTime ORDER BY m.startDate,m.endDate,m.endTime"),
+    @NamedQuery(name = "MeetingSchedule.findByBookingId", query = "SELECT m FROM MeetingSchedule m WHERE m.bookingid = :bookingid"),
     @NamedQuery(name = "MeetingSchedule.findByKindAndTime", query = "SELECT m FROM MeetingSchedule m WHERE m.meetingRoom.kind = :bookingkind AND m.endDate >=:startDate AND m.endTime >:startTime AND m.startDate <= :endDate AND m.startTime <:endTime ")})
 public class MeetingSchedule extends SuperDetailEntity {
 

@@ -18,7 +18,7 @@ import javax.json.JsonObjectBuilder;
  */
 @Stateless
 @LocalBean
-public class ProposalAttachBean  extends SuperEJBForEAP<ProposalAttach>{
+public class ProposalAttachBean extends SuperEJBForEAP<ProposalAttach> {
 
     public ProposalAttachBean() {
         super(ProposalAttach.class);
@@ -31,8 +31,8 @@ public class ProposalAttachBean  extends SuperEJBForEAP<ProposalAttach>{
             job.add("id", entity.getId())
                     .add("pid", entity.getPid())
                     .add("seq", entity.getSeq())
-                    .add("resource",entity.getResource());
-        
+                    .add("resource", entity.getResource());
+
             if (entity.getContent() != null) {
                 job.add("content", entity.getContent());
             } else {
@@ -41,5 +41,5 @@ public class ProposalAttachBean  extends SuperEJBForEAP<ProposalAttach>{
         }
         return job;
     }
-    
+
 }

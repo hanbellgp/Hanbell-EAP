@@ -28,7 +28,7 @@ public class ProposalBean extends SuperEJBForEAP<Proposal> {
     @EJB
     private ProposalAttachBean proposalAttachBean;
     private List<ProposalAttach> attachList;
-    
+
     public ProposalBean() {
         super(Proposal.class);
     }
@@ -38,7 +38,7 @@ public class ProposalBean extends SuperEJBForEAP<Proposal> {
         if (sp == null) {
             throw new NullPointerException("找不到应用接口_proposal");
         }
-        return super.getFormId(day, sp.getNolead(), sp.getNoformat(), sp.getNoseqlen(),"proposalid");
+        return super.getFormId(day, sp.getNolead(), sp.getNoformat(), sp.getNoseqlen(), "proposalid");
     }
 
     public List<ProposalAttach> getAttachList() {
@@ -48,5 +48,5 @@ public class ProposalBean extends SuperEJBForEAP<Proposal> {
     public void setAttachList(List<ProposalAttach> attachList) {
         this.attachList = attachList;
     }
-    
+
 }
