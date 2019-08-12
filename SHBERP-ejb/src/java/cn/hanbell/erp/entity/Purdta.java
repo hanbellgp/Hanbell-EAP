@@ -12,9 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -35,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Purdta.findAll", query = "SELECT p FROM Purdta p"),
     @NamedQuery(name = "Purdta.findByPK", query = "SELECT p FROM Purdta p WHERE p.purdtaPK.facno = :facno AND p.purdtaPK.pono = :pono"),
     @NamedQuery(name = "Purdta.findByProno", query = "SELECT p FROM Purdta p WHERE p.purdtaPK.prono = :prono"),
-    @NamedQuery(name = "Purdta.findByPono", query = "SELECT p FROM Purdta p WHERE p.purdtaPK.pono = :pono")})
+    @NamedQuery(name = "Purdta.findByPono", query = "SELECT p FROM Purdta p WHERE p.purdtaPK.pono = :pono ORDER BY p.purdtaPK.facno,p.purdtaPK.pono,p.purdtaPK.trseq")})
 public class Purdta implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -157,12 +154,6 @@ public class Purdta implements Serializable {
     @Size(max = 1)
     @Column(name = "predict")
     private String predict;
-    @JoinColumns({
-        @JoinColumn(name = "facno", referencedColumnName = "facno", insertable = false, updatable = false),
-        @JoinColumn(name = "prono", referencedColumnName = "prono", insertable = false, updatable = false),
-        @JoinColumn(name = "pono", referencedColumnName = "pono", insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Purhad purhad;
 
     public Purdta() {
     }
@@ -514,14 +505,6 @@ public class Purdta implements Serializable {
 
     public void setPredict(String predict) {
         this.predict = predict;
-    }
-
-    public Purhad getPurhad() {
-        return purhad;
-    }
-
-    public void setPurhad(Purhad purhad) {
-        this.purhad = purhad;
     }
 
     @Override

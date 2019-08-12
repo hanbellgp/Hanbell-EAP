@@ -82,5 +82,5 @@ public class MiscodePK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.MiscodePK[ ckind=" + ckind + ", code=" + code + " ]";
     }
-    
+
 }

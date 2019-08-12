@@ -52,8 +52,10 @@ public class ReportManagedBean extends SuperReportManagedBean {
     @Override
     public void construct() {
         FacesContext fc = FacesContext.getCurrentInstance();
-        this.reportPath = fc.getExternalContext().getRealPath("/") + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportpath");
-        this.reportOutputPath = fc.getExternalContext().getRealPath("/") + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportoutputpath");
+        this.reportPath = fc.getExternalContext().getRealPath("/")
+                + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportpath");
+        this.reportOutputPath = fc.getExternalContext().getRealPath("/")
+                + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportoutputpath");
         this.reportViewContext = fc.getExternalContext().getInitParameter("cn.hanbell.web.reportviewcontext");
         msg = reportPath;
         super.construct();
@@ -91,8 +93,8 @@ public class ReportManagedBean extends SuperReportManagedBean {
                 reportParams.put("formid", paramMap.get("formid")[0]);
             }
         }
-        //加入列印者参数user
-         if (paramMap.containsKey("user")) {
+        // 加入列印者参数user
+        if (paramMap.containsKey("user")) {
             reportParams.put("user", paramMap.get("user")[0]);
         }
         if (paramMap.containsKey("filterFields")) {
@@ -102,7 +104,8 @@ public class ReportManagedBean extends SuperReportManagedBean {
             reportParams.put("sortFields", paramMap.get("sortFields")[0]);
         }
         reportOutputFormat = systemProgram.getRptformat();
-        String fileName = systemProgram.getApi() + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + "." + reportOutputFormat;
+        String fileName = systemProgram.getApi() + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + "."
+                + reportOutputFormat;
         String reportName = reportPath + systemProgram.getRptdesign();
         String outputName = reportOutputPath + fileName;
         reportViewPath = reportViewContext + fileName;
@@ -111,15 +114,15 @@ public class ReportManagedBean extends SuperReportManagedBean {
                 OutputStream os = new FileOutputStream(outputName);
                 PdfCopyFields pdfCopy = new PdfCopyFields(os);
                 ByteArrayOutputStream baos;
-                //生成表单内容
+                // 生成表单内容
                 this.setReportClass(Class.forName(systemProgram.getRptclazz()).getClassLoader());
-                //初始配置
+                // 初始配置
                 this.reportInitAndConfig();
-                //生成报表
+                // 生成报表
                 baos = new ByteArrayOutputStream();
                 this.reportRunAndOutput(reportName, reportParams, null, "pdf", baos);
                 pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
-                //报销单有差旅明细单独列印
+                // 报销单有差旅明细单独列印
                 if ("HZ_CW028".equals(api)) {
                     String formSerialNumber = hzcw028Bean.findByPSN(reportParams.get("formid")).getFormSerialNumber();
                     if (hzcw028Bean.getTrafficDetail(formSerialNumber).size() > 0) {
@@ -129,26 +132,27 @@ public class ReportManagedBean extends SuperReportManagedBean {
                     }
                 }
 
-                //生成签核流程
-                this.setReportClass(Class.forName("cn.hanbell.efgp.rpt.ProcessCheckReport").getClassLoader());//设置成流程报表
+                // 生成签核流程
+                this.setReportClass(Class.forName("cn.hanbell.efgp.rpt.ProcessCheckReport").getClassLoader());// 设置成流程报表
                 reportParams.remove("JNDIName");
-                reportParams.put("JNDIName", "java:global/Hanbell-EAP/EFGP-ejb/ProcessCheckBean!cn.hanbell.oa.ejb.ProcessCheckBean");//设置成流程报表Bean
-                //初始配置
+                reportParams.put("JNDIName",
+                        "java:global/Hanbell-EAP/EFGP-ejb/ProcessCheckBean!cn.hanbell.oa.ejb.ProcessCheckBean");// 设置成流程报表Bean
+                // 初始配置
                 this.reportInitAndConfig();
-                //生成报表
+                // 生成报表
                 baos = new ByteArrayOutputStream();
                 this.reportRunAndOutput(reportPath + "processcheck.rptdesign", reportParams, null, "pdf", baos);
                 pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
-                //生成合并文件
+                // 生成合并文件
                 pdfCopy.close();
             } else {
                 this.setReportClass(Class.forName(systemProgram.getRptclazz()).getClassLoader());
-                //初始配置
+                // 初始配置
                 this.reportInitAndConfig();
-                //生成报表
+                // 生成报表
                 this.reportRunAndOutput(reportName, reportParams, outputName, reportOutputFormat, null);
             }
-            //预览报表
+            // 预览报表
             this.preview();
         } catch (Exception ex) {
             throw ex;

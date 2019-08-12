@@ -28,42 +28,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "DepartmentChange")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DepartmentChange.findAll", query = "SELECT d FROM DepartmentChange d")
-    , @NamedQuery(name = "DepartmentChange.findByDepartmentChangeId", query = "SELECT d FROM DepartmentChange d WHERE d.departmentChangeId = :departmentChangeId")
-    , @NamedQuery(name = "DepartmentChange.findByNo", query = "SELECT d FROM DepartmentChange d WHERE d.no = :no")
-    , @NamedQuery(name = "DepartmentChange.findByDepartmentId", query = "SELECT d FROM DepartmentChange d WHERE d.departmentId = :departmentId")
-    , @NamedQuery(name = "DepartmentChange.findByShortName", query = "SELECT d FROM DepartmentChange d WHERE d.shortName = :shortName")
-    , @NamedQuery(name = "DepartmentChange.findByDescribe", query = "SELECT d FROM DepartmentChange d WHERE d.describe = :describe")
-    , @NamedQuery(name = "DepartmentChange.findByRepealRemark", query = "SELECT d FROM DepartmentChange d WHERE d.repealRemark = :repealRemark")
-    , @NamedQuery(name = "DepartmentChange.findByType", query = "SELECT d FROM DepartmentChange d WHERE d.type = :type")
-    , @NamedQuery(name = "DepartmentChange.findByCorporationId", query = "SELECT d FROM DepartmentChange d WHERE d.corporationId = :corporationId")
-    , @NamedQuery(name = "DepartmentChange.findByParentId", query = "SELECT d FROM DepartmentChange d WHERE d.parentId = :parentId")
-    , @NamedQuery(name = "DepartmentChange.findByCostCenterId", query = "SELECT d FROM DepartmentChange d WHERE d.costCenterId = :costCenterId")
-    , @NamedQuery(name = "DepartmentChange.findByOrderNumber", query = "SELECT d FROM DepartmentChange d WHERE d.orderNumber = :orderNumber")
-    , @NamedQuery(name = "DepartmentChange.findByCode", query = "SELECT d FROM DepartmentChange d WHERE d.code = :code")
-    , @NamedQuery(name = "DepartmentChange.findByName", query = "SELECT d FROM DepartmentChange d WHERE d.name = :name")
-    , @NamedQuery(name = "DepartmentChange.findByFlag", query = "SELECT d FROM DepartmentChange d WHERE d.flag = :flag")
-    , @NamedQuery(name = "DepartmentChange.findByIsERP", query = "SELECT d FROM DepartmentChange d WHERE d.isERP = :isERP")
-    , @NamedQuery(name = "DepartmentChange.findByCreateDate", query = "SELECT d FROM DepartmentChange d WHERE d.createDate = :createDate")
-    , @NamedQuery(name = "DepartmentChange.findByLastModifiedDate", query = "SELECT d FROM DepartmentChange d WHERE d.lastModifiedDate = :lastModifiedDate")
-    , @NamedQuery(name = "DepartmentChange.findByCreateBy", query = "SELECT d FROM DepartmentChange d WHERE d.createBy = :createBy")
-    , @NamedQuery(name = "DepartmentChange.findByLastModifiedBy", query = "SELECT d FROM DepartmentChange d WHERE d.lastModifiedBy = :lastModifiedBy")
-    , @NamedQuery(name = "DepartmentChange.findByBeginDate", query = "SELECT d FROM DepartmentChange d WHERE d.beginDate = :beginDate")
-    , @NamedQuery(name = "DepartmentChange.findByEndDate", query = "SELECT d FROM DepartmentChange d WHERE d.endDate = :endDate")
-    , @NamedQuery(name = "DepartmentChange.findByAssignReason", query = "SELECT d FROM DepartmentChange d WHERE d.assignReason = :assignReason")
-    , @NamedQuery(name = "DepartmentChange.findByOwnerId", query = "SELECT d FROM DepartmentChange d WHERE d.ownerId = :ownerId")
-    , @NamedQuery(name = "DepartmentChange.findByAlias", query = "SELECT d FROM DepartmentChange d WHERE d.alias = :alias")
-    , @NamedQuery(name = "DepartmentChange.findByOrgType", query = "SELECT d FROM DepartmentChange d WHERE d.orgType = :orgType")
-    , @NamedQuery(name = "DepartmentChange.findByIsShowInOrg", query = "SELECT d FROM DepartmentChange d WHERE d.isShowInOrg = :isShowInOrg")
-    , @NamedQuery(name = "DepartmentChange.findByIsAccounting", query = "SELECT d FROM DepartmentChange d WHERE d.isAccounting = :isAccounting")
-    , @NamedQuery(name = "DepartmentChange.findByCostTypeId", query = "SELECT d FROM DepartmentChange d WHERE d.costTypeId = :costTypeId")
-    , @NamedQuery(name = "DepartmentChange.findByDeptLevel", query = "SELECT d FROM DepartmentChange d WHERE d.deptLevel = :deptLevel")
-    , @NamedQuery(name = "DepartmentChange.findByDirectDeptId", query = "SELECT d FROM DepartmentChange d WHERE d.directDeptId = :directDeptId")
-    , @NamedQuery(name = "DepartmentChange.findByWorkingCenterId", query = "SELECT d FROM DepartmentChange d WHERE d.workingCenterId = :workingCenterId")
-    , @NamedQuery(name = "DepartmentChange.findByPrincipal", query = "SELECT d FROM DepartmentChange d WHERE d.principal = :principal")
-    , @NamedQuery(name = "DepartmentChange.findByLevelCode", query = "SELECT d FROM DepartmentChange d WHERE d.levelCode = :levelCode")
-    , @NamedQuery(name = "DepartmentChange.findByFloorCode", query = "SELECT d FROM DepartmentChange d WHERE d.floorCode = :floorCode")
-    , @NamedQuery(name = "DepartmentChange.findByPrincipalJobId", query = "SELECT d FROM DepartmentChange d WHERE d.principalJobId = :principalJobId")})
+    @NamedQuery(name = "DepartmentChange.findAll", query = "SELECT d FROM DepartmentChange d"),
+    @NamedQuery(name = "DepartmentChange.findByDepartmentChangeId", query = "SELECT d FROM DepartmentChange d WHERE d.departmentChangeId = :departmentChangeId"),
+    @NamedQuery(name = "DepartmentChange.findByNo", query = "SELECT d FROM DepartmentChange d WHERE d.no = :no"),
+    @NamedQuery(name = "DepartmentChange.findByDepartmentId", query = "SELECT d FROM DepartmentChange d WHERE d.departmentId = :departmentId"),
+    @NamedQuery(name = "DepartmentChange.findByShortName", query = "SELECT d FROM DepartmentChange d WHERE d.shortName = :shortName"),
+    @NamedQuery(name = "DepartmentChange.findByDescribe", query = "SELECT d FROM DepartmentChange d WHERE d.describe = :describe"),
+    @NamedQuery(name = "DepartmentChange.findByRepealRemark", query = "SELECT d FROM DepartmentChange d WHERE d.repealRemark = :repealRemark"),
+    @NamedQuery(name = "DepartmentChange.findByType", query = "SELECT d FROM DepartmentChange d WHERE d.type = :type"),
+    @NamedQuery(name = "DepartmentChange.findByCorporationId", query = "SELECT d FROM DepartmentChange d WHERE d.corporationId = :corporationId"),
+    @NamedQuery(name = "DepartmentChange.findByParentId", query = "SELECT d FROM DepartmentChange d WHERE d.parentId = :parentId"),
+    @NamedQuery(name = "DepartmentChange.findByCostCenterId", query = "SELECT d FROM DepartmentChange d WHERE d.costCenterId = :costCenterId"),
+    @NamedQuery(name = "DepartmentChange.findByOrderNumber", query = "SELECT d FROM DepartmentChange d WHERE d.orderNumber = :orderNumber"),
+    @NamedQuery(name = "DepartmentChange.findByCode", query = "SELECT d FROM DepartmentChange d WHERE d.code = :code"),
+    @NamedQuery(name = "DepartmentChange.findByName", query = "SELECT d FROM DepartmentChange d WHERE d.name = :name"),
+    @NamedQuery(name = "DepartmentChange.findByFlag", query = "SELECT d FROM DepartmentChange d WHERE d.flag = :flag"),
+    @NamedQuery(name = "DepartmentChange.findByIsERP", query = "SELECT d FROM DepartmentChange d WHERE d.isERP = :isERP"),
+    @NamedQuery(name = "DepartmentChange.findByCreateDate", query = "SELECT d FROM DepartmentChange d WHERE d.createDate = :createDate"),
+    @NamedQuery(name = "DepartmentChange.findByLastModifiedDate", query = "SELECT d FROM DepartmentChange d WHERE d.lastModifiedDate = :lastModifiedDate"),
+    @NamedQuery(name = "DepartmentChange.findByCreateBy", query = "SELECT d FROM DepartmentChange d WHERE d.createBy = :createBy"),
+    @NamedQuery(name = "DepartmentChange.findByLastModifiedBy", query = "SELECT d FROM DepartmentChange d WHERE d.lastModifiedBy = :lastModifiedBy"),
+    @NamedQuery(name = "DepartmentChange.findByBeginDate", query = "SELECT d FROM DepartmentChange d WHERE d.beginDate = :beginDate"),
+    @NamedQuery(name = "DepartmentChange.findByEndDate", query = "SELECT d FROM DepartmentChange d WHERE d.endDate = :endDate"),
+    @NamedQuery(name = "DepartmentChange.findByAssignReason", query = "SELECT d FROM DepartmentChange d WHERE d.assignReason = :assignReason"),
+    @NamedQuery(name = "DepartmentChange.findByOwnerId", query = "SELECT d FROM DepartmentChange d WHERE d.ownerId = :ownerId"),
+    @NamedQuery(name = "DepartmentChange.findByAlias", query = "SELECT d FROM DepartmentChange d WHERE d.alias = :alias"),
+    @NamedQuery(name = "DepartmentChange.findByOrgType", query = "SELECT d FROM DepartmentChange d WHERE d.orgType = :orgType"),
+    @NamedQuery(name = "DepartmentChange.findByIsShowInOrg", query = "SELECT d FROM DepartmentChange d WHERE d.isShowInOrg = :isShowInOrg"),
+    @NamedQuery(name = "DepartmentChange.findByIsAccounting", query = "SELECT d FROM DepartmentChange d WHERE d.isAccounting = :isAccounting"),
+    @NamedQuery(name = "DepartmentChange.findByCostTypeId", query = "SELECT d FROM DepartmentChange d WHERE d.costTypeId = :costTypeId"),
+    @NamedQuery(name = "DepartmentChange.findByDeptLevel", query = "SELECT d FROM DepartmentChange d WHERE d.deptLevel = :deptLevel"),
+    @NamedQuery(name = "DepartmentChange.findByDirectDeptId", query = "SELECT d FROM DepartmentChange d WHERE d.directDeptId = :directDeptId"),
+    @NamedQuery(name = "DepartmentChange.findByWorkingCenterId", query = "SELECT d FROM DepartmentChange d WHERE d.workingCenterId = :workingCenterId"),
+    @NamedQuery(name = "DepartmentChange.findByPrincipal", query = "SELECT d FROM DepartmentChange d WHERE d.principal = :principal"),
+    @NamedQuery(name = "DepartmentChange.findByLevelCode", query = "SELECT d FROM DepartmentChange d WHERE d.levelCode = :levelCode"),
+    @NamedQuery(name = "DepartmentChange.findByFloorCode", query = "SELECT d FROM DepartmentChange d WHERE d.floorCode = :floorCode"),
+    @NamedQuery(name = "DepartmentChange.findByPrincipalJobId", query = "SELECT d FROM DepartmentChange d WHERE d.principalJobId = :principalJobId")})
 public class DepartmentChange implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -478,5 +478,5 @@ public class DepartmentChange implements Serializable {
     public String toString() {
         return "cn.hanbell.hr.entity.DepartmentChange[ departmentChangeId=" + departmentChangeId + " ]";
     }
-    
+
 }

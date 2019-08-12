@@ -1014,7 +1014,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         sb.append(" and t.trseq=a.trseq and t.trno= a.trno and t.trtype = a.trtype where t.facno='${facno}' and (t.trtype ='IAF' or t.trtype= 'IAG') and t.prono= '1' ");
         String facno = "C";
         switch (kfno.substring(0, 2)) {
-             case "HD":
+            case "HD":
                 facno = "C";
                 break;
             case "NJ":

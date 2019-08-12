@@ -16,13 +16,12 @@ import java.util.List;
  *
  * @author Administrator
  */
-public class HZCW028Report extends SuperMultiReportBean<HZCW028Bean ,HZCW028,HZCW028reDetail>{
+public class HZCW028Report extends SuperMultiReportBean<HZCW028Bean, HZCW028, HZCW028reDetail> {
 
-    
-    public HZCW028Report(){
-        
+    public HZCW028Report() {
+
     }
-    
+
     @Override
     public List<HZCW028reDetail> getDetail(Object o) throws Exception {
         this.superEJB.setDetail(o);
@@ -33,9 +32,9 @@ public class HZCW028Report extends SuperMultiReportBean<HZCW028Bean ,HZCW028,HZC
     public HZCW028 getEntity(Object o) throws Exception {
         return this.superEJB.findByPSN(o);
     }
-    
-    public List<HZCW028tDetail> getTrafficDetail(Object o){
+
+    public List<HZCW028tDetail> getTrafficDetail(Object o) {
         return this.superEJB.getTrafficDetail(o);
     }
-    
+
 }

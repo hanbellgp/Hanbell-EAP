@@ -212,7 +212,7 @@ public class CdrlnhadBean extends SuperEJBForERP<Cdrlnhad> {
     }
 
     /**
-     * 
+     *
      * @param kfno
      * @return CDRN20借出归还单运费
      */
