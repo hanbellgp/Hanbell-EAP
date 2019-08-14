@@ -328,5 +328,5 @@ public class SERI12grid1SERI12 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.SERI12grid1SERI12[ oid=" + oid + " ]";
     }
-    
+
 }

@@ -17,12 +17,13 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class WARTBBean extends SuperEJBForCRM<WARTB>{
+public class WARTBBean extends SuperEJBForCRM<WARTB> {
 
-    public WARTBBean(){
+    public WARTBBean() {
         super(WARTB.class);
     }
-    public WARTB findByPK(String tb001,String tb002,String tb003){
+
+    public WARTB findByPK(String tb001, String tb002, String tb003) {
         Query query = this.getEntityManager().createNamedQuery("WARTB.findByPK");
         query.setParameter("tb001", tb001);
         query.setParameter("tb002", tb002);

@@ -118,5 +118,5 @@ public class REPMFPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.REPMFPK[ mf001=" + mf001 + ", mf002=" + mf002 + ", mf005=" + mf005 + ", mf009=" + mf009 + " ]";
     }
-    
+
 }

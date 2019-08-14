@@ -1174,5 +1174,5 @@ public class WARMB implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.WARMB[ mb001=" + mb001 + " ]";
     }
-    
+
 }

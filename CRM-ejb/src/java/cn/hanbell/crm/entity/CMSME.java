@@ -517,5 +517,5 @@ public class CMSME implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.CMSME[ me001=" + me001 + " ]";
     }
-    
+
 }

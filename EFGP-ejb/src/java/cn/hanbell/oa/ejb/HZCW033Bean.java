@@ -26,28 +26,18 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
         super(HZCW033.class);
     }
 
-     public Boolean updateCRMPORMY(String psn) {
+    public Boolean updateCRMPORMY(String psn) {
         try {
             HZCW033 h = this.findByPSN(psn);
             List<HZCW033reDetail> details = hzcw033reDetailBean.findByFSN(h.getFormSerialNumber());
-               
-                //表身循环
-                for (int i = 0; i < details.size(); i++) {
-                    HZCW033reDetail detail = details.get(i);
-                    if ("6617".equals(detail.getBudgetAcc())) {
-                        String[] split = detail.getRemark().split(",");
-                        for (String s : split) {
-                            Pormy p = pormyBean.findByMY002(s);
-                            if (p != null && "".equals(p.getMy024())) {
-                                p.setMy026(psn);
-                                p.setMy025(detail.getFormSerialNumber());
-                                p.setMy012("3");
-                                p.setMy024(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                                pormyBean.update(p);
-                            }
-                        }
-                    } else {
-                        Pormy p = pormyBean.findByMY002(detail.getRemark());
+
+            //表身循环
+            for (int i = 0; i < details.size(); i++) {
+                HZCW033reDetail detail = details.get(i);
+                if ("6617".equals(detail.getBudgetAcc())) {
+                    String[] split = detail.getRemark().split(",");
+                    for (String s : split) {
+                        Pormy p = pormyBean.findByMY002(s);
                         if (p != null && "".equals(p.getMy024())) {
                             p.setMy026(psn);
                             p.setMy025(detail.getFormSerialNumber());
@@ -56,8 +46,18 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
                             pormyBean.update(p);
                         }
                     }
+                } else {
+                    Pormy p = pormyBean.findByMY002(detail.getRemark());
+                    if (p != null && "".equals(p.getMy024())) {
+                        p.setMy026(psn);
+                        p.setMy025(detail.getFormSerialNumber());
+                        p.setMy012("3");
+                        p.setMy024(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                        pormyBean.update(p);
+                    }
                 }
-                pormyBean.getEntityManager().flush();            
+            }
+            pormyBean.getEntityManager().flush();
             return true;
         } catch (Exception ex) {
             Logger.getLogger(HZCW033Bean.class.getName()).log(Level.SEVERE, null, ex);
@@ -65,6 +65,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
         }
 
     }
+
     public Boolean updateCRMPORMY(String psn, String status) {
         try {
             HZCW033 h = this.findByPSN(psn);

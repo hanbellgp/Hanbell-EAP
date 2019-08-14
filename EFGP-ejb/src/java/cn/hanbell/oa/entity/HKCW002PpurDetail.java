@@ -155,7 +155,6 @@ public class HKCW002PpurDetail implements Serializable {
     @Size(max = 255)
     @Column(name = "pnname")
     private String pnname;
-    
 
     public HKCW002PpurDetail() {
     }
@@ -436,5 +435,5 @@ public class HKCW002PpurDetail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKCW002PpurDetail[ oid=" + oid + " ]";
     }
-    
+
 }

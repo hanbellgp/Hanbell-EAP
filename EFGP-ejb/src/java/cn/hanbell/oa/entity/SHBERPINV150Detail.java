@@ -25,14 +25,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SHB_ERP_INV150_Detail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SHBERPINV150Detail.findAll", query = "SELECT s FROM SHBERPINV150Detail s")
-    , @NamedQuery(name = "SHBERPINV150Detail.findByOid", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.oid = :oid")
-    , @NamedQuery(name = "SHBERPINV150Detail.findByWclerkLbl", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.wclerkLbl = :wclerkLbl")
-    , @NamedQuery(name = "SHBERPINV150Detail.findByWclerkTxt", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.wclerkTxt = :wclerkTxt")
-    , @NamedQuery(name = "SHBERPINV150Detail.findByWareh", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.wareh = :wareh")
-    , @NamedQuery(name = "SHBERPINV150Detail.findByWhdsc", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.whdsc = :whdsc")
-    , @NamedQuery(name = "SHBERPINV150Detail.findBySeq", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.seq = :seq")
-    , @NamedQuery(name = "SHBERPINV150Detail.findByFSN", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.formSerialNumber = :fsn")})
+    @NamedQuery(name = "SHBERPINV150Detail.findAll", query = "SELECT s FROM SHBERPINV150Detail s"),
+    @NamedQuery(name = "SHBERPINV150Detail.findByOid", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.oid = :oid"),
+    @NamedQuery(name = "SHBERPINV150Detail.findByWclerkLbl", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.wclerkLbl = :wclerkLbl"),
+    @NamedQuery(name = "SHBERPINV150Detail.findByWclerkTxt", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.wclerkTxt = :wclerkTxt"),
+    @NamedQuery(name = "SHBERPINV150Detail.findByWareh", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.wareh = :wareh"),
+    @NamedQuery(name = "SHBERPINV150Detail.findByWhdsc", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.whdsc = :whdsc"),
+    @NamedQuery(name = "SHBERPINV150Detail.findBySeq", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.seq = :seq"),
+    @NamedQuery(name = "SHBERPINV150Detail.findByFSN", query = "SELECT s FROM SHBERPINV150Detail s WHERE s.formSerialNumber = :fsn")})
 public class SHBERPINV150Detail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -170,5 +170,5 @@ public class SHBERPINV150Detail implements Serializable {
     public void setHdnCostyn(String hdnCostyn) {
         this.hdnCostyn = hdnCostyn;
     }
-    
+
 }

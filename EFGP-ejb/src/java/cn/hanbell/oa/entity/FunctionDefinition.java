@@ -148,5 +148,5 @@ public class FunctionDefinition implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.FunctionDefinition[ oid=" + oid + " ]";
     }
-    
+
 }

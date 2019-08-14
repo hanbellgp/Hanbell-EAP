@@ -43,7 +43,7 @@ public class VHTV002Bean extends SuperEJBForEFGP<VHTV002> {
         List<VHTV002reDetail> details = vhtv002redetailBean.findByFSN(FSN);
         VHTV002reDetail detail = details.get(0);
         Double TaxInclusive = Double.parseDouble(detail.getTaxInclusive());
-        Double Refund =  Double.parseDouble(detail.getRefund()); 
+        Double Refund = Double.parseDouble(detail.getRefund());
         String LoanNo = detail.getLoanNo();
         VHTV001 VH = vhtv001Bean.findByPSN(LoanNo);
         VH.setArrears(VH.getArrears() - Refund - TaxInclusive);

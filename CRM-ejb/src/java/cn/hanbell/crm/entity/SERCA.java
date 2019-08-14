@@ -24,42 +24,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SERCA")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SERCA.findAll", query = "SELECT s FROM SERCA s")
-    , @NamedQuery(name = "SERCA.findByCompany", query = "SELECT s FROM SERCA s WHERE s.company = :company")
-    , @NamedQuery(name = "SERCA.findByCreator", query = "SELECT s FROM SERCA s WHERE s.creator = :creator")
-    , @NamedQuery(name = "SERCA.findByUsrGroup", query = "SELECT s FROM SERCA s WHERE s.usrGroup = :usrGroup")
-    , @NamedQuery(name = "SERCA.findByCreateDate", query = "SELECT s FROM SERCA s WHERE s.createDate = :createDate")
-    , @NamedQuery(name = "SERCA.findByModifier", query = "SELECT s FROM SERCA s WHERE s.modifier = :modifier")
-    , @NamedQuery(name = "SERCA.findByModiDate", query = "SELECT s FROM SERCA s WHERE s.modiDate = :modiDate")
-    , @NamedQuery(name = "SERCA.findByFlag", query = "SELECT s FROM SERCA s WHERE s.flag = :flag")
-    , @NamedQuery(name = "SERCA.findByCa001", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca001 = :ca001")
-    , @NamedQuery(name = "SERCA.findByCa002", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca002 = :ca002")
-    , @NamedQuery(name = "SERCA.findByCa003", query = "SELECT s FROM SERCA s WHERE s.ca003 = :ca003")
-    , @NamedQuery(name = "SERCA.findByCa004", query = "SELECT s FROM SERCA s WHERE s.ca004 = :ca004")
-    , @NamedQuery(name = "SERCA.findByCa005", query = "SELECT s FROM SERCA s WHERE s.ca005 = :ca005")
-    , @NamedQuery(name = "SERCA.findByCa006", query = "SELECT s FROM SERCA s WHERE s.ca006 = :ca006")
-    , @NamedQuery(name = "SERCA.findByCa007", query = "SELECT s FROM SERCA s WHERE s.ca007 = :ca007")
-    , @NamedQuery(name = "SERCA.findByCa008", query = "SELECT s FROM SERCA s WHERE s.ca008 = :ca008")
-    , @NamedQuery(name = "SERCA.findByCa009", query = "SELECT s FROM SERCA s WHERE s.ca009 = :ca009")
-    , @NamedQuery(name = "SERCA.findCa009ByCa001", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca001 = :ca001")
-    , @NamedQuery(name = "SERCA.findByCa010", query = "SELECT s FROM SERCA s WHERE s.ca010 = :ca010")
-    , @NamedQuery(name = "SERCA.findByCa011", query = "SELECT s FROM SERCA s WHERE s.ca011 = :ca011")
-    , @NamedQuery(name = "SERCA.findByCa012", query = "SELECT s FROM SERCA s WHERE s.ca012 = :ca012")
-    , @NamedQuery(name = "SERCA.findByCa013", query = "SELECT s FROM SERCA s WHERE s.ca013 = :ca013")
-    , @NamedQuery(name = "SERCA.findByCa014", query = "SELECT s FROM SERCA s WHERE s.ca014 = :ca014")
-    , @NamedQuery(name = "SERCA.findByCa015", query = "SELECT s FROM SERCA s WHERE s.ca015 = :ca015")
-    , @NamedQuery(name = "SERCA.findByCa016", query = "SELECT s FROM SERCA s WHERE s.ca016 = :ca016")
-    , @NamedQuery(name = "SERCA.findByCa017", query = "SELECT s FROM SERCA s WHERE s.ca017 = :ca017")
-    , @NamedQuery(name = "SERCA.findByCa018", query = "SELECT s FROM SERCA s WHERE s.ca018 = :ca018")
-    , @NamedQuery(name = "SERCA.findByCa019", query = "SELECT s FROM SERCA s WHERE s.ca019 = :ca019")
-    , @NamedQuery(name = "SERCA.findByCustomer", query = "SELECT s FROM SERCA s WHERE s.customer = :customer")
-    , @NamedQuery(name = "SERCA.findByProduct", query = "SELECT s FROM SERCA s WHERE s.product = :product")
-    , @NamedQuery(name = "SERCA.findByRegion", query = "SELECT s FROM SERCA s WHERE s.region = :region")
-    , @NamedQuery(name = "SERCA.findByDealer", query = "SELECT s FROM SERCA s WHERE s.dealer = :dealer")
-    , @NamedQuery(name = "SERCA.findByCa020", query = "SELECT s FROM SERCA s WHERE s.ca020 = :ca020")
-    , @NamedQuery(name = "SERCA.findByCa021", query = "SELECT s FROM SERCA s WHERE s.ca021 = :ca021")
-    , @NamedQuery(name = "SERCA.findByCa500", query = "SELECT s FROM SERCA s WHERE s.ca500 = :ca500")
-    , @NamedQuery(name = "SERCA.findByCa022", query = "SELECT s FROM SERCA s WHERE s.ca022 = :ca022")})
+    @NamedQuery(name = "SERCA.findAll", query = "SELECT s FROM SERCA s"),
+    @NamedQuery(name = "SERCA.findByCompany", query = "SELECT s FROM SERCA s WHERE s.company = :company"),
+    @NamedQuery(name = "SERCA.findByCreator", query = "SELECT s FROM SERCA s WHERE s.creator = :creator"),
+    @NamedQuery(name = "SERCA.findByUsrGroup", query = "SELECT s FROM SERCA s WHERE s.usrGroup = :usrGroup"),
+    @NamedQuery(name = "SERCA.findByCreateDate", query = "SELECT s FROM SERCA s WHERE s.createDate = :createDate"),
+    @NamedQuery(name = "SERCA.findByModifier", query = "SELECT s FROM SERCA s WHERE s.modifier = :modifier"),
+    @NamedQuery(name = "SERCA.findByModiDate", query = "SELECT s FROM SERCA s WHERE s.modiDate = :modiDate"),
+    @NamedQuery(name = "SERCA.findByFlag", query = "SELECT s FROM SERCA s WHERE s.flag = :flag"),
+    @NamedQuery(name = "SERCA.findByCa001", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca001 = :ca001"),
+    @NamedQuery(name = "SERCA.findByCa002", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca002 = :ca002"),
+    @NamedQuery(name = "SERCA.findByCa003", query = "SELECT s FROM SERCA s WHERE s.ca003 = :ca003"),
+    @NamedQuery(name = "SERCA.findByCa004", query = "SELECT s FROM SERCA s WHERE s.ca004 = :ca004"),
+    @NamedQuery(name = "SERCA.findByCa005", query = "SELECT s FROM SERCA s WHERE s.ca005 = :ca005"),
+    @NamedQuery(name = "SERCA.findByCa006", query = "SELECT s FROM SERCA s WHERE s.ca006 = :ca006"),
+    @NamedQuery(name = "SERCA.findByCa007", query = "SELECT s FROM SERCA s WHERE s.ca007 = :ca007"),
+    @NamedQuery(name = "SERCA.findByCa008", query = "SELECT s FROM SERCA s WHERE s.ca008 = :ca008"),
+    @NamedQuery(name = "SERCA.findByCa009", query = "SELECT s FROM SERCA s WHERE s.ca009 = :ca009"),
+    @NamedQuery(name = "SERCA.findCa009ByCa001", query = "SELECT s FROM SERCA s WHERE s.sercaPK.ca001 = :ca001"),
+    @NamedQuery(name = "SERCA.findByCa010", query = "SELECT s FROM SERCA s WHERE s.ca010 = :ca010"),
+    @NamedQuery(name = "SERCA.findByCa011", query = "SELECT s FROM SERCA s WHERE s.ca011 = :ca011"),
+    @NamedQuery(name = "SERCA.findByCa012", query = "SELECT s FROM SERCA s WHERE s.ca012 = :ca012"),
+    @NamedQuery(name = "SERCA.findByCa013", query = "SELECT s FROM SERCA s WHERE s.ca013 = :ca013"),
+    @NamedQuery(name = "SERCA.findByCa014", query = "SELECT s FROM SERCA s WHERE s.ca014 = :ca014"),
+    @NamedQuery(name = "SERCA.findByCa015", query = "SELECT s FROM SERCA s WHERE s.ca015 = :ca015"),
+    @NamedQuery(name = "SERCA.findByCa016", query = "SELECT s FROM SERCA s WHERE s.ca016 = :ca016"),
+    @NamedQuery(name = "SERCA.findByCa017", query = "SELECT s FROM SERCA s WHERE s.ca017 = :ca017"),
+    @NamedQuery(name = "SERCA.findByCa018", query = "SELECT s FROM SERCA s WHERE s.ca018 = :ca018"),
+    @NamedQuery(name = "SERCA.findByCa019", query = "SELECT s FROM SERCA s WHERE s.ca019 = :ca019"),
+    @NamedQuery(name = "SERCA.findByCustomer", query = "SELECT s FROM SERCA s WHERE s.customer = :customer"),
+    @NamedQuery(name = "SERCA.findByProduct", query = "SELECT s FROM SERCA s WHERE s.product = :product"),
+    @NamedQuery(name = "SERCA.findByRegion", query = "SELECT s FROM SERCA s WHERE s.region = :region"),
+    @NamedQuery(name = "SERCA.findByDealer", query = "SELECT s FROM SERCA s WHERE s.dealer = :dealer"),
+    @NamedQuery(name = "SERCA.findByCa020", query = "SELECT s FROM SERCA s WHERE s.ca020 = :ca020"),
+    @NamedQuery(name = "SERCA.findByCa021", query = "SELECT s FROM SERCA s WHERE s.ca021 = :ca021"),
+    @NamedQuery(name = "SERCA.findByCa500", query = "SELECT s FROM SERCA s WHERE s.ca500 = :ca500"),
+    @NamedQuery(name = "SERCA.findByCa022", query = "SELECT s FROM SERCA s WHERE s.ca022 = :ca022")})
 public class SERCA implements Serializable {
 
     private static final long serialVersionUID = 1L;

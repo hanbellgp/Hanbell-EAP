@@ -22,7 +22,7 @@ import javax.ejb.LocalBean;
 public class HZCW005Bean extends SuperEJBForEFGP<HZCW005> {
 
     @EJB
-    private HZCW005DetailBean hzcw005DetailBean ;
+    private HZCW005DetailBean hzcw005DetailBean;
     private List<HZCW005Detail> detailList;
 
     public HZCW005Bean() {
@@ -34,7 +34,7 @@ public class HZCW005Bean extends SuperEJBForEFGP<HZCW005> {
     }
 
     public void setDetailList(Object value) {
-        this.detailList = hzcw005DetailBean.findByFSN(value) ;
+        this.detailList = hzcw005DetailBean.findByFSN(value);
     }
 
 }

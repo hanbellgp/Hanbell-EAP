@@ -21,5 +21,5 @@ public class SHBINV140DetailBean extends SuperEJBForEFGP<SHBERPINV140Detail> {
     public SHBINV140DetailBean() {
         super(SHBERPINV140Detail.class);
     }
-    
+
 }

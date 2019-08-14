@@ -82,5 +82,5 @@ public class PormyPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.PormyPK[ my001=" + my001 + ", my002=" + my002 + " ]";
     }
-    
+
 }

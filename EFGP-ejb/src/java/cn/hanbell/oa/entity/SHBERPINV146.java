@@ -367,5 +367,5 @@ public class SHBERPINV146 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.SHBERPINV146[ oid=" + oid + " ]";
     }
-    
+
 }

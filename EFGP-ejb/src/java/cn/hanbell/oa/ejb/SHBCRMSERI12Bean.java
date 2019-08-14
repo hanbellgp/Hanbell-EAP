@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class SHBCRMSERI12Bean extends SuperEJBForEFGP<SHBCRMSERI12>{
+public class SHBCRMSERI12Bean extends SuperEJBForEFGP<SHBCRMSERI12> {
 
     public SHBCRMSERI12Bean() {
         super(SHBCRMSERI12.class);

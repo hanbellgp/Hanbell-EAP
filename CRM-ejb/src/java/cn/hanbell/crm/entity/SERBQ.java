@@ -26,330 +26,168 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SERBQ")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SERBQ.findAll", query = "SELECT s FROM SERBQ s")
-    ,
-    @NamedQuery(name = "SERBQ.findByCompany", query = "SELECT s FROM SERBQ s WHERE s.company = :company")
-    ,
-    @NamedQuery(name = "SERBQ.findByCreator", query = "SELECT s FROM SERBQ s WHERE s.creator = :creator")
-    ,
-    @NamedQuery(name = "SERBQ.findByUsrGroup", query = "SELECT s FROM SERBQ s WHERE s.usrGroup = :usrGroup")
-    ,
-    @NamedQuery(name = "SERBQ.findByCreateDate", query = "SELECT s FROM SERBQ s WHERE s.createDate = :createDate")
-    ,
-    @NamedQuery(name = "SERBQ.findByModifier", query = "SELECT s FROM SERBQ s WHERE s.modifier = :modifier")
-    ,
-    @NamedQuery(name = "SERBQ.findByModiDate", query = "SELECT s FROM SERBQ s WHERE s.modiDate = :modiDate")
-    ,
-    @NamedQuery(name = "SERBQ.findByFlag", query = "SELECT s FROM SERBQ s WHERE s.flag = :flag")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq001", query = "SELECT s FROM SERBQ s WHERE s.bq001 = :bq001")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq002", query = "SELECT s FROM SERBQ s WHERE s.bq002 = :bq002")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq003", query = "SELECT s FROM SERBQ s WHERE s.bq003 = :bq003")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq004", query = "SELECT s FROM SERBQ s WHERE s.bq004 = :bq004")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq005", query = "SELECT s FROM SERBQ s WHERE s.bq005 = :bq005")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq006", query = "SELECT s FROM SERBQ s WHERE s.bq006 = :bq006")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq007", query = "SELECT s FROM SERBQ s WHERE s.bq007 = :bq007")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq008", query = "SELECT s FROM SERBQ s WHERE s.bq008 = :bq008")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq009", query = "SELECT s FROM SERBQ s WHERE s.bq009 = :bq009")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq010", query = "SELECT s FROM SERBQ s WHERE s.bq010 = :bq010")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq011", query = "SELECT s FROM SERBQ s WHERE s.bq011 = :bq011")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq012", query = "SELECT s FROM SERBQ s WHERE s.bq012 = :bq012")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq013", query = "SELECT s FROM SERBQ s WHERE s.bq013 = :bq013")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq014", query = "SELECT s FROM SERBQ s WHERE s.bq014 = :bq014")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq015", query = "SELECT s FROM SERBQ s WHERE s.bq015 = :bq015")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq016", query = "SELECT s FROM SERBQ s WHERE s.bq016 = :bq016")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq017", query = "SELECT s FROM SERBQ s WHERE s.bq017 = :bq017")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq018", query = "SELECT s FROM SERBQ s WHERE s.bq018 = :bq018")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq019", query = "SELECT s FROM SERBQ s WHERE s.bq019 = :bq019")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq020", query = "SELECT s FROM SERBQ s WHERE s.bq020 = :bq020")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq021", query = "SELECT s FROM SERBQ s WHERE s.bq021 = :bq021")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq022", query = "SELECT s FROM SERBQ s WHERE s.bq022 = :bq022")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq023", query = "SELECT s FROM SERBQ s WHERE s.bq023 = :bq023")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq024", query = "SELECT s FROM SERBQ s WHERE s.bq024 = :bq024")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq025", query = "SELECT s FROM SERBQ s WHERE s.bq025 = :bq025")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq026", query = "SELECT s FROM SERBQ s WHERE s.bq026 = :bq026")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq027", query = "SELECT s FROM SERBQ s WHERE s.bq027 = :bq027")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq028", query = "SELECT s FROM SERBQ s WHERE s.bq028 = :bq028")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq029", query = "SELECT s FROM SERBQ s WHERE s.bq029 = :bq029")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq030", query = "SELECT s FROM SERBQ s WHERE s.bq030 = :bq030")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq031", query = "SELECT s FROM SERBQ s WHERE s.bq031 = :bq031")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq032", query = "SELECT s FROM SERBQ s WHERE s.bq032 = :bq032")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq033", query = "SELECT s FROM SERBQ s WHERE s.bq033 = :bq033")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq034", query = "SELECT s FROM SERBQ s WHERE s.bq034 = :bq034")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq035", query = "SELECT s FROM SERBQ s WHERE s.bq035 = :bq035")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq036", query = "SELECT s FROM SERBQ s WHERE s.bq036 = :bq036")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq037", query = "SELECT s FROM SERBQ s WHERE s.bq037 = :bq037")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq038", query = "SELECT s FROM SERBQ s WHERE s.bq038 = :bq038")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq039", query = "SELECT s FROM SERBQ s WHERE s.bq039 = :bq039")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq040", query = "SELECT s FROM SERBQ s WHERE s.bq040 = :bq040")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq041", query = "SELECT s FROM SERBQ s WHERE s.bq041 = :bq041")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq042", query = "SELECT s FROM SERBQ s WHERE s.bq042 = :bq042")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq043", query = "SELECT s FROM SERBQ s WHERE s.bq043 = :bq043")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq044", query = "SELECT s FROM SERBQ s WHERE s.bq044 = :bq044")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq045", query = "SELECT s FROM SERBQ s WHERE s.bq045 = :bq045")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq046", query = "SELECT s FROM SERBQ s WHERE s.bq046 = :bq046")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq047", query = "SELECT s FROM SERBQ s WHERE s.bq047 = :bq047")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq048", query = "SELECT s FROM SERBQ s WHERE s.bq048 = :bq048")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq049", query = "SELECT s FROM SERBQ s WHERE s.bq049 = :bq049")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq050", query = "SELECT s FROM SERBQ s WHERE s.bq050 = :bq050")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq051", query = "SELECT s FROM SERBQ s WHERE s.bq051 = :bq051")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq052", query = "SELECT s FROM SERBQ s WHERE s.bq052 = :bq052")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq053", query = "SELECT s FROM SERBQ s WHERE s.bq053 = :bq053")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq054", query = "SELECT s FROM SERBQ s WHERE s.bq054 = :bq054")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq055", query = "SELECT s FROM SERBQ s WHERE s.bq055 = :bq055")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq056", query = "SELECT s FROM SERBQ s WHERE s.bq056 = :bq056")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq057", query = "SELECT s FROM SERBQ s WHERE s.bq057 = :bq057")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq058", query = "SELECT s FROM SERBQ s WHERE s.bq058 = :bq058")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq059", query = "SELECT s FROM SERBQ s WHERE s.bq059 = :bq059")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq060", query = "SELECT s FROM SERBQ s WHERE s.bq060 = :bq060")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq061", query = "SELECT s FROM SERBQ s WHERE s.bq061 = :bq061")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq062", query = "SELECT s FROM SERBQ s WHERE s.bq062 = :bq062")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq063", query = "SELECT s FROM SERBQ s WHERE s.bq063 = :bq063")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq064", query = "SELECT s FROM SERBQ s WHERE s.bq064 = :bq064")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq065", query = "SELECT s FROM SERBQ s WHERE s.bq065 = :bq065")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq066", query = "SELECT s FROM SERBQ s WHERE s.bq066 = :bq066")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq067", query = "SELECT s FROM SERBQ s WHERE s.bq067 = :bq067")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq068", query = "SELECT s FROM SERBQ s WHERE s.bq068 = :bq068")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq069", query = "SELECT s FROM SERBQ s WHERE s.bq069 = :bq069")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq070", query = "SELECT s FROM SERBQ s WHERE s.bq070 = :bq070")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq071", query = "SELECT s FROM SERBQ s WHERE s.bq071 = :bq071")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq072", query = "SELECT s FROM SERBQ s WHERE s.bq072 = :bq072")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq073", query = "SELECT s FROM SERBQ s WHERE s.bq073 = :bq073")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq074", query = "SELECT s FROM SERBQ s WHERE s.bq074 = :bq074")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq075", query = "SELECT s FROM SERBQ s WHERE s.bq075 = :bq075")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq076", query = "SELECT s FROM SERBQ s WHERE s.bq076 = :bq076")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq077", query = "SELECT s FROM SERBQ s WHERE s.bq077 = :bq077")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq078", query = "SELECT s FROM SERBQ s WHERE s.bq078 = :bq078")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq079", query = "SELECT s FROM SERBQ s WHERE s.bq079 = :bq079")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq080", query = "SELECT s FROM SERBQ s WHERE s.bq080 = :bq080")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq081", query = "SELECT s FROM SERBQ s WHERE s.bq081 = :bq081")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq082", query = "SELECT s FROM SERBQ s WHERE s.bq082 = :bq082")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq083", query = "SELECT s FROM SERBQ s WHERE s.bq083 = :bq083")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq084", query = "SELECT s FROM SERBQ s WHERE s.bq084 = :bq084")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq085", query = "SELECT s FROM SERBQ s WHERE s.bq085 = :bq085")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq086", query = "SELECT s FROM SERBQ s WHERE s.bq086 = :bq086")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq087", query = "SELECT s FROM SERBQ s WHERE s.bq087 = :bq087")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq088", query = "SELECT s FROM SERBQ s WHERE s.bq088 = :bq088")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq089", query = "SELECT s FROM SERBQ s WHERE s.bq089 = :bq089")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq090", query = "SELECT s FROM SERBQ s WHERE s.bq090 = :bq090")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq091", query = "SELECT s FROM SERBQ s WHERE s.bq091 = :bq091")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq092", query = "SELECT s FROM SERBQ s WHERE s.bq092 = :bq092")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq093", query = "SELECT s FROM SERBQ s WHERE s.bq093 = :bq093")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq094", query = "SELECT s FROM SERBQ s WHERE s.bq094 = :bq094")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq095", query = "SELECT s FROM SERBQ s WHERE s.bq095 = :bq095")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq096", query = "SELECT s FROM SERBQ s WHERE s.bq096 = :bq096")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq097", query = "SELECT s FROM SERBQ s WHERE s.bq097 = :bq097")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq098", query = "SELECT s FROM SERBQ s WHERE s.bq098 = :bq098")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq099", query = "SELECT s FROM SERBQ s WHERE s.bq099 = :bq099")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq100", query = "SELECT s FROM SERBQ s WHERE s.bq100 = :bq100")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq101", query = "SELECT s FROM SERBQ s WHERE s.bq101 = :bq101")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq102", query = "SELECT s FROM SERBQ s WHERE s.bq102 = :bq102")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq103", query = "SELECT s FROM SERBQ s WHERE s.bq103 = :bq103")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq104", query = "SELECT s FROM SERBQ s WHERE s.bq104 = :bq104")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq105", query = "SELECT s FROM SERBQ s WHERE s.bq105 = :bq105")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq106", query = "SELECT s FROM SERBQ s WHERE s.bq106 = :bq106")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq107", query = "SELECT s FROM SERBQ s WHERE s.bq107 = :bq107")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq108", query = "SELECT s FROM SERBQ s WHERE s.bq108 = :bq108")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq109", query = "SELECT s FROM SERBQ s WHERE s.bq109 = :bq109")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq110", query = "SELECT s FROM SERBQ s WHERE s.bq110 = :bq110")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq111", query = "SELECT s FROM SERBQ s WHERE s.bq111 = :bq111")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq112", query = "SELECT s FROM SERBQ s WHERE s.bq112 = :bq112")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq113", query = "SELECT s FROM SERBQ s WHERE s.bq113 = :bq113")
-    ,
-    @NamedQuery(name = "SERBQ.findByCustomer", query = "SELECT s FROM SERBQ s WHERE s.customer = :customer")
-    ,
-    @NamedQuery(name = "SERBQ.findByProduct", query = "SELECT s FROM SERBQ s WHERE s.product = :product")
-    ,
-    @NamedQuery(name = "SERBQ.findByRegion", query = "SELECT s FROM SERBQ s WHERE s.region = :region")
-    ,
-    @NamedQuery(name = "SERBQ.findByDealer", query = "SELECT s FROM SERBQ s WHERE s.dealer = :dealer")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq114", query = "SELECT s FROM SERBQ s WHERE s.bq114 = :bq114")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq115", query = "SELECT s FROM SERBQ s WHERE s.bq115 = :bq115")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq197", query = "SELECT s FROM SERBQ s WHERE s.bq197 = :bq197")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq198", query = "SELECT s FROM SERBQ s WHERE s.bq198 = :bq198")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq199", query = "SELECT s FROM SERBQ s WHERE s.bq199 = :bq199")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq01", query = "SELECT s FROM SERBQ s WHERE s.serbq01 = :serbq01")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq02", query = "SELECT s FROM SERBQ s WHERE s.serbq02 = :serbq02")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq03", query = "SELECT s FROM SERBQ s WHERE s.serbq03 = :serbq03")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq04", query = "SELECT s FROM SERBQ s WHERE s.serbq04 = :serbq04")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq05", query = "SELECT s FROM SERBQ s WHERE s.serbq05 = :serbq05")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq06", query = "SELECT s FROM SERBQ s WHERE s.serbq06 = :serbq06")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq07", query = "SELECT s FROM SERBQ s WHERE s.serbq07 = :serbq07")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq08", query = "SELECT s FROM SERBQ s WHERE s.serbq08 = :serbq08")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq09", query = "SELECT s FROM SERBQ s WHERE s.serbq09 = :serbq09")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq10", query = "SELECT s FROM SERBQ s WHERE s.serbq10 = :serbq10")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq11", query = "SELECT s FROM SERBQ s WHERE s.serbq11 = :serbq11")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq12", query = "SELECT s FROM SERBQ s WHERE s.serbq12 = :serbq12")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq13", query = "SELECT s FROM SERBQ s WHERE s.serbq13 = :serbq13")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq14", query = "SELECT s FROM SERBQ s WHERE s.serbq14 = :serbq14")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq15", query = "SELECT s FROM SERBQ s WHERE s.serbq15 = :serbq15")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq16", query = "SELECT s FROM SERBQ s WHERE s.serbq16 = :serbq16")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq17", query = "SELECT s FROM SERBQ s WHERE s.serbq17 = :serbq17")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq18", query = "SELECT s FROM SERBQ s WHERE s.serbq18 = :serbq18")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq19", query = "SELECT s FROM SERBQ s WHERE s.serbq19 = :serbq19")
-    ,
-    @NamedQuery(name = "SERBQ.findBySerbq20", query = "SELECT s FROM SERBQ s WHERE s.serbq20 = :serbq20")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq116", query = "SELECT s FROM SERBQ s WHERE s.bq116 = :bq116")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq117", query = "SELECT s FROM SERBQ s WHERE s.bq117 = :bq117")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq118", query = "SELECT s FROM SERBQ s WHERE s.bq118 = :bq118")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq119", query = "SELECT s FROM SERBQ s WHERE s.bq119 = :bq119")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq120", query = "SELECT s FROM SERBQ s WHERE s.bq120 = :bq120")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq121", query = "SELECT s FROM SERBQ s WHERE s.bq121 = :bq121")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq122", query = "SELECT s FROM SERBQ s WHERE s.bq122 = :bq122")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq123", query = "SELECT s FROM SERBQ s WHERE s.bq123 = :bq123")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq124", query = "SELECT s FROM SERBQ s WHERE s.bq124 = :bq124")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq125", query = "SELECT s FROM SERBQ s WHERE s.bq125 = :bq125")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq126", query = "SELECT s FROM SERBQ s WHERE s.bq126 = :bq126")
-    ,
-    @NamedQuery(name = "SERBQ.findByBq127", query = "SELECT s FROM SERBQ s WHERE s.bq127 = :bq127")
-    ,
+    @NamedQuery(name = "SERBQ.findAll", query = "SELECT s FROM SERBQ s"),
+    @NamedQuery(name = "SERBQ.findByCompany", query = "SELECT s FROM SERBQ s WHERE s.company = :company"),
+    @NamedQuery(name = "SERBQ.findByCreator", query = "SELECT s FROM SERBQ s WHERE s.creator = :creator"),
+    @NamedQuery(name = "SERBQ.findByUsrGroup", query = "SELECT s FROM SERBQ s WHERE s.usrGroup = :usrGroup"),
+    @NamedQuery(name = "SERBQ.findByCreateDate", query = "SELECT s FROM SERBQ s WHERE s.createDate = :createDate"),
+    @NamedQuery(name = "SERBQ.findByModifier", query = "SELECT s FROM SERBQ s WHERE s.modifier = :modifier"),
+    @NamedQuery(name = "SERBQ.findByModiDate", query = "SELECT s FROM SERBQ s WHERE s.modiDate = :modiDate"),
+    @NamedQuery(name = "SERBQ.findByFlag", query = "SELECT s FROM SERBQ s WHERE s.flag = :flag"),
+    @NamedQuery(name = "SERBQ.findByBq001", query = "SELECT s FROM SERBQ s WHERE s.bq001 = :bq001"),
+    @NamedQuery(name = "SERBQ.findByBq002", query = "SELECT s FROM SERBQ s WHERE s.bq002 = :bq002"),
+    @NamedQuery(name = "SERBQ.findByBq003", query = "SELECT s FROM SERBQ s WHERE s.bq003 = :bq003"),
+    @NamedQuery(name = "SERBQ.findByBq004", query = "SELECT s FROM SERBQ s WHERE s.bq004 = :bq004"),
+    @NamedQuery(name = "SERBQ.findByBq005", query = "SELECT s FROM SERBQ s WHERE s.bq005 = :bq005"),
+    @NamedQuery(name = "SERBQ.findByBq006", query = "SELECT s FROM SERBQ s WHERE s.bq006 = :bq006"),
+    @NamedQuery(name = "SERBQ.findByBq007", query = "SELECT s FROM SERBQ s WHERE s.bq007 = :bq007"),
+    @NamedQuery(name = "SERBQ.findByBq008", query = "SELECT s FROM SERBQ s WHERE s.bq008 = :bq008"),
+    @NamedQuery(name = "SERBQ.findByBq009", query = "SELECT s FROM SERBQ s WHERE s.bq009 = :bq009"),
+    @NamedQuery(name = "SERBQ.findByBq010", query = "SELECT s FROM SERBQ s WHERE s.bq010 = :bq010"),
+    @NamedQuery(name = "SERBQ.findByBq011", query = "SELECT s FROM SERBQ s WHERE s.bq011 = :bq011"),
+    @NamedQuery(name = "SERBQ.findByBq012", query = "SELECT s FROM SERBQ s WHERE s.bq012 = :bq012"),
+    @NamedQuery(name = "SERBQ.findByBq013", query = "SELECT s FROM SERBQ s WHERE s.bq013 = :bq013"),
+    @NamedQuery(name = "SERBQ.findByBq014", query = "SELECT s FROM SERBQ s WHERE s.bq014 = :bq014"),
+    @NamedQuery(name = "SERBQ.findByBq015", query = "SELECT s FROM SERBQ s WHERE s.bq015 = :bq015"),
+    @NamedQuery(name = "SERBQ.findByBq016", query = "SELECT s FROM SERBQ s WHERE s.bq016 = :bq016"),
+    @NamedQuery(name = "SERBQ.findByBq017", query = "SELECT s FROM SERBQ s WHERE s.bq017 = :bq017"),
+    @NamedQuery(name = "SERBQ.findByBq018", query = "SELECT s FROM SERBQ s WHERE s.bq018 = :bq018"),
+    @NamedQuery(name = "SERBQ.findByBq019", query = "SELECT s FROM SERBQ s WHERE s.bq019 = :bq019"),
+    @NamedQuery(name = "SERBQ.findByBq020", query = "SELECT s FROM SERBQ s WHERE s.bq020 = :bq020"),
+    @NamedQuery(name = "SERBQ.findByBq021", query = "SELECT s FROM SERBQ s WHERE s.bq021 = :bq021"),
+    @NamedQuery(name = "SERBQ.findByBq022", query = "SELECT s FROM SERBQ s WHERE s.bq022 = :bq022"),
+    @NamedQuery(name = "SERBQ.findByBq023", query = "SELECT s FROM SERBQ s WHERE s.bq023 = :bq023"),
+    @NamedQuery(name = "SERBQ.findByBq024", query = "SELECT s FROM SERBQ s WHERE s.bq024 = :bq024"),
+    @NamedQuery(name = "SERBQ.findByBq025", query = "SELECT s FROM SERBQ s WHERE s.bq025 = :bq025"),
+    @NamedQuery(name = "SERBQ.findByBq026", query = "SELECT s FROM SERBQ s WHERE s.bq026 = :bq026"),
+    @NamedQuery(name = "SERBQ.findByBq027", query = "SELECT s FROM SERBQ s WHERE s.bq027 = :bq027"),
+    @NamedQuery(name = "SERBQ.findByBq028", query = "SELECT s FROM SERBQ s WHERE s.bq028 = :bq028"),
+    @NamedQuery(name = "SERBQ.findByBq029", query = "SELECT s FROM SERBQ s WHERE s.bq029 = :bq029"),
+    @NamedQuery(name = "SERBQ.findByBq030", query = "SELECT s FROM SERBQ s WHERE s.bq030 = :bq030"),
+    @NamedQuery(name = "SERBQ.findByBq031", query = "SELECT s FROM SERBQ s WHERE s.bq031 = :bq031"),
+    @NamedQuery(name = "SERBQ.findByBq032", query = "SELECT s FROM SERBQ s WHERE s.bq032 = :bq032"),
+    @NamedQuery(name = "SERBQ.findByBq033", query = "SELECT s FROM SERBQ s WHERE s.bq033 = :bq033"),
+    @NamedQuery(name = "SERBQ.findByBq034", query = "SELECT s FROM SERBQ s WHERE s.bq034 = :bq034"),
+    @NamedQuery(name = "SERBQ.findByBq035", query = "SELECT s FROM SERBQ s WHERE s.bq035 = :bq035"),
+    @NamedQuery(name = "SERBQ.findByBq036", query = "SELECT s FROM SERBQ s WHERE s.bq036 = :bq036"),
+    @NamedQuery(name = "SERBQ.findByBq037", query = "SELECT s FROM SERBQ s WHERE s.bq037 = :bq037"),
+    @NamedQuery(name = "SERBQ.findByBq038", query = "SELECT s FROM SERBQ s WHERE s.bq038 = :bq038"),
+    @NamedQuery(name = "SERBQ.findByBq039", query = "SELECT s FROM SERBQ s WHERE s.bq039 = :bq039"),
+    @NamedQuery(name = "SERBQ.findByBq040", query = "SELECT s FROM SERBQ s WHERE s.bq040 = :bq040"),
+    @NamedQuery(name = "SERBQ.findByBq041", query = "SELECT s FROM SERBQ s WHERE s.bq041 = :bq041"),
+    @NamedQuery(name = "SERBQ.findByBq042", query = "SELECT s FROM SERBQ s WHERE s.bq042 = :bq042"),
+    @NamedQuery(name = "SERBQ.findByBq043", query = "SELECT s FROM SERBQ s WHERE s.bq043 = :bq043"),
+    @NamedQuery(name = "SERBQ.findByBq044", query = "SELECT s FROM SERBQ s WHERE s.bq044 = :bq044"),
+    @NamedQuery(name = "SERBQ.findByBq045", query = "SELECT s FROM SERBQ s WHERE s.bq045 = :bq045"),
+    @NamedQuery(name = "SERBQ.findByBq046", query = "SELECT s FROM SERBQ s WHERE s.bq046 = :bq046"),
+    @NamedQuery(name = "SERBQ.findByBq047", query = "SELECT s FROM SERBQ s WHERE s.bq047 = :bq047"),
+    @NamedQuery(name = "SERBQ.findByBq048", query = "SELECT s FROM SERBQ s WHERE s.bq048 = :bq048"),
+    @NamedQuery(name = "SERBQ.findByBq049", query = "SELECT s FROM SERBQ s WHERE s.bq049 = :bq049"),
+    @NamedQuery(name = "SERBQ.findByBq050", query = "SELECT s FROM SERBQ s WHERE s.bq050 = :bq050"),
+    @NamedQuery(name = "SERBQ.findByBq051", query = "SELECT s FROM SERBQ s WHERE s.bq051 = :bq051"),
+    @NamedQuery(name = "SERBQ.findByBq052", query = "SELECT s FROM SERBQ s WHERE s.bq052 = :bq052"),
+    @NamedQuery(name = "SERBQ.findByBq053", query = "SELECT s FROM SERBQ s WHERE s.bq053 = :bq053"),
+    @NamedQuery(name = "SERBQ.findByBq054", query = "SELECT s FROM SERBQ s WHERE s.bq054 = :bq054"),
+    @NamedQuery(name = "SERBQ.findByBq055", query = "SELECT s FROM SERBQ s WHERE s.bq055 = :bq055"),
+    @NamedQuery(name = "SERBQ.findByBq056", query = "SELECT s FROM SERBQ s WHERE s.bq056 = :bq056"),
+    @NamedQuery(name = "SERBQ.findByBq057", query = "SELECT s FROM SERBQ s WHERE s.bq057 = :bq057"),
+    @NamedQuery(name = "SERBQ.findByBq058", query = "SELECT s FROM SERBQ s WHERE s.bq058 = :bq058"),
+    @NamedQuery(name = "SERBQ.findByBq059", query = "SELECT s FROM SERBQ s WHERE s.bq059 = :bq059"),
+    @NamedQuery(name = "SERBQ.findByBq060", query = "SELECT s FROM SERBQ s WHERE s.bq060 = :bq060"),
+    @NamedQuery(name = "SERBQ.findByBq061", query = "SELECT s FROM SERBQ s WHERE s.bq061 = :bq061"),
+    @NamedQuery(name = "SERBQ.findByBq062", query = "SELECT s FROM SERBQ s WHERE s.bq062 = :bq062"),
+    @NamedQuery(name = "SERBQ.findByBq063", query = "SELECT s FROM SERBQ s WHERE s.bq063 = :bq063"),
+    @NamedQuery(name = "SERBQ.findByBq064", query = "SELECT s FROM SERBQ s WHERE s.bq064 = :bq064"),
+    @NamedQuery(name = "SERBQ.findByBq065", query = "SELECT s FROM SERBQ s WHERE s.bq065 = :bq065"),
+    @NamedQuery(name = "SERBQ.findByBq066", query = "SELECT s FROM SERBQ s WHERE s.bq066 = :bq066"),
+    @NamedQuery(name = "SERBQ.findByBq067", query = "SELECT s FROM SERBQ s WHERE s.bq067 = :bq067"),
+    @NamedQuery(name = "SERBQ.findByBq068", query = "SELECT s FROM SERBQ s WHERE s.bq068 = :bq068"),
+    @NamedQuery(name = "SERBQ.findByBq069", query = "SELECT s FROM SERBQ s WHERE s.bq069 = :bq069"),
+    @NamedQuery(name = "SERBQ.findByBq070", query = "SELECT s FROM SERBQ s WHERE s.bq070 = :bq070"),
+    @NamedQuery(name = "SERBQ.findByBq071", query = "SELECT s FROM SERBQ s WHERE s.bq071 = :bq071"),
+    @NamedQuery(name = "SERBQ.findByBq072", query = "SELECT s FROM SERBQ s WHERE s.bq072 = :bq072"),
+    @NamedQuery(name = "SERBQ.findByBq073", query = "SELECT s FROM SERBQ s WHERE s.bq073 = :bq073"),
+    @NamedQuery(name = "SERBQ.findByBq074", query = "SELECT s FROM SERBQ s WHERE s.bq074 = :bq074"),
+    @NamedQuery(name = "SERBQ.findByBq075", query = "SELECT s FROM SERBQ s WHERE s.bq075 = :bq075"),
+    @NamedQuery(name = "SERBQ.findByBq076", query = "SELECT s FROM SERBQ s WHERE s.bq076 = :bq076"),
+    @NamedQuery(name = "SERBQ.findByBq077", query = "SELECT s FROM SERBQ s WHERE s.bq077 = :bq077"),
+    @NamedQuery(name = "SERBQ.findByBq078", query = "SELECT s FROM SERBQ s WHERE s.bq078 = :bq078"),
+    @NamedQuery(name = "SERBQ.findByBq079", query = "SELECT s FROM SERBQ s WHERE s.bq079 = :bq079"),
+    @NamedQuery(name = "SERBQ.findByBq080", query = "SELECT s FROM SERBQ s WHERE s.bq080 = :bq080"),
+    @NamedQuery(name = "SERBQ.findByBq081", query = "SELECT s FROM SERBQ s WHERE s.bq081 = :bq081"),
+    @NamedQuery(name = "SERBQ.findByBq082", query = "SELECT s FROM SERBQ s WHERE s.bq082 = :bq082"),
+    @NamedQuery(name = "SERBQ.findByBq083", query = "SELECT s FROM SERBQ s WHERE s.bq083 = :bq083"),
+    @NamedQuery(name = "SERBQ.findByBq084", query = "SELECT s FROM SERBQ s WHERE s.bq084 = :bq084"),
+    @NamedQuery(name = "SERBQ.findByBq085", query = "SELECT s FROM SERBQ s WHERE s.bq085 = :bq085"),
+    @NamedQuery(name = "SERBQ.findByBq086", query = "SELECT s FROM SERBQ s WHERE s.bq086 = :bq086"),
+    @NamedQuery(name = "SERBQ.findByBq087", query = "SELECT s FROM SERBQ s WHERE s.bq087 = :bq087"),
+    @NamedQuery(name = "SERBQ.findByBq088", query = "SELECT s FROM SERBQ s WHERE s.bq088 = :bq088"),
+    @NamedQuery(name = "SERBQ.findByBq089", query = "SELECT s FROM SERBQ s WHERE s.bq089 = :bq089"),
+    @NamedQuery(name = "SERBQ.findByBq090", query = "SELECT s FROM SERBQ s WHERE s.bq090 = :bq090"),
+    @NamedQuery(name = "SERBQ.findByBq091", query = "SELECT s FROM SERBQ s WHERE s.bq091 = :bq091"),
+    @NamedQuery(name = "SERBQ.findByBq092", query = "SELECT s FROM SERBQ s WHERE s.bq092 = :bq092"),
+    @NamedQuery(name = "SERBQ.findByBq093", query = "SELECT s FROM SERBQ s WHERE s.bq093 = :bq093"),
+    @NamedQuery(name = "SERBQ.findByBq094", query = "SELECT s FROM SERBQ s WHERE s.bq094 = :bq094"),
+    @NamedQuery(name = "SERBQ.findByBq095", query = "SELECT s FROM SERBQ s WHERE s.bq095 = :bq095"),
+    @NamedQuery(name = "SERBQ.findByBq096", query = "SELECT s FROM SERBQ s WHERE s.bq096 = :bq096"),
+    @NamedQuery(name = "SERBQ.findByBq097", query = "SELECT s FROM SERBQ s WHERE s.bq097 = :bq097"),
+    @NamedQuery(name = "SERBQ.findByBq098", query = "SELECT s FROM SERBQ s WHERE s.bq098 = :bq098"),
+    @NamedQuery(name = "SERBQ.findByBq099", query = "SELECT s FROM SERBQ s WHERE s.bq099 = :bq099"),
+    @NamedQuery(name = "SERBQ.findByBq100", query = "SELECT s FROM SERBQ s WHERE s.bq100 = :bq100"),
+    @NamedQuery(name = "SERBQ.findByBq101", query = "SELECT s FROM SERBQ s WHERE s.bq101 = :bq101"),
+    @NamedQuery(name = "SERBQ.findByBq102", query = "SELECT s FROM SERBQ s WHERE s.bq102 = :bq102"),
+    @NamedQuery(name = "SERBQ.findByBq103", query = "SELECT s FROM SERBQ s WHERE s.bq103 = :bq103"),
+    @NamedQuery(name = "SERBQ.findByBq104", query = "SELECT s FROM SERBQ s WHERE s.bq104 = :bq104"),
+    @NamedQuery(name = "SERBQ.findByBq105", query = "SELECT s FROM SERBQ s WHERE s.bq105 = :bq105"),
+    @NamedQuery(name = "SERBQ.findByBq106", query = "SELECT s FROM SERBQ s WHERE s.bq106 = :bq106"),
+    @NamedQuery(name = "SERBQ.findByBq107", query = "SELECT s FROM SERBQ s WHERE s.bq107 = :bq107"),
+    @NamedQuery(name = "SERBQ.findByBq108", query = "SELECT s FROM SERBQ s WHERE s.bq108 = :bq108"),
+    @NamedQuery(name = "SERBQ.findByBq109", query = "SELECT s FROM SERBQ s WHERE s.bq109 = :bq109"),
+    @NamedQuery(name = "SERBQ.findByBq110", query = "SELECT s FROM SERBQ s WHERE s.bq110 = :bq110"),
+    @NamedQuery(name = "SERBQ.findByBq111", query = "SELECT s FROM SERBQ s WHERE s.bq111 = :bq111"),
+    @NamedQuery(name = "SERBQ.findByBq112", query = "SELECT s FROM SERBQ s WHERE s.bq112 = :bq112"),
+    @NamedQuery(name = "SERBQ.findByBq113", query = "SELECT s FROM SERBQ s WHERE s.bq113 = :bq113"),
+    @NamedQuery(name = "SERBQ.findByCustomer", query = "SELECT s FROM SERBQ s WHERE s.customer = :customer"),
+    @NamedQuery(name = "SERBQ.findByProduct", query = "SELECT s FROM SERBQ s WHERE s.product = :product"),
+    @NamedQuery(name = "SERBQ.findByRegion", query = "SELECT s FROM SERBQ s WHERE s.region = :region"),
+    @NamedQuery(name = "SERBQ.findByDealer", query = "SELECT s FROM SERBQ s WHERE s.dealer = :dealer"),
+    @NamedQuery(name = "SERBQ.findByBq114", query = "SELECT s FROM SERBQ s WHERE s.bq114 = :bq114"),
+    @NamedQuery(name = "SERBQ.findByBq115", query = "SELECT s FROM SERBQ s WHERE s.bq115 = :bq115"),
+    @NamedQuery(name = "SERBQ.findByBq197", query = "SELECT s FROM SERBQ s WHERE s.bq197 = :bq197"),
+    @NamedQuery(name = "SERBQ.findByBq198", query = "SELECT s FROM SERBQ s WHERE s.bq198 = :bq198"),
+    @NamedQuery(name = "SERBQ.findByBq199", query = "SELECT s FROM SERBQ s WHERE s.bq199 = :bq199"),
+    @NamedQuery(name = "SERBQ.findBySerbq01", query = "SELECT s FROM SERBQ s WHERE s.serbq01 = :serbq01"),
+    @NamedQuery(name = "SERBQ.findBySerbq02", query = "SELECT s FROM SERBQ s WHERE s.serbq02 = :serbq02"),
+    @NamedQuery(name = "SERBQ.findBySerbq03", query = "SELECT s FROM SERBQ s WHERE s.serbq03 = :serbq03"),
+    @NamedQuery(name = "SERBQ.findBySerbq04", query = "SELECT s FROM SERBQ s WHERE s.serbq04 = :serbq04"),
+    @NamedQuery(name = "SERBQ.findBySerbq05", query = "SELECT s FROM SERBQ s WHERE s.serbq05 = :serbq05"),
+    @NamedQuery(name = "SERBQ.findBySerbq06", query = "SELECT s FROM SERBQ s WHERE s.serbq06 = :serbq06"),
+    @NamedQuery(name = "SERBQ.findBySerbq07", query = "SELECT s FROM SERBQ s WHERE s.serbq07 = :serbq07"),
+    @NamedQuery(name = "SERBQ.findBySerbq08", query = "SELECT s FROM SERBQ s WHERE s.serbq08 = :serbq08"),
+    @NamedQuery(name = "SERBQ.findBySerbq09", query = "SELECT s FROM SERBQ s WHERE s.serbq09 = :serbq09"),
+    @NamedQuery(name = "SERBQ.findBySerbq10", query = "SELECT s FROM SERBQ s WHERE s.serbq10 = :serbq10"),
+    @NamedQuery(name = "SERBQ.findBySerbq11", query = "SELECT s FROM SERBQ s WHERE s.serbq11 = :serbq11"),
+    @NamedQuery(name = "SERBQ.findBySerbq12", query = "SELECT s FROM SERBQ s WHERE s.serbq12 = :serbq12"),
+    @NamedQuery(name = "SERBQ.findBySerbq13", query = "SELECT s FROM SERBQ s WHERE s.serbq13 = :serbq13"),
+    @NamedQuery(name = "SERBQ.findBySerbq14", query = "SELECT s FROM SERBQ s WHERE s.serbq14 = :serbq14"),
+    @NamedQuery(name = "SERBQ.findBySerbq15", query = "SELECT s FROM SERBQ s WHERE s.serbq15 = :serbq15"),
+    @NamedQuery(name = "SERBQ.findBySerbq16", query = "SELECT s FROM SERBQ s WHERE s.serbq16 = :serbq16"),
+    @NamedQuery(name = "SERBQ.findBySerbq17", query = "SELECT s FROM SERBQ s WHERE s.serbq17 = :serbq17"),
+    @NamedQuery(name = "SERBQ.findBySerbq18", query = "SELECT s FROM SERBQ s WHERE s.serbq18 = :serbq18"),
+    @NamedQuery(name = "SERBQ.findBySerbq19", query = "SELECT s FROM SERBQ s WHERE s.serbq19 = :serbq19"),
+    @NamedQuery(name = "SERBQ.findBySerbq20", query = "SELECT s FROM SERBQ s WHERE s.serbq20 = :serbq20"),
+    @NamedQuery(name = "SERBQ.findByBq116", query = "SELECT s FROM SERBQ s WHERE s.bq116 = :bq116"),
+    @NamedQuery(name = "SERBQ.findByBq117", query = "SELECT s FROM SERBQ s WHERE s.bq117 = :bq117"),
+    @NamedQuery(name = "SERBQ.findByBq118", query = "SELECT s FROM SERBQ s WHERE s.bq118 = :bq118"),
+    @NamedQuery(name = "SERBQ.findByBq119", query = "SELECT s FROM SERBQ s WHERE s.bq119 = :bq119"),
+    @NamedQuery(name = "SERBQ.findByBq120", query = "SELECT s FROM SERBQ s WHERE s.bq120 = :bq120"),
+    @NamedQuery(name = "SERBQ.findByBq121", query = "SELECT s FROM SERBQ s WHERE s.bq121 = :bq121"),
+    @NamedQuery(name = "SERBQ.findByBq122", query = "SELECT s FROM SERBQ s WHERE s.bq122 = :bq122"),
+    @NamedQuery(name = "SERBQ.findByBq123", query = "SELECT s FROM SERBQ s WHERE s.bq123 = :bq123"),
+    @NamedQuery(name = "SERBQ.findByBq124", query = "SELECT s FROM SERBQ s WHERE s.bq124 = :bq124"),
+    @NamedQuery(name = "SERBQ.findByBq125", query = "SELECT s FROM SERBQ s WHERE s.bq125 = :bq125"),
+    @NamedQuery(name = "SERBQ.findByBq126", query = "SELECT s FROM SERBQ s WHERE s.bq126 = :bq126"),
+    @NamedQuery(name = "SERBQ.findByBq127", query = "SELECT s FROM SERBQ s WHERE s.bq127 = :bq127"),
     @NamedQuery(name = "SERBQ.findByBq128", query = "SELECT s FROM SERBQ s WHERE s.bq128 = :bq128")})
 public class SERBQ implements Serializable {
 

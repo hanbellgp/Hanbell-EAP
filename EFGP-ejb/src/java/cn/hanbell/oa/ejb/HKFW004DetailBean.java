@@ -51,7 +51,7 @@ public class HKFW004DetailBean extends SuperEJBForEFGP<HKFW004Detail> {
                 td.setTd500(BigDecimal.valueOf(Double.valueOf(detail.getQty())));     //退货数量
                 td.setTd502(detail.getFormSerialNumber());                            //OA单号  
                 td.setTd043("Y");
-               reptdBean.update(td);
+                reptdBean.update(td);
             }
 
             return true;
@@ -78,7 +78,7 @@ public class HKFW004DetailBean extends SuperEJBForEFGP<HKFW004Detail> {
                 String td003 = detail.getTd003();
                 REPTD td = reptdBean.findByPK(td001, td002, td003);
                 td.setTd043("N");
-               reptdBean.update(td);
+                reptdBean.update(td);
             }
 
             return true;
@@ -90,5 +90,5 @@ public class HKFW004DetailBean extends SuperEJBForEFGP<HKFW004Detail> {
         }
 
     }
-    
+
 }

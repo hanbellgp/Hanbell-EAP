@@ -176,5 +176,5 @@ public class HZGLPCDDetail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HZGLPCDDetail[ oid=" + oid + " ]";
     }
-    
+
 }

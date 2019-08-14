@@ -154,5 +154,5 @@ public class Employee implements Serializable {
     public String toString() {
         return "com.hanbell.oa.entity.Employee[ oid=" + oid + " ]";
     }
-    
+
 }

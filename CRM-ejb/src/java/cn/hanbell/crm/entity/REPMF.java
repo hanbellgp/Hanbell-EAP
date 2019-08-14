@@ -509,5 +509,5 @@ public class REPMF implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.REPMF[ rEPMFPK=" + rEPMFPK + " ]";
     }
-    
+
 }

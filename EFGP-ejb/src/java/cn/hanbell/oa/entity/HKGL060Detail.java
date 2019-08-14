@@ -25,9 +25,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "HK_GL060_detail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HKGL060Detail.findAll", query = "SELECT h FROM HKGL060Detail h")
-    , @NamedQuery(name = "HKGL060Detail.findByOID", query = "SELECT h FROM HKGL060Detail h WHERE h.oid = :oid")
-    , @NamedQuery(name = "HKGL060Detail.findByFSN", query = "SELECT h FROM HKGL060Detail h WHERE h.formSerialNumber = :fsn")})
+    @NamedQuery(name = "HKGL060Detail.findAll", query = "SELECT h FROM HKGL060Detail h"),
+    @NamedQuery(name = "HKGL060Detail.findByOID", query = "SELECT h FROM HKGL060Detail h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKGL060Detail.findByFSN", query = "SELECT h FROM HKGL060Detail h WHERE h.formSerialNumber = :fsn")})
 public class HKGL060Detail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -242,5 +242,5 @@ public class HKGL060Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKGL060Detail[ oid=" + oid + " ]";
     }
-    
+
 }

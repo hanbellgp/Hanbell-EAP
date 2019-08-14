@@ -156,6 +156,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "REPTC.findByTc094", query = "SELECT r FROM REPTC r WHERE r.tc094 = :tc094")})
 public class REPTC implements Serializable {
 
+    @Size(max = 10)
+    @Column(name = "TC500")
+    private String tc500;
+    @Size(max = 50)
+    @Column(name = "TC501")
+    private String tc501;
     @Size(max = 50)
     @Column(name = "TC502")
     private String tc502;
@@ -178,9 +184,19 @@ public class REPTC implements Serializable {
     @Column(name = "TC508")
     private String tc508;
 
-//    @Size(max = 50)
-//    @Column(name = "TC100")
-//    private String tc100;
+    @Column(name = "TC090")
+    private BigDecimal tc090;
+    @Column(name = "TC091")
+    private BigDecimal tc091;
+    @Size(max = 1)
+    @Column(name = "TC092")
+    private String tc092;
+    @Size(max = 4)
+    @Column(name = "TC093")
+    private String tc093;
+    @Size(max = 11)
+    @Column(name = "TC094")
+    private String tc094;
     @Size(max = 4)
     @Column(name = "TC095")
     private String tc095;
@@ -193,15 +209,12 @@ public class REPTC implements Serializable {
     @Size(max = 4)
     @Column(name = "TC098")
     private String tc098;
-    @Size(max = 10)
-    @Column(name = "TC500")
-    private String tc500;
-    @Size(max = 50)
-    @Column(name = "TC501")
-    private String tc501;
     @Size(max = 4)
     @Column(name = "TC099")
     private String tc099;
+    // @Size(max = 50)
+    // @Column(name = "TC100")
+    // private String tc100;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -291,7 +304,8 @@ public class REPTC implements Serializable {
     @Size(max = 10)
     @Column(name = "TC024")
     private String tc024;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    // @Max(value=?) @Min(value=?)//if you know range of your decimal fields
+    // consider using these annotations to enforce field validation
     @Column(name = "TC025")
     private BigDecimal tc025;
     @Column(name = "TC026")
@@ -552,19 +566,6 @@ public class REPTC implements Serializable {
     @Size(max = 255)
     @Column(name = "REPTC20")
     private String reptc20;
-    @Column(name = "TC090")
-    private BigDecimal tc090;
-    @Column(name = "TC091")
-    private BigDecimal tc091;
-    @Size(max = 1)
-    @Column(name = "TC092")
-    private String tc092;
-    @Size(max = 4)
-    @Column(name = "TC093")
-    private String tc093;
-    @Size(max = 11)
-    @Column(name = "TC094")
-    private String tc094;
 
     public REPTC() {
     }
@@ -1607,7 +1608,8 @@ public class REPTC implements Serializable {
             return false;
         }
         REPTC other = (REPTC) object;
-        if ((this.reptcPK == null && other.reptcPK != null) || (this.reptcPK != null && !this.reptcPK.equals(other.reptcPK))) {
+        if ((this.reptcPK == null && other.reptcPK != null)
+                || (this.reptcPK != null && !this.reptcPK.equals(other.reptcPK))) {
             return false;
         }
         return true;
@@ -1618,14 +1620,13 @@ public class REPTC implements Serializable {
         return "cn.hanbell.crm.entity.REPTC[ reptcPK=" + reptcPK + " ]";
     }
 
-//    public String getTc100() {
-//        return tc100;
-//    }
-//
-//    public void setTc100(String tc100) {
-//        this.tc100 = tc100;
-//    }
-
+    // public String getTc100() {
+    // return tc100;
+    // }
+    //
+    // public void setTc100(String tc100) {
+    // this.tc100 = tc100;
+    // }
     public String getTc095() {
         return tc095;
     }
@@ -1737,5 +1738,5 @@ public class REPTC implements Serializable {
     public void setTc508(String tc508) {
         this.tc508 = tc508;
     }
-    
+
 }

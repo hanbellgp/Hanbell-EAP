@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 @LocalBean
-public class SyncCRMBean extends SuperSyncBean{
+public class SyncCRMBean extends SuperSyncBean {
 
     @PersistenceContext(unitName = "CRM-syncPU")
     private EntityManager em;
@@ -26,5 +26,5 @@ public class SyncCRMBean extends SuperSyncBean{
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

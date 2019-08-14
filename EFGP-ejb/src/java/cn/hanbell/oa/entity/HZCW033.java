@@ -853,7 +853,7 @@ public class HZCW033 implements Serializable {
     public void setTaxes(Double taxes) {
         this.taxes = taxes;
     }
-    
+
     public Double getTotalRefund() {
         return totalRefund;
     }
@@ -861,7 +861,7 @@ public class HZCW033 implements Serializable {
     public void setTotalRefund(Double totalRefund) {
         this.totalRefund = totalRefund;
     }
-    
+
     public String getFormSerialNumber() {
         return formSerialNumber;
     }
@@ -870,7 +870,6 @@ public class HZCW033 implements Serializable {
         this.formSerialNumber = formSerialNumber;
     }
 
-     
     @Override
     public int hashCode() {
         int hash = 0;
@@ -900,5 +899,4 @@ public class HZCW033 implements Serializable {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
 }

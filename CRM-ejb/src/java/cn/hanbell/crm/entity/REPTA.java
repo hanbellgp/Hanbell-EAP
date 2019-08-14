@@ -24,143 +24,143 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "REPTA")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "REPTA.findAll", query = "SELECT r FROM REPTA r")
-    , @NamedQuery(name = "REPTA.findByCompany", query = "SELECT r FROM REPTA r WHERE r.company = :company")
-    , @NamedQuery(name = "REPTA.findByCreator", query = "SELECT r FROM REPTA r WHERE r.creator = :creator")
-    , @NamedQuery(name = "REPTA.findByUsrGroup", query = "SELECT r FROM REPTA r WHERE r.usrGroup = :usrGroup")
-    , @NamedQuery(name = "REPTA.findByCreateDate", query = "SELECT r FROM REPTA r WHERE r.createDate = :createDate")
-    , @NamedQuery(name = "REPTA.findByModifier", query = "SELECT r FROM REPTA r WHERE r.modifier = :modifier")
-    , @NamedQuery(name = "REPTA.findByModiDate", query = "SELECT r FROM REPTA r WHERE r.modiDate = :modiDate")
-    , @NamedQuery(name = "REPTA.findByFlag", query = "SELECT r FROM REPTA r WHERE r.flag = :flag")
-    , @NamedQuery(name = "REPTA.findByTa001", query = "SELECT r FROM REPTA r WHERE r.rEPTAPK.ta001 = :ta001")
-    , @NamedQuery(name = "REPTA.findByTa002", query = "SELECT r FROM REPTA r WHERE r.rEPTAPK.ta002 = :ta002")
-    , @NamedQuery(name = "REPTA.findByTa003", query = "SELECT r FROM REPTA r WHERE r.ta003 = :ta003")
-    , @NamedQuery(name = "REPTA.findByTa004", query = "SELECT r FROM REPTA r WHERE r.ta004 = :ta004")
-    , @NamedQuery(name = "REPTA.findByTa005", query = "SELECT r FROM REPTA r WHERE r.ta005 = :ta005")
-    , @NamedQuery(name = "REPTA.findByTa006", query = "SELECT r FROM REPTA r WHERE r.ta006 = :ta006")
-    , @NamedQuery(name = "REPTA.findByTa007", query = "SELECT r FROM REPTA r WHERE r.ta007 = :ta007")
-    , @NamedQuery(name = "REPTA.findByTa008", query = "SELECT r FROM REPTA r WHERE r.ta008 = :ta008")
-    , @NamedQuery(name = "REPTA.findByTa009", query = "SELECT r FROM REPTA r WHERE r.ta009 = :ta009")
-    , @NamedQuery(name = "REPTA.findByTa010", query = "SELECT r FROM REPTA r WHERE r.ta010 = :ta010")
-    , @NamedQuery(name = "REPTA.findByTa011", query = "SELECT r FROM REPTA r WHERE r.ta011 = :ta011")
-    , @NamedQuery(name = "REPTA.findByTa012", query = "SELECT r FROM REPTA r WHERE r.ta012 = :ta012")
-    , @NamedQuery(name = "REPTA.findByTa013", query = "SELECT r FROM REPTA r WHERE r.ta013 = :ta013")
-    , @NamedQuery(name = "REPTA.findByTa014", query = "SELECT r FROM REPTA r WHERE r.ta014 = :ta014")
-    , @NamedQuery(name = "REPTA.findByTa015", query = "SELECT r FROM REPTA r WHERE r.ta015 = :ta015")
-    , @NamedQuery(name = "REPTA.findByTa016", query = "SELECT r FROM REPTA r WHERE r.ta016 = :ta016")
-    , @NamedQuery(name = "REPTA.findByTa017", query = "SELECT r FROM REPTA r WHERE r.ta017 = :ta017")
-    , @NamedQuery(name = "REPTA.findByTa018", query = "SELECT r FROM REPTA r WHERE r.ta018 = :ta018")
-    , @NamedQuery(name = "REPTA.findByTa019", query = "SELECT r FROM REPTA r WHERE r.ta019 = :ta019")
-    , @NamedQuery(name = "REPTA.findByTa020", query = "SELECT r FROM REPTA r WHERE r.ta020 = :ta020")
-    , @NamedQuery(name = "REPTA.findByTa021", query = "SELECT r FROM REPTA r WHERE r.ta021 = :ta021")
-    , @NamedQuery(name = "REPTA.findByTa022", query = "SELECT r FROM REPTA r WHERE r.ta022 = :ta022")
-    , @NamedQuery(name = "REPTA.findByTa023", query = "SELECT r FROM REPTA r WHERE r.ta023 = :ta023")
-    , @NamedQuery(name = "REPTA.findByTa024", query = "SELECT r FROM REPTA r WHERE r.ta024 = :ta024")
-    , @NamedQuery(name = "REPTA.findByTa025", query = "SELECT r FROM REPTA r WHERE r.ta025 = :ta025")
-    , @NamedQuery(name = "REPTA.findByTa026", query = "SELECT r FROM REPTA r WHERE r.ta026 = :ta026")
-    , @NamedQuery(name = "REPTA.findByTa027", query = "SELECT r FROM REPTA r WHERE r.ta027 = :ta027")
-    , @NamedQuery(name = "REPTA.findByTa028", query = "SELECT r FROM REPTA r WHERE r.ta028 = :ta028")
-    , @NamedQuery(name = "REPTA.findByTa029", query = "SELECT r FROM REPTA r WHERE r.ta029 = :ta029")
-    , @NamedQuery(name = "REPTA.findByTa030", query = "SELECT r FROM REPTA r WHERE r.ta030 = :ta030")
-    , @NamedQuery(name = "REPTA.findByTa031", query = "SELECT r FROM REPTA r WHERE r.ta031 = :ta031")
-    , @NamedQuery(name = "REPTA.findByTa032", query = "SELECT r FROM REPTA r WHERE r.ta032 = :ta032")
-    , @NamedQuery(name = "REPTA.findByTa033", query = "SELECT r FROM REPTA r WHERE r.ta033 = :ta033")
-    , @NamedQuery(name = "REPTA.findByTa034", query = "SELECT r FROM REPTA r WHERE r.ta034 = :ta034")
-    , @NamedQuery(name = "REPTA.findByTa035", query = "SELECT r FROM REPTA r WHERE r.ta035 = :ta035")
-    , @NamedQuery(name = "REPTA.findByTa036", query = "SELECT r FROM REPTA r WHERE r.ta036 = :ta036")
-    , @NamedQuery(name = "REPTA.findByTa037", query = "SELECT r FROM REPTA r WHERE r.ta037 = :ta037")
-    , @NamedQuery(name = "REPTA.findByTa038", query = "SELECT r FROM REPTA r WHERE r.ta038 = :ta038")
-    , @NamedQuery(name = "REPTA.findByTa039", query = "SELECT r FROM REPTA r WHERE r.ta039 = :ta039")
-    , @NamedQuery(name = "REPTA.findByTa040", query = "SELECT r FROM REPTA r WHERE r.ta040 = :ta040")
-    , @NamedQuery(name = "REPTA.findByTa041", query = "SELECT r FROM REPTA r WHERE r.ta041 = :ta041")
-    , @NamedQuery(name = "REPTA.findByTa042", query = "SELECT r FROM REPTA r WHERE r.ta042 = :ta042")
-    , @NamedQuery(name = "REPTA.findByTa043", query = "SELECT r FROM REPTA r WHERE r.ta043 = :ta043")
-    , @NamedQuery(name = "REPTA.findByTa044", query = "SELECT r FROM REPTA r WHERE r.ta044 = :ta044")
-    , @NamedQuery(name = "REPTA.findByTa045", query = "SELECT r FROM REPTA r WHERE r.ta045 = :ta045")
-    , @NamedQuery(name = "REPTA.findByTa046", query = "SELECT r FROM REPTA r WHERE r.ta046 = :ta046")
-    , @NamedQuery(name = "REPTA.findByTa047", query = "SELECT r FROM REPTA r WHERE r.ta047 = :ta047")
-    , @NamedQuery(name = "REPTA.findByTa048", query = "SELECT r FROM REPTA r WHERE r.ta048 = :ta048")
-    , @NamedQuery(name = "REPTA.findByTa049", query = "SELECT r FROM REPTA r WHERE r.ta049 = :ta049")
-    , @NamedQuery(name = "REPTA.findByTa050", query = "SELECT r FROM REPTA r WHERE r.ta050 = :ta050")
-    , @NamedQuery(name = "REPTA.findByTa051", query = "SELECT r FROM REPTA r WHERE r.ta051 = :ta051")
-    , @NamedQuery(name = "REPTA.findByTa052", query = "SELECT r FROM REPTA r WHERE r.ta052 = :ta052")
-    , @NamedQuery(name = "REPTA.findByTa053", query = "SELECT r FROM REPTA r WHERE r.ta053 = :ta053")
-    , @NamedQuery(name = "REPTA.findByTa054", query = "SELECT r FROM REPTA r WHERE r.ta054 = :ta054")
-    , @NamedQuery(name = "REPTA.findByTa055", query = "SELECT r FROM REPTA r WHERE r.ta055 = :ta055")
-    , @NamedQuery(name = "REPTA.findByTa056", query = "SELECT r FROM REPTA r WHERE r.ta056 = :ta056")
-    , @NamedQuery(name = "REPTA.findByTa057", query = "SELECT r FROM REPTA r WHERE r.ta057 = :ta057")
-    , @NamedQuery(name = "REPTA.findByTa058", query = "SELECT r FROM REPTA r WHERE r.ta058 = :ta058")
-    , @NamedQuery(name = "REPTA.findByTa059", query = "SELECT r FROM REPTA r WHERE r.ta059 = :ta059")
-    , @NamedQuery(name = "REPTA.findByTa060", query = "SELECT r FROM REPTA r WHERE r.ta060 = :ta060")
-    , @NamedQuery(name = "REPTA.findByTa061", query = "SELECT r FROM REPTA r WHERE r.ta061 = :ta061")
-    , @NamedQuery(name = "REPTA.findByTa062", query = "SELECT r FROM REPTA r WHERE r.ta062 = :ta062")
-    , @NamedQuery(name = "REPTA.findByTa063", query = "SELECT r FROM REPTA r WHERE r.ta063 = :ta063")
-    , @NamedQuery(name = "REPTA.findByTa064", query = "SELECT r FROM REPTA r WHERE r.ta064 = :ta064")
-    , @NamedQuery(name = "REPTA.findByTa065", query = "SELECT r FROM REPTA r WHERE r.ta065 = :ta065")
-    , @NamedQuery(name = "REPTA.findByTa066", query = "SELECT r FROM REPTA r WHERE r.ta066 = :ta066")
-    , @NamedQuery(name = "REPTA.findByTa067", query = "SELECT r FROM REPTA r WHERE r.ta067 = :ta067")
-    , @NamedQuery(name = "REPTA.findByTa068", query = "SELECT r FROM REPTA r WHERE r.ta068 = :ta068")
-    , @NamedQuery(name = "REPTA.findByTa069", query = "SELECT r FROM REPTA r WHERE r.ta069 = :ta069")
-    , @NamedQuery(name = "REPTA.findByTa070", query = "SELECT r FROM REPTA r WHERE r.ta070 = :ta070")
-    , @NamedQuery(name = "REPTA.findByTa071", query = "SELECT r FROM REPTA r WHERE r.ta071 = :ta071")
-    , @NamedQuery(name = "REPTA.findByTa072", query = "SELECT r FROM REPTA r WHERE r.ta072 = :ta072")
-    , @NamedQuery(name = "REPTA.findByTa073", query = "SELECT r FROM REPTA r WHERE r.ta073 = :ta073")
-    , @NamedQuery(name = "REPTA.findByTa074", query = "SELECT r FROM REPTA r WHERE r.ta074 = :ta074")
-    , @NamedQuery(name = "REPTA.findByTa075", query = "SELECT r FROM REPTA r WHERE r.ta075 = :ta075")
-    , @NamedQuery(name = "REPTA.findByTa076", query = "SELECT r FROM REPTA r WHERE r.ta076 = :ta076")
-    , @NamedQuery(name = "REPTA.findByTa077", query = "SELECT r FROM REPTA r WHERE r.ta077 = :ta077")
-    , @NamedQuery(name = "REPTA.findByTa078", query = "SELECT r FROM REPTA r WHERE r.ta078 = :ta078")
-    , @NamedQuery(name = "REPTA.findByTa079", query = "SELECT r FROM REPTA r WHERE r.ta079 = :ta079")
-    , @NamedQuery(name = "REPTA.findByCustomer", query = "SELECT r FROM REPTA r WHERE r.customer = :customer")
-    , @NamedQuery(name = "REPTA.findByProduct", query = "SELECT r FROM REPTA r WHERE r.product = :product")
-    , @NamedQuery(name = "REPTA.findByRegion", query = "SELECT r FROM REPTA r WHERE r.region = :region")
-    , @NamedQuery(name = "REPTA.findByDealer", query = "SELECT r FROM REPTA r WHERE r.dealer = :dealer")
-    , @NamedQuery(name = "REPTA.findByTa080", query = "SELECT r FROM REPTA r WHERE r.ta080 = :ta080")
-    , @NamedQuery(name = "REPTA.findByTa081", query = "SELECT r FROM REPTA r WHERE r.ta081 = :ta081")
-    , @NamedQuery(name = "REPTA.findByTa197", query = "SELECT r FROM REPTA r WHERE r.ta197 = :ta197")
-    , @NamedQuery(name = "REPTA.findByTa198", query = "SELECT r FROM REPTA r WHERE r.ta198 = :ta198")
-    , @NamedQuery(name = "REPTA.findByTa199", query = "SELECT r FROM REPTA r WHERE r.ta199 = :ta199")
-    , @NamedQuery(name = "REPTA.findByTa082", query = "SELECT r FROM REPTA r WHERE r.ta082 = :ta082")
-    , @NamedQuery(name = "REPTA.findByTa083", query = "SELECT r FROM REPTA r WHERE r.ta083 = :ta083")
-    , @NamedQuery(name = "REPTA.findByTa084", query = "SELECT r FROM REPTA r WHERE r.ta084 = :ta084")
-    , @NamedQuery(name = "REPTA.findByTa085", query = "SELECT r FROM REPTA r WHERE r.ta085 = :ta085")
-    , @NamedQuery(name = "REPTA.findByTa086", query = "SELECT r FROM REPTA r WHERE r.ta086 = :ta086")
-    , @NamedQuery(name = "REPTA.findByTa087", query = "SELECT r FROM REPTA r WHERE r.ta087 = :ta087")
-    , @NamedQuery(name = "REPTA.findByTa088", query = "SELECT r FROM REPTA r WHERE r.ta088 = :ta088")
-    , @NamedQuery(name = "REPTA.findByTa089", query = "SELECT r FROM REPTA r WHERE r.ta089 = :ta089")
-    , @NamedQuery(name = "REPTA.findByTa090", query = "SELECT r FROM REPTA r WHERE r.ta090 = :ta090")
-    , @NamedQuery(name = "REPTA.findByRepta01", query = "SELECT r FROM REPTA r WHERE r.repta01 = :repta01")
-    , @NamedQuery(name = "REPTA.findByRepta02", query = "SELECT r FROM REPTA r WHERE r.repta02 = :repta02")
-    , @NamedQuery(name = "REPTA.findByRepta03", query = "SELECT r FROM REPTA r WHERE r.repta03 = :repta03")
-    , @NamedQuery(name = "REPTA.findByRepta04", query = "SELECT r FROM REPTA r WHERE r.repta04 = :repta04")
-    , @NamedQuery(name = "REPTA.findByRepta05", query = "SELECT r FROM REPTA r WHERE r.repta05 = :repta05")
-    , @NamedQuery(name = "REPTA.findByRepta06", query = "SELECT r FROM REPTA r WHERE r.repta06 = :repta06")
-    , @NamedQuery(name = "REPTA.findByRepta07", query = "SELECT r FROM REPTA r WHERE r.repta07 = :repta07")
-    , @NamedQuery(name = "REPTA.findByRepta08", query = "SELECT r FROM REPTA r WHERE r.repta08 = :repta08")
-    , @NamedQuery(name = "REPTA.findByRepta09", query = "SELECT r FROM REPTA r WHERE r.repta09 = :repta09")
-    , @NamedQuery(name = "REPTA.findByRepta10", query = "SELECT r FROM REPTA r WHERE r.repta10 = :repta10")
-    , @NamedQuery(name = "REPTA.findByRepta11", query = "SELECT r FROM REPTA r WHERE r.repta11 = :repta11")
-    , @NamedQuery(name = "REPTA.findByRepta12", query = "SELECT r FROM REPTA r WHERE r.repta12 = :repta12")
-    , @NamedQuery(name = "REPTA.findByRepta13", query = "SELECT r FROM REPTA r WHERE r.repta13 = :repta13")
-    , @NamedQuery(name = "REPTA.findByRepta14", query = "SELECT r FROM REPTA r WHERE r.repta14 = :repta14")
-    , @NamedQuery(name = "REPTA.findByRepta15", query = "SELECT r FROM REPTA r WHERE r.repta15 = :repta15")
-    , @NamedQuery(name = "REPTA.findByRepta16", query = "SELECT r FROM REPTA r WHERE r.repta16 = :repta16")
-    , @NamedQuery(name = "REPTA.findByRepta17", query = "SELECT r FROM REPTA r WHERE r.repta17 = :repta17")
-    , @NamedQuery(name = "REPTA.findByRepta18", query = "SELECT r FROM REPTA r WHERE r.repta18 = :repta18")
-    , @NamedQuery(name = "REPTA.findByRepta19", query = "SELECT r FROM REPTA r WHERE r.repta19 = :repta19")
-    , @NamedQuery(name = "REPTA.findByRepta20", query = "SELECT r FROM REPTA r WHERE r.repta20 = :repta20")
-    , @NamedQuery(name = "REPTA.findByTa091", query = "SELECT r FROM REPTA r WHERE r.ta091 = :ta091")
-    , @NamedQuery(name = "REPTA.findByTa092", query = "SELECT r FROM REPTA r WHERE r.ta092 = :ta092")
-    , @NamedQuery(name = "REPTA.findByTa093", query = "SELECT r FROM REPTA r WHERE r.ta093 = :ta093")
-    , @NamedQuery(name = "REPTA.findByTa094", query = "SELECT r FROM REPTA r WHERE r.ta094 = :ta094")
-    , @NamedQuery(name = "REPTA.findByTa500", query = "SELECT r FROM REPTA r WHERE r.ta500 = :ta500")
-    , @NamedQuery(name = "REPTA.findByTa095", query = "SELECT r FROM REPTA r WHERE r.ta095 = :ta095")
-    , @NamedQuery(name = "REPTA.findByTa096", query = "SELECT r FROM REPTA r WHERE r.ta096 = :ta096")
-    , @NamedQuery(name = "REPTA.findByTa097", query = "SELECT r FROM REPTA r WHERE r.ta097 = :ta097")
-    , @NamedQuery(name = "REPTA.findByTa098", query = "SELECT r FROM REPTA r WHERE r.ta098 = :ta098")
-    , @NamedQuery(name = "REPTA.findByTa099", query = "SELECT r FROM REPTA r WHERE r.ta099 = :ta099")
-    , @NamedQuery(name = "REPTA.findByTa100", query = "SELECT r FROM REPTA r WHERE r.ta100 = :ta100")
-    , @NamedQuery(name = "REPTA.findByTa101", query = "SELECT r FROM REPTA r WHERE r.ta101 = :ta101")})
+    @NamedQuery(name = "REPTA.findAll", query = "SELECT r FROM REPTA r"),
+    @NamedQuery(name = "REPTA.findByCompany", query = "SELECT r FROM REPTA r WHERE r.company = :company"),
+    @NamedQuery(name = "REPTA.findByCreator", query = "SELECT r FROM REPTA r WHERE r.creator = :creator"),
+    @NamedQuery(name = "REPTA.findByUsrGroup", query = "SELECT r FROM REPTA r WHERE r.usrGroup = :usrGroup"),
+    @NamedQuery(name = "REPTA.findByCreateDate", query = "SELECT r FROM REPTA r WHERE r.createDate = :createDate"),
+    @NamedQuery(name = "REPTA.findByModifier", query = "SELECT r FROM REPTA r WHERE r.modifier = :modifier"),
+    @NamedQuery(name = "REPTA.findByModiDate", query = "SELECT r FROM REPTA r WHERE r.modiDate = :modiDate"),
+    @NamedQuery(name = "REPTA.findByFlag", query = "SELECT r FROM REPTA r WHERE r.flag = :flag"),
+    @NamedQuery(name = "REPTA.findByTa001", query = "SELECT r FROM REPTA r WHERE r.rEPTAPK.ta001 = :ta001"),
+    @NamedQuery(name = "REPTA.findByTa002", query = "SELECT r FROM REPTA r WHERE r.rEPTAPK.ta002 = :ta002"),
+    @NamedQuery(name = "REPTA.findByTa003", query = "SELECT r FROM REPTA r WHERE r.ta003 = :ta003"),
+    @NamedQuery(name = "REPTA.findByTa004", query = "SELECT r FROM REPTA r WHERE r.ta004 = :ta004"),
+    @NamedQuery(name = "REPTA.findByTa005", query = "SELECT r FROM REPTA r WHERE r.ta005 = :ta005"),
+    @NamedQuery(name = "REPTA.findByTa006", query = "SELECT r FROM REPTA r WHERE r.ta006 = :ta006"),
+    @NamedQuery(name = "REPTA.findByTa007", query = "SELECT r FROM REPTA r WHERE r.ta007 = :ta007"),
+    @NamedQuery(name = "REPTA.findByTa008", query = "SELECT r FROM REPTA r WHERE r.ta008 = :ta008"),
+    @NamedQuery(name = "REPTA.findByTa009", query = "SELECT r FROM REPTA r WHERE r.ta009 = :ta009"),
+    @NamedQuery(name = "REPTA.findByTa010", query = "SELECT r FROM REPTA r WHERE r.ta010 = :ta010"),
+    @NamedQuery(name = "REPTA.findByTa011", query = "SELECT r FROM REPTA r WHERE r.ta011 = :ta011"),
+    @NamedQuery(name = "REPTA.findByTa012", query = "SELECT r FROM REPTA r WHERE r.ta012 = :ta012"),
+    @NamedQuery(name = "REPTA.findByTa013", query = "SELECT r FROM REPTA r WHERE r.ta013 = :ta013"),
+    @NamedQuery(name = "REPTA.findByTa014", query = "SELECT r FROM REPTA r WHERE r.ta014 = :ta014"),
+    @NamedQuery(name = "REPTA.findByTa015", query = "SELECT r FROM REPTA r WHERE r.ta015 = :ta015"),
+    @NamedQuery(name = "REPTA.findByTa016", query = "SELECT r FROM REPTA r WHERE r.ta016 = :ta016"),
+    @NamedQuery(name = "REPTA.findByTa017", query = "SELECT r FROM REPTA r WHERE r.ta017 = :ta017"),
+    @NamedQuery(name = "REPTA.findByTa018", query = "SELECT r FROM REPTA r WHERE r.ta018 = :ta018"),
+    @NamedQuery(name = "REPTA.findByTa019", query = "SELECT r FROM REPTA r WHERE r.ta019 = :ta019"),
+    @NamedQuery(name = "REPTA.findByTa020", query = "SELECT r FROM REPTA r WHERE r.ta020 = :ta020"),
+    @NamedQuery(name = "REPTA.findByTa021", query = "SELECT r FROM REPTA r WHERE r.ta021 = :ta021"),
+    @NamedQuery(name = "REPTA.findByTa022", query = "SELECT r FROM REPTA r WHERE r.ta022 = :ta022"),
+    @NamedQuery(name = "REPTA.findByTa023", query = "SELECT r FROM REPTA r WHERE r.ta023 = :ta023"),
+    @NamedQuery(name = "REPTA.findByTa024", query = "SELECT r FROM REPTA r WHERE r.ta024 = :ta024"),
+    @NamedQuery(name = "REPTA.findByTa025", query = "SELECT r FROM REPTA r WHERE r.ta025 = :ta025"),
+    @NamedQuery(name = "REPTA.findByTa026", query = "SELECT r FROM REPTA r WHERE r.ta026 = :ta026"),
+    @NamedQuery(name = "REPTA.findByTa027", query = "SELECT r FROM REPTA r WHERE r.ta027 = :ta027"),
+    @NamedQuery(name = "REPTA.findByTa028", query = "SELECT r FROM REPTA r WHERE r.ta028 = :ta028"),
+    @NamedQuery(name = "REPTA.findByTa029", query = "SELECT r FROM REPTA r WHERE r.ta029 = :ta029"),
+    @NamedQuery(name = "REPTA.findByTa030", query = "SELECT r FROM REPTA r WHERE r.ta030 = :ta030"),
+    @NamedQuery(name = "REPTA.findByTa031", query = "SELECT r FROM REPTA r WHERE r.ta031 = :ta031"),
+    @NamedQuery(name = "REPTA.findByTa032", query = "SELECT r FROM REPTA r WHERE r.ta032 = :ta032"),
+    @NamedQuery(name = "REPTA.findByTa033", query = "SELECT r FROM REPTA r WHERE r.ta033 = :ta033"),
+    @NamedQuery(name = "REPTA.findByTa034", query = "SELECT r FROM REPTA r WHERE r.ta034 = :ta034"),
+    @NamedQuery(name = "REPTA.findByTa035", query = "SELECT r FROM REPTA r WHERE r.ta035 = :ta035"),
+    @NamedQuery(name = "REPTA.findByTa036", query = "SELECT r FROM REPTA r WHERE r.ta036 = :ta036"),
+    @NamedQuery(name = "REPTA.findByTa037", query = "SELECT r FROM REPTA r WHERE r.ta037 = :ta037"),
+    @NamedQuery(name = "REPTA.findByTa038", query = "SELECT r FROM REPTA r WHERE r.ta038 = :ta038"),
+    @NamedQuery(name = "REPTA.findByTa039", query = "SELECT r FROM REPTA r WHERE r.ta039 = :ta039"),
+    @NamedQuery(name = "REPTA.findByTa040", query = "SELECT r FROM REPTA r WHERE r.ta040 = :ta040"),
+    @NamedQuery(name = "REPTA.findByTa041", query = "SELECT r FROM REPTA r WHERE r.ta041 = :ta041"),
+    @NamedQuery(name = "REPTA.findByTa042", query = "SELECT r FROM REPTA r WHERE r.ta042 = :ta042"),
+    @NamedQuery(name = "REPTA.findByTa043", query = "SELECT r FROM REPTA r WHERE r.ta043 = :ta043"),
+    @NamedQuery(name = "REPTA.findByTa044", query = "SELECT r FROM REPTA r WHERE r.ta044 = :ta044"),
+    @NamedQuery(name = "REPTA.findByTa045", query = "SELECT r FROM REPTA r WHERE r.ta045 = :ta045"),
+    @NamedQuery(name = "REPTA.findByTa046", query = "SELECT r FROM REPTA r WHERE r.ta046 = :ta046"),
+    @NamedQuery(name = "REPTA.findByTa047", query = "SELECT r FROM REPTA r WHERE r.ta047 = :ta047"),
+    @NamedQuery(name = "REPTA.findByTa048", query = "SELECT r FROM REPTA r WHERE r.ta048 = :ta048"),
+    @NamedQuery(name = "REPTA.findByTa049", query = "SELECT r FROM REPTA r WHERE r.ta049 = :ta049"),
+    @NamedQuery(name = "REPTA.findByTa050", query = "SELECT r FROM REPTA r WHERE r.ta050 = :ta050"),
+    @NamedQuery(name = "REPTA.findByTa051", query = "SELECT r FROM REPTA r WHERE r.ta051 = :ta051"),
+    @NamedQuery(name = "REPTA.findByTa052", query = "SELECT r FROM REPTA r WHERE r.ta052 = :ta052"),
+    @NamedQuery(name = "REPTA.findByTa053", query = "SELECT r FROM REPTA r WHERE r.ta053 = :ta053"),
+    @NamedQuery(name = "REPTA.findByTa054", query = "SELECT r FROM REPTA r WHERE r.ta054 = :ta054"),
+    @NamedQuery(name = "REPTA.findByTa055", query = "SELECT r FROM REPTA r WHERE r.ta055 = :ta055"),
+    @NamedQuery(name = "REPTA.findByTa056", query = "SELECT r FROM REPTA r WHERE r.ta056 = :ta056"),
+    @NamedQuery(name = "REPTA.findByTa057", query = "SELECT r FROM REPTA r WHERE r.ta057 = :ta057"),
+    @NamedQuery(name = "REPTA.findByTa058", query = "SELECT r FROM REPTA r WHERE r.ta058 = :ta058"),
+    @NamedQuery(name = "REPTA.findByTa059", query = "SELECT r FROM REPTA r WHERE r.ta059 = :ta059"),
+    @NamedQuery(name = "REPTA.findByTa060", query = "SELECT r FROM REPTA r WHERE r.ta060 = :ta060"),
+    @NamedQuery(name = "REPTA.findByTa061", query = "SELECT r FROM REPTA r WHERE r.ta061 = :ta061"),
+    @NamedQuery(name = "REPTA.findByTa062", query = "SELECT r FROM REPTA r WHERE r.ta062 = :ta062"),
+    @NamedQuery(name = "REPTA.findByTa063", query = "SELECT r FROM REPTA r WHERE r.ta063 = :ta063"),
+    @NamedQuery(name = "REPTA.findByTa064", query = "SELECT r FROM REPTA r WHERE r.ta064 = :ta064"),
+    @NamedQuery(name = "REPTA.findByTa065", query = "SELECT r FROM REPTA r WHERE r.ta065 = :ta065"),
+    @NamedQuery(name = "REPTA.findByTa066", query = "SELECT r FROM REPTA r WHERE r.ta066 = :ta066"),
+    @NamedQuery(name = "REPTA.findByTa067", query = "SELECT r FROM REPTA r WHERE r.ta067 = :ta067"),
+    @NamedQuery(name = "REPTA.findByTa068", query = "SELECT r FROM REPTA r WHERE r.ta068 = :ta068"),
+    @NamedQuery(name = "REPTA.findByTa069", query = "SELECT r FROM REPTA r WHERE r.ta069 = :ta069"),
+    @NamedQuery(name = "REPTA.findByTa070", query = "SELECT r FROM REPTA r WHERE r.ta070 = :ta070"),
+    @NamedQuery(name = "REPTA.findByTa071", query = "SELECT r FROM REPTA r WHERE r.ta071 = :ta071"),
+    @NamedQuery(name = "REPTA.findByTa072", query = "SELECT r FROM REPTA r WHERE r.ta072 = :ta072"),
+    @NamedQuery(name = "REPTA.findByTa073", query = "SELECT r FROM REPTA r WHERE r.ta073 = :ta073"),
+    @NamedQuery(name = "REPTA.findByTa074", query = "SELECT r FROM REPTA r WHERE r.ta074 = :ta074"),
+    @NamedQuery(name = "REPTA.findByTa075", query = "SELECT r FROM REPTA r WHERE r.ta075 = :ta075"),
+    @NamedQuery(name = "REPTA.findByTa076", query = "SELECT r FROM REPTA r WHERE r.ta076 = :ta076"),
+    @NamedQuery(name = "REPTA.findByTa077", query = "SELECT r FROM REPTA r WHERE r.ta077 = :ta077"),
+    @NamedQuery(name = "REPTA.findByTa078", query = "SELECT r FROM REPTA r WHERE r.ta078 = :ta078"),
+    @NamedQuery(name = "REPTA.findByTa079", query = "SELECT r FROM REPTA r WHERE r.ta079 = :ta079"),
+    @NamedQuery(name = "REPTA.findByCustomer", query = "SELECT r FROM REPTA r WHERE r.customer = :customer"),
+    @NamedQuery(name = "REPTA.findByProduct", query = "SELECT r FROM REPTA r WHERE r.product = :product"),
+    @NamedQuery(name = "REPTA.findByRegion", query = "SELECT r FROM REPTA r WHERE r.region = :region"),
+    @NamedQuery(name = "REPTA.findByDealer", query = "SELECT r FROM REPTA r WHERE r.dealer = :dealer"),
+    @NamedQuery(name = "REPTA.findByTa080", query = "SELECT r FROM REPTA r WHERE r.ta080 = :ta080"),
+    @NamedQuery(name = "REPTA.findByTa081", query = "SELECT r FROM REPTA r WHERE r.ta081 = :ta081"),
+    @NamedQuery(name = "REPTA.findByTa197", query = "SELECT r FROM REPTA r WHERE r.ta197 = :ta197"),
+    @NamedQuery(name = "REPTA.findByTa198", query = "SELECT r FROM REPTA r WHERE r.ta198 = :ta198"),
+    @NamedQuery(name = "REPTA.findByTa199", query = "SELECT r FROM REPTA r WHERE r.ta199 = :ta199"),
+    @NamedQuery(name = "REPTA.findByTa082", query = "SELECT r FROM REPTA r WHERE r.ta082 = :ta082"),
+    @NamedQuery(name = "REPTA.findByTa083", query = "SELECT r FROM REPTA r WHERE r.ta083 = :ta083"),
+    @NamedQuery(name = "REPTA.findByTa084", query = "SELECT r FROM REPTA r WHERE r.ta084 = :ta084"),
+    @NamedQuery(name = "REPTA.findByTa085", query = "SELECT r FROM REPTA r WHERE r.ta085 = :ta085"),
+    @NamedQuery(name = "REPTA.findByTa086", query = "SELECT r FROM REPTA r WHERE r.ta086 = :ta086"),
+    @NamedQuery(name = "REPTA.findByTa087", query = "SELECT r FROM REPTA r WHERE r.ta087 = :ta087"),
+    @NamedQuery(name = "REPTA.findByTa088", query = "SELECT r FROM REPTA r WHERE r.ta088 = :ta088"),
+    @NamedQuery(name = "REPTA.findByTa089", query = "SELECT r FROM REPTA r WHERE r.ta089 = :ta089"),
+    @NamedQuery(name = "REPTA.findByTa090", query = "SELECT r FROM REPTA r WHERE r.ta090 = :ta090"),
+    @NamedQuery(name = "REPTA.findByRepta01", query = "SELECT r FROM REPTA r WHERE r.repta01 = :repta01"),
+    @NamedQuery(name = "REPTA.findByRepta02", query = "SELECT r FROM REPTA r WHERE r.repta02 = :repta02"),
+    @NamedQuery(name = "REPTA.findByRepta03", query = "SELECT r FROM REPTA r WHERE r.repta03 = :repta03"),
+    @NamedQuery(name = "REPTA.findByRepta04", query = "SELECT r FROM REPTA r WHERE r.repta04 = :repta04"),
+    @NamedQuery(name = "REPTA.findByRepta05", query = "SELECT r FROM REPTA r WHERE r.repta05 = :repta05"),
+    @NamedQuery(name = "REPTA.findByRepta06", query = "SELECT r FROM REPTA r WHERE r.repta06 = :repta06"),
+    @NamedQuery(name = "REPTA.findByRepta07", query = "SELECT r FROM REPTA r WHERE r.repta07 = :repta07"),
+    @NamedQuery(name = "REPTA.findByRepta08", query = "SELECT r FROM REPTA r WHERE r.repta08 = :repta08"),
+    @NamedQuery(name = "REPTA.findByRepta09", query = "SELECT r FROM REPTA r WHERE r.repta09 = :repta09"),
+    @NamedQuery(name = "REPTA.findByRepta10", query = "SELECT r FROM REPTA r WHERE r.repta10 = :repta10"),
+    @NamedQuery(name = "REPTA.findByRepta11", query = "SELECT r FROM REPTA r WHERE r.repta11 = :repta11"),
+    @NamedQuery(name = "REPTA.findByRepta12", query = "SELECT r FROM REPTA r WHERE r.repta12 = :repta12"),
+    @NamedQuery(name = "REPTA.findByRepta13", query = "SELECT r FROM REPTA r WHERE r.repta13 = :repta13"),
+    @NamedQuery(name = "REPTA.findByRepta14", query = "SELECT r FROM REPTA r WHERE r.repta14 = :repta14"),
+    @NamedQuery(name = "REPTA.findByRepta15", query = "SELECT r FROM REPTA r WHERE r.repta15 = :repta15"),
+    @NamedQuery(name = "REPTA.findByRepta16", query = "SELECT r FROM REPTA r WHERE r.repta16 = :repta16"),
+    @NamedQuery(name = "REPTA.findByRepta17", query = "SELECT r FROM REPTA r WHERE r.repta17 = :repta17"),
+    @NamedQuery(name = "REPTA.findByRepta18", query = "SELECT r FROM REPTA r WHERE r.repta18 = :repta18"),
+    @NamedQuery(name = "REPTA.findByRepta19", query = "SELECT r FROM REPTA r WHERE r.repta19 = :repta19"),
+    @NamedQuery(name = "REPTA.findByRepta20", query = "SELECT r FROM REPTA r WHERE r.repta20 = :repta20"),
+    @NamedQuery(name = "REPTA.findByTa091", query = "SELECT r FROM REPTA r WHERE r.ta091 = :ta091"),
+    @NamedQuery(name = "REPTA.findByTa092", query = "SELECT r FROM REPTA r WHERE r.ta092 = :ta092"),
+    @NamedQuery(name = "REPTA.findByTa093", query = "SELECT r FROM REPTA r WHERE r.ta093 = :ta093"),
+    @NamedQuery(name = "REPTA.findByTa094", query = "SELECT r FROM REPTA r WHERE r.ta094 = :ta094"),
+    @NamedQuery(name = "REPTA.findByTa500", query = "SELECT r FROM REPTA r WHERE r.ta500 = :ta500"),
+    @NamedQuery(name = "REPTA.findByTa095", query = "SELECT r FROM REPTA r WHERE r.ta095 = :ta095"),
+    @NamedQuery(name = "REPTA.findByTa096", query = "SELECT r FROM REPTA r WHERE r.ta096 = :ta096"),
+    @NamedQuery(name = "REPTA.findByTa097", query = "SELECT r FROM REPTA r WHERE r.ta097 = :ta097"),
+    @NamedQuery(name = "REPTA.findByTa098", query = "SELECT r FROM REPTA r WHERE r.ta098 = :ta098"),
+    @NamedQuery(name = "REPTA.findByTa099", query = "SELECT r FROM REPTA r WHERE r.ta099 = :ta099"),
+    @NamedQuery(name = "REPTA.findByTa100", query = "SELECT r FROM REPTA r WHERE r.ta100 = :ta100"),
+    @NamedQuery(name = "REPTA.findByTa101", query = "SELECT r FROM REPTA r WHERE r.ta101 = :ta101")})
 public class REPTA implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -1666,5 +1666,5 @@ public class REPTA implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.REPTA[ rEPTAPK=" + rEPTAPK + " ]";
     }
-    
+
 }

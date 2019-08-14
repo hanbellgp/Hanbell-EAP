@@ -82,5 +82,5 @@ public class OrgUnitOrgUnitPropertyPK implements Serializable {
     public String toString() {
         return "com.hanbell.oa.entity.OrgUnitOrgUnitPropertyPK[ organizationUnitPropertyOID=" + organizationUnitPropertyOID + ", organizationUnitOID=" + organizationUnitOID + " ]";
     }
-    
+
 }

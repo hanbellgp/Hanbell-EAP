@@ -69,7 +69,7 @@ public class HZCW017Model implements Serializable {
             return false;
         }
         HZCW017Model hzcw017m = (HZCW017Model) object;
-        if ((this.getLoanUser() != null) && (hzcw017m.getLoanUser()!= null)) {
+        if ((this.getLoanUser() != null) && (hzcw017m.getLoanUser() != null)) {
             return this.getLoanUser().equals(hzcw017m.getLoanUser());
         }
         return true;
@@ -360,5 +360,4 @@ public class HZCW017Model implements Serializable {
         this.userTitle = userTitle;
     }
 
-    
 }

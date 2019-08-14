@@ -421,5 +421,5 @@ public class HZCW005 implements Serializable {
     public void setHdnApplyuser(String hdnApplyuser) {
         this.hdnApplyuser = hdnApplyuser;
     }
-    
+
 }

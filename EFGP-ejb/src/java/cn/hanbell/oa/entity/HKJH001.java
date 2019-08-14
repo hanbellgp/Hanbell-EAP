@@ -847,5 +847,5 @@ public class HKJH001 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKJH001[ oid=" + oid + " ]";
     }
-    
+
 }

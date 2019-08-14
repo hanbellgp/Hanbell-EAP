@@ -16,9 +16,9 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class HKCG006Bean extends SuperEJBForEFGP<HKCG006>{
+public class HKCG006Bean extends SuperEJBForEFGP<HKCG006> {
 
-    public HKCG006Bean(){
-           super(HKCG006.class);
+    public HKCG006Bean() {
+        super(HKCG006.class);
     }
 }

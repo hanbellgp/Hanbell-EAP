@@ -16,10 +16,10 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class HKJH005DetailBean extends SuperEJBForEFGP<HKJH005Detail>{ 
+public class HKJH005DetailBean extends SuperEJBForEFGP<HKJH005Detail> {
 
-    public HKJH005DetailBean(){
-        super( HKJH005Detail.class);
+    public HKJH005DetailBean() {
+        super(HKJH005Detail.class);
     }
-  
+
 }

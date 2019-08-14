@@ -28,20 +28,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SHB_ERP_MIS226")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SHBERPMIS226.findAll", query = "SELECT s FROM SHBERPMIS226 s")
-    ,
-    @NamedQuery(name = "SHBERPMIS226.findBySerialNumber", query = "SELECT s FROM SHBERPMIS226 s WHERE s.serialNumber = :serialNumber")
-    ,
-    @NamedQuery(name = "SHBERPMIS226.findByDept", query = "SELECT s FROM SHBERPMIS226 s WHERE s.dept = :dept")
-    ,
-    @NamedQuery(name = "SHBERPMIS226.findByOID", query = "SELECT s FROM SHBERPMIS226 s WHERE s.oid = :oid")
-    ,
-    @NamedQuery(name = "SHBERPMIS226.findByFacno", query = "SELECT s FROM SHBERPMIS226 s WHERE s.facno = :facno")
-    ,
-    @NamedQuery(name = "SHBERPMIS226.findByApplyuser", query = "SELECT s FROM SHBERPMIS226 s WHERE s.applyuser = :applyuser")
-    ,
-    @NamedQuery(name = "SHBERPMIS226.findByPSN", query = "SELECT s FROM SHBERPMIS226 s WHERE s.processSerialNumber = :psn")
-    ,
+    @NamedQuery(name = "SHBERPMIS226.findAll", query = "SELECT s FROM SHBERPMIS226 s"),
+    @NamedQuery(name = "SHBERPMIS226.findBySerialNumber", query = "SELECT s FROM SHBERPMIS226 s WHERE s.serialNumber = :serialNumber"),
+    @NamedQuery(name = "SHBERPMIS226.findByDept", query = "SELECT s FROM SHBERPMIS226 s WHERE s.dept = :dept"),
+    @NamedQuery(name = "SHBERPMIS226.findByOID", query = "SELECT s FROM SHBERPMIS226 s WHERE s.oid = :oid"),
+    @NamedQuery(name = "SHBERPMIS226.findByFacno", query = "SELECT s FROM SHBERPMIS226 s WHERE s.facno = :facno"),
+    @NamedQuery(name = "SHBERPMIS226.findByApplyuser", query = "SELECT s FROM SHBERPMIS226 s WHERE s.applyuser = :applyuser"),
+    @NamedQuery(name = "SHBERPMIS226.findByPSN", query = "SELECT s FROM SHBERPMIS226 s WHERE s.processSerialNumber = :psn"),
     @NamedQuery(name = "SHBERPMIS226.findByFSN", query = "SELECT s FROM SHBERPMIS226 s WHERE s.formSerialNumber = :fsn")})
 public class SHBERPMIS226 implements Serializable {
 

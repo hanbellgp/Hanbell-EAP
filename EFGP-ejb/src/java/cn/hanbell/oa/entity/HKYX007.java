@@ -28,12 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "HK_YX007")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HKYX007.findAll", query = "SELECT h FROM HKYX007 h")
-    ,
-    @NamedQuery(name = "HKYX007.findByOID", query = "SELECT h FROM HKYX007 h WHERE h.oid = :oid")
-    ,
-    @NamedQuery(name = "HKYX007.findByPSN", query = "SELECT h FROM HKYX007 h WHERE h.processSerialNumber = :psn")
-    ,
+    @NamedQuery(name = "HKYX007.findAll", query = "SELECT h FROM HKYX007 h"),
+    @NamedQuery(name = "HKYX007.findByOID", query = "SELECT h FROM HKYX007 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKYX007.findByPSN", query = "SELECT h FROM HKYX007 h WHERE h.processSerialNumber = :psn"),
     @NamedQuery(name = "HKYX007.findByFSN", query = "SELECT h FROM HKYX007 h WHERE h.formSerialNumber = :fsn")})
 public class HKYX007 implements Serializable {
 

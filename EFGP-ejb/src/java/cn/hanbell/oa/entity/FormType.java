@@ -106,5 +106,5 @@ public class FormType implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.FormType[ oid=" + oid + " ]";
     }
-    
+
 }

@@ -485,5 +485,5 @@ public class VHTK001Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.VHTK001Detail[ oid=" + oid + " ]";
     }
-    
+
 }

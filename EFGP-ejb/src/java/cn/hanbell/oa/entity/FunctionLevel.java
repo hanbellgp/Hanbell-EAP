@@ -150,5 +150,5 @@ public class FunctionLevel implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.FunctionLevel[ oid=" + oid + " ]";
     }
-    
+
 }

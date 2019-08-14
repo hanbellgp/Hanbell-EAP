@@ -148,5 +148,5 @@ public class HKJH004Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKJH004Detail[ oid=" + oid + " ]";
     }
-    
+
 }

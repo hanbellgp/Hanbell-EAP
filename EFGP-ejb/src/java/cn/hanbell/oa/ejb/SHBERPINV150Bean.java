@@ -19,11 +19,12 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class SHBERPINV150Bean extends SuperEJBForEFGP<SHBERPINV150>{
+public class SHBERPINV150Bean extends SuperEJBForEFGP<SHBERPINV150> {
+
     @EJB
     private SHBERPINV150DetailBean shberpinv150DetailBean;
-    private List<SHBERPINV150Detail> detailList ;
-    
+    private List<SHBERPINV150Detail> detailList;
+
     public SHBERPINV150Bean() {
         super(SHBERPINV150.class);
     }
@@ -35,6 +36,5 @@ public class SHBERPINV150Bean extends SuperEJBForEFGP<SHBERPINV150>{
     public void setDetailList(List<SHBERPINV150Detail> detailList) {
         this.detailList = detailList;
     }
-     
-    
+
 }

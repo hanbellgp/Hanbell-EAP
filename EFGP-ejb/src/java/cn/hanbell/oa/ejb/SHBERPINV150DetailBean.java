@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class SHBERPINV150DetailBean extends SuperEJBForEFGP<SHBERPINV150Detail>{
+public class SHBERPINV150DetailBean extends SuperEJBForEFGP<SHBERPINV150Detail> {
 
     public SHBERPINV150DetailBean() {
         super(SHBERPINV150Detail.class);

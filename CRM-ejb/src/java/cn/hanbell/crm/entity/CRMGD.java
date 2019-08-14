@@ -27,93 +27,93 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "CRMGD")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CRMGD.findAll", query = "SELECT c FROM CRMGD c")
-    , @NamedQuery(name = "CRMGD.findByCompany", query = "SELECT c FROM CRMGD c WHERE c.company = :company")
-    , @NamedQuery(name = "CRMGD.findByCreator", query = "SELECT c FROM CRMGD c WHERE c.creator = :creator")
-    , @NamedQuery(name = "CRMGD.findByUsrGroup", query = "SELECT c FROM CRMGD c WHERE c.usrGroup = :usrGroup")
-    , @NamedQuery(name = "CRMGD.findByCreateDate", query = "SELECT c FROM CRMGD c WHERE c.createDate = :createDate")
-    , @NamedQuery(name = "CRMGD.findByModifier", query = "SELECT c FROM CRMGD c WHERE c.modifier = :modifier")
-    , @NamedQuery(name = "CRMGD.findByModiDate", query = "SELECT c FROM CRMGD c WHERE c.modiDate = :modiDate")
-    , @NamedQuery(name = "CRMGD.findByFlag", query = "SELECT c FROM CRMGD c WHERE c.flag = :flag")
-    , @NamedQuery(name = "CRMGD.findByGd001", query = "SELECT c FROM CRMGD c WHERE c.gd001 = :gd001")
-    , @NamedQuery(name = "CRMGD.findByGd002", query = "SELECT c FROM CRMGD c WHERE c.gd002 = :gd002")
-    , @NamedQuery(name = "CRMGD.findByGd003", query = "SELECT c FROM CRMGD c WHERE c.gd003 = :gd003")
-    , @NamedQuery(name = "CRMGD.findByGd004", query = "SELECT c FROM CRMGD c WHERE c.gd004 = :gd004")
-    , @NamedQuery(name = "CRMGD.findByGd005", query = "SELECT c FROM CRMGD c WHERE c.gd005 = :gd005")
-    , @NamedQuery(name = "CRMGD.findByGd006", query = "SELECT c FROM CRMGD c WHERE c.gd006 = :gd006")
-    , @NamedQuery(name = "CRMGD.findByGd007", query = "SELECT c FROM CRMGD c WHERE c.gd007 = :gd007")
-    , @NamedQuery(name = "CRMGD.findByGd008", query = "SELECT c FROM CRMGD c WHERE c.gd008 = :gd008")
-    , @NamedQuery(name = "CRMGD.findByGd009", query = "SELECT c FROM CRMGD c WHERE c.gd009 = :gd009")
-    , @NamedQuery(name = "CRMGD.findByGd010", query = "SELECT c FROM CRMGD c WHERE c.gd010 = :gd010")
-    , @NamedQuery(name = "CRMGD.findByGd011", query = "SELECT c FROM CRMGD c WHERE c.gd011 = :gd011")
-    , @NamedQuery(name = "CRMGD.findByGd012", query = "SELECT c FROM CRMGD c WHERE c.gd012 = :gd012")
-    , @NamedQuery(name = "CRMGD.findByGd013", query = "SELECT c FROM CRMGD c WHERE c.gd013 = :gd013")
-    , @NamedQuery(name = "CRMGD.findByGd014", query = "SELECT c FROM CRMGD c WHERE c.gd014 = :gd014")
-    , @NamedQuery(name = "CRMGD.findByGd015", query = "SELECT c FROM CRMGD c WHERE c.gd015 = :gd015")
-    , @NamedQuery(name = "CRMGD.findByGd016", query = "SELECT c FROM CRMGD c WHERE c.gd016 = :gd016")
-    , @NamedQuery(name = "CRMGD.findByGd017", query = "SELECT c FROM CRMGD c WHERE c.gd017 = :gd017")
-    , @NamedQuery(name = "CRMGD.findByGd018", query = "SELECT c FROM CRMGD c WHERE c.gd018 = :gd018")
-    , @NamedQuery(name = "CRMGD.findByGd019", query = "SELECT c FROM CRMGD c WHERE c.gd019 = :gd019")
-    , @NamedQuery(name = "CRMGD.findByGd020", query = "SELECT c FROM CRMGD c WHERE c.gd020 = :gd020")
-    , @NamedQuery(name = "CRMGD.findByGd021", query = "SELECT c FROM CRMGD c WHERE c.gd021 = :gd021")
-    , @NamedQuery(name = "CRMGD.findByGd022", query = "SELECT c FROM CRMGD c WHERE c.gd022 = :gd022")
-    , @NamedQuery(name = "CRMGD.findByGd023", query = "SELECT c FROM CRMGD c WHERE c.gd023 = :gd023")
-    , @NamedQuery(name = "CRMGD.findByGd024", query = "SELECT c FROM CRMGD c WHERE c.gd024 = :gd024")
-    , @NamedQuery(name = "CRMGD.findByGd025", query = "SELECT c FROM CRMGD c WHERE c.gd025 = :gd025")
-    , @NamedQuery(name = "CRMGD.findByGd026", query = "SELECT c FROM CRMGD c WHERE c.gd026 = :gd026")
-    , @NamedQuery(name = "CRMGD.findByGd027", query = "SELECT c FROM CRMGD c WHERE c.gd027 = :gd027")
-    , @NamedQuery(name = "CRMGD.findByGd028", query = "SELECT c FROM CRMGD c WHERE c.gd028 = :gd028")
-    , @NamedQuery(name = "CRMGD.findByGd029", query = "SELECT c FROM CRMGD c WHERE c.gd029 = :gd029")
-    , @NamedQuery(name = "CRMGD.findByGd030", query = "SELECT c FROM CRMGD c WHERE c.gd030 = :gd030")
-    , @NamedQuery(name = "CRMGD.findByGd031", query = "SELECT c FROM CRMGD c WHERE c.gd031 = :gd031")
-    , @NamedQuery(name = "CRMGD.findByGd032", query = "SELECT c FROM CRMGD c WHERE c.gd032 = :gd032")
-    , @NamedQuery(name = "CRMGD.findByGd033", query = "SELECT c FROM CRMGD c WHERE c.gd033 = :gd033")
-    , @NamedQuery(name = "CRMGD.findByGd034", query = "SELECT c FROM CRMGD c WHERE c.gd034 = :gd034")
-    , @NamedQuery(name = "CRMGD.findByGd035", query = "SELECT c FROM CRMGD c WHERE c.gd035 = :gd035")
-    , @NamedQuery(name = "CRMGD.findByGd036", query = "SELECT c FROM CRMGD c WHERE c.gd036 = :gd036")
-    , @NamedQuery(name = "CRMGD.findByGd037", query = "SELECT c FROM CRMGD c WHERE c.gd037 = :gd037")
-    , @NamedQuery(name = "CRMGD.findByGd038", query = "SELECT c FROM CRMGD c WHERE c.gd038 = :gd038")
-    , @NamedQuery(name = "CRMGD.findByGd040", query = "SELECT c FROM CRMGD c WHERE c.gd040 = :gd040")
-    , @NamedQuery(name = "CRMGD.findByCustomer", query = "SELECT c FROM CRMGD c WHERE c.customer = :customer")
-    , @NamedQuery(name = "CRMGD.findByProduct", query = "SELECT c FROM CRMGD c WHERE c.product = :product")
-    , @NamedQuery(name = "CRMGD.findByRegion", query = "SELECT c FROM CRMGD c WHERE c.region = :region")
-    , @NamedQuery(name = "CRMGD.findByDealer", query = "SELECT c FROM CRMGD c WHERE c.dealer = :dealer")
-    , @NamedQuery(name = "CRMGD.findByGd041", query = "SELECT c FROM CRMGD c WHERE c.gd041 = :gd041")
-    , @NamedQuery(name = "CRMGD.findByGd042", query = "SELECT c FROM CRMGD c WHERE c.gd042 = :gd042")
-    , @NamedQuery(name = "CRMGD.findByGd197", query = "SELECT c FROM CRMGD c WHERE c.gd197 = :gd197")
-    , @NamedQuery(name = "CRMGD.findByGd198", query = "SELECT c FROM CRMGD c WHERE c.gd198 = :gd198")
-    , @NamedQuery(name = "CRMGD.findByGd199", query = "SELECT c FROM CRMGD c WHERE c.gd199 = :gd199")
-    , @NamedQuery(name = "CRMGD.findByGd043", query = "SELECT c FROM CRMGD c WHERE c.gd043 = :gd043")
-    , @NamedQuery(name = "CRMGD.findByCrmgd01", query = "SELECT c FROM CRMGD c WHERE c.crmgd01 = :crmgd01")
-    , @NamedQuery(name = "CRMGD.findByCrmgd02", query = "SELECT c FROM CRMGD c WHERE c.crmgd02 = :crmgd02")
-    , @NamedQuery(name = "CRMGD.findByCrmgd03", query = "SELECT c FROM CRMGD c WHERE c.crmgd03 = :crmgd03")
-    , @NamedQuery(name = "CRMGD.findByCrmgd04", query = "SELECT c FROM CRMGD c WHERE c.crmgd04 = :crmgd04")
-    , @NamedQuery(name = "CRMGD.findByCrmgd05", query = "SELECT c FROM CRMGD c WHERE c.crmgd05 = :crmgd05")
-    , @NamedQuery(name = "CRMGD.findByCrmgd06", query = "SELECT c FROM CRMGD c WHERE c.crmgd06 = :crmgd06")
-    , @NamedQuery(name = "CRMGD.findByCrmgd07", query = "SELECT c FROM CRMGD c WHERE c.crmgd07 = :crmgd07")
-    , @NamedQuery(name = "CRMGD.findByCrmgd08", query = "SELECT c FROM CRMGD c WHERE c.crmgd08 = :crmgd08")
-    , @NamedQuery(name = "CRMGD.findByCrmgd09", query = "SELECT c FROM CRMGD c WHERE c.crmgd09 = :crmgd09")
-    , @NamedQuery(name = "CRMGD.findByCrmgd10", query = "SELECT c FROM CRMGD c WHERE c.crmgd10 = :crmgd10")
-    , @NamedQuery(name = "CRMGD.findByCrmgd11", query = "SELECT c FROM CRMGD c WHERE c.crmgd11 = :crmgd11")
-    , @NamedQuery(name = "CRMGD.findByCrmgd12", query = "SELECT c FROM CRMGD c WHERE c.crmgd12 = :crmgd12")
-    , @NamedQuery(name = "CRMGD.findByCrmgd13", query = "SELECT c FROM CRMGD c WHERE c.crmgd13 = :crmgd13")
-    , @NamedQuery(name = "CRMGD.findByCrmgd14", query = "SELECT c FROM CRMGD c WHERE c.crmgd14 = :crmgd14")
-    , @NamedQuery(name = "CRMGD.findByCrmgd15", query = "SELECT c FROM CRMGD c WHERE c.crmgd15 = :crmgd15")
-    , @NamedQuery(name = "CRMGD.findByCrmgd16", query = "SELECT c FROM CRMGD c WHERE c.crmgd16 = :crmgd16")
-    , @NamedQuery(name = "CRMGD.findByCrmgd17", query = "SELECT c FROM CRMGD c WHERE c.crmgd17 = :crmgd17")
-    , @NamedQuery(name = "CRMGD.findByCrmgd18", query = "SELECT c FROM CRMGD c WHERE c.crmgd18 = :crmgd18")
-    , @NamedQuery(name = "CRMGD.findByCrmgd19", query = "SELECT c FROM CRMGD c WHERE c.crmgd19 = :crmgd19")
-    , @NamedQuery(name = "CRMGD.findByCrmgd20", query = "SELECT c FROM CRMGD c WHERE c.crmgd20 = :crmgd20")
-    , @NamedQuery(name = "CRMGD.findByGd044", query = "SELECT c FROM CRMGD c WHERE c.gd044 = :gd044")
-    , @NamedQuery(name = "CRMGD.findByGd045", query = "SELECT c FROM CRMGD c WHERE c.gd045 = :gd045")
-    , @NamedQuery(name = "CRMGD.findByGd046", query = "SELECT c FROM CRMGD c WHERE c.gd046 = :gd046")
-    , @NamedQuery(name = "CRMGD.findByGd047", query = "SELECT c FROM CRMGD c WHERE c.gd047 = :gd047")
-    , @NamedQuery(name = "CRMGD.findByGd048", query = "SELECT c FROM CRMGD c WHERE c.gd048 = :gd048")
-    , @NamedQuery(name = "CRMGD.findByGd049", query = "SELECT c FROM CRMGD c WHERE c.gd049 = :gd049")
-    , @NamedQuery(name = "CRMGD.findByGd050", query = "SELECT c FROM CRMGD c WHERE c.gd050 = :gd050")
-    , @NamedQuery(name = "CRMGD.findByGd051", query = "SELECT c FROM CRMGD c WHERE c.gd051 = :gd051")
-    , @NamedQuery(name = "CRMGD.findByGd052", query = "SELECT c FROM CRMGD c WHERE c.gd052 = :gd052")
-    , @NamedQuery(name = "CRMGD.findByGd053", query = "SELECT c FROM CRMGD c WHERE c.gd053 = :gd053")})
+    @NamedQuery(name = "CRMGD.findAll", query = "SELECT c FROM CRMGD c"),
+    @NamedQuery(name = "CRMGD.findByCompany", query = "SELECT c FROM CRMGD c WHERE c.company = :company"),
+    @NamedQuery(name = "CRMGD.findByCreator", query = "SELECT c FROM CRMGD c WHERE c.creator = :creator"),
+    @NamedQuery(name = "CRMGD.findByUsrGroup", query = "SELECT c FROM CRMGD c WHERE c.usrGroup = :usrGroup"),
+    @NamedQuery(name = "CRMGD.findByCreateDate", query = "SELECT c FROM CRMGD c WHERE c.createDate = :createDate"),
+    @NamedQuery(name = "CRMGD.findByModifier", query = "SELECT c FROM CRMGD c WHERE c.modifier = :modifier"),
+    @NamedQuery(name = "CRMGD.findByModiDate", query = "SELECT c FROM CRMGD c WHERE c.modiDate = :modiDate"),
+    @NamedQuery(name = "CRMGD.findByFlag", query = "SELECT c FROM CRMGD c WHERE c.flag = :flag"),
+    @NamedQuery(name = "CRMGD.findByGd001", query = "SELECT c FROM CRMGD c WHERE c.gd001 = :gd001"),
+    @NamedQuery(name = "CRMGD.findByGd002", query = "SELECT c FROM CRMGD c WHERE c.gd002 = :gd002"),
+    @NamedQuery(name = "CRMGD.findByGd003", query = "SELECT c FROM CRMGD c WHERE c.gd003 = :gd003"),
+    @NamedQuery(name = "CRMGD.findByGd004", query = "SELECT c FROM CRMGD c WHERE c.gd004 = :gd004"),
+    @NamedQuery(name = "CRMGD.findByGd005", query = "SELECT c FROM CRMGD c WHERE c.gd005 = :gd005"),
+    @NamedQuery(name = "CRMGD.findByGd006", query = "SELECT c FROM CRMGD c WHERE c.gd006 = :gd006"),
+    @NamedQuery(name = "CRMGD.findByGd007", query = "SELECT c FROM CRMGD c WHERE c.gd007 = :gd007"),
+    @NamedQuery(name = "CRMGD.findByGd008", query = "SELECT c FROM CRMGD c WHERE c.gd008 = :gd008"),
+    @NamedQuery(name = "CRMGD.findByGd009", query = "SELECT c FROM CRMGD c WHERE c.gd009 = :gd009"),
+    @NamedQuery(name = "CRMGD.findByGd010", query = "SELECT c FROM CRMGD c WHERE c.gd010 = :gd010"),
+    @NamedQuery(name = "CRMGD.findByGd011", query = "SELECT c FROM CRMGD c WHERE c.gd011 = :gd011"),
+    @NamedQuery(name = "CRMGD.findByGd012", query = "SELECT c FROM CRMGD c WHERE c.gd012 = :gd012"),
+    @NamedQuery(name = "CRMGD.findByGd013", query = "SELECT c FROM CRMGD c WHERE c.gd013 = :gd013"),
+    @NamedQuery(name = "CRMGD.findByGd014", query = "SELECT c FROM CRMGD c WHERE c.gd014 = :gd014"),
+    @NamedQuery(name = "CRMGD.findByGd015", query = "SELECT c FROM CRMGD c WHERE c.gd015 = :gd015"),
+    @NamedQuery(name = "CRMGD.findByGd016", query = "SELECT c FROM CRMGD c WHERE c.gd016 = :gd016"),
+    @NamedQuery(name = "CRMGD.findByGd017", query = "SELECT c FROM CRMGD c WHERE c.gd017 = :gd017"),
+    @NamedQuery(name = "CRMGD.findByGd018", query = "SELECT c FROM CRMGD c WHERE c.gd018 = :gd018"),
+    @NamedQuery(name = "CRMGD.findByGd019", query = "SELECT c FROM CRMGD c WHERE c.gd019 = :gd019"),
+    @NamedQuery(name = "CRMGD.findByGd020", query = "SELECT c FROM CRMGD c WHERE c.gd020 = :gd020"),
+    @NamedQuery(name = "CRMGD.findByGd021", query = "SELECT c FROM CRMGD c WHERE c.gd021 = :gd021"),
+    @NamedQuery(name = "CRMGD.findByGd022", query = "SELECT c FROM CRMGD c WHERE c.gd022 = :gd022"),
+    @NamedQuery(name = "CRMGD.findByGd023", query = "SELECT c FROM CRMGD c WHERE c.gd023 = :gd023"),
+    @NamedQuery(name = "CRMGD.findByGd024", query = "SELECT c FROM CRMGD c WHERE c.gd024 = :gd024"),
+    @NamedQuery(name = "CRMGD.findByGd025", query = "SELECT c FROM CRMGD c WHERE c.gd025 = :gd025"),
+    @NamedQuery(name = "CRMGD.findByGd026", query = "SELECT c FROM CRMGD c WHERE c.gd026 = :gd026"),
+    @NamedQuery(name = "CRMGD.findByGd027", query = "SELECT c FROM CRMGD c WHERE c.gd027 = :gd027"),
+    @NamedQuery(name = "CRMGD.findByGd028", query = "SELECT c FROM CRMGD c WHERE c.gd028 = :gd028"),
+    @NamedQuery(name = "CRMGD.findByGd029", query = "SELECT c FROM CRMGD c WHERE c.gd029 = :gd029"),
+    @NamedQuery(name = "CRMGD.findByGd030", query = "SELECT c FROM CRMGD c WHERE c.gd030 = :gd030"),
+    @NamedQuery(name = "CRMGD.findByGd031", query = "SELECT c FROM CRMGD c WHERE c.gd031 = :gd031"),
+    @NamedQuery(name = "CRMGD.findByGd032", query = "SELECT c FROM CRMGD c WHERE c.gd032 = :gd032"),
+    @NamedQuery(name = "CRMGD.findByGd033", query = "SELECT c FROM CRMGD c WHERE c.gd033 = :gd033"),
+    @NamedQuery(name = "CRMGD.findByGd034", query = "SELECT c FROM CRMGD c WHERE c.gd034 = :gd034"),
+    @NamedQuery(name = "CRMGD.findByGd035", query = "SELECT c FROM CRMGD c WHERE c.gd035 = :gd035"),
+    @NamedQuery(name = "CRMGD.findByGd036", query = "SELECT c FROM CRMGD c WHERE c.gd036 = :gd036"),
+    @NamedQuery(name = "CRMGD.findByGd037", query = "SELECT c FROM CRMGD c WHERE c.gd037 = :gd037"),
+    @NamedQuery(name = "CRMGD.findByGd038", query = "SELECT c FROM CRMGD c WHERE c.gd038 = :gd038"),
+    @NamedQuery(name = "CRMGD.findByGd040", query = "SELECT c FROM CRMGD c WHERE c.gd040 = :gd040"),
+    @NamedQuery(name = "CRMGD.findByCustomer", query = "SELECT c FROM CRMGD c WHERE c.customer = :customer"),
+    @NamedQuery(name = "CRMGD.findByProduct", query = "SELECT c FROM CRMGD c WHERE c.product = :product"),
+    @NamedQuery(name = "CRMGD.findByRegion", query = "SELECT c FROM CRMGD c WHERE c.region = :region"),
+    @NamedQuery(name = "CRMGD.findByDealer", query = "SELECT c FROM CRMGD c WHERE c.dealer = :dealer"),
+    @NamedQuery(name = "CRMGD.findByGd041", query = "SELECT c FROM CRMGD c WHERE c.gd041 = :gd041"),
+    @NamedQuery(name = "CRMGD.findByGd042", query = "SELECT c FROM CRMGD c WHERE c.gd042 = :gd042"),
+    @NamedQuery(name = "CRMGD.findByGd197", query = "SELECT c FROM CRMGD c WHERE c.gd197 = :gd197"),
+    @NamedQuery(name = "CRMGD.findByGd198", query = "SELECT c FROM CRMGD c WHERE c.gd198 = :gd198"),
+    @NamedQuery(name = "CRMGD.findByGd199", query = "SELECT c FROM CRMGD c WHERE c.gd199 = :gd199"),
+    @NamedQuery(name = "CRMGD.findByGd043", query = "SELECT c FROM CRMGD c WHERE c.gd043 = :gd043"),
+    @NamedQuery(name = "CRMGD.findByCrmgd01", query = "SELECT c FROM CRMGD c WHERE c.crmgd01 = :crmgd01"),
+    @NamedQuery(name = "CRMGD.findByCrmgd02", query = "SELECT c FROM CRMGD c WHERE c.crmgd02 = :crmgd02"),
+    @NamedQuery(name = "CRMGD.findByCrmgd03", query = "SELECT c FROM CRMGD c WHERE c.crmgd03 = :crmgd03"),
+    @NamedQuery(name = "CRMGD.findByCrmgd04", query = "SELECT c FROM CRMGD c WHERE c.crmgd04 = :crmgd04"),
+    @NamedQuery(name = "CRMGD.findByCrmgd05", query = "SELECT c FROM CRMGD c WHERE c.crmgd05 = :crmgd05"),
+    @NamedQuery(name = "CRMGD.findByCrmgd06", query = "SELECT c FROM CRMGD c WHERE c.crmgd06 = :crmgd06"),
+    @NamedQuery(name = "CRMGD.findByCrmgd07", query = "SELECT c FROM CRMGD c WHERE c.crmgd07 = :crmgd07"),
+    @NamedQuery(name = "CRMGD.findByCrmgd08", query = "SELECT c FROM CRMGD c WHERE c.crmgd08 = :crmgd08"),
+    @NamedQuery(name = "CRMGD.findByCrmgd09", query = "SELECT c FROM CRMGD c WHERE c.crmgd09 = :crmgd09"),
+    @NamedQuery(name = "CRMGD.findByCrmgd10", query = "SELECT c FROM CRMGD c WHERE c.crmgd10 = :crmgd10"),
+    @NamedQuery(name = "CRMGD.findByCrmgd11", query = "SELECT c FROM CRMGD c WHERE c.crmgd11 = :crmgd11"),
+    @NamedQuery(name = "CRMGD.findByCrmgd12", query = "SELECT c FROM CRMGD c WHERE c.crmgd12 = :crmgd12"),
+    @NamedQuery(name = "CRMGD.findByCrmgd13", query = "SELECT c FROM CRMGD c WHERE c.crmgd13 = :crmgd13"),
+    @NamedQuery(name = "CRMGD.findByCrmgd14", query = "SELECT c FROM CRMGD c WHERE c.crmgd14 = :crmgd14"),
+    @NamedQuery(name = "CRMGD.findByCrmgd15", query = "SELECT c FROM CRMGD c WHERE c.crmgd15 = :crmgd15"),
+    @NamedQuery(name = "CRMGD.findByCrmgd16", query = "SELECT c FROM CRMGD c WHERE c.crmgd16 = :crmgd16"),
+    @NamedQuery(name = "CRMGD.findByCrmgd17", query = "SELECT c FROM CRMGD c WHERE c.crmgd17 = :crmgd17"),
+    @NamedQuery(name = "CRMGD.findByCrmgd18", query = "SELECT c FROM CRMGD c WHERE c.crmgd18 = :crmgd18"),
+    @NamedQuery(name = "CRMGD.findByCrmgd19", query = "SELECT c FROM CRMGD c WHERE c.crmgd19 = :crmgd19"),
+    @NamedQuery(name = "CRMGD.findByCrmgd20", query = "SELECT c FROM CRMGD c WHERE c.crmgd20 = :crmgd20"),
+    @NamedQuery(name = "CRMGD.findByGd044", query = "SELECT c FROM CRMGD c WHERE c.gd044 = :gd044"),
+    @NamedQuery(name = "CRMGD.findByGd045", query = "SELECT c FROM CRMGD c WHERE c.gd045 = :gd045"),
+    @NamedQuery(name = "CRMGD.findByGd046", query = "SELECT c FROM CRMGD c WHERE c.gd046 = :gd046"),
+    @NamedQuery(name = "CRMGD.findByGd047", query = "SELECT c FROM CRMGD c WHERE c.gd047 = :gd047"),
+    @NamedQuery(name = "CRMGD.findByGd048", query = "SELECT c FROM CRMGD c WHERE c.gd048 = :gd048"),
+    @NamedQuery(name = "CRMGD.findByGd049", query = "SELECT c FROM CRMGD c WHERE c.gd049 = :gd049"),
+    @NamedQuery(name = "CRMGD.findByGd050", query = "SELECT c FROM CRMGD c WHERE c.gd050 = :gd050"),
+    @NamedQuery(name = "CRMGD.findByGd051", query = "SELECT c FROM CRMGD c WHERE c.gd051 = :gd051"),
+    @NamedQuery(name = "CRMGD.findByGd052", query = "SELECT c FROM CRMGD c WHERE c.gd052 = :gd052"),
+    @NamedQuery(name = "CRMGD.findByGd053", query = "SELECT c FROM CRMGD c WHERE c.gd053 = :gd053")})
 public class CRMGD implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -1106,5 +1106,5 @@ public class CRMGD implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.CRMGD[ gd001=" + gd001 + " ]";
     }
-    
+
 }

@@ -118,5 +118,5 @@ public class DDGCPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.DDGCPK[ gc001=" + gc001 + ", gc002=" + gc002 + ", gc003=" + gc003 + ", gc004=" + gc004 + " ]";
     }
-    
+
 }

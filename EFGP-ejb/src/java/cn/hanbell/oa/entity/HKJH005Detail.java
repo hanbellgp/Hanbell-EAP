@@ -25,19 +25,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "HK_JH005_Detail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HKJH005Detail.findAll", query = "SELECT h FROM HKJH005Detail h")
-    , @NamedQuery(name = "HKJH005Detail.findByOid", query = "SELECT h FROM HKJH005Detail h WHERE h.oid = :oid")
-    , @NamedQuery(name = "HKJH005Detail.findByFixnr", query = "SELECT h FROM HKJH005Detail h WHERE h.fixnr = :fixnr")
-    , @NamedQuery(name = "HKJH005Detail.findByNprebkdatetxt", query = "SELECT h FROM HKJH005Detail h WHERE h.nprebkdatetxt = :nprebkdatetxt")
-    , @NamedQuery(name = "HKJH005Detail.findByOprebkdatetxt", query = "SELECT h FROM HKJH005Detail h WHERE h.oprebkdatetxt = :oprebkdatetxt")
-    , @NamedQuery(name = "HKJH005Detail.findByBvarnr", query = "SELECT h FROM HKJH005Detail h WHERE h.bvarnr = :bvarnr")
-    , @NamedQuery(name = "HKJH005Detail.findBySeq", query = "SELECT h FROM HKJH005Detail h WHERE h.seq = :seq")
-    , @NamedQuery(name = "HKJH005Detail.findByItnbr", query = "SELECT h FROM HKJH005Detail h WHERE h.itnbr = :itnbr")
-    , @NamedQuery(name = "HKJH005Detail.findByUnmsr1", query = "SELECT h FROM HKJH005Detail h WHERE h.unmsr1 = :unmsr1")
-    , @NamedQuery(name = "HKJH005Detail.findByItdsc", query = "SELECT h FROM HKJH005Detail h WHERE h.itdsc = :itdsc")
-    , @NamedQuery(name = "HKJH005Detail.findByBtrseq", query = "SELECT h FROM HKJH005Detail h WHERE h.btrseq = :btrseq")
-    , @NamedQuery(name = "HKJH005Detail.findByBqty", query = "SELECT h FROM HKJH005Detail h WHERE h.bqty = :bqty")
-    , @NamedQuery(name = "HKJH005Detail.findByFSN", query = "SELECT h FROM HKJH005Detail h WHERE h.formSerialNumber = :fsn")})
+    @NamedQuery(name = "HKJH005Detail.findAll", query = "SELECT h FROM HKJH005Detail h"),
+    @NamedQuery(name = "HKJH005Detail.findByOid", query = "SELECT h FROM HKJH005Detail h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKJH005Detail.findByFixnr", query = "SELECT h FROM HKJH005Detail h WHERE h.fixnr = :fixnr"),
+    @NamedQuery(name = "HKJH005Detail.findByNprebkdatetxt", query = "SELECT h FROM HKJH005Detail h WHERE h.nprebkdatetxt = :nprebkdatetxt"),
+    @NamedQuery(name = "HKJH005Detail.findByOprebkdatetxt", query = "SELECT h FROM HKJH005Detail h WHERE h.oprebkdatetxt = :oprebkdatetxt"),
+    @NamedQuery(name = "HKJH005Detail.findByBvarnr", query = "SELECT h FROM HKJH005Detail h WHERE h.bvarnr = :bvarnr"),
+    @NamedQuery(name = "HKJH005Detail.findBySeq", query = "SELECT h FROM HKJH005Detail h WHERE h.seq = :seq"),
+    @NamedQuery(name = "HKJH005Detail.findByItnbr", query = "SELECT h FROM HKJH005Detail h WHERE h.itnbr = :itnbr"),
+    @NamedQuery(name = "HKJH005Detail.findByUnmsr1", query = "SELECT h FROM HKJH005Detail h WHERE h.unmsr1 = :unmsr1"),
+    @NamedQuery(name = "HKJH005Detail.findByItdsc", query = "SELECT h FROM HKJH005Detail h WHERE h.itdsc = :itdsc"),
+    @NamedQuery(name = "HKJH005Detail.findByBtrseq", query = "SELECT h FROM HKJH005Detail h WHERE h.btrseq = :btrseq"),
+    @NamedQuery(name = "HKJH005Detail.findByBqty", query = "SELECT h FROM HKJH005Detail h WHERE h.bqty = :bqty"),
+    @NamedQuery(name = "HKJH005Detail.findByFSN", query = "SELECT h FROM HKJH005Detail h WHERE h.formSerialNumber = :fsn")})
 public class HKJH005Detail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -208,5 +208,5 @@ public class HKJH005Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKJH005Detail[ oid=" + oid + " ]";
     }
-    
+
 }

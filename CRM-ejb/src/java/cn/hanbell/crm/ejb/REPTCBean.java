@@ -35,9 +35,9 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
             return null;
         }
     }
-    
+
     /**
-     * 
+     *
      * @param kfno
      * @return CRM 差旅费
      */

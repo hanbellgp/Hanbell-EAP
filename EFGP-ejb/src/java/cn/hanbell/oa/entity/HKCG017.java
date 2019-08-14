@@ -25,102 +25,54 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "HK_CG017")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HKCG017.findAll", query = "SELECT h FROM HKCG017 h")
-    ,
-    @NamedQuery(name = "HKCG017.findByAlse", query = "SELECT h FROM HKCG017 h WHERE h.alse = :alse")
-    ,
-    @NamedQuery(name = "HKCG017.findByOid", query = "SELECT h FROM HKCG017 h WHERE h.oid = :oid")
-    ,
-    @NamedQuery(name = "HKCG017.findByTtbankna", query = "SELECT h FROM HKCG017 h WHERE h.ttbankna = :ttbankna")
-    ,
-    @NamedQuery(name = "HKCG017.findByBfkfs1", query = "SELECT h FROM HKCG017 h WHERE h.bfkfs1 = :bfkfs1")
-    ,
-    @NamedQuery(name = "HKCG017.findByReason", query = "SELECT h FROM HKCG017 h WHERE h.reason = :reason")
-    ,
-    @NamedQuery(name = "HKCG017.findByBaddress", query = "SELECT h FROM HKCG017 h WHERE h.baddress = :baddress")
-    ,
-    @NamedQuery(name = "HKCG017.findByVdrna", query = "SELECT h FROM HKCG017 h WHERE h.vdrna = :vdrna")
-    ,
-    @NamedQuery(name = "HKCG017.findByContactman", query = "SELECT h FROM HKCG017 h WHERE h.contactman = :contactman")
-    ,
-    @NamedQuery(name = "HKCG017.findByFktype", query = "SELECT h FROM HKCG017 h WHERE h.fktype = :fktype")
-    ,
-    @NamedQuery(name = "HKCG017.findByFacno", query = "SELECT h FROM HKCG017 h WHERE h.facno = :facno")
-    ,
-    @NamedQuery(name = "HKCG017.findByBfkfs", query = "SELECT h FROM HKCG017 h WHERE h.bfkfs = :bfkfs")
-    ,
-    @NamedQuery(name = "HKCG017.findByTel1", query = "SELECT h FROM HKCG017 h WHERE h.tel1 = :tel1")
-    ,
-    @NamedQuery(name = "HKCG017.findByBfax1", query = "SELECT h FROM HKCG017 h WHERE h.bfax1 = :bfax1")
-    ,
-    @NamedQuery(name = "HKCG017.findBySerialNumber", query = "SELECT h FROM HKCG017 h WHERE h.serialNumber = :serialNumber")
-    ,
-    @NamedQuery(name = "HKCG017.findByTtbankno", query = "SELECT h FROM HKCG017 h WHERE h.ttbankno = :ttbankno")
-    ,
-    @NamedQuery(name = "HKCG017.findByTel2", query = "SELECT h FROM HKCG017 h WHERE h.tel2 = :tel2")
-    ,
-    @NamedQuery(name = "HKCG017.findByVdrds", query = "SELECT h FROM HKCG017 h WHERE h.vdrds = :vdrds")
-    ,
-    @NamedQuery(name = "HKCG017.findByBuniform", query = "SELECT h FROM HKCG017 h WHERE h.buniform = :buniform")
-    ,
-    @NamedQuery(name = "HKCG017.findByBcontactman", query = "SELECT h FROM HKCG017 h WHERE h.bcontactman = :bcontactman")
-    ,
-    @NamedQuery(name = "HKCG017.findByApplyuser", query = "SELECT h FROM HKCG017 h WHERE h.applyuser = :applyuser")
-    ,
-    @NamedQuery(name = "HKCG017.findByFax1", query = "SELECT h FROM HKCG017 h WHERE h.fax1 = :fax1")
-    ,
-    @NamedQuery(name = "HKCG017.findByDept", query = "SELECT h FROM HKCG017 h WHERE h.dept = :dept")
-    ,
-    @NamedQuery(name = "HKCG017.findByPSN", query = "SELECT h FROM HKCG017 h WHERE h.processSerialNumber = :psn")
-    ,
-    @NamedQuery(name = "HKCG017.findByVdrd", query = "SELECT h FROM HKCG017 h WHERE h.vdrd = :vdrd")
-    ,
-    @NamedQuery(name = "HKCG017.findByBvdrds1", query = "SELECT h FROM HKCG017 h WHERE h.bvdrds1 = :bvdrds1")
-    ,
-    @NamedQuery(name = "HKCG017.findByUniform", query = "SELECT h FROM HKCG017 h WHERE h.uniform = :uniform")
-    ,
-    @NamedQuery(name = "HKCG017.findByBttbankno", query = "SELECT h FROM HKCG017 h WHERE h.bttbankno = :bttbankno")
-    ,
-    @NamedQuery(name = "HKCG017.findByBvdrds", query = "SELECT h FROM HKCG017 h WHERE h.bvdrds = :bvdrds")
-    ,
-    @NamedQuery(name = "HKCG017.findByBtel1", query = "SELECT h FROM HKCG017 h WHERE h.btel1 = :btel1")
-    ,
-    @NamedQuery(name = "HKCG017.findByCheckbox10", query = "SELECT h FROM HKCG017 h WHERE h.checkbox10 = :checkbox10")
-    ,
-    @NamedQuery(name = "HKCG017.findByBtel2", query = "SELECT h FROM HKCG017 h WHERE h.btel2 = :btel2")
-    ,
-    @NamedQuery(name = "HKCG017.findByCheckbox11", query = "SELECT h FROM HKCG017 h WHERE h.checkbox11 = :checkbox11")
-    ,
-    @NamedQuery(name = "HKCG017.findByTtbanknum", query = "SELECT h FROM HKCG017 h WHERE h.ttbanknum = :ttbanknum")
-    ,
-    @NamedQuery(name = "HKCG017.findByCheckbox14", query = "SELECT h FROM HKCG017 h WHERE h.checkbox14 = :checkbox14")
-    ,
-    @NamedQuery(name = "HKCG017.findByAddress", query = "SELECT h FROM HKCG017 h WHERE h.address = :address")
-    ,
-    @NamedQuery(name = "HKCG017.findByCheckbox15", query = "SELECT h FROM HKCG017 h WHERE h.checkbox15 = :checkbox15")
-    ,
-    @NamedQuery(name = "HKCG017.findByCheckbox12", query = "SELECT h FROM HKCG017 h WHERE h.checkbox12 = :checkbox12")
-    ,
-    @NamedQuery(name = "HKCG017.findByCheckbox13", query = "SELECT h FROM HKCG017 h WHERE h.checkbox13 = :checkbox13")
-    ,
-    @NamedQuery(name = "HKCG017.findByFkfs", query = "SELECT h FROM HKCG017 h WHERE h.fkfs = :fkfs")
-    ,
-    @NamedQuery(name = "HKCG017.findByBttbanknum", query = "SELECT h FROM HKCG017 h WHERE h.bttbanknum = :bttbanknum")
-    ,
-    @NamedQuery(name = "HKCG017.findByCheckbox18", query = "SELECT h FROM HKCG017 h WHERE h.checkbox18 = :checkbox18")
-    ,
-    @NamedQuery(name = "HKCG017.findByBelse", query = "SELECT h FROM HKCG017 h WHERE h.belse = :belse")
-    ,
-    @NamedQuery(name = "HKCG017.findByPurkind", query = "SELECT h FROM HKCG017 h WHERE h.purkind = :purkind")
-    ,
-    @NamedQuery(name = "HKCG017.findByCheckbox16", query = "SELECT h FROM HKCG017 h WHERE h.checkbox16 = :checkbox16")
-    ,
-    @NamedQuery(name = "HKCG017.findByCheckbox17", query = "SELECT h FROM HKCG017 h WHERE h.checkbox17 = :checkbox17")
-    ,
-    @NamedQuery(name = "HKCG017.findByBfktype", query = "SELECT h FROM HKCG017 h WHERE h.bfktype = :bfktype")
-    ,
-    @NamedQuery(name = "HKCG017.findByVdrno", query = "SELECT h FROM HKCG017 h WHERE h.vdrno = :vdrno")
-    ,
+    @NamedQuery(name = "HKCG017.findAll", query = "SELECT h FROM HKCG017 h"),
+    @NamedQuery(name = "HKCG017.findByAlse", query = "SELECT h FROM HKCG017 h WHERE h.alse = :alse"),
+    @NamedQuery(name = "HKCG017.findByOid", query = "SELECT h FROM HKCG017 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKCG017.findByTtbankna", query = "SELECT h FROM HKCG017 h WHERE h.ttbankna = :ttbankna"),
+    @NamedQuery(name = "HKCG017.findByBfkfs1", query = "SELECT h FROM HKCG017 h WHERE h.bfkfs1 = :bfkfs1"),
+    @NamedQuery(name = "HKCG017.findByReason", query = "SELECT h FROM HKCG017 h WHERE h.reason = :reason"),
+    @NamedQuery(name = "HKCG017.findByBaddress", query = "SELECT h FROM HKCG017 h WHERE h.baddress = :baddress"),
+    @NamedQuery(name = "HKCG017.findByVdrna", query = "SELECT h FROM HKCG017 h WHERE h.vdrna = :vdrna"),
+    @NamedQuery(name = "HKCG017.findByContactman", query = "SELECT h FROM HKCG017 h WHERE h.contactman = :contactman"),
+    @NamedQuery(name = "HKCG017.findByFktype", query = "SELECT h FROM HKCG017 h WHERE h.fktype = :fktype"),
+    @NamedQuery(name = "HKCG017.findByFacno", query = "SELECT h FROM HKCG017 h WHERE h.facno = :facno"),
+    @NamedQuery(name = "HKCG017.findByBfkfs", query = "SELECT h FROM HKCG017 h WHERE h.bfkfs = :bfkfs"),
+    @NamedQuery(name = "HKCG017.findByTel1", query = "SELECT h FROM HKCG017 h WHERE h.tel1 = :tel1"),
+    @NamedQuery(name = "HKCG017.findByBfax1", query = "SELECT h FROM HKCG017 h WHERE h.bfax1 = :bfax1"),
+    @NamedQuery(name = "HKCG017.findBySerialNumber", query = "SELECT h FROM HKCG017 h WHERE h.serialNumber = :serialNumber"),
+    @NamedQuery(name = "HKCG017.findByTtbankno", query = "SELECT h FROM HKCG017 h WHERE h.ttbankno = :ttbankno"),
+    @NamedQuery(name = "HKCG017.findByTel2", query = "SELECT h FROM HKCG017 h WHERE h.tel2 = :tel2"),
+    @NamedQuery(name = "HKCG017.findByVdrds", query = "SELECT h FROM HKCG017 h WHERE h.vdrds = :vdrds"),
+    @NamedQuery(name = "HKCG017.findByBuniform", query = "SELECT h FROM HKCG017 h WHERE h.buniform = :buniform"),
+    @NamedQuery(name = "HKCG017.findByBcontactman", query = "SELECT h FROM HKCG017 h WHERE h.bcontactman = :bcontactman"),
+    @NamedQuery(name = "HKCG017.findByApplyuser", query = "SELECT h FROM HKCG017 h WHERE h.applyuser = :applyuser"),
+    @NamedQuery(name = "HKCG017.findByFax1", query = "SELECT h FROM HKCG017 h WHERE h.fax1 = :fax1"),
+    @NamedQuery(name = "HKCG017.findByDept", query = "SELECT h FROM HKCG017 h WHERE h.dept = :dept"),
+    @NamedQuery(name = "HKCG017.findByPSN", query = "SELECT h FROM HKCG017 h WHERE h.processSerialNumber = :psn"),
+    @NamedQuery(name = "HKCG017.findByVdrd", query = "SELECT h FROM HKCG017 h WHERE h.vdrd = :vdrd"),
+    @NamedQuery(name = "HKCG017.findByBvdrds1", query = "SELECT h FROM HKCG017 h WHERE h.bvdrds1 = :bvdrds1"),
+    @NamedQuery(name = "HKCG017.findByUniform", query = "SELECT h FROM HKCG017 h WHERE h.uniform = :uniform"),
+    @NamedQuery(name = "HKCG017.findByBttbankno", query = "SELECT h FROM HKCG017 h WHERE h.bttbankno = :bttbankno"),
+    @NamedQuery(name = "HKCG017.findByBvdrds", query = "SELECT h FROM HKCG017 h WHERE h.bvdrds = :bvdrds"),
+    @NamedQuery(name = "HKCG017.findByBtel1", query = "SELECT h FROM HKCG017 h WHERE h.btel1 = :btel1"),
+    @NamedQuery(name = "HKCG017.findByCheckbox10", query = "SELECT h FROM HKCG017 h WHERE h.checkbox10 = :checkbox10"),
+    @NamedQuery(name = "HKCG017.findByBtel2", query = "SELECT h FROM HKCG017 h WHERE h.btel2 = :btel2"),
+    @NamedQuery(name = "HKCG017.findByCheckbox11", query = "SELECT h FROM HKCG017 h WHERE h.checkbox11 = :checkbox11"),
+    @NamedQuery(name = "HKCG017.findByTtbanknum", query = "SELECT h FROM HKCG017 h WHERE h.ttbanknum = :ttbanknum"),
+    @NamedQuery(name = "HKCG017.findByCheckbox14", query = "SELECT h FROM HKCG017 h WHERE h.checkbox14 = :checkbox14"),
+    @NamedQuery(name = "HKCG017.findByAddress", query = "SELECT h FROM HKCG017 h WHERE h.address = :address"),
+    @NamedQuery(name = "HKCG017.findByCheckbox15", query = "SELECT h FROM HKCG017 h WHERE h.checkbox15 = :checkbox15"),
+    @NamedQuery(name = "HKCG017.findByCheckbox12", query = "SELECT h FROM HKCG017 h WHERE h.checkbox12 = :checkbox12"),
+    @NamedQuery(name = "HKCG017.findByCheckbox13", query = "SELECT h FROM HKCG017 h WHERE h.checkbox13 = :checkbox13"),
+    @NamedQuery(name = "HKCG017.findByFkfs", query = "SELECT h FROM HKCG017 h WHERE h.fkfs = :fkfs"),
+    @NamedQuery(name = "HKCG017.findByBttbanknum", query = "SELECT h FROM HKCG017 h WHERE h.bttbanknum = :bttbanknum"),
+    @NamedQuery(name = "HKCG017.findByCheckbox18", query = "SELECT h FROM HKCG017 h WHERE h.checkbox18 = :checkbox18"),
+    @NamedQuery(name = "HKCG017.findByBelse", query = "SELECT h FROM HKCG017 h WHERE h.belse = :belse"),
+    @NamedQuery(name = "HKCG017.findByPurkind", query = "SELECT h FROM HKCG017 h WHERE h.purkind = :purkind"),
+    @NamedQuery(name = "HKCG017.findByCheckbox16", query = "SELECT h FROM HKCG017 h WHERE h.checkbox16 = :checkbox16"),
+    @NamedQuery(name = "HKCG017.findByCheckbox17", query = "SELECT h FROM HKCG017 h WHERE h.checkbox17 = :checkbox17"),
+    @NamedQuery(name = "HKCG017.findByBfktype", query = "SELECT h FROM HKCG017 h WHERE h.bfktype = :bfktype"),
+    @NamedQuery(name = "HKCG017.findByVdrno", query = "SELECT h FROM HKCG017 h WHERE h.vdrno = :vdrno"),
     @NamedQuery(name = "HKCG017.findByFSN", query = "SELECT h FROM HKCG017 h WHERE h.formSerialNumber = :fsn")})
 public class HKCG017 implements Serializable {
 

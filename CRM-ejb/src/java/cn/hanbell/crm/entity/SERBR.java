@@ -902,5 +902,5 @@ public class SERBR implements Serializable {
     public void setBr037(String br037) {
         this.br037 = br037;
     }
-    
+
 }

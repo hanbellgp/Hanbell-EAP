@@ -28,32 +28,32 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "HK_JH005")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HKJH005.findAll", query = "SELECT h FROM HKJH005 h")
-    , @NamedQuery(name = "HKJH005.findByOprebkdate", query = "SELECT h FROM HKJH005 h WHERE h.oprebkdate = :oprebkdate")
-    , @NamedQuery(name = "HKJH005.findByHdcdrlnhad", query = "SELECT h FROM HKJH005 h WHERE h.hdcdrlnhad = :hdcdrlnhad")
-    , @NamedQuery(name = "HKJH005.findByFixnr", query = "SELECT h FROM HKJH005 h WHERE h.fixnr = :fixnr")
-    , @NamedQuery(name = "HKJH005.findByOid", query = "SELECT h FROM HKJH005 h WHERE h.oid = :oid")
-    , @NamedQuery(name = "HKJH005.findByRemark", query = "SELECT h FROM HKJH005 h WHERE h.remark = :remark")
-    , @NamedQuery(name = "HKJH005.findByBtrno", query = "SELECT h FROM HKJH005 h WHERE h.btrno = :btrno")
-    , @NamedQuery(name = "HKJH005.findByApplydept", query = "SELECT h FROM HKJH005 h WHERE h.applydept = :applydept")
-    , @NamedQuery(name = "HKJH005.findByFacno", query = "SELECT h FROM HKJH005 h WHERE h.facno = :facno")
-    , @NamedQuery(name = "HKJH005.findByIsspecial", query = "SELECT h FROM HKJH005 h WHERE h.isspecial = :isspecial")
-    , @NamedQuery(name = "HKJH005.findBySerialNumber", query = "SELECT h FROM HKJH005 h WHERE h.serialNumber = :serialNumber")
-    , @NamedQuery(name = "HKJH005.findByApplyuser", query = "SELECT h FROM HKJH005 h WHERE h.applyuser = :applyuser")
-    , @NamedQuery(name = "HKJH005.findByCusno", query = "SELECT h FROM HKJH005 h WHERE h.cusno = :cusno")
-    , @NamedQuery(name = "HKJH005.findByItnbr", query = "SELECT h FROM HKJH005 h WHERE h.itnbr = :itnbr")
-    , @NamedQuery(name = "HKJH005.findByPSN", query = "SELECT h FROM HKJH005 h WHERE h.processSerialNumber = :psn")
-    , @NamedQuery(name = "HKJH005.findByBtrseq", query = "SELECT h FROM HKJH005 h WHERE h.btrseq = :btrseq")
-    , @NamedQuery(name = "HKJH005.findByNprebkdate", query = "SELECT h FROM HKJH005 h WHERE h.nprebkdate = :nprebkdate")
-    , @NamedQuery(name = "HKJH005.findByApplydate", query = "SELECT h FROM HKJH005 h WHERE h.applydate = :applydate")
-    , @NamedQuery(name = "HKJH005.findByBvarnr", query = "SELECT h FROM HKJH005 h WHERE h.bvarnr = :bvarnr")
-    , @NamedQuery(name = "HKJH005.findByCusna", query = "SELECT h FROM HKJH005 h WHERE h.cusna = :cusna")
-    , @NamedQuery(name = "HKJH005.findByItdsc", query = "SELECT h FROM HKJH005 h WHERE h.itdsc = :itdsc")
-    , @NamedQuery(name = "HKJH005.findByUnmsr1", query = "SELECT h FROM HKJH005 h WHERE h.unmsr1 = :unmsr1")
-    , @NamedQuery(name = "HKJH005.findByBqty", query = "SELECT h FROM HKJH005 h WHERE h.bqty = :bqty")
-    , @NamedQuery(name = "HKJH005.findByCategory", query = "SELECT h FROM HKJH005 h WHERE h.category = :category")
-    , @NamedQuery(name = "HKJH005.findByCdrtractno", query = "SELECT h FROM HKJH005 h WHERE h.cdrtractno = :cdrtractno")
-    , @NamedQuery(name = "HKJH005.findByFSN", query = "SELECT h FROM HKJH005 h WHERE h.formSerialNumber = :fsn")})
+    @NamedQuery(name = "HKJH005.findAll", query = "SELECT h FROM HKJH005 h"),
+    @NamedQuery(name = "HKJH005.findByOprebkdate", query = "SELECT h FROM HKJH005 h WHERE h.oprebkdate = :oprebkdate"),
+    @NamedQuery(name = "HKJH005.findByHdcdrlnhad", query = "SELECT h FROM HKJH005 h WHERE h.hdcdrlnhad = :hdcdrlnhad"),
+    @NamedQuery(name = "HKJH005.findByFixnr", query = "SELECT h FROM HKJH005 h WHERE h.fixnr = :fixnr"),
+    @NamedQuery(name = "HKJH005.findByOid", query = "SELECT h FROM HKJH005 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKJH005.findByRemark", query = "SELECT h FROM HKJH005 h WHERE h.remark = :remark"),
+    @NamedQuery(name = "HKJH005.findByBtrno", query = "SELECT h FROM HKJH005 h WHERE h.btrno = :btrno"),
+    @NamedQuery(name = "HKJH005.findByApplydept", query = "SELECT h FROM HKJH005 h WHERE h.applydept = :applydept"),
+    @NamedQuery(name = "HKJH005.findByFacno", query = "SELECT h FROM HKJH005 h WHERE h.facno = :facno"),
+    @NamedQuery(name = "HKJH005.findByIsspecial", query = "SELECT h FROM HKJH005 h WHERE h.isspecial = :isspecial"),
+    @NamedQuery(name = "HKJH005.findBySerialNumber", query = "SELECT h FROM HKJH005 h WHERE h.serialNumber = :serialNumber"),
+    @NamedQuery(name = "HKJH005.findByApplyuser", query = "SELECT h FROM HKJH005 h WHERE h.applyuser = :applyuser"),
+    @NamedQuery(name = "HKJH005.findByCusno", query = "SELECT h FROM HKJH005 h WHERE h.cusno = :cusno"),
+    @NamedQuery(name = "HKJH005.findByItnbr", query = "SELECT h FROM HKJH005 h WHERE h.itnbr = :itnbr"),
+    @NamedQuery(name = "HKJH005.findByPSN", query = "SELECT h FROM HKJH005 h WHERE h.processSerialNumber = :psn"),
+    @NamedQuery(name = "HKJH005.findByBtrseq", query = "SELECT h FROM HKJH005 h WHERE h.btrseq = :btrseq"),
+    @NamedQuery(name = "HKJH005.findByNprebkdate", query = "SELECT h FROM HKJH005 h WHERE h.nprebkdate = :nprebkdate"),
+    @NamedQuery(name = "HKJH005.findByApplydate", query = "SELECT h FROM HKJH005 h WHERE h.applydate = :applydate"),
+    @NamedQuery(name = "HKJH005.findByBvarnr", query = "SELECT h FROM HKJH005 h WHERE h.bvarnr = :bvarnr"),
+    @NamedQuery(name = "HKJH005.findByCusna", query = "SELECT h FROM HKJH005 h WHERE h.cusna = :cusna"),
+    @NamedQuery(name = "HKJH005.findByItdsc", query = "SELECT h FROM HKJH005 h WHERE h.itdsc = :itdsc"),
+    @NamedQuery(name = "HKJH005.findByUnmsr1", query = "SELECT h FROM HKJH005 h WHERE h.unmsr1 = :unmsr1"),
+    @NamedQuery(name = "HKJH005.findByBqty", query = "SELECT h FROM HKJH005 h WHERE h.bqty = :bqty"),
+    @NamedQuery(name = "HKJH005.findByCategory", query = "SELECT h FROM HKJH005 h WHERE h.category = :category"),
+    @NamedQuery(name = "HKJH005.findByCdrtractno", query = "SELECT h FROM HKJH005 h WHERE h.cdrtractno = :cdrtractno"),
+    @NamedQuery(name = "HKJH005.findByFSN", query = "SELECT h FROM HKJH005 h WHERE h.formSerialNumber = :fsn")})
 public class HKJH005 implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -367,5 +367,5 @@ public class HKJH005 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKJH005[ oid=" + oid + " ]";
     }
-    
+
 }

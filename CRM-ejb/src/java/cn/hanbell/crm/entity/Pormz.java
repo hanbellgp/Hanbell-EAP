@@ -849,5 +849,5 @@ public class Pormz implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.Pormz[ pormzPK=" + pormzPK + " ]";
     }
-    
+
 }

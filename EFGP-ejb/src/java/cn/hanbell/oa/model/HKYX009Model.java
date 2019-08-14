@@ -50,7 +50,6 @@ public class HKYX009Model implements Serializable {
         return "cn.hanbell.oa.entity.SHBERPAPM811Model";
     }
 
-
     public Date getCfmdate() {
         return cfmdate;
     }
@@ -138,7 +137,6 @@ public class HKYX009Model implements Serializable {
     public void setDepno(String depno) {
         this.depno = depno;
     }
-
 
     public Double getRatio() {
         return ratio;

@@ -82,5 +82,5 @@ public class REPTCPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.REPTCPK[ tc001=" + tc001 + ", tc002=" + tc002 + " ]";
     }
-    
+
 }

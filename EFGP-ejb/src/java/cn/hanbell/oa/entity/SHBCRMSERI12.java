@@ -25,28 +25,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SHB_CRM_SERI12")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SHBCRMSERI12.findAll", query = "SELECT s FROM SHBCRMSERI12 s")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq500", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq500 = :bq500")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq506", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq506 = :bq506")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq035h", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq035h = :bq035h")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq035", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq035 = :bq035")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq135", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq135 = :bq135")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq005c", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq005c = :bq005c")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq130", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq130 = :bq130")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq056", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq056 = :bq056")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq055", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq055 = :bq055")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq023c", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq023c = :bq023c")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq023", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq023 = :bq023")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq024", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq024 = :bq024")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq506c", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq506c = :bq506c")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq129", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq129 = :bq129")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq060", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq060 = :bq060")
-    , @NamedQuery(name = "SHBCRMSERI12.findByCa500", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.ca500 = :ca500")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq061", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq061 = :bq061")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq003c", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq003c = :bq003c")
-    , @NamedQuery(name = "SHBCRMSERI12.findByBq197", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq197 = :bq197")
-    , @NamedQuery(name = "SHBCRMSERI12.findByPSN", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.processSerialNumber = :psn")
-    , @NamedQuery(name = "SHBCRMSERI12.findByFSN", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.formSerialNumber = :fsn")})
+    @NamedQuery(name = "SHBCRMSERI12.findAll", query = "SELECT s FROM SHBCRMSERI12 s"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq500", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq500 = :bq500"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq506", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq506 = :bq506"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq035h", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq035h = :bq035h"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq035", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq035 = :bq035"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq135", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq135 = :bq135"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq005c", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq005c = :bq005c"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq130", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq130 = :bq130"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq056", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq056 = :bq056"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq055", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq055 = :bq055"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq023c", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq023c = :bq023c"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq023", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq023 = :bq023"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq024", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq024 = :bq024"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq506c", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq506c = :bq506c"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq129", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq129 = :bq129"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq060", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq060 = :bq060"),
+    @NamedQuery(name = "SHBCRMSERI12.findByCa500", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.ca500 = :ca500"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq061", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq061 = :bq061"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq003c", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq003c = :bq003c"),
+    @NamedQuery(name = "SHBCRMSERI12.findByBq197", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.bq197 = :bq197"),
+    @NamedQuery(name = "SHBCRMSERI12.findByPSN", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.processSerialNumber = :psn"),
+    @NamedQuery(name = "SHBCRMSERI12.findByFSN", query = "SELECT s FROM SHBCRMSERI12 s WHERE s.formSerialNumber = :fsn")})
 public class SHBCRMSERI12 implements Serializable {
 
     @Size(max = 255)

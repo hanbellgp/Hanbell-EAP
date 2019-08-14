@@ -25,19 +25,19 @@ import org.atmosphere.config.service.AsyncSupportService;
 @Table(name = "REPPA")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "REPPA.findAll", query = "SELECT r FROM REPPA r")
-    , @NamedQuery(name = "REPPA.findByCompany", query = "SELECT r FROM REPPA r WHERE r.company = :company")
-    , @NamedQuery(name = "REPPA.findByCreator", query = "SELECT r FROM REPPA r WHERE r.creator = :creator")
-    , @NamedQuery(name = "REPPA.findByUsrGroup", query = "SELECT r FROM REPPA r WHERE r.usrGroup = :usrGroup")
-    , @NamedQuery(name = "REPPA.findByCreateDate", query = "SELECT r FROM REPPA r WHERE r.createDate = :createDate")
-    , @NamedQuery(name = "REPPA.findByModifier", query = "SELECT r FROM REPPA r WHERE r.modifier = :modifier")
-    , @NamedQuery(name = "REPPA.findByModiDate", query = "SELECT r FROM REPPA r WHERE r.modiDate = :modiDate")
-    , @NamedQuery(name = "REPPA.findByFlag", query = "SELECT r FROM REPPA r WHERE r.flag = :flag")
-    , @NamedQuery(name = "REPPA.findByPa001", query = "SELECT r FROM REPPA r WHERE r.rEPPAPK.pa001 = :pa001")
-    , @NamedQuery(name = "REPPA.findByPa002", query = "SELECT r FROM REPPA r WHERE r.rEPPAPK.pa002 = :pa002")
-    , @NamedQuery(name = "REPPA.findByPK", query = "SELECT r FROM REPPA r WHERE r.rEPPAPK.pa001 = :pa001 AND r.rEPPAPK.pa002 = :pa002")
-    , @NamedQuery(name = "REPPA.findByPA519", query = "SELECT r FROM REPPA r WHERE r.pa519 = :pa519")
-    , @NamedQuery(name = "REPPA.findNeedThrow", query = "SELECT r FROM REPPA r WHERE r.pa026 = 'Y' AND r.pa027 = 'N' AND (CAST(r.pa518 AS int) < 4  OR r.pa518 IS null )")
+    @NamedQuery(name = "REPPA.findAll", query = "SELECT r FROM REPPA r"),
+    @NamedQuery(name = "REPPA.findByCompany", query = "SELECT r FROM REPPA r WHERE r.company = :company"),
+    @NamedQuery(name = "REPPA.findByCreator", query = "SELECT r FROM REPPA r WHERE r.creator = :creator"),
+    @NamedQuery(name = "REPPA.findByUsrGroup", query = "SELECT r FROM REPPA r WHERE r.usrGroup = :usrGroup"),
+    @NamedQuery(name = "REPPA.findByCreateDate", query = "SELECT r FROM REPPA r WHERE r.createDate = :createDate"),
+    @NamedQuery(name = "REPPA.findByModifier", query = "SELECT r FROM REPPA r WHERE r.modifier = :modifier"),
+    @NamedQuery(name = "REPPA.findByModiDate", query = "SELECT r FROM REPPA r WHERE r.modiDate = :modiDate"),
+    @NamedQuery(name = "REPPA.findByFlag", query = "SELECT r FROM REPPA r WHERE r.flag = :flag"),
+    @NamedQuery(name = "REPPA.findByPa001", query = "SELECT r FROM REPPA r WHERE r.rEPPAPK.pa001 = :pa001"),
+    @NamedQuery(name = "REPPA.findByPa002", query = "SELECT r FROM REPPA r WHERE r.rEPPAPK.pa002 = :pa002"),
+    @NamedQuery(name = "REPPA.findByPK", query = "SELECT r FROM REPPA r WHERE r.rEPPAPK.pa001 = :pa001 AND r.rEPPAPK.pa002 = :pa002"),
+    @NamedQuery(name = "REPPA.findByPA519", query = "SELECT r FROM REPPA r WHERE r.pa519 = :pa519"),
+    @NamedQuery(name = "REPPA.findNeedThrow", query = "SELECT r FROM REPPA r WHERE r.pa026 = 'Y' AND r.pa027 = 'N' AND (CAST(r.pa518 AS int) < 4  OR r.pa518 IS null )")
 })
 public class REPPA implements Serializable {
 

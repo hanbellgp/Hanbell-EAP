@@ -1032,7 +1032,6 @@ public class CRMGG implements Serializable {
         this.gg043 = gg043;
     }
 
-
     public String getGg047() {
         return gg047;
     }
@@ -1072,7 +1071,6 @@ public class CRMGG implements Serializable {
     public void setGg051(String gg051) {
         this.gg051 = gg051;
     }
-
 
     public String getGg053() {
         return gg053;
@@ -1138,7 +1136,6 @@ public class CRMGG implements Serializable {
         this.gg060 = gg060;
     }
 
-
     public String getGg062() {
         return gg062;
     }
@@ -1146,7 +1143,6 @@ public class CRMGG implements Serializable {
     public void setGg062(String gg062) {
         this.gg062 = gg062;
     }
-
 
     public String getGg064() {
         return gg064;
@@ -1276,7 +1272,6 @@ public class CRMGG implements Serializable {
         this.gg079 = gg079;
     }
 
-
     public String getGg082() {
         return gg082;
     }
@@ -1332,7 +1327,6 @@ public class CRMGG implements Serializable {
     public void setGg088(String gg088) {
         this.gg088 = gg088;
     }
-
 
     public String getGg091() {
         return gg091;
@@ -1390,7 +1384,6 @@ public class CRMGG implements Serializable {
         this.gg097 = gg097;
     }
 
-
     public Short getGg099() {
         return gg099;
     }
@@ -1423,7 +1416,6 @@ public class CRMGG implements Serializable {
         this.gg102 = gg102;
     }
 
-
     public String getGg104() {
         return gg104;
     }
@@ -1448,7 +1440,6 @@ public class CRMGG implements Serializable {
         this.gg106 = gg106;
     }
 
-
     public String getGg108() {
         return gg108;
     }
@@ -1472,7 +1463,6 @@ public class CRMGG implements Serializable {
     public void setGg110(String gg110) {
         this.gg110 = gg110;
     }
-
 
     public String getGg114() {
         return gg114;
@@ -1514,7 +1504,6 @@ public class CRMGG implements Serializable {
         this.gg118 = gg118;
     }
 
-
     public String getGg120() {
         return gg120;
     }
@@ -1546,7 +1535,6 @@ public class CRMGG implements Serializable {
     public void setGg123(BigDecimal gg123) {
         this.gg123 = gg123;
     }
-
 
     public Short getGg125() {
         return gg125;
@@ -1635,7 +1623,6 @@ public class CRMGG implements Serializable {
     public void setDealer(String dealer) {
         this.dealer = dealer;
     }
-
 
     public BigDecimal getGg133() {
         return gg133;
@@ -2293,5 +2280,5 @@ public class CRMGG implements Serializable {
     public void setGg172(String gg172) {
         this.gg172 = gg172;
     }
-    
+
 }

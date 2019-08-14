@@ -18,7 +18,7 @@ import javax.ejb.LocalBean;
 @LocalBean
 public class HKCG017Bean extends SuperEJBForEFGP<HKCG017> {
 
-    public HKCG017Bean(){
+    public HKCG017Bean() {
         super(HKCG017.class);
     }
 

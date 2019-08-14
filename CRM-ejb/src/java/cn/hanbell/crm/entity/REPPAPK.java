@@ -82,5 +82,5 @@ public class REPPAPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.REPPAPK[ pa001=" + pa001 + ", pa002=" + pa002 + " ]";
     }
-    
+
 }

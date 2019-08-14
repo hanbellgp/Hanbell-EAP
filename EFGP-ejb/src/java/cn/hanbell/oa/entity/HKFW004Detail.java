@@ -302,5 +302,5 @@ public class HKFW004Detail implements Serializable {
     public void setTd001(String td001) {
         this.td001 = td001;
     }
-    
+
 }

@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class HKNG001DetailBean extends SuperEJBForEFGP<HKCG019Detail>{
+public class HKNG001DetailBean extends SuperEJBForEFGP<HKCG019Detail> {
 
     public HKNG001DetailBean() {
         super(HKCG019Detail.class);

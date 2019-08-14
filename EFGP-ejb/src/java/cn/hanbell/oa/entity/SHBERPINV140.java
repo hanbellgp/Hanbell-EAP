@@ -760,5 +760,5 @@ public class SHBERPINV140 implements Serializable {
     public void setTracetype(String tracetype) {
         this.tracetype = tracetype;
     }
-    
+
 }

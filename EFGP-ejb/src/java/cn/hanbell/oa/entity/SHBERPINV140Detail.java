@@ -612,5 +612,5 @@ public class SHBERPINV140Detail implements Serializable {
     public void setGenre1(String genre1) {
         this.genre1 = genre1;
     }
-    
+
 }
