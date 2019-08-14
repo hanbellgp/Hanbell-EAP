@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Pormy.findByRegion", query = "SELECT p FROM Pormy p WHERE p.region = :region"),
     @NamedQuery(name = "Pormy.findByDealer", query = "SELECT p FROM Pormy p WHERE p.dealer = :dealer"),
     @NamedQuery(name = "Pormy.findByMy001", query = "SELECT p FROM Pormy p WHERE p.pormyPK.my001 = :my001"),
-    @NamedQuery(name = "Pormy.findByMy002", query = "SELECT p FROM Pormy p WHERE p.pormyPK.my002 = :my002"),    
+    @NamedQuery(name = "Pormy.findByMy002", query = "SELECT p FROM Pormy p WHERE p.pormyPK.my002 = :my002"),
     @NamedQuery(name = "Pormy.findByPK", query = "SELECT p FROM Pormy p WHERE p.pormyPK = :pormyPK"),
     @NamedQuery(name = "Pormy.findByMy032", query = "SELECT p FROM Pormy p WHERE p.my032 = :my032"),
     @NamedQuery(name = "Pormy.findByMy033", query = "SELECT p FROM Pormy p WHERE p.my033 = :my033")})
@@ -762,5 +762,5 @@ public class Pormy implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.Pormy[ pormyPK=" + pormyPK + " ]";
     }
-    
+
 }

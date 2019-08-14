@@ -946,5 +946,5 @@ public class WARTB implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.WARTB[ wARTBPK=" + wARTBPK + " ]";
     }
-    
+
 }

@@ -23,23 +23,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "DDGD")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DDGD.findAll", query = "SELECT d FROM DDGD d")
-    , @NamedQuery(name = "DDGD.findByCompany", query = "SELECT d FROM DDGD d WHERE d.company = :company")
-    , @NamedQuery(name = "DDGD.findByCreator", query = "SELECT d FROM DDGD d WHERE d.creator = :creator")
-    , @NamedQuery(name = "DDGD.findByUsrGroup", query = "SELECT d FROM DDGD d WHERE d.usrGroup = :usrGroup")
-    , @NamedQuery(name = "DDGD.findByCreateDate", query = "SELECT d FROM DDGD d WHERE d.createDate = :createDate")
-    , @NamedQuery(name = "DDGD.findByModifier", query = "SELECT d FROM DDGD d WHERE d.modifier = :modifier")
-    , @NamedQuery(name = "DDGD.findByModiDate", query = "SELECT d FROM DDGD d WHERE d.modiDate = :modiDate")
-    , @NamedQuery(name = "DDGD.findByFlag", query = "SELECT d FROM DDGD d WHERE d.flag = :flag")
-    , @NamedQuery(name = "DDGD.findByGd001", query = "SELECT d FROM DDGD d WHERE d.dDGDPK.gd001 = :gd001")
-    , @NamedQuery(name = "DDGD.findByGd002", query = "SELECT d FROM DDGD d WHERE d.dDGDPK.gd002 = :gd002")
-    , @NamedQuery(name = "DDGD.findByGd003", query = "SELECT d FROM DDGD d WHERE d.gd003 = :gd003")
-    , @NamedQuery(name = "DDGD.findByGd004", query = "SELECT d FROM DDGD d WHERE d.gd004 = :gd004")
-    , @NamedQuery(name = "DDGD.findByGd005", query = "SELECT d FROM DDGD d WHERE d.gd005 = :gd005")
-    , @NamedQuery(name = "DDGD.findByGd006", query = "SELECT d FROM DDGD d WHERE d.gd006 = :gd006")
-    , @NamedQuery(name = "DDGD.findByGd007", query = "SELECT d FROM DDGD d WHERE d.gd007 = :gd007")
-    , @NamedQuery(name = "DDGD.findByGd008", query = "SELECT d FROM DDGD d WHERE d.gd008 = :gd008")
-    , @NamedQuery(name = "DDGD.findByGd009", query = "SELECT d FROM DDGD d WHERE d.gd009 = :gd009")})
+    @NamedQuery(name = "DDGD.findAll", query = "SELECT d FROM DDGD d"),
+    @NamedQuery(name = "DDGD.findByCompany", query = "SELECT d FROM DDGD d WHERE d.company = :company"),
+    @NamedQuery(name = "DDGD.findByCreator", query = "SELECT d FROM DDGD d WHERE d.creator = :creator"),
+    @NamedQuery(name = "DDGD.findByUsrGroup", query = "SELECT d FROM DDGD d WHERE d.usrGroup = :usrGroup"),
+    @NamedQuery(name = "DDGD.findByCreateDate", query = "SELECT d FROM DDGD d WHERE d.createDate = :createDate"),
+    @NamedQuery(name = "DDGD.findByModifier", query = "SELECT d FROM DDGD d WHERE d.modifier = :modifier"),
+    @NamedQuery(name = "DDGD.findByModiDate", query = "SELECT d FROM DDGD d WHERE d.modiDate = :modiDate"),
+    @NamedQuery(name = "DDGD.findByFlag", query = "SELECT d FROM DDGD d WHERE d.flag = :flag"),
+    @NamedQuery(name = "DDGD.findByGd001", query = "SELECT d FROM DDGD d WHERE d.dDGDPK.gd001 = :gd001"),
+    @NamedQuery(name = "DDGD.findByGd002", query = "SELECT d FROM DDGD d WHERE d.dDGDPK.gd002 = :gd002"),
+    @NamedQuery(name = "DDGD.findByGd003", query = "SELECT d FROM DDGD d WHERE d.gd003 = :gd003"),
+    @NamedQuery(name = "DDGD.findByGd004", query = "SELECT d FROM DDGD d WHERE d.gd004 = :gd004"),
+    @NamedQuery(name = "DDGD.findByGd005", query = "SELECT d FROM DDGD d WHERE d.gd005 = :gd005"),
+    @NamedQuery(name = "DDGD.findByGd006", query = "SELECT d FROM DDGD d WHERE d.gd006 = :gd006"),
+    @NamedQuery(name = "DDGD.findByGd007", query = "SELECT d FROM DDGD d WHERE d.gd007 = :gd007"),
+    @NamedQuery(name = "DDGD.findByGd008", query = "SELECT d FROM DDGD d WHERE d.gd008 = :gd008"),
+    @NamedQuery(name = "DDGD.findByGd009", query = "SELECT d FROM DDGD d WHERE d.gd009 = :gd009")})
 public class DDGD implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -242,5 +242,5 @@ public class DDGD implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.DDGD[ dDGDPK=" + dDGDPK + " ]";
     }
-    
+
 }

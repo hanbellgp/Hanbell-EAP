@@ -82,5 +82,5 @@ public class SERBRPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.SERBRPK[ br001=" + br001 + ", br002=" + br002 + " ]";
     }
-    
+
 }

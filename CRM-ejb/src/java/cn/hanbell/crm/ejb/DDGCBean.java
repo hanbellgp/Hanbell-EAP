@@ -20,7 +20,8 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class DDGCBean extends SuperEJBForCRM<DDGC>{
+public class DDGCBean extends SuperEJBForCRM<DDGC> {
+
     @EJB
     private DDGDBean ddgdBean;
     private List<DDGD> ddgdList;

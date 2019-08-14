@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "REPMI.findByDealer", query = "SELECT r FROM REPMI r WHERE r.dealer = :dealer"),
     @NamedQuery(name = "REPMI.findByRepmi01", query = "SELECT r FROM REPMI r WHERE r.repmi01 = :repmi01"),
     @NamedQuery(name = "REPMI.findByRepmi02", query = "SELECT r FROM REPMI r WHERE r.repmi02 = :repmi02")})
-public class REPMI implements Serializable  {
+public class REPMI implements Serializable {
 
     @Size(max = 1)
     @Column(name = "MI503")
@@ -640,5 +640,5 @@ public class REPMI implements Serializable  {
     public void setMi507(String mi507) {
         this.mi507 = mi507;
     }
-    
+
 }

@@ -17,7 +17,7 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class REPTDBean extends SuperEJBForCRM<REPTD> { 
+public class REPTDBean extends SuperEJBForCRM<REPTD> {
 
     public REPTDBean() {
         super(REPTD.class);
@@ -36,7 +36,5 @@ public class REPTDBean extends SuperEJBForCRM<REPTD> {
         }
 
     }
-    
-   
 
 }

@@ -23,23 +23,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "DDGB")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DDGB.findAll", query = "SELECT d FROM DDGB d")
-    , @NamedQuery(name = "DDGB.findByCompany", query = "SELECT d FROM DDGB d WHERE d.company = :company")
-    , @NamedQuery(name = "DDGB.findByCreator", query = "SELECT d FROM DDGB d WHERE d.creator = :creator")
-    , @NamedQuery(name = "DDGB.findByUsrGroup", query = "SELECT d FROM DDGB d WHERE d.usrGroup = :usrGroup")
-    , @NamedQuery(name = "DDGB.findByCreateDate", query = "SELECT d FROM DDGB d WHERE d.createDate = :createDate")
-    , @NamedQuery(name = "DDGB.findByModifier", query = "SELECT d FROM DDGB d WHERE d.modifier = :modifier")
-    , @NamedQuery(name = "DDGB.findByModiDate", query = "SELECT d FROM DDGB d WHERE d.modiDate = :modiDate")
-    , @NamedQuery(name = "DDGB.findByFlag", query = "SELECT d FROM DDGB d WHERE d.flag = :flag")
-    , @NamedQuery(name = "DDGB.findByGb001", query = "SELECT d FROM DDGB d WHERE d.dDGBPK.gb001 = :gb001")
-    , @NamedQuery(name = "DDGB.findByGb002", query = "SELECT d FROM DDGB d WHERE d.dDGBPK.gb002 = :gb002")
-    , @NamedQuery(name = "DDGB.findByGb003", query = "SELECT d FROM DDGB d WHERE d.gb003 = :gb003")
-    , @NamedQuery(name = "DDGB.findByGb004", query = "SELECT d FROM DDGB d WHERE d.gb004 = :gb004")
-    , @NamedQuery(name = "DDGB.findByGb005", query = "SELECT d FROM DDGB d WHERE d.gb005 = :gb005")
-    , @NamedQuery(name = "DDGB.findByGb006", query = "SELECT d FROM DDGB d WHERE d.gb006 = :gb006")
-    , @NamedQuery(name = "DDGB.findByGb007", query = "SELECT d FROM DDGB d WHERE d.gb007 = :gb007")
-    , @NamedQuery(name = "DDGB.findByGb008", query = "SELECT d FROM DDGB d WHERE d.gb008 = :gb008")
-    , @NamedQuery(name = "DDGB.findByGb009", query = "SELECT d FROM DDGB d WHERE d.gb009 = :gb009")})
+    @NamedQuery(name = "DDGB.findAll", query = "SELECT d FROM DDGB d"),
+    @NamedQuery(name = "DDGB.findByCompany", query = "SELECT d FROM DDGB d WHERE d.company = :company"),
+    @NamedQuery(name = "DDGB.findByCreator", query = "SELECT d FROM DDGB d WHERE d.creator = :creator"),
+    @NamedQuery(name = "DDGB.findByUsrGroup", query = "SELECT d FROM DDGB d WHERE d.usrGroup = :usrGroup"),
+    @NamedQuery(name = "DDGB.findByCreateDate", query = "SELECT d FROM DDGB d WHERE d.createDate = :createDate"),
+    @NamedQuery(name = "DDGB.findByModifier", query = "SELECT d FROM DDGB d WHERE d.modifier = :modifier"),
+    @NamedQuery(name = "DDGB.findByModiDate", query = "SELECT d FROM DDGB d WHERE d.modiDate = :modiDate"),
+    @NamedQuery(name = "DDGB.findByFlag", query = "SELECT d FROM DDGB d WHERE d.flag = :flag"),
+    @NamedQuery(name = "DDGB.findByGb001", query = "SELECT d FROM DDGB d WHERE d.dDGBPK.gb001 = :gb001"),
+    @NamedQuery(name = "DDGB.findByGb002", query = "SELECT d FROM DDGB d WHERE d.dDGBPK.gb002 = :gb002"),
+    @NamedQuery(name = "DDGB.findByGb003", query = "SELECT d FROM DDGB d WHERE d.gb003 = :gb003"),
+    @NamedQuery(name = "DDGB.findByGb004", query = "SELECT d FROM DDGB d WHERE d.gb004 = :gb004"),
+    @NamedQuery(name = "DDGB.findByGb005", query = "SELECT d FROM DDGB d WHERE d.gb005 = :gb005"),
+    @NamedQuery(name = "DDGB.findByGb006", query = "SELECT d FROM DDGB d WHERE d.gb006 = :gb006"),
+    @NamedQuery(name = "DDGB.findByGb007", query = "SELECT d FROM DDGB d WHERE d.gb007 = :gb007"),
+    @NamedQuery(name = "DDGB.findByGb008", query = "SELECT d FROM DDGB d WHERE d.gb008 = :gb008"),
+    @NamedQuery(name = "DDGB.findByGb009", query = "SELECT d FROM DDGB d WHERE d.gb009 = :gb009")})
 public class DDGB implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -82,5 +82,5 @@ public class REPMIPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.REPMIPK[ mi001=" + mi001 + ", mi002=" + mi002 + " ]";
     }
-    
+
 }

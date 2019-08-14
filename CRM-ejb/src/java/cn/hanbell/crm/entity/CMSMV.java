@@ -1773,5 +1773,5 @@ public class CMSMV implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.CMSMV[ mv001=" + mv001 + " ]";
     }
-    
+
 }

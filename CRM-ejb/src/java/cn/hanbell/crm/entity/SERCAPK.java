@@ -82,5 +82,5 @@ public class SERCAPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.ejb.SERCAPK[ ca001=" + ca001 + ", ca002=" + ca002 + " ]";
     }
-    
+
 }

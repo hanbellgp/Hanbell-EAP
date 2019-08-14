@@ -82,5 +82,5 @@ public class DDGDPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.DDGDPK[ gd001=" + gd001 + ", gd002=" + gd002 + " ]";
     }
-    
+
 }

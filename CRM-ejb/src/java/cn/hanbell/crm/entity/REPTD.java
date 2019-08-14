@@ -34,8 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "REPTD.findByFlag", query = "SELECT r FROM REPTD r WHERE r.flag = :flag"),
     @NamedQuery(name = "REPTD.findByTd001", query = "SELECT r FROM REPTD r WHERE r.reptdPK.td001 = :td001"),
     @NamedQuery(name = "REPTD.findByTd002", query = "SELECT r FROM REPTD r WHERE r.reptdPK.td002 = :td002"),
-    @NamedQuery(name = "REPTD.findByTd003", query = "SELECT r FROM REPTD r WHERE r.reptdPK.td003 = :td003"), 
-    @NamedQuery(name = "REPTD.findByPK", query = "SELECT r FROM REPTD r WHERE r.reptdPK.td001 = :td001 AND r.reptdPK.td002 = :td002 AND r.reptdPK.td003 = :td003"), 
+    @NamedQuery(name = "REPTD.findByTd003", query = "SELECT r FROM REPTD r WHERE r.reptdPK.td003 = :td003"),
+    @NamedQuery(name = "REPTD.findByPK", query = "SELECT r FROM REPTD r WHERE r.reptdPK.td001 = :td001 AND r.reptdPK.td002 = :td002 AND r.reptdPK.td003 = :td003"),
     @NamedQuery(name = "REPTD.findByCustomer", query = "SELECT r FROM REPTD r WHERE r.customer = :customer"),
     @NamedQuery(name = "REPTD.findByProduct", query = "SELECT r FROM REPTD r WHERE r.product = :product"),
     @NamedQuery(name = "REPTD.findByRegion", query = "SELECT r FROM REPTD r WHERE r.region = :region"),
@@ -1000,5 +1000,5 @@ public class REPTD implements Serializable {
     public void setTd502(String td502) {
         this.td502 = td502;
     }
-    
+
 }

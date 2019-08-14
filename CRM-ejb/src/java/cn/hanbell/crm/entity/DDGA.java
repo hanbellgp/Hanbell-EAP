@@ -23,28 +23,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "DDGA")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DDGA.findAll", query = "SELECT d FROM DDGA d")
-    , @NamedQuery(name = "DDGA.findByCompany", query = "SELECT d FROM DDGA d WHERE d.company = :company")
-    , @NamedQuery(name = "DDGA.findByCreator", query = "SELECT d FROM DDGA d WHERE d.creator = :creator")
-    , @NamedQuery(name = "DDGA.findByUsrGroup", query = "SELECT d FROM DDGA d WHERE d.usrGroup = :usrGroup")
-    , @NamedQuery(name = "DDGA.findByCreateDate", query = "SELECT d FROM DDGA d WHERE d.createDate = :createDate")
-    , @NamedQuery(name = "DDGA.findByModifier", query = "SELECT d FROM DDGA d WHERE d.modifier = :modifier")
-    , @NamedQuery(name = "DDGA.findByModiDate", query = "SELECT d FROM DDGA d WHERE d.modiDate = :modiDate")
-    , @NamedQuery(name = "DDGA.findByFlag", query = "SELECT d FROM DDGA d WHERE d.flag = :flag")
-    , @NamedQuery(name = "DDGA.findByGa001", query = "SELECT d FROM DDGA d WHERE d.dDGAPK.ga001 = :ga001")
-    , @NamedQuery(name = "DDGA.findByGa002", query = "SELECT d FROM DDGA d WHERE d.dDGAPK.ga002 = :ga002")
-    , @NamedQuery(name = "DDGA.findByGa003", query = "SELECT d FROM DDGA d WHERE d.dDGAPK.ga003 = :ga003")
-    , @NamedQuery(name = "DDGA.findByGa004", query = "SELECT d FROM DDGA d WHERE d.dDGAPK.ga004 = :ga004")
-    , @NamedQuery(name = "DDGA.findByREPPB", query = "SELECT d FROM DDGA d WHERE d.dDGAPK.ga001 = :ga001 AND d.dDGAPK.ga002 = :ga002 AND d.dDGAPK.ga003 = :ga003")
-    , @NamedQuery(name = "DDGA.findByGa005", query = "SELECT d FROM DDGA d WHERE d.ga005 = :ga005")
-    , @NamedQuery(name = "DDGA.findByGa006", query = "SELECT d FROM DDGA d WHERE d.ga006 = :ga006")
-    , @NamedQuery(name = "DDGA.findByGa007", query = "SELECT d FROM DDGA d WHERE d.ga007 = :ga007")
-    , @NamedQuery(name = "DDGA.findByGa008", query = "SELECT d FROM DDGA d WHERE d.ga008 = :ga008")
-    , @NamedQuery(name = "DDGA.findByGa009", query = "SELECT d FROM DDGA d WHERE d.ga009 = :ga009")
-    , @NamedQuery(name = "DDGA.findByGa010", query = "SELECT d FROM DDGA d WHERE d.ga010 = :ga010")
-    , @NamedQuery(name = "DDGA.findByGa011", query = "SELECT d FROM DDGA d WHERE d.ga011 = :ga011")
-    , @NamedQuery(name = "DDGA.findByGa012", query = "SELECT d FROM DDGA d WHERE d.ga012 = :ga012")
-    , @NamedQuery(name = "DDGA.findByGa013", query = "SELECT d FROM DDGA d WHERE d.ga013 = :ga013")})
+    @NamedQuery(name = "DDGA.findAll", query = "SELECT d FROM DDGA d"),
+    @NamedQuery(name = "DDGA.findByCompany", query = "SELECT d FROM DDGA d WHERE d.company = :company"),
+    @NamedQuery(name = "DDGA.findByCreator", query = "SELECT d FROM DDGA d WHERE d.creator = :creator"),
+    @NamedQuery(name = "DDGA.findByUsrGroup", query = "SELECT d FROM DDGA d WHERE d.usrGroup = :usrGroup"),
+    @NamedQuery(name = "DDGA.findByCreateDate", query = "SELECT d FROM DDGA d WHERE d.createDate = :createDate"),
+    @NamedQuery(name = "DDGA.findByModifier", query = "SELECT d FROM DDGA d WHERE d.modifier = :modifier"),
+    @NamedQuery(name = "DDGA.findByModiDate", query = "SELECT d FROM DDGA d WHERE d.modiDate = :modiDate"),
+    @NamedQuery(name = "DDGA.findByFlag", query = "SELECT d FROM DDGA d WHERE d.flag = :flag"),
+    @NamedQuery(name = "DDGA.findByGa001", query = "SELECT d FROM DDGA d WHERE d.dDGAPK.ga001 = :ga001"),
+    @NamedQuery(name = "DDGA.findByGa002", query = "SELECT d FROM DDGA d WHERE d.dDGAPK.ga002 = :ga002"),
+    @NamedQuery(name = "DDGA.findByGa003", query = "SELECT d FROM DDGA d WHERE d.dDGAPK.ga003 = :ga003"),
+    @NamedQuery(name = "DDGA.findByGa004", query = "SELECT d FROM DDGA d WHERE d.dDGAPK.ga004 = :ga004"),
+    @NamedQuery(name = "DDGA.findByREPPB", query = "SELECT d FROM DDGA d WHERE d.dDGAPK.ga001 = :ga001 AND d.dDGAPK.ga002 = :ga002 AND d.dDGAPK.ga003 = :ga003"),
+    @NamedQuery(name = "DDGA.findByGa005", query = "SELECT d FROM DDGA d WHERE d.ga005 = :ga005"),
+    @NamedQuery(name = "DDGA.findByGa006", query = "SELECT d FROM DDGA d WHERE d.ga006 = :ga006"),
+    @NamedQuery(name = "DDGA.findByGa007", query = "SELECT d FROM DDGA d WHERE d.ga007 = :ga007"),
+    @NamedQuery(name = "DDGA.findByGa008", query = "SELECT d FROM DDGA d WHERE d.ga008 = :ga008"),
+    @NamedQuery(name = "DDGA.findByGa009", query = "SELECT d FROM DDGA d WHERE d.ga009 = :ga009"),
+    @NamedQuery(name = "DDGA.findByGa010", query = "SELECT d FROM DDGA d WHERE d.ga010 = :ga010"),
+    @NamedQuery(name = "DDGA.findByGa011", query = "SELECT d FROM DDGA d WHERE d.ga011 = :ga011"),
+    @NamedQuery(name = "DDGA.findByGa012", query = "SELECT d FROM DDGA d WHERE d.ga012 = :ga012"),
+    @NamedQuery(name = "DDGA.findByGa013", query = "SELECT d FROM DDGA d WHERE d.ga013 = :ga013")})
 public class DDGA implements Serializable {
 
     private static final long serialVersionUID = 1L;

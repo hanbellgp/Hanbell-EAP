@@ -100,5 +100,5 @@ public class WARTBPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.WARTBPK[ tb001=" + tb001 + ", tb002=" + tb002 + ", tb003=" + tb003 + " ]";
     }
-    
+
 }

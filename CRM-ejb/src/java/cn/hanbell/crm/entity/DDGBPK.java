@@ -82,5 +82,5 @@ public class DDGBPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.DDGBPK[ gb001=" + gb001 + ", gb002=" + gb002 + " ]";
     }
-    
+
 }

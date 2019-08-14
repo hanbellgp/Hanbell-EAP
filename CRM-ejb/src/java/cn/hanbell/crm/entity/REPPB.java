@@ -24,18 +24,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "REPPB")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "REPPB.findAll", query = "SELECT r FROM REPPB r")
-    , @NamedQuery(name = "REPPB.findByCompany", query = "SELECT r FROM REPPB r WHERE r.company = :company")
-    , @NamedQuery(name = "REPPB.findByCreator", query = "SELECT r FROM REPPB r WHERE r.creator = :creator")
-    , @NamedQuery(name = "REPPB.findByUsrGroup", query = "SELECT r FROM REPPB r WHERE r.usrGroup = :usrGroup")
-    , @NamedQuery(name = "REPPB.findByCreateDate", query = "SELECT r FROM REPPB r WHERE r.createDate = :createDate")
-    , @NamedQuery(name = "REPPB.findByModifier", query = "SELECT r FROM REPPB r WHERE r.modifier = :modifier")
-    , @NamedQuery(name = "REPPB.findByModiDate", query = "SELECT r FROM REPPB r WHERE r.modiDate = :modiDate")
-    , @NamedQuery(name = "REPPB.findByFlag", query = "SELECT r FROM REPPB r WHERE r.flag = :flag")
-    , @NamedQuery(name = "REPPB.findByPb001", query = "SELECT r FROM REPPB r WHERE r.reppbPK.pb001 = :pb001")
-    , @NamedQuery(name = "REPPB.findByPb002", query = "SELECT r FROM REPPB r WHERE r.reppbPK.pb002 = :pb002")
-    , @NamedQuery(name = "REPPB.findByPb003", query = "SELECT r FROM REPPB r WHERE r.reppbPK.pb003 = :pb003")
-    , @NamedQuery(name = "REPPB.findByREPPAPK", query = "SELECT r FROM REPPB r WHERE r.reppbPK.pb001 = :pb001 AND r.reppbPK.pb002 = :pb002")
+    @NamedQuery(name = "REPPB.findAll", query = "SELECT r FROM REPPB r"),
+    @NamedQuery(name = "REPPB.findByCompany", query = "SELECT r FROM REPPB r WHERE r.company = :company"),
+    @NamedQuery(name = "REPPB.findByCreator", query = "SELECT r FROM REPPB r WHERE r.creator = :creator"),
+    @NamedQuery(name = "REPPB.findByUsrGroup", query = "SELECT r FROM REPPB r WHERE r.usrGroup = :usrGroup"),
+    @NamedQuery(name = "REPPB.findByCreateDate", query = "SELECT r FROM REPPB r WHERE r.createDate = :createDate"),
+    @NamedQuery(name = "REPPB.findByModifier", query = "SELECT r FROM REPPB r WHERE r.modifier = :modifier"),
+    @NamedQuery(name = "REPPB.findByModiDate", query = "SELECT r FROM REPPB r WHERE r.modiDate = :modiDate"),
+    @NamedQuery(name = "REPPB.findByFlag", query = "SELECT r FROM REPPB r WHERE r.flag = :flag"),
+    @NamedQuery(name = "REPPB.findByPb001", query = "SELECT r FROM REPPB r WHERE r.reppbPK.pb001 = :pb001"),
+    @NamedQuery(name = "REPPB.findByPb002", query = "SELECT r FROM REPPB r WHERE r.reppbPK.pb002 = :pb002"),
+    @NamedQuery(name = "REPPB.findByPb003", query = "SELECT r FROM REPPB r WHERE r.reppbPK.pb003 = :pb003"),
+    @NamedQuery(name = "REPPB.findByREPPAPK", query = "SELECT r FROM REPPB r WHERE r.reppbPK.pb001 = :pb001 AND r.reppbPK.pb002 = :pb002")
 })
 public class REPPB implements Serializable {
 
@@ -697,7 +697,6 @@ public class REPPB implements Serializable {
     public void setPb501(BigDecimal pb501) {
         this.pb501 = pb501;
     }
-
 
     public String getPb504() {
         return pb504;

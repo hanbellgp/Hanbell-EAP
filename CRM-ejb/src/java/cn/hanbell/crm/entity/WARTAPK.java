@@ -82,5 +82,5 @@ public class WARTAPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.WARTAPK[ ta001=" + ta001 + ", ta002=" + ta002 + " ]";
     }
-    
+
 }

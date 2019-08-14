@@ -23,28 +23,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "DDGC")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DDGC.findAll", query = "SELECT d FROM DDGC d")
-    , @NamedQuery(name = "DDGC.findByCompany", query = "SELECT d FROM DDGC d WHERE d.company = :company")
-    , @NamedQuery(name = "DDGC.findByCreator", query = "SELECT d FROM DDGC d WHERE d.creator = :creator")
-    , @NamedQuery(name = "DDGC.findByUsrGroup", query = "SELECT d FROM DDGC d WHERE d.usrGroup = :usrGroup")
-    , @NamedQuery(name = "DDGC.findByCreateDate", query = "SELECT d FROM DDGC d WHERE d.createDate = :createDate")
-    , @NamedQuery(name = "DDGC.findByModifier", query = "SELECT d FROM DDGC d WHERE d.modifier = :modifier")
-    , @NamedQuery(name = "DDGC.findByModiDate", query = "SELECT d FROM DDGC d WHERE d.modiDate = :modiDate")
-    , @NamedQuery(name = "DDGC.findByFlag", query = "SELECT d FROM DDGC d WHERE d.flag = :flag")
-    , @NamedQuery(name = "DDGC.findByGc001", query = "SELECT d FROM DDGC d WHERE d.dDGCPK.gc001 = :gc001")
-    , @NamedQuery(name = "DDGC.findByGc002", query = "SELECT d FROM DDGC d WHERE d.dDGCPK.gc002 = :gc002")
-    , @NamedQuery(name = "DDGC.findByGc003", query = "SELECT d FROM DDGC d WHERE d.dDGCPK.gc003 = :gc003")
-    , @NamedQuery(name = "DDGC.findByGc004", query = "SELECT d FROM DDGC d WHERE d.dDGCPK.gc004 = :gc004")
-    , @NamedQuery(name = "DDGC.findByREPPB", query = "SELECT d FROM DDGC d WHERE d.dDGCPK.gc001 = :gc001 AND d.dDGCPK.gc002 = :gc002 AND d.dDGCPK.gc003 = :gc003")
-    , @NamedQuery(name = "DDGC.findByGc005", query = "SELECT d FROM DDGC d WHERE d.gc005 = :gc005")
-    , @NamedQuery(name = "DDGC.findByGc006", query = "SELECT d FROM DDGC d WHERE d.gc006 = :gc006")
-    , @NamedQuery(name = "DDGC.findByGc007", query = "SELECT d FROM DDGC d WHERE d.gc007 = :gc007")
-    , @NamedQuery(name = "DDGC.findByGc008", query = "SELECT d FROM DDGC d WHERE d.gc008 = :gc008")
-    , @NamedQuery(name = "DDGC.findByGc009", query = "SELECT d FROM DDGC d WHERE d.gc009 = :gc009")
-    , @NamedQuery(name = "DDGC.findByGc010", query = "SELECT d FROM DDGC d WHERE d.gc010 = :gc010")
-    , @NamedQuery(name = "DDGC.findByGc011", query = "SELECT d FROM DDGC d WHERE d.gc011 = :gc011")
-    , @NamedQuery(name = "DDGC.findByGc012", query = "SELECT d FROM DDGC d WHERE d.gc012 = :gc012")
-    , @NamedQuery(name = "DDGC.findByGc013", query = "SELECT d FROM DDGC d WHERE d.gc013 = :gc013")})
+    @NamedQuery(name = "DDGC.findAll", query = "SELECT d FROM DDGC d"),
+    @NamedQuery(name = "DDGC.findByCompany", query = "SELECT d FROM DDGC d WHERE d.company = :company"),
+    @NamedQuery(name = "DDGC.findByCreator", query = "SELECT d FROM DDGC d WHERE d.creator = :creator"),
+    @NamedQuery(name = "DDGC.findByUsrGroup", query = "SELECT d FROM DDGC d WHERE d.usrGroup = :usrGroup"),
+    @NamedQuery(name = "DDGC.findByCreateDate", query = "SELECT d FROM DDGC d WHERE d.createDate = :createDate"),
+    @NamedQuery(name = "DDGC.findByModifier", query = "SELECT d FROM DDGC d WHERE d.modifier = :modifier"),
+    @NamedQuery(name = "DDGC.findByModiDate", query = "SELECT d FROM DDGC d WHERE d.modiDate = :modiDate"),
+    @NamedQuery(name = "DDGC.findByFlag", query = "SELECT d FROM DDGC d WHERE d.flag = :flag"),
+    @NamedQuery(name = "DDGC.findByGc001", query = "SELECT d FROM DDGC d WHERE d.dDGCPK.gc001 = :gc001"),
+    @NamedQuery(name = "DDGC.findByGc002", query = "SELECT d FROM DDGC d WHERE d.dDGCPK.gc002 = :gc002"),
+    @NamedQuery(name = "DDGC.findByGc003", query = "SELECT d FROM DDGC d WHERE d.dDGCPK.gc003 = :gc003"),
+    @NamedQuery(name = "DDGC.findByGc004", query = "SELECT d FROM DDGC d WHERE d.dDGCPK.gc004 = :gc004"),
+    @NamedQuery(name = "DDGC.findByREPPB", query = "SELECT d FROM DDGC d WHERE d.dDGCPK.gc001 = :gc001 AND d.dDGCPK.gc002 = :gc002 AND d.dDGCPK.gc003 = :gc003"),
+    @NamedQuery(name = "DDGC.findByGc005", query = "SELECT d FROM DDGC d WHERE d.gc005 = :gc005"),
+    @NamedQuery(name = "DDGC.findByGc006", query = "SELECT d FROM DDGC d WHERE d.gc006 = :gc006"),
+    @NamedQuery(name = "DDGC.findByGc007", query = "SELECT d FROM DDGC d WHERE d.gc007 = :gc007"),
+    @NamedQuery(name = "DDGC.findByGc008", query = "SELECT d FROM DDGC d WHERE d.gc008 = :gc008"),
+    @NamedQuery(name = "DDGC.findByGc009", query = "SELECT d FROM DDGC d WHERE d.gc009 = :gc009"),
+    @NamedQuery(name = "DDGC.findByGc010", query = "SELECT d FROM DDGC d WHERE d.gc010 = :gc010"),
+    @NamedQuery(name = "DDGC.findByGc011", query = "SELECT d FROM DDGC d WHERE d.gc011 = :gc011"),
+    @NamedQuery(name = "DDGC.findByGc012", query = "SELECT d FROM DDGC d WHERE d.gc012 = :gc012"),
+    @NamedQuery(name = "DDGC.findByGc013", query = "SELECT d FROM DDGC d WHERE d.gc013 = :gc013")})
 public class DDGC implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -17,13 +17,13 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class REPMFBean extends  SuperEJBForCRM<REPMF>{
+public class REPMFBean extends SuperEJBForCRM<REPMF> {
 
     public REPMFBean() {
         super(REPMF.class);
     }
 
-   public REPMF findByItnbr(String itnbr) {
+    public REPMF findByItnbr(String itnbr) {
         Query query = getEntityManager().createNamedQuery("REPMF.findByMf001");
         query.setParameter("mf001", itnbr);
         try {
@@ -32,5 +32,5 @@ public class REPMFBean extends  SuperEJBForCRM<REPMF>{
             return null;
         }
     }
-    
+
 }

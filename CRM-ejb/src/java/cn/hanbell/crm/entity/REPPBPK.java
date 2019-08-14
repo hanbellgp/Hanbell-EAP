@@ -100,5 +100,5 @@ public class REPPBPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.REPPBPK[ pb001=" + pb001 + ", pb002=" + pb002 + ", pb003=" + pb003 + " ]";
     }
-    
+
 }

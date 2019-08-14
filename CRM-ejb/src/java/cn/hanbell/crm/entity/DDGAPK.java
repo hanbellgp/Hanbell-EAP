@@ -118,5 +118,5 @@ public class DDGAPK implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.DDGAPK[ ga001=" + ga001 + ", ga002=" + ga002 + ", ga003=" + ga003 + ", ga004=" + ga004 + " ]";
     }
-    
+
 }
