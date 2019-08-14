@@ -2058,9 +2058,9 @@ public class TimerBean {
                         purhadBean.update(ph);
                         msgBuilder
                                 .append(String.format("执行%s成功：%s公司采购单%s抛转成%s公司订单%s", "createERPCDR310ByERPPUR410", pc, pono, cc, cdrno))
-                                .append("/r/n");
+                                .append("\r\n");
                         msgBuilder.append("来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细")
-                                .append("/r/n");
+                                .append("\r\n");
                     } else {
                         ph.setFromcdrno("PASS");
                         purhadBean.update(ph);
@@ -2072,7 +2072,7 @@ public class TimerBean {
                 log4j.error("createERPCDR310ByERPPUR410遇到错误", ex);
             } finally {
                 if (!eapMailBean.getTo().isEmpty() || !eapMailBean.getCc().isEmpty()) {
-                    msgBuilder.append("/r/n").append(errorBuilder.toString());
+                    msgBuilder.append("\r\n").append(errorBuilder.toString());
                     eapMailBean.setMailContent(msgBuilder.toString());
                     eapMailBean.notify(new cn.hanbell.eap.comm.MailNotify());
                 }
@@ -2185,10 +2185,19 @@ public class TimerBean {
                 Purdta npd, tpd;
                 List<Purdta> npdList = new ArrayList<>();
                 List<Purdta> tpdList = new ArrayList<>();
+                String pono = "";
+                String cdrno = "", judco;
+                BigDecimal tramts = BigDecimal.ZERO;
+                BigDecimal taxamts = BigDecimal.ZERO;
+                BigDecimal totamts = BigDecimal.ZERO;
+                Cdrhmas ch;
+                Cdrdmas cd;
+                Invmas item;
+                List<Cdrdmas> addedCdrdmas = new ArrayList<>();
+                short seq;
                 for (Purhad ph : purhadList) {
                     log4j.info("开始转换" + ph.getPurhadPK());
-                    pursysBean.setCompany(facno);
-                    purhadBean.setCompany(facno);
+                    pono = ph.getPurhadPK().getPono();
                     purdtaBean.setCompany(facno);
                     List<Purdta> purdtaList = purdtaBean.findByPono(ph.getPurhadPK().getPono());
                     if (purdtaList == null && purdtaList.isEmpty()) {
@@ -2196,118 +2205,41 @@ public class TimerBean {
                     }
                     npdList.clear();
                     tpdList.clear();
+                    seq = 0;
+                    addedCdrdmas.clear();
                     for (Purdta pd : purdtaList) {
                         npd = (Purdta) BeanUtils.cloneBean(pd);
                         tpd = (Purdta) BeanUtils.cloneBean(pd);
                         npdList.add(npd);
                         tpdList.add(tpd);
-                        pd.setDposta("99");
-                        purdtaBean.getEntityManager().merge(pd);
+                        if (pd.getDposta().equals("20") || pd.getDposta().equals("30")) {
+                            // 订单明细
+                            seq++;
+                            cd = new Cdrdmas(tofacno, "", seq);
+                            cd.setItnbr(pd.getItnbr());
+                            cd.setItnbrcus("");
+                            cd.setProno("1");
+                            cd.setShptrseq((short) 1);
+                            cd.setIvotrseq((short) 1);
+                            cd.setCdrqy1(pd.getPoqy1());// 需要处理单位换算问题
+                            cd.setCdrqy2(pd.getPoqy2());
+                            cd.setArmqy(pd.getApmqy());
+                            cd.setUnpris(pd.getUnpris());
+                            cd.setOutdate(pd.getAskdate());
+                            cd.setCdrdate(pd.getAskdate());
+                            cd.setTramts(pd.getTramts());
+                            cd.setDrecsta("20");
+                            cd.setUnprisrccode('1');
+                            addedCdrdmas.add(cd);
+                            // 计算合计金额
+                            tramts = tramts.add(pd.getTramts());
+                            totamts = totamts.add(pd.getTramts());
+                        }
                     }
-                    log4j.info("产生ThirdPart采购单开始");
-                    nph = (Purhad) BeanUtils.cloneBean(ph);
-                    nph.setPurvdr(null);
-                    nph.setVdrno(thirdvdrno);
-                    nph.setTrivdrno(purvdr.getVdrno());
-                    nph.setFromcdrno(ph.getPurhadPK().getPono());
-                    nph.setFromcusno(purvdr.getVdrna());
-                    npono = pursysBean.getNewPono(ph.getPurhadPK().getFacno(), ph.getPurhadPK().getProno(), ph.getPodate(),
-                            ph.getDecode().toString(), true);
-                    nph.setPurhadPK(new PurhadPK(facno, "1", npono));
-                    purhadBean.persist(nph);
-                    pursysBean.getEntityManager().flush();
-                    purhadBean.getEntityManager().flush();
-                    for (Purdta e : npdList) {
-                        e.setPurdtaPK(new PurdtaPK(facno, e.getPurdtaPK().getProno(), npono, e.getPurdtaPK().getTrseq()));
-                        purdtaBean.persist(e);
-                    }
-                    purdtaBean.getEntityManager().flush();
-                    log4j.info("产生ThirdPart采购单结束-" + npono);
-                    log4j.info("产生ActualVendor采购单开始");
-                    pursysBean.setCompany(tofacno);
-                    purhadBean.setCompany(tofacno);
-                    purdtaBean.setCompany(tofacno);
-                    tph = (Purhad) BeanUtils.cloneBean(ph);
-                    tph.setPurvdr(null);
-                    tph.setVdrno(tovdrno);
-                    tph.setBuyer(tobuyer);
-                    tph.setPosrc('3');
-                    tph.setTrivdrno(thirdvendor.getVdrno());
-                    tph.setFromcdrno(npono);
-                    tph.setFromcusno(thirdvendor.getVdrna());
-                    tpono = pursysBean.getNewPono(tofacno, tph.getPurhadPK().getProno(), tph.getPodate(),
-                            tph.getDecode().toString(), true);
-                    tph.setPurhadPK(new PurhadPK(tofacno, tph.getPurhadPK().getProno(), tpono));
-                    purhadBean.persist(tph);
-                    pursysBean.getEntityManager().flush();
-                    purhadBean.getEntityManager().flush();
-                    for (Purdta e : tpdList) {
-                        e.setPurdtaPK(new PurdtaPK(tofacno, e.getPurdtaPK().getProno(), tpono, e.getPurdtaPK().getTrseq()));
-                        purdtaBean.persist(e);
-                    }
-                    purdtaBean.getEntityManager().flush();
-                    log4j.info("产生ActualVendor采购单结束-" + tpono);
                     log4j.info("产生ThirdPart订单开始");
                     // 处理订单逻辑
                     indate = BaseLib.getDate();
                     recdate = BaseLib.getDate("yyyy-MM-dd", BaseLib.formatDate("yyyy-MM-dd", indate));
-
-                    purhadBean.setCompany(facno);
-                    cdrsysBean.setCompany(tofacno);
-                    cdrcusBean.setCompany(tofacno);
-                    cdrcusmanBean.setCompany(tofacno);
-                    cdrhmasBean.setCompany(tofacno);
-                    cdrdmasBean.setCompany(tofacno);
-                    invmasBean.setCompany(tofacno);
-                    miscodeBean.setCompany(tofacno);
-                    secuserBean.setCompany(tofacno);
-
-                    String pono = "";
-                    String cdrno = "", judco;
-                    BigDecimal tramts = BigDecimal.ZERO;
-                    BigDecimal taxamts = BigDecimal.ZERO;
-                    BigDecimal totamts = BigDecimal.ZERO;
-                    Cdrhmas ch;
-                    Cdrdmas cd;
-                    Invmas item;
-                    List<Cdrdmas> addedCdrdmas = new ArrayList<>();
-                    short seq;
-                    pono = ph.getPurhadPK().getPono();
-                    seq = 0;
-                    addedCdrdmas.clear();
-                    for (Purdta pd : purdtaList) {
-                        item = invmasBean.findByItnbr(pd.getItnbr());
-                        if (item == null) {
-                            errorBuilder.append("syncThirdPartyTradingByERPPUR410遇到错误：").append(tofacno).append("公司ERP中")
-                                    .append(pd.getItnbr()).append("品号不存在").append("/r/n");
-                            throw new RuntimeException(errorBuilder.toString());
-                        }
-                        // judco = item.getJudco().substring(1, 1) + item.getJudco().substring(4);
-                        // if (!judco.equals(pd.getJudco())) {
-                        // errorBuilder.append("syncThirdPartyTradingByERPPUR410遇到错误：").append(pd.getItnbr()).append("品号单位设置不一致").append("<br/>");
-                        // continue;
-                        // }
-                        seq++;
-                        cd = new Cdrdmas(tofacno, "", seq);
-                        cd.setItnbr(pd.getItnbr());
-                        cd.setItnbrcus("");
-                        cd.setProno("1");
-                        cd.setShptrseq((short) 1);
-                        cd.setIvotrseq((short) 1);
-                        cd.setCdrqy1(pd.getPoqy1());// 需要处理单位换算问题
-                        cd.setCdrqy2(pd.getPoqy2());
-                        cd.setArmqy(pd.getApmqy());
-                        cd.setUnpris(pd.getUnpris());
-                        cd.setOutdate(pd.getAskdate());
-                        cd.setCdrdate(pd.getAskdate());
-                        cd.setTramts(pd.getTramts());
-                        cd.setDrecsta("10");
-                        cd.setUnprisrccode('1');
-                        addedCdrdmas.add(cd);
-                        // 计算合计金额
-                        tramts = tramts.add(pd.getTramts());
-                        totamts = totamts.add(pd.getTramts());
-                    }
                     if (!addedCdrdmas.isEmpty()) {
                         // 设置邮件收件人
                         if (secuser.getEmail() != null && !"".equals(secuser.getEmail())) {
@@ -2330,7 +2262,7 @@ public class TimerBean {
                         ch.setDecode(ph.getDecode());
                         ch.setShptrseq(cdrcus.getShptrseq());
                         ch.setIvotrseq(cdrcus.getIvotrseq());
-                        ch.setHrecsta('N');
+                        ch.setHrecsta('Y');
                         ch.setTax(ph.getTax());
                         ch.setTaxrate(ph.getTaxrate());
                         ch.setCoin(ph.getCoin());
@@ -2338,6 +2270,7 @@ public class TimerBean {
                         ch.setSndcode(cdrcus.getSndcode());
                         ch.setPaycode(cdrcus.getPaycode());
                         ch.setTermcode(ph.getTermcode());
+                        miscodeBean.setCompany(tofacno);
                         ch.setSndcodedsc(miscodeBean.findByPK("GD", cdrcus.getSndcode()).getCdesc());
                         ch.setPaycodedsc(ph.getPaycodedsc());
                         ch.setTermcodedsc(ph.getTermcodedsc());
@@ -2378,37 +2311,103 @@ public class TimerBean {
                         ch.setUserno(cdrcusman.getMan());
                         ch.setCuspono(ph.getPurhadPK().getPono());
                         // 设置订单编号
+                        cdrsysBean.setCompany(tofacno);
+                        cdrhmasBean.setCompany(tofacno);
+                        cdrdmasBean.setCompany(tofacno);
                         cdrno = cdrsysBean.getSerialNumber(tofacno, "", "A", recdate, ph.getDecode(), true, "CDR310");
                         ch.getCdrhmasPK().setCdrno(cdrno);
                         cdrhmasBean.persist(ch);
                         cdrhmasBean.getEntityManager().flush();
-                        cdrsysBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
                             e.getCdrdmasPK().setCdrno(cdrno);
                             cdrdmasBean.persist(e);
                         }
                         cdrdmasBean.getEntityManager().flush();
                         log4j.info("产生ThirdPart订单结束-" + cdrno);
-                        ph.setFromcdrno(cdrno);
-                        purhadBean.update(ph);
-                        nph.setTocdrno(cdrno);
-                        purhadBean.update(nph);
+                        log4j.info("产生ThirdPart采购单开始");
+                        nph = (Purhad) BeanUtils.cloneBean(ph);
+                        nph.setPurvdr(null);
+                        nph.setVdrno(thirdvdrno);
+                        nph.setTrivdrno(vdrno);
+                        nph.setFromcdrno(pono);
+                        nph.setFromcusno(purvdr.getVdrna());
+                        pursysBean.setCompany(facno);
+                        purhadBean.setCompany(facno);
+                        purdtaBean.setCompany(facno);
+                        npono = pursysBean.getNewPono(facno, ph.getPurhadPK().getProno(), ph.getPodate(), ph.getDecode().toString(),
+                                true);
+                        nph.setPurhadPK(new PurhadPK(facno, ph.getPurhadPK().getProno(), npono));
+                        purhadBean.persist(nph);
+                        purhadBean.getEntityManager().flush();
+                        for (Purdta e : npdList) {
+                            e.setPurdtaPK(new PurdtaPK(facno, e.getPurdtaPK().getProno(), npono, e.getPurdtaPK().getTrseq()));
+                            purdtaBean.persist(e);
+                        }
+                        purdtaBean.getEntityManager().flush();
+                        pursysBean.getEntityManager().flush();
+                        log4j.info("产生ThirdPart采购单结束-" + npono);
+
+                        log4j.info("产生ActualVendor采购单开始");
+                        tph = (Purhad) BeanUtils.cloneBean(ph);
+                        tph.setPurvdr(null);
+                        tph.setVdrno(tovdrno);
+                        tph.setBuyer(tobuyer);
+                        tph.setPosrc('3');
+                        tph.setTrivdrno(thirdvendor.getVdrno());
+                        tph.setFromcdrno(npono);
+                        tph.setFromcusno(thirdvendor.getVdrna());
+                        tph.setIndate(indate);
+                        tph.setUserno(tobuyer);
+                        tph.setCfmdate(indate);
+                        tph.setCfmuserno(tobuyer);
+                        pursysBean.setCompany(tofacno);
+                        purhadBean.setCompany(tofacno);
+                        purdtaBean.setCompany(tofacno);
+                        tpono = pursysBean.getNewPono(tofacno, tph.getPurhadPK().getProno(), tph.getPodate(),
+                                tph.getDecode().toString(), true);
+                        tph.setPurhadPK(new PurhadPK(tofacno, tph.getPurhadPK().getProno(), tpono));
+                        purhadBean.persist(tph);
+                        purhadBean.getEntityManager().flush();
+                        for (Purdta e : tpdList) {
+                            e.setPurdtaPK(new PurdtaPK(tofacno, e.getPurdtaPK().getProno(), tpono, e.getPurdtaPK().getTrseq()));
+                            purdtaBean.persist(e);
+                        }
+                        purdtaBean.getEntityManager().flush();
+                        pursysBean.getEntityManager().flush();
+                        log4j.info("产生ActualVendor采购单结束-" + tpono);
+                        // 原始采购单记录订单
                         msgBuilder.append(String.format("执行%s成功：%s公司采购单%s抛转成%s公司订单%s", "syncThirdPartyTradingByERPPUR410", facno,
-                                pono, tofacno, cdrno)).append("/r/n");
+                                pono, tofacno, cdrno)).append("\r\n");
                         msgBuilder.append("来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细")
-                                .append("/r/n");
+                                .append("\r\n");
+                        // 回写单号
+                        purhadBean.setCompany(facno);
+                        purdtaBean.setCompany(facno);
+                        ph.setFromcdrno(cdrno);
+                        nph.setTocdrno(tpono);
+                        purhadBean.update(ph);
+                        purhadBean.update(nph);
+                        for (Purdta pd : purdtaList) {
+                            pd.setDposta("98");
+                            purdtaBean.update(pd);
+                        }
+                        purhadBean.getEntityManager().flush();
+                        purdtaBean.getEntityManager().flush();
                     } else {
+                        purhadBean.setCompany(facno);
                         ph.setFromcdrno("PASS");
                         purhadBean.update(ph);
+                        purhadBean.getEntityManager().flush();
                     }
                 }
                 log4j.info(msgBuilder.toString());
             } catch (Exception ex) {
                 errorBuilder.append(ex.toString());
                 log4j.error("syncThirdPartyTradingByERPPUR410遇到错误", ex);
+                throw new RuntimeException(errorBuilder.toString());
             } finally {
                 if (!eapMailBean.getTo().isEmpty() || !eapMailBean.getCc().isEmpty()) {
-                    msgBuilder.append("/r/n").append(errorBuilder.toString());
+                    msgBuilder.append("\r\n").append(errorBuilder.toString());
                     eapMailBean.setMailContent(msgBuilder.toString());
                     eapMailBean.notify(new cn.hanbell.eap.comm.MailNotify());
                 }
