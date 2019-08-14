@@ -28,104 +28,55 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "HK_CG016")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HKCG016.findAll", query = "SELECT h FROM HKCG016 h")
-    ,
-    @NamedQuery(name = "HKCG016.findByTtbankna", query = "SELECT h FROM HKCG016 h WHERE h.ttbankna = :ttbankna")
-    ,
-    @NamedQuery(name = "HKCG016.findByVdrdse", query = "SELECT h FROM HKCG016 h WHERE h.vdrdse = :vdrdse")
-    ,
-    @NamedQuery(name = "HKCG016.findByTtname", query = "SELECT h FROM HKCG016 h WHERE h.ttname = :ttname")
-    ,
-    @NamedQuery(name = "HKCG016.findByVdrna", query = "SELECT h FROM HKCG016 h WHERE h.vdrna = :vdrna")
-    ,
-    @NamedQuery(name = "HKCG016.findBySerialNumber", query = "SELECT h FROM HKCG016 h WHERE h.serialNumber = :serialNumber")
-    ,
-    @NamedQuery(name = "HKCG016.findByTel1", query = "SELECT h FROM HKCG016 h WHERE h.tel1 = :tel1")
-    ,
-    @NamedQuery(name = "HKCG016.findByTel2", query = "SELECT h FROM HKCG016 h WHERE h.tel2 = :tel2")
-    ,
-    @NamedQuery(name = "HKCG016.findByTtbankno", query = "SELECT h FROM HKCG016 h WHERE h.ttbankno = :ttbankno")
-    ,
-    @NamedQuery(name = "HKCG016.findByZonenum", query = "SELECT h FROM HKCG016 h WHERE h.zonenum = :zonenum")
-    ,
-    @NamedQuery(name = "HKCG016.findByLatdate", query = "SELECT h FROM HKCG016 h WHERE h.latdate = :latdate")
-    ,
-    @NamedQuery(name = "HKCG016.findBySndcode", query = "SELECT h FROM HKCG016 h WHERE h.sndcode = :sndcode")
-    ,
-    @NamedQuery(name = "HKCG016.findByTtbanknum", query = "SELECT h FROM HKCG016 h WHERE h.ttbanknum = :ttbanknum")
-    ,
-    @NamedQuery(name = "HKCG016.findByDecode", query = "SELECT h FROM HKCG016 h WHERE h.decode = :decode")
-    ,
-    @NamedQuery(name = "HKCG016.findByPaycom", query = "SELECT h FROM HKCG016 h WHERE h.paycom = :paycom")
-    ,
-    @NamedQuery(name = "HKCG016.findByTax", query = "SELECT h FROM HKCG016 h WHERE h.tax = :tax")
-    ,
-    @NamedQuery(name = "HKCG016.findByBegdate", query = "SELECT h FROM HKCG016 h WHERE h.begdate = :begdate")
-    ,
-    @NamedQuery(name = "HKCG016.findByFkfs", query = "SELECT h FROM HKCG016 h WHERE h.fkfs = :fkfs")
-    ,
-    @NamedQuery(name = "HKCG016.findByPaycode", query = "SELECT h FROM HKCG016 h WHERE h.paycode = :paycode")
-    ,
-    @NamedQuery(name = "HKCG016.findByPurkind", query = "SELECT h FROM HKCG016 h WHERE h.purkind = :purkind")
-    ,
-    @NamedQuery(name = "HKCG016.findByYeramt", query = "SELECT h FROM HKCG016 h WHERE h.yeramt = :yeramt")
-    ,
-    @NamedQuery(name = "HKCG016.findByOid", query = "SELECT h FROM HKCG016 h WHERE h.oid = :oid")
-    ,
-    @NamedQuery(name = "HKCG016.findByMark1", query = "SELECT h FROM HKCG016 h WHERE h.mark1 = :mark1")
-    ,
-    @NamedQuery(name = "HKCG016.findByCapamt", query = "SELECT h FROM HKCG016 h WHERE h.capamt = :capamt")
-    ,
-    @NamedQuery(name = "HKCG016.findByAreacode", query = "SELECT h FROM HKCG016 h WHERE h.areacode = :areacode")
-    ,
-    @NamedQuery(name = "HKCG016.findByContactman", query = "SELECT h FROM HKCG016 h WHERE h.contactman = :contactman")
-    ,
-    @NamedQuery(name = "HKCG016.findByFktype", query = "SELECT h FROM HKCG016 h WHERE h.fktype = :fktype")
-    ,
-    @NamedQuery(name = "HKCG016.findByFacno", query = "SELECT h FROM HKCG016 h WHERE h.facno = :facno")
-    ,
-    @NamedQuery(name = "HKCG016.findByTaxrate", query = "SELECT h FROM HKCG016 h WHERE h.taxrate = :taxrate")
-    ,
-    @NamedQuery(name = "HKCG016.findByTitle", query = "SELECT h FROM HKCG016 h WHERE h.title = :title")
-    ,
-    @NamedQuery(name = "HKCG016.findByVdrds", query = "SELECT h FROM HKCG016 h WHERE h.vdrds = :vdrds")
-    ,
-    @NamedQuery(name = "HKCG016.findByVdrsta", query = "SELECT h FROM HKCG016 h WHERE h.vdrsta = :vdrsta")
-    ,
-    @NamedQuery(name = "HKCG016.findByFax2", query = "SELECT h FROM HKCG016 h WHERE h.fax2 = :fax2")
-    ,
-    @NamedQuery(name = "HKCG016.findByFax1", query = "SELECT h FROM HKCG016 h WHERE h.fax1 = :fax1")
-    ,
-    @NamedQuery(name = "HKCG016.findByTickdays", query = "SELECT h FROM HKCG016 h WHERE h.tickdays = :tickdays")
-    ,
-    @NamedQuery(name = "HKCG016.findByPSN", query = "SELECT h FROM HKCG016 h WHERE h.processSerialNumber = :psn")
-    ,
-    @NamedQuery(name = "HKCG016.findByFj1", query = "SELECT h FROM HKCG016 h WHERE h.fj1 = :fj1")
-    ,
-    @NamedQuery(name = "HKCG016.findByFj2", query = "SELECT h FROM HKCG016 h WHERE h.fj2 = :fj2")
-    ,
-    @NamedQuery(name = "HKCG016.findByUniform", query = "SELECT h FROM HKCG016 h WHERE h.uniform = :uniform")
-    ,
-    @NamedQuery(name = "HKCG016.findByWebsite", query = "SELECT h FROM HKCG016 h WHERE h.website = :website")
-    ,
-    @NamedQuery(name = "HKCG016.findByCoin", query = "SELECT h FROM HKCG016 h WHERE h.coin = :coin")
-    ,
-    @NamedQuery(name = "HKCG016.findByBoss", query = "SELECT h FROM HKCG016 h WHERE h.boss = :boss")
-    ,
-    @NamedQuery(name = "HKCG016.findByCuycode", query = "SELECT h FROM HKCG016 h WHERE h.cuycode = :cuycode")
-    ,
-    @NamedQuery(name = "HKCG016.findByUserno", query = "SELECT h FROM HKCG016 h WHERE h.userno = :userno")
-    ,
-    @NamedQuery(name = "HKCG016.findByAddress", query = "SELECT h FROM HKCG016 h WHERE h.address = :address")
-    ,
-    @NamedQuery(name = "HKCG016.findByAbccode", query = "SELECT h FROM HKCG016 h WHERE h.abccode = :abccode")
-    ,
-    @NamedQuery(name = "HKCG016.findByTermcode", query = "SELECT h FROM HKCG016 h WHERE h.termcode = :termcode")
-    ,
-    @NamedQuery(name = "HKCG016.findByTextbox45", query = "SELECT h FROM HKCG016 h WHERE h.textbox45 = :textbox45")
-    ,
-    @NamedQuery(name = "HKCG016.findByVdrno", query = "SELECT h FROM HKCG016 h WHERE h.vdrno = :vdrno")
-    ,
+    @NamedQuery(name = "HKCG016.findAll", query = "SELECT h FROM HKCG016 h"),
+    @NamedQuery(name = "HKCG016.findByTtbankna", query = "SELECT h FROM HKCG016 h WHERE h.ttbankna = :ttbankna"),
+    @NamedQuery(name = "HKCG016.findByVdrdse", query = "SELECT h FROM HKCG016 h WHERE h.vdrdse = :vdrdse"),
+    @NamedQuery(name = "HKCG016.findByTtname", query = "SELECT h FROM HKCG016 h WHERE h.ttname = :ttname"),
+    @NamedQuery(name = "HKCG016.findByVdrna", query = "SELECT h FROM HKCG016 h WHERE h.vdrna = :vdrna"),
+    @NamedQuery(name = "HKCG016.findBySerialNumber", query = "SELECT h FROM HKCG016 h WHERE h.serialNumber = :serialNumber"),
+    @NamedQuery(name = "HKCG016.findByTel1", query = "SELECT h FROM HKCG016 h WHERE h.tel1 = :tel1"),
+    @NamedQuery(name = "HKCG016.findByTel2", query = "SELECT h FROM HKCG016 h WHERE h.tel2 = :tel2"),
+    @NamedQuery(name = "HKCG016.findByTtbankno", query = "SELECT h FROM HKCG016 h WHERE h.ttbankno = :ttbankno"),
+    @NamedQuery(name = "HKCG016.findByZonenum", query = "SELECT h FROM HKCG016 h WHERE h.zonenum = :zonenum"),
+    @NamedQuery(name = "HKCG016.findByLatdate", query = "SELECT h FROM HKCG016 h WHERE h.latdate = :latdate"),
+    @NamedQuery(name = "HKCG016.findBySndcode", query = "SELECT h FROM HKCG016 h WHERE h.sndcode = :sndcode"),
+    @NamedQuery(name = "HKCG016.findByTtbanknum", query = "SELECT h FROM HKCG016 h WHERE h.ttbanknum = :ttbanknum"),
+    @NamedQuery(name = "HKCG016.findByDecode", query = "SELECT h FROM HKCG016 h WHERE h.decode = :decode"),
+    @NamedQuery(name = "HKCG016.findByPaycom", query = "SELECT h FROM HKCG016 h WHERE h.paycom = :paycom"),
+    @NamedQuery(name = "HKCG016.findByTax", query = "SELECT h FROM HKCG016 h WHERE h.tax = :tax"),
+    @NamedQuery(name = "HKCG016.findByBegdate", query = "SELECT h FROM HKCG016 h WHERE h.begdate = :begdate"),
+    @NamedQuery(name = "HKCG016.findByFkfs", query = "SELECT h FROM HKCG016 h WHERE h.fkfs = :fkfs"),
+    @NamedQuery(name = "HKCG016.findByPaycode", query = "SELECT h FROM HKCG016 h WHERE h.paycode = :paycode"),
+    @NamedQuery(name = "HKCG016.findByPurkind", query = "SELECT h FROM HKCG016 h WHERE h.purkind = :purkind"),
+    @NamedQuery(name = "HKCG016.findByYeramt", query = "SELECT h FROM HKCG016 h WHERE h.yeramt = :yeramt"),
+    @NamedQuery(name = "HKCG016.findByOid", query = "SELECT h FROM HKCG016 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKCG016.findByMark1", query = "SELECT h FROM HKCG016 h WHERE h.mark1 = :mark1"),
+    @NamedQuery(name = "HKCG016.findByCapamt", query = "SELECT h FROM HKCG016 h WHERE h.capamt = :capamt"),
+    @NamedQuery(name = "HKCG016.findByAreacode", query = "SELECT h FROM HKCG016 h WHERE h.areacode = :areacode"),
+    @NamedQuery(name = "HKCG016.findByContactman", query = "SELECT h FROM HKCG016 h WHERE h.contactman = :contactman"),
+    @NamedQuery(name = "HKCG016.findByFktype", query = "SELECT h FROM HKCG016 h WHERE h.fktype = :fktype"),
+    @NamedQuery(name = "HKCG016.findByFacno", query = "SELECT h FROM HKCG016 h WHERE h.facno = :facno"),
+    @NamedQuery(name = "HKCG016.findByTaxrate", query = "SELECT h FROM HKCG016 h WHERE h.taxrate = :taxrate"),
+    @NamedQuery(name = "HKCG016.findByTitle", query = "SELECT h FROM HKCG016 h WHERE h.title = :title"),
+    @NamedQuery(name = "HKCG016.findByVdrds", query = "SELECT h FROM HKCG016 h WHERE h.vdrds = :vdrds"),
+    @NamedQuery(name = "HKCG016.findByVdrsta", query = "SELECT h FROM HKCG016 h WHERE h.vdrsta = :vdrsta"),
+    @NamedQuery(name = "HKCG016.findByFax2", query = "SELECT h FROM HKCG016 h WHERE h.fax2 = :fax2"),
+    @NamedQuery(name = "HKCG016.findByFax1", query = "SELECT h FROM HKCG016 h WHERE h.fax1 = :fax1"),
+    @NamedQuery(name = "HKCG016.findByTickdays", query = "SELECT h FROM HKCG016 h WHERE h.tickdays = :tickdays"),
+    @NamedQuery(name = "HKCG016.findByPSN", query = "SELECT h FROM HKCG016 h WHERE h.processSerialNumber = :psn"),
+    @NamedQuery(name = "HKCG016.findByFj1", query = "SELECT h FROM HKCG016 h WHERE h.fj1 = :fj1"),
+    @NamedQuery(name = "HKCG016.findByFj2", query = "SELECT h FROM HKCG016 h WHERE h.fj2 = :fj2"),
+    @NamedQuery(name = "HKCG016.findByUniform", query = "SELECT h FROM HKCG016 h WHERE h.uniform = :uniform"),
+    @NamedQuery(name = "HKCG016.findByWebsite", query = "SELECT h FROM HKCG016 h WHERE h.website = :website"),
+    @NamedQuery(name = "HKCG016.findByCoin", query = "SELECT h FROM HKCG016 h WHERE h.coin = :coin"),
+    @NamedQuery(name = "HKCG016.findByBoss", query = "SELECT h FROM HKCG016 h WHERE h.boss = :boss"),
+    @NamedQuery(name = "HKCG016.findByCuycode", query = "SELECT h FROM HKCG016 h WHERE h.cuycode = :cuycode"),
+    @NamedQuery(name = "HKCG016.findByUserno", query = "SELECT h FROM HKCG016 h WHERE h.userno = :userno"),
+    @NamedQuery(name = "HKCG016.findByAddress", query = "SELECT h FROM HKCG016 h WHERE h.address = :address"),
+    @NamedQuery(name = "HKCG016.findByAbccode", query = "SELECT h FROM HKCG016 h WHERE h.abccode = :abccode"),
+    @NamedQuery(name = "HKCG016.findByTermcode", query = "SELECT h FROM HKCG016 h WHERE h.termcode = :termcode"),
+    @NamedQuery(name = "HKCG016.findByTextbox45", query = "SELECT h FROM HKCG016 h WHERE h.textbox45 = :textbox45"),
+    @NamedQuery(name = "HKCG016.findByVdrno", query = "SELECT h FROM HKCG016 h WHERE h.vdrno = :vdrno"),
     @NamedQuery(name = "HKCG016.findByFSN", query = "SELECT h FROM HKCG016 h WHERE h.formSerialNumber = :fsn")})
 public class HKCG016 implements Serializable {
 
@@ -292,8 +243,6 @@ public class HKCG016 implements Serializable {
     @Size(max = 255)
     @Column(name = "BackUrl")
     private String BackUrl;
-
-    
 
     public HKCG016() {
     }

@@ -1124,5 +1124,5 @@ public class HKCW002P implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKCW002P[ oid=" + oid + " ]";
     }
-    
+
 }

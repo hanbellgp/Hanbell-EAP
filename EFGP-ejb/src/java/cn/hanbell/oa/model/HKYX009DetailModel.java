@@ -32,7 +32,7 @@ public class HKYX009DetailModel implements Serializable {
     private String diffitting;
 
     public HKYX009DetailModel() {
-        
+
         this.trseq = "";
         this.itnbr = "";
         this.itnbrcus = "";
@@ -69,7 +69,7 @@ public class HKYX009DetailModel implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.SHBERPAPM811DetailModel";
     }
-    
+
     public String getSeq() {
         return seq;
     }

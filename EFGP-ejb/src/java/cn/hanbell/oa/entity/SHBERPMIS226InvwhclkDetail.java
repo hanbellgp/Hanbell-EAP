@@ -25,9 +25,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SHB_ERP_MIS226_invwhclkDetail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SHBERPMIS226InvwhclkDetail.findAll", query = "SELECT s FROM SHBERPMIS226InvwhclkDetail s")
-    , @NamedQuery(name = "SHBERPMIS226InvwhclkDetail.findByOID", query = "SELECT s FROM SHBERPMIS226InvwhclkDetail s WHERE s.oid = :oid")
-    , @NamedQuery(name = "SHBERPMIS226InvwhclkDetail.findByFSN", query = "SELECT s FROM SHBERPMIS226InvwhclkDetail s WHERE s.formSerialNumber = :fsn")})
+    @NamedQuery(name = "SHBERPMIS226InvwhclkDetail.findAll", query = "SELECT s FROM SHBERPMIS226InvwhclkDetail s"),
+    @NamedQuery(name = "SHBERPMIS226InvwhclkDetail.findByOID", query = "SELECT s FROM SHBERPMIS226InvwhclkDetail s WHERE s.oid = :oid"),
+    @NamedQuery(name = "SHBERPMIS226InvwhclkDetail.findByFSN", query = "SELECT s FROM SHBERPMIS226InvwhclkDetail s WHERE s.formSerialNumber = :fsn")})
 public class SHBERPMIS226InvwhclkDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -90,6 +90,7 @@ public class HKGL038Detail implements Serializable {
     private Double unprice;
     @Column(name = "cost ")
     private Double cost;
+
     public HKGL038Detail() {
     }
 
@@ -185,7 +186,6 @@ public class HKGL038Detail implements Serializable {
         this.cctime = cctime;
     }
 
-    
     public String getHctime() {
         return hctime;
     }
@@ -193,7 +193,7 @@ public class HKGL038Detail implements Serializable {
     public void setHctime(String hctime) {
         this.hctime = hctime;
     }
-    
+
     public String getFormSerialNumber() {
         return formSerialNumber;
     }

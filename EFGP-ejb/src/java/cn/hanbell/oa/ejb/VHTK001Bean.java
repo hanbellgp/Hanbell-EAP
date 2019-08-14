@@ -19,23 +19,23 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class VHTK001Bean extends SuperEJBForEFGP<VHTK001>{
-  @EJB
-  private VHTK001DetailBean vhtk001DetailBean ;
-  private List<VHTK001Detail> detailList ;
-    
+public class VHTK001Bean extends SuperEJBForEFGP<VHTK001> {
+
+    @EJB
+    private VHTK001DetailBean vhtk001DetailBean;
+    private List<VHTK001Detail> detailList;
+
     public VHTK001Bean() {
         super(VHTK001.class);
     }
 
     public List<VHTK001Detail> getDetailList(String fsn) {
         detailList = vhtk001DetailBean.findByFSN(fsn);
-        return  detailList;
+        return detailList;
     }
 
     public void setDetailList(List<VHTK001Detail> detailList) {
         this.detailList = detailList;
     }
-  
 
 }

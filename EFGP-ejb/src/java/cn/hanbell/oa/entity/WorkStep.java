@@ -204,5 +204,5 @@ public class WorkStep implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.WorkStep[ oid=" + oid + " ]";
     }
-    
+
 }

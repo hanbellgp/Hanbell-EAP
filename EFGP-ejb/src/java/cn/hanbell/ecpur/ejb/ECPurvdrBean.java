@@ -32,6 +32,7 @@ public class ECPurvdrBean {
     public ECPurvdrBean() {
 
     }
+
     //回写电子采购平台
     public String ECPostBack(String url, JSONObject jsonObject) {
         try {

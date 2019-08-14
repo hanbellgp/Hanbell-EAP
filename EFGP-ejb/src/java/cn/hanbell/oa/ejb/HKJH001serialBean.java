@@ -17,8 +17,9 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class HKJH001serialBean extends SuperEJBForEFGP<HKJH001serial>{
-    public HKJH001serialBean(){
+public class HKJH001serialBean extends SuperEJBForEFGP<HKJH001serial> {
+
+    public HKJH001serialBean() {
         super(HKJH001serial.class);
     }
 
@@ -32,5 +33,5 @@ public class HKJH001serialBean extends SuperEJBForEFGP<HKJH001serial>{
             return null;
         }
     }
-    
+
 }

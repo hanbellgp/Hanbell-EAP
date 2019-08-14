@@ -25,41 +25,41 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "HK_CG019")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HKCG019.findAll", query = "SELECT h FROM HKCG019 h")
-    , @NamedQuery(name = "HKCG019.findByEName", query = "SELECT h FROM HKCG019 h WHERE h.eName = :eName")
-    , @NamedQuery(name = "HKCG019.findByEsdid", query = "SELECT h FROM HKCG019 h WHERE h.esdid = :esdid")
-    , @NamedQuery(name = "HKCG019.findBySupName", query = "SELECT h FROM HKCG019 h WHERE h.supName = :supName")
-    , @NamedQuery(name = "HKCG019.findByTramts", query = "SELECT h FROM HKCG019 h WHERE h.tramts = :tramts")
-    , @NamedQuery(name = "HKCG019.findByPSN", query = "SELECT h FROM HKCG019 h WHERE h.processSerialNumber = :psn")
-    , @NamedQuery(name = "HKCG019.findBySupNo", query = "SELECT h FROM HKCG019 h WHERE h.supNo = :supNo")
-    , @NamedQuery(name = "HKCG019.findByTax", query = "SELECT h FROM HKCG019 h WHERE h.tax = :tax")
-    , @NamedQuery(name = "HKCG019.findByTaxrate", query = "SELECT h FROM HKCG019 h WHERE h.taxrate = :taxrate")
-    , @NamedQuery(name = "HKCG019.findByCreateDate", query = "SELECT h FROM HKCG019 h WHERE h.createDate = :createDate")
-    , @NamedQuery(name = "HKCG019.findByCoin", query = "SELECT h FROM HKCG019 h WHERE h.coin = :coin")
-    , @NamedQuery(name = "HKCG019.findByCreater", query = "SELECT h FROM HKCG019 h WHERE h.creater = :creater")
-    , @NamedQuery(name = "HKCG019.findByUnmsr", query = "SELECT h FROM HKCG019 h WHERE h.unmsr = :unmsr")
-    , @NamedQuery(name = "HKCG019.findByBGInfoUrl", query = "SELECT h FROM HKCG019 h WHERE h.bGInfoUrl = :bGInfoUrl")
-    , @NamedQuery(name = "HKCG019.findByFSN", query = "SELECT h FROM HKCG019 h WHERE h.formSerialNumber = :fsn")
-    , @NamedQuery(name = "HKCG019.findByPreMark", query = "SELECT h FROM HKCG019 h WHERE h.preMark = :preMark")
-    , @NamedQuery(name = "HKCG019.findByCondition", query = "SELECT h FROM HKCG019 h WHERE h.condition = :condition")
-    , @NamedQuery(name = "HKCG019.findByEid", query = "SELECT h FROM HKCG019 h WHERE h.eid = :eid")
-    , @NamedQuery(name = "HKCG019.findByFacno", query = "SELECT h FROM HKCG019 h WHERE h.facno = :facno")
-    , @NamedQuery(name = "HKCG019.findByTotamts", query = "SELECT h FROM HKCG019 h WHERE h.totamts = :totamts")
-    , @NamedQuery(name = "HKCG019.findByExplain", query = "SELECT h FROM HKCG019 h WHERE h.explain = :explain")
-    , @NamedQuery(name = "HKCG019.findByBgSeq", query = "SELECT h FROM HKCG019 h WHERE h.bgSeq = :bgSeq")
-    , @NamedQuery(name = "HKCG019.findByItnbr", query = "SELECT h FROM HKCG019 h WHERE h.itnbr = :itnbr")
-    , @NamedQuery(name = "HKCG019.findByEType", query = "SELECT h FROM HKCG019 h WHERE h.eType = :eType")
-    , @NamedQuery(name = "HKCG019.findByOid", query = "SELECT h FROM HKCG019 h WHERE h.oid = :oid")
-    , @NamedQuery(name = "HKCG019.findByTaxamts", query = "SELECT h FROM HKCG019 h WHERE h.taxamts = :taxamts")
-    , @NamedQuery(name = "HKCG019.findByBackUrl", query = "SELECT h FROM HKCG019 h WHERE h.backUrl = :backUrl")
-    , @NamedQuery(name = "HKCG019.findByItdsc", query = "SELECT h FROM HKCG019 h WHERE h.itdsc = :itdsc")
-    , @NamedQuery(name = "HKCG019.findBySerialNumber", query = "SELECT h FROM HKCG019 h WHERE h.serialNumber = :serialNumber")
-    , @NamedQuery(name = "HKCG019.findByUnprice", query = "SELECT h FROM HKCG019 h WHERE h.unprice = :unprice")
-    , @NamedQuery(name = "HKCG019.findByCreaterName", query = "SELECT h FROM HKCG019 h WHERE h.createrName = :createrName")
-    , @NamedQuery(name = "HKCG019.findByTag", query = "SELECT h FROM HKCG019 h WHERE h.tag = :tag")
-    , @NamedQuery(name = "HKCG019.findByPrePrqy", query = "SELECT h FROM HKCG019 h WHERE h.prePrqy = :prePrqy")
-    , @NamedQuery(name = "HKCG019.findByECode", query = "SELECT h FROM HKCG019 h WHERE h.eCode = :eCode")
-    , @NamedQuery(name = "HKCG019.findByAttachment", query = "SELECT h FROM HKCG019 h WHERE h.attachment = :attachment")})
+    @NamedQuery(name = "HKCG019.findAll", query = "SELECT h FROM HKCG019 h"),
+    @NamedQuery(name = "HKCG019.findByEName", query = "SELECT h FROM HKCG019 h WHERE h.eName = :eName"),
+    @NamedQuery(name = "HKCG019.findByEsdid", query = "SELECT h FROM HKCG019 h WHERE h.esdid = :esdid"),
+    @NamedQuery(name = "HKCG019.findBySupName", query = "SELECT h FROM HKCG019 h WHERE h.supName = :supName"),
+    @NamedQuery(name = "HKCG019.findByTramts", query = "SELECT h FROM HKCG019 h WHERE h.tramts = :tramts"),
+    @NamedQuery(name = "HKCG019.findByPSN", query = "SELECT h FROM HKCG019 h WHERE h.processSerialNumber = :psn"),
+    @NamedQuery(name = "HKCG019.findBySupNo", query = "SELECT h FROM HKCG019 h WHERE h.supNo = :supNo"),
+    @NamedQuery(name = "HKCG019.findByTax", query = "SELECT h FROM HKCG019 h WHERE h.tax = :tax"),
+    @NamedQuery(name = "HKCG019.findByTaxrate", query = "SELECT h FROM HKCG019 h WHERE h.taxrate = :taxrate"),
+    @NamedQuery(name = "HKCG019.findByCreateDate", query = "SELECT h FROM HKCG019 h WHERE h.createDate = :createDate"),
+    @NamedQuery(name = "HKCG019.findByCoin", query = "SELECT h FROM HKCG019 h WHERE h.coin = :coin"),
+    @NamedQuery(name = "HKCG019.findByCreater", query = "SELECT h FROM HKCG019 h WHERE h.creater = :creater"),
+    @NamedQuery(name = "HKCG019.findByUnmsr", query = "SELECT h FROM HKCG019 h WHERE h.unmsr = :unmsr"),
+    @NamedQuery(name = "HKCG019.findByBGInfoUrl", query = "SELECT h FROM HKCG019 h WHERE h.bGInfoUrl = :bGInfoUrl"),
+    @NamedQuery(name = "HKCG019.findByFSN", query = "SELECT h FROM HKCG019 h WHERE h.formSerialNumber = :fsn"),
+    @NamedQuery(name = "HKCG019.findByPreMark", query = "SELECT h FROM HKCG019 h WHERE h.preMark = :preMark"),
+    @NamedQuery(name = "HKCG019.findByCondition", query = "SELECT h FROM HKCG019 h WHERE h.condition = :condition"),
+    @NamedQuery(name = "HKCG019.findByEid", query = "SELECT h FROM HKCG019 h WHERE h.eid = :eid"),
+    @NamedQuery(name = "HKCG019.findByFacno", query = "SELECT h FROM HKCG019 h WHERE h.facno = :facno"),
+    @NamedQuery(name = "HKCG019.findByTotamts", query = "SELECT h FROM HKCG019 h WHERE h.totamts = :totamts"),
+    @NamedQuery(name = "HKCG019.findByExplain", query = "SELECT h FROM HKCG019 h WHERE h.explain = :explain"),
+    @NamedQuery(name = "HKCG019.findByBgSeq", query = "SELECT h FROM HKCG019 h WHERE h.bgSeq = :bgSeq"),
+    @NamedQuery(name = "HKCG019.findByItnbr", query = "SELECT h FROM HKCG019 h WHERE h.itnbr = :itnbr"),
+    @NamedQuery(name = "HKCG019.findByEType", query = "SELECT h FROM HKCG019 h WHERE h.eType = :eType"),
+    @NamedQuery(name = "HKCG019.findByOid", query = "SELECT h FROM HKCG019 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKCG019.findByTaxamts", query = "SELECT h FROM HKCG019 h WHERE h.taxamts = :taxamts"),
+    @NamedQuery(name = "HKCG019.findByBackUrl", query = "SELECT h FROM HKCG019 h WHERE h.backUrl = :backUrl"),
+    @NamedQuery(name = "HKCG019.findByItdsc", query = "SELECT h FROM HKCG019 h WHERE h.itdsc = :itdsc"),
+    @NamedQuery(name = "HKCG019.findBySerialNumber", query = "SELECT h FROM HKCG019 h WHERE h.serialNumber = :serialNumber"),
+    @NamedQuery(name = "HKCG019.findByUnprice", query = "SELECT h FROM HKCG019 h WHERE h.unprice = :unprice"),
+    @NamedQuery(name = "HKCG019.findByCreaterName", query = "SELECT h FROM HKCG019 h WHERE h.createrName = :createrName"),
+    @NamedQuery(name = "HKCG019.findByTag", query = "SELECT h FROM HKCG019 h WHERE h.tag = :tag"),
+    @NamedQuery(name = "HKCG019.findByPrePrqy", query = "SELECT h FROM HKCG019 h WHERE h.prePrqy = :prePrqy"),
+    @NamedQuery(name = "HKCG019.findByECode", query = "SELECT h FROM HKCG019 h WHERE h.eCode = :eCode"),
+    @NamedQuery(name = "HKCG019.findByAttachment", query = "SELECT h FROM HKCG019 h WHERE h.attachment = :attachment")})
 public class HKCG019 implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -472,5 +472,5 @@ public class HKCG019 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKCG019[ oid=" + oid + " ]";
     }
-    
+
 }

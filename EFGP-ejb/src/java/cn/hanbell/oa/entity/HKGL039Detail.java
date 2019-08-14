@@ -250,5 +250,5 @@ public class HKGL039Detail implements Serializable {
     public void setPrice01h(String price01h) {
         this.price01h = price01h;
     }
-    
+
 }

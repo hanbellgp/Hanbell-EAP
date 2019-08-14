@@ -41,7 +41,7 @@ public class SHBERPAPM811DetailModel implements Serializable {
     private String apdsc;
 
     public SHBERPAPM811DetailModel() {
-    
+
     }
 
     public String getCoin() {

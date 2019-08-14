@@ -386,5 +386,5 @@ public class HZCW028tDetail implements Serializable {
     public void setServiceno2(String serviceno2) {
         this.serviceno2 = serviceno2;
     }
-    
+
 }

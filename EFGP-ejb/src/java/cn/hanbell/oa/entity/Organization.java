@@ -124,5 +124,5 @@ public class Organization implements Serializable {
     public String toString() {
         return "com.hanbell.oa.entity.Organization[ oid=" + oid + " ]";
     }
-    
+
 }

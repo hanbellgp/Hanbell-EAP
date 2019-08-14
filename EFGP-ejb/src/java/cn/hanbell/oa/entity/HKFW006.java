@@ -574,7 +574,7 @@ public class HKFW006 implements Serializable {
     public void setProcessSerialNumber(String processSerialNumber) {
         this.processSerialNumber = processSerialNumber;
     }
-    
+
     public Double getYf() {
         return yf;
     }

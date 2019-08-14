@@ -502,5 +502,5 @@ public class HKGL039 implements Serializable {
     public void setTakeuser1(Users takeuser1) {
         this.takeuser1 = takeuser1;
     }
-    
+
 }

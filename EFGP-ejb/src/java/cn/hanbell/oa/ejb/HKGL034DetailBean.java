@@ -21,5 +21,5 @@ public class HKGL034DetailBean extends SuperEJBForEFGP<HKGL034Detail> {
     public HKGL034DetailBean() {
         super(HKGL034Detail.class);
     }
-    
+
 }

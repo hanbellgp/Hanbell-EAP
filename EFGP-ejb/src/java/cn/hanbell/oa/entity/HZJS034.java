@@ -875,5 +875,5 @@ public class HZJS034 implements Serializable {
     public void setGx(String gx) {
         this.gx = gx;
     }
-    
+
 }

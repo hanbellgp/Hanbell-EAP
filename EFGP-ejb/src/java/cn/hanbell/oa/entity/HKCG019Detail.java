@@ -25,26 +25,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "HK_CG019_Detail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HKCG019Detail.findAll", query = "SELECT h FROM HKCG019Detail h")
-    , @NamedQuery(name = "HKCG019Detail.findByTotamts", query = "SELECT h FROM HKCG019Detail h WHERE h.totamts = :totamts")
-    , @NamedQuery(name = "HKCG019Detail.findByEsdid", query = "SELECT h FROM HKCG019Detail h WHERE h.esdid = :esdid")
-    , @NamedQuery(name = "HKCG019Detail.findBySupName", query = "SELECT h FROM HKCG019Detail h WHERE h.supName = :supName")
-    , @NamedQuery(name = "HKCG019Detail.findBySupNo", query = "SELECT h FROM HKCG019Detail h WHERE h.supNo = :supNo")
-    , @NamedQuery(name = "HKCG019Detail.findByBgSeq", query = "SELECT h FROM HKCG019Detail h WHERE h.bgSeq = :bgSeq")
-    , @NamedQuery(name = "HKCG019Detail.findByItnbr", query = "SELECT h FROM HKCG019Detail h WHERE h.itnbr = :itnbr")
-    , @NamedQuery(name = "HKCG019Detail.findByTaxrate", query = "SELECT h FROM HKCG019Detail h WHERE h.taxrate = :taxrate")
-    , @NamedQuery(name = "HKCG019Detail.findByOid", query = "SELECT h FROM HKCG019Detail h WHERE h.oid = :oid")
-    , @NamedQuery(name = "HKCG019Detail.findByUnmsr", query = "SELECT h FROM HKCG019Detail h WHERE h.unmsr = :unmsr")
-    , @NamedQuery(name = "HKCG019Detail.findByItdsc", query = "SELECT h FROM HKCG019Detail h WHERE h.itdsc = :itdsc")
-    , @NamedQuery(name = "HKCG019Detail.findByUnprice", query = "SELECT h FROM HKCG019Detail h WHERE h.unprice = :unprice")
-    , @NamedQuery(name = "HKCG019Detail.findByTotprice", query = "SELECT h FROM HKCG019Detail h WHERE h.totprice = :totprice")
-    , @NamedQuery(name = "HKCG019Detail.findByFormSerialNumber", query = "SELECT h FROM HKCG019Detail h WHERE h.formSerialNumber = :formSerialNumber")
-    , @NamedQuery(name = "HKCG019Detail.findByPrePrqy", query = "SELECT h FROM HKCG019Detail h WHERE h.prePrqy = :prePrqy")
-    , @NamedQuery(name = "HKCG019Detail.findByTax", query = "SELECT h FROM HKCG019Detail h WHERE h.tax = :tax")
-    , @NamedQuery(name = "HKCG019Detail.findByTaxamts", query = "SELECT h FROM HKCG019Detail h WHERE h.taxamts = :taxamts")
-    , @NamedQuery(name = "HKCG019Detail.findByCoin", query = "SELECT h FROM HKCG019Detail h WHERE h.coin = :coin")
-    , @NamedQuery(name = "HKCG019Detail.findByPreMark", query = "SELECT h FROM HKCG019Detail h WHERE h.preMark = :preMark")
-    , @NamedQuery(name = "HKCG019Detail.findByTramts", query = "SELECT h FROM HKCG019Detail h WHERE h.tramts = :tramts")})
+    @NamedQuery(name = "HKCG019Detail.findAll", query = "SELECT h FROM HKCG019Detail h"),
+    @NamedQuery(name = "HKCG019Detail.findByTotamts", query = "SELECT h FROM HKCG019Detail h WHERE h.totamts = :totamts"),
+    @NamedQuery(name = "HKCG019Detail.findByEsdid", query = "SELECT h FROM HKCG019Detail h WHERE h.esdid = :esdid"),
+    @NamedQuery(name = "HKCG019Detail.findBySupName", query = "SELECT h FROM HKCG019Detail h WHERE h.supName = :supName"),
+    @NamedQuery(name = "HKCG019Detail.findBySupNo", query = "SELECT h FROM HKCG019Detail h WHERE h.supNo = :supNo"),
+    @NamedQuery(name = "HKCG019Detail.findByBgSeq", query = "SELECT h FROM HKCG019Detail h WHERE h.bgSeq = :bgSeq"),
+    @NamedQuery(name = "HKCG019Detail.findByItnbr", query = "SELECT h FROM HKCG019Detail h WHERE h.itnbr = :itnbr"),
+    @NamedQuery(name = "HKCG019Detail.findByTaxrate", query = "SELECT h FROM HKCG019Detail h WHERE h.taxrate = :taxrate"),
+    @NamedQuery(name = "HKCG019Detail.findByOid", query = "SELECT h FROM HKCG019Detail h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKCG019Detail.findByUnmsr", query = "SELECT h FROM HKCG019Detail h WHERE h.unmsr = :unmsr"),
+    @NamedQuery(name = "HKCG019Detail.findByItdsc", query = "SELECT h FROM HKCG019Detail h WHERE h.itdsc = :itdsc"),
+    @NamedQuery(name = "HKCG019Detail.findByUnprice", query = "SELECT h FROM HKCG019Detail h WHERE h.unprice = :unprice"),
+    @NamedQuery(name = "HKCG019Detail.findByTotprice", query = "SELECT h FROM HKCG019Detail h WHERE h.totprice = :totprice"),
+    @NamedQuery(name = "HKCG019Detail.findByFormSerialNumber", query = "SELECT h FROM HKCG019Detail h WHERE h.formSerialNumber = :formSerialNumber"),
+    @NamedQuery(name = "HKCG019Detail.findByPrePrqy", query = "SELECT h FROM HKCG019Detail h WHERE h.prePrqy = :prePrqy"),
+    @NamedQuery(name = "HKCG019Detail.findByTax", query = "SELECT h FROM HKCG019Detail h WHERE h.tax = :tax"),
+    @NamedQuery(name = "HKCG019Detail.findByTaxamts", query = "SELECT h FROM HKCG019Detail h WHERE h.taxamts = :taxamts"),
+    @NamedQuery(name = "HKCG019Detail.findByCoin", query = "SELECT h FROM HKCG019Detail h WHERE h.coin = :coin"),
+    @NamedQuery(name = "HKCG019Detail.findByPreMark", query = "SELECT h FROM HKCG019Detail h WHERE h.preMark = :preMark"),
+    @NamedQuery(name = "HKCG019Detail.findByTramts", query = "SELECT h FROM HKCG019Detail h WHERE h.tramts = :tramts")})
 public class HKCG019Detail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -292,5 +292,5 @@ public class HKCG019Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKCG019Detail[ oid=" + oid + " ]";
     }
-    
+
 }

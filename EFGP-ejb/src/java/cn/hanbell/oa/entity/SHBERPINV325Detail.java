@@ -172,6 +172,7 @@ public class SHBERPINV325Detail implements Serializable {
     public void setDtowarehName(String dtowarehName) {
         this.dtowarehName = dtowarehName;
     }
+
     @Override
     public int hashCode() {
         int hash = 0;

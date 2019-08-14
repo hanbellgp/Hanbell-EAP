@@ -400,5 +400,5 @@ public class VHTV002reDetail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.VHTV002reDetail[ oid=" + oid + " ]";
     }
-    
+
 }

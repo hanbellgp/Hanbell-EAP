@@ -606,5 +606,5 @@ public class SHBERPAPM811 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.app.SHBERPAPM811[ oid=" + oid + " ]";
     }
-    
+
 }

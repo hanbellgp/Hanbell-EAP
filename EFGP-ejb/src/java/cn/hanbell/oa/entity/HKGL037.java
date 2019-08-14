@@ -593,5 +593,5 @@ public class HKGL037 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.ejb.HKGL037[ oid=" + oid + " ]";
     }
-    
+
 }

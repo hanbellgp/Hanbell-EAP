@@ -20,7 +20,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class HKGL034Model implements Serializable {
 
-
     private String facno;
     private String hdn_facno;
     private Date applyDate;

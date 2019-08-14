@@ -177,5 +177,5 @@ public class WorkAssignment implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.WorkAssignment[ oid=" + oid + " ]";
     }
-    
+
 }

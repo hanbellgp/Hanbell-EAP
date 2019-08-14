@@ -29,28 +29,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "Users")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Users.getRowCount", query = "SELECT COUNT(u) FROM Users u")
-    ,
-    @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u")
-    ,
-    @NamedQuery(name = "Users.findByOID", query = "SELECT u FROM Users u WHERE u.oid = :oid")
-    ,
-    @NamedQuery(name = "Users.findById", query = "SELECT u FROM Users u WHERE u.id = :id")
-    ,
-    @NamedQuery(name = "Users.findByUserName", query = "SELECT u FROM Users u WHERE u.userName = :userName")
-    ,
-    @NamedQuery(name = "Users.findByObjectVersion", query = "SELECT u FROM Users u WHERE u.objectVersion = :objectVersion")
-    ,
-    @NamedQuery(name = "Users.findByReferCalendarOID", query = "SELECT u FROM Users u WHERE u.referCalendarOID = :referCalendarOID")
-    ,
-    @NamedQuery(name = "Users.findByIdentificationType", query = "SELECT u FROM Users u WHERE u.identificationType = :identificationType")
-    ,
-    @NamedQuery(name = "Users.findByMailAddress", query = "SELECT u FROM Users u WHERE u.mailAddress = :mailAddress")
-    ,
-    @NamedQuery(name = "Users.findByLocaleString", query = "SELECT u FROM Users u WHERE u.localeString = :localeString")
-    ,
-    @NamedQuery(name = "Users.findByPhoneNumber", query = "SELECT u FROM Users u WHERE u.phoneNumber = :phoneNumber")
-    ,
+    @NamedQuery(name = "Users.getRowCount", query = "SELECT COUNT(u) FROM Users u"),
+    @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
+    @NamedQuery(name = "Users.findByOID", query = "SELECT u FROM Users u WHERE u.oid = :oid"),
+    @NamedQuery(name = "Users.findById", query = "SELECT u FROM Users u WHERE u.id = :id"),
+    @NamedQuery(name = "Users.findByUserName", query = "SELECT u FROM Users u WHERE u.userName = :userName"),
+    @NamedQuery(name = "Users.findByObjectVersion", query = "SELECT u FROM Users u WHERE u.objectVersion = :objectVersion"),
+    @NamedQuery(name = "Users.findByReferCalendarOID", query = "SELECT u FROM Users u WHERE u.referCalendarOID = :referCalendarOID"),
+    @NamedQuery(name = "Users.findByIdentificationType", query = "SELECT u FROM Users u WHERE u.identificationType = :identificationType"),
+    @NamedQuery(name = "Users.findByMailAddress", query = "SELECT u FROM Users u WHERE u.mailAddress = :mailAddress"),
+    @NamedQuery(name = "Users.findByLocaleString", query = "SELECT u FROM Users u WHERE u.localeString = :localeString"),
+    @NamedQuery(name = "Users.findByPhoneNumber", query = "SELECT u FROM Users u WHERE u.phoneNumber = :phoneNumber"),
     @NamedQuery(name = "Users.findByWorkflowServerOID", query = "SELECT u FROM Users u WHERE u.workflowServerOID = :workflowServerOID")})
 public class Users implements Serializable {
 

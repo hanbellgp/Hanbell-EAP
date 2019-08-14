@@ -28,10 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "HK_GL060")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HKGL060.findAll", query = "SELECT h FROM HKGL060 h")
-    , @NamedQuery(name = "HKGL060.findByOID", query = "SELECT h FROM HKGL060 h WHERE h.oid = :oid")
-    , @NamedQuery(name = "HKGL060.findByPSN", query = "SELECT h FROM HKGL060 h WHERE h.processSerialNumber = :psn")
-    , @NamedQuery(name = "HKGL060.findByFSN", query = "SELECT h FROM HKGL060 h WHERE h.formSerialNumber = :fsn")})
+    @NamedQuery(name = "HKGL060.findAll", query = "SELECT h FROM HKGL060 h"),
+    @NamedQuery(name = "HKGL060.findByOID", query = "SELECT h FROM HKGL060 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKGL060.findByPSN", query = "SELECT h FROM HKGL060 h WHERE h.processSerialNumber = :psn"),
+    @NamedQuery(name = "HKGL060.findByFSN", query = "SELECT h FROM HKGL060 h WHERE h.formSerialNumber = :fsn")})
 public class HKGL060 implements Serializable {
 
     private static final long serialVersionUID = 1L;

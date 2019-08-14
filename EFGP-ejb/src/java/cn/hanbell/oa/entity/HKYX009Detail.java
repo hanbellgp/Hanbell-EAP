@@ -270,5 +270,5 @@ public class HKYX009Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKYX009Detail[ oid=" + oid + " ]";
     }
-    
+
 }

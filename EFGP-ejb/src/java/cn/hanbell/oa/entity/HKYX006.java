@@ -608,5 +608,5 @@ public class HKYX006 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKYX006[ oid=" + oid + " ]";
     }
-    
+
 }

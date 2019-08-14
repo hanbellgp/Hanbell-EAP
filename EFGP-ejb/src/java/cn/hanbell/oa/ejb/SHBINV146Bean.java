@@ -16,10 +16,10 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class SHBINV146Bean extends SuperEJBForEFGP<SHBERPINV146>{
+public class SHBINV146Bean extends SuperEJBForEFGP<SHBERPINV146> {
 
-    public  SHBINV146Bean(){
+    public SHBINV146Bean() {
         super(SHBERPINV146.class);
     }
-    
+
 }

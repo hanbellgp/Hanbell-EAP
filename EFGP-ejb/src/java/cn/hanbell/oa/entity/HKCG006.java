@@ -391,5 +391,5 @@ public class HKCG006 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKCG006[ oid=" + oid + " ]";
     }
-    
+
 }

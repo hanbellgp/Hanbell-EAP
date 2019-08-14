@@ -184,5 +184,5 @@ public class HKFW006Inv310Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKFW006Inv310Detail[ oid=" + oid + " ]";
     }
-    
+
 }

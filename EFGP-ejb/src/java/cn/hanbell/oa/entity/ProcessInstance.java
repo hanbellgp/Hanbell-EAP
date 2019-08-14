@@ -458,5 +458,5 @@ public class ProcessInstance implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.ProcessInstance[ oid=" + oid + " ]";
     }
-    
+
 }

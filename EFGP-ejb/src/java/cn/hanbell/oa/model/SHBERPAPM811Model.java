@@ -16,7 +16,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class SHBERPAPM811Model implements Serializable {
 
- 
     private Double total;
     private String apsta;
     private String terdate;

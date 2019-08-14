@@ -21,5 +21,5 @@ public class HZCW028reDetailBean extends SuperEJBForEFGP<HZCW028reDetail> {
     public HZCW028reDetailBean() {
         super(HZCW028reDetail.class);
     }
-    
+
 }

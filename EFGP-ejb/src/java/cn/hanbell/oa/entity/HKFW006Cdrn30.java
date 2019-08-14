@@ -495,5 +495,5 @@ public class HKFW006Cdrn30 implements Serializable {
     public void setDmark1(String dmark1) {
         this.dmark1 = dmark1;
     }
-    
+
 }

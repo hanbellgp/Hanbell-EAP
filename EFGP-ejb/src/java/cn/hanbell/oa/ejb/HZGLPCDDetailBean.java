@@ -21,5 +21,5 @@ public class HZGLPCDDetailBean extends SuperEJBForEFGP<HZGLPCDDetail> {
     public HZGLPCDDetailBean() {
         super(HZGLPCDDetail.class);
     }
-    
+
 }

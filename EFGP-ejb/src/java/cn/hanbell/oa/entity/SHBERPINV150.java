@@ -28,19 +28,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SHB_ERP_INV150")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SHBERPINV150.findAll", query = "SELECT s FROM SHBERPINV150 s")
-    , @NamedQuery(name = "SHBERPINV150.findByOid", query = "SELECT s FROM SHBERPINV150 s WHERE s.oid = :oid")
-    , @NamedQuery(name = "SHBERPINV150.findByWareh", query = "SELECT s FROM SHBERPINV150 s WHERE s.wareh = :wareh")
-    , @NamedQuery(name = "SHBERPINV150.findByWhdsc", query = "SELECT s FROM SHBERPINV150 s WHERE s.whdsc = :whdsc")
-    , @NamedQuery(name = "SHBERPINV150.findByApplyreason", query = "SELECT s FROM SHBERPINV150 s WHERE s.applyreason = :applyreason")
-    , @NamedQuery(name = "SHBERPINV150.findByFacno", query = "SELECT s FROM SHBERPINV150 s WHERE s.facno = :facno")
-    , @NamedQuery(name = "SHBERPINV150.findByWclerk", query = "SELECT s FROM SHBERPINV150 s WHERE s.wclerk = :wclerk")
-    , @NamedQuery(name = "SHBERPINV150.findByApplyDate", query = "SELECT s FROM SHBERPINV150 s WHERE s.applyDate = :applyDate")
-    , @NamedQuery(name = "SHBERPINV150.findByApplyUser", query = "SELECT s FROM SHBERPINV150 s WHERE s.applyUser = :applyUser")
-    , @NamedQuery(name = "SHBERPINV150.findByApplyDept", query = "SELECT s FROM SHBERPINV150 s WHERE s.applyDept = :applyDept")
-    , @NamedQuery(name = "SHBERPINV150.findByProductplace", query = "SELECT s FROM SHBERPINV150 s WHERE s.productplace = :productplace")
-    , @NamedQuery(name = "SHBERPINV150.findByPSN", query = "SELECT s FROM SHBERPINV150 s WHERE s.processSerialNumber = :psn")
-    , @NamedQuery(name = "SHBERPINV150.findByFSN", query = "SELECT s FROM SHBERPINV150 s WHERE s.formSerialNumber = :fsn")})
+    @NamedQuery(name = "SHBERPINV150.findAll", query = "SELECT s FROM SHBERPINV150 s"),
+    @NamedQuery(name = "SHBERPINV150.findByOid", query = "SELECT s FROM SHBERPINV150 s WHERE s.oid = :oid"),
+    @NamedQuery(name = "SHBERPINV150.findByWareh", query = "SELECT s FROM SHBERPINV150 s WHERE s.wareh = :wareh"),
+    @NamedQuery(name = "SHBERPINV150.findByWhdsc", query = "SELECT s FROM SHBERPINV150 s WHERE s.whdsc = :whdsc"),
+    @NamedQuery(name = "SHBERPINV150.findByApplyreason", query = "SELECT s FROM SHBERPINV150 s WHERE s.applyreason = :applyreason"),
+    @NamedQuery(name = "SHBERPINV150.findByFacno", query = "SELECT s FROM SHBERPINV150 s WHERE s.facno = :facno"),
+    @NamedQuery(name = "SHBERPINV150.findByWclerk", query = "SELECT s FROM SHBERPINV150 s WHERE s.wclerk = :wclerk"),
+    @NamedQuery(name = "SHBERPINV150.findByApplyDate", query = "SELECT s FROM SHBERPINV150 s WHERE s.applyDate = :applyDate"),
+    @NamedQuery(name = "SHBERPINV150.findByApplyUser", query = "SELECT s FROM SHBERPINV150 s WHERE s.applyUser = :applyUser"),
+    @NamedQuery(name = "SHBERPINV150.findByApplyDept", query = "SELECT s FROM SHBERPINV150 s WHERE s.applyDept = :applyDept"),
+    @NamedQuery(name = "SHBERPINV150.findByProductplace", query = "SELECT s FROM SHBERPINV150 s WHERE s.productplace = :productplace"),
+    @NamedQuery(name = "SHBERPINV150.findByPSN", query = "SELECT s FROM SHBERPINV150 s WHERE s.processSerialNumber = :psn"),
+    @NamedQuery(name = "SHBERPINV150.findByFSN", query = "SELECT s FROM SHBERPINV150 s WHERE s.formSerialNumber = :fsn")})
 public class SHBERPINV150 implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -255,5 +255,5 @@ public class SHBERPINV150 implements Serializable {
     public void setWhdsc(String whdsc) {
         this.whdsc = whdsc;
     }
-    
+
 }

@@ -19,10 +19,11 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class SHBERPAPM811Bean extends SuperEJBForEFGP<SHBERPAPM811>{
+public class SHBERPAPM811Bean extends SuperEJBForEFGP<SHBERPAPM811> {
+
     @EJB
     private SHBERPAPM811DetailBean shberpapm811DetailBean;
-    private List<SHBERPAPM811Detail> detailList ;
+    private List<SHBERPAPM811Detail> detailList;
 
     public SHBERPAPM811Bean() {
         super(SHBERPAPM811.class);
@@ -30,7 +31,7 @@ public class SHBERPAPM811Bean extends SuperEJBForEFGP<SHBERPAPM811>{
 
     public List<SHBERPAPM811Detail> getDetailList(String fsn) {
         detailList = shberpapm811DetailBean.findByFSN(fsn);
-        return  detailList ;
+        return detailList;
     }
 
     public void setDetailList(List<SHBERPAPM811Detail> detailList) {

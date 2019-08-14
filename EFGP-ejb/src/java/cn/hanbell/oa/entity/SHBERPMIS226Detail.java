@@ -396,5 +396,5 @@ public class SHBERPMIS226Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.SHBERPMIS226Detail[ oid=" + oid + " ]";
     }
-    
+
 }

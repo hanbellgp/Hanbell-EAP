@@ -285,6 +285,7 @@ public class HZCW033reDetail implements Serializable {
     public void setBudgetDeptlbl(String budgetDeptlbl) {
         this.budgetDeptlbl = budgetDeptlbl;
     }
+
     public String getBudgetAcc() {
         return budgetAcc;
     }
@@ -357,14 +358,14 @@ public class HZCW033reDetail implements Serializable {
         this.taxes = taxes;
     }
 
-      public String getCenterid() {
+    public String getCenterid() {
         return centerid;
     }
 
     public void setCenterid(String centerid) {
         this.centerid = centerid;
     }
-    
+
     public String getFormSerialNumber() {
         return formSerialNumber;
     }
@@ -398,6 +399,4 @@ public class HZCW033reDetail implements Serializable {
         return "cn.hanbell.oa.entity.HZCW033reDetail[ oid=" + oid + " ]";
     }
 
-  
-    
 }

@@ -136,5 +136,5 @@ public class OrganizationUnitProperty implements Serializable {
     public String toString() {
         return "com.hanbell.oa.entity.OrganizationUnitProperty[ oid=" + oid + " ]";
     }
-    
+
 }

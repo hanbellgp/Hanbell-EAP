@@ -76,7 +76,7 @@ public class HKYX009 implements Serializable {
     @Size(max = 255)
     @Column(name = "pricingtype")
     private String pricingtype;
-     @Size(max = 255)
+    @Size(max = 255)
     @Column(name = "pricingtypedsc")
     private String pricingtypedsc;
     @Size(max = 255)
@@ -92,7 +92,7 @@ public class HKYX009 implements Serializable {
     private String coin;
     @Size(max = 255)
     @Column(name = "quotype ")
-    private String quotype ;
+    private String quotype;
     @Size(max = 255)
     @Column(name = "cusna")
     private String cusna;
@@ -268,12 +268,12 @@ public class HKYX009 implements Serializable {
         this.coin = coin;
     }
 
-    public String getQuotype () {
-        return quotype ;
+    public String getQuotype() {
+        return quotype;
     }
 
-    public void setQuotype (String quotype ) {
-        this.quotype  = quotype ;
+    public void setQuotype(String quotype) {
+        this.quotype = quotype;
     }
 
     public String getCusna() {
@@ -444,5 +444,5 @@ public class HKYX009 implements Serializable {
     public void setMancodesc(String mancodesc) {
         this.mancodesc = mancodesc;
     }
-    
+
 }

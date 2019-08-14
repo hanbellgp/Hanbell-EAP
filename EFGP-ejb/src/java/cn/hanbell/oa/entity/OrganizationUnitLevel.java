@@ -150,5 +150,5 @@ public class OrganizationUnitLevel implements Serializable {
     public String toString() {
         return "com.hanbell.oa.entity.OrganizationUnitLevel[ oid=" + oid + " ]";
     }
-    
+
 }

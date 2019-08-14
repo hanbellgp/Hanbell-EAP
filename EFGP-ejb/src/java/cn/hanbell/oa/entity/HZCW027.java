@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "HZCW027.findAll", query = "SELECT h FROM HZCW027 h"),
-    @NamedQuery(name = "HZCW027.findByOid", query = "SELECT h FROM HZCW027 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HZCW027.findByOID", query = "SELECT h FROM HZCW027 h WHERE h.oid = :oid"),
     @NamedQuery(name = "HZCW027.findByPSN", query = "SELECT h FROM HZCW027 h WHERE h.processSerialNumber = :psn"),
     @NamedQuery(name = "HZCW027.findByFSN", query = "SELECT h FROM HZCW027 h WHERE h.formSerialNumber = :fsn")})
 public class HZCW027 implements Serializable {

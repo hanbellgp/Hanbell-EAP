@@ -126,6 +126,7 @@ public class HKGL038 implements Serializable {
     private Double cost;
     @Column(name = "totalcost")
     private Double totalcost;
+
     public HKGL038() {
     }
 

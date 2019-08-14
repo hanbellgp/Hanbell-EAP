@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class HKCG007DetailModel implements Serializable {
+
     @Size(max = 255)
     @Column(name = "seq")
     private String seq;
@@ -115,8 +116,6 @@ public class HKCG007DetailModel implements Serializable {
 
     public HKCG007DetailModel() {
     }
-
-   
 
     public String getRqtdateTxt() {
         return rqtdateTxt;
@@ -349,7 +348,6 @@ public class HKCG007DetailModel implements Serializable {
     public void setQtotamts(String qtotamts) {
         this.qtotamts = qtotamts;
     }
-
 
     public String getAddcode() {
         return addcode;

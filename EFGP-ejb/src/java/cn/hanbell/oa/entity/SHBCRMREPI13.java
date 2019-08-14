@@ -25,20 +25,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SHB_CRM_REPI13")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SHBCRMREPI13.findAll", query = "SELECT s FROM SHBCRMREPI13 s")
-    , @NamedQuery(name = "SHBCRMREPI13.findBySerialNumber", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.serialNumber = :serialNumber")
-    , @NamedQuery(name = "SHBCRMREPI13.findByOid", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.oid = :oid")
-    , @NamedQuery(name = "SHBCRMREPI13.findByTc087", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc087 = :tc087")
-    , @NamedQuery(name = "SHBCRMREPI13.findByTc088", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc088 = :tc088")
-    , @NamedQuery(name = "SHBCRMREPI13.findByTc001", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc001 = :tc001")
-    , @NamedQuery(name = "SHBCRMREPI13.findByTc002", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc002 = :tc002")
-    , @NamedQuery(name = "SHBCRMREPI13.findByTc082", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc082 = :tc082")
-    , @NamedQuery(name = "SHBCRMREPI13.findByPSN", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.processSerialNumber = :psn")
-    , @NamedQuery(name = "SHBCRMREPI13.findByTc086", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc086 = :tc086")
-    , @NamedQuery(name = "SHBCRMREPI13.findByFSN", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.formSerialNumber = :fsn")
-    , @NamedQuery(name = "SHBCRMREPI13.findByHdncp", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.hdncp = :hdncp")
-    , @NamedQuery(name = "SHBCRMREPI13.findByHdnfw", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.hdnfw = :hdnfw")
-    , @NamedQuery(name = "SHBCRMREPI13.findByHdnapplydept", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.hdnapplydept = :hdnapplydept")})
+    @NamedQuery(name = "SHBCRMREPI13.findAll", query = "SELECT s FROM SHBCRMREPI13 s"),
+    @NamedQuery(name = "SHBCRMREPI13.findBySerialNumber", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.serialNumber = :serialNumber"),
+    @NamedQuery(name = "SHBCRMREPI13.findByOid", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.oid = :oid"),
+    @NamedQuery(name = "SHBCRMREPI13.findByTc087", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc087 = :tc087"),
+    @NamedQuery(name = "SHBCRMREPI13.findByTc088", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc088 = :tc088"),
+    @NamedQuery(name = "SHBCRMREPI13.findByTc001", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc001 = :tc001"),
+    @NamedQuery(name = "SHBCRMREPI13.findByTc002", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc002 = :tc002"),
+    @NamedQuery(name = "SHBCRMREPI13.findByTc082", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc082 = :tc082"),
+    @NamedQuery(name = "SHBCRMREPI13.findByPSN", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.processSerialNumber = :psn"),
+    @NamedQuery(name = "SHBCRMREPI13.findByTc086", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.tc086 = :tc086"),
+    @NamedQuery(name = "SHBCRMREPI13.findByFSN", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.formSerialNumber = :fsn"),
+    @NamedQuery(name = "SHBCRMREPI13.findByHdncp", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.hdncp = :hdncp"),
+    @NamedQuery(name = "SHBCRMREPI13.findByHdnfw", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.hdnfw = :hdnfw"),
+    @NamedQuery(name = "SHBCRMREPI13.findByHdnapplydept", query = "SELECT s FROM SHBCRMREPI13 s WHERE s.hdnapplydept = :hdnapplydept")})
 public class SHBCRMREPI13 implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -220,5 +220,5 @@ public class SHBCRMREPI13 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.SHBCRMREPI13[ oid=" + oid + " ]";
     }
-    
+
 }

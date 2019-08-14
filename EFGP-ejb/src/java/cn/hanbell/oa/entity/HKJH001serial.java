@@ -94,5 +94,5 @@ public class HKJH001serial implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.hkjh001serial[ kind=" + kind + " ]";
     }
-    
+
 }

@@ -811,5 +811,5 @@ public class HKJS007 implements Serializable {
     public void setFixdscf(String fixdscf) {
         this.fixdscf = fixdscf;
     }
-    
+
 }

@@ -173,5 +173,5 @@ public class FormInstance implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.FormInstance[ oid=" + oid + " ]";
     }
-    
+
 }

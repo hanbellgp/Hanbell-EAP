@@ -148,5 +148,5 @@ public class TitleDefinition implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.TitleDefinition[ oid=" + oid + " ]";
     }
-    
+
 }

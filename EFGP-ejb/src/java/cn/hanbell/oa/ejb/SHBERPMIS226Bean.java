@@ -16,9 +16,9 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class SHBERPMIS226Bean extends SuperEJBForEFGP<SHBERPMIS226>{
-    
-    public SHBERPMIS226Bean(){
+public class SHBERPMIS226Bean extends SuperEJBForEFGP<SHBERPMIS226> {
+
+    public SHBERPMIS226Bean() {
         super(SHBERPMIS226.class);
     }
 

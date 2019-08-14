@@ -25,9 +25,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SERI12_grid2_SERI12")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SERI12grid2SERI12.findAll", query = "SELECT s FROM SERI12grid2SERI12 s")
-    , @NamedQuery(name = "SERI12grid2SERI12.findByOID", query = "SELECT s FROM SERI12grid2SERI12 s WHERE s.oid = :oid")
-    , @NamedQuery(name = "SERI12grid2SERI12.findByFSN", query = "SELECT s FROM SERI12grid2SERI12 s WHERE s.formSerialNumber = :fsn")})
+    @NamedQuery(name = "SERI12grid2SERI12.findAll", query = "SELECT s FROM SERI12grid2SERI12 s"),
+    @NamedQuery(name = "SERI12grid2SERI12.findByOID", query = "SELECT s FROM SERI12grid2SERI12 s WHERE s.oid = :oid"),
+    @NamedQuery(name = "SERI12grid2SERI12.findByFSN", query = "SELECT s FROM SERI12grid2SERI12 s WHERE s.formSerialNumber = :fsn")})
 public class SERI12grid2SERI12 implements Serializable {
 
     private static final long serialVersionUID = 1L;
