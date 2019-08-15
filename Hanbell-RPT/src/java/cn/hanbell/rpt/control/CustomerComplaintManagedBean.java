@@ -562,26 +562,6 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
                         materialList.add(cpd);
                     }
                 }
-                List invhads = invhadBean.getCustomerComplaintMaterial(kfno);
-                if (invhads != null && !invhads.isEmpty()) {
-                    for (int i = 0; i < invhads.size(); i++) {
-                        Object[] row = (Object[]) invhads.get(i);
-                        cpd = new CustomerComplaintMaterial();
-                        cpd.setKfno(row[0].toString());
-                        cpd.setFwno(row[1] == null ? "null" : row[1].toString());
-                        cpd.setTrtype(row[2] == null ? "null" : row[2].toString());
-                        cpd.setTypedsc(row[3] == null ? "null" : row[3].toString());
-                        cpd.setTrno(row[4] == null ? "null" : row[4].toString());
-                        cpd.setTrdate(sdf.parse(row[5].toString()));
-                        cpd.setTrseq(row[6] == null ? 0 : Integer.parseInt(row[6].toString()));
-                        cpd.setItnbr(row[7] == null ? "null" : row[7].toString());
-                        cpd.setItdsc(row[8] == null ? "null" : row[8].toString());
-                        cpd.setTrnqy1(row[9] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
-                        cpd.setUnmsr1(row[10] == null ? "null" : row[10].toString());
-                        cpd.setTramt(row[11] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[11].toString())));
-                        materialList.add(cpd);
-                    }
-                }
                 //资料更新
                 List<CustomerComplaintExpense> expenses = customerComplaintExpenseBean.findKfno(kfno);
                 if (expenses != null && !expenses.isEmpty()) {
