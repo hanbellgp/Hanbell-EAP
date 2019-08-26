@@ -190,6 +190,32 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
         return "C";
     }
 
+    public String getCompanyName(String facno) {
+        switch (facno) {
+            case "C":
+                return "上海汉钟";
+            case "G":
+                return "广州分公司";
+            case "J":
+                return "济南分公司";
+            case "C4":
+                return "重庆分公司";
+            case "N":
+                return "南京分公司";
+            case "H":
+                return "浙江汉声";
+            case "K":
+                return "上海柯茂";
+            case "Y":
+                return "安徽汉扬";
+            case "Q":
+                return "世纪东元";
+            case "W":
+                return "顺德涡旋";
+        }
+        return "上海汉钟";
+    }
+
     public String getFormFieldTemplate(String formOID) throws Exception {
         Object[] params = null;
         Object object = null;

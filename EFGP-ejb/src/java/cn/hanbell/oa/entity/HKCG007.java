@@ -319,7 +319,10 @@ public class HKCG007 implements Serializable {
     @Size(max = 255)
     @Column(name = "addcode")
     private String addcode;
-
+    @Size(max = 255)
+    @Column(name = "issup")
+    private String issup;
+    
     public HKCG007() {
     }
 
@@ -1142,6 +1145,14 @@ public class HKCG007 implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.HKCG007[ oid=" + oid + " ]";
+    }
+
+    public String getIssup() {
+        return issup;
+    }
+
+    public void setIssup(String issup) {
+        this.issup = issup;
     }
 
 }

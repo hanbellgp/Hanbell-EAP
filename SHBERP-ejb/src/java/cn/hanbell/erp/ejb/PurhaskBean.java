@@ -147,7 +147,12 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                 pd.setApmqy(pd.getPrqy1());
                 SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
                 pd.setRqtdate(format.parse(detail.getRqtdateTxt()));                           //需求日期
-                pd.setEmgyn(detail.getEmgyn().charAt(0));
+                //如果是补单，更新表身是否紧急栏位
+                if("1".equals(q.getIssup())){
+                     pd.setEmgyn('B');
+                }else{
+                    pd.setEmgyn(detail.getEmgyn().charAt(0));
+                }
                 pd.setDmark1(detail.getDmark1());
                 pd.setDmark2(detail.getDmark2());
                 pd.setDasksta("20");                                                        //请购单身状态码
