@@ -6,17 +6,16 @@
 package cn.hanbell.oa.jrs;
 
 import cn.hanbell.jrs.ResponseMessage;
-import cn.hanbell.jrs.SuperREST;
+import cn.hanbell.jrs.SuperRESTForEFGP;
 import cn.hanbell.oa.app.MCHZGL004;
 import cn.hanbell.oa.app.MCHZGL004BizDetail;
+import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HZGL004Bean;
-import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.oa.entity.HZGL004;
 import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.oa.model.HZGL004BizDetailModel;
 import cn.hanbell.oa.model.HZGL004Model;
 import cn.hanbell.util.BaseLib;
-import cn.hanbell.util.SuperEJB;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,15 +34,13 @@ import javax.ws.rs.core.Response;
  */
 @Path("efgp/hzgl004")
 @javax.enterprise.context.RequestScoped
-public class HZGL004FacadeREST extends SuperREST<HZGL004> {
+public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
 
-    @EJB
-    private WorkFlowBean workFlowBean;
     @EJB
     private HZGL004Bean hzgl004Bean;
 
     @Override
-    protected SuperEJB getSuperEJB() {
+    protected SuperEJBForEFGP getSuperEJB() {
         return hzgl004Bean;
     }
 

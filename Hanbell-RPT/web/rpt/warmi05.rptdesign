@@ -946,7 +946,7 @@ return false;
                         <property name="fontWeight">bold</property>
                         <property name="textAlign">center</property>
                         <text-property name="text">汉 钟&#13;
-精 机</text-property>
+                            精 机</text-property>
                     </label>
                 </cell>
                 <cell id="378">
@@ -2485,7 +2485,7 @@ return false;
                 S6s7y4s9TtLtbSEzTeRMH2qATk4+lfH+pXsup6ldX8pzLczNKc+pOa+q9N+HPhrR9J1HTrK0kitdRQJc
                 HzWLMozwDnI6ms3/AIUr4I/6B8//AIEyf40AmkWPCfiDwpoPhPS9M/4SDTA9vbqH/wBJT72Mt39Sa7K0
                 u4L61jurSRJ4JV3JJGwKsPUGuE/4Ul4H/wCgdP8A+BUn+NdzYWUOm6fb2NnGI7a3QRxrnoo4FMk//9k=
-</property>
+            </property>
         </structure>
     </list-property>
 </report>

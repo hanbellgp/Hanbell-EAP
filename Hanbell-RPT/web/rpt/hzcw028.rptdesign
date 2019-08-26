@@ -649,7 +649,7 @@ return false ;
                         <property name="marginTop">3pt</property>
                         <property name="textAlign">center</property>
                         <text-property name="text">汉 钟&#13;
-精 机</text-property>
+                            精 机</text-property>
                     </label>
                 </cell>
                 <cell id="378">
@@ -1834,7 +1834,7 @@ return false ;
                         <property name="marginTop">3pt</property>
                         <property name="textAlign">center</property>
                         <text-property name="text">汉 钟&#13;
-精 机</text-property>
+                            精 机</text-property>
                     </label>
                 </cell>
                 <cell id="1514">
@@ -3087,7 +3087,7 @@ return false ;
                 otfwljO+fG0hnH2fyxs+36P04DBll8/uObT4s2D5GN8tKPj/fRnZ4qH7Pi/cerVerVfr1Xr9513/K7qw
                 Uuifzf6rFcz30+qtV+vVerVerdd/7nWYsgs6DQR5HapUDvLb/4uuf6boSmuBWq/W69/tYhZc69V6tV7/
                 uuswZffPWNxL+fD+Ha5Sv+33rbtovVqv1qv1ar3+M67/Bk9TJceqXEMPAAAAAElFTkSuQmCC
-</property>
+            </property>
         </structure>
     </list-property>
 </report>

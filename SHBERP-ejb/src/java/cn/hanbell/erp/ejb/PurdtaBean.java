@@ -34,4 +34,18 @@ public class PurdtaBean extends SuperEJBForERP<Purdta> {
         }
     }
 
+    public Purdta findByPK(String facno, String prono, String pono, short trseq) {
+        Query query = getEntityManager().createNamedQuery("Purdta.findByPK");
+        query.setParameter("facno", facno);
+        query.setParameter("prono", prono);
+        query.setParameter("pono", pono);
+        query.setParameter("trseq", trseq);
+        try {
+            Object o = query.getSingleResult();
+            return (Purdta) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
 }
