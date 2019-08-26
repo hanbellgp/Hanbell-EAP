@@ -61,6 +61,7 @@ public class UsersFacadeREST extends SuperRESTForEFGP<Users> {
                 workFlowBean.initUserInfo(id.getPath());
                 Users u = workFlowBean.getCurrentUser();
                 u.setCompany(workFlowBean.getCompanyByDeptId(u.getDeptno()));
+                u.setCompanyName(workFlowBean.getCompanyName(u.getCompany()));
                 return u;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);

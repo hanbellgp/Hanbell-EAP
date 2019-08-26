@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "WARMI05Detail.findAll", query = "SELECT w FROM WARMI05Detail w"),
     @NamedQuery(name = "WARMI05Detail.findByOID", query = "SELECT w FROM WARMI05Detail w WHERE w.oid = :oid"),
-    @NamedQuery(name = "WARMI05Detail.findByFSN", query = "SELECT w FROM WARMI05Detail w WHERE w.formSerialNumber = :fsn")})
+    @NamedQuery(name = "WARMI05Detail.findByFSN", query = "SELECT w FROM WARMI05Detail w WHERE w.formSerialNumber = :fsn ORDER BY w.tb003")})
 public class WARMI05Detail implements Serializable {
 
     private static final long serialVersionUID = 1L;
