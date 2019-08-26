@@ -66,7 +66,7 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
             }
             //检查申请人是否重复借款
             if (hzcw017Bean.checkArrears(entity.getLoanUser())) {
-                return new ResponseMessage("500", "有借款未还不能再发起借支申请，系统错误更新失败");
+                return new ResponseMessage("500", "您有借款未还不能再发起借支申请");
             }
             try {
                 //初始化发起人

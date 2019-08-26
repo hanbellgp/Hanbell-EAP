@@ -46,7 +46,7 @@ public class Users implements Serializable {
     @Transient
     private String company;
     @Transient
-    private String companyname;
+    private String companyName;
     @Transient
     private String deptno;
     @Transient
@@ -375,12 +375,12 @@ public class Users implements Serializable {
         this.title = title;
     }
 
-    public String getCompanyname() {
-        return companyname;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCompanyname(String companyname) {
-        this.companyname = companyname;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

@@ -198,16 +198,16 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 return "广州分公司";
             case "J":
                 return "济南分公司";
-            case "C4":
-                return "重庆分公司";
             case "N":
                 return "南京分公司";
+            case "C4":
+                return "重庆分公司";
             case "H":
                 return "浙江汉声";
-            case "K":
-                return "上海柯茂";
             case "Y":
                 return "安徽汉扬";
+            case "K":
+                return "上海柯茂";
             case "Q":
                 return "世纪东元";
             case "W":
