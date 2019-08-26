@@ -966,81 +966,33 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         sb.append(" LEFT JOIN invdou e on e.trtype=d.trtype where  h.facno='${facno}' and h.prono='1' and (h.trtype in ('IAF' ,'IAG')) AND h.kfno='${kfno}' ) a ");
         sb.append(" LEFT JOIN  invtrnh t on a.facno=t.facno and a.prono=t.prono and a.itnbr = t.itnbr  and  a.trno= t.trno ");
         sb.append(" and t.trseq=a.trseq and t.trno= a.trno and t.trtype = a.trtype where t.facno='${facno}' and (t.trtype ='IAF' or t.trtype= 'IAG') and t.prono= '1' ");
-        String facno = "C";
-        switch (kfno.substring(0, 2)) {
-            case "HD":
-                facno = "C";
-                break;
-            case "NJ":
-                facno = "N";
-                break;
-            case "HB":
-                facno = "J";
-                break;
-            case "HN":
-                facno = "G";
-                break;
-            case "CQ":
-                facno = "C4";
-                break;
-            case "KM":
-                facno = "K";
-                break;
-            default:
-                facno = "C";
-        }
-        try {
-            String sql = sb.toString().replace("${facno}", facno).replace("${kfno}", kfno);
-            setCompany(facno);
-            Query query = getEntityManager().createNativeQuery(sql);
-            List list = query.getResultList();
-            return list;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /**
-     *
-     * @param kfno
-     * @return 得出材料明细
-     */
-    public List getCustomerComplaintDetail(String kfno) {
-        StringBuilder sb = new StringBuilder();
+        sb.append(" union all ");
         sb.append(" select a.kfno,a.fwno,a.trtype,a.typedsc,t.trno,a.trdate,a.trseq,t.itnbr,a.itdsc,t.trnqy1,t.unmsr1,t.tramt FROM (SELECT * FROM invhad h ");
         sb.append(" LEFT JOIN invdta d on h.trno=d.trno AND  h.facno=d.facno AND h.prono=d.prono  LEFT JOIN invmas v on d.itnbr = v.itnbr ");
         sb.append(" LEFT JOIN invdou e on e.trtype=d.trtype where  h.facno='${facno}' and h.prono='1' and (h.trtype in ('IAF' ,'IAG')) AND h.kfno='${kfno}' ) a ");
         sb.append(" LEFT JOIN  invtrn t on a.facno=t.facno and a.prono=t.prono and a.itnbr = t.itnbr  and  a.trno= t.trno ");
         sb.append(" and t.trseq=a.trseq and t.trno= a.trno and t.trtype = a.trtype where t.facno='${facno}' and (t.trtype ='IAF' or t.trtype= 'IAG') and t.prono= '1' ");
-        String facno = "C";
-        switch (kfno.substring(0, 2)) {
-            case "HD":
-                facno = "C";
-                break;
-            case "NJ":
-                facno = "N";
-                break;
-            case "HB":
-                facno = "J";
-                break;
-            case "HN":
-                facno = "G";
-                break;
-            case "CQ":
-                facno = "C4";
-                break;
-            case "KM":
-                facno = "K";
-                break;
-            default:
-                facno = "C";
-        }
+
+        List alllist = null;
+        String facno = "KM".equals(kfno.substring(0, 2)) ? "K" : "C,C4,N,G,J";
         try {
-            String sql = sb.toString().replace("${facno}", facno).replace("${kfno}", kfno);
-            setCompany(facno);
-            Query query = getEntityManager().createNativeQuery(sql);
-            List list = query.getResultList();
-            return list;
+            if (facno != null) {
+                alllist = new ArrayList<>();
+                String[] arr = facno.split(",");
+                String sql;
+                Query query;
+                List list;
+                for (String fn : arr) {
+                    sql = sb.toString().replace("${facno}", fn).replace("${kfno}", kfno);
+                    setCompany(fn);
+                    query = getEntityManager().createNativeQuery(sql);
+                    list = query.getResultList();
+                    if (list != null && !list.isEmpty()) {
+                        alllist.addAll(list);
+                    }
+                }
+            }
+            return alllist;
         } catch (Exception e) {
             return null;
         }

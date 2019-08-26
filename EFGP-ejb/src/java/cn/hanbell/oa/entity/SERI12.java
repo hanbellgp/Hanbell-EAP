@@ -52,6 +52,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SERI12.findByBq113", query = "SELECT s FROM SERI12 s WHERE s.bq113 = :bq113"),
     @NamedQuery(name = "SERI12.findByEdBQ097", query = "SELECT s FROM SERI12 s WHERE s.edBQ097 = :edBQ097"),
     @NamedQuery(name = "SERI12.findByPSN", query = "SELECT s FROM SERI12 s WHERE s.processSerialNumber = :psn"),
+    @NamedQuery(name = "SERI12.findByPSNAndBQ110", query = "SELECT s FROM SERI12 s WHERE s.bq035h = 'Y' AND s.bq110 = 'Y' AND s.processSerialNumber = :psn"),
     @NamedQuery(name = "SERI12.findByBq199c", query = "SELECT s FROM SERI12 s WHERE s.bq199c = :bq199c"),
     @NamedQuery(name = "SERI12.findByBq016c", query = "SELECT s FROM SERI12 s WHERE s.bq016c = :bq016c"),
     @NamedQuery(name = "SERI12.findByBq101", query = "SELECT s FROM SERI12 s WHERE s.bq101 = :bq101"),
