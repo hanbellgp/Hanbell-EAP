@@ -1860,10 +1860,19 @@ public class TimerBean {
     @Schedule(minute = "*/11", hour = "7-23", persistent = false)
     public void syncInterCompanyTransactions() {
         log4j.info("ERP集团内部交易互转轮询开始");
+        // 汉声
         this.createERPCDR310ByERPPUR410("H", "HSH00003", "C", "SZJ00065", "20190601");
-        //this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00087", "C", "SZJ00065", "SSH00229", "20190801", true);
-        //this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HZJ00030", "C", "SZJ00065", "SZJ00101", "20190801", false);
-        //this.syncThirdPartyTradingByERPMAN275("H", "C", "20190501");
+        // 科恩特
+        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HZJ00030", "C", "SZJ00065", "SZJ00101", "20190901", false);
+        // 卓准
+        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00247", "C", "SZJ00065", "SSH01164", "20190901", false);
+        // 恒工
+        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HHB00007", "C", "SZJ00065", "SHB00016", "20190901", false);
+        // 催料
+        this.syncThirdPartyTradingByERPMAN275("H", "C", "20190901");
+        // 海光
+        // this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00087", "C", "SZJ00065", "SSH00229", "20190801", true);
+        // THB
         // this.cloneERPPUR410ToExchange("C", "STW00007", "20190101");
         // this.cloneERPPUR410ToExchange("C", "STW00035", "20190101");
         // this.cloneERPPUR410ToExchange("C", "SXG00007", "20190101");
@@ -2157,7 +2166,7 @@ public class TimerBean {
         // 开始处理业务逻辑
         purvdrBean.setCompany(facno);
         purhadBean.setCompany(facno);
-        // 需要处理的采购单 
+        // 需要处理的采购单
         List<Purhad> purhadList;
         if (fullTrading) {
             purhadList = purhadBean.findNeedThrowByVdrno(vdrno, d);
@@ -2248,7 +2257,7 @@ public class TimerBean {
                             totamts = totamts.add(pd.getTramts());
                         }
                     }
-                    log4j.info("产生ThirdPart订单开始");
+                    log4j.info("产生ThirdParty订单开始");
                     // 处理订单逻辑
                     indate = BaseLib.getDate();
                     recdate = BaseLib.getDate("yyyy-MM-dd", BaseLib.formatDate("yyyy-MM-dd", indate));
@@ -2335,19 +2344,19 @@ public class TimerBean {
                             cdrdmasBean.persist(e);
                         }
                         cdrdmasBean.getEntityManager().flush();
-                        log4j.info("产生ThirdPart订单结束-" + cdrno);
-                        log4j.info("产生ThirdPart采购单开始");
+                        log4j.info("产生ThirdParty订单结束-" + cdrno);
+                        log4j.info("产生ThirdParty采购单开始");
                         nph = (Purhad) BeanUtils.cloneBean(ph);
                         nph.setPurvdr(null);
                         nph.setVdrno(thirdvdrno);
+                        nph.setPosrc('3');
                         nph.setTrivdrno(vdrno);
                         nph.setFromcdrno(pono);
                         nph.setFromcusno(purvdr.getVdrna());
                         pursysBean.setCompany(facno);
                         purhadBean.setCompany(facno);
                         purdtaBean.setCompany(facno);
-                        npono = pursysBean.getNewPono(facno, ph.getPurhadPK().getProno(), ph.getPodate(), ph.getDecode().toString(),
-                                true);
+                        npono = pursysBean.getNewPono(facno, ph.getPurhadPK().getProno(), ph.getPodate(), ph.getDecode().toString(), true);
                         nph.setPurhadPK(new PurhadPK(facno, ph.getPurhadPK().getProno(), npono));
                         purhadBean.persist(nph);
                         purhadBean.getEntityManager().flush();
@@ -2357,7 +2366,7 @@ public class TimerBean {
                         }
                         purdtaBean.getEntityManager().flush();
                         pursysBean.getEntityManager().flush();
-                        log4j.info("产生ThirdPart采购单结束-" + npono);
+                        log4j.info("产生ThirdParty采购单结束-" + npono);
 
                         log4j.info("产生ActualVendor采购单开始");
                         tph = (Purhad) BeanUtils.cloneBean(ph);
