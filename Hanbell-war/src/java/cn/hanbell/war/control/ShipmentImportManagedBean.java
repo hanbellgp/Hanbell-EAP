@@ -206,7 +206,7 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                         if (h.getCusno().equals("SSD00103") && sd.getItemModel() != null && l.getVarnr() != null) {
                             // 海达瑞专属二维码
                             StringBuilder content = new StringBuilder();
-                            content.append(sd.getItemModel()).append(".").append(sd.getCustomerItem()).append(".")
+                            content.append(sd.getCustomerItem()).append(".").append(sd.getItemModel()).append(".")
                                     .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc())
                                     .append(".").append(sd.getVarnr());
                             this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(),
@@ -219,8 +219,6 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                         this.fileName = this.getAppResPath() + l.getVarnr() + ".png";
                         this.generateCode128(l.getVarnr(), 1.5f, 8d, fileName);
                         this.generateQRCode(l.getVarnr(), 300, 300, this.getAppResPath(), "QR" + l.getVarnr() + ".png");
-                        // this.generateZXingCode128(l.getVarnr(), 300, 70, this.getAppResPath(),
-                        // "ZXing" + l.getVarnr() + ".png");
                     }
                     sd.setFixnr(l.getFixnr());
                     sd.setWareh(l.getWareh());

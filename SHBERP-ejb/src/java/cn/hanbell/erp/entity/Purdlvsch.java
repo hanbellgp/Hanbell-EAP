@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Purdlvsch.findByProno", query = "SELECT p FROM Purdlvsch p WHERE p.purdlvschPK.prono = :prono"),
     @NamedQuery(name = "Purdlvsch.findByPono", query = "SELECT p FROM Purdlvsch p WHERE p.purdlvschPK.pono = :pono"),
     @NamedQuery(name = "Purdlvsch.findByPK", query = "SELECT p FROM Purdlvsch p WHERE p.purdlvschPK.facno = :facno AND p.purdlvschPK.prono = :prono AND p.purdlvschPK.pono = :pono AND  p.purdlvschPK.trseq = :trseq AND p.purdlvschPK.schseq = :schseq"),
-    @NamedQuery(name = "Purdlvsch.findNeedThrowByStatus", query = "SELECT p FROM Purdlvsch p WHERE p.syncsta='N' AND p.schsta='20' AND p.indate>= :indate ORDER BY p.purdlvschPK.pono"),
+    @NamedQuery(name = "Purdlvsch.findNeedThrowByStatus", query = "SELECT p FROM Purdlvsch p WHERE p.syncsta='N' AND p.schsta='25' AND p.indate>= :indate ORDER BY p.purdlvschPK.pono"),
     @NamedQuery(name = "Purdlvsch.findNeedCancelByStatus", query = "SELECT p FROM Purdlvsch p WHERE p.syncsta='Y' AND p.schsta>'95' AND p.indate>= :indate ORDER BY p.purdlvschPK.pono")})
 public class Purdlvsch implements Serializable {
 

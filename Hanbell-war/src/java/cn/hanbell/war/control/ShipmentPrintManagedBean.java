@@ -117,7 +117,7 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
                     if (currentEntity.getCustomerno().equals("SSD00103") && sd.getItemModel() != null && sd.getVarnr() != null) {
                         // 海达瑞专属二维码
                         StringBuilder content = new StringBuilder();
-                        content.append(sd.getItemModel()).append(".").append(sd.getCustomerItem()).append(".")
+                        content.append(sd.getCustomerItem()).append(".").append(sd.getItemModel()).append(".")
                                 .append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(".").append(sd.getCustomerItemDesc())
                                 .append(".").append(sd.getVarnr());
                         this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(),
