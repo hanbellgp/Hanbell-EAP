@@ -220,7 +220,7 @@ public class Purdask implements Serializable {
     private short poprtcnt;
     @Column(name = "posrccode")
     private Character posrccode;
-    @Size(max = 18)
+    @Size(max = 36)
     @Column(name = "refno")
     private String refno;
     @Basic(optional = false)
