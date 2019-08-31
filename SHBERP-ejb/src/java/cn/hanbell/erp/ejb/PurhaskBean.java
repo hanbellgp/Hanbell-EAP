@@ -148,9 +148,9 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
                 pd.setRqtdate(format.parse(detail.getRqtdateTxt()));                           //需求日期
                 //如果是补单，更新表身是否紧急栏位
-                if("1".equals(q.getIssup())){
-                     pd.setEmgyn('B');
-                }else{
+                if ("1".equals(q.getIssup())) {
+                    pd.setEmgyn('B');
+                } else {
                     pd.setEmgyn(detail.getEmgyn().charAt(0));
                 }
                 pd.setDmark1(detail.getDmark1());
@@ -179,32 +179,34 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                 pd.setTaxamts(BigDecimal.valueOf(Double.parseDouble(detail.getCtaxamts())));
                 pd.setAskdate(format.parse(detail.getAskdateTxt()));                         //设置预计交期
                 purvdrBean.setCompany(facno);
-                Purvdr pv = purvdrBean.findByVdrno(detail.getVdrno());
-                pd.setTermcode(pv.getTermcode());
-                miscodeBean.setCompany(facno);
-                Miscode m1 = miscodeBean.findByPK("GH", pd.getTermcode());
-                pd.setTermcodedsc(m1.getCdesc());
-                pd.setSndcode(pv.getSndcode());
-                Miscode m2 = miscodeBean.findByPK("GD", pd.getSndcode());
-                pd.setSndcodedsc(m2.getCdesc());
-                pd.setPaycom(pv.getPaycom());
-                pd.setPaycode(pv.getPaycode());
-                String paycodedsc = pv.getPaycode() == '1' ? "现金" : pv.getPaycode() == '2' ? "支票" : pv.getPaycode() == '3' ? "国内T/T或承兑汇票" : pv.getPaycode() == '4' ? "国~外T/T" : pv.getPaycode() == '5' ? "国内L/C" : pv.getPaycode() == '6' ? "国~外L/C" : pv.getPaycode() == '7' ? "D/A" : pv.getPaycode() == '8' ? "D/P" : "";    //付款条件叙述--------------
-                paycodedsc = paycodedsc + " " + pv.getTickdays() + "天";
-                pd.setPaycodedsc(paycodedsc);
-                pd.setPaysepcode(pv.getPaysepcode());
-                pd.setSeldate1(pv.getSeldate1());
-                pd.setSeldate2(pv.getSeldate2());
-                pd.setSeldate3(pv.getSeldate3());
-                pd.setSeldate4(pv.getSeldate4());
-                pd.setHandays1(pv.getHandays1());
-                pd.setHandays2(pv.getHandays2());
-                pd.setHandays3(pv.getHandays3());
-                pd.setHandays4(pv.getHandays4());
-                pd.setTickdays(pv.getTickdays());
+                if (!detail.getVdrna().isEmpty()) {
+                    Purvdr pv = purvdrBean.findByVdrno(detail.getVdrno());
+                    pd.setTermcode(pv.getTermcode());
+                    miscodeBean.setCompany(facno);
+                    Miscode m1 = miscodeBean.findByPK("GH", pd.getTermcode());
+                    pd.setTermcodedsc(m1.getCdesc());
+                    pd.setSndcode(pv.getSndcode());
+                    Miscode m2 = miscodeBean.findByPK("GD", pd.getSndcode());
+                    pd.setSndcodedsc(m2.getCdesc());
+                    pd.setPaycom(pv.getPaycom());
+                    pd.setPaycode(pv.getPaycode());
+                    String paycodedsc = pv.getPaycode() == '1' ? "现金" : pv.getPaycode() == '2' ? "支票" : pv.getPaycode() == '3' ? "国内T/T或承兑汇票" : pv.getPaycode() == '4' ? "国~外T/T" : pv.getPaycode() == '5' ? "国内L/C" : pv.getPaycode() == '6' ? "国~外L/C" : pv.getPaycode() == '7' ? "D/A" : pv.getPaycode() == '8' ? "D/P" : "";    //付款条件叙述--------------
+                    paycodedsc = paycodedsc + " " + pv.getTickdays() + "天";
+                    pd.setPaycodedsc(paycodedsc);
+                    pd.setPaysepcode(pv.getPaysepcode());
+                    pd.setSeldate1(pv.getSeldate1());
+                    pd.setSeldate2(pv.getSeldate2());
+                    pd.setSeldate3(pv.getSeldate3());
+                    pd.setSeldate4(pv.getSeldate4());
+                    pd.setHandays1(pv.getHandays1());
+                    pd.setHandays2(pv.getHandays2());
+                    pd.setHandays3(pv.getHandays3());
+                    pd.setHandays4(pv.getHandays4());
+                    pd.setTickdays(pv.getTickdays());
+                    pd.setDecode(pv.getDecode());
+                }
                 pd.setPrepayamts(BigDecimal.ZERO);
                 pd.setAddcode(detail.getAddcode());                              //设置收货地址
-                pd.setDecode(pv.getDecode());
                 pd.setPoprtcnt((short) 0);
                 pd.setPosrccode(detail.getPosrccode().charAt(0));                 //单价来源码
                 pd.setRefno(q.getFormid());                                       //请购来源编号
@@ -258,7 +260,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
 
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(ApmpayBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PurhaskBean.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
