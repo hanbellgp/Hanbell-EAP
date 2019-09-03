@@ -24,6 +24,7 @@ import cn.hanbell.oa.entity.HKCG007purDetail;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -78,7 +79,9 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
         Date date;
         String facno;
         String prono;
-
+        List<Purdask> purdasks = new ArrayList<>();
+        List<Purqnam> purqnams = new ArrayList<>();
+        List<Purdaskdsc> purdaskdscs = new ArrayList<>();
         try {
             HKCG007 q = hkcg007Bean.findByPSN(psn);
             if (q == null) {
@@ -129,8 +132,6 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
             } else {
                 p.setApplyno("Y");
             }
-            persist(p);
-
             //表身明细
             for (int i = 0; i < details.size(); i++) {
                 HKCG007purDetail detail = details.get(i);
@@ -146,7 +147,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                 pd.setPrqy2(BigDecimal.ZERO);
                 pd.setApmqy(pd.getPrqy1());
                 SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-                pd.setRqtdate(format.parse(detail.getRqtdateTxt()));                           //需求日期
+                pd.setRqtdate(format.parse(detail.getRqtdateTxt()));                          //需求日期
                 //如果是补单，更新表身是否紧急栏位
                 if ("1".equals(q.getIssup())) {
                     pd.setEmgyn('B');
@@ -169,15 +170,23 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                 pd.setVdrno(detail.getVdrno());
                 pd.setBuyer(detail.getBuyer());
                 pd.setCoin(q.getCurrency());
-                double d1 = Double.parseDouble(detail.getUnpris());
-                pd.setUnpris(BigDecimal.valueOf(d1));
+                if (!"".equals(detail.getUnpris())) {
+                    double d1 = Double.parseDouble(detail.getUnpris());
+                    pd.setUnpris(BigDecimal.valueOf(d1));
+                }
                 pd.setRatio(BigDecimal.valueOf(q.getRate()));
-                pd.setTax(detail.getTax().charAt(0));
-                pd.setTaxrate(BigDecimal.valueOf(Double.parseDouble(detail.getTaxrate())));
+                if (!"".equals(detail.getTax())) {
+                    pd.setTax(detail.getTax().charAt(0));
+                }
+                if (!"".equals(detail.getTaxrate())) {
+                    pd.setTaxrate(BigDecimal.valueOf(Double.parseDouble(detail.getTaxrate())));
+                }
                 pd.setTotamts(BigDecimal.valueOf(Double.parseDouble(detail.getCtotamts())));
                 pd.setTramts(BigDecimal.valueOf(Double.parseDouble(detail.getCtramts())));
                 pd.setTaxamts(BigDecimal.valueOf(Double.parseDouble(detail.getCtaxamts())));
-                pd.setAskdate(format.parse(detail.getAskdateTxt()));                         //设置预计交期
+                if (!"".equals(detail.getAskdateTxt())) {
+                    pd.setAskdate(format.parse(detail.getAskdateTxt()));                         //设置预计交期
+                }
                 purvdrBean.setCompany(facno);
                 if (!detail.getVdrna().isEmpty()) {
                     Purvdr pv = purvdrBean.findByVdrno(detail.getVdrno());
@@ -204,18 +213,19 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     pd.setHandays4(pv.getHandays4());
                     pd.setTickdays(pv.getTickdays());
                     pd.setDecode(pv.getDecode());
+                    pd.setPosrccode(detail.getPosrccode().charAt(0));            //单价来源码
                 }
                 pd.setPrepayamts(BigDecimal.ZERO);
-                pd.setAddcode(detail.getAddcode());                              //设置收货地址
+                if(!"".equals(detail.getAddcode())){
+                    pd.setAddcode(detail.getAddcode());                          //设置收货地址
+                }        
                 pd.setPoprtcnt((short) 0);
-                pd.setPosrccode(detail.getPosrccode().charAt(0));                 //单价来源码
-                pd.setRefno(q.getFormid());                                       //请购来源编号
+                pd.setRefno(q.getFormid());                                      //请购来源编号
                 pd.setModnum((short) 0);
                 pd.setTransno("N");
                 pd.setBudgetacc(detail.getBudgetacc());
                 pd.setPreprice(BigDecimal.ZERO);
-                purdaskBean.setCompany(q.getFacno());
-                purdaskBean.persist(pd);
+                purdasks.add(pd);
 
                 //9件号，更新purqnam 表
                 if ("9".equals(detail.getItnbr())) {
@@ -229,9 +239,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     purqnam.setItdsc(detail.getItdsc());
                     purqnam.setSpdsc(detail.getSpdsc());
                     purqnam.setUnmsr1(detail.getAppunit());
-                    purqnamBean.setCompany(facno);
-                    purqnamBean.persist(purqnam);
-
+                    purqnams.add(purqnam);
                 }
                 //请购备注/用途
                 if (!"".equals(detail.getPurdaskdescs())) {
@@ -252,16 +260,27 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     purdaskdsc.setMark8("");
                     purdaskdsc.setMark9("");
                     purdaskdsc.setMarka("");
-                    purdaskdscBean.setCompany(facno);
-                    purdaskdscBean.persist(purdaskdsc);
+                    purdaskdscs.add(purdaskdsc);
                 }
 
             }
-
+            this.persist(p);
+            purdaskBean.setCompany(q.getFacno());
+            purdasks.forEach((pd) -> {
+                purdaskBean.persist(pd);
+            });
+            purqnamBean.setCompany(facno);
+            purqnams.forEach((purqnam) -> {
+                purqnamBean.persist(purqnam);
+            });
+            purdaskdscBean.setCompany(facno);
+            purdaskdscs.forEach((purdaskdsc) -> {
+                purdaskdscBean.persist(purdaskdsc);
+            });
             return true;
         } catch (Exception ex) {
             Logger.getLogger(PurhaskBean.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+            throw new RuntimeException(ex);
         }
     }
 }
