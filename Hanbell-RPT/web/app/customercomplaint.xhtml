@@ -37,6 +37,16 @@
                                     required="true" requiredMessage="请输入结案日期止"/>
                     </p:column>
                 </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="是否免费" for="queryRemark1" /></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="queryRemark1" value="#{customerComplaintManagedBean.queryRemark1}" style="width:100%;" >
+                            <f:selectItem itemLabel="ALL" itemValue="ALL"/>
+                            <f:selectItem itemLabel="免费" itemValue="免费"/>
+                            <f:selectItem itemLabel="收费" itemValue="收费"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
             </p:panelGrid>
             <p:toolbar id="toolbar" styleClass="topToolbar">
                 <f:facet name="left">
@@ -59,30 +69,23 @@
                 </f:facet>
                 <p:ajax event="rowSelect"  update="formList:dlgDetail"  oncomplete="PF('dlgDetail').show();" />
                 <p:ajax event="rowUnselect"  update="formList:dlgDetail" oncomplete="" />
-
                 <p:column styleClass="Wid15">
                     <f:facet name="header">
                         <h:outputText value="客诉单号"/>
                     </f:facet>
                     <h:outputText value="#{item.kfno}"/>
                 </p:column>
-                <p:column styleClass="Wid8">
+                <p:column styleClass="Wid10">
                     <f:facet name="header">
                         <h:outputText value="产品"/>
                     </f:facet>
                     <h:outputText value="#{item.ncodeDC}"/>
                 </p:column>
-                <p:column styleClass="Wid8">
+                <p:column styleClass="Wid10">
                     <f:facet name="header">
                         <h:outputText value="区域"/>
                     </f:facet>
                     <h:outputText value="#{item.ncodeCD}"/>
-                </p:column>
-                <p:column styleClass="Wid8">
-                    <f:facet name="header">
-                        <h:outputText value="类别"/>
-                    </f:facet>
-                    <h:outputText value="#{item.ncodeDD}"/>
                 </p:column>
                 <p:column styleClass="Wid10">
                     <f:facet name="header">
@@ -96,19 +99,19 @@
                     </f:facet>
                     <h:outputText value="#{item.cusna}"/>
                 </p:column>
-                <p:column styleClass="Wid8 ">
+                <p:column styleClass="Wid10 ">
                     <f:facet name="header">
                         <h:outputText value="责任代号"/>
                     </f:facet>
-                    <h:outputText value="#{item.dutydeptno}"/>
+                    <h:outputText value="#{item.dutydeptno}" title="#{item.dutydeptna}"/>
                 </p:column>
-                <p:column styleClass="Wid10 ">
+                <p:column styleClass="Wid10">
                     <f:facet name="header">
-                        <h:outputText value="责任名称"/>
+                        <h:outputText value="责任判定"/>
                     </f:facet>
-                    <h:outputText value="#{item.dutydeptna}"/>
+                    <h:outputText value="#{item.remark1}"/>
                 </p:column>
-                <p:column styleClass="Wid8">
+                <p:column styleClass="Wid10">
                     <f:facet name="header">
                         <h:outputText value="责任比率"/>
                     </f:facet>
@@ -133,11 +136,12 @@
                         <p:column styleClass="Wid30">
                             <h:outputText id="kfno" value="#{customerComplaintManagedBean.currentEntity.kfno}" title="kfno" />
                         </p:column>
-                        <p:column><h:outputText value="区域"/></p:column>
+                        <p:column><h:outputText value="结案时间"/></p:column>
                         <p:column>
-                            <h:outputText id="ncodeDC" value="#{customerComplaintManagedBean.currentEntity.ncodeCD}" title="ncodeDC"/>
+                            <h:outputText id="overdate" value="#{customerComplaintManagedBean.currentEntity.overdate}" title="overdate" >
+                                <f:convertDateTime pattern="yyyy/MM/dd HH:mm"  />
+                            </h:outputText>
                         </p:column>
-
                     </p:row>
                     <p:row>
                         <p:column><h:outputText value="客户代号"/></p:column>
@@ -166,21 +170,29 @@
                         </p:column>
                     </p:row>
                     <p:row>
+                        <p:column><h:outputText value="责任判定"/></p:column>
+                        <p:column>
+                            <h:outputText id="remark1" value="#{customerComplaintManagedBean.currentEntity.remark1}" title="remark1" />
+                        </p:column>
                         <p:column><h:outputText value="责任比率"/></p:column>
                         <p:column>
                             <h:outputText id="dutyrate" value="#{customerComplaintManagedBean.currentEntity.dutyrate}" title="dutyrate" />
-                        </p:column>
-                        <p:column><h:outputText value="结案时间"/></p:column>
-                        <p:column>
-                            <h:outputText id="overdate" value="#{customerComplaintManagedBean.currentEntity.overdate}" title="overdate" >
-                                <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
-                            </h:outputText>
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column><h:outputText value="不良原因"/></p:column>
                         <p:column colspan="3">
                             <p:inputTextarea rows="3" style="width: 100%"  readonly="true"  value="#{customerComplaintManagedBean.currentEntity.badwhy}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="区域"/></p:column>
+                        <p:column>
+                            <h:outputText id="ncodeDC" value="#{customerComplaintManagedBean.currentEntity.ncodeCD}" title="ncodeDC"/>
+                        </p:column>
+                        <p:column><h:outputText value="类别"/></p:column>
+                        <p:column>
+                            <h:outputText id="ncodeDD" value="#{customerComplaintManagedBean.currentEntity.ncodeDD}" title="ncodeDD"/>
                         </p:column>
                     </p:row>
                     <p:row>
