@@ -112,16 +112,23 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
                     // 客户品号条码
                     f = this.getAppResPath() + currentEntity.getCustomerno() + sd.getCustomerItem() + ".png";
                     this.generateCode128(sd.getCustomerItem(), 1.5f, 8d, f);
-                    this.generateQRCode(sd.getCustomerItem(), 300, 300, this.getAppResPath(),
-                            "QR" + currentEntity.getCustomerno() + sd.getCustomerItem() + ".png");
-                    if (currentEntity.getCustomerno().equals("SSD00103") && sd.getItemModel() != null && sd.getVarnr() != null) {
-                        // 海达瑞专属二维码
+                    this.generateQRCode(sd.getCustomerItem(), 300, 300, this.getAppResPath(), "QR" + currentEntity.getCustomerno() + sd.getCustomerItem() + ".png");
+                    if (sd.getItemModel() != null && sd.getVarnr() != null) {
                         StringBuilder content = new StringBuilder();
-                        content.append(sd.getCustomerItem()).append(".").append(sd.getItemModel()).append(".")
-                                .append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(".").append(sd.getCustomerItemDesc())
-                                .append(".").append(sd.getVarnr());
-                        this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(),
-                                "QR" + currentEntity.getCustomerno() + sd.getVarnr() + ".png");
+                        switch (currentEntity.getCustomerno()) {
+                            case "SCQ00011":
+                                // 美的专属二维码
+                                content.append("A0007001").append("|").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append("|")
+                                        .append(sd.getVarnr()).append("|").append(sd.getCustomerItem()).append("|").append(sd.getItemModel());
+                                break;
+                            case "SSD00103":
+                                // 海达瑞专属二维码
+                                content.append(sd.getCustomerItem()).append(".").append(sd.getItemModel()).append(".")
+                                        .append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(".").append(sd.getCustomerItemDesc())
+                                        .append(".").append(sd.getVarnr());
+                                break;
+                        }
+                        this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + currentEntity.getCustomerno() + sd.getVarnr() + ".png");
                     }
                 }
                 if (sd.getVarnr() != null) {
