@@ -3150,7 +3150,7 @@ public class EAPWebService {
             if (seri12.getBq001() == null && "".equals(seri12.getBq001())) {
                 throw new NullPointerException("createCustomerComplaintByEAP--seri12.getBq001()为空");
             }
-            String badwhy, dutydeptno;
+            String badwhy, dutydeptno, remark1;
             String kfno = seri12.getBq001();
             CustomerComplaint cp = new CustomerComplaint();
             String varnr = sercaBean.findCa009ByCa001(kfno);
@@ -3169,6 +3169,13 @@ public class EAPWebService {
                 cp.setDutydeptno(seri12.getBq133() == null ? "null" : seri12.getBq133());
             }
             cp.setDutydeptna(seri12.getBq504c() == null ? "null" : seri12.getBq504c());
+            //19年9月10日加入责任判定
+            remark1 = seri12.getBq502() == null ? "" : seri12.getBq502();
+            if (!remark1.equals("")) {
+                    cp.setRemark1(remark1);
+            } else {
+                    cp.setRemark1(seri12.getBq131() == null ? "null" : seri12.getBq131());
+            }
             cp.setDutyrate(seri12.getPropotion() == null ? "null" : seri12.getPropotion());
             cp.setCredate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq021()));
             cp.setOverdate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq037()));
@@ -3363,7 +3370,6 @@ public class EAPWebService {
             mailBean.setMailSubject("客诉结案抛转详细");
             mailBean.setMailContent(customerComplaintBean.getMail("客诉结案抛转详细", kfno));
             mailBean.notify(new MailNotify());
-            log4j.info("Info", kfno + "客诉结案抛转报表邮件发送成功");
             ret = true;
         }
         } catch (Exception ex) {
