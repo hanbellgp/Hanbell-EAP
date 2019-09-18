@@ -54,12 +54,22 @@
                 </structure>
                 <structure>
                     <property name="position">9</property>
-                    <property name="name">itembarcode</property>
+                    <property name="name">varnrbarcode</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
                     <property name="position">10</property>
-                    <property name="name">varnrbarcode</property>
+                    <property name="name">varnrqrcode</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">shpdate</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">shpqrcode</property>
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
@@ -89,10 +99,16 @@
                     <property name="columnName">varnr</property>
                 </structure>
                 <structure>
-                    <property name="columnName">itembarcode</property>
+                    <property name="columnName">varnrbarcode</property>
                 </structure>
                 <structure>
-                    <property name="columnName">varnrbarcode</property>
+                    <property name="columnName">varnrqrcode</property>
+                </structure>
+                <structure>
+                    <property name="columnName">shpdate</property>
+                </structure>
+                <structure>
+                    <property name="columnName">shpqrcode</property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
@@ -139,12 +155,22 @@
                     </structure>
                     <structure>
                         <property name="position">9</property>
-                        <property name="name">itembarcode</property>
+                        <property name="name">varnrbarcode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">10</property>
-                        <property name="name">varnrbarcode</property>
+                        <property name="name">varnrqrcode</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">shpdate</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">shpqrcode</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -168,11 +194,13 @@ currentRow = 0;]]></method>
 	dataSetRow["itemmodel"] = detail.get(currentRow).getItemModel();
     dataSetRow["customeritem"] = detail.get(currentRow).getCustomerItem();
     dataSetRow["customeritemdesc"] = detail.get(currentRow).getCustomerItemDesc();
-    dataSetRow["itembarcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/" + master.getCustomerno()+ detail.get(currentRow).getCustomerItem() + ".png";
     dataSetRow["itemno"] = detail.get(currentRow).getItemno();
     dataSetRow["fixnr"] = detail.get(currentRow).getFixnr();
     dataSetRow["varnr"] = detail.get(currentRow).getVarnr();
     dataSetRow["varnrbarcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/" + detail.get(currentRow).getVarnr()+ ".png";
+    dataSetRow["varnrqrcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + detail.get(currentRow).getVarnr()+ ".png";
+    dataSetRow["shpdate"] = detail.get(currentRow).getShpdate();
+    dataSetRow["shpqrcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png";
     currentRow++;
     return true;
 }
@@ -220,12 +248,6 @@ return false;
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">itembarcode</property>
-                    <text-property name="displayName">itembarcode</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["itembarcode"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
                     <property name="name">customeritemdesc</property>
                     <text-property name="displayName">customeritemdesc</text-property>
                     <expression name="expression" type="javascript">dataSetRow["customeritemdesc"]</expression>
@@ -267,52 +289,116 @@ return false;
                     <expression name="expression" type="javascript">dataSetRow["customerno"]</expression>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="name">shpdate</property>
+                    <text-property name="displayName">shpdate</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["shpdate"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">customer</property>
+                    <text-property name="displayName">customer</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["customer"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">varnrqrcode</property>
+                    <text-property name="displayName">varnrqrcode</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["varnrqrcode"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">shpqrcode</property>
+                    <text-property name="displayName">shpqrcode</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["shpqrcode"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
+            <property name="repeatHeader">false</property>
             <property name="pageBreakInterval">0</property>
             <detail>
                 <grid id="115">
                     <property name="marginTop">1pt</property>
                     <property name="marginRight">1pt</property>
-                    <property name="width">1.96875in</property>
-                    <column id="116">
-                        <property name="width">0.3958333333333333in</property>
+                    <property name="pageBreakAfter">always</property>
+                    <column id="177">
+                        <property name="width">2.1cm</property>
                     </column>
-                    <column id="117">
-                        <property name="width">1.5729166666666667in</property>
-                    </column>
-                    <row id="118">
-                        <cell id="119">
-                            <property name="colSpan">2</property>
-                            <property name="rowSpan">1</property>
-                            <data id="147">
-                                <property name="fontSize">12pt</property>
-                                <property name="fontWeight">bold</property>
-                                <property name="resultSetColumn">customeritemdesc</property>
+                    <column id="117"/>
+                    <row id="156">
+                        <cell id="174">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">5</property>
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="textAlign">center</property>
+                            <image id="165">
+                                <property name="height">2cm</property>
+                                <property name="width">2cm</property>
+                                <property name="source">url</property>
+                                <expression name="uri" type="javascript">row["shpqrcode"]</expression>
+                            </image>
+                        </cell>
+                        <cell id="158">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <label id="188">
+                                <property name="marginTop">0pt</property>
+                                <text-property name="text">A0007001</text-property>
+                            </label>
+                        </cell>
+                    </row>
+                    <row id="184">
+                        <cell id="186">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <data id="187">
+                                <property name="marginTop">0pt</property>
+                                <property name="marginBottom">0pt</property>
+                                <property name="paddingTop">1pt</property>
+                                <structure name="dateTimeFormat">
+                                    <property name="category">Custom</property>
+                                    <property name="pattern">yyyyMMdd</property>
+                                </structure>
+                                <property name="resultSetColumn">shpdate</property>
                             </data>
                         </cell>
                     </row>
-                    <row id="132">
-                        <cell id="133">
-                            <label id="136">
-                                <text-property name="text">SN</text-property>
-                            </label>
-                        </cell>
-                        <cell id="134">
-                            <image id="135">
-                                <property name="pageBreakAfter">auto</property>
-                                <property name="source">url</property>
-                                <expression name="uri" type="javascript">row["varnrbarcode"]</expression>
-                            </image>
+                    <row id="179">
+                        <cell id="181">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <data id="183">
+                                <property name="marginTop">0pt</property>
+                                <property name="marginBottom">0pt</property>
+                                <property name="whiteSpace">nowrap</property>
+                                <property name="resultSetColumn">varnr</property>
+                            </data>
                         </cell>
                     </row>
-                    <row id="144">
-                        <property name="height">0.6cm</property>
-                        <cell id="145"/>
-                        <cell id="146">
-                            <data id="143">
-                                <property name="fontSize">12pt</property>
-                                <property name="pageBreakAfter">always</property>
+                    <row id="166">
+                        <cell id="167">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <data id="163">
+                                <property name="fontWeight">normal</property>
+                                <property name="marginTop">0pt</property>
+                                <property name="marginBottom">0pt</property>
+                                <property name="paddingTop">1pt</property>
+                                <property name="whiteSpace">nowrap</property>
+                                <property name="pageBreakAfter">avoid</property>
                                 <property name="resultSetColumn">customeritem</property>
+                            </data>
+                        </cell>
+                    </row>
+                    <row id="189">
+                        <cell id="191">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <data id="192">
+                                <property name="marginTop">0pt</property>
+                                <property name="whiteSpace">nowrap</property>
+                                <property name="resultSetColumn">itemmodel</property>
                             </data>
                         </cell>
                     </row>
