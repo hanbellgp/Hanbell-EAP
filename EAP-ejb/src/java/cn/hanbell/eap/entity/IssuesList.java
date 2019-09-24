@@ -6,7 +6,6 @@
 package cn.hanbell.eap.entity;
 
 import com.lightshell.comm.SuperEntity;
-import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,7 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,62 +29,78 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "issueslist")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "IssuesList.findAll", query = "SELECT i FROM IssuesList i"),
-    @NamedQuery(name = "IssuesList.findById", query = "SELECT i FROM IssuesList i WHERE i.id = :id"),
-    @NamedQuery(name = "IssuesList.findByAnnual", query = "SELECT i FROM IssuesList i WHERE i.annual = :annual"),
-    @NamedQuery(name = "IssuesList.findByName", query = "SELECT i FROM IssuesList i WHERE i.name = :name"),
-    @NamedQuery(name = "IssuesList.findByDescription", query = "SELECT i FROM IssuesList i WHERE i.description = :description"),
-    @NamedQuery(name = "IssuesList.findByDept", query = "SELECT i FROM IssuesList i WHERE i.dept = :dept"),
-    @NamedQuery(name = "IssuesList.findByPerson", query = "SELECT i FROM IssuesList i WHERE i.person = :person"),
-    @NamedQuery(name = "IssuesList.findByPlantime", query = "SELECT i FROM IssuesList i WHERE i.plantime = :plantime"),
-    @NamedQuery(name = "IssuesList.findByPhase", query = "SELECT i FROM IssuesList i WHERE i.phase = :phase"),
-    @NamedQuery(name = "IssuesList.findByHead", query = "SELECT i FROM IssuesList i WHERE i.head = :head"),
-    @NamedQuery(name = "IssuesList.findByJindu", query = "SELECT i FROM IssuesList i WHERE i.jindu = :jindu"),
-    @NamedQuery(name = "IssuesList.findByEndtime", query = "SELECT i FROM IssuesList i WHERE i.endtime = :endtime"),
-    @NamedQuery(name = "IssuesList.findByRemark1", query = "SELECT i FROM IssuesList i WHERE i.remark1 = :remark1"),
-    @NamedQuery(name = "IssuesList.findByRemark2", query = "SELECT i FROM IssuesList i WHERE i.remark2 = :remark2"),
-    @NamedQuery(name = "IssuesList.findByAnswer", query = "SELECT i FROM IssuesList i WHERE i.answer = :answer"),
-    @NamedQuery(name = "IssuesList.findByAnswerstate", query = "SELECT i FROM IssuesList i WHERE i.answerstate = :answerstate"),
-    @NamedQuery(name = "IssuesList.findByFile", query = "SELECT i FROM IssuesList i WHERE i.file = :file"),
-    @NamedQuery(name = "IssuesList.findByStatus", query = "SELECT i FROM IssuesList i WHERE i.status = :status"),
-    @NamedQuery(name = "IssuesList.findByCreator", query = "SELECT i FROM IssuesList i WHERE i.creator = :creator"),
-    @NamedQuery(name = "IssuesList.findByCredate", query = "SELECT i FROM IssuesList i WHERE i.credate = :credate"),
-    @NamedQuery(name = "IssuesList.findByOptuser", query = "SELECT i FROM IssuesList i WHERE i.optuser = :optuser"),
-    @NamedQuery(name = "IssuesList.findByOptdate", query = "SELECT i FROM IssuesList i WHERE i.optdate = :optdate"),
-    @NamedQuery(name = "IssuesList.findByCfmuser", query = "SELECT i FROM IssuesList i WHERE i.cfmuser = :cfmuser"),
-    @NamedQuery(name = "IssuesList.findByCfmdate", query = "SELECT i FROM IssuesList i WHERE i.cfmdate = :cfmdate")})
+    @NamedQuery(name = "IssuesList.findAll", query = "SELECT i FROM IssuesList i")
+    , @NamedQuery(name = "IssuesList.findById", query = "SELECT i FROM IssuesList i WHERE i.id = :id")
+    , @NamedQuery(name = "IssuesList.findByIssuesid", query = "SELECT i FROM IssuesList i WHERE i.issuesid = :issuesid")
+    , @NamedQuery(name = "IssuesList.findByIssuesname", query = "SELECT i FROM IssuesList i WHERE i.issuesname = :issuesname")
+    , @NamedQuery(name = "IssuesList.findByDeptno", query = "SELECT i FROM IssuesList i WHERE i.deptno = :deptno")
+    , @NamedQuery(name = "IssuesList.findByDeptname", query = "SELECT i FROM IssuesList i WHERE i.deptname = :deptname")
+    , @NamedQuery(name = "IssuesList.findByNeederid", query = "SELECT i FROM IssuesList i WHERE i.neederid = :neederid")
+    , @NamedQuery(name = "IssuesList.findByNeedername", query = "SELECT i FROM IssuesList i WHERE i.needername = :needername")
+    , @NamedQuery(name = "IssuesList.findByCreatetime", query = "SELECT i FROM IssuesList i WHERE i.createtime = :createtime")
+    , @NamedQuery(name = "IssuesList.findByPlantime", query = "SELECT i FROM IssuesList i WHERE i.plantime = :plantime")
+    , @NamedQuery(name = "IssuesList.findByEndtime", query = "SELECT i FROM IssuesList i WHERE i.endtime = :endtime")
+    , @NamedQuery(name = "IssuesList.findByPhase", query = "SELECT i FROM IssuesList i WHERE i.phase = :phase")
+    , @NamedQuery(name = "IssuesList.findByPrincipalid", query = "SELECT i FROM IssuesList i WHERE i.principalid = :principalid")
+    , @NamedQuery(name = "IssuesList.findByPrincipalname", query = "SELECT i FROM IssuesList i WHERE i.principalname = :principalname")
+    , @NamedQuery(name = "IssuesList.findBySchedule", query = "SELECT i FROM IssuesList i WHERE i.schedule = :schedule")
+    , @NamedQuery(name = "IssuesList.findByRemark1", query = "SELECT i FROM IssuesList i WHERE i.remark1 = :remark1")
+    , @NamedQuery(name = "IssuesList.findByRemark2", query = "SELECT i FROM IssuesList i WHERE i.remark2 = :remark2")
+    , @NamedQuery(name = "IssuesList.findByAnswer", query = "SELECT i FROM IssuesList i WHERE i.answer = :answer")
+    , @NamedQuery(name = "IssuesList.findByAnswerstate", query = "SELECT i FROM IssuesList i WHERE i.answerstate = :answerstate")
+    , @NamedQuery(name = "IssuesList.findByFile", query = "SELECT i FROM IssuesList i WHERE i.file = :file")
+    , @NamedQuery(name = "IssuesList.findByStatus", query = "SELECT i FROM IssuesList i WHERE i.status = :status")
+    , @NamedQuery(name = "IssuesList.findByCreator", query = "SELECT i FROM IssuesList i WHERE i.creator = :creator")
+    , @NamedQuery(name = "IssuesList.findByCredate", query = "SELECT i FROM IssuesList i WHERE i.credate = :credate")
+    , @NamedQuery(name = "IssuesList.findByOptuser", query = "SELECT i FROM IssuesList i WHERE i.optuser = :optuser")
+    , @NamedQuery(name = "IssuesList.findByOptdate", query = "SELECT i FROM IssuesList i WHERE i.optdate = :optdate")
+    , @NamedQuery(name = "IssuesList.findByCfmuser", query = "SELECT i FROM IssuesList i WHERE i.cfmuser = :cfmuser")
+    , @NamedQuery(name = "IssuesList.findByCfmdate", query = "SELECT i FROM IssuesList i WHERE i.cfmdate = :cfmdate")})
 public class IssuesList extends SuperEntity {
 
+    @Basic(optional = false)
+    @Size(min = 1, max = 45)
+    @Column(name = "issuesid")
+    private String issuesid;
+    @Size(max = 400)
+    @Column(name = "issuesname")
+    private String issuesname;
+    @Basic(optional = false)
+    @Size(min = 1, max = 10)
+    @Column(name = "deptno")
+    private String deptno;
     @Size(max = 45)
-    @Column(name = "annual")
-    private String annual;
+    @Column(name = "deptname")
+    private String deptname;
+    @Basic(optional = false)
+    @Size(min = 1, max = 45)
+    @Column(name = "neederid")
+    private String neederid;
     @Size(max = 45)
-    @Column(name = "name")
-    private String name;
-    @Size(max = 45)
-    @Column(name = "description")
-    private String description;
-    @Size(max = 45)
-    @Column(name = "dept")
-    private String dept;
-    @Size(max = 45)
-    @Column(name = "person")
-    private String person;
+    @Column(name = "needername")
+    private String needername;
+    @Basic(optional = false)
+    @Column(name = "createtime")
+    @Temporal(TemporalType.DATE)
+    private Date createtime;
     @Column(name = "plantime")
     @Temporal(TemporalType.DATE)
     private Date plantime;
-    @Size(max = 45)
-    @Column(name = "phase")
-    private String phase;
-    @Size(max = 45)
-    @Column(name = "head")
-    private String head;
-    @Size(max = 45)
-    @Column(name = "jindu")
-    private String jindu;
     @Column(name = "endtime")
     @Temporal(TemporalType.DATE)
     private Date endtime;
+    @Size(max = 400)
+    @Column(name = "phase")
+    private String phase;
+    @Size(max = 45)
+    @Column(name = "principalid")
+    private String principalid;
+    @Size(max = 45)
+    @Column(name = "principalname")
+    private String principalname;
+    @Size(max = 200)
+    @Column(name = "schedule")
+    private String schedule;
     @Size(max = 45)
     @Column(name = "remark1")
     private String remark1;
@@ -102,88 +116,72 @@ public class IssuesList extends SuperEntity {
     @Size(max = 45)
     @Column(name = "file")
     private String file;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2)
-    @Column(name = "status")
-    private String status;
-    @Size(max = 20)
-    @Column(name = "creator")
-    private String creator;
-    @Column(name = "credate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date credate;
-    @Size(max = 20)
-    @Column(name = "optuser")
-    private String optuser;
-    @Column(name = "optdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date optdate;
-    @Size(max = 20)
-    @Column(name = "cfmuser")
-    private String cfmuser;
-    @Column(name = "cfmdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date cfmdate;
-
+    
     public IssuesList() {
     }
 
-    public IssuesList(Integer id) {
-        this.id = id;
+
+    public IssuesList(String issuesid, String deptno, String neederid, Date createtime) {
+        this.issuesid = issuesid;
+        this.deptno = deptno;
+        this.neederid = neederid;
+        this.createtime = createtime;
     }
 
-    public IssuesList(Integer id, String status) {
-        this.id = id;
-        this.status = status;
+    public String getIssuesid() {
+        return issuesid;
     }
 
-    public Integer getId() {
-        return id;
+    public void setIssuesid(String issuesid) {
+        this.issuesid = issuesid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getIssuesname() {
+        return issuesname;
     }
 
-    public String getAnnual() {
-        return annual;
+    public void setIssuesname(String issuesname) {
+        this.issuesname = issuesname;
     }
 
-    public void setAnnual(String annual) {
-        this.annual = annual;
+    public String getDeptno() {
+        return deptno;
     }
 
-    public String getName() {
-        return name;
+    public void setDeptno(String deptno) {
+        this.deptno = deptno;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getDeptname() {
+        return deptname;
     }
 
-    public String getDescription() {
-        return description;
+    public void setDeptname(String deptname) {
+        this.deptname = deptname;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getNeederid() {
+        return neederid;
     }
 
-    public String getDept() {
-        return dept;
+    public void setNeederid(String neederid) {
+        this.neederid = neederid;
     }
 
-    public void setDept(String dept) {
-        this.dept = dept;
+    public String getNeedername() {
+        return needername;
     }
 
-    public String getPerson() {
-        return person;
+    public void setNeedername(String needername) {
+        this.needername = needername;
     }
 
-    public void setPerson(String person) {
-        this.person = person;
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 
     public Date getPlantime() {
@@ -194,6 +192,14 @@ public class IssuesList extends SuperEntity {
         this.plantime = plantime;
     }
 
+    public Date getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(Date endtime) {
+        this.endtime = endtime;
+    }
+
     public String getPhase() {
         return phase;
     }
@@ -202,28 +208,28 @@ public class IssuesList extends SuperEntity {
         this.phase = phase;
     }
 
-    public String getHead() {
-        return head;
+    public String getPrincipalid() {
+        return principalid;
     }
 
-    public void setHead(String head) {
-        this.head = head;
+    public void setPrincipalid(String principalid) {
+        this.principalid = principalid;
     }
 
-    public String getJindu() {
-        return jindu;
+    public String getPrincipalname() {
+        return principalname;
     }
 
-    public void setJindu(String jindu) {
-        this.jindu = jindu;
+    public void setPrincipalname(String principalname) {
+        this.principalname = principalname;
     }
 
-    public Date getEndtime() {
-        return endtime;
+    public String getSchedule() {
+        return schedule;
     }
 
-    public void setEndtime(Date endtime) {
-        this.endtime = endtime;
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
     }
 
     public String getRemark1() {
@@ -264,62 +270,6 @@ public class IssuesList extends SuperEntity {
 
     public void setFile(String file) {
         this.file = file;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public Date getCredate() {
-        return credate;
-    }
-
-    public void setCredate(Date credate) {
-        this.credate = credate;
-    }
-
-    public String getOptuser() {
-        return optuser;
-    }
-
-    public void setOptuser(String optuser) {
-        this.optuser = optuser;
-    }
-
-    public Date getOptdate() {
-        return optdate;
-    }
-
-    public void setOptdate(Date optdate) {
-        this.optdate = optdate;
-    }
-
-    public String getCfmuser() {
-        return cfmuser;
-    }
-
-    public void setCfmuser(String cfmuser) {
-        this.cfmuser = cfmuser;
-    }
-
-    public Date getCfmdate() {
-        return cfmdate;
-    }
-
-    public void setCfmdate(Date cfmdate) {
-        this.cfmdate = cfmdate;
     }
 
     @Override
