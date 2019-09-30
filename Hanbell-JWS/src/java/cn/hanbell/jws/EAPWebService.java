@@ -198,7 +198,7 @@ import org.json.JSONObject;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class EAPWebService {
 
-    private final Logger log4j = LogManager.getLogger();
+    private final Logger log4j = LogManager.getLogger("cn.hanbell.eap");
 
     // EJBForCRM
     @EJB
@@ -1453,8 +1453,7 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "createERPQuoteByCRMREPPA")
-    public String createERPQuoteByCRMREPPA(@WebParam(name = "pa001") String pa001,
-            @WebParam(name = "pa002") String pa002) {
+    public String createERPQuoteByCRMREPPA(@WebParam(name = "pa001") String pa001, @WebParam(name = "pa002") String pa002) {
         String facno;
         String pricelevel;
         String ls_levelp;
@@ -2283,6 +2282,9 @@ public class EAPWebService {
 
     /**
      * Web 服务操作
+     *
+     * @param psn
+     * @return
      */
     @WebMethod(operationName = "createOAHKGC002ByOAHKGC001")
     public String createOAHKGC002ByOAHKGC001(@WebParam(name = "psn") String psn) {
@@ -2584,8 +2586,7 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "updateCRMPORMYByOAHZCW033")
-    public String updateCRMPORMYByOAHZCW033(@WebParam(name = "psn") String psn,
-            @WebParam(name = "status") String status) {
+    public String updateCRMPORMYByOAHZCW033(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
         Boolean ret = false;
         try {
             ret = hzcw033Bean.updateCRMPORMY(psn, status);
@@ -2780,11 +2781,11 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "updateERPPUR120ByOAHKCG006") // -----by C1749 2018/3/28
+    @WebMethod(operationName = "updateERPPUR120ByOAHKCG006") // by C1749 2018/3/28
     public String updateERPPUR120ByOAHKCG006(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
         try {
-            ret = purvdrBean.refuseOAHKCG006(psn);
+            ret = purvdrBean.refuseByOAHKCG006(psn);
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "updateERPPUR120ByOAHKCG006", psn), ex);
         }
@@ -2892,8 +2893,7 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "updateRootCloudDeviceAlarmStatus")
-    public String updateRootCloudDeviceAlarmStatus(@WebParam(name = "psn") String psn,
-            @WebParam(name = "status") String status) {
+    public String updateRootCloudDeviceAlarmStatus(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
         Boolean ret = false;
         try {
             SERI12 e = seri12Bean.findByPSN(psn);
@@ -2993,8 +2993,7 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "updateEProcurementByOAHKCG016")
-    public String updateEProcurementByOAHKCG016(@WebParam(name = "psn") String psn,
-            @WebParam(name = "status") String status) {
+    public String updateEProcurementByOAHKCG016(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
         Boolean ret = false;
         try {
             HKCG016 p = hkcg016Bean.findByPSN(psn);
@@ -3042,8 +3041,7 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "rollbackERPCdrqhadByCRMREPPA")
-    public String rollbackERPCdrqhadByCRMREPPA(@WebParam(name = "facno") String facno,
-            @WebParam(name = "pa001") String pa001, @WebParam(name = "pa002") String pa002) {
+    public String rollbackERPCdrqhadByCRMREPPA(@WebParam(name = "facno") String facno, @WebParam(name = "pa001") String pa001, @WebParam(name = "pa002") String pa002) {
         String ret = "404";
         try {
             ret = cdrqhadBean.rollbackFromCRMREPPA(facno, pa001, pa002);
@@ -3116,8 +3114,7 @@ public class EAPWebService {
     }
 
     @WebMethod(operationName = "updateCRMREPTDFromOAHKFW006")
-    public String updateCRMREPTDFromOAHKFW006(@WebParam(name = "psn") String psn,
-            @WebParam(name = "status") String status) {
+    public String updateCRMREPTDFromOAHKFW006(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
         Boolean ret = false;
         try {
             ret = hkfw006Bean.updateReptdByOAHKFW006(psn, status);
@@ -3147,231 +3144,231 @@ public class EAPWebService {
         try {
             SERI12 seri12 = seri12Bean.findByPSNAndBQ110(psn);
             if (seri12 != null) {
-            if (seri12.getBq001() == null && "".equals(seri12.getBq001())) {
-                throw new NullPointerException("createCustomerComplaintByEAP--seri12.getBq001()为空");
-            }
-            String badwhy, dutydeptno, remark1;
-            String kfno = seri12.getBq001();
-            CustomerComplaint cp = new CustomerComplaint();
-            String varnr = sercaBean.findCa009ByCa001(kfno);
-            cp.setKfno(seri12.getBq001());
-            cp.setCusno(seri12.getBq002() == null ? "null" : seri12.getBq002());
-            cp.setCusna(seri12.getBq002c() == null ? "null" : seri12.getBq002c());
-            cp.setVarnr(varnr == null ? "null" : varnr);
-            cp.setNcodeDC(seri12.getBq197() == null ? "null" : seri12.getBq197());
-            cp.setNcodeCD(seri12.getBq198() == null ? "null" : seri12.getBq198());
-            cp.setNcodeDD(seri12.getBq003() == null ? "null" : seri12.getBq003());
-            dutydeptno = seri12.getBq504() == null ? "null" : seri12.getBq504();
-            //因OA版更栏位发生改变
-            if (!dutydeptno.equals("null") && !dutydeptno.equals("")) {
-                cp.setDutydeptno(dutydeptno);
-            } else {
-                cp.setDutydeptno(seri12.getBq133() == null ? "null" : seri12.getBq133());
-            }
-            cp.setDutydeptna(seri12.getBq504c() == null ? "null" : seri12.getBq504c());
-            //19年9月10日加入责任判定
-            remark1 = seri12.getBq502() == null ? "" : seri12.getBq502();
-            if (!remark1.equals("")) {
+                if (seri12.getBq001() == null && "".equals(seri12.getBq001())) {
+                    throw new NullPointerException("createCustomerComplaintByEAP--seri12.getBq001()为空");
+                }
+                String badwhy, dutydeptno, remark1;
+                String kfno = seri12.getBq001();
+                CustomerComplaint cp = new CustomerComplaint();
+                String varnr = sercaBean.findCa009ByCa001(kfno);
+                cp.setKfno(seri12.getBq001());
+                cp.setCusno(seri12.getBq002() == null ? "null" : seri12.getBq002());
+                cp.setCusna(seri12.getBq002c() == null ? "null" : seri12.getBq002c());
+                cp.setVarnr(varnr == null ? "null" : varnr);
+                cp.setNcodeDC(seri12.getBq197() == null ? "null" : seri12.getBq197());
+                cp.setNcodeCD(seri12.getBq198() == null ? "null" : seri12.getBq198());
+                cp.setNcodeDD(seri12.getBq003() == null ? "null" : seri12.getBq003());
+                dutydeptno = seri12.getBq504() == null ? "null" : seri12.getBq504();
+                //因OA版更栏位发生改变
+                if (!dutydeptno.equals("null") && !dutydeptno.equals("")) {
+                    cp.setDutydeptno(dutydeptno);
+                } else {
+                    cp.setDutydeptno(seri12.getBq133() == null ? "null" : seri12.getBq133());
+                }
+                cp.setDutydeptna(seri12.getBq504c() == null ? "null" : seri12.getBq504c());
+                //19年9月10日加入责任判定
+                remark1 = seri12.getBq502() == null ? "" : seri12.getBq502();
+                if (!remark1.equals("")) {
                     cp.setRemark1(remark1);
-            } else {
+                } else {
                     cp.setRemark1(seri12.getBq131() == null ? "null" : seri12.getBq131());
-            }
-            cp.setDutyrate(seri12.getPropotion() == null ? "null" : seri12.getPropotion());
-            cp.setCredate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq021()));
-            cp.setOverdate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq037()));
-            badwhy = seri12.getBq503() == null ? "null" : seri12.getBq503();
-            //因OA版更栏位发生改变
-            if (!badwhy.equals("null") && !badwhy.equals("")) {
-                cp.setBadwhy(badwhy);
-            } else {
-                cp.setBadwhy(seri12.getBq132() == null ? "null" : seri12.getBq132());
-            }
-            //一、运输费
-            tansportList = new ArrayList<>();
-            CustomerComplaintExpense cce;
-            List hkfw005s = hkfw005Bean.getTansportExpense(kfno);
-            if (hkfw005s != null && !hkfw005s.isEmpty()) {
-                for (int i = 0; i < hkfw005s.size(); i++) {
-                    Object[] row = (Object[]) hkfw005s.get(i);
-                    cce = new CustomerComplaintExpense();
-                    cce.setType(row[0].toString());
-                    cce.setSources(row[1].toString());
-                    cce.setKfno(row[2].toString());
-                    cce.setFwno(row[3] == null ? "null" : row[3].toString());
-                    cce.setUserno(row[4] == null ? "null" : row[4].toString());
-                    cce.setUserna(row[5] == null ? "null" : row[5].toString());
-                    cce.setDeptno(row[6] == null ? "null" : row[6].toString());
-                    cce.setDeptna(row[7] == null ? "null" : row[7].toString());
-                    cce.setOccurdate(row[8] == null ? "null" : row[8].toString());
-                    cce.setExpensetype(row[9] == null ? "null" : row[9].toString());
-                    cce.setCustom1(hkfw005Bean.getYsStyleName(row[10].toString()));
-                    cce.setCustom2(row[11] == null ? "null" : row[11].toString());
-                    cce.setCustom3(row[12] == null ? "null" : row[12].toString());
-                    cce.setCustom4(row[13] == null ? "null" : row[13].toString());
-                    cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
-                    cce.setRemark1(row[15] == null ? "null" : row[15].toString());
-                    cce.setSourcesno(row[16] == null ? "null" : row[16].toString());
-                    tansportList.add(cce);
                 }
-            }
-            List hkfw006s = hkfw006Bean.getTansportExpense(kfno);
-            if (hkfw006s != null && !hkfw006s.isEmpty()) {
-                for (int i = 0; i < hkfw006s.size(); i++) {
-                    Object[] row = (Object[]) hkfw006s.get(i);
-                    cce = new CustomerComplaintExpense();
-                    cce.setType(row[0].toString());
-                    cce.setSources(row[1].toString());
-                    cce.setKfno(row[2].toString());
-                    cce.setFwno(row[3] == null ? "null" : row[3].toString());
-                    cce.setUserno(row[4] == null ? "null" : row[4].toString());
-                    cce.setUserna(row[5] == null ? "null" : row[5].toString());
-                    cce.setDeptno(row[6] == null ? "null" : row[6].toString());
-                    cce.setDeptna(row[7] == null ? "null" : row[7].toString());
-                    cce.setOccurdate(row[8] == null ? "null" : row[8].toString());
-                    cce.setExpensetype(row[9] == null ? "null" : row[9].toString());
-                    cce.setCustom1(row[10] == null ? "null" : row[10].toString());
-                    cce.setCustom2(row[11] == null ? "null" : row[11].toString());
-                    cce.setCustom3(row[12] == null ? "null" : row[12].toString());
-                    cce.setCustom4(row[13] == null ? "null" : row[13].toString());
-                    cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
-                    cce.setRemark1(row[15] == null ? "null" : row[15].toString());
-                    cce.setSourcesno(row[16] == null ? "null" : row[16].toString());
-                    tansportList.add(cce);
+                cp.setDutyrate(seri12.getPropotion() == null ? "null" : seri12.getPropotion());
+                cp.setCredate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq021()));
+                cp.setOverdate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq037()));
+                badwhy = seri12.getBq503() == null ? "null" : seri12.getBq503();
+                //因OA版更栏位发生改变
+                if (!badwhy.equals("null") && !badwhy.equals("")) {
+                    cp.setBadwhy(badwhy);
+                } else {
+                    cp.setBadwhy(seri12.getBq132() == null ? "null" : seri12.getBq132());
                 }
-            }
-            List cdrlnhads = cdrlnhadBean.getCustomerComplaintExpense(kfno);
-            if (cdrlnhads != null && !cdrlnhads.isEmpty()) {
-                for (int i = 0; i < cdrlnhads.size(); i++) {
-                    Object[] row = (Object[]) cdrlnhads.get(i);
-                    cce = new CustomerComplaintExpense();
-                    cce.setType(row[0].toString());
-                    cce.setSources(row[1].toString());
-                    cce.setKfno(row[2].toString());
-                    cce.setFwno(row[3] == null ? "null" : row[3].toString());
-                    cce.setUserno(row[4] == null ? "null" : row[4].toString());
-                    cce.setUserna(row[5] == null ? "null" : row[5].toString());
-                    cce.setDeptno(row[6] == null ? "null" : row[6].toString());
-                    cce.setDeptna(row[7] == null ? "null" : row[7].toString());
-                    cce.setOccurdate(row[8] == null ? "null" : row[8].toString());
-                    cce.setExpensetype(row[9] == null ? "null" : row[9].toString());
-                    cce.setCustom1(row[10] == null ? "null" : row[10].toString());
-                    cce.setCustom2(row[11] == null ? "null" : row[11].toString());
-                    cce.setCustom3(row[12] == null ? "null" : row[12].toString());
-                    cce.setSourcesno(row[13] == null ? "null" : row[13].toString());
-                    cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
-                    cce.setRemark1(row[15] == null ? "null" : row[15].toString());
-                    tansportList.add(cce);
-                }
-            }
-            //二、差旅费
-            travelList = new ArrayList<>();
-            List repts = reptcBean.getCustomerComplaintExpense(kfno);
-            if (repts != null && !repts.isEmpty()) {
-                for (int i = 0; i < repts.size(); i++) {
-                    Object[] row = (Object[]) repts.get(i);
-                    cce = new CustomerComplaintExpense();
-                    cce.setType(row[0].toString());
-                    cce.setSources(row[1].toString());
-                    cce.setKfno(row[2].toString());
-                    cce.setFwno(row[3] == null ? "null" : row[3].toString());
-                    cce.setUserno(row[4] == null ? "null" : row[4].toString());
-                    cce.setUserna(row[5] == null ? "null" : row[5].toString());
-                    cce.setDeptno(row[6] == null ? "null" : row[6].toString());
-                    cce.setDeptna(row[7] == null ? "null" : row[7].toString());
-                    cce.setSerialno(row[8] == null ? "null" : row[8].toString());
-                    cce.setOccurdate(row[9] == null ? "null" : row[9].toString());
-                    cce.setExpensetype(row[10] == null ? "null" : row[10].toString());
-                    cce.setCustom1(row[11] == null ? "null" : row[11].toString());
-                    cce.setCustom2(row[12] == null ? "null" : row[12].toString());
-                    cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[13].toString())));
-                    cce.setRemark1(row[14] == null ? "null" : row[14].toString());
-                    cce.setSourcesno(row[15] == null ? "null" : row[15].toString());
-                    cce.setSourcesdate(row[16] == null ? "null" : row[16].toString());
-                    travelList.add(cce);
-                }
-            }
-            //三、材料费
-            materialList = new ArrayList<>();
-            CustomerComplaintMaterial cpd;
-            List invhadhs = invhadBean.getCustomerComplaintMaterial(kfno);
-            if (invhadhs != null && !invhadhs.isEmpty()) {
-                for (int i = 0; i < invhadhs.size(); i++) {
-                    Object[] row = (Object[]) invhadhs.get(i);
-                    cpd = new CustomerComplaintMaterial();
-                    cpd.setKfno(row[0].toString());
-                    cpd.setFwno(row[1] == null ? "null" : row[1].toString());
-                    cpd.setTrtype(row[2] == null ? "null" : row[2].toString());
-                    cpd.setTypedsc(row[3] == null ? "null" : row[3].toString());
-                    cpd.setTrno(row[4] == null ? "null" : row[4].toString());
-                    cpd.setTrdate(df.parse(row[5].toString()));
-                    cpd.setTrseq(row[6] == null ? 0 : Integer.parseInt(row[6].toString()));
-                    cpd.setItnbr(row[7] == null ? "null" : row[7].toString());
-                    cpd.setItdsc(row[8] == null ? "null" : row[8].toString());
-                    cpd.setTrnqy1(row[9] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
-                    cpd.setUnmsr1(row[10] == null ? "null" : row[10].toString());
-                    cpd.setTramt(row[11] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[11].toString())));
-                    materialList.add(cpd);
-                }
-            }
-            //资料更新
-            List<CustomerComplaintExpense> expenses = complaintExpenseBean.findKfno(kfno);
-            if (expenses != null && !expenses.isEmpty()) {
-                complaintExpenseBean.delete(expenses);
-            }
-            List<CustomerComplaintMaterial> materials = complaintMaterialBean.findKfno(kfno);
-            if (materials != null && !materials.isEmpty()) {
-                complaintMaterialBean.delete(materials);
-            }
-            if (!travelList.isEmpty()) {
-                for (CustomerComplaintExpense complaintExpense : travelList) {
-                    travel = travel.add(complaintExpense.getExpense());
-                    complaintExpenseBean.persist(complaintExpense);
-                }
-            }
-            if (!tansportList.isEmpty()) {
-                for (CustomerComplaintExpense complaintExpense : tansportList) {
-                    tansport = tansport.add(complaintExpense.getExpense());
-                    complaintExpenseBean.persist(complaintExpense);
-                }
-            }
-            if (!materialList.isEmpty()) {
-                for (CustomerComplaintMaterial complaintMaterial : materialList) {
-                    //IAF为服务领料 领料加项 IAG为服务退料 退料减项
-                    if (complaintMaterial.getTrtype().equals("IAF")) {
-                        material = material.add(complaintMaterial.getTramt());
-                    } else {
-                        material = material.subtract(complaintMaterial.getTramt());
+                //一、运输费
+                tansportList = new ArrayList<>();
+                CustomerComplaintExpense cce;
+                List hkfw005s = hkfw005Bean.getTansportExpense(kfno);
+                if (hkfw005s != null && !hkfw005s.isEmpty()) {
+                    for (int i = 0; i < hkfw005s.size(); i++) {
+                        Object[] row = (Object[]) hkfw005s.get(i);
+                        cce = new CustomerComplaintExpense();
+                        cce.setType(row[0].toString());
+                        cce.setSources(row[1].toString());
+                        cce.setKfno(row[2].toString());
+                        cce.setFwno(row[3] == null ? "null" : row[3].toString());
+                        cce.setUserno(row[4] == null ? "null" : row[4].toString());
+                        cce.setUserna(row[5] == null ? "null" : row[5].toString());
+                        cce.setDeptno(row[6] == null ? "null" : row[6].toString());
+                        cce.setDeptna(row[7] == null ? "null" : row[7].toString());
+                        cce.setOccurdate(row[8] == null ? "null" : row[8].toString());
+                        cce.setExpensetype(row[9] == null ? "null" : row[9].toString());
+                        cce.setCustom1(hkfw005Bean.getYsStyleName(row[10].toString()));
+                        cce.setCustom2(row[11] == null ? "null" : row[11].toString());
+                        cce.setCustom3(row[12] == null ? "null" : row[12].toString());
+                        cce.setCustom4(row[13] == null ? "null" : row[13].toString());
+                        cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
+                        cce.setRemark1(row[15] == null ? "null" : row[15].toString());
+                        cce.setSourcesno(row[16] == null ? "null" : row[16].toString());
+                        tansportList.add(cce);
                     }
-                    complaintMaterialBean.persist(complaintMaterial);
                 }
-            }
-            CustomerComplaint plaint = customerComplaintBean.findKfno(kfno);
-            if (plaint != null) {
-                customerComplaintBean.delete(plaint);
-            }
-            cp.setMaterialcost(material);
-            cp.setTravelexpense(travel);
-            cp.setTansportexpense(tansport);
-            customerComplaintBean.persist(cp);
-            List<EmailRecipient> emailto = emailRecipientBean.findEmailnameByCodeAndEmailtype("客诉结案抛转详细", "to");
-            List<EmailRecipient> emailcc = emailRecipientBean.findEmailnameByCodeAndEmailtype("客诉结案抛转详细", "cc");
-            mailBean.getTo().clear();
-            mailBean.getCc().clear();
-            if (emailto != null && !emailto.isEmpty()) {
-                for (EmailRecipient emailRecipient : emailto) {
-                    mailBean.getTo().add(emailRecipient.getEmailaddress());
+                List hkfw006s = hkfw006Bean.getTansportExpense(kfno);
+                if (hkfw006s != null && !hkfw006s.isEmpty()) {
+                    for (int i = 0; i < hkfw006s.size(); i++) {
+                        Object[] row = (Object[]) hkfw006s.get(i);
+                        cce = new CustomerComplaintExpense();
+                        cce.setType(row[0].toString());
+                        cce.setSources(row[1].toString());
+                        cce.setKfno(row[2].toString());
+                        cce.setFwno(row[3] == null ? "null" : row[3].toString());
+                        cce.setUserno(row[4] == null ? "null" : row[4].toString());
+                        cce.setUserna(row[5] == null ? "null" : row[5].toString());
+                        cce.setDeptno(row[6] == null ? "null" : row[6].toString());
+                        cce.setDeptna(row[7] == null ? "null" : row[7].toString());
+                        cce.setOccurdate(row[8] == null ? "null" : row[8].toString());
+                        cce.setExpensetype(row[9] == null ? "null" : row[9].toString());
+                        cce.setCustom1(row[10] == null ? "null" : row[10].toString());
+                        cce.setCustom2(row[11] == null ? "null" : row[11].toString());
+                        cce.setCustom3(row[12] == null ? "null" : row[12].toString());
+                        cce.setCustom4(row[13] == null ? "null" : row[13].toString());
+                        cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
+                        cce.setRemark1(row[15] == null ? "null" : row[15].toString());
+                        cce.setSourcesno(row[16] == null ? "null" : row[16].toString());
+                        tansportList.add(cce);
+                    }
                 }
-            }
-            if (emailcc != null && !emailcc.isEmpty()) {
-                for (EmailRecipient emailRecipient : emailcc) {
-                    mailBean.getCc().add(emailRecipient.getEmailaddress());
+                List cdrlnhads = cdrlnhadBean.getCustomerComplaintExpense(kfno);
+                if (cdrlnhads != null && !cdrlnhads.isEmpty()) {
+                    for (int i = 0; i < cdrlnhads.size(); i++) {
+                        Object[] row = (Object[]) cdrlnhads.get(i);
+                        cce = new CustomerComplaintExpense();
+                        cce.setType(row[0].toString());
+                        cce.setSources(row[1].toString());
+                        cce.setKfno(row[2].toString());
+                        cce.setFwno(row[3] == null ? "null" : row[3].toString());
+                        cce.setUserno(row[4] == null ? "null" : row[4].toString());
+                        cce.setUserna(row[5] == null ? "null" : row[5].toString());
+                        cce.setDeptno(row[6] == null ? "null" : row[6].toString());
+                        cce.setDeptna(row[7] == null ? "null" : row[7].toString());
+                        cce.setOccurdate(row[8] == null ? "null" : row[8].toString());
+                        cce.setExpensetype(row[9] == null ? "null" : row[9].toString());
+                        cce.setCustom1(row[10] == null ? "null" : row[10].toString());
+                        cce.setCustom2(row[11] == null ? "null" : row[11].toString());
+                        cce.setCustom3(row[12] == null ? "null" : row[12].toString());
+                        cce.setSourcesno(row[13] == null ? "null" : row[13].toString());
+                        cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
+                        cce.setRemark1(row[15] == null ? "null" : row[15].toString());
+                        tansportList.add(cce);
+                    }
                 }
+                //二、差旅费
+                travelList = new ArrayList<>();
+                List repts = reptcBean.getCustomerComplaintExpense(kfno);
+                if (repts != null && !repts.isEmpty()) {
+                    for (int i = 0; i < repts.size(); i++) {
+                        Object[] row = (Object[]) repts.get(i);
+                        cce = new CustomerComplaintExpense();
+                        cce.setType(row[0].toString());
+                        cce.setSources(row[1].toString());
+                        cce.setKfno(row[2].toString());
+                        cce.setFwno(row[3] == null ? "null" : row[3].toString());
+                        cce.setUserno(row[4] == null ? "null" : row[4].toString());
+                        cce.setUserna(row[5] == null ? "null" : row[5].toString());
+                        cce.setDeptno(row[6] == null ? "null" : row[6].toString());
+                        cce.setDeptna(row[7] == null ? "null" : row[7].toString());
+                        cce.setSerialno(row[8] == null ? "null" : row[8].toString());
+                        cce.setOccurdate(row[9] == null ? "null" : row[9].toString());
+                        cce.setExpensetype(row[10] == null ? "null" : row[10].toString());
+                        cce.setCustom1(row[11] == null ? "null" : row[11].toString());
+                        cce.setCustom2(row[12] == null ? "null" : row[12].toString());
+                        cce.setExpense(BigDecimal.valueOf(Double.parseDouble(row[13].toString())));
+                        cce.setRemark1(row[14] == null ? "null" : row[14].toString());
+                        cce.setSourcesno(row[15] == null ? "null" : row[15].toString());
+                        cce.setSourcesdate(row[16] == null ? "null" : row[16].toString());
+                        travelList.add(cce);
+                    }
+                }
+                //三、材料费
+                materialList = new ArrayList<>();
+                CustomerComplaintMaterial cpd;
+                List invhadhs = invhadBean.getCustomerComplaintMaterial(kfno);
+                if (invhadhs != null && !invhadhs.isEmpty()) {
+                    for (int i = 0; i < invhadhs.size(); i++) {
+                        Object[] row = (Object[]) invhadhs.get(i);
+                        cpd = new CustomerComplaintMaterial();
+                        cpd.setKfno(row[0].toString());
+                        cpd.setFwno(row[1] == null ? "null" : row[1].toString());
+                        cpd.setTrtype(row[2] == null ? "null" : row[2].toString());
+                        cpd.setTypedsc(row[3] == null ? "null" : row[3].toString());
+                        cpd.setTrno(row[4] == null ? "null" : row[4].toString());
+                        cpd.setTrdate(df.parse(row[5].toString()));
+                        cpd.setTrseq(row[6] == null ? 0 : Integer.parseInt(row[6].toString()));
+                        cpd.setItnbr(row[7] == null ? "null" : row[7].toString());
+                        cpd.setItdsc(row[8] == null ? "null" : row[8].toString());
+                        cpd.setTrnqy1(row[9] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
+                        cpd.setUnmsr1(row[10] == null ? "null" : row[10].toString());
+                        cpd.setTramt(row[11] == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(row[11].toString())));
+                        materialList.add(cpd);
+                    }
+                }
+                //资料更新
+                List<CustomerComplaintExpense> expenses = complaintExpenseBean.findKfno(kfno);
+                if (expenses != null && !expenses.isEmpty()) {
+                    complaintExpenseBean.delete(expenses);
+                }
+                List<CustomerComplaintMaterial> materials = complaintMaterialBean.findKfno(kfno);
+                if (materials != null && !materials.isEmpty()) {
+                    complaintMaterialBean.delete(materials);
+                }
+                if (!travelList.isEmpty()) {
+                    for (CustomerComplaintExpense complaintExpense : travelList) {
+                        travel = travel.add(complaintExpense.getExpense());
+                        complaintExpenseBean.persist(complaintExpense);
+                    }
+                }
+                if (!tansportList.isEmpty()) {
+                    for (CustomerComplaintExpense complaintExpense : tansportList) {
+                        tansport = tansport.add(complaintExpense.getExpense());
+                        complaintExpenseBean.persist(complaintExpense);
+                    }
+                }
+                if (!materialList.isEmpty()) {
+                    for (CustomerComplaintMaterial complaintMaterial : materialList) {
+                        //IAF为服务领料 领料加项 IAG为服务退料 退料减项
+                        if (complaintMaterial.getTrtype().equals("IAF")) {
+                            material = material.add(complaintMaterial.getTramt());
+                        } else {
+                            material = material.subtract(complaintMaterial.getTramt());
+                        }
+                        complaintMaterialBean.persist(complaintMaterial);
+                    }
+                }
+                CustomerComplaint plaint = customerComplaintBean.findKfno(kfno);
+                if (plaint != null) {
+                    customerComplaintBean.delete(plaint);
+                }
+                cp.setMaterialcost(material);
+                cp.setTravelexpense(travel);
+                cp.setTansportexpense(tansport);
+                customerComplaintBean.persist(cp);
+                List<EmailRecipient> emailto = emailRecipientBean.findEmailnameByCodeAndEmailtype("客诉结案抛转详细", "to");
+                List<EmailRecipient> emailcc = emailRecipientBean.findEmailnameByCodeAndEmailtype("客诉结案抛转详细", "cc");
+                mailBean.getTo().clear();
+                mailBean.getCc().clear();
+                if (emailto != null && !emailto.isEmpty()) {
+                    for (EmailRecipient emailRecipient : emailto) {
+                        mailBean.getTo().add(emailRecipient.getEmailaddress());
+                    }
+                }
+                if (emailcc != null && !emailcc.isEmpty()) {
+                    for (EmailRecipient emailRecipient : emailcc) {
+                        mailBean.getCc().add(emailRecipient.getEmailaddress());
+                    }
+                }
+                mailBean.setMailSubject("客诉结案抛转详细");
+                mailBean.setMailContent(customerComplaintBean.getMail("客诉结案抛转详细", kfno));
+                mailBean.notify(new MailNotify());
+                ret = true;
             }
-            mailBean.setMailSubject("客诉结案抛转详细");
-            mailBean.setMailContent(customerComplaintBean.getMail("客诉结案抛转详细", kfno));
-            mailBean.notify(new MailNotify());
-            ret = true;
-        }
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "createCustomerComplaintByEAP", psn), ex);
             mailBean.getTo().clear();

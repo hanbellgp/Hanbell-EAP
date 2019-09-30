@@ -26,8 +26,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -53,14 +51,17 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
     private final List<Invwhclk> invwhclkAdded = new ArrayList<>();
 
     @EJB
-    private HKCG016Bean beanHKCG016;
-
+    private HKCG006Bean beanHKCG006;
     @EJB
-    private HKJH004Bean beanHKJH004;
+    private HKCG016Bean beanHKCG016;
     @EJB
     private HKCG017Bean beanHKCG017;
     @EJB
-    private HKCG006Bean beanHKCG006;
+    private HKJH004Bean beanHKJH004;
+    @EJB
+    private InvwhBean invwhBean;
+    @EJB
+    private InvwhclkBean invwhclkBean;
     @EJB
     private SyncGZBean syncGZBean;
     @EJB
@@ -70,9 +71,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
     @EJB
     private SyncCQBean syncCQBean;
     @EJB
-    private InvwhBean invwhBean;
-    @EJB
-    private InvwhclkBean invwhclkBean;
+    private SyncZKBean syncZKBean;
 
     private Purvdr purvdr;
 
@@ -81,40 +80,38 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
     }
 
     public Boolean cloneByOAHKJH004(String psn) {
-        //定义表头
+        // 定义表头
         HKJH004 h = beanHKJH004.findByPSN(psn);
-        //判断当前表是否存在
+        // 判断当前表是否存在
         if (h == null) {
             throw new NullPointerException(psn + "不存在");
         }
         List<HKJH004Detail> detailList = beanHKJH004.findDetail(h.getFormSerialNumber());
         try {
-            //判断当前detail里是否为空
+            // 判断当前detail里是否为空
             String facno1, facno2, vdrno;
             facno1 = h.getFacno1();
             facno2 = h.getFacno2();
             if (detailList == null || detailList.isEmpty()) {
                 throw new NullPointerException("厂商明细表不存在!");
             }
-            //当前对象的处理
+            // 当前对象的处理
             details.put(purvdrBuyerBean, purvdrBuyerList);
             details.put(miscodeBean, miscodeAdded);
-            //循环detail里的数据
+            // 循环detail里的数据
             for (HKJH004Detail v : detailList) {
                 vdrno = v.getVdrno();
                 setCompany(facno2);
-                purvdr = findByVdrno(vdrno);//确认并找到厂商的编号
-                if (purvdr != null) {//不为空就不做处理 继续执行
+                purvdr = findByVdrno(vdrno);// 确认厂商是否已存在
+                if (purvdr != null) {// 不为空就不做处理继续执行
                     continue;
                 }
-                //设置来源的公司
+                // 设置为来源公司
                 setCompany(facno1);
                 purvdrBuyerBean.setCompany(facno1);
                 miscodeBean.setCompany(facno1);
-
-                //取出数据
+                // 取出数据
                 purvdr = findByVdrno(vdrno);
-                //purvdrBuyerList.addAll(purvdrBuyerBean.findByVdrno(vdrno));
                 List<PurvdrBuyer> purvdrby = purvdrBuyerBean.findByVdrno(vdrno);
                 if (purvdrby != null && !purvdrby.isEmpty()) {
                     for (PurvdrBuyer pb : purvdrby) {
@@ -131,17 +128,17 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                 if (code != null) {
                     miscodeAdded.add(code);
                 }
+                // 设置为目的公司
+                setCompany(facno2);
+                purvdrBuyerBean.setCompany(facno2);
+                miscodeBean.setCompany(facno2);
 
-                setCompany(facno2);//设置为目的公司
-                purvdrBuyerBean.setCompany(facno2);//设置存放的目的公司
-                miscodeBean.setCompany(facno2);//设置存放的目的公司
-
-                persist(purvdr, details);//新增到这个目的公司去
-                resetObjects();//如果循环之后，存在前一个对象的数据，就用这个方法清除
+                persist(purvdr, details);// 新增到这个目的公司去
+                resetObjects();// 如果循环之后，存在前一个对象的数据，就用这个方法清除
             }
         } catch (Exception ex) {
             resetObjects();
-            Logger.getLogger(PurvdrBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
             throw new RuntimeException(ex);
         }
         return true;
@@ -182,12 +179,13 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
 
         String facno, code, newvdrno;
         switch (oa.getFacno()) {
-            //SHB和分公司统一到SHB下
+            // SHB和分公司统一到SHB下
             case "C":
             case "G":
             case "J":
             case "N":
             case "C4":
+            case "L":
                 facno = "C";
                 code = "S";
                 break;
@@ -195,7 +193,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                 facno = oa.getFacno();
                 code = facno;
         }
-        //增加检查避免重复抛转
+        // 增加检查避免重复抛转
         setCompany(facno);
         Purvdr e = this.findByVdrds(oa.getVdrds());
         if (e != null) {
@@ -205,8 +203,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         }
 
         Miscode m;
-        this.miscodeBean.setCompany(facno);
-        //m = miscodeBean.findByCdesc(oa.getTtbankna());
+        miscodeBean.setCompany(facno);
         m = miscodeBean.findByCkindAndCdesc("NB", oa.getTtbankna());
         if (m == null) {
             m = new Miscode("NB", miscodeBean.getFormId("NB", "B", 4));
@@ -276,15 +273,15 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         erp.setPaysepcode('1');
         erp.setHandays1((short) 30);
 
-        //生成厂商编号
+        // 生成厂商编号
         newvdrno = getFormId(BaseLib.getDate(), code + erp.getCuycode(), null, 5, "purvdr", "vdrno");
         erp.setVdrno(newvdrno);
 
-        //生成采购员
+        // 生成采购员
         PurvdrBuyer b = new PurvdrBuyer(facno, "1", newvdrno);
         b.setBuyer(oa.getUserno());
 
-        //生成借客户仓
+        // 生成借客户仓
         if ("Y".equals(oa.getIsvdrwareh())) {
             Invwh w = new Invwh();
             w.setFacno(facno);
@@ -293,7 +290,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             if (erp.getVdrna().length() < 3) {
                 w.setWhdsc("借厂商-" + erp.getVdrna());
             } else {
-                //规则是只取两位名称
+                // 规则是只取两位名称
                 if (erp.getVdrna().length() <= 4) {
                     w.setWhdsc("借厂商-" + erp.getVdrna().substring(2));
                 } else if (erp.getVdrna().length() > 4) {
@@ -308,7 +305,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             w.setUserno("mis");
             invwhAdded.add(w);
 
-            //生成仓管员
+            // 生成仓管员
             Invwhclk u = new Invwhclk(w.getFacno(), w.getProno(), w.getWareh(), w.getWclerk());
             u.setMainyn('Y');
             u.setIndate(BaseLib.getDate());
@@ -316,7 +313,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             invwhclkAdded.add(u);
         }
 
-        //生成MISCODE资料
+        // 生成MISCODE资料
         Miscode c = new Miscode("PJ", newvdrno);
         c.setCdesc(erp.getVdrna());
         c.setStatus('Y');
@@ -335,34 +332,40 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
 
             switch (oa.getFacno()) {
                 case "G":
-                    //同步广州ERP
+                    // 同步广州ERP
                     resetFacno("G");
                     syncGZBean.persist(erp, details);
                     syncGZBean.getEntityManager().flush();
                     break;
                 case "J":
-                    //同步济南ERP
+                    // 同步济南ERP
                     resetFacno("J");
                     syncJNBean.persist(erp, details);
                     syncJNBean.getEntityManager().flush();
                     break;
                 case "N":
-                    //同步南京ERP
+                    // 同步南京ERP
                     resetFacno("N");
                     syncNJBean.persist(erp, details);
                     syncNJBean.getEntityManager().flush();
                     break;
                 case "C4":
-                    //同步重庆ERP
+                    // 同步重庆ERP
                     resetFacno("C4");
                     syncCQBean.persist(erp, details);
                     syncCQBean.getEntityManager().flush();
+                    break;
+                case "L":
+                    // 同步重庆ERP
+                    resetFacno("L");
+                    syncZKBean.persist(erp, details);
+                    syncZKBean.getEntityManager().flush();
                     break;
                 default:
             }
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(PurvdrBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
             return false;
         } finally {
             resetObjects();
@@ -370,23 +373,24 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
 
     }
 
-    //撤销供应商 by C1749 --2018/3/28
-    public boolean refuseOAHKCG006(String psn) { //撤销供应商
-        //定义表头
+    // 撤销供应商 by C1749 --2018/3/28
+    public boolean refuseByOAHKCG006(String psn) {
+        // 定义表头
         HKCG006 oa = beanHKCG006.findByPSN(psn);
-        //判断当前表是否存在
+        // 判断当前表是否存在
         if (oa == null) {
             throw new NullPointerException(psn + "不存在");
         }
         String facno, code;
         facno = oa.getFacno();
         switch (facno) {
-            //SHB和分公司统一到SHB下
+            // SHB和分公司统一到SHB下
             case "C":
             case "G":
             case "J":
             case "N":
             case "C4":
+            case "L":
                 facno = "C";
                 code = "S";
                 break;
@@ -412,30 +416,35 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                 getEntityManager().flush();
                 switch (oa.getFacno()) {
                     case "G":
-                        //同步广州ERP
+                        // 同步广州ERP
                         syncGZBean.update(erp, null);
                         syncGZBean.getEntityManager().flush();
                         break;
                     case "J":
-                        //同步济南ERP
+                        // 同步济南ERP
                         syncJNBean.update(erp, null);
                         syncJNBean.getEntityManager().flush();
                         break;
                     case "N":
-                        //同步南京ERP
+                        // 同步南京ERP
                         syncNJBean.update(erp, null);
                         syncNJBean.getEntityManager().flush();
                         break;
                     case "C4":
-                        //同步重庆ERP
+                        // 同步重庆ERP
                         syncCQBean.update(erp, null);
                         syncCQBean.getEntityManager().flush();
+                        break;
+                    case "L":
+                        // 同步真空ERP
+                        syncZKBean.update(erp, null);
+                        syncZKBean.getEntityManager().flush();
                         break;
                     default:
                 }
                 return true;
             } catch (Exception ex) {
-                Logger.getLogger(PurvdrBean.class.getName()).log(Level.SEVERE, null, ex);
+                log4j.error(ex);
                 return false;
             } finally {
                 resetObjects();
@@ -475,12 +484,13 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
 
         String facno, code, newvdrno;
         switch (oa.getFacno()) {
-            //SHB和分公司统一到SHB下
+            // SHB和分公司统一到SHB下
             case "C":
             case "G":
             case "J":
             case "N":
             case "C4":
+            case "L":
                 facno = "C";
                 code = "S";
                 break;
@@ -489,17 +499,14 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                 code = facno;
         }
         setCompany(facno);
-
         Purvdr erp;
         erp = this.findById(oa.getVdrno());
         if (erp == null) {
             throw new NullPointerException();
         }
-
         if ("1".equals(oa.getCheckbox11())) {
             Miscode m;
-            this.miscodeBean.setCompany(facno);
-            //m = miscodeBean.findByCdesc(oa.getTtbankna());
+            miscodeBean.setCompany(facno);
             m = miscodeBean.findByCkindAndCdesc("NB", oa.getTtbankna());
             if (m == null) {
                 m = new Miscode("NB", miscodeBean.getFormId("NB", "B", 4));
@@ -512,7 +519,6 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                 erp.setTtbankno(m.getMiscodePK().getCode());
             }
         }
-
         if (oa.getBvdrds().equals("1")) {
             erp.setVdrds(oa.getVdrds());
         }
@@ -550,34 +556,40 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
 
             switch (oa.getFacno()) {
                 case "G":
-                    //同步广州ERP
-                    //resetFacno("G");
+                    // 同步广州ERP
+                    // resetFacno("G");
                     syncGZBean.update(erp, null);
                     syncGZBean.getEntityManager().flush();
                     break;
                 case "J":
-                    //同步济南ERP
-                    //resetFacno("J");
+                    // 同步济南ERP
+                    // resetFacno("J");
                     syncJNBean.update(erp, null);
                     syncJNBean.getEntityManager().flush();
                     break;
                 case "N":
-                    //同步南京ERP
-                    //resetFacno("N");
+                    // 同步南京ERP
+                    // resetFacno("N");
                     syncNJBean.update(erp, null);
                     syncNJBean.getEntityManager().flush();
                     break;
                 case "C4":
-                    //同步重庆ERP
-                    //resetFacno("C4");
+                    // 同步重庆ERP
+                    // resetFacno("C4");
                     syncCQBean.update(erp, null);
                     syncCQBean.getEntityManager().flush();
+                    break;
+                case "L":
+                    // 同步真空ERP
+                    // resetFacno("L");
+                    syncZKBean.update(erp, null);
+                    syncZKBean.getEntityManager().flush();
                     break;
                 default:
             }
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(PurvdrBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
             return false;
         } finally {
             resetObjects();

@@ -323,7 +323,11 @@ public class TimerBean {
                         ed = new cn.hanbell.eap.entity.Department();
                         ed.setDeptno(hd.getCode());
                         ed.setDept(hd.getName());
-                        ed.setStatusToNew();
+                        if (hd.getFlag()) {
+                            ed.setStatus("N");
+                        } else {
+                            ed.setStatus("D");
+                        }
                         ed.setCreatorToSystem();
                         ed.setCredateToNow();
                         eapDepartmentBean.persist(ed);
@@ -335,6 +339,9 @@ public class TimerBean {
                             if (ep != null) {
                                 ed.setParentDept(ep);
                             }
+                        }
+                        if (!hd.getFlag()) {
+                            ed.setStatus("D");
                         }
                         eapDepartmentBean.update(ed);
                     }
@@ -616,8 +623,7 @@ public class TimerBean {
                                             for (Puracd acd : puracdList) {
                                                 ai = assetItemBean.findByItemno(acd.getItnbr());
                                                 if (ai == null) {
-                                                    log4j.error("执行createEAMAssetAcceptanceByERPPUR530时异常,找不到件号" + acd.getItnbr() + ",流程序号"
-                                                            + e.getProcessSerialNumber());
+                                                    log4j.error("执行createEAMAssetAcceptanceByERPPUR530时异常,找不到件号" + acd.getItnbr() + ",流程序号" + e.getProcessSerialNumber());
                                                     continue;
                                                 }
                                                 // 判断验收记录，处理多次验收逻辑
@@ -742,11 +748,9 @@ public class TimerBean {
 
             // 用于更新资产明细
             for (AssetDistribute e : adList) {
-
                 if (e.getRelformid() != null && !"".equals(e.getRelformid())) {
                     continue;
                 }
-
                 facno = e.getCompany();
                 trdate = e.getFormdate();
                 indate = BaseLib.getDate();
@@ -810,7 +814,6 @@ public class TimerBean {
                         log4j.error("createERPINV310ByEAMAssetDistribute时异常", ex);
                     }
                 }
-
             }
         }
         log4j.info("createERPINV310ByEAMAssetDistribute轮询");
@@ -1957,8 +1960,7 @@ public class TimerBean {
                         if (pd.getDposta().equals("20") || pd.getDposta().equals("30")) {
                             item = invmasBean.findByItnbr(pd.getItnbr());
                             if (item == null) {
-                                errorBuilder.append("createERPCDR310ByERPPUR410遇到错误：").append(cc).append("公司ERP中").append(pd.getItnbr())
-                                        .append("品号不存在").append("\r\n");
+                                errorBuilder.append("createERPCDR310ByERPPUR410遇到错误：").append(cc).append("公司ERP中").append(pd.getItnbr()).append("品号不存在").append("\r\n");
                                 continue;
                             }
                             // judco = item.getJudco().substring(1, 1) + item.getJudco().substring(4);
@@ -2070,11 +2072,8 @@ public class TimerBean {
                         }
                         ph.setFromcdrno(cdrno);
                         purhadBean.update(ph);
-                        msgBuilder
-                                .append(String.format("执行%s成功：%s公司采购单%s抛转成%s公司订单%s", "createERPCDR310ByERPPUR410", pc, pono, cc, cdrno))
-                                .append("\r\n");
-                        msgBuilder.append("来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细")
-                                .append("\r\n");
+                        msgBuilder.append(String.format("执行%s成功：%s公司采购单%s抛转成%s公司订单%s", "createERPCDR310ByERPPUR410", pc, pono, cc, cdrno)).append("\r\n");
+                        msgBuilder.append("来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细").append("\r\n");
                     } else {
                         msgBuilder.append(String.format("执行%s成功：%s公司采购单%s，PASS", "createERPCDR310ByERPPUR410", pc, pono));
                         ph.setFromcdrno("PASS");
@@ -2387,8 +2386,7 @@ public class TimerBean {
                         pursysBean.setCompany(tofacno);
                         purhadBean.setCompany(tofacno);
                         purdtaBean.setCompany(tofacno);
-                        tpono = pursysBean.getNewPono(tofacno, tph.getPurhadPK().getProno(), tph.getPodate(),
-                                tph.getDecode().toString(), true);
+                        tpono = pursysBean.getNewPono(tofacno, tph.getPurhadPK().getProno(), tph.getPodate(), tph.getDecode().toString(), true);
                         tph.setPurhadPK(new PurhadPK(tofacno, tph.getPurhadPK().getProno(), tpono));
                         purhadBean.persist(tph);
                         purhadBean.getEntityManager().flush();
@@ -2400,10 +2398,8 @@ public class TimerBean {
                         pursysBean.getEntityManager().flush();
                         log4j.info("产生ActualVendor采购单结束-" + tpono);
                         // 原始采购单记录订单
-                        msgBuilder.append(String.format("执行%s成功：%s公司采购单%s抛转成%s公司订单%s和采购单%s", "syncThirdPartyTradingByERPPUR410", facno,
-                                pono, tofacno, cdrno, tpono)).append("\r\n");
-                        msgBuilder.append("来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细")
-                                .append("\r\n");
+                        msgBuilder.append(String.format("执行%s成功：%s公司采购单%s抛转成%s公司订单%s和采购单%s", "syncThirdPartyTradingByERPPUR410", facno, pono, tofacno, cdrno, tpono)).append("\r\n");
+                        msgBuilder.append("来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细").append("\r\n");
                         // 回写单号
                         purhadBean.setCompany(facno);
                         purdtaBean.setCompany(facno);
@@ -2607,7 +2603,6 @@ public class TimerBean {
                 log4j.error(ex);
             }
             return returnStr;
-
         }
         return s;
     }

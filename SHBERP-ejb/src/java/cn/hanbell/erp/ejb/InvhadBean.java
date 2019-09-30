@@ -43,8 +43,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -208,7 +206,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             hkfw006Bean.update(fw006);
             return true;
         } catch (ParseException | NullPointerException | NumberFormatException ex) {
-            Logger.getLogger(InvhadBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error("initByOAHKFW006", ex);
             return false;
         }
     }
@@ -548,6 +546,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 invdta.setFixnr("");
                 invdta.setVarnr("");
                 invdta.setIocode('2');
+                invdta.setDmark2("EFGP");
                 addedDetail.add(invdta);
 
                 trseq++;
@@ -563,6 +562,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 invdta.setFixnr("");
                 invdta.setVarnr("");
                 invdta.setIocode('1');
+                invdta.setDmark2("EFGP");
                 addedDetail.add(invdta);
             }
 
@@ -590,7 +590,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             shberpinv325Bean.update(e);
             return trno;
         } catch (ParseException | RuntimeException ex) {
-            Logger.getLogger(InvhadBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error("initByOASHBERPINV325", ex);
         }
         return "";
     }
@@ -816,7 +816,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
 
             return true;
         } catch (ParseException | RuntimeException ex) {
-            Logger.getLogger(InvhadBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error("initByOAWARMI05", ex);
             return false;
         }
 
@@ -949,7 +949,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             }
             return trno + "$" + String.valueOf(flag);
         } catch (Exception ex) {
-            Logger.getLogger(InvhadBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error("initINV310", ex);
             return "";
         }
     }
