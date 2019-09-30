@@ -67,6 +67,8 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
     @EJB
     private SyncCQBean syncCQBean;
     @EJB
+    private SyncZKBean syncZKBean;
+    @EJB
     private SyncSHBBean syncSHBBean;
 
     @EJB
@@ -84,10 +86,8 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
 
     private Cdrcus cdrcus;
     private final HashMap<SuperEJBForERP, List<?>> detailAdded = new HashMap<>();
-    // private final HashMap<SuperEJBForERP, List<?>> detailEdited = new
-    // HashMap<>();
-    // private final HashMap<SuperEJBForERP, List<?>> detailDeleted = new
-    // HashMap<>();
+    // private final HashMap<SuperEJBForERP, List<?>> detailEdited = new HashMap<>();
+    // private final HashMap<SuperEJBForERP, List<?>> detailDeleted = new HashMap<>();
 
     private final List<Cdrivo> cdrivoAdded = new ArrayList<>();
     private final List<Cdrscus> cdrscusAdded = new ArrayList<>();
@@ -99,50 +99,6 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
 
     public CdrcusBean() {
         super(Cdrcus.class);
-    }
-
-    public Cdrcus findByCusno(String cusno) {
-        Query query = getEntityManager().createNamedQuery("Cdrcus.findByCusno");
-        query.setParameter("cusno", cusno);
-        try {
-            Object o = query.getSingleResult();
-            return (Cdrcus) o;
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public Cdrcus findByCusds(String cusds) {
-        Query query = getEntityManager().createNamedQuery("Cdrcus.findByCusds");
-        query.setParameter("cusds", cusds);
-        try {
-            Object o = query.getSingleResult();
-            return (Cdrcus) o;
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<Cdrcus> findByMan(String userno) {
-        List<Cdrcus> cdrcusList = new ArrayList<>();
-        List<Cdrcusman> results = cdrcusmanBean.findByMan(userno);
-        if (results != null && !results.isEmpty()) {
-            for (Cdrcusman m : results) {
-                cdrcusList.add(m.getCdrcus());
-            }
-        }
-        return cdrcusList;
-    }
-
-    public List<Cdrcus> findByMan(Map<String, Object> filters, int first, int pageSize) {
-        List<Cdrcus> cdrcusList = new ArrayList<>();
-        List<Cdrcusman> results = cdrcusmanBean.findByFilters(filters, first, pageSize);
-        if (results != null && !results.isEmpty()) {
-            for (Cdrcusman m : results) {
-                cdrcusList.add(m.getCdrcus());
-            }
-        }
-        return cdrcusList;
     }
 
     public boolean cloneByOAHKJH003(String psn) {
@@ -273,6 +229,50 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         }
     }
 
+    public Cdrcus findByCusno(String cusno) {
+        Query query = getEntityManager().createNamedQuery("Cdrcus.findByCusno");
+        query.setParameter("cusno", cusno);
+        try {
+            Object o = query.getSingleResult();
+            return (Cdrcus) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Cdrcus findByCusds(String cusds) {
+        Query query = getEntityManager().createNamedQuery("Cdrcus.findByCusds");
+        query.setParameter("cusds", cusds);
+        try {
+            Object o = query.getSingleResult();
+            return (Cdrcus) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Cdrcus> findByMan(String userno) {
+        List<Cdrcus> cdrcusList = new ArrayList<>();
+        List<Cdrcusman> results = cdrcusmanBean.findByMan(userno);
+        if (results != null && !results.isEmpty()) {
+            for (Cdrcusman m : results) {
+                cdrcusList.add(m.getCdrcus());
+            }
+        }
+        return cdrcusList;
+    }
+
+    public List<Cdrcus> findByMan(Map<String, Object> filters, int first, int pageSize) {
+        List<Cdrcus> cdrcusList = new ArrayList<>();
+        List<Cdrcusman> results = cdrcusmanBean.findByFilters(filters, first, pageSize);
+        if (results != null && !results.isEmpty()) {
+            for (Cdrcusman m : results) {
+                cdrcusList.add(m.getCdrcus());
+            }
+        }
+        return cdrcusList;
+    }
+
     @Override
     public Boolean initByOAPSN(String psn) {
 
@@ -294,6 +294,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             case "J":
             case "N":
             case "C4":
+            case "L":
                 facno = "C";
                 code = "S";
                 break;
@@ -584,6 +585,12 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                     syncCQBean.persist(cdrcus, detailAdded);
                     syncCQBean.getEntityManager().flush();
                     break;
+                case "L":
+                    // 同步真空ERP
+                    resetFacno("L");
+                    syncZKBean.persist(cdrcus, detailAdded);
+                    syncZKBean.getEntityManager().flush();
+                    break;
                 default:
             }
             return true;
@@ -592,6 +599,48 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             return false;
         } finally {
             resetObjects();
+        }
+    }
+
+    protected void resetFacno(String facno) {
+        for (Cdrcusman m : cdrcusmanAdded) {
+            m.getCdrcusmanPK().setFacno(facno);
+        }
+        for (Invwh w : invwhAdded) {
+            w.setFacno(facno);
+        }
+        for (Invwhclk u : invwhclkAdded) {
+            u.getInvwhclkPK().setFacno(facno);
+        }
+        for (Transwah t : transwahAdded) {
+            t.getTranswahPK().setFacno(facno);
+        }
+    }
+
+    protected void resetObjects() {
+        if (cdrivoAdded != null && !cdrivoAdded.isEmpty()) {
+            cdrivoAdded.clear();
+        }
+        if (cdrscusAdded != null && !cdrscusAdded.isEmpty()) {
+            cdrscusAdded.clear();
+        }
+        if (cdrcusmanAdded != null && !cdrcusmanAdded.isEmpty()) {
+            cdrcusmanAdded.clear();
+        }
+        if (invwhAdded != null && !invwhAdded.isEmpty()) {
+            invwhAdded.clear();
+        }
+        if (invwhclkAdded != null && !invwhclkAdded.isEmpty()) {
+            invwhclkAdded.clear();
+        }
+        if (transwahAdded != null && !transwahAdded.isEmpty()) {
+            transwahAdded.clear();
+        }
+        if (miscodeAdded != null && !miscodeAdded.isEmpty()) {
+            miscodeAdded.clear();
+        }
+        if (detailAdded != null) {
+            detailAdded.clear();
         }
     }
 
@@ -692,6 +741,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                     case "J":
                     case "N":
                     case "C4":
+                    case "L":
                         // 分公司发起,同步删除SHB_ERP中的负责业务信息
                         cdrcusmanBean.setCompany("C");
                         m = cdrcusmanBean.findByPK("C", oa.getCusno());
@@ -730,6 +780,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                 case "J":
                 case "N":
                 case "C4":
+                case "L":
                     // 分公司发起,同步SHB_ERP
                     resetFacno("C");
                     syncSHBBean.update(cdrcus, detailAdded, null, null);
@@ -750,48 +801,6 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             resetObjects();
         }
 
-    }
-
-    protected void resetFacno(String facno) {
-        for (Cdrcusman m : cdrcusmanAdded) {
-            m.getCdrcusmanPK().setFacno(facno);
-        }
-        for (Invwh w : invwhAdded) {
-            w.setFacno(facno);
-        }
-        for (Invwhclk u : invwhclkAdded) {
-            u.getInvwhclkPK().setFacno(facno);
-        }
-        for (Transwah t : transwahAdded) {
-            t.getTranswahPK().setFacno(facno);
-        }
-    }
-
-    protected void resetObjects() {
-        if (cdrivoAdded != null && !cdrivoAdded.isEmpty()) {
-            cdrivoAdded.clear();
-        }
-        if (cdrscusAdded != null && !cdrscusAdded.isEmpty()) {
-            cdrscusAdded.clear();
-        }
-        if (cdrcusmanAdded != null && !cdrcusmanAdded.isEmpty()) {
-            cdrcusmanAdded.clear();
-        }
-        if (invwhAdded != null && !invwhAdded.isEmpty()) {
-            invwhAdded.clear();
-        }
-        if (invwhclkAdded != null && !invwhclkAdded.isEmpty()) {
-            invwhclkAdded.clear();
-        }
-        if (transwahAdded != null && !transwahAdded.isEmpty()) {
-            transwahAdded.clear();
-        }
-        if (miscodeAdded != null && !miscodeAdded.isEmpty()) {
-            miscodeAdded.clear();
-        }
-        if (detailAdded != null) {
-            detailAdded.clear();
-        }
     }
 
     // 更新应收账款立账表中的负责业务

@@ -322,7 +322,7 @@ public class HKCG007 implements Serializable {
     @Size(max = 255)
     @Column(name = "issup")
     private String issup;
-    
+
     public HKCG007() {
     }
 

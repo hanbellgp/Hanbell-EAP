@@ -210,5 +210,5 @@ public class LoanApplication implements Serializable {
     public void setReason(String reason) {
         this.reason = reason;
     }
-    
+
 }
