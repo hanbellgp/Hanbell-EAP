@@ -367,4 +367,14 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         }
     }
 
+    public SERI12 findByPSNAndBQ110(String psn) {
+        Query query = getEntityManager().createNamedQuery("SERI12.findByPSNAndBQ110");
+        query.setParameter("psn", psn);
+        try {
+            return (SERI12) query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
 }

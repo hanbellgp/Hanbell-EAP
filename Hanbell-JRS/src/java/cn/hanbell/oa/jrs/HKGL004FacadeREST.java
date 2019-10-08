@@ -7,15 +7,14 @@ package cn.hanbell.oa.jrs;
 
 import cn.hanbell.oa.app.LeaveApplication;
 import cn.hanbell.jrs.ResponseMessage;
-import cn.hanbell.jrs.SuperREST;
+import cn.hanbell.jrs.SuperRESTForEFGP;
 import cn.hanbell.oa.app.MCHKGL004;
+import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HKGL004Bean;
-import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.oa.entity.HKGL004;
 import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.oa.model.HKGL004Model;
 import cn.hanbell.util.BaseLib;
-import cn.hanbell.util.SuperEJB;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -31,15 +30,13 @@ import javax.ws.rs.core.Response;
  */
 @Path("efgp/hkgl004")
 @javax.enterprise.context.RequestScoped
-public class HKGL004FacadeREST extends SuperREST<HKGL004> {
+public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
 
-    @EJB
-    private WorkFlowBean workFlowBean;
     @EJB
     private HKGL004Bean hkgl004Bean;
 
     @Override
-    protected SuperEJB getSuperEJB() {
+    protected SuperEJBForEFGP getSuperEJB() {
         return hkgl004Bean;
     }
 

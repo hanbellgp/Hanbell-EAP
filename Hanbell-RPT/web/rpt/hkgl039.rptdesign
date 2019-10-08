@@ -559,7 +559,7 @@ return false;
                         <property name="fontWeight">bold</property>
                         <property name="textAlign">center</property>
                         <text-property name="text">汉 钟&#13;
-精 机</text-property>
+                            精 机</text-property>
                     </label>
                 </cell>
                 <cell id="378">

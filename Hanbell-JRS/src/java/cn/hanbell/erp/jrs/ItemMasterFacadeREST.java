@@ -9,7 +9,6 @@ import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.ItemMasterBean;
 import cn.hanbell.erp.entity.ItemMaster;
 import cn.hanbell.jrs.SuperRESTForERP;
-import cn.hanbell.util.SuperEJB;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;

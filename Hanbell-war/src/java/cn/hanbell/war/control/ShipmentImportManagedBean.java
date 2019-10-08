@@ -165,8 +165,7 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
         for (Cdrhad h : cdrhadSelected) {
             this.fileName = this.getAppResPath() + h.getCdrhadPK().getShpno() + ".png";
             this.generateCode128(h.getCdrhadPK().getShpno(), 1.5f, 8d, this.fileName);
-            this.generateQRCode(h.getCdrhadPK().getShpno(), 300, 300, this.getAppResPath(),
-                    "QR" + h.getCdrhadPK().getShpno() + ".png");
+            this.generateQRCode(h.getCdrhadPK().getShpno(), 300, 300, this.getAppResPath(), "QR" + h.getCdrhadPK().getShpno() + ".png");
             cdrlotList = cdrhadBean.findCdrlotList(h.getCdrhadPK().getFacno(), h.getCdrhadPK().getShpno());
             if (cdrlotList != null && !cdrlotList.isEmpty()) {
                 shpnoList.add(h.getCdrhadPK().getShpno());
@@ -197,30 +196,37 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                     sd.setItemModel(l.getCdrdta().getItnbrcus());
                     sd.setCustomerItem(l.getCdrdta().getMatecode());
                     sd.setCustomerItemDesc(l.getCdrdta().getCuslable());
-                    if (sd.getCustomerItem() != null && !"".equals(sd.getCustomerItem())) {
-                        // 客户条码的文件名
-                        this.fileName = this.getAppResPath() + h.getCusno() + sd.getCustomerItem() + ".png";
-                        this.generateCode128(sd.getCustomerItem(), 1.5f, 8d, fileName);
-                        this.generateQRCode(sd.getCustomerItem(), 300, 300, this.getAppResPath(),
-                                "QR" + h.getCusno() + sd.getCustomerItem() + ".png");
-                        if (h.getCusno().equals("SSD00103") && sd.getItemModel() != null && l.getVarnr() != null) {
-                            // 海达瑞专属二维码
-                            StringBuilder content = new StringBuilder();
-                            content.append(sd.getItemModel()).append(".").append(sd.getCustomerItem()).append(".")
-                                    .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc())
-                                    .append(".").append(sd.getVarnr());
-                            this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(),
-                                    "QR" + h.getCusno() + l.getVarnr() + ".png");
-                        }
-                    }
                     sd.setLotseq(l.getCdrlotPK().getSeq());
                     sd.setVarnr(l.getVarnr());
-                    if (l.getVarnr() != null) {
+                    if (sd.getCustomerItem() != null && !"".equals(sd.getCustomerItem())) {
+                        // 客户物料条码
+                        this.fileName = this.getAppResPath() + h.getCusno() + sd.getCustomerItem() + ".png";
+                        this.generateCode128(sd.getCustomerItem(), 1.5f, 8d, fileName);
+                        this.generateQRCode(sd.getCustomerItem(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + sd.getCustomerItem() + ".png");
+                        // 客户MES条码
+                        if (sd.getItemModel() != null && l.getVarnr() != null) {
+                            StringBuilder content = new StringBuilder();
+                            switch (h.getCusno()) {
+                                case "SCQ00011":
+                                    // 美的专属二维码
+                                    content.append("A0007001").append("|").append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append("|")
+                                            .append(sd.getVarnr()).append("|").append(sd.getCustomerItem()).append("|").append(sd.getItemModel());
+                                    break;
+                                case "SSD00103":
+                                    // 海达瑞专属二维码
+                                    content.append(sd.getCustomerItem()).append(".").append(sd.getItemModel()).append(".")
+                                            .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc())
+                                            .append(".").append(sd.getVarnr());
+                                    break;
+                            }
+                            this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + l.getVarnr() + ".png");
+                        }
+                    }
+                    // 汉钟制造号码条码
+                    if (l.getVarnr() != null && !"".equals(l.getVarnr())) {
                         this.fileName = this.getAppResPath() + l.getVarnr() + ".png";
                         this.generateCode128(l.getVarnr(), 1.5f, 8d, fileName);
                         this.generateQRCode(l.getVarnr(), 300, 300, this.getAppResPath(), "QR" + l.getVarnr() + ".png");
-                        // this.generateZXingCode128(l.getVarnr(), 300, 70, this.getAppResPath(),
-                        // "ZXing" + l.getVarnr() + ".png");
                     }
                     sd.setFixnr(l.getFixnr());
                     sd.setWareh(l.getWareh());

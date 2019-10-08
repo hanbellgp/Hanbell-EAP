@@ -322,33 +322,19 @@ return false;
                     <property name="marginRight">1pt</property>
                     <property name="pageBreakAfter">always</property>
                     <column id="177">
-                        <property name="width">1.45cm</property>
+                        <property name="width">2.1cm</property>
                     </column>
                     <column id="117"/>
-                    <column id="152">
-                        <property name="width">1.7cm</property>
-                    </column>
-                    <row id="132">
-                        <cell id="173">
-                            <property name="colSpan">3</property>
-                            <property name="rowSpan">1</property>
-                            <property name="paddingTop">0pt</property>
-                            <property name="paddingBottom">0pt</property>
-                            <image id="171">
-                                <property name="source">url</property>
-                                <expression name="uri" type="javascript">row["varnrbarcode"]</expression>
-                            </image>
-                        </cell>
-                    </row>
                     <row id="156">
                         <cell id="174">
                             <property name="colSpan">1</property>
-                            <property name="rowSpan">2</property>
+                            <property name="rowSpan">4</property>
                             <property name="paddingTop">0pt</property>
                             <property name="paddingBottom">0pt</property>
+                            <property name="textAlign">left</property>
                             <image id="165">
-                                <property name="height">1.4cm</property>
-                                <property name="width">1.4cm</property>
+                                <property name="height">2cm</property>
+                                <property name="width">2cm</property>
                                 <property name="source">url</property>
                                 <expression name="uri" type="javascript">row["shpqrcode"]</expression>
                             </image>
@@ -357,24 +343,27 @@ return false;
                             <property name="paddingTop">0pt</property>
                             <property name="paddingBottom">0pt</property>
                             <data id="163">
-                                <property name="fontWeight">bold</property>
+                                <property name="fontWeight">normal</property>
+                                <property name="marginTop">2pt</property>
                                 <property name="whiteSpace">nowrap</property>
                                 <property name="pageBreakAfter">avoid</property>
                                 <property name="resultSetColumn">customeritem</property>
                             </data>
                         </cell>
-                        <cell id="159">
-                            <property name="colSpan">1</property>
-                            <property name="rowSpan">1</property>
+                    </row>
+                    <row id="183">
+                        <cell id="185">
                             <property name="paddingTop">0pt</property>
                             <property name="paddingBottom">0pt</property>
                             <data id="153">
                                 <property name="fontSize">10pt</property>
-                                <property name="fontWeight">bold</property>
+                                <property name="fontWeight">normal</property>
+                                <property name="marginTop">2pt</property>
                                 <structure name="dateTimeFormat">
                                     <property name="category">Custom</property>
                                     <property name="pattern">yyyy/MM/dd</property>
                                 </structure>
+                                <property name="whiteSpace">nowrap</property>
                                 <property name="pageBreakAfter">auto</property>
                                 <property name="resultSetColumn">shpdate</property>
                             </data>
@@ -386,18 +375,23 @@ return false;
                             <property name="paddingBottom">0pt</property>
                             <data id="148">
                                 <property name="fontSize">10pt</property>
-                                <property name="fontWeight">bold</property>
+                                <property name="fontWeight">normal</property>
+                                <property name="marginTop">2pt</property>
                                 <property name="whiteSpace">nowrap</property>
                                 <property name="pageBreakAfter">auto</property>
                                 <property name="resultSetColumn">itemmodel</property>
                             </data>
                         </cell>
-                        <cell id="178">
+                    </row>
+                    <row id="179">
+                        <cell id="181">
                             <property name="paddingTop">0pt</property>
                             <property name="paddingBottom">0pt</property>
                             <data id="147">
                                 <property name="fontSize">10pt</property>
-                                <property name="fontWeight">bold</property>
+                                <property name="fontWeight">normal</property>
+                                <property name="marginTop">2pt</property>
+                                <property name="whiteSpace">nowrap</property>
                                 <property name="resultSetColumn">customeritemdesc</property>
                             </data>
                         </cell>
@@ -1543,7 +1537,7 @@ return false;
                 9ucwCGkt5AShG3UUqJVaqZVa6TYh5rBcn7dSK7XSZ5yuXkyDXYjoruV0nIu3+Bw0wEuUz2q1fex1MjdX
                 LLJKDdzQkUm5Pmul25Eovm81JanZt36Z3UzDjVeUcgHocjKWXF2iuuTEZG7ptU4srdRKrdRKrdRKrdQC
                 yMDuJ/L/AeGX86pPjru2AAAAAElFTkSuQmCC
-</property>
+            </property>
         </structure>
         <structure>
             <property name="name">HanbellLogo.jpg</property>
@@ -11240,7 +11234,7 @@ return false;
                 /h5f2tOXn1+LskR/8GfoP1D8PDMH/lU3f6Z2N/8ACmx/5VL/AKZ2OHX/AKafoenywj/kkv8ApnYR6N9u
                 5/46nT/pX/a/56Zl6jp9H+d+hqxdefwdh1/4U2Yn/Kpt/wBM7L/8KbEf8kl6/wATsDzf39n/AMpD/ev/
                 AHn2/sH+69/H2rlseUv7v8Hr5IPT6nZ//9k=
-</property>
+            </property>
         </structure>
         <structure>
             <property name="name">HanbellLogo.png</property>
@@ -11738,7 +11732,7 @@ return false;
                 lepS93Jp20P4CZML11B1195vcsGrM8dLPbnUretfs9DhXxiMVrnxw6XfQzoQ6eJ/sfp4sDBYsuKTec/Z
                 ACTw0sH7Z13rWieun4R3/2t+XWpo8c97KJtLzL1ffW1Zlc9Prgn+xWENftrsG7FqIsxP/5mL1+r/v35d
                 XANc+t/8PBjN/8mrMpR9s2tX6P87AGqG8QW/l5+gAAAAAElFTkSuQmCC
-</property>
+            </property>
         </structure>
     </list-property>
 </report>

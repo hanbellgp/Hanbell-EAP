@@ -220,7 +220,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     pd.setAddcode(facno);
                 }else{
                     pd.setAddcode(detail.getAddcode());
-                }               
+                }
                 pd.setPoprtcnt((short) 0);
                 pd.setRefno(q.getFormid());                                      //请购来源编号
                 pd.setModnum((short) 0);

@@ -186,6 +186,8 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 return "K";
             case "7":
                 return "Y";
+            case "9":
+                return "L";
         }
         return "C";
     }
@@ -212,6 +214,8 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 return "世纪东元";
             case "W":
                 return "顺德涡旋";
+            case "L":
+                return "真空技术";
         }
         return "上海汉钟";
     }

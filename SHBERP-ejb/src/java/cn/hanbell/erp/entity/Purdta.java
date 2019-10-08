@@ -30,8 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Purdta.findAll", query = "SELECT p FROM Purdta p"),
-    @NamedQuery(name = "Purdta.findByPK", query = "SELECT p FROM Purdta p WHERE p.purdtaPK.facno = :facno AND p.purdtaPK.pono = :pono"),
-    @NamedQuery(name = "Purdta.findByProno", query = "SELECT p FROM Purdta p WHERE p.purdtaPK.prono = :prono"),
+    @NamedQuery(name = "Purdta.findByPK", query = "SELECT p FROM Purdta p WHERE p.purdtaPK.facno = :facno AND p.purdtaPK.prono = :prono AND p.purdtaPK.pono = :pono AND p.purdtaPK.trseq = :trseq"),
     @NamedQuery(name = "Purdta.findByPono", query = "SELECT p FROM Purdta p WHERE p.purdtaPK.pono = :pono ORDER BY p.purdtaPK.facno,p.purdtaPK.pono,p.purdtaPK.trseq")})
 public class Purdta implements Serializable {
 
