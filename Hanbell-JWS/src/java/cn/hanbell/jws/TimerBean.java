@@ -1036,6 +1036,7 @@ public class TimerBean {
                             dm.setItnbrcus(d.getItnbrcus());
                             Invmas invmas = invmasBean.findByItnbr(d.getItnbr());
                             dm.setItdsc(filterString(invmas.getItdsc()));
+                            dm.setSpdsc(filterString(invmas.getSpdsc()));
                             dm.setQuaqy1(d.getQuaqy1().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                             dm.setUnpris(d.getUnpris().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                             dm.setLastunpri(d.getListunpri().setScale(2, BigDecimal.ROUND_HALF_UP).toString());

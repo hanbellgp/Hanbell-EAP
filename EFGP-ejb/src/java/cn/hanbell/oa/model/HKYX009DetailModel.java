@@ -30,6 +30,7 @@ public class HKYX009DetailModel implements Serializable {
     private String refmodel;
     private String refratio;
     private String diffitting;
+    private String spdsc;
 
     public HKYX009DetailModel() {
 
@@ -188,6 +189,14 @@ public class HKYX009DetailModel implements Serializable {
 
     public void setDiffitting(String diffitting) {
         this.diffitting = diffitting;
+    }
+
+    public String getSpdsc() {
+        return spdsc;
+    }
+
+    public void setSpdsc(String spdsc) {
+        this.spdsc = spdsc;
     }
 
 }
