@@ -134,12 +134,15 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                 miscodeBean.setCompany(facno2);
 
                 persist(purvdr, details);// 新增到这个目的公司去
+                getEntityManager().flush();
                 resetObjects();// 如果循环之后，存在前一个对象的数据，就用这个方法清除
             }
         } catch (Exception ex) {
             resetObjects();
             log4j.error(ex);
             throw new RuntimeException(ex);
+        } finally {
+            details.clear();
         }
         return true;
     }
@@ -369,11 +372,12 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             return false;
         } finally {
             resetObjects();
+            details.clear();
         }
 
     }
 
-    // 撤销供应商 by C1749 --2018/3/28
+    // 撤销供应商 by C1749 2018/3/28
     public boolean refuseByOAHKCG006(String psn) {
         // 定义表头
         HKCG006 oa = beanHKCG006.findByPSN(psn);
@@ -448,6 +452,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                 return false;
             } finally {
                 resetObjects();
+                details.clear();
             }
         }
         return true;
@@ -593,8 +598,8 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             return false;
         } finally {
             resetObjects();
+            details.clear();
         }
-
     }
 
 }
