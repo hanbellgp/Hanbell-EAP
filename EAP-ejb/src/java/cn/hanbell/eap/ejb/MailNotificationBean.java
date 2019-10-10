@@ -18,7 +18,7 @@ import javax.ejb.LocalBean;
 public class MailNotificationBean extends MailNotification {
 
     public MailNotificationBean() {
-        super();
+
     }
 
 }
