@@ -29,6 +29,7 @@ public class MailNotify {
 
     protected void init() {
         if (email == null) {
+            System.setProperty("mail.mime.splitlongparameters", "false");
             email = new HtmlEmail();
             email.setHostName(smtpHost);
             email.setSmtpPort(smptPort);

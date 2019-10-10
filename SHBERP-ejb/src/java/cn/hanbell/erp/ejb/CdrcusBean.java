@@ -216,6 +216,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                 transwahBean.setCompany(facno2);
                 if (cdrcus != null) {
                     persist(cdrcus, detailAdded);
+                    getEntityManager().flush();
                     resetObjects();
                 } else {
                     throw new NullPointerException("客户资料不存在");
@@ -226,6 +227,10 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             resetObjects();
             log4j.error(ex);
             throw new RuntimeException(ex);
+        } finally {
+            if (detailAdded != null) {
+                detailAdded.clear();
+            }
         }
     }
 
@@ -599,6 +604,9 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             return false;
         } finally {
             resetObjects();
+            if (detailAdded != null) {
+                detailAdded.clear();
+            }
         }
     }
 
@@ -638,9 +646,6 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         }
         if (miscodeAdded != null && !miscodeAdded.isEmpty()) {
             miscodeAdded.clear();
-        }
-        if (detailAdded != null) {
-            detailAdded.clear();
         }
     }
 
@@ -799,6 +804,9 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             return false;
         } finally {
             resetObjects();
+            if (detailAdded != null) {
+                detailAdded.clear();
+            }
         }
 
     }

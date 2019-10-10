@@ -1889,7 +1889,6 @@ public class TimerBean {
             d = BaseLib.getDate();
         }
         eapMailBean.clearReceivers();
-        eapMailBean.setMailSubject("ERP系统集团内部交易互转");
         purvdrBean.setCompany(pc);
         purvdrrelBean.setCompany(pc);
         purhadBean.setCompany(pc);
@@ -1904,6 +1903,8 @@ public class TimerBean {
             String temp;
             Date indate;
             Date recdate;
+            String cdrno = "";
+            msgBuilder.append("<div>各位好</div>");
             try {
                 indate = BaseLib.getDate();
                 recdate = BaseLib.getDate("yyyy-MM-dd", BaseLib.formatDate("yyyy-MM-dd", indate));
@@ -1917,14 +1918,14 @@ public class TimerBean {
                 secuserBean.setCompany(cc);
                 Cdrcus cdrcus = cdrcusBean.findByCusno(cusno);
                 if (cdrcus == null) {
-                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中" + cusno + "客户不存在";
+                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中" + cusno + "客户不存在/r/n";
                     log4j.error(temp);
                     errorBuilder.append(temp);
                     throw new RuntimeException(cc + "公司ERP中" + cusno + "客户不存在");
                 }
                 Cdrcusman cdrcusman = cdrcusmanBean.findByPK(cc, cusno);
                 if (cdrcusman == null) {
-                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中客户对应业务员资料不存在";
+                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中客户对应业务员资料不存在\r\n";
                     log4j.error(temp);
                     errorBuilder.append(temp);
                     throw new RuntimeException(cc + "公司ERP中客户对应业务员资料不存在");
@@ -1936,8 +1937,7 @@ public class TimerBean {
                     errorBuilder.append(temp);
                     throw new RuntimeException(cc + "公司ERP中业务员对应员工资料不存在或不完整");
                 }
-                String pono = "";
-                String cdrno = "", judco;
+                String pono = "", judco;
                 BigDecimal tramts = BigDecimal.ZERO;
                 BigDecimal taxamts = BigDecimal.ZERO;
                 BigDecimal totamts = BigDecimal.ZERO;
@@ -1993,13 +1993,13 @@ public class TimerBean {
                     }
                     if (!addedCdrdmas.isEmpty()) {
                         // 设置邮件收件人
-                        if (secuser.getEmail() != null && !"".equals(secuser.getEmail())) {
+                        if (secuser.getEmail() != null && !"".equals(secuser.getEmail().trim())) {
                             eapMailBean.addTo(secuser.getEmail());
                         }
                         List<Purvdrrel> vdrrelList = purvdrrelBean.findByVdrno(vdrno);
                         if (vdrrelList != null && !vdrrelList.isEmpty()) {
                             for (Purvdrrel r : vdrrelList) {
-                                if (r.getEmail() != null && !"".equals(r.getEmail())) {
+                                if (r.getEmail() != null && !"".equals(r.getEmail().trim())) {
                                     eapMailBean.addTo(r.getEmail());
                                 }
                             }
@@ -2073,8 +2073,8 @@ public class TimerBean {
                         }
                         ph.setFromcdrno(cdrno);
                         purhadBean.update(ph);
-                        msgBuilder.append(String.format("执行%s成功：%s公司采购单%s抛转成%s公司订单%s", "createERPCDR310ByERPPUR410", pc, pono, cc, cdrno)).append("\r\n");
-                        msgBuilder.append("来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细").append("\r\n");
+                        msgBuilder.append(String.format("<div>执行%s成功：%s公司采购单%s抛转成%s公司订单%s", "createERPCDR310ByERPPUR410", pc, pono, cc, cdrno)).append("</div>");
+                        msgBuilder.append("<div>来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细").append("</div>");
                     } else {
                         msgBuilder.append(String.format("执行%s成功：%s公司采购单%s，PASS", "createERPCDR310ByERPPUR410", pc, pono));
                         ph.setFromcdrno("PASS");
@@ -2088,8 +2088,9 @@ public class TimerBean {
                 throw new RuntimeException(errorBuilder.toString());
             } finally {
                 if (!eapMailBean.getTo().isEmpty() || !eapMailBean.getCc().isEmpty()) {
-                    msgBuilder.append("\r\n").append(errorBuilder.toString());
-                    eapMailBean.setMailContent(msgBuilder.toString());
+                    eapMailBean.setMailSubject("ERP系统集团内部交易互转,新订单" + cdrno);
+                    msgBuilder.append("<div>").append(errorBuilder.toString()).append("</div>");
+                    eapMailBean.setHTMLMailContent(msgBuilder.toString());
                     eapMailBean.notify(new cn.hanbell.eap.comm.MailNotify());
                 }
             }
