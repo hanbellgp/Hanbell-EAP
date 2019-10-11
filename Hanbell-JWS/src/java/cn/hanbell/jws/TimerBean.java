@@ -1102,7 +1102,7 @@ public class TimerBean {
 
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);
-                        String subject = "客户:" + hm.getCusna() + "申请原因： " + hm.getApprresno() + ".  业务员:" + hm.getMancode();
+                        String subject = "客户:" + hm.getCusna() + "申请原因： " + hm.getApprresno() + ".  业务员:" + hm.getMancode()+hm.getMancodesc();
                         String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_YX009",
                                 formInstance, subject);
                         String[] rm = msg.split("\\$");
