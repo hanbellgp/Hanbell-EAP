@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class REPMQBean extends SuperEJBForCRM{
+public class REPMQBean extends SuperEJBForCRM<REPMQ>{
 
     public REPMQBean() {
         super(REPMQ.class);
