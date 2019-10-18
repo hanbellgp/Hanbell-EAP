@@ -1003,6 +1003,7 @@ public class TimerBean {
         createOAHKYX009ByERPCDR220("N");
         createOAHKYX009ByERPCDR220("C4");
         createOAHKYX009ByERPCDR220("K");
+        createOAHKYX009ByERPCDR220("L");
         log4j.info("ERP-CDR220报价审批抛转EFGP签核轮询结束");
         log4j.info("ERP-APM811进货请款抛转EFGP签核轮询开始");
         createOASHBERPAPM811ByERPAPM811("C");
@@ -1102,7 +1103,7 @@ public class TimerBean {
 
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);
-                        String subject = "客户:" + hm.getCusna() + "申请原因： " + hm.getApprresno() + ".  业务员:" + hm.getMancode()+hm.getMancodesc();
+                        String subject = "客户:" + hm.getCusna() + "申请原因： " + hm.getApprresno() + ".  业务员:" + hm.getMancode() + hm.getMancodesc();
                         String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_YX009",
                                 formInstance, subject);
                         String[] rm = msg.split("\\$");
@@ -1918,14 +1919,14 @@ public class TimerBean {
                 secuserBean.setCompany(cc);
                 Cdrcus cdrcus = cdrcusBean.findByCusno(cusno);
                 if (cdrcus == null) {
-                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中" + cusno + "客户不存在/r/n";
+                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中" + cusno + "客户不存在";
                     log4j.error(temp);
                     errorBuilder.append(temp);
                     throw new RuntimeException(cc + "公司ERP中" + cusno + "客户不存在");
                 }
                 Cdrcusman cdrcusman = cdrcusmanBean.findByPK(cc, cusno);
                 if (cdrcusman == null) {
-                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中客户对应业务员资料不存在\r\n";
+                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中客户对应业务员资料不存在";
                     log4j.error(temp);
                     errorBuilder.append(temp);
                     throw new RuntimeException(cc + "公司ERP中客户对应业务员资料不存在");
@@ -1961,7 +1962,7 @@ public class TimerBean {
                         if (pd.getDposta().equals("20") || pd.getDposta().equals("30")) {
                             item = invmasBean.findByItnbr(pd.getItnbr());
                             if (item == null) {
-                                errorBuilder.append("createERPCDR310ByERPPUR410遇到错误：").append(cc).append("公司ERP中").append(pd.getItnbr()).append("品号不存在").append("\r\n");
+                                errorBuilder.append("<div>createERPCDR310ByERPPUR410遇到错误：").append(cc).append("公司ERP中").append(pd.getItnbr()).append("品号不存在").append("</div>");
                                 continue;
                             }
                             // judco = item.getJudco().substring(1, 1) + item.getJudco().substring(4);
@@ -2076,7 +2077,7 @@ public class TimerBean {
                         msgBuilder.append(String.format("<div>执行%s成功：%s公司采购单%s抛转成%s公司订单%s", "createERPCDR310ByERPPUR410", pc, pono, cc, cdrno)).append("</div>");
                         msgBuilder.append("<div>来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细").append("</div>");
                     } else {
-                        msgBuilder.append(String.format("执行%s成功：%s公司采购单%s，PASS", "createERPCDR310ByERPPUR410", pc, pono));
+                        msgBuilder.append(String.format("<div>执行%s成功：%s公司采购单%s，PASS", "createERPCDR310ByERPPUR410", pc, pono)).append("</div>");
                         ph.setFromcdrno("PASS");
                         purhadBean.update(ph);
                     }
@@ -2088,7 +2089,7 @@ public class TimerBean {
                 throw new RuntimeException(errorBuilder.toString());
             } finally {
                 if (!eapMailBean.getTo().isEmpty() || !eapMailBean.getCc().isEmpty()) {
-                    eapMailBean.setMailSubject("ERP系统集团内部交易互转,新订单" + cdrno);
+                    eapMailBean.setMailSubject("ERP系统新订单" + cdrno);
                     msgBuilder.append("<div>").append(errorBuilder.toString()).append("</div>");
                     eapMailBean.setHTMLMailContent(msgBuilder.toString());
                     eapMailBean.notify(new cn.hanbell.eap.comm.MailNotify());
@@ -2105,11 +2106,8 @@ public class TimerBean {
         } catch (Exception ex) {
             d = BaseLib.getDate();
         }
-        StringBuilder msgBuilder = new StringBuilder();
-        StringBuilder errorBuilder = new StringBuilder();
         String tobuyer;
         eapMailBean.clearReceivers();
-        eapMailBean.setMailSubject("ERP系统集团内部交易互转");
         Purvdr purvdr, thirdvendor, tovendor;
         List<PurvdrBuyer> buyerList;
         // 来源公司交易对象检查
@@ -2178,8 +2176,13 @@ public class TimerBean {
             purhadBean.getEntityManager().clear();
         }
         if (purhadList != null && !purhadList.isEmpty()) {
+            StringBuilder msgBuilder = new StringBuilder();
+            StringBuilder errorBuilder = new StringBuilder();
+            msgBuilder.append("<div>各位好</div>");
             Date indate;
             Date recdate;
+            String cdrno = "";
+            String pono = "";
             try {
                 // 先同步缺少的品号大类和品号
                 for (Purhad ph : purhadList) {
@@ -2208,8 +2211,6 @@ public class TimerBean {
                 Purdta npd, tpd;
                 List<Purdta> npdList = new ArrayList<>();
                 List<Purdta> tpdList = new ArrayList<>();
-                String pono = "";
-                String cdrno = "", judco;
                 BigDecimal tramts = BigDecimal.ZERO;
                 BigDecimal taxamts = BigDecimal.ZERO;
                 BigDecimal totamts = BigDecimal.ZERO;
@@ -2265,12 +2266,12 @@ public class TimerBean {
                     recdate = BaseLib.getDate("yyyy-MM-dd", BaseLib.formatDate("yyyy-MM-dd", indate));
                     if (!addedCdrdmas.isEmpty()) {
                         // 设置邮件收件人
-                        if (secuser.getEmail() != null && !"".equals(secuser.getEmail())) {
+                        if (secuser.getEmail() != null && !"".equals(secuser.getEmail().trim())) {
                             eapMailBean.addTo(secuser.getEmail());
                         }
                         if (vdrrelList != null && !vdrrelList.isEmpty()) {
                             for (Purvdrrel r : vdrrelList) {
-                                if (r.getEmail() != null && !"".equals(r.getEmail())) {
+                                if (r.getEmail() != null && !"".equals(r.getEmail().trim())) {
                                     eapMailBean.addTo(r.getEmail());
                                 }
                             }
@@ -2400,8 +2401,8 @@ public class TimerBean {
                         pursysBean.getEntityManager().flush();
                         log4j.info("产生ActualVendor采购单结束-" + tpono);
                         // 原始采购单记录订单
-                        msgBuilder.append(String.format("执行%s成功：%s公司采购单%s抛转成%s公司订单%s和采购单%s", "syncThirdPartyTradingByERPPUR410", facno, pono, tofacno, cdrno, tpono)).append("\r\n");
-                        msgBuilder.append("来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细").append("\r\n");
+                        msgBuilder.append(String.format("<div>执行%s成功：%s公司采购单%s抛转成%s公司订单%s和采购单%s", "syncThirdPartyTradingByERPPUR410", facno, pono, tofacno, cdrno, tpono)).append("</div>");
+                        msgBuilder.append("<div>来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单").append(seq).append("笔明细").append("</div>");
                         // 回写单号
                         purhadBean.setCompany(facno);
                         purdtaBean.setCompany(facno);
@@ -2429,8 +2430,9 @@ public class TimerBean {
                 throw new RuntimeException(errorBuilder.toString());
             } finally {
                 if (!eapMailBean.getTo().isEmpty() || !eapMailBean.getCc().isEmpty()) {
-                    msgBuilder.append("\r\n").append(errorBuilder.toString());
-                    eapMailBean.setMailContent(msgBuilder.toString());
+                    eapMailBean.setMailSubject("ERP系统新订单" + cdrno);
+                    msgBuilder.append("<div>").append(errorBuilder.toString()).append("</div>");
+                    eapMailBean.setHTMLMailContent(msgBuilder.toString());
                     eapMailBean.notify(new cn.hanbell.eap.comm.MailNotify());
                 }
             }
