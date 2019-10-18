@@ -32,7 +32,7 @@ public abstract class MailNotification {
     protected List<String> bcc;
     protected List<File> attachments;
 
-    protected String css = "<style type='text/css'>body{font-size:14px;}div.content{margin:auto;}div.tbl{margin-bottom:20px;}table{margin:auto;border-spacing:0px;border:1px solid #A2C0DA;}th,td{padding:5px;border-collapse:collapse;text-align:left;}th{background:#B0D0FC;border:1px solid #000000;text-align:center;font-weight:bold;}td{background:#D3E5FD;border:1px solid #000000;text-align:right;}.title{font-size:14px;font-weight:bold;}.foot{font-size:14px;color:Red;}.divFoot{text-align:left;height:20px;width:100%;}div.tableTitle{float:left;font-size:14px;font-weight:bold;text-align:left;}</style>";
+    protected String css = "<style type='text/css'>body{font-size:14px;}div.content{margin:auto;}div.tbl{margin-bottom:20px;}table{margin:auto;border-spacing:0px;border:1px solid #A2C0DA;}th,td{padding:5px;border-collapse:collapse;text-align:left;}th{background:#B0D0FC;border:1px solid #000000;text-align:center;font-weight:bold;}td{background:#D3E5FD;border:1px solid #000000;text-align:right;}.title{font-size:14px;font-weight:bold;}.footer{text-align:left;margin-top:20px;width:100%;}div.tableTitle{float:left;font-size:14px;font-weight:bold;text-align:left;}</style>";
 
     protected Calendar c;
 
@@ -87,8 +87,9 @@ public abstract class MailNotification {
         sb.append("</div>");
         sb.append(body);
         sb.append("</div>");//对应body中的div.content
-        sb.append("<div class=\"divFoot\">此邮件由系统自动发送,请不要直接回复</div>");
-        sb.append("<div class=\"divFoot\">系统管理员</div>");
+        sb.append("<div class=\"footer\">");
+        sb.append("<div>此邮件由系统自动发送,请不要直接回复</div>");
+        sb.append("<div>系统管理员</div>");
         sb.append("</div></body></html>");
         this.mailContent = sb.toString();
     }
