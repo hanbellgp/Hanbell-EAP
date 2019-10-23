@@ -25,15 +25,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Administrator
  */
 @Entity
-@Table(name = "VH_TV002")
+@Table(name = "VH_TV003")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "VHTV002.findAll", query = "SELECT v FROM VHTV002 v"),
-    @NamedQuery(name = "VHTV002.findByOID", query = "SELECT v FROM VHTV002 v WHERE v.oid = :oid"),
-    @NamedQuery(name = "VHTV002.findByHdCRMNO", query = "SELECT v FROM VHTV002 v WHERE v.hdCRMNO = :hdCRMNO"),
-    @NamedQuery(name = "VHTV002.findByPSN", query = "SELECT v FROM VHTV002 v WHERE v.processSerialNumber = :psn"),
-    @NamedQuery(name = "VHTV002.findByFSN", query = "SELECT v FROM VHTV002 v WHERE v.formSerialNumber = :fsn")})
-public class VHTV002 implements Serializable {
+    @NamedQuery(name = "VHTV003.findAll", query = "SELECT v FROM VHTV003 v")
+    , @NamedQuery(name = "VHTV003.findByOid", query = "SELECT v FROM VHTV003 v WHERE v.oid = :oid")
+    , @NamedQuery(name = "VHTV003.findByPSN", query = "SELECT v FROM VHTV003 v WHERE v.processSerialNumber = :psn")
+    , @NamedQuery(name = "VHTV003.findByFSN", query = "SELECT v FROM VHTV003 v WHERE v.formSerialNumber = :fsn")})
+public class VHTV003 implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Size(max = 255)
@@ -66,22 +65,19 @@ public class VHTV002 implements Serializable {
     @Column(name = "receipt")
     private Integer receipt;
     @Size(max = 255)
-    @Column(name = "loanNo")
-    private String loanNo;
-    @Size(max = 255)
     @Column(name = "carUse")
     private String carUse;
     @Column(name = "startMileage")
     private Double startMileage;
+    @Size(max = 255)
+    @Column(name = "hdtrafficAmount")
+    private String hdtrafficAmount;
     @Size(max = 255)
     @Column(name = "deptqx")
     private String deptqx;
     @Size(max = 255)
     @Column(name = "bh1")
     private String bh1;
-    @Size(max = 255)
-    @Column(name = "amount")
-    private String amount;
     @Size(max = 255)
     @Column(name = "SerialNumber")
     private String serialNumber;
@@ -112,6 +108,8 @@ public class VHTV002 implements Serializable {
     @Size(max = 255)
     @Column(name = "cost")
     private String cost;
+    @Column(name = "totaltaxesVND")
+    private Double totaltaxesVND;
     @Size(max = 255)
     @Column(name = "hdnfacno")
     private String hdnfacno;
@@ -126,8 +124,9 @@ public class VHTV002 implements Serializable {
     @Size(max = 255)
     @Column(name = "hdnappDept")
     private String hdnappDept;
-    @Column(name = "applyAmount")
-    private Double applyAmount;
+    @Size(max = 255)
+    @Column(name = "customerSno2")
+    private String customerSno2;
     @Size(max = 255)
     @Column(name = "hdnreimbursement")
     private String hdnreimbursement;
@@ -141,8 +140,6 @@ public class VHTV002 implements Serializable {
     private Double endMileage;
     @Column(name = "taxi")
     private Double taxi;
-    @Column(name = "loanAmount")
-    private Double loanAmount;
     @Size(max = 255)
     @Column(name = "hdnappUser")
     private String hdnappUser;
@@ -151,8 +148,6 @@ public class VHTV002 implements Serializable {
     @Size(max = 255)
     @Column(name = "hdCRMNO")
     private String hdCRMNO;
-    @Column(name = "totaltaxInclusiveRMB")
-    private Double totaltaxInclusiveRMB;
     @Column(name = "taxInclusive")
     private Double taxInclusive;
     @Size(max = 255)
@@ -167,8 +162,6 @@ public class VHTV002 implements Serializable {
     @Size(max = 255)
     @Column(name = "Textbox6")
     private String textbox6;
-    @Column(name = "totaltaxesRMB")
-    private Double totaltaxesRMB;
     @Size(max = 255)
     @Column(name = "Textbox7")
     private String textbox7;
@@ -183,6 +176,8 @@ public class VHTV002 implements Serializable {
     @Size(max = 255)
     @Column(name = "creator")
     private String creator;
+    @Column(name = "totaltaxInclusiveVND")
+    private Double totaltaxInclusiveVND;
     @Column(name = "accPeriod")
     private Double accPeriod;
     @Size(max = 255)
@@ -190,11 +185,6 @@ public class VHTV002 implements Serializable {
     private String crmno;
     @Column(name = "accYear")
     private Double accYear;
-    @Column(name = "refund")
-    private Double refund;
-    @Size(max = 255)
-    @Column(name = "customerSno")
-    private String customerSno;
     @Column(name = "entertainDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date entertainDate;
@@ -218,16 +208,13 @@ public class VHTV002 implements Serializable {
     @Column(name = "hdncreator")
     private String hdncreator;
     @Size(max = 255)
-    @Column(name = "loanProp")
-    private String loanProp;
-    @Size(max = 255)
     @Column(name = "budgetDept")
     private String budgetDept;
     @Size(max = 255)
     @Column(name = "coin")
     private String coin;
-    @Column(name = "totalnotaxesRMB")
-    private Double totalnotaxesRMB;
+    @Column(name = "totalnotaxesVND")
+    private Double totalnotaxesVND;
     @Size(max = 255)
     @Column(name = "reimbursement")
     private String reimbursement;
@@ -240,8 +227,6 @@ public class VHTV002 implements Serializable {
     @Size(max = 255)
     @Column(name = "entertainPeople")
     private String entertainPeople;
-    @Column(name = "totalRefund")
-    private Double totalRefund;
     @Size(max = 255)
     @Column(name = "sort3")
     private String sort3;
@@ -252,13 +237,13 @@ public class VHTV002 implements Serializable {
     @Column(name = "sort2")
     private String sort2;
     @Size(max = 255)
-    @Column(name = "serviceno")
-    private String serviceno;
-    @Size(max = 255)
     @Column(name = "appUser")
     private String appUser;
     @Column(name = "days")
     private Double days;
+    @Size(max = 255)
+    @Column(name = "isFree")
+    private String isFree;
     @Column(name = "accommodation")
     private Double accommodation;
     @Size(max = 255)
@@ -267,16 +252,19 @@ public class VHTV002 implements Serializable {
     @Size(max = 255)
     @Column(name = "budgetAccname")
     private String budgetAccname;
+    @Size(max = 255)
+    @Column(name = "serviceno2")
+    private String serviceno2;
     @Column(name = "taxes")
     private Double taxes;
     @Size(max = 255)
     @Column(name = "formSerialNumber")
     private String formSerialNumber;
 
-    public VHTV002() {
+    public VHTV003() {
     }
 
-    public VHTV002(String oid) {
+    public VHTV003(String oid) {
         this.oid = oid;
     }
 
@@ -360,14 +348,6 @@ public class VHTV002 implements Serializable {
         this.receipt = receipt;
     }
 
-    public String getLoanNo() {
-        return loanNo;
-    }
-
-    public void setLoanNo(String loanNo) {
-        this.loanNo = loanNo;
-    }
-
     public String getCarUse() {
         return carUse;
     }
@@ -384,6 +364,14 @@ public class VHTV002 implements Serializable {
         this.startMileage = startMileage;
     }
 
+    public String getHdtrafficAmount() {
+        return hdtrafficAmount;
+    }
+
+    public void setHdtrafficAmount(String hdtrafficAmount) {
+        this.hdtrafficAmount = hdtrafficAmount;
+    }
+
     public String getDeptqx() {
         return deptqx;
     }
@@ -398,14 +386,6 @@ public class VHTV002 implements Serializable {
 
     public void setBh1(String bh1) {
         this.bh1 = bh1;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
     }
 
     public String getSerialNumber() {
@@ -496,6 +476,14 @@ public class VHTV002 implements Serializable {
         this.cost = cost;
     }
 
+    public Double getTotaltaxesVND() {
+        return totaltaxesVND;
+    }
+
+    public void setTotaltaxesVND(Double totaltaxesVND) {
+        this.totaltaxesVND = totaltaxesVND;
+    }
+
     public String getHdnfacno() {
         return hdnfacno;
     }
@@ -536,12 +524,12 @@ public class VHTV002 implements Serializable {
         this.hdnappDept = hdnappDept;
     }
 
-    public Double getApplyAmount() {
-        return applyAmount;
+    public String getCustomerSno2() {
+        return customerSno2;
     }
 
-    public void setApplyAmount(Double applyAmount) {
-        this.applyAmount = applyAmount;
+    public void setCustomerSno2(String customerSno2) {
+        this.customerSno2 = customerSno2;
     }
 
     public String getHdnreimbursement() {
@@ -576,14 +564,6 @@ public class VHTV002 implements Serializable {
         this.taxi = taxi;
     }
 
-    public Double getLoanAmount() {
-        return loanAmount;
-    }
-
-    public void setLoanAmount(Double loanAmount) {
-        this.loanAmount = loanAmount;
-    }
-
     public String getHdnappUser() {
         return hdnappUser;
     }
@@ -606,14 +586,6 @@ public class VHTV002 implements Serializable {
 
     public void setHdCRMNO(String hdCRMNO) {
         this.hdCRMNO = hdCRMNO;
-    }
-
-    public Double getTotaltaxInclusiveRMB() {
-        return totaltaxInclusiveRMB;
-    }
-
-    public void setTotaltaxInclusiveRMB(Double totaltaxInclusiveRMB) {
-        this.totaltaxInclusiveRMB = totaltaxInclusiveRMB;
     }
 
     public Double getTaxInclusive() {
@@ -656,14 +628,6 @@ public class VHTV002 implements Serializable {
         this.textbox6 = textbox6;
     }
 
-    public Double getTotaltaxesRMB() {
-        return totaltaxesRMB;
-    }
-
-    public void setTotaltaxesRMB(Double totaltaxesRMB) {
-        this.totaltaxesRMB = totaltaxesRMB;
-    }
-
     public String getTextbox7() {
         return textbox7;
     }
@@ -704,6 +668,14 @@ public class VHTV002 implements Serializable {
         this.creator = creator;
     }
 
+    public Double getTotaltaxInclusiveVND() {
+        return totaltaxInclusiveVND;
+    }
+
+    public void setTotaltaxInclusiveVND(Double totaltaxInclusiveVND) {
+        this.totaltaxInclusiveVND = totaltaxInclusiveVND;
+    }
+
     public Double getAccPeriod() {
         return accPeriod;
     }
@@ -726,22 +698,6 @@ public class VHTV002 implements Serializable {
 
     public void setAccYear(Double accYear) {
         this.accYear = accYear;
-    }
-
-    public Double getRefund() {
-        return refund;
-    }
-
-    public void setRefund(Double refund) {
-        this.refund = refund;
-    }
-
-    public String getCustomerSno() {
-        return customerSno;
-    }
-
-    public void setCustomerSno(String customerSno) {
-        this.customerSno = customerSno;
     }
 
     public Date getEntertainDate() {
@@ -808,14 +764,6 @@ public class VHTV002 implements Serializable {
         this.hdncreator = hdncreator;
     }
 
-    public String getLoanProp() {
-        return loanProp;
-    }
-
-    public void setLoanProp(String loanProp) {
-        this.loanProp = loanProp;
-    }
-
     public String getBudgetDept() {
         return budgetDept;
     }
@@ -832,12 +780,12 @@ public class VHTV002 implements Serializable {
         this.coin = coin;
     }
 
-    public Double getTotalnotaxesRMB() {
-        return totalnotaxesRMB;
+    public Double getTotalnotaxesVND() {
+        return totalnotaxesVND;
     }
 
-    public void setTotalnotaxesRMB(Double totalnotaxesRMB) {
-        this.totalnotaxesRMB = totalnotaxesRMB;
+    public void setTotalnotaxesVND(Double totalnotaxesVND) {
+        this.totalnotaxesVND = totalnotaxesVND;
     }
 
     public String getReimbursement() {
@@ -872,14 +820,6 @@ public class VHTV002 implements Serializable {
         this.entertainPeople = entertainPeople;
     }
 
-    public Double getTotalRefund() {
-        return totalRefund;
-    }
-
-    public void setTotalRefund(Double totalRefund) {
-        this.totalRefund = totalRefund;
-    }
-
     public String getSort3() {
         return sort3;
     }
@@ -904,14 +844,6 @@ public class VHTV002 implements Serializable {
         this.sort2 = sort2;
     }
 
-    public String getServiceno() {
-        return serviceno;
-    }
-
-    public void setServiceno(String serviceno) {
-        this.serviceno = serviceno;
-    }
-
     public String getAppUser() {
         return appUser;
     }
@@ -926,6 +858,14 @@ public class VHTV002 implements Serializable {
 
     public void setDays(Double days) {
         this.days = days;
+    }
+
+    public String getIsFree() {
+        return isFree;
+    }
+
+    public void setIsFree(String isFree) {
+        this.isFree = isFree;
     }
 
     public Double getAccommodation() {
@@ -950,6 +890,14 @@ public class VHTV002 implements Serializable {
 
     public void setBudgetAccname(String budgetAccname) {
         this.budgetAccname = budgetAccname;
+    }
+
+    public String getServiceno2() {
+        return serviceno2;
+    }
+
+    public void setServiceno2(String serviceno2) {
+        this.serviceno2 = serviceno2;
     }
 
     public Double getTaxes() {
@@ -978,10 +926,10 @@ public class VHTV002 implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof VHTV002)) {
+        if (!(object instanceof VHTV003)) {
             return false;
         }
-        VHTV002 other = (VHTV002) object;
+        VHTV003 other = (VHTV003) object;
         if ((this.oid == null && other.oid != null) || (this.oid != null && !this.oid.equals(other.oid))) {
             return false;
         }
@@ -990,7 +938,7 @@ public class VHTV002 implements Serializable {
 
     @Override
     public String toString() {
-        return "cn.hanbell.oa.entity.VHTV002[ oid=" + oid + " ]";
+        return "cn.hanbell.oa.entity.VHTV003[ oid=" + oid + " ]";
     }
 
 }

@@ -32,6 +32,10 @@ public class VHTV002Bean extends SuperEJBForEFGP<VHTV002> {
         super(VHTV002.class);
     }
 
+    public List<VHTV002reDetail> getDetailList(Object value) {
+        return vhtv002redetailBean.findByFSN(value);
+    }
+    
     public boolean updatevhtv002(String psn) {
         VHTV002 h = findByPSN(psn);
         if (h == null) {
