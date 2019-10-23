@@ -41,7 +41,7 @@ public class Miscode implements Serializable {
     protected MiscodePK miscodePK;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 60)
     @Column(name = "cdesc")
     private String cdesc;
     @Basic(optional = false)
@@ -52,7 +52,7 @@ public class Miscode implements Serializable {
     @NotNull
     @Column(name = "mascreyn")
     private Character mascreyn;
-    @Size(max = 80)
+    @Size(max = 160)
     @Column(name = "cusds")
     private String cusds;
 

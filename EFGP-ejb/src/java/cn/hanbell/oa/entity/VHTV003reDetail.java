@@ -22,13 +22,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Administrator
  */
 @Entity
-@Table(name = "VH_TV002_reDetail")
+@Table(name = "VH_TV003_reDetail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "VHTV002reDetail.findAll", query = "SELECT v FROM VHTV002reDetail v"),
-    @NamedQuery(name = "VHTV002reDetail.findByOID", query = "SELECT v FROM VHTV002reDetail v WHERE v.oid = :oid"),
-    @NamedQuery(name = "VHTV002reDetail.findByFSN", query = "SELECT v FROM VHTV002reDetail v WHERE v.formSerialNumber = :fsn")})
-public class VHTV002reDetail implements Serializable {
+    @NamedQuery(name = "VHTV003reDetail.findAll", query = "SELECT v FROM VHTV003reDetail v")
+    , @NamedQuery(name = "VHTV003reDetail.findByOid", query = "SELECT v FROM VHTV003reDetail v WHERE v.oid = :oid")
+    , @NamedQuery(name = "VHTV003reDetail.findByFSN", query = "SELECT v FROM VHTV003reDetail v WHERE v.formSerialNumber = :fsn")})
+public class VHTV003reDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Size(max = 255)
@@ -44,9 +44,6 @@ public class VHTV002reDetail implements Serializable {
     @Column(name = "centerid")
     private String centerid;
     @Size(max = 255)
-    @Column(name = "loanAmount")
-    private String loanAmount;
-    @Size(max = 255)
     @Column(name = "notaxes")
     private String notaxes;
     @Size(max = 255)
@@ -59,35 +56,17 @@ public class VHTV002reDetail implements Serializable {
     @Column(name = "taxInclusive")
     private String taxInclusive;
     @Size(max = 255)
-    @Column(name = "accno")
-    private String accno;
-    @Size(max = 255)
-    @Column(name = "entertainReason")
-    private String entertainReason;
-    @Size(max = 255)
-    @Column(name = "loanNo")
-    private String loanNo;
-    @Size(max = 255)
-    @Column(name = "accPeriod")
-    private String accPeriod;
-    @Size(max = 255)
-    @Column(name = "budgetDept_lbl")
-    private String budgetDeptlbl;
-    @Size(max = 255)
-    @Column(name = "accYear")
-    private String accYear;
-    @Size(max = 255)
-    @Column(name = "refund")
-    private String refund;
-    @Size(max = 255)
-    @Column(name = "loanProp")
-    private String loanProp;
-    @Size(max = 255)
     @Column(name = "budgetDept_txt")
     private String budgetDepttxt;
     @Size(max = 255)
+    @Column(name = "accno")
+    private String accno;
+    @Size(max = 255)
     @Column(name = "entertainDate_txt")
     private String entertainDatetxt;
+    @Size(max = 255)
+    @Column(name = "entertainReason")
+    private String entertainReason;
     @Size(max = 255)
     @Column(name = "budgetAcc")
     private String budgetAcc;
@@ -104,14 +83,20 @@ public class VHTV002reDetail implements Serializable {
     @Column(name = "entertainObj")
     private String entertainObj;
     @Size(max = 255)
+    @Column(name = "accPeriod")
+    private String accPeriod;
+    @Size(max = 255)
+    @Column(name = "budgetDept_lbl")
+    private String budgetDeptlbl;
+    @Size(max = 255)
+    @Column(name = "accYear")
+    private String accYear;
+    @Size(max = 255)
     @Column(name = "accName")
     private String accName;
     @Size(max = 255)
     @Column(name = "budgetAccname")
     private String budgetAccname;
-    @Size(max = 255)
-    @Column(name = "applyAmount")
-    private String applyAmount;
     @Size(max = 255)
     @Column(name = "taxes")
     private String taxes;
@@ -119,10 +104,10 @@ public class VHTV002reDetail implements Serializable {
     @Column(name = "formSerialNumber")
     private String formSerialNumber;
 
-    public VHTV002reDetail() {
+    public VHTV003reDetail() {
     }
 
-    public VHTV002reDetail(String oid) {
+    public VHTV003reDetail(String oid) {
         this.oid = oid;
     }
 
@@ -148,14 +133,6 @@ public class VHTV002reDetail implements Serializable {
 
     public void setCenterid(String centerid) {
         this.centerid = centerid;
-    }
-
-    public String getLoanAmount() {
-        return loanAmount;
-    }
-
-    public void setLoanAmount(String loanAmount) {
-        this.loanAmount = loanAmount;
     }
 
     public String getNotaxes() {
@@ -190,70 +167,6 @@ public class VHTV002reDetail implements Serializable {
         this.taxInclusive = taxInclusive;
     }
 
-    public String getAccno() {
-        return accno;
-    }
-
-    public void setAccno(String accno) {
-        this.accno = accno;
-    }
-
-    public String getEntertainReason() {
-        return entertainReason;
-    }
-
-    public void setEntertainReason(String entertainReason) {
-        this.entertainReason = entertainReason;
-    }
-
-    public String getLoanNo() {
-        return loanNo;
-    }
-
-    public void setLoanNo(String loanNo) {
-        this.loanNo = loanNo;
-    }
-
-    public String getAccPeriod() {
-        return accPeriod;
-    }
-
-    public void setAccPeriod(String accPeriod) {
-        this.accPeriod = accPeriod;
-    }
-
-    public String getBudgetDeptlbl() {
-        return budgetDeptlbl;
-    }
-
-    public void setBudgetDeptlbl(String budgetDeptlbl) {
-        this.budgetDeptlbl = budgetDeptlbl;
-    }
-
-    public String getAccYear() {
-        return accYear;
-    }
-
-    public void setAccYear(String accYear) {
-        this.accYear = accYear;
-    }
-
-    public String getRefund() {
-        return refund;
-    }
-
-    public void setRefund(String refund) {
-        this.refund = refund;
-    }
-
-    public String getLoanProp() {
-        return loanProp;
-    }
-
-    public void setLoanProp(String loanProp) {
-        this.loanProp = loanProp;
-    }
-
     public String getBudgetDepttxt() {
         return budgetDepttxt;
     }
@@ -262,12 +175,28 @@ public class VHTV002reDetail implements Serializable {
         this.budgetDepttxt = budgetDepttxt;
     }
 
+    public String getAccno() {
+        return accno;
+    }
+
+    public void setAccno(String accno) {
+        this.accno = accno;
+    }
+
     public String getEntertainDatetxt() {
         return entertainDatetxt;
     }
 
     public void setEntertainDatetxt(String entertainDatetxt) {
         this.entertainDatetxt = entertainDatetxt;
+    }
+
+    public String getEntertainReason() {
+        return entertainReason;
+    }
+
+    public void setEntertainReason(String entertainReason) {
+        this.entertainReason = entertainReason;
     }
 
     public String getBudgetAcc() {
@@ -310,6 +239,30 @@ public class VHTV002reDetail implements Serializable {
         this.entertainObj = entertainObj;
     }
 
+    public String getAccPeriod() {
+        return accPeriod;
+    }
+
+    public void setAccPeriod(String accPeriod) {
+        this.accPeriod = accPeriod;
+    }
+
+    public String getBudgetDeptlbl() {
+        return budgetDeptlbl;
+    }
+
+    public void setBudgetDeptlbl(String budgetDeptlbl) {
+        this.budgetDeptlbl = budgetDeptlbl;
+    }
+
+    public String getAccYear() {
+        return accYear;
+    }
+
+    public void setAccYear(String accYear) {
+        this.accYear = accYear;
+    }
+
     public String getAccName() {
         return accName;
     }
@@ -324,14 +277,6 @@ public class VHTV002reDetail implements Serializable {
 
     public void setBudgetAccname(String budgetAccname) {
         this.budgetAccname = budgetAccname;
-    }
-
-    public String getApplyAmount() {
-        return applyAmount;
-    }
-
-    public void setApplyAmount(String applyAmount) {
-        this.applyAmount = applyAmount;
     }
 
     public String getTaxes() {
@@ -360,10 +305,10 @@ public class VHTV002reDetail implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof VHTV002reDetail)) {
+        if (!(object instanceof VHTV003reDetail)) {
             return false;
         }
-        VHTV002reDetail other = (VHTV002reDetail) object;
+        VHTV003reDetail other = (VHTV003reDetail) object;
         if ((this.oid == null && other.oid != null) || (this.oid != null && !this.oid.equals(other.oid))) {
             return false;
         }
@@ -372,7 +317,7 @@ public class VHTV002reDetail implements Serializable {
 
     @Override
     public String toString() {
-        return "cn.hanbell.oa.entity.VHTV002reDetail[ oid=" + oid + " ]";
+        return "cn.hanbell.oa.entity.VHTV003reDetail[ oid=" + oid + " ]";
     }
-
+    
 }
