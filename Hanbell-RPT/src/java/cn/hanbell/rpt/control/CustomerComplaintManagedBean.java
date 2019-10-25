@@ -441,7 +441,7 @@ public class CustomerComplaintManagedBean extends SuperQueryBean<CustomerComplai
                 }
                 cp.setDutydeptna(seri12.getBq504c() == null ? "null" : seri12.getBq504c());
                 //19年9月3日加入责任判定
-                remark1 = seri12.getBq502() == null ? "" : seri12.getBq504();
+                remark1 = seri12.getBq502() == null ? "" : seri12.getBq502();
                 if (!remark1.equals("")) {
                     cp.setRemark1(remark1);
                 } else {
