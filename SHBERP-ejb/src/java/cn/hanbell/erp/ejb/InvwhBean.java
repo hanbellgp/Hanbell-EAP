@@ -14,8 +14,6 @@ import cn.hanbell.oa.entity.SHBERPINV150;
 import cn.hanbell.oa.entity.SHBERPINV150Detail;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -85,7 +83,7 @@ public class InvwhBean extends SuperEJBForERP<Invwh> {
                     if (null == this.findByWareh(detail.getWareh())) {
                         Invwh w = new Invwh();
                         w.setFacno(facno);
-                        if ("".equals(prono)) {
+                        if (prono == null || "".equals(prono)) {
                             w.setProno("1");
                         } else {
                             w.setProno(prono);
@@ -114,7 +112,7 @@ public class InvwhBean extends SuperEJBForERP<Invwh> {
                 }
                 return true;
             } catch (Exception ex) {
-                Logger.getLogger(InvwhBean.class.getName()).log(Level.SEVERE, null, ex);
+                log4j.error(ex);
                 throw new RuntimeException(ex);
             }
         } else {

@@ -10,6 +10,9 @@ import cn.hanbell.eap.entity.Department;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.persistence.Query;
 
 /**
@@ -22,6 +25,19 @@ public class DepartmentBean extends SuperEJBForEAP<Department> {
 
     public DepartmentBean() {
         super(Department.class);
+    }
+
+    @Override
+    public JsonObjectBuilder createJsonObjectBuilder(Department entity) {
+        JsonObjectBuilder job = Json.createObjectBuilder();
+        if (entity != null) {
+            job.add("id", entity.getId())
+                    .add("name", entity.getDept());
+            if (entity.getParentDept() != null) {
+                job.add("parentid", entity.getParentDept().getId());
+            }
+        }
+        return job;
     }
 
     public Department findByDeptno(String value) {

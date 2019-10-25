@@ -6,6 +6,7 @@
 package cn.hanbell.eap.entity;
 
 import com.lightshell.comm.SuperEntity;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Department.findByDeptno", query = "SELECT d FROM Department d WHERE d.deptno = :deptno"),
     @NamedQuery(name = "Department.findByDept", query = "SELECT d FROM Department d WHERE d.dept = :dept"),
     @NamedQuery(name = "Department.findByLeader", query = "SELECT d FROM Department d WHERE d.leader = :leader"),
-    @NamedQuery(name = "Department.findByPId", query = "SELECT d FROM Department d WHERE d.parentDept.id = :pid"),
+    @NamedQuery(name = "Department.findByPId", query = "SELECT d FROM Department d WHERE d.parentDept.id = :pid ORDER BY d.deptno"),
     @NamedQuery(name = "Department.findByStatus", query = "SELECT d FROM Department d WHERE d.status = :status"),
     @NamedQuery(name = "Department.findRoot", query = "SELECT d FROM Department d WHERE d.parentDept is NULL")})
 public class Department extends SuperEntity {
@@ -53,17 +56,25 @@ public class Department extends SuperEntity {
     @Size(max = 300)
     @Column(name = "remark")
     private String remark;
+    @Size(max = 2)
+    @Column(name = "syncWeChatStatus")
+    private String syncWeChatStatus;
+    @Column(name = "syncWeChatDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date syncWeChatDate;
 
     @JoinColumn(name = "pid", referencedColumnName = "id")
     @ManyToOne
     private Department parentDept;
 
     public Department() {
+        this.syncWeChatStatus = "N";
     }
 
     public Department(String deptno, String dept) {
         this.deptno = deptno;
         this.dept = dept;
+        this.syncWeChatStatus = "N";
     }
 
     public String getDeptno() {
@@ -96,6 +107,34 @@ public class Department extends SuperEntity {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    /**
+     * @return the syncWeChatStatus
+     */
+    public String getSyncWeChatStatus() {
+        return syncWeChatStatus;
+    }
+
+    /**
+     * @param syncWeChatStatus the syncWeChatStatus to set
+     */
+    public void setSyncWeChatStatus(String syncWeChatStatus) {
+        this.syncWeChatStatus = syncWeChatStatus;
+    }
+
+    /**
+     * @return the syncWeChatDate
+     */
+    public Date getSyncWeChatDate() {
+        return syncWeChatDate;
+    }
+
+    /**
+     * @param syncWeChatDate the syncWeChatDate to set
+     */
+    public void setSyncWeChatDate(Date syncWeChatDate) {
+        this.syncWeChatDate = syncWeChatDate;
     }
 
     public Department getParentDept() {
