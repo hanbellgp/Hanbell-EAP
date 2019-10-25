@@ -2224,6 +2224,7 @@ public class TimerBean {
                     pono = ph.getPurhadPK().getPono();
                     purdtaBean.setCompany(facno);
                     List<Purdta> purdtaList = purdtaBean.findByPono(ph.getPurhadPK().getPono());
+                    purdtaBean.getEntityManager().clear();
                     if (purdtaList == null && purdtaList.isEmpty()) {
                         continue;
                     }
@@ -2386,6 +2387,7 @@ public class TimerBean {
                         tph.setUserno(tobuyer);
                         tph.setCfmdate(indate);
                         tph.setCfmuserno(tobuyer);
+                        invmasBean.setCompany(tofacno);
                         pursysBean.setCompany(tofacno);
                         purhadBean.setCompany(tofacno);
                         purdtaBean.setCompany(tofacno);
@@ -2394,6 +2396,12 @@ public class TimerBean {
                         purhadBean.persist(tph);
                         purhadBean.getEntityManager().flush();
                         for (Purdta e : tpdList) {
+                            item = invmasBean.findByItnbr(e.getItnbr());
+                            if (item == null) {
+                                errorBuilder.append("<div>syncThirdPartyTradingByERPPUR410遇到错误：").append(tofacno).append("公司ERP中").append(e.getItnbr()).append("品号不存在").append("</div>");
+                            } else {
+                                e.setJudco(item.getJudco().substring(2, 4));
+                            }
                             e.setPurdtaPK(new PurdtaPK(tofacno, e.getPurdtaPK().getProno(), tpono, e.getPurdtaPK().getTrseq()));
                             purdtaBean.persist(e);
                         }

@@ -7,6 +7,7 @@ package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
 import cn.hanbell.eap.entity.SystemUser;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
@@ -19,6 +20,26 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
 
     public SystemUserBean() {
         super(SystemUser.class);
+    }
+
+    public List<SystemUser> findByDeptno(String deptno) {
+        Query query = getEntityManager().createNamedQuery("SystemUser.findByDeptno");
+        query.setParameter("deptno", deptno);
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List<SystemUser> findByDeptnoAndOnJob(String deptno) {
+        Query query = getEntityManager().createNamedQuery("SystemUser.findByDeptnoAndOnJob");
+        query.setParameter("deptno", deptno);
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public SystemUser findByUserId(String userid) {

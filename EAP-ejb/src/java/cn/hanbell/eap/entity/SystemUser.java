@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SystemUser.getRowCount", query = "SELECT COUNT(s) FROM SystemUser s"),
     @NamedQuery(name = "SystemUser.findAll", query = "SELECT s FROM SystemUser s ORDER BY s.userid"),
     @NamedQuery(name = "SystemUser.findById", query = "SELECT s FROM SystemUser s WHERE s.id = :id"),
+    @NamedQuery(name = "SystemUser.findByDeptno", query = "SELECT s FROM SystemUser s WHERE s.deptno = :deptno ORDER BY s.userid"),
+    @NamedQuery(name = "SystemUser.findByDeptnoAndOnJob", query = "SELECT s FROM SystemUser s WHERE s.status<>'X' AND s.deptno = :deptno ORDER BY s.userid"),
     @NamedQuery(name = "SystemUser.findByUserId", query = "SELECT s FROM SystemUser s WHERE s.userid = :userid"),
     @NamedQuery(name = "SystemUser.findByUsername", query = "SELECT s FROM SystemUser s WHERE s.username = :username"),
     @NamedQuery(name = "SystemUser.findByUserIdAndPwd", query = "SELECT s FROM SystemUser s WHERE (s.userid = :userid OR s.email =:email) AND s.password = :pwd"),
@@ -84,6 +86,12 @@ public class SystemUser extends SuperEntity {
     @Column(name = "newestlogin")
     @Temporal(TemporalType.TIMESTAMP)
     private Date newestlogin;
+    @Size(max = 2)
+    @Column(name = "syncWeChatStatus")
+    private String syncWeChatStatus;
+    @Column(name = "syncWeChatDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date syncWeChatDate;
 
     public SystemUser() {
         this.password = "e10adc3949ba59abbe56e057f20f883e";//123456
@@ -91,6 +99,7 @@ public class SystemUser extends SuperEntity {
         this.failure = 0;
         this.locked = false;
         this.status = "N";
+        this.syncWeChatStatus = "N";
     }
 
     public String getUserid() {
@@ -209,6 +218,34 @@ public class SystemUser extends SuperEntity {
 
     public void setNewestlogin(Date newestlogin) {
         this.newestlogin = newestlogin;
+    }
+
+    /**
+     * @return the syncWeChatStatus
+     */
+    public String getSyncWeChatStatus() {
+        return syncWeChatStatus;
+    }
+
+    /**
+     * @param syncWeChatStatus the syncWeChatStatus to set
+     */
+    public void setSyncWeChatStatus(String syncWeChatStatus) {
+        this.syncWeChatStatus = syncWeChatStatus;
+    }
+
+    /**
+     * @return the syncWeChatDate
+     */
+    public Date getSyncWeChatDate() {
+        return syncWeChatDate;
+    }
+
+    /**
+     * @param syncWeChatDate the syncWeChatDate to set
+     */
+    public void setSyncWeChatDate(Date syncWeChatDate) {
+        this.syncWeChatDate = syncWeChatDate;
     }
 
     @Override
