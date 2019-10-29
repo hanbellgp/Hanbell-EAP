@@ -68,13 +68,12 @@ public class Department extends SuperEntity {
     private Department parentDept;
 
     public Department() {
-        this.syncWeChatStatus = "N";
+
     }
 
     public Department(String deptno, String dept) {
         this.deptno = deptno;
         this.dept = dept;
-        this.syncWeChatStatus = "N";
     }
 
     public String getDeptno() {
