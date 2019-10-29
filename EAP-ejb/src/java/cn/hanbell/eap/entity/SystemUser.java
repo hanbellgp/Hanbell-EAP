@@ -10,6 +10,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -38,6 +40,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SystemUser.findByLocked", query = "SELECT s FROM SystemUser s WHERE s.locked = :locked"),
     @NamedQuery(name = "SystemUser.findByStatus", query = "SELECT s FROM SystemUser s WHERE s.status = :status")})
 public class SystemUser extends SuperEntity {
+
+    @JoinColumn(name = "deptno", referencedColumnName = "deptno", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private Department dept;
 
     @Basic(optional = false)
     @NotNull
@@ -100,6 +106,13 @@ public class SystemUser extends SuperEntity {
         this.locked = false;
         this.status = "N";
         this.syncWeChatStatus = "N";
+    }
+
+    /**
+     * @return the dept
+     */
+    public Department getDept() {
+        return dept;
     }
 
     public String getUserid() {
