@@ -47,6 +47,9 @@
                 <library dirs="100">
                     <file>${reference.PLM-ejb.dist}</file>
                 </library>
+                <library dirs="100">
+                    <file>${reference.EXCH-ejb.dist}</file>
+                </library>
                 <library dirs="200">
                     <file>${libs.Log4j2.classpath}</file>
                 </library>
@@ -94,6 +97,14 @@
             </reference>
             <reference>
                 <foreign-project>EFGP-ejb</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>dist</target>
+                <clean-target>clean</clean-target>
+                <id>dist</id>
+            </reference>
+            <reference>
+                <foreign-project>EXCH-ejb</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
                 <target>dist</target>

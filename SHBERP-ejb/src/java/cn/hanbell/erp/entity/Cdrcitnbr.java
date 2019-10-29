@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrcitnbr.getRowCount", query = "SELECT COUNT(c) FROM Cdrcitnbr c"),
     @NamedQuery(name = "Cdrcitnbr.findAll", query = "SELECT c FROM Cdrcitnbr c"),
     @NamedQuery(name = "Cdrcitnbr.findByCusno", query = "SELECT c FROM Cdrcitnbr c WHERE c.cdrcitnbrPK.cusno = :cusno"),
-    @NamedQuery(name = "Cdrcitnbr.findByItnbr", query = "SELECT c FROM Cdrcitnbr c WHERE c.cdrcitnbrPK.itnbr = :itnbr"),
+    @NamedQuery(name = "Cdrcitnbr.findByCusnoAndItnbr", query = "SELECT c FROM Cdrcitnbr c WHERE c.cdrcitnbrPK.cusno = :cusno AND c.cdrcitnbrPK.itnbr = :itnbr"),
     @NamedQuery(name = "Cdrcitnbr.findByPK", query = "SELECT c FROM Cdrcitnbr c WHERE  c.cdrcitnbrPK.cusno = :cusno AND c.cdrcitnbrPK.itnbr = :itnbr AND c.cdrcitnbrPK.itnbrcus = :itnbrcus")})
 public class Cdrcitnbr implements Serializable {
 

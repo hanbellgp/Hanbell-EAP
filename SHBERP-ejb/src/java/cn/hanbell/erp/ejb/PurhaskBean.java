@@ -216,9 +216,9 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     pd.setPosrccode(detail.getPosrccode().charAt(0));            //单价来源码
                 }
                 pd.setPrepayamts(BigDecimal.ZERO);
-                if(null == detail.getAddcode() || "".equals(detail.getAddcode())){
+                if (null == detail.getAddcode() || "".equals(detail.getAddcode())) {
                     pd.setAddcode(facno);
-                }else{
+                } else {
                     pd.setAddcode(detail.getAddcode());
                 }
                 pd.setPoprtcnt((short) 0);

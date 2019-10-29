@@ -65,6 +65,6 @@ hs_err_pid*
 /Hanbell-JWS/dist/
 /Hanbell-RPT/dist/
 /Hanbell-war/dist/
-/Exchange-ejb/nbproject/private/
-/Exchange-ejb/dist/
-/Exchange-ejb/build/
+/EXCH-ejb/nbproject/private/
+/EXCH-ejb/build/
+/EXCH-ejb/dist/

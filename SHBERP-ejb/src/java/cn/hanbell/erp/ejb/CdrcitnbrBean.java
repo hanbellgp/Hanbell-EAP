@@ -7,6 +7,7 @@ package cn.hanbell.erp.ejb;
 
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Cdrcitnbr;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -24,13 +25,33 @@ public class CdrcitnbrBean extends SuperEJBForERP<Cdrcitnbr> {
     }
 
     public Cdrcitnbr findByPK(String cusno, String itnbr, String itnbrcus) {
-        Query query = getEntityManager().createNamedQuery("Cdrcitnbr.findByPK");
+        if (itnbrcus != null && !"".equals(itnbrcus)) {
+            Query query = getEntityManager().createNamedQuery("Cdrcitnbr.findByPK");
+            query.setParameter("cusno", cusno);
+            query.setParameter("itnbr", itnbr);
+            query.setParameter("itnbrcus", itnbrcus);
+            try {
+                Object o = query.getSingleResult();
+                return (Cdrcitnbr) o;
+            } catch (Exception ex) {
+                return null;
+            }
+        } else {
+            List<Cdrcitnbr> entities = findByCusnoAndItnbr(cusno, itnbr);
+            if (entities != null && !entities.isEmpty()) {
+                return entities.get(0);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public List<Cdrcitnbr> findByCusnoAndItnbr(String cusno, String itnbr) {
+        Query query = getEntityManager().createNamedQuery("Cdrcitnbr.findByCusnoAndItnbr");
         query.setParameter("cusno", cusno);
         query.setParameter("itnbr", itnbr);
-        query.setParameter("itnbrcus", itnbrcus);
         try {
-            Object o = query.getSingleResult();
-            return (Cdrcitnbr) o;
+            return query.getResultList();
         } catch (Exception ex) {
             return null;
         }

@@ -6,14 +6,10 @@
 package cn.hanbell.eap.entity;
 
 import com.lightshell.comm.SuperEntity;
-import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -31,29 +27,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "issues")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Issues.findAll", query = "SELECT i FROM Issues i")
-    , @NamedQuery(name = "Issues.findById", query = "SELECT i FROM Issues i WHERE i.id = :id")
-    , @NamedQuery(name = "Issues.findByIssuenumber", query = "SELECT i FROM Issues i WHERE i.issuenumber = :issuenumber")
-    , @NamedQuery(name = "Issues.findBySystemtype", query = "SELECT i FROM Issues i WHERE i.systemtype = :systemtype")
-    , @NamedQuery(name = "Issues.findByModuletype", query = "SELECT i FROM Issues i WHERE i.moduletype = :moduletype")
-    , @NamedQuery(name = "Issues.findByIssuesid", query = "SELECT i FROM Issues i WHERE i.issuesid = :issuesid")
-    , @NamedQuery(name = "Issues.findByIssuesname", query = "SELECT i FROM Issues i WHERE i.issuesname = :issuesname")
-    , @NamedQuery(name = "Issues.findByDeptno", query = "SELECT i FROM Issues i WHERE i.deptno = :deptno")
-    , @NamedQuery(name = "Issues.findByDeptname", query = "SELECT i FROM Issues i WHERE i.deptname = :deptname")
-    , @NamedQuery(name = "Issues.findByNeederid", query = "SELECT i FROM Issues i WHERE i.neederid = :neederid")
-    , @NamedQuery(name = "Issues.findByNeedername", query = "SELECT i FROM Issues i WHERE i.needername = :needername")
-    , @NamedQuery(name = "Issues.findByCreatetime", query = "SELECT i FROM Issues i WHERE i.createtime = :createtime")
-    , @NamedQuery(name = "Issues.findByPlantime", query = "SELECT i FROM Issues i WHERE i.plantime = :plantime")
-    , @NamedQuery(name = "Issues.findByEndtime", query = "SELECT i FROM Issues i WHERE i.endtime = :endtime")
-    , @NamedQuery(name = "Issues.findByPrincipalid", query = "SELECT i FROM Issues i WHERE i.principalid = :principalid")
-    , @NamedQuery(name = "Issues.findByPrincipalname", query = "SELECT i FROM Issues i WHERE i.principalname = :principalname")
-    , @NamedQuery(name = "Issues.findBySchedule", query = "SELECT i FROM Issues i WHERE i.schedule = :schedule")
-    , @NamedQuery(name = "Issues.findByUsetime", query = "SELECT i FROM Issues i WHERE i.usetime = :usetime")
-    , @NamedQuery(name = "Issues.findByPostpone", query = "SELECT i FROM Issues i WHERE i.postpone = :postpone")
-    , @NamedQuery(name = "Issues.findByPostponecause", query = "SELECT i FROM Issues i WHERE i.postponecause = :postponecause")
-    , @NamedQuery(name = "Issues.findByAnswer", query = "SELECT i FROM Issues i WHERE i.answer = :answer")
-    , @NamedQuery(name = "Issues.findByAnswerstate", query = "SELECT i FROM Issues i WHERE i.answerstate = :answerstate")
-    , @NamedQuery(name = "Issues.findByFile", query = "SELECT i FROM Issues i WHERE i.file = :file")})
+    @NamedQuery(name = "Issues.findAll", query = "SELECT i FROM Issues i"),
+    @NamedQuery(name = "Issues.findById", query = "SELECT i FROM Issues i WHERE i.id = :id"),
+    @NamedQuery(name = "Issues.findByIssuenumber", query = "SELECT i FROM Issues i WHERE i.issuenumber = :issuenumber"),
+    @NamedQuery(name = "Issues.findBySystemtype", query = "SELECT i FROM Issues i WHERE i.systemtype = :systemtype"),
+    @NamedQuery(name = "Issues.findByModuletype", query = "SELECT i FROM Issues i WHERE i.moduletype = :moduletype"),
+    @NamedQuery(name = "Issues.findByIssuesid", query = "SELECT i FROM Issues i WHERE i.issuesid = :issuesid"),
+    @NamedQuery(name = "Issues.findByIssuesname", query = "SELECT i FROM Issues i WHERE i.issuesname = :issuesname"),
+    @NamedQuery(name = "Issues.findByDeptno", query = "SELECT i FROM Issues i WHERE i.deptno = :deptno"),
+    @NamedQuery(name = "Issues.findByDeptname", query = "SELECT i FROM Issues i WHERE i.deptname = :deptname"),
+    @NamedQuery(name = "Issues.findByNeederid", query = "SELECT i FROM Issues i WHERE i.neederid = :neederid"),
+    @NamedQuery(name = "Issues.findByNeedername", query = "SELECT i FROM Issues i WHERE i.needername = :needername"),
+    @NamedQuery(name = "Issues.findByCreatetime", query = "SELECT i FROM Issues i WHERE i.createtime = :createtime"),
+    @NamedQuery(name = "Issues.findByPlantime", query = "SELECT i FROM Issues i WHERE i.plantime = :plantime"),
+    @NamedQuery(name = "Issues.findByEndtime", query = "SELECT i FROM Issues i WHERE i.endtime = :endtime"),
+    @NamedQuery(name = "Issues.findByPrincipalid", query = "SELECT i FROM Issues i WHERE i.principalid = :principalid"),
+    @NamedQuery(name = "Issues.findByPrincipalname", query = "SELECT i FROM Issues i WHERE i.principalname = :principalname"),
+    @NamedQuery(name = "Issues.findBySchedule", query = "SELECT i FROM Issues i WHERE i.schedule = :schedule"),
+    @NamedQuery(name = "Issues.findByUsetime", query = "SELECT i FROM Issues i WHERE i.usetime = :usetime"),
+    @NamedQuery(name = "Issues.findByPostpone", query = "SELECT i FROM Issues i WHERE i.postpone = :postpone"),
+    @NamedQuery(name = "Issues.findByPostponecause", query = "SELECT i FROM Issues i WHERE i.postponecause = :postponecause"),
+    @NamedQuery(name = "Issues.findByAnswer", query = "SELECT i FROM Issues i WHERE i.answer = :answer"),
+    @NamedQuery(name = "Issues.findByAnswerstate", query = "SELECT i FROM Issues i WHERE i.answerstate = :answerstate"),
+    @NamedQuery(name = "Issues.findByFile", query = "SELECT i FROM Issues i WHERE i.file = :file")})
 public class Issues extends SuperEntity {
 
     @NotNull
@@ -336,5 +332,5 @@ public class Issues extends SuperEntity {
     public String toString() {
         return "cn.hanbell.eap.entity.Issues[ id=" + id + " ]";
     }
-    
+
 }

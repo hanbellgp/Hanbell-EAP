@@ -31,10 +31,16 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="100">
+                    <file>${reference.CRM-ejb.dist}</file>
+                </library>
+                <library dirs="100">
                     <file>${reference.EAP-ejb.dist}</file>
                 </library>
                 <library dirs="100">
                     <file>${reference.EFGP-ejb.dist}</file>
+                </library>
+                <library dirs="100">
+                    <file>${reference.SHBERP-ejb.dist}</file>
                 </library>
                 <library dirs="200">
                     <file>${libs.Log4j2.classpath}</file>
@@ -50,6 +56,14 @@
         </data>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/1">
             <reference>
+                <foreign-project>CRM-ejb</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>dist</target>
+                <clean-target>clean</clean-target>
+                <id>dist</id>
+            </reference>
+            <reference>
                 <foreign-project>EAP-ejb</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
@@ -59,6 +73,14 @@
             </reference>
             <reference>
                 <foreign-project>EFGP-ejb</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>dist</target>
+                <clean-target>clean</clean-target>
+                <id>dist</id>
+            </reference>
+            <reference>
+                <foreign-project>SHBERP-ejb</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
                 <target>dist</target>
