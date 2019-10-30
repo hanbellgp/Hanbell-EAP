@@ -358,7 +358,9 @@ public class TimerBean {
                     } else {
                         if (!ed.getDept().equals(hd.getName()) || !Objects.equals(ed.getParentDept(), ep)) {
                             ed.setDept(hd.getName());
-                            ed.setParentDept(ep);
+                            if (ep != null) {
+                                ed.setParentDept(ep);
+                            }
                             if (!hd.getFlag()) {
                                 ed.setStatus("X");
                             }
@@ -430,8 +432,7 @@ public class TimerBean {
                 employeeList.forEach((e) -> {
                     boolean flag = false;
                     String company = e.getCode().substring(0, 1);
-                    if ("C".equals(company) || "H".equals(company) || "K".equals(company) || "Q".equals(company)
-                            || "Y".equals(company)) {
+                    if ("C".equals(company) || "H".equals(company) || "K".equals(company) || "Q".equals(company) || "Y".equals(company)) {
                         // EAP
                         cn.hanbell.eap.entity.SystemUser eu = eapSystemUserBean.findByUserId(e.getCode());
                         if (eu == null) {
@@ -439,12 +440,17 @@ public class TimerBean {
                             eu.setUserid(e.getCode());
                             eu.setUsername(e.getCnName());
                             eu.setDeptno(e.getDepartment().getCode());
+                            eu.setPhone(e.getMobilePhone());
+                            eu.setEmail(e.getEmail());
                             eu.setCreatorToSystem();
                             eu.setCredateToNow();
                             eapSystemUserBean.persist(eu);
                         } else {
-                            if (!Objects.equals(eu.getDeptno(), e.getDepartment().getCode())) {
+                            if (eu.getOptdate().before(e.getLastModifiedDate())) {
+                                eu.setUsername(e.getCnName());
                                 eu.setDeptno(e.getDepartment().getCode());
+                                eu.setPhone(e.getMobilePhone());
+                                eu.setEmail(e.getEmail());
                                 eu.setOptuserToSystem();
                                 eu.setOptdate(e.getLastModifiedDate());
                                 flag = true;
