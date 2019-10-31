@@ -43,6 +43,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Employee.findByCorporationId", query = "SELECT e FROM Employee e WHERE e.corporationId = :corporationId"),
     @NamedQuery(name = "Employee.findByAreaId", query = "SELECT e FROM Employee e WHERE e.areaId = :areaId"),
     @NamedQuery(name = "Employee.findByFactoryId", query = "SELECT e FROM Employee e WHERE e.factoryId = :factoryId"),
+    @NamedQuery(name = "Employee.findByDepartmentCode", query = "SELECT e FROM Employee e WHERE e.department.code = :code"),
     @NamedQuery(name = "Employee.findByDepartmentId", query = "SELECT e FROM Employee e WHERE e.departmentId = :departmentId"),
     @NamedQuery(name = "Employee.findByJobId", query = "SELECT e FROM Employee e WHERE e.jobId = :jobId"),
     @NamedQuery(name = "Employee.findByPartTimeJob", query = "SELECT e FROM Employee e WHERE e.partTimeJob = :partTimeJob"),

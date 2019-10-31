@@ -35,6 +35,16 @@ public class EmployeeBean extends SuperEJBForHRM<Employee> {
         }
     }
 
+    public List<Employee> findByDepartmentCode(String code) {
+        Query query = getEntityManager().createNamedQuery("Employee.findByDepartmentCode");
+        query.setParameter("code", code);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<Employee> findByLastModifiedDate(Date value) {
         Query query = getEntityManager().createNamedQuery("Employee.findByLastModifiedDate");
         query.setParameter("lastModifiedDate", value);
