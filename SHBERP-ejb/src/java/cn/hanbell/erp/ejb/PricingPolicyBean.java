@@ -7,9 +7,6 @@ package cn.hanbell.erp.ejb;
 
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.PricingPolicy;
-import cn.hanbell.erp.entity.PricingPolicy;
-import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.inject.Named;
