@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Secgprg.findByGroupno", query = "SELECT s FROM Secgprg s WHERE s.secgprgPK.groupno = :groupno"),
     @NamedQuery(name = "Secgprg.findByGtype", query = "SELECT s FROM Secgprg s WHERE s.secgprgPK.gtype = :gtype"),
     @NamedQuery(name = "Secgprg.findByGroupnoAndGtype", query = "SELECT s FROM Secgprg s WHERE s.secgprgPK.groupno = :groupno AND s.secgprgPK.gtype = :gtype ORDER BY s.secgprgPK.prgno"),
+    @NamedQuery(name = "Secgprg.findByGroupnoGtypeAndSysno", query = "SELECT s FROM Secgprg s WHERE s.secgprgPK.groupno = :groupno AND s.secgprgPK.gtype = :gtype AND s.secgprgPK.sysno = :sysno ORDER BY s.secgprgPK.prgno"),
     @NamedQuery(name = "Secgprg.findByPadd", query = "SELECT s FROM Secgprg s WHERE s.padd = :padd"),
     @NamedQuery(name = "Secgprg.findByPdelete", query = "SELECT s FROM Secgprg s WHERE s.pdelete = :pdelete"),
     @NamedQuery(name = "Secgprg.findByPmodify", query = "SELECT s FROM Secgprg s WHERE s.pmodify = :pmodify"),

@@ -7,10 +7,8 @@ package cn.hanbell.war.control;
 
 import cn.hanbell.erp.ejb.SecgprgBean;
 import cn.hanbell.erp.ejb.SecgroupBean;
-import cn.hanbell.erp.ejb.SecguserBean;
 import cn.hanbell.erp.entity.Secgprg;
 import cn.hanbell.erp.entity.Secgroup;
-import cn.hanbell.erp.entity.Secguser;
 import cn.hanbell.war.lazy.SecgroupModel;
 import java.io.Serializable;
 import java.util.List;
@@ -32,20 +30,18 @@ public class SecgprgManagedBean implements Serializable {
 
     @EJB
     private SecgroupBean secgroupBean;
-    @EJB
-    private SecguserBean secguserBean;
 
     private SecgroupModel model;
     private Secgroup currentEntity;
 
     private List<Secgprg> detailList;
-    private List<Secguser> detailList2;
 
     private Secgprg currentDetail;
 
     private String queryFacno;
     private String queryGroupno;
     private String queryGroupname;
+    private String querySysno;
 
     public SecgprgManagedBean() {
     }
@@ -60,15 +56,15 @@ public class SecgprgManagedBean implements Serializable {
     }
 
     public void query() {
-        if (model == null) {
-            return;
-        }
-        this.secgroupBean.setCompany(queryFacno);
-        if (queryGroupno != null && !"".equals(queryGroupno)) {
-            model.getFilterFields().put("secgroupPK.groupno", queryGroupno);
-        }
-        if (this.queryGroupname != null && !"".equals(this.queryGroupname)) {
-            model.getFilterFields().put("groupname", queryGroupname);
+        if (model != null) {
+            model.getFilterFields().clear();
+            this.secgroupBean.setCompany(queryFacno);
+            if (queryGroupno != null && !"".equals(queryGroupno)) {
+                model.getFilterFields().put("secgroupPK.groupno", queryGroupno);
+            }
+            if (this.queryGroupname != null && !"".equals(this.queryGroupname)) {
+                model.getFilterFields().put("groupname", queryGroupname);
+            }
         }
     }
 
@@ -81,9 +77,11 @@ public class SecgprgManagedBean implements Serializable {
             return "";
         } else {
             secgprgBean.setCompany(queryFacno);
-            detailList = secgprgBean.findByGroupnoAndGtype(currentEntity.getSecgroupPK().getGroupno(), "G");
-            secguserBean.setCompany(queryFacno);
-            detailList2 = secguserBean.findByGroupno(currentEntity.getSecgroupPK().getGroupno());
+            if (querySysno == null || "".equals(querySysno)) {
+                detailList = secgprgBean.findByGroupnoAndGtype(currentEntity.getSecgroupPK().getGroupno(), "G");
+            } else {
+                detailList = secgprgBean.findByGroupnoGtypeAndSysno(currentEntity.getSecgroupPK().getGroupno(), "G", querySysno);
+            }
             return path;
         }
     }
@@ -138,6 +136,20 @@ public class SecgprgManagedBean implements Serializable {
     }
 
     /**
+     * @return the querySysno
+     */
+    public String getQuerySysno() {
+        return querySysno;
+    }
+
+    /**
+     * @param querySysno the querySysno to set
+     */
+    public void setQuerySysno(String querySysno) {
+        this.querySysno = querySysno;
+    }
+
+    /**
      * @return the currentEntity
      */
     public Secgroup getCurrentEntity() {
@@ -163,20 +175,6 @@ public class SecgprgManagedBean implements Serializable {
      */
     public void setDetailList(List<Secgprg> detailList) {
         this.detailList = detailList;
-    }
-
-    /**
-     * @return the detailList2
-     */
-    public List<Secguser> getDetailList2() {
-        return detailList2;
-    }
-
-    /**
-     * @param detailList2 the detailList2 to set
-     */
-    public void setDetailList2(List<Secguser> detailList2) {
-        this.detailList2 = detailList2;
     }
 
     /**

@@ -37,7 +37,9 @@
             </p:panelGrid>
             <p:tabView id="tabView" styleClass="tabView">
                 <p:tab title="所有授权">
-                    <p:dataTable id="tableList" value="#{secgprgManagedBean.detailList}" var="item" styleClass="tableList Wid100 Mtop10"
+                    <p:dataTable id="tableList" value="#{secgprgManagedBean.detailList}" var="item" styleClass="tableList Wid100 Mtop10" paginator="true" paginatorPosition="bottom" rows="15"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="15,30,45" 
                                  selectionMode="single" selection="#{secgprgManagedBean.currentDetail}" rowKey="#{item.secgprgPK.prgno}" >
                         <p:ajax event="rowSelect"  update="formOne:dlgDetail" oncomplete="PF('dlgDetail').show();" />
                         <p:ajax event="rowUnselect"  update="formOne:dlgDetail" oncomplete="" />
@@ -98,7 +100,7 @@
                     </p:dataTable>
                 </p:tab>
                 <p:tab title="用户授权">
-                    <p:dataTable id="tableList2" value="#{secgprgManagedBean.detailList2}" var="item" styleClass="tableList Wid100 Mtop10">
+                    <p:dataTable id="tableList2" value="#{secgprgManagedBean.currentEntity.secguserList}" var="item" styleClass="tableList Wid100 Mtop10">
                         <p:column styleClass="Wid10">
                             <f:facet name="header">
                                 <h:outputText value="工号"/>
