@@ -3190,7 +3190,8 @@ public class EAPWebService {
                 } else {
                     cp.setRemark1(seri12.getBq131() == null ? "null" : seri12.getBq131());
                 }
-                cp.setDutyrate(seri12.getPropotion() == null ? "null" : seri12.getPropotion());
+                //0值改为空白
+                cp.setDutyrate(seri12.getPropotion() == null ? "" : seri12.getPropotion().trim().equals("0") ? "" : seri12.getPropotion());
                 cp.setCredate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq021()));
                 cp.setOverdate(BaseLib.getDate("yyyy/MM/dd", seri12.getBq037()));
                 badwhy = seri12.getBq503() == null ? "null" : seri12.getBq503();
