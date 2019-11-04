@@ -585,4 +585,12 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
         return query.getResultList();
     }
 
+    public List<Secgprg> findByGroupnoGtypeAndSysno(String groupno, String gtype, String sysno) {
+        Query query = getEntityManager().createNamedQuery("Secgprg.findByGroupnoGtypeAndSysno");
+        query.setParameter("groupno", groupno);
+        query.setParameter("gtype", gtype);
+        query.setParameter("sysno", sysno);
+        return query.getResultList();
+    }
+
 }

@@ -91,7 +91,13 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <description>ERP权限查询</description>
+            <description>ERP权限查询-群组</description>
+            <from-outcome>secgroupgrant</from-outcome>
+            <to-view-id>/app/erp/secgroupgrant.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <description>ERP权限查询-人员</description>
             <from-outcome>secusergrant</from-outcome>
             <to-view-id>/app/erp/secusergrant.xhtml</to-view-id>
             <redirect/>

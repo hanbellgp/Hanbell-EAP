@@ -426,8 +426,7 @@ public class TimerBean {
             }
             log4j.info("syncOrganizationByHRM,同步EAP/CRM/MES部门资料结束");
             // 同步人员
-            List<cn.hanbell.hrm.entity.Employee> employeeList = hrmEmployeeBean
-                    .findByLastModifiedDate(BaseLib.getDate("yyyy-MM-dd", BaseLib.formatDate("yyyy-MM-dd", BaseLib.getDate())));
+            List<cn.hanbell.hrm.entity.Employee> employeeList = hrmEmployeeBean.findByLastModifiedDate(BaseLib.getDate("yyyy-MM-dd", BaseLib.formatDate("yyyy-MM-dd", BaseLib.getDate())));
             if (employeeList != null && !employeeList.isEmpty()) {
                 employeeList.forEach((e) -> {
                     boolean flag = false;
@@ -444,9 +443,10 @@ public class TimerBean {
                             eu.setEmail(e.getEmail());
                             eu.setCreatorToSystem();
                             eu.setCredateToNow();
+                            eu.setOptdate(eu.getCredate());
                             eapSystemUserBean.persist(eu);
                         } else {
-                            if (eu.getOptdate().before(e.getLastModifiedDate())) {
+                            if (eu.getOptdate() != null && eu.getOptdate().before(e.getLastModifiedDate())) {
                                 eu.setUsername(e.getCnName());
                                 eu.setDeptno(e.getDepartment().getCode());
                                 eu.setPhone(e.getMobilePhone());
@@ -455,7 +455,7 @@ public class TimerBean {
                                 eu.setOptdate(e.getLastModifiedDate());
                                 flag = true;
                             }
-                            if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
+                            if (!eu.getStatus().equals("X") && e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
                                 eu.setStatus("X");
                                 eu.setOptuserToSystem();
                                 eu.setOptdate(e.getLastModifiedDate());
