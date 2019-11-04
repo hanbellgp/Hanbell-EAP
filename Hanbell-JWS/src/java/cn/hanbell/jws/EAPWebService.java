@@ -92,6 +92,7 @@ import cn.hanbell.erp.ejb.InvhadBean;
 import cn.hanbell.erp.ejb.InvmasBean;
 import cn.hanbell.erp.ejb.InvwhBean;
 import cn.hanbell.erp.ejb.MiscodeBean;
+import cn.hanbell.erp.ejb.PricingGroupBean;
 import cn.hanbell.erp.ejb.PurachBean;
 import cn.hanbell.erp.ejb.PurhaskBean;
 import cn.hanbell.erp.ejb.PurvdrBean;
@@ -310,6 +311,8 @@ public class EAPWebService {
 
     // EJBForERP
     @EJB
+    private PricingGroupBean pricingGroupBean;
+    @EJB
     private InvclswahBean invclswahBean;
     @EJB
     private InvhadBean invhadBean;
@@ -325,7 +328,6 @@ public class EAPWebService {
     private CdrqhadBean cdrqhadBean;
     @EJB
     private CdrlndtaBean cdrlndtaBean;
-
     @EJB
     private CdrlnhadBean cdrlnhadBean;
     @EJB
@@ -1488,7 +1490,7 @@ public class EAPWebService {
                 ra.setPa518(String.valueOf(i));
             }
             logreppa.setPzcnt(Integer.parseInt(ra.getPa518()));
-            syncCRMBean.syncUpdate(ra, null);
+            //syncCRMBean.syncUpdate(ra, null);
 
         }
         try {
@@ -2766,6 +2768,21 @@ public class EAPWebService {
         }
     }
 
+     @WebMethod(operationName = "updateERPCDR1P3ByOASHBERPCDR1P3")
+    public String updateERPCDR1P3ByOASHBERPCDR1P3(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = pricingGroupBean.updateByOASHBERPCDR1P3(psn);
+        } catch (Exception ex) {
+            log4j.error("createPUR210ByOAQGD时异常", ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+    
     @WebMethod(operationName = "updateERPINV140ByOAHKCW003")
     public String updateERPINV140ByOAHKCW003(@WebParam(name = "psn") String psn) {
         Boolean ret = false;

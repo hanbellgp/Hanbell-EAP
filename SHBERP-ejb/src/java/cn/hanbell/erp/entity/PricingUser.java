@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -27,25 +28,32 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "pricinguser")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PricingUser.findAll", query = "SELECT p FROM PricingUser p"),
-    @NamedQuery(name = "PricingUser.findByGroupid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.groupid = :groupid"),
-    @NamedQuery(name = "PricingUser.findByPricingtype", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.pricingtype = :pricingtype"),
-    @NamedQuery(name = "PricingUser.findByUserid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.userid = :userid"),
-    @NamedQuery(name = "PricingUser.findByFacno", query = "SELECT p FROM PricingUser p WHERE p.facno = :facno")})
+    @NamedQuery(name = "PricingUser.findAll", query = "SELECT p FROM PricingUser p")
+    ,
+    @NamedQuery(name = "PricingUser.findByGroupid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.groupid = :groupid")
+    ,
+    @NamedQuery(name = "PricingUser.findByPricingtype", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.pricingtype = :pricingtype")
+    ,
+    @NamedQuery(name = "PricingUser.findByUserid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.userid = :userid")
+    ,
+    @NamedQuery(name = "PricingUser.findByGroupidAndUserid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.groupid = :groupid AND p.pricingUserPK.userid = :userid")})
 public class PricingUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PricingUserPK pricingUserPK;
+    @JoinColumns({
+        @JoinColumn(name = "groupid", referencedColumnName = "groupid", insertable = false, updatable = false)
+        ,
+      @JoinColumn(name = "pricingtype", referencedColumnName = "pricingtype", insertable = false, updatable = false)
+    })
+    @ManyToOne(optional = true)
+    private PricingGroup pricingGroup;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 3)
     @Column(name = "facno")
     private String facno;
-    @JoinColumn(name = "groupid", referencedColumnName = "groupid", insertable = false, updatable = false)
-    @JoinColumn(name = "pricingtype", referencedColumnName = "pricingtype", insertable = false, updatable = false)
-    @ManyToOne(optional = true)
-    private PricingGroup pricingGroup;
 
     public PricingUser() {
     }
