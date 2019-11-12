@@ -26,6 +26,18 @@ public class REPTABean extends SuperEJBForCRM<REPTA> {
         super(REPTA.class);
     }
 
+    public REPTA findByPK(String ta001, String ta002) {
+        Query query = getEntityManager().createNamedQuery("REPTA.findByPK");
+        query.setParameter("ta001", ta001);
+        query.setParameter("ta002", ta002);
+        try {
+            return (REPTA) query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+
+    }
+
     public String getTA002ByTA001AndDate(String ta001, Date date) {
         String ls_no = "";
         String ls_ta002 = "";

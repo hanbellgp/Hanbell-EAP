@@ -8,8 +8,10 @@ package cn.hanbell.crm.jrs;
 import cn.hanbell.crm.app.REPPWApplication;
 import cn.hanbell.crm.app.REPTAApplication;
 import cn.hanbell.crm.ejb.REPPWBean;
+import cn.hanbell.crm.ejb.REPTABean;
 import cn.hanbell.crm.entity.REPPW;
 import cn.hanbell.crm.entity.REPPWPK;
+import cn.hanbell.crm.entity.REPTA;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.BaseLib;
@@ -35,6 +37,8 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
 
     @EJB
     private REPPWBean reppwBean;
+    @EJB
+    private REPTABean reptaBean;
 
     public REPPWFacadeREST() {
         super(REPPW.class);
@@ -64,7 +68,7 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                             mk.setPw001(entity.getRepairKindname().split("-")[0]);
                             mk.setPw002(entity.getRepairno());
                             String pw004 = repmen[i - 1];
-                            if("".equals(pw004)){
+                            if ("".equals(pw004)) {
                                 continue;
                             }
                             m.setPw004(pw004.split("-")[0]);
@@ -98,9 +102,16 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                         return new ResponseMessage("400", "请维护维修人员");
                     }
                 }
+
+                REPTA ra = reptaBean.findByPK(entity.getRepairKindname().split("-")[0], entity.getRepairno());
                 for (REPPW reppw : reppwList) {
                     reppw.setPw026(pw026);
                     reppwBean.persist(reppw);
+                }
+                //更新叫修单状态为确认
+                if (ra != null) {
+                    ra.setTa030("Y");
+                    reptaBean.update(ra);
                 }
                 return new ResponseMessage("200", "更新派工资料成功！");
             } catch (Exception ex) {

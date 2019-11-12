@@ -396,8 +396,8 @@ if (currentRow < detail.size()) {
     if(master.getLookuser1() == null || master.getLookuser1() == ""){
     dataSetRow["lookuser"] = master.getLookuser();
     }else {dataSetRow["lookuser"] = master.getLookuser1().getUserName();}
-    if(master.getLookuser1() == null || master.getLookuser1() == ""){
-    dataSetRow["takeuser"] = master.getTakeuser();
+    if(master.getTakeuser1() == null || master.getTakeuser1() == ""){
+    dataSetRow["takeuser"] = "";
     }else {dataSetRow["takeuser"] = master.getTakeuser1().getUserName();}
 
     dataSetRow["seq"] = detail.get(currentRow).getSeq();

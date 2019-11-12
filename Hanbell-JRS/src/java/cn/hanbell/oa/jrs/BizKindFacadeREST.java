@@ -40,7 +40,7 @@ public class BizKindFacadeREST extends SuperRESTForEFGP<KV> {
                 dataList.add(new KV("2", "售后服务"));
                 dataList.add(new KV("3", "厂商洽谈"));
                 dataList.add(new KV("4", "培训"));
-                dataList.add(new KV("7", "其他"));
+                dataList.add(new KV("5", "其他"));
                 return dataList;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
