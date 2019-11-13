@@ -110,6 +110,9 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                 }
                 //更新叫修单状态为确认
                 if (ra != null) {
+                    ra.setTa014("Y");
+                    ra.setTa015(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                    ra.setTa016(entity.getDetailList().get(0).getEmployeeId());
                     ra.setTa030("Y");
                     reptaBean.update(ra);
                 }
