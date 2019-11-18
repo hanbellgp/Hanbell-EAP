@@ -111,8 +111,8 @@ public class PricingGroupBean extends SuperEJBForERP<PricingGroup> {
         }
         return null;
     }
-    
-     public PricingGroup findByGroupId(String id) {
+
+    public PricingGroup findByGroupId(String id) {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT pricinggroup.groupid,pricinggroup.groupname,price09,price08,price07,price06,price05,price04,price03,price02,price01,pricinggroup.pricingtype FROM pricinggroup ");
         sb.append(" WHERE pricinggroup.groupid = '");
@@ -152,19 +152,29 @@ public class PricingGroupBean extends SuperEJBForERP<PricingGroup> {
             }
             List<SHBERPCDR1P3Detail> details = shberpcdr1p3Bean.getDetails(p.getFormSerialNumber());
             facno = p.getFacno();
-
+            pricingUserBean.setCompany(facno);
             //表身明细
             for (SHBERPCDR1P3Detail d : details) {
+                //先判断是否选了删除等级
+                if ("3".equals(d.getChangetype())) {
+                    if (null != d.getCuslevel1() || !"".equals(d.getCuslevel1())) {
+                        PricingUser du = pricingUserBean.findByGroupidAndUserid(d.getCuslevel1(), d.getCusno());
+                        if (du != null) {
+                            pricingUserBean.delete(du);
+                        }
+                    }
+                    continue;
+                }
+                //修改或新增等级
                 if (null == d.getCuslevel2() || "".equals(d.getCuslevel2())) {
                     continue;
                 }
                 PricingGroup pg = this.findByGroupId(d.getCuslevel2());
-                if(pg == null){
-                     continue;
+                if (pg == null) {
+                    continue;
                 }
                 if (null != d.getCuslevel1() || !"".equals(d.getCuslevel1())) {
-                    pricingUserBean.setCompany(facno);
-                    PricingUser pricingUser = pricingUserBean.findByGroupidAndUserid(d.getCuslevel1(),d.getCusno());
+                    PricingUser pricingUser = pricingUserBean.findByGroupidAndUserid(d.getCuslevel1(), d.getCusno());
                     if (pricingUser != null) {
                         pricingUserBean.delete(pricingUser);
                     }
