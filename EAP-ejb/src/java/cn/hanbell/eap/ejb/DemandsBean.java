@@ -6,7 +6,7 @@
 package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
-import cn.hanbell.eap.entity.Issues;
+import cn.hanbell.eap.entity.Demands;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -16,10 +16,12 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class IssuesBean extends SuperEJBForEAP<Issues>{
-    
-    public IssuesBean() {
-        super(Issues.class);
+public class DemandsBean extends SuperEJBForEAP<Demands>{
+   
+    public DemandsBean() {
+        super(Demands.class);
     }
+    
+    
     
 }

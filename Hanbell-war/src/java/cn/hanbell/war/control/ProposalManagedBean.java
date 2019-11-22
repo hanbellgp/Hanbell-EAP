@@ -13,7 +13,15 @@ import cn.hanbell.eap.entity.ProposalAttach;
 import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.war.lazy.ProposalModel;
 import cn.hanbell.war.web.SuperMultiBean;
+import com.lightshell.comm.BaseLib;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
+import java.text.FieldPosition;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -41,15 +49,27 @@ public class ProposalManagedBean extends SuperMultiBean<Proposal, ProposalAttach
         super(Proposal.class, ProposalAttach.class);
     }
     // 自动获取案件编号
-    // @Override
-    // protected boolean doBeforePersist() throws Exception {
-    // if (super.doBeforePersist()) {
-    // String fomrid = proposalBean.getFormId(BaseLib.getDate());
-    // newEntity.setProposalid(fomrid);
-    // return true;
-    // }
-    // return false;
-    // }
+     @Override
+     protected boolean doBeforePersist() throws Exception {
+     if (super.doBeforePersist()) {
+     String fomrid = proposalBean.getFormId(BaseLib.getDate());
+     newEntity.setProposalid(fomrid);
+     return true;
+     }
+     return false;
+     }
+
+    @Override
+    public void reset() {
+        queryFormId = null;
+        queryName = null;
+        queryCreator = null;
+        queryDept = null;
+        queryDateBegin = null;
+        queryDateEnd = null;
+        queryState = null;
+        super.reset(); //
+    }
 
     @Override
     public void handleDialogReturnWhenNew(SelectEvent event) {
@@ -162,4 +182,28 @@ public class ProposalManagedBean extends SuperMultiBean<Proposal, ProposalAttach
         }
     }
 
+//    //设置唯一ID
+//    static String oldProsalID = "";
+//    //唯一ID的生成
+//    public String getnewPorsaalID() {
+//        String id = null;
+//        Date date = new Date();
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMM");
+//        String thisData = oldProsalID.substring(0, 6);
+//        //这个判断就是判断你数据取出来的最后一个业务单号是不是当月的
+//        if (!formatter.format(date).equals(thisData)) {
+//          //过了一个月
+//            thisData = formatter.format(date);
+//            id = "HHTG" + thisData + "0001";
+//        } else {
+//           //当月
+//            DecimalFormat df = new DecimalFormat("0000");
+//           //不是新的一月就累加
+//            id = "HHTG" + formatter.format(date)
+//                    + df.format(1 + Integer.parseInt(oldProsalID.substring(6)));
+//        }
+//        oldProsalID=id;
+//        return id;
+//
+//    }
 }
