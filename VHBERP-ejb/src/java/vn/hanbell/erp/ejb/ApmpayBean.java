@@ -138,7 +138,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad.setTrntype("");  //设置交易种类
 
                 //apmpad.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad.getAccno(), 'D')); //设置config参数
-                List<Accsped> accspeds = accspedBean.findByAccno(facno);
+                List<Accsped> accspeds = accspedBean.findByAccno(apmpad.getAccno());
                 if (null == accspeds || accspeds.isEmpty()) {
                     apmpad.setConfig((short) 0);
                 } else {
@@ -149,7 +149,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
 
                 //预算金额更新逻辑
                 BudgetDetail u;
-                u = new BudgetDetail(facno, "", period, detail0l.getCenterid(), detail0l.getAccno(), "R", apmpadPK.getTrse(), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(Double.valueOf(detail0l.getTaxInclusive()) * (v.getRatio())), BigDecimal.ZERO);
+                u = new BudgetDetail(facno, "", period, detail0l.getCenterid(), detail0l.getBudgetAcc(), "R", apmpadPK.getTrse(), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(Double.valueOf(detail0l.getTaxInclusive()) * (v.getRatio())), BigDecimal.ZERO);
                 u.setPreamts(u.getPreamts().subtract(u.getDecramts()));
                 budgetDetails.add(u);
 
@@ -180,7 +180,13 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad.setRefamtfs(BigDecimal.ZERO);   //对应相关金额原币
 
                 apmpad.setAccno("3339");
-                apmpad.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad.getAccno(), 'D'));  //设置config参数
+                //apmpad.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad.getAccno(), 'D'));  //设置config参数
+                List<Accsped> accspeds = accspedBean.findByAccno(apmpad.getAccno());
+                if (null == accspeds || accspeds.isEmpty()) {
+                    apmpad.setConfig((short) 0);
+                } else {
+                    apmpad.setConfig(accspeds.get(0).getAccspedPK().getConfig());
+                }
 
                 apmpads.add(apmpad);
 
@@ -210,9 +216,15 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             apmpad2.setRefamt(BigDecimal.ZERO);     //对应相关金额本币
             apmpad2.setRefamtfs(BigDecimal.ZERO);   //对应相关金额原币
 
-            apmpad2.setAccno("3388");
-            apmpad2.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad2.getAccno(), 'C'));  //设置config参数
-            apmpad2.setCuskind("9E");
+            apmpad2.setAccno("1111");               //现金
+            //apmpad2.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad2.getAccno(), 'C'));  //设置config参数
+            List<Accsped> accspeds = accspedBean.findByAccno(apmpad2.getAccno());
+            if (null == accspeds || accspeds.isEmpty()) {
+                apmpad2.setConfig((short) 0);
+            } else {
+                apmpad2.setConfig(accspeds.get(0).getAccspedPK().getConfig());
+            }
+            apmpad2.setCuskind("9E");    //对象类别
             apmpad2.setVdrno(v.getAppUser());
             Miscode miscode = miscodeBean.findByPK("9E", v.getAppUser());
             if (miscode != null) {
@@ -304,7 +316,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             apmpad.setTrntype("");                                              //设置交易种类
 
             //apmpad.setConfig(accacrBean.getConfig("V", "APM", "3", h.getRkd(), apmpad.getAccno(), 'D'));//设置config参数
-            List<Accsped> accspeds = accspedBean.findByAccno("V");
+            List<Accsped> accspeds = accspedBean.findByAccno(apmpad.getAccno());
             if (null == accspeds || accspeds.isEmpty()) {
                 apmpad.setConfig((short) 0);
             } else {
@@ -320,7 +332,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             apmpadPK2.setTrse((short) (2));
             apmpad2.setApmpadPK(apmpadPK2);
 
-            apmpad2.setAccno("1121");                                           //设置会计科目
+            apmpad2.setAccno("1111");                                           //设置会计科目
             apmpad2.setCoin(j.getCoin());                                       //设置币别
             apmpad2.setRatio(BigDecimal.valueOf(j.getRatio()));                 //设置汇率
 
@@ -341,6 +353,12 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             apmpad2.setTrntype("");                                             //设置交易种类
 
             //apmpad2.setConfig(accacrBean.getConfig("V", "APM", "3", h.getRkd(), apmpad2.getAccno(), 'C')); //设置config参数
+            accspeds = accspedBean.findByAccno(apmpad2.getAccno());
+            if (null == accspeds || accspeds.isEmpty()) {
+                apmpad2.setConfig((short) 0);
+            } else {
+                apmpad2.setConfig(accspeds.get(0).getAccspedPK().getConfig());
+            }
             apmpads.add(apmpad2);
 
             persist(h);
@@ -365,7 +383,6 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
         Date date;
         String period;
         try {
-
             date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())); //付款日期
             period = BaseLib.formatDate("yyyyMM", date);
             Apmpay h = new Apmpay();
@@ -433,12 +450,18 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad.setVouseq((short) (3));                                  //对应相关序号
                 apmpad.setTrntype("");                                          //设置交易种类
 
-                apmpad.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad.getAccno(), 'D')); //设置config参数
+                //apmpad.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad.getAccno(), 'D')); //设置config参数
+                List<Accsped> accspeds = accspedBean.findByAccno(apmpad.getAccno());
+                if (null == accspeds || accspeds.isEmpty()) {
+                    apmpad.setConfig((short) 0);
+                } else {
+                    apmpad.setConfig(accspeds.get(0).getAccspedPK().getConfig());
+                }
                 apmpads.add(apmpad);
 
                 //预算金额更新逻辑
                 BudgetDetail u;
-                u = new BudgetDetail(facno, "", period, detail0l.getCenterid(), detail0l.getAccno(), "R", apmpadPK.getTrse(), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(Double.valueOf(detail0l.getTaxInclusive()) * (g.getRatio())), BigDecimal.ZERO);
+                u = new BudgetDetail(facno, "", period, detail0l.getCenterid(), detail0l.getBudgetAcc(), "R", apmpadPK.getTrse(), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(Double.valueOf(detail0l.getTaxInclusive()) * (g.getRatio())), BigDecimal.ZERO);
                 u.setPreamts(u.getPreamts().subtract(u.getDecramts()));
                 budgetDetails.add(u);
             }
@@ -467,7 +490,13 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad2.setRefamtfs(BigDecimal.ZERO);
                 apmpad2.setRefamt(BigDecimal.ZERO);
                 apmpad2.setAccno("3339");
-                apmpad2.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad2.getAccno(), 'D'));//设置config参数
+                //apmpad2.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad2.getAccno(), 'D'));//设置config参数
+                List<Accsped> accspeds = accspedBean.findByAccno(apmpad2.getAccno());
+                if (null == accspeds || accspeds.isEmpty()) {
+                    apmpad2.setConfig((short) 0);
+                } else {
+                    apmpad2.setConfig(accspeds.get(0).getAccspedPK().getConfig());
+                }
 
                 apmpads.add(apmpad2);
 
@@ -504,7 +533,13 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 //apmpad.setVouseq((short) (2));                                //对应相关序号
                 apmpad3.setTrntype("");                                         //设置交易种类
 
-                apmpad3.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad3.getAccno(), 'D')); //设置config参数
+                //apmpad3.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad3.getAccno(), 'D')); //设置config参数
+                List<Accsped> accspeds = accspedBean.findByAccno(apmpad3.getAccno());
+                if (null == accspeds || accspeds.isEmpty()) {
+                    apmpad3.setConfig((short) 0);
+                } else {
+                    apmpad3.setConfig(accspeds.get(0).getAccspedPK().getConfig());
+                }
                 apmpads.add(apmpad3);
             }
 
@@ -532,7 +567,13 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad4.setRefamtfs(BigDecimal.ZERO);
                 apmpad4.setRefamt(BigDecimal.ZERO);
                 apmpad4.setAccno("1410");
-                apmpad4.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad4.getAccno(), 'C'));  //设置config参数
+                //apmpad4.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad4.getAccno(), 'C'));  //设置config参数
+                List<Accsped> accspeds = accspedBean.findByAccno(apmpad4.getAccno());
+                if (null == accspeds || accspeds.isEmpty()) {
+                    apmpad4.setConfig((short) 0);
+                } else {
+                    apmpad4.setConfig(accspeds.get(0).getAccspedPK().getConfig());
+                }
 
                 apmpad4.setCuskind("9E");
                 apmpad4.setVdrno(g.getAppUser());
@@ -570,7 +611,13 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad5.setRefamtfs(BigDecimal.ZERO);
                 apmpad5.setRefamt(BigDecimal.ZERO);
                 apmpad5.setAccno("1410");
-                apmpad5.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad5.getAccno(), 'C'));  //设置config参数
+                //apmpad5.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad5.getAccno(), 'C'));  //设置config参数
+                List<Accsped> accspeds = accspedBean.findByAccno(apmpad5.getAccno());
+                if (null == accspeds || accspeds.isEmpty()) {
+                    apmpad5.setConfig((short) 0);
+                } else {
+                    apmpad5.setConfig(accspeds.get(0).getAccspedPK().getConfig());
+                }
 
                 apmpad5.setCuskind("9E");
                 apmpad5.setVdrno(g.getAppUser());
@@ -600,8 +647,14 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad6.setTnfamtfs(BigDecimal.ZERO);
                 apmpad6.setRefamtfs(BigDecimal.ZERO);
                 apmpad6.setRefamt(BigDecimal.ZERO);
-                apmpad6.setAccno("3388");
-                apmpad6.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad6.getAccno(), 'C'));  //设置config参数
+                apmpad6.setAccno("1111");
+                //apmpad6.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad6.getAccno(), 'C'));  //设置config参数
+                accspeds = accspedBean.findByAccno(apmpad6.getAccno());
+                if (null == accspeds || accspeds.isEmpty()) {
+                    apmpad6.setConfig((short) 0);
+                } else {
+                    apmpad6.setConfig(accspeds.get(0).getAccspedPK().getConfig());
+                }
 
                 apmpad6.setCuskind("9E");
                 apmpad6.setVdrno(g.getAppUser());
