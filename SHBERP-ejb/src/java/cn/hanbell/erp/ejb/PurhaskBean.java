@@ -188,7 +188,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     pd.setAskdate(format.parse(detail.getAskdateTxt()));                         //设置预计交期
                 }
                 purvdrBean.setCompany(facno);
-                if (!detail.getVdrna().isEmpty()) {
+                if (!detail.getVdrno().isEmpty()) {
                     Purvdr pv = purvdrBean.findByVdrno(detail.getVdrno());
                     pd.setTermcode(pv.getTermcode());
                     miscodeBean.setCompany(facno);
