@@ -134,7 +134,8 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 }
                 apmpad.setCramtfs(BigDecimal.ZERO);
                 apmpad.setCramt(BigDecimal.ZERO);
-                apmpad.setVouseq((short) (3));                                  //对应相关序号
+                //apmpad.setVouseq((short) (3));                                  //对应相关序号
+                apmpad.setVouseq(apmpadPK.getTrse());
                 apmpad.setTrntype("");  //设置交易种类
 
                 //apmpad.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad.getAccno(), 'D')); //设置config参数
@@ -178,6 +179,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad.setTnfamtfs(BigDecimal.ZERO);   //本次冲账金额原币
                 apmpad.setRefamt(BigDecimal.ZERO);     //对应相关金额本币
                 apmpad.setRefamtfs(BigDecimal.ZERO);   //对应相关金额原币
+                apmpad.setVouseq(apmpadPK.getTrse());
 
                 apmpad.setAccno("3339");
                 //apmpad.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad.getAccno(), 'D'));  //设置config参数
@@ -215,6 +217,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             apmpad2.setTnfamtfs(BigDecimal.ZERO);   //本次冲账金额原币
             apmpad2.setRefamt(BigDecimal.ZERO);     //对应相关金额本币
             apmpad2.setRefamtfs(BigDecimal.ZERO);   //对应相关金额原币
+            apmpad2.setVouseq(apmpadPK2.getTrse());
 
             apmpad2.setAccno("1111");               //现金
             //apmpad2.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad2.getAccno(), 'C'));  //设置config参数
@@ -423,8 +426,8 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad.setAccno(detail0l.getAccno());                           //设置会计科目
                 apmpad.setCoin(g.getCoin());                                    //设置币别
                 apmpad.setRatio(BigDecimal.valueOf(g.getRatio()));              //设置汇率
-                apmpad.setCuskind("GE");                                    //设置对象代号类别（cuskind）
-                apmpad.setVdrno(detail0l.getBudgetDepttxt());               //设置费用部门（预算部门）
+                apmpad.setCuskind("GE");                                        //设置对象代号类别（cuskind）
+                apmpad.setVdrno(detail0l.getBudgetDepttxt());                   //设置费用部门（预算部门）
                 apmpad.setVdrna(detail0l.getBudgetDeptlbl());
                 apmpad.setTnfamt(BigDecimal.ZERO);
                 apmpad.setTnfamtfs(BigDecimal.ZERO);
@@ -447,7 +450,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 }
                 apmpad.setCramtfs(BigDecimal.ZERO);
                 apmpad.setCramt(BigDecimal.ZERO);
-                apmpad.setVouseq((short) (3));                                  //对应相关序号
+                apmpad.setVouseq(apmpadPK.getTrse());                           //对应相关序号
                 apmpad.setTrntype("");                                          //设置交易种类
 
                 //apmpad.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad.getAccno(), 'D')); //设置config参数
@@ -482,6 +485,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad2.setRatio(BigDecimal.valueOf(g.getRatio()));             //设置汇率
                 apmpad2.setDramtfs(BigDecimal.valueOf(g.getTotaltaxesRMB() / g.getRatio()));//设置dramtfs借方原币
                 apmpad2.setDramt(BigDecimal.valueOf(g.getTotaltaxesRMB()));     //设置dramt借方本币
+                apmpad2.setVouseq(apmpadPK2.getTrse());
 
                 apmpad2.setCramtfs(BigDecimal.ZERO);
                 apmpad2.setCramt(BigDecimal.ZERO);
@@ -530,7 +534,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
 
                 apmpad3.setDramtfs(BigDecimal.valueOf(g.getTotalRefund()));
                 apmpad3.setDramt(BigDecimal.valueOf(g.getTotalRefund() * (g.getRatio())));
-                //apmpad.setVouseq((short) (2));                                //对应相关序号
+                apmpad3.setVouseq(apmpadPK3.getTrse());                         //对应相关序号
                 apmpad3.setTrntype("");                                         //设置交易种类
 
                 //apmpad3.setConfig(accacrBean.getConfig(facno, "APM", "3", h.getRkd(), apmpad3.getAccno(), 'D')); //设置config参数
@@ -561,6 +565,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad4.setCramtfs(BigDecimal.valueOf(c2));                     //设置cramtfs报销总额原币
                 double c1 = g.getRatio() * c2;
                 apmpad4.setCramt(BigDecimal.valueOf(c1));                       //设置cramt报销总额本币
+                apmpad4.setVouseq(apmpadPK4.getTrse());
 
                 apmpad4.setTnfamt(BigDecimal.ZERO);
                 apmpad4.setTnfamtfs(BigDecimal.ZERO);
@@ -605,6 +610,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad5.setCramtfs(BigDecimal.valueOf(c2));                     //设置 cramtfs(报销总额原币)
                 double c1 = g.getRatio() * c2;
                 apmpad5.setCramt(BigDecimal.valueOf(c1));                       //设置 cramt(人民币报销 总额)
+                apmpad5.setVouseq(apmpadPK5.getTrse());
 
                 apmpad5.setTnfamt(BigDecimal.ZERO);
                 apmpad5.setTnfamtfs(BigDecimal.ZERO);
@@ -641,6 +647,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad6.setCramtfs(BigDecimal.valueOf(c3));                     //设置cramtfs报销总额原币
                 double c4 = c3 * g.getRatio();
                 apmpad6.setCramt(BigDecimal.valueOf(c4));                       //设置cramt报销总额本币
+                apmpad6.setVouseq(apmpadPK6.getTrse());
 
                 apmpad6.setApmpadPK(apmpadPK6);
                 apmpad6.setTnfamt(BigDecimal.ZERO);
