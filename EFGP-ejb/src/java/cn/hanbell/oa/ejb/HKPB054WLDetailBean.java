@@ -6,9 +6,9 @@
 package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
-import cn.hanbell.oa.entity.HKPB054DetailB;
-import javax.ejb.LocalBean;
+import cn.hanbell.oa.entity.HKPB054WLDetail;
 import javax.ejb.Stateless;
+import javax.ejb.LocalBean;
 
 /**
  *
@@ -16,10 +16,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class HKPB054DetailBBean extends SuperEJBForEFGP<HKPB054DetailB> {
+public class HKPB054WLDetailBean extends SuperEJBForEFGP<HKPB054WLDetail> {
 
-    public HKPB054DetailBBean() {
-        super(HKPB054DetailB.class);
+    public HKPB054WLDetailBean() {
+        super(HKPB054WLDetail.class);
     }
-
 }

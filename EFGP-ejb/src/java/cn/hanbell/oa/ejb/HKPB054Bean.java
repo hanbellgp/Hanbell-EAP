@@ -8,7 +8,7 @@ package cn.hanbell.oa.ejb;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.HKPB054;
 import cn.hanbell.oa.entity.HKPB054Detail;
-import cn.hanbell.oa.entity.HKPB054DetailB;
+import cn.hanbell.oa.entity.HKPB054WLDetail;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -22,15 +22,15 @@ import javax.ejb.Stateless;
 @Stateless
 @LocalBean
 public class HKPB054Bean extends SuperEJBForEFGP<HKPB054> {
-    
+
     @EJB
-    private HKPB054DetailBean hkpbdbDetailBean;
+    private HKPB054DetailBean hkpb054DetailBean;
     @EJB
-    private HKPB054DetailBBean hkpb054DetailBBean;
-    
+    private HKPB054WLDetailBean hkpb054WLDetailBean;
+
     private List<HKPB054Detail> hkpb054DetalList;
-    
-    private List<HKPB054DetailB> hkpb054DetailBList;
+
+    private List<HKPB054WLDetail> hkpb054WLDetailList;
 
     public HKPB054Bean() {
         super(HKPB054.class);
@@ -41,22 +41,21 @@ public class HKPB054Bean extends SuperEJBForEFGP<HKPB054> {
     }
 
     public void setHkpb054DetalList(Object value) {
-        hkpb054DetalList = hkpbdbDetailBean.findByFSN(value.toString());
+        hkpb054DetalList = hkpb054DetailBean.findByFSN(value.toString());
         if (hkpb054DetalList == null) {
             hkpb054DetalList = new ArrayList<>();
         }
     }
 
-    public List<HKPB054DetailB> getHkpb054DetailBList() {
-        return hkpb054DetailBList;
+    public List<HKPB054WLDetail> getHkpb054WLDetailList() {
+        return hkpb054WLDetailList;
     }
 
-    public void setHkpb054DetailBList(Object value) {
-        hkpb054DetailBList = hkpb054DetailBBean.findByFSN(value.toString());
-        if (hkpb054DetailBList == null) {
-            hkpb054DetailBList = new ArrayList<>();
+    public void setHkpb054WLDetailList(Object value) {
+        hkpb054WLDetailList = hkpb054WLDetailBean.findByFSN(value.toString());
+        if (hkpb054WLDetailList == null) {
+            hkpb054WLDetailList = new ArrayList<>();
         }
     }
-
 
 }

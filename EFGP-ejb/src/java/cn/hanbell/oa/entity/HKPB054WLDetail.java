@@ -22,21 +22,39 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Administrator
  */
 @Entity
-@Table(name = "HK_PB054_DetailB")
+@Table(name = "HK_PB054_WLDetail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HKPB054DetailB.findAll", query = "SELECT h FROM HKPB054DetailB h"),
-    @NamedQuery(name = "HKPB054DetailB.findByOID", query = "SELECT h FROM HKPB054DetailB h WHERE h.oid = :oid"),
-    @NamedQuery(name = "HKPB054DetailB.findByFSN", query = "SELECT h FROM HKPB054DetailB h WHERE h.formSerialNumber = :fsn"),})
-public class HKPB054DetailB implements Serializable {
+    @NamedQuery(name = "HKPB054WLDetail.findAll", query = "SELECT h FROM HKPB054WLDetail h"),
+    @NamedQuery(name = "HKPB054WLDetail.findByFSN", query = "SELECT h FROM HKPB054WLDetail h WHERE h.formSerialNumber = :fsn"),
+    @NamedQuery(name = "HKPB054WLDetail.findByOID", query = "SELECT h FROM HKPB054WLDetail h WHERE h.oid = :oid")})
+public class HKPB054WLDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Size(max = 255)
+    @Column(name = "JEtotalB")
+    private String jEtotalB;
+    @Size(max = 255)
+    @Column(name = "no")
+    private String no;
+    @Size(max = 255)
+    @Column(name = "wareh")
+    private String wareh;
+    @Size(max = 255)
+    @Column(name = "cost")
+    private String cost;
+    @Size(max = 255)
+    @Column(name = "quantity")
+    private String quantity;
+    @Size(max = 255)
+    @Column(name = "itdsc")
+    private String itdsc;
     @Size(max = 255)
     @Column(name = "unmsr")
     private String unmsr;
     @Size(max = 255)
-    @Column(name = "JEtotalB")
-    private String jEtotalB;
+    @Column(name = "formSerialNumber")
+    private String formSerialNumber;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -44,46 +62,17 @@ public class HKPB054DetailB implements Serializable {
     @Column(name = "OID")
     private String oid;
     @Size(max = 255)
-    @Column(name = "no")
-    private String no;
-    @Size(max = 255)
-    @Column(name = "abcclass")
-    private String abcclass;
-    @Size(max = 255)
-    @Column(name = "quantity")
-    private String quantity;
-    @Size(max = 255)
     @Column(name = "itnbr")
     private String itnbr;
-    @Size(max = 255)
-    @Column(name = "itdsc")
-    private String itdsc;
-    @Size(max = 255)
-    @Column(name = "cost")
-    private String cost;
-    @Size(max = 255)
-    @Column(name = "formSerialNumber")
-    private String formSerialNumber;
-    @Size(max = 255)
-    @Column(name = "wareh")
-    private String wareh;
     @Size(max = 255)
     @Column(name = "whdsc")
     private String whdsc;
 
-    public HKPB054DetailB() {
+    public HKPB054WLDetail() {
     }
 
-    public HKPB054DetailB(String oid) {
+    public HKPB054WLDetail(String oid) {
         this.oid = oid;
-    }
-
-    public String getUnmsr() {
-        return unmsr;
-    }
-
-    public void setUnmsr(String unmsr) {
-        this.unmsr = unmsr;
     }
 
     public String getJEtotalB() {
@@ -94,14 +83,6 @@ public class HKPB054DetailB implements Serializable {
         this.jEtotalB = jEtotalB;
     }
 
-    public String getOid() {
-        return oid;
-    }
-
-    public void setOid(String oid) {
-        this.oid = oid;
-    }
-
     public String getNo() {
         return no;
     }
@@ -110,36 +91,12 @@ public class HKPB054DetailB implements Serializable {
         this.no = no;
     }
 
-    public String getAbcclass() {
-        return abcclass;
+    public String getWareh() {
+        return wareh;
     }
 
-    public void setAbcclass(String abcclass) {
-        this.abcclass = abcclass;
-    }
-
-    public String getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getItnbr() {
-        return itnbr;
-    }
-
-    public void setItnbr(String itnbr) {
-        this.itnbr = itnbr;
-    }
-
-    public String getItdsc() {
-        return itdsc;
-    }
-
-    public void setItdsc(String itdsc) {
-        this.itdsc = itdsc;
+    public void setWareh(String wareh) {
+        this.wareh = wareh;
     }
 
     public String getCost() {
@@ -150,6 +107,30 @@ public class HKPB054DetailB implements Serializable {
         this.cost = cost;
     }
 
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getItdsc() {
+        return itdsc;
+    }
+
+    public void setItdsc(String itdsc) {
+        this.itdsc = itdsc;
+    }
+
+    public String getUnmsr() {
+        return unmsr;
+    }
+
+    public void setUnmsr(String unmsr) {
+        this.unmsr = unmsr;
+    }
+
     public String getFormSerialNumber() {
         return formSerialNumber;
     }
@@ -158,12 +139,20 @@ public class HKPB054DetailB implements Serializable {
         this.formSerialNumber = formSerialNumber;
     }
 
-    public String getWareh() {
-        return wareh;
+    public String getOid() {
+        return oid;
     }
 
-    public void setWareh(String wareh) {
-        this.wareh = wareh;
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
+    public String getItnbr() {
+        return itnbr;
+    }
+
+    public void setItnbr(String itnbr) {
+        this.itnbr = itnbr;
     }
 
     public String getWhdsc() {
@@ -184,10 +173,10 @@ public class HKPB054DetailB implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof HKPB054DetailB)) {
+        if (!(object instanceof HKPB054WLDetail)) {
             return false;
         }
-        HKPB054DetailB other = (HKPB054DetailB) object;
+        HKPB054WLDetail other = (HKPB054WLDetail) object;
         if ((this.oid == null && other.oid != null) || (this.oid != null && !this.oid.equals(other.oid))) {
             return false;
         }
@@ -196,7 +185,7 @@ public class HKPB054DetailB implements Serializable {
 
     @Override
     public String toString() {
-        return "cn.hanbell.oa.entity.HKPB054DetailB[ oid=" + oid + " ]";
+        return "cn.hanbell.oa.entity.HKPB054WLDetail[ oid=" + oid + " ]";
     }
-    
+
 }

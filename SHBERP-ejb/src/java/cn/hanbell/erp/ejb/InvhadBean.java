@@ -33,7 +33,7 @@ import cn.hanbell.oa.entity.HKGC001Detail;
 import cn.hanbell.oa.entity.HKGC003;
 import cn.hanbell.oa.entity.HKGC003Detail;
 import cn.hanbell.oa.entity.HKPB054;
-import cn.hanbell.oa.entity.HKPB054DetailB;
+import cn.hanbell.oa.entity.HKPB054WLDetail;
 import cn.hanbell.oa.entity.SHBERPINV325;
 import cn.hanbell.oa.entity.SHBERPINV325Detail;
 import cn.hanbell.oa.entity.WARMI05;
@@ -967,8 +967,8 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             throw new NullPointerException(psn + "流程实例不存在");
         }
         //判断物料赔款明细是否存在
-        hkpb054Bean.setHkpb054DetailBList(e.getFormSerialNumber());
-        if (hkpb054Bean.getHkpb054DetailBList() == null || hkpb054Bean.getHkpb054DetailBList().isEmpty()) {
+        hkpb054Bean.setHkpb054WLDetailList(e.getFormSerialNumber());
+        if (hkpb054Bean.getHkpb054WLDetailList() == null || hkpb054Bean.getHkpb054WLDetailList().isEmpty()) {
             throw new NullPointerException("OA表单中不存在物料赔款明细");
         }
         String facno;
@@ -1012,8 +1012,8 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 c.set(Calendar.DATE, 1);
                 trdate = c.getTime();
             }
-            for (HKPB054DetailB d : hkpb054Bean.getHkpb054DetailBList()) {
-                //获取品号资料
+            for (HKPB054WLDetail d : hkpb054Bean.getHkpb054WLDetailList()) {
+            //获取品号资料
                 invmas = invmasBean.findByItnbr(d.getItnbr());
                 if (invmas == null) {
                     throw new RuntimeException(d.getItnbr() + "ERP中不存在");
