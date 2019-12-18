@@ -56,6 +56,7 @@ import cn.hanbell.eap.comm.MailNotify;
 import cn.hanbell.eap.ejb.CustomerComplaintBean;
 import cn.hanbell.eap.ejb.CustomerComplaintExpenseBean;
 import cn.hanbell.eap.ejb.CustomerComplaintMaterialBean;
+import cn.hanbell.eap.ejb.DemandsBean;
 import cn.hanbell.eap.ejb.DepartmentBean;
 import cn.hanbell.eap.ejb.EmailRecipientBean;
 import cn.hanbell.eap.ejb.MailNotificationBean;
@@ -237,6 +238,8 @@ public class EAPWebService {
     private CustomerComplaintExpenseBean complaintExpenseBean;
     @EJB
     private CustomerComplaintMaterialBean complaintMaterialBean;
+    @EJB
+    private DemandsBean demandsBean;
 
     // EJBForEAM
     @EJB
@@ -2913,6 +2916,21 @@ public class EAPWebService {
             }
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "updateRootCloudDeviceAlarmStatus", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateOAHKXQB001")
+    public String updateOAHKXQB001(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = demandsBean.initByOAHKXQB001(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKXQB001", psn), ex);
         }
         if (ret) {
             return "200";

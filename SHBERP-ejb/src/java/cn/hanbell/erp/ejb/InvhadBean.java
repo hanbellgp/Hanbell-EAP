@@ -22,6 +22,7 @@ import cn.hanbell.oa.ejb.HKFW006Inv310Bean;
 import cn.hanbell.oa.ejb.HKFW006Inv310DetailBean;
 import cn.hanbell.oa.ejb.HKGC001Bean;
 import cn.hanbell.oa.ejb.HKGC003Bean;
+import cn.hanbell.oa.ejb.HKPB054Bean;
 import cn.hanbell.oa.ejb.SHBERPINV325Bean;
 import cn.hanbell.oa.ejb.WARMI05Bean;
 import cn.hanbell.oa.entity.HKFW006;
@@ -31,6 +32,8 @@ import cn.hanbell.oa.entity.HKGC001;
 import cn.hanbell.oa.entity.HKGC001Detail;
 import cn.hanbell.oa.entity.HKGC003;
 import cn.hanbell.oa.entity.HKGC003Detail;
+import cn.hanbell.oa.entity.HKPB054;
+import cn.hanbell.oa.entity.HKPB054DetailB;
 import cn.hanbell.oa.entity.SHBERPINV325;
 import cn.hanbell.oa.entity.SHBERPINV325Detail;
 import cn.hanbell.oa.entity.WARMI05;
@@ -71,6 +74,9 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
     private SHBERPINV325Bean shberpinv325Bean;
     @EJB
     private WARMI05Bean warmi05Bean;
+
+    @EJB
+    private HKPB054Bean hkpb054Bean;
 
     //EJBForERP
     @EJB
@@ -951,6 +957,120 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         } catch (Exception ex) {
             log4j.error("initINV310", ex);
             return "";
+        }
+    }
+
+    public Boolean initByOAHKPB054(String psn) throws Exception {
+        HKPB054 e = hkpb054Bean.findByPSN(psn);
+        //判断流程是否存在
+        if (e == null) {
+            throw new NullPointerException(psn + "流程实例不存在");
+        }
+        //判断物料赔款明细是否存在
+        hkpb054Bean.setHkpb054DetailBList(e.getFormSerialNumber());
+        if (hkpb054Bean.getHkpb054DetailBList() == null || hkpb054Bean.getHkpb054DetailBList().isEmpty()) {
+            throw new NullPointerException("OA表单中不存在物料赔款明细");
+        }
+        String facno;
+        String prono;
+        String trno;
+        Date trdate;
+        BigDecimal trnqy;
+        Date indate = BaseLib.getDate();
+
+        facno = e.getFacno();
+        prono = "1";
+        //获取ERP库存交易类别
+        invdouBean.setCompany(facno);
+        Invdou IAB = invdouBean.findByTrtype("IAB");
+        if (IAB == null) {
+            throw new NullPointerException("库存交易单据类别错误，ERP不存在" + "IAB");
+        }
+        //手工领料单
+        int trseq = 0;
+        Invhad invhad;
+        Invdta invdta;
+        Invmas invmas;
+        Invbal invbal;
+        List<Invdta> addedIAB = new ArrayList<>();
+        HashMap<SuperEJBForERP, List<?>> detailIABAdded = new HashMap<>();
+        detailIABAdded.put(invdtaBean, addedIAB);
+
+        this.setCompany(facno);
+        invmasBean.setCompany(facno);
+        invsernoBean.setCompany(facno);
+        invsysBean.setCompany(facno);
+        try {
+            trdate = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
+            String mon = BaseLib.formatDate("yyyyMM", trdate);
+            Invsys invsys = invsysBean.findByFacno(facno);
+            //如果已月结就改成次月1号
+            if (mon.equals(invsys.getLmonth())) {
+                Calendar c = Calendar.getInstance();
+                c.setTime(trdate);
+                c.add(Calendar.MONTH, 1);
+                c.set(Calendar.DATE, 1);
+                trdate = c.getTime();
+            }
+            for (HKPB054DetailB d : hkpb054Bean.getHkpb054DetailBList()) {
+                //获取品号资料
+                invmas = invmasBean.findByItnbr(d.getItnbr());
+                if (invmas == null) {
+                    throw new RuntimeException(d.getItnbr() + "ERP中不存在");
+                }
+                //判断是否有库存数量
+                invbal = invbalBean.findByItnbrAndWareh(d.getItnbr(), d.getWareh());
+                if (invbal == null) {
+                    throw new RuntimeException(d.getItnbr() + "ERP中不存在库存信息");
+                } else {
+                    trnqy = new BigDecimal(d.getQuantity());
+                    if (invbal.getOnhand1().compareTo(trnqy) == -1) {
+                        throw new RuntimeException(d.getItnbr() + "ERP中库存不足");
+                    }
+                }
+                trseq++;
+                //调拨出去
+                invdta = new Invdta(d.getItnbr(), facno, prono, "", trseq);
+                invdta.setTrtype(IAB.getTrtype());
+                invdta.setItcls(invmas.getItcls());
+                invdta.setItclscode(invmas.getItclscode());
+                invdta.setTrnqy1(BigDecimal.valueOf(Double.parseDouble(d.getQuantity())));
+                invdta.setTrnqy2(BigDecimal.ZERO);
+                invdta.setTrnqy3(BigDecimal.ZERO);
+                invdta.setUnmsr1(invmas.getUnmsr1());
+                invdta.setWareh(d.getWareh());
+                invdta.setFixnr("");
+                invdta.setVarnr("");
+                invdta.setIocode(IAB.getIocode());
+                addedIAB.add(invdta);
+            }
+            trno = invsernoBean.getTrno(facno, "", IAB.getTrtype(), trdate, true);
+            invhad = new Invhad(facno, prono, trno);
+            invhad.setTrtype(IAB.getTrtype());
+            invhad.setTrdate(trdate);
+            invhad.setDepno(e.getApplyDept());
+            invhad.setIocode(IAB.getIocode());
+            invhad.setResno("");
+            invhad.setSourceno(e.getProcessSerialNumber().substring(8));
+            invhad.setStatus('N');
+            invhad.setUserno(e.getApplyUser());
+            invhad.setIndate(indate);
+            invhad.setPrtcnt((short) 0);
+            invhad.setAsrsQty(BigDecimal.ZERO);
+            //明细列表交易单号赋值
+            for (Invdta d : addedIAB) {
+                d.getInvdtaPK().setTrno(trno);
+            }
+            //更新ERP INV310
+            this.persist(invhad, detailIABAdded);
+            getEntityManager().flush();
+            //单号回写OA
+            e.setRelformid(trno);
+            hkpb054Bean.update(e);
+            return true;
+        } catch (Exception ex) {
+            log4j.error("initByOAHKPB054", ex.toString());
+            throw ex;
         }
     }
 
