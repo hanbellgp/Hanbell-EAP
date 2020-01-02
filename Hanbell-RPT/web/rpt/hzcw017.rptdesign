@@ -793,7 +793,7 @@ return false;
                         <property name="marginTop">3pt</property>
                         <property name="textAlign">center</property>
                         <text-property name="text">汉 钟&#13;
-                            精 机</text-property>
+精 机</text-property>
                     </label>
                 </cell>
                 <cell id="378">
