@@ -364,6 +364,21 @@ public class SHBERPWebService {
         }
     }
 
+    @WebMethod(operationName = "createINV310ByOAHKPB054")
+    public String createINV310ByOAHKPB054(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = invhadBean.initByOAHKPB054(psn);
+        } catch (Exception ex) {
+            log4j.error("createINV310ByOAHKPB054", ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "isLessThenInvbal")
     public String isLessThenInvbal(@WebParam(name = "facno") String facno, @WebParam(name = "prono") String prono,
             @WebParam(name = "itnbr") String itnbr, @WebParam(name = "wareh") String wareh,
