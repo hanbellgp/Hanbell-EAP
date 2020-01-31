@@ -1902,6 +1902,7 @@ public class TimerBean {
         this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HZJ00030", "C", "SZJ00065", "SZJ00101", "20190901", false);// 科恩特
         this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00247", "C", "SZJ00065", "SSH01164", "20190901", false);// 卓准
         this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HHB00007", "C", "SZJ00065", "SHB00016", "20190901", false);// 恒工
+        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HJS00129", "C", "SZJ00065", "SJS00291", "20200101", false);// 腾达
         //this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00087", "C", "SZJ00065", "SSH00229", "20190801", true);// 海光
         this.syncThirdPartyTradingByERPMAN275("H", "C", "20190901");// 催料
         //this.syncERPPUR410ToExchange("C", "STW00007", "20190801");// SHB->Exch
