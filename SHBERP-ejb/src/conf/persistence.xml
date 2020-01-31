@@ -59,13 +59,13 @@
       <property name="eclipselink.canonicalmodel.subpackage" value="hanson"/>
     </properties>
   </persistence-unit>
-  <persistence-unit name="PU_hanyangerp" transaction-type="JTA">
+  <persistence-unit name="PU_hanyoungerp" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>jdbc/hanyangerp</jta-data-source>
+    <jta-data-source>jdbc/hanyoungerp</jta-data-source>
     <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
-      <property name="eclipselink.canonicalmodel.subpackage" value="hanyang"/>
+      <property name="eclipselink.canonicalmodel.subpackage" value="hanyoung"/>
     </properties>
   </persistence-unit>
   <persistence-unit name="PU_comererp" transaction-type="JTA">

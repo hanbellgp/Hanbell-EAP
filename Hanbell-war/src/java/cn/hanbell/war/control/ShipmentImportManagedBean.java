@@ -214,9 +214,8 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                     break;
                                 case "SSD00103":
                                     // 海达瑞专属二维码
-                                    content.append(sd.getCustomerItem()).append(".").append(sd.getItemModel()).append(".")
-                                            .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc())
-                                            .append(".").append(sd.getVarnr());
+                                    content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
+                                            .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc());
                                     break;
                             }
                             this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + l.getVarnr() + ".png");
