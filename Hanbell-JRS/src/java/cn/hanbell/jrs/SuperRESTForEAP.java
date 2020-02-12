@@ -9,7 +9,7 @@ import com.lightshell.comm.SuperEJB;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
+import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -36,7 +36,7 @@ public abstract class SuperRESTForEAP<T> {
 
     protected abstract SuperEJB getSuperEJB();
 
-    @Inject
+    @EJB
     protected cn.hanbell.eap.ejb.SystemNameBean systemNameBean;
 
     public SuperRESTForEAP(Class<T> entityClass) {
@@ -98,10 +98,14 @@ public abstract class SuperRESTForEAP<T> {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<T> findAll(@QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData findAll(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
-                return getSuperEJB().findAll();
+                List<T> list = getSuperEJB().findAll();
+                ResponseData res = new ResponseData<T>("200", "success");
+                res.setData(list);
+                res.setCount(list.size());
+                return res;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
@@ -113,10 +117,15 @@ public abstract class SuperRESTForEAP<T> {
     @GET
     @Path("{offset}/{pageSize}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<T> findAll(@PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData findAll(@PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
-                return getSuperEJB().findAll(offset, pageSize);
+                List<T> list = getSuperEJB().findAll(offset, pageSize);
+                int count = getSuperEJB().getRowCount();
+                ResponseData res = new ResponseData<T>("200", "success");
+                res.setData(list);
+                res.setCount(count);
+                return res;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
@@ -128,10 +137,12 @@ public abstract class SuperRESTForEAP<T> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public T findById(@PathParam("id") PathSegment id, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseObject findById(@PathParam("id") PathSegment id, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
-                return (T) getSuperEJB().findById(Integer.parseInt(id.getPath()));
+                T t = (T) getSuperEJB().findById(Integer.parseInt(id.getPath()));
+                ResponseObject res = new ResponseObject<>("200", "success", t);
+                return res;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
@@ -143,7 +154,7 @@ public abstract class SuperRESTForEAP<T> {
     @GET
     @Path("{filters}/{sorts}/{offset}/{pageSize}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<T> findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
@@ -165,8 +176,12 @@ public abstract class SuperRESTForEAP<T> {
                         sortFields.put(key, value);
                     }
                 }
-                int size = getSuperEJB().getRowCount(filterFields);
-                return getSuperEJB().findByFilters(filterFields, offset, pageSize, sortFields);
+                List<T> list = getSuperEJB().findByFilters(filterFields, offset, pageSize, sortFields);
+                int count = getSuperEJB().getRowCount(filterFields);
+                ResponseData res = new ResponseData<T>("200", "success");
+                res.setData(list);
+                res.setCount(count);
+                return res;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

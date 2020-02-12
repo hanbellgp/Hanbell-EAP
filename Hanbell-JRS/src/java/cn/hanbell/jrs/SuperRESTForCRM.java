@@ -31,6 +31,7 @@ import javax.ws.rs.core.Response;
  * @param <T>
  */
 public abstract class SuperRESTForCRM<T> {
+
     protected Class<T> entityClass;
 
     protected abstract SuperEJB getSuperEJB();
@@ -178,5 +179,4 @@ public abstract class SuperRESTForCRM<T> {
         return systemNameBean.isAuthorized(appid, token);
     }
 
-    
 }

@@ -71,7 +71,7 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                         arr[1] = result.get(0).toString();
                     } else {
                         Query query2 = getEntityManager().createNativeQuery(sql2);
-                        result  =query2.getResultList();
+                        result = query2.getResultList();
                         if (result != null && !result.isEmpty()) {
                             arr[1] = result.get(0).toString();
                         } else {
