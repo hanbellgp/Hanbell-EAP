@@ -9,7 +9,7 @@ import cn.hanbell.eap.ejb.BookingKindBean;
 import cn.hanbell.eap.entity.BookingKind;
 import cn.hanbell.jrs.SuperRESTForEAP;
 import com.lightshell.comm.SuperEJB;
-import javax.inject.Inject;
+import javax.ejb.EJB;
 import javax.ws.rs.Path;
 
 /**
@@ -20,7 +20,7 @@ import javax.ws.rs.Path;
 @javax.enterprise.context.RequestScoped
 public class BookingKindFacadeREST extends SuperRESTForEAP<BookingKind> {
 
-    @Inject
+    @EJB
     private BookingKindBean bookingKindBean;
 
     public BookingKindFacadeREST() {

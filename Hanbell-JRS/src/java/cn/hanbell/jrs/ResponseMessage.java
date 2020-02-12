@@ -11,8 +11,8 @@ package cn.hanbell.jrs;
  */
 public class ResponseMessage {
 
-    private String code;
-    private String msg;
+    protected String code;
+    protected String msg;
 
     public ResponseMessage() {
 
@@ -31,24 +31,10 @@ public class ResponseMessage {
     }
 
     /**
-     * @param code the code to set
-     */
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    /**
      * @return the msg
      */
     public String getMsg() {
         return msg;
-    }
-
-    /**
-     * @param msg the msg to set
-     */
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 
 }
