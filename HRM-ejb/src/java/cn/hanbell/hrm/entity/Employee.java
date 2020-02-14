@@ -71,6 +71,14 @@ public class Employee implements Serializable {
     @ManyToOne(optional = false)
     private Department department;
 
+    @JoinColumn(name = "JobId", referencedColumnName = "JobId", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private Job job;
+
+    @JoinColumn(name = "PositionId", referencedColumnName = "PositionId", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private Position position;
+
     private static final long serialVersionUID = 1L;
     @Size(max = 200)
     @Column(name = "IsTowner")
@@ -482,6 +490,10 @@ public class Employee implements Serializable {
     public Employee() {
     }
 
+    public Employee(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
     /**
      * @return the department
      */
@@ -496,8 +508,32 @@ public class Employee implements Serializable {
         this.department = department;
     }
 
-    public Employee(String employeeId) {
-        this.employeeId = employeeId;
+    /**
+     * @return the job
+     */
+    public Job getJob() {
+        return job;
+    }
+
+    /**
+     * @param job the job to set
+     */
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    /**
+     * @return the position
+     */
+    public Position getPosition() {
+        return position;
+    }
+
+    /**
+     * @param position the position to set
+     */
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public String getIsTowner() {
