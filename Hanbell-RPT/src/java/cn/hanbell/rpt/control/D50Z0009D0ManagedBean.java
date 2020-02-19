@@ -53,16 +53,19 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
 
     @EJB
     private D50Z0009D0Bean d50Z0009D0Bean;
+
     public D50Z0009D0ManagedBean() {
         super(D50Z0009D0.class);
     }
-@Override
+
+    @Override
     public void init() {
         this.setSuperEJB(this.d50Z0009D0Bean);
         this.model = new D50Z0009D0Model(this.d50Z0009D0Bean);
         super.init();
     }
-@Override
+
+    @Override
     public void query() {
         if (this.model != null && this.model.getFilterFields() != null) {
             this.model.getFilterFields().clear();
@@ -73,15 +76,17 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
             }
         }
     }
-@Override
+
+    @Override
     public void reset() {
         this.setSuperEJB(this.d50Z0009D0Bean);
         this.model = new D50Z0009D0Model(this.d50Z0009D0Bean);
-        this.queryDateBegin=null;
-        this.queryDateEnd=null;
+        this.queryDateBegin = null;
+        this.queryDateEnd = null;
         super.reset();
     }
-@Override
+
+    @Override
     public void print() {
         this.entityList = d50Z0009D0Bean.findByFilters(model.getFilterFields(), model.getSortFields());
         InputStream is = null;
@@ -130,7 +135,7 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
                         startoutString = null;
                         endoutString = null;
                     }
-                    row.createCell(12).setCellValue(e.getTotaldays()!= null ? e.getTotaldays() : "");
+                    row.createCell(12).setCellValue(e.getTotaldays() != null ? e.getTotaldays() : "");
                     row.createCell(13).setCellValue(e.getApplyreason() != null ? e.getApplyreason() : "");
                     row.createCell(14).setCellValue(e.getApplypay() != null && e.getApplypay().contains("1") ? "√" : "");
                     row.createCell(15).setCellValue(e.getApplypay() != null && e.getApplypay().contains("2") ? "√" : "");
@@ -138,10 +143,10 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
                     row.createCell(17).setCellValue(e.getApplypay() != null && e.getApplypay().contains("4") ? "√" : "");
                     row.createCell(18).setCellValue(e.getApplypay() != null && e.getApplypay().contains("6") ? "√" : "");
                     row.createCell(19).setCellValue(e.getApplypay() != null && e.getApplypay().contains("9") ? "√" : "");
-                    if(e.getApplyfactory()!= null&&!"".equals(e.getApplyfactory())){
+                    if (e.getApplyfactory() != null && !"".equals(e.getApplyfactory())) {
                         row.createCell(20).setCellValue(e.getApplyfactory() != null ? e.getApplyfactory().concat("%") : "");
-                }
-              
+                    }
+
                 }
 
                 FileOutputStream os = null;
