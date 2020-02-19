@@ -55,4 +55,14 @@ public class EmployeeBean extends SuperEJBForHRM<Employee> {
         }
     }
 
+    public List findByLevelIdForWechatTag() {
+        try {
+            Query query = getEntityManager().createNativeQuery("SELECT LevelId FROM Employee WHERE Flag=1 GROUP BY LevelId");
+            List list = query.getResultList();
+            return list;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

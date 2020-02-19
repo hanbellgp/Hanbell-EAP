@@ -72,6 +72,15 @@ public class SystemUser extends SuperEntity {
     @Size(max = 45)
     @Column(name = "email")
     private String email;
+    @Size(max = 10)
+    @Column(name = "position")
+    private String position;
+    @Size(max = 20)
+    @Column(name = "levelid")
+    private String levelid;
+    @Size(max = 45)
+    @Column(name = "decisionLevel")
+    private String decisionLevel;
     @Size(max = 20)
     @Column(name = "deptno")
     private String deptno;
@@ -162,6 +171,30 @@ public class SystemUser extends SuperEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getLevelid() {
+        return levelid;
+    }
+
+    public void setLevelid(String levelid) {
+        this.levelid = levelid;
+    }
+
+    public String getDecisionLevel() {
+        return decisionLevel;
+    }
+
+    public void setDecisionLevel(String decisionLevel) {
+        this.decisionLevel = decisionLevel;
     }
 
     /**
