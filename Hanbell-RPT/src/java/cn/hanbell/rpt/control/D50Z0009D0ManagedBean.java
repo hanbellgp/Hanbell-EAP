@@ -56,13 +56,13 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
     public D50Z0009D0ManagedBean() {
         super(D50Z0009D0.class);
     }
-
+@Override
     public void init() {
         this.setSuperEJB(this.d50Z0009D0Bean);
         this.model = new D50Z0009D0Model(this.d50Z0009D0Bean);
         super.init();
     }
-
+@Override
     public void query() {
         if (this.model != null && this.model.getFilterFields() != null) {
             this.model.getFilterFields().clear();
@@ -73,7 +73,7 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
             }
         }
     }
-
+@Override
     public void reset() {
         this.setSuperEJB(this.d50Z0009D0Bean);
         this.model = new D50Z0009D0Model(this.d50Z0009D0Bean);
@@ -81,7 +81,7 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
         this.queryDateEnd=null;
         super.reset();
     }
-
+@Override
     public void print() {
         this.entityList = d50Z0009D0Bean.findByFilters(model.getFilterFields(), model.getSortFields());
         InputStream is = null;
