@@ -1892,16 +1892,17 @@ public class TimerBean {
     public void syncInterCompanyTransactions() {
         log4j.info("ERP集团内部交易互转轮询开始");
         this.createERPCDR310ByERPPUR410("H", "HSH00003", "00", "C", "SZJ00065", "20190601");// SHB->汉声
-        //this.createERPCDR310ByERPPUR410("C", "SGD00088", "00", "G", "SSH00307", "20191201");// 广州->SHB
-        //this.createERPCDR310ByERPPUR410("C", "SSD00107", "00", "J", "SSH00307", "20191201");// 济南->SHB
-        //this.createERPCDR310ByERPPUR410("C", "SJS00254", "00", "N", "SSH00307", "20191201");// 南京->SHB
-        //this.createERPCDR310ByERPPUR410("C", "SCQ00146", "00", "C4", "SSH00307", "20191201");// 重庆->SHB
+        this.createERPCDR310ByERPPUR410("C", "SGD00088", "00", "G", "SSH00307", "20191223");// 广州->SHB
+        this.createERPCDR310ByERPPUR410("C", "SSD00107", "00", "J", "SSH00307", "20191223");// 济南->SHB
+        this.createERPCDR310ByERPPUR410("C", "SJS00254", "00", "N", "SSH00307", "20191223");// 南京->SHB
+        this.createERPCDR310ByERPPUR410("C", "SCQ00146", "00", "C4", "SSH00307", "20191223");// 重庆->SHB
         //this.createERPCDR310ByExchPUR415("C", "STW00003", "00", "A", "86005", "20190901");// THB->SHB
         //this.createERPCDR310ByExchPUR415("K", "KTW00004", "00", "A", "86010 ", "20190901");// THB->Comer
         //this.createERPCDR310ByExchPUR415("H", "HTW00001", "00", "A", "1139 ", "20190901");// THB->Hanson
         this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HZJ00030", "C", "SZJ00065", "SZJ00101", "20190901", false);// 科恩特
         this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00247", "C", "SZJ00065", "SSH01164", "20190901", false);// 卓准
         this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HHB00007", "C", "SZJ00065", "SHB00016", "20190901", false);// 恒工
+        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HJS00129", "C", "SZJ00065", "SJS00291", "20200101", false);// 腾达
         //this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00087", "C", "SZJ00065", "SSH00229", "20190801", true);// 海光
         this.syncThirdPartyTradingByERPMAN275("H", "C", "20190901");// 催料
         //this.syncERPPUR410ToExchange("C", "STW00007", "20190801");// SHB->Exch

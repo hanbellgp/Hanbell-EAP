@@ -30,14 +30,15 @@ import javax.ws.rs.core.Response;
  */
 @Path("erp/invmas")
 @javax.enterprise.context.RequestScoped
-public class InvmasFacadeREST extends SuperRESTForERP<Invmas>{
+public class InvmasFacadeREST extends SuperRESTForERP<Invmas> {
+
     @EJB
     private InvmasBean invmasBean;
-    
-    public  InvmasFacadeREST(){
+
+    public InvmasFacadeREST() {
         super(Invmas.class);
     }
-    
+
     @GET
     @Path("{filters}/{sorts}/{offset}/{pageSize}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -79,5 +80,5 @@ public class InvmasFacadeREST extends SuperRESTForERP<Invmas>{
     protected SuperEJBForERP getERPEJB() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

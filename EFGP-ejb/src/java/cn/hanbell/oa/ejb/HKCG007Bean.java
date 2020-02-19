@@ -265,7 +265,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                         d.setUnpris("");
                         d.setAskdateTxt("");
                         d.setTax("4");
-                        d.setTaxrate("0.17");
+                        d.setTaxrate("0.13");
                         d.setPosrccode("3");
                         d.setAddcode(aa.getAddcode());
                         d.setVdrna("");
@@ -304,7 +304,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     m.setCtotalyRMB(0.00);
                     m.setIstechnique("N");
 
-                    m.setIsNine("0");
+                    m.setIsNine(aa.getProtype());
                     m.setYfPrice("N");
                     m.setBudgetcode(workFlowBean.getOrganizationUnit().getId());
                     m.setCfmuserno(workFlowBean.getOrganizationUnit().getManager().getId());
