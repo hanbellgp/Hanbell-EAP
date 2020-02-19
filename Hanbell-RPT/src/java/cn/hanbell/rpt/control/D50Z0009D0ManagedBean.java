@@ -53,20 +53,22 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
 
     @EJB
     private D50Z0009D0Bean d50Z0009D0Bean;
+
     public D50Z0009D0ManagedBean() {
         super(D50Z0009D0.class);
     }
 
+    @Override
     public void init() {
         this.setSuperEJB(this.d50Z0009D0Bean);
         this.model = new D50Z0009D0Model(this.d50Z0009D0Bean);
         super.init();
     }
 
+    @Override
     public void query() {
         if (this.model != null && this.model.getFilterFields() != null) {
             this.model.getFilterFields().clear();
-            System.err.println("");
             if (this.queryDateBegin != null && this.queryDateEnd != null) {
                 model.getFilterFields().put("processSerialNumber.createdTimeBegin", this.queryDateBegin);
                 model.getFilterFields().put("processSerialNumber.createdTimeEnd", this.queryDateEnd);
@@ -74,31 +76,31 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
         }
     }
 
+    @Override
     public void reset() {
         this.setSuperEJB(this.d50Z0009D0Bean);
         this.model = new D50Z0009D0Model(this.d50Z0009D0Bean);
-        this.queryDateBegin=null;
-        this.queryDateEnd=null;
+        this.queryDateBegin = null;
+        this.queryDateEnd = null;
         super.reset();
     }
 
+    @Override
     public void print() {
-        this.entityList = d50Z0009D0Bean.findByFilters(model.getFilterFields(), model.getSortFields());
+        entityList = d50Z0009D0Bean.findByFilters(model.getFilterFields(), model.getSortFields());
         InputStream is = null;
         try {
             try {
                 String finalFilePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-                System.out.print("finallypath" + finalFilePath);
-                int index = finalFilePath.indexOf("dist/gfdeploy");
-                System.out.println("index" + index);
+                //测试路径
+//                int index = finalFilePath.indexOf("dist/gfdeploy");
+                //正式路径
+//                D:\Java\glassfish5\glassfish\domains\domain1\applications\Hanbell-EAP\Hanbell-RPT_war\rpt
+//                D:\Java\glassfish5\glassfish\domains\domain1\applications\Hanbell-EAP\Hanbell-RPT_war\WEB-INF\classes\cn\hanbell\rpt\control
+                int index = finalFilePath.indexOf("WEB-INF");
                 String filePath = new String(finalFilePath.substring(1, index));
-//                String pathString = filePath+"Hanbell-RPI/web/rpt/集团支援单.xlsx";
-                String pathString = new String(filePath.concat("Hanbell-RPT/web/rpt/"));
-                System.out.println("path" + pathString);
-                String path = pathString.replaceAll("/", "\\\\\\\\");
-                System.out.println("path=" + path);
-                File file = new File(pathString, "集团支援单.xlsx");
-                System.out.println("file=" + file);
+                String pathString = new String(filePath.concat("rpt/"));
+                File file = new File(pathString, "集团支援单模板.xlsx");
                 is = new FileInputStream(file);
                 this.fileName = "D50Z0009D0" + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + ".xlsx";
                 this.fileFullName = this.reportOutputPath + this.fileName;
@@ -108,7 +110,6 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
                 wb.setSheetName(1, sdf.format(new Date()) + "集团工作支援单");
                 Row row = null;
                 int i = 3;
-                System.out.print("this.entityList" + this.entityList);
                 for (Iterator var12 = this.entityList.iterator(); var12.hasNext(); ++i) {
                     D50Z0009D0 e = (D50Z0009D0) var12.next();
                     row = sheet.createRow(i);
@@ -130,7 +131,7 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
                         startoutString = null;
                         endoutString = null;
                     }
-                    row.createCell(12).setCellValue(e.getTotaldays()!= null ? e.getTotaldays() : "");
+                    row.createCell(12).setCellValue(e.getTotaldays() != null ? e.getTotaldays() : "");
                     row.createCell(13).setCellValue(e.getApplyreason() != null ? e.getApplyreason() : "");
                     row.createCell(14).setCellValue(e.getApplypay() != null && e.getApplypay().contains("1") ? "√" : "");
                     row.createCell(15).setCellValue(e.getApplypay() != null && e.getApplypay().contains("2") ? "√" : "");
@@ -138,10 +139,10 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
                     row.createCell(17).setCellValue(e.getApplypay() != null && e.getApplypay().contains("4") ? "√" : "");
                     row.createCell(18).setCellValue(e.getApplypay() != null && e.getApplypay().contains("6") ? "√" : "");
                     row.createCell(19).setCellValue(e.getApplypay() != null && e.getApplypay().contains("9") ? "√" : "");
-                    if(e.getApplyfactory()!= null&&!"".equals(e.getApplyfactory())){
+                    if (e.getApplyfactory() != null && !"".equals(e.getApplyfactory())) {
                         row.createCell(20).setCellValue(e.getApplyfactory() != null ? e.getApplyfactory().concat("%") : "");
-                }
-              
+                    }
+
                 }
 
                 FileOutputStream os = null;
@@ -166,13 +167,11 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
 
                 }
             } catch (FileNotFoundException var40) {
-                System.out.println("is=" + is);
-                System.err.println("异常是" + var40);
+                this.log4j.error(var40.getMessage());
             } catch (IOException var41) {
-                System.out.println("2");
+                this.log4j.error(var41.getMessage());
             } catch (Exception var42) {
-//                Logger.getLogger(D50Z0009D0ManagedBean.class.getName()).log(Level.SEVERE, (String)null, var42);
-                System.out.println("cn.hanbell.rpt.control.D50Z0009D0ManagedBean.print()" + var42);
+                this.log4j.error(var42.getMessage());
             }
 
         } finally {
