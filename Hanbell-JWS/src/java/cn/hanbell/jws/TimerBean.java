@@ -1108,7 +1108,7 @@ public class TimerBean {
                         hm.setCfmdate(h.getCfmdate());
                         hm.setIsspecial(h.getIsspecial());
                         hm.setPricingtype(h.getPricingtype());
-
+                        hm.setQuotype(h.getQuotype().toString());            
                         Miscode miscode = miscodeBean.findByPK("1C", h.getPricingtype());
                         hm.setPricingtypedsc(miscode.getCdesc());
                         hm.setCoin(h.getCoin());
