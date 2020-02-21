@@ -66,6 +66,9 @@ public class Department extends SuperEntity {
     @JoinColumn(name = "pid", referencedColumnName = "id")
     @ManyToOne
     private Department parentDept;
+    @Size(max = 2)
+    @Column(name = "company")
+    private String company;
 
     public Department() {
 
@@ -167,6 +170,14 @@ public class Department extends SuperEntity {
     @Override
     public String toString() {
         return "cn.hanbell.eap.entity.Department[ id=" + id + " ]";
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
 }
