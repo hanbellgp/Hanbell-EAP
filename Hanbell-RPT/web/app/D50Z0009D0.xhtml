@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">查询条件</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column><h:outputLabel value="签核日期" for="queryDateBegin" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateBegin" value="#{d50Z0009D0ManagedBean.queryDateBegin}" title="开始日期" pattern="yyyy/MM/dd"/>
+                    </p:column>
+                    <p:column><h:outputLabel value="截止日期" for="queryDateEnd" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateEnd" value="#{d50Z0009D0ManagedBean.queryDateEnd}" title="结束日期" pattern="yyyy/MM/dd"/>
+                    </p:column>
+                </p:row>
+           
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{d50Z0009D0ManagedBean.init()}"  icon="ui-icon-search"  update=":formList"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnPrint" value="导出" actionListener="#{d50Z0009D0ManagedBean.print()}" icon="ui-icon-print"  update=":formList"/>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{d50Z0009D0ManagedBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{d50Z0009D0ManagedBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable value="#{d50Z0009D0ManagedBean.model}"  var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="15,30,45" lazy="true" selectionMode="single"  selection="#{d50Z0009D0ManagedBean.currentEntity}" rowKey="#{item.oid}" >
+                <f:facet name="header">
+                    服务工作支援单
+                </f:facet>
+                <p:ajax event="rowSelect"  update=":formList:toolbar" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="表单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.formSerialNumber}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="申请公司"/>
+                    </f:facet>
+                    <h:outputText value="#{item.applyfacno}"/>
+                </p:column>
+                 <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="申请人"/>
+                    </f:facet>
+                    <h:outputText value="#{item.applyUser.userName}"/>
+                </p:column>
+                 <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="支援公司"/>
+                    </f:facet>
+                    <h:outputText value="#{item.supportfacno}"/>
+                 </p:column>
+                 <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="支援人员"/>
+                    </f:facet>
+                    <h:outputText value="#{item.supportUser.userName}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="创建时间"/>
+                    </f:facet>
+                    <h:outputText value="#{item.processSerialNumber.createdTime}">
+                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="实际支援时间"/>
+                    </f:facet>
+                    <h:outputText value="#{item.startout}">
+                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                    </h:outputText>
+                </p:column>
+                 <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="支援天数"/>
+                    </f:facet>
+                    <h:outputText value="#{item.totaldays}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="申请原因"/>
+                    </f:facet>
+                    <h:outputText value="#{item.applyreason}"/>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnLoad,btnPrint,btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

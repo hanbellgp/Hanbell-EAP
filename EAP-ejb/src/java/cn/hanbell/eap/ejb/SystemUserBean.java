@@ -7,12 +7,10 @@ package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
 import cn.hanbell.eap.entity.SystemUser;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.persistence.Query;
 
@@ -64,6 +62,16 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
 
     public List<SystemUser> findByDeptnoAndOnJob(String deptno) {
         Query query = getEntityManager().createNamedQuery("SystemUser.findByDeptnoAndOnJob");
+        query.setParameter("deptno", deptno);
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List<SystemUser> findByDeptnoAndSyncWeChatStatus(String deptno) {
+        Query query = getEntityManager().createNamedQuery("SystemUser.findByDeptnoAndSyncWeChatStatus");
         query.setParameter("deptno", deptno);
         try {
             return query.getResultList();
