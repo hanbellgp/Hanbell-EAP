@@ -6,7 +6,7 @@
 package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
-import cn.hanbell.eap.entity.WechatTag;
+import cn.hanbell.eap.entity.WeChatTag;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.json.Json;
@@ -19,14 +19,14 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class WechatTagBean extends SuperEJBForEAP<WechatTag> {
+public class WeChatTagBean extends SuperEJBForEAP<WeChatTag> {
 
-    public WechatTagBean() {
-        super(WechatTag.class);
+    public WeChatTagBean() {
+        super(WeChatTag.class);
     }
 
     @Override
-    public JsonObjectBuilder createJsonObjectBuilder(WechatTag entity) {
+    public JsonObjectBuilder createJsonObjectBuilder(WeChatTag entity) {
         JsonObjectBuilder job = Json.createObjectBuilder();
         if (entity != null) {
             job.add("tagname", entity.getTagname())
@@ -35,27 +35,26 @@ public class WechatTagBean extends SuperEJBForEAP<WechatTag> {
         return job;
     }
 
-    public WechatTag findByTagcode(String value) {
+    public WeChatTag findByTagcode(String value) {
         Query query = getEntityManager().createNamedQuery("WechatTag.findByTagcode");
         query.setParameter("tagcode", value);
         try {
             Object o = query.getSingleResult();
-            return (WechatTag) o;
+            return (WeChatTag) o;
         } catch (Exception ex) {
             return null;
         }
     }
 
-    public WechatTag findByTagname(String value) {
+    public WeChatTag findByTagname(String value) {
         Query query = getEntityManager().createNamedQuery("WechatTag.findByTagname");
         query.setParameter("tagname", value);
         try {
             Object o = query.getSingleResult();
-            return (WechatTag) o;
+            return (WeChatTag) o;
         } catch (Exception ex) {
             return null;
         }
     }
-    
 
 }

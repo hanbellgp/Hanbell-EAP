@@ -319,7 +319,5 @@ public class Issues extends FormEntity implements Serializable {
     public void setIssuestype(String issuestype) {
         this.issuestype = issuestype;
     }
-    
-   
 
 }

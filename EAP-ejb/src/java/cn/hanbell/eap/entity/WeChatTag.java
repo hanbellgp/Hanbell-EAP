@@ -24,13 +24,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "wechattag")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "WechatTag.findAll", query = "SELECT w FROM WechatTag w")
-    , @NamedQuery(name = "WechatTag.findById", query = "SELECT w FROM WechatTag w WHERE w.id = :id")
-    , @NamedQuery(name = "WechatTag.findByTagcode", query = "SELECT w FROM WechatTag w WHERE w.tagcode = :tagcode")
-    , @NamedQuery(name = "WechatTag.findByTagname", query = "SELECT w FROM WechatTag w WHERE w.tagname = :tagname")
-    , @NamedQuery(name = "WechatTag.findByWeChatStatus", query = "SELECT w FROM WechatTag w WHERE w.weChatStatus = :weChatStatus")
+    @NamedQuery(name = "WeChatTag.findAll", query = "SELECT w FROM WeChatTag w"),
+    @NamedQuery(name = "WeChatTag.findById", query = "SELECT w FROM WeChatTag w WHERE w.id = :id"),
+    @NamedQuery(name = "WeChatTag.findByTagcode", query = "SELECT w FROM WeChatTag w WHERE w.tagcode = :tagcode"),
+    @NamedQuery(name = "WeChatTag.findByTagname", query = "SELECT w FROM WeChatTag w WHERE w.tagname = :tagname"),
+    @NamedQuery(name = "WeChatTag.findByWeChatStatus", query = "SELECT w FROM WeChatTag w WHERE w.weChatStatus = :weChatStatus")
 })
-public class WechatTag extends SuperEntity {
+public class WeChatTag extends SuperEntity {
 
     @Basic(optional = false)
     @NotNull
@@ -46,10 +46,10 @@ public class WechatTag extends SuperEntity {
     @Column(name = "WeChatStatus")
     private String weChatStatus;
 
-    public WechatTag() {
+    public WeChatTag() {
     }
 
-    public WechatTag(Integer id, String tagid, String tagname, String status) {
+    public WeChatTag(Integer id, String tagid, String tagname, String status) {
         this.id = id;
         this.tagcode = tagid;
         this.tagname = tagname;
@@ -96,10 +96,10 @@ public class WechatTag extends SuperEntity {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof WechatTag)) {
+        if (!(object instanceof WeChatTag)) {
             return false;
         }
-        WechatTag other = (WechatTag) object;
+        WeChatTag other = (WeChatTag) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -108,7 +108,7 @@ public class WechatTag extends SuperEntity {
 
     @Override
     public String toString() {
-        return "cn.hanbell.eap.entity.WechatTag[ id=" + id + " ]";
+        return "cn.hanbell.eap.entity.WeChatTag[ id=" + id + " ]";
     }
-    
+
 }

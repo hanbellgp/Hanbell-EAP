@@ -10,9 +10,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,21 +26,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "wechattaguser")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "WechatTagUser.findAll", query = "SELECT w FROM WechatTagUser w")
-    , @NamedQuery(name = "WechatTagUser.findById", query = "SELECT w FROM WechatTagUser w WHERE w.id = :id")
-    , @NamedQuery(name = "WechatTagUser.findByTagid", query = "SELECT w FROM WechatTagUser w WHERE w.tagid = :tagid")
-    , @NamedQuery(name = "WechatTagUser.findByUserid", query = "SELECT w FROM WechatTagUser w WHERE w.userid = :userid")
-    , @NamedQuery(name = "WechatTagUser.findByTagidAndUserid", query = "SELECT w FROM WechatTagUser w WHERE w.userid = :userid AND w.tagid = :tagid ")
-    , @NamedQuery(name = "WechatTagUser.findByWeChatStatus", query = "SELECT w FROM WechatTagUser w WHERE w.weChatStatus = :weChatStatus")})
-public class WechatTagUser extends SuperEntity {
+    @NamedQuery(name = "WeChatTagUser.findAll", query = "SELECT w FROM WeChatTagUser w"),
+    @NamedQuery(name = "WeChatTagUser.findById", query = "SELECT w FROM WeChatTagUser w WHERE w.id = :id"),
+    @NamedQuery(name = "WeChatTagUser.findByTagid", query = "SELECT w FROM WeChatTagUser w WHERE w.tagid = :tagid"),
+    @NamedQuery(name = "WeChatTagUser.findByUserid", query = "SELECT w FROM WeChatTagUser w WHERE w.userid = :userid"),
+    @NamedQuery(name = "WeChatTagUser.findByTagidAndUserid", query = "SELECT w FROM WeChatTagUser w WHERE w.userid = :userid AND w.tagid = :tagid "),
+    @NamedQuery(name = "WeChatTagUser.findByWeChatStatus", query = "SELECT w FROM WeChatTagUser w WHERE w.weChatStatus = :weChatStatus")})
+public class WeChatTagUser extends SuperEntity {
 
     @JoinColumn(name = "userid", referencedColumnName = "userid", insertable = false, updatable = false)
-    @OneToOne(optional = true)
+    @ManyToOne(optional = false)
     private SystemUser user;
-    
+
     @JoinColumn(name = "tagid", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = true)
-    private WechatTag tag;
+    @ManyToOne(optional = false)
+    private WeChatTag tag;
 
     @Basic(optional = false)
     @NotNull
@@ -55,12 +55,12 @@ public class WechatTagUser extends SuperEntity {
     @Column(name = "WeChatStatus")
     private String weChatStatus;
 
-    public WechatTagUser() {
+    public WeChatTagUser() {
         this.status = "N";
         this.weChatStatus = "N";
     }
 
-    public WechatTagUser(Integer id, int tagid, String userid, String status) {
+    public WeChatTagUser(Integer id, int tagid, String userid, String status) {
         this.id = id;
         this.tagid = tagid;
         this.userid = userid;
@@ -101,10 +101,10 @@ public class WechatTagUser extends SuperEntity {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof WechatTagUser)) {
+        if (!(object instanceof WeChatTagUser)) {
             return false;
         }
-        WechatTagUser other = (WechatTagUser) object;
+        WeChatTagUser other = (WeChatTagUser) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -113,7 +113,7 @@ public class WechatTagUser extends SuperEntity {
 
     @Override
     public String toString() {
-        return "cn.hanbell.eap.entity.WechatTagUser[ id=" + id + " ]";
+        return "cn.hanbell.eap.entity.WeChatTagUser[ id=" + id + " ]";
     }
 
     /**
@@ -126,7 +126,7 @@ public class WechatTagUser extends SuperEntity {
     /**
      * @return the tag
      */
-    public WechatTag getTag() {
+    public WeChatTag getTag() {
         return tag;
     }
 
