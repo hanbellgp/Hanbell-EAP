@@ -36,7 +36,7 @@ public class WeChatTagBean extends SuperEJBForEAP<WeChatTag> {
     }
 
     public WeChatTag findByTagcode(String value) {
-        Query query = getEntityManager().createNamedQuery("WechatTag.findByTagcode");
+        Query query = getEntityManager().createNamedQuery("WeChatTag.findByTagcode");
         query.setParameter("tagcode", value);
         try {
             Object o = query.getSingleResult();
@@ -47,7 +47,7 @@ public class WeChatTagBean extends SuperEJBForEAP<WeChatTag> {
     }
 
     public WeChatTag findByTagname(String value) {
-        Query query = getEntityManager().createNamedQuery("WechatTag.findByTagname");
+        Query query = getEntityManager().createNamedQuery("WeChatTag.findByTagname");
         query.setParameter("tagname", value);
         try {
             Object o = query.getSingleResult();

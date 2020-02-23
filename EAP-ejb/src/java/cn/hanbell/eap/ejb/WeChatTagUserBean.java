@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.persistence.Query;
 
@@ -26,57 +27,41 @@ public class WeChatTagUserBean extends SuperEJBForEAP<WeChatTagUser> {
         super(WeChatTagUser.class);
     }
 
+    @Override
+    public JsonArrayBuilder createJsonArrayBuilder(List<WeChatTagUser> entityList) {
+        if (entityList == null || entityList.isEmpty()) {
+            return null;
+        }
+        JsonArrayBuilder jab = Json.createArrayBuilder();
+        for (WeChatTagUser tu : entityList) {
+            jab.add(tu.getUserid());
+        }
+        return jab;
+    }
+
     public JsonObjectBuilder createJsonObjectBuilder(List<WeChatTagUser> list, int tagid) {
         JsonObjectBuilder job = Json.createObjectBuilder();
         if (list != null && !list.isEmpty()) {
-            if (list.size() > 1) {
-                job.add("tagid", tagid);
-                StringBuilder listjs = new StringBuilder();
-                for (WeChatTagUser tgr : list) {
-                    if (list.indexOf(tgr) == 0) {
-                        listjs.append("[\"").append(tgr.getUserid()).append("\"");
-                        continue;
-                    }
-                    if (list.size() - 1 == list.indexOf(tgr)) {
-                        listjs.append(",\"").append(tgr.getUserid()).append("\"]");
-                        continue;
-                    }
-                    listjs.append(",\"").append(tgr.getUserid()).append("\"");
-                }
-                if (listjs.length() > 0 && !"".equals(listjs.toString())) {
-                    job.add("userlist", listjs.toString());
-                }
-            } else {
-                job = createJsonObjectBuilder(list.get(0));
-            }
+            job.add("tagid", tagid);
+            job.add("userlist", createJsonArrayBuilder(list));
         }
-        return job;
-    }
-    
-    
-
-    @Override
-    public JsonObjectBuilder createJsonObjectBuilder(WeChatTagUser taguser) {
-        JsonObjectBuilder job = Json.createObjectBuilder();
-        job.add("tagid", taguser.getTagid());
-        job.add("userlist", "[\"" + taguser.getUserid() + "\"]");
         return job;
     }
 
     public List<WeChatTagUser> findByTagid(int tagid) {
-        Query query = this.getEntityManager().createNamedQuery("WechatTagUser.findByTagid");
+        Query query = this.getEntityManager().createNamedQuery("WeChatTagUser.findByTagid");
         query.setParameter("tagid", tagid);
         return query.getResultList();
     }
 
     public List<WeChatTagUser> findByUserid(String userid) {
-        Query query = this.getEntityManager().createNamedQuery("WechatTagUser.findByUserid");
+        Query query = this.getEntityManager().createNamedQuery("WeChatTagUser.findByUserid");
         query.setParameter("userid", userid);
         return query.getResultList();
     }
 
     public WeChatTagUser findByTagidAndUserid(int tagid, String userid) {
-        Query query = this.getEntityManager().createNamedQuery("WechatTagUser.findByTagidAndUserid");
+        Query query = this.getEntityManager().createNamedQuery("WeChatTagUser.findByTagidAndUserid");
         query.setParameter("tagid", tagid);
         query.setParameter("userid", userid);
         try {
