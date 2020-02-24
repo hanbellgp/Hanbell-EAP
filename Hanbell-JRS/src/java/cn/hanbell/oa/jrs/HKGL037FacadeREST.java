@@ -136,7 +136,7 @@ public class HKGL037FacadeREST extends SuperRESTForEFGP<KV> {
                 if ("1T100".equals(m.getDept())) {
                     m.setHdnDept(m.getDept());
                 } else {
-                    m.setHdnDept(m.getDept().substring(0, 2)+"000");
+                    m.setHdnDept(m.getDept().substring(0, 2) + "000");
                 }
                 //设置隐藏栏位
                 m.setHdn_emply(entity.getEmployeeId() + "-" + entity.getEmployeeName());

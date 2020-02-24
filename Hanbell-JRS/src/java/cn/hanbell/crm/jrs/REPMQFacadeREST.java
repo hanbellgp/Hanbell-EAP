@@ -30,11 +30,12 @@ import javax.ws.rs.core.Response;
  */
 @Path("crm/repmq")
 @javax.enterprise.context.RequestScoped
-public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ>{
+public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ> {
+
     @EJB
     private REPMQBean repmqBean;
-    
-    public REPMQFacadeREST(){
+
+    public REPMQFacadeREST() {
         super(REPMQ.class);
     }
 
@@ -74,11 +75,10 @@ public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ>{
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
-    
+
     @Override
     protected SuperEJB getSuperEJB() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

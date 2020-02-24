@@ -5,14 +5,10 @@
  */
 package cn.hanbell.eap.entity;
 
-import java.io.Serializable;
+import com.lightshell.comm.FormEntity;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -63,24 +59,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Demands.findByWriterID", query = "SELECT d FROM Demands d WHERE d.writerID = :writerID"),
     @NamedQuery(name = "Demands.findByWriterName", query = "SELECT d FROM Demands d WHERE d.writerName = :writerName"),
     @NamedQuery(name = "Demands.findById", query = "SELECT d FROM Demands d WHERE d.id = :id")})
-public class Demands implements Serializable {
+public class Demands extends FormEntity {
 
-    private static final long serialVersionUID = 1L;
     @Size(max = 255)
     @Column(name = "appendix")
     private String appendix;
-    @Column(name = "cfmdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date cfmdate;
-    @Size(max = 255)
-    @Column(name = "cfmuser")
-    private String cfmuser;
-    @Size(max = 255)
-    @Column(name = "creator")
-    private String creator;
-    @Column(name = "credate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date credate;
+
     @Size(max = 255)
     @Column(name = "demandContent")
     private String demandContent;
@@ -114,24 +98,13 @@ public class Demands implements Serializable {
     @Size(max = 10)
     @Column(name = "directorDeptName")
     private String directorDeptName;
-    @Column(name = "formdate")
-    @Temporal(TemporalType.DATE)
-    private Date formdate;
-    @Size(max = 255)
-    @Column(name = "formid")
-    private String formid;
+
     @Size(max = 255)
     @Column(name = "modulName")
     private String modulName;
     @Size(max = 255)
     @Column(name = "oid")
     private String oid;
-    @Column(name = "optdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date optdate;
-    @Size(max = 255)
-    @Column(name = "optuser")
-    private String optuser;
     @Column(name = "planEndDate")
     @Temporal(TemporalType.DATE)
     private Date planEndDate;
@@ -148,9 +121,6 @@ public class Demands implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date realStartDate;
     @Size(max = 255)
-    @Column(name = "status")
-    private String status;
-    @Size(max = 255)
     @Column(name = "systemName")
     private String systemName;
     @Column(name = "writeDate")
@@ -162,11 +132,6 @@ public class Demands implements Serializable {
     @Size(max = 255)
     @Column(name = "writerName")
     private String writerName;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
 
     public Demands() {
     }
@@ -181,38 +146,6 @@ public class Demands implements Serializable {
 
     public void setAppendix(String appendix) {
         this.appendix = appendix;
-    }
-
-    public Date getCfmdate() {
-        return cfmdate;
-    }
-
-    public void setCfmdate(Date cfmdate) {
-        this.cfmdate = cfmdate;
-    }
-
-    public String getCfmuser() {
-        return cfmuser;
-    }
-
-    public void setCfmuser(String cfmuser) {
-        this.cfmuser = cfmuser;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public Date getCredate() {
-        return credate;
-    }
-
-    public void setCredate(Date credate) {
-        this.credate = credate;
     }
 
     public String getDemandContent() {
@@ -303,22 +236,6 @@ public class Demands implements Serializable {
         this.directorDeptName = directorDeptName;
     }
 
-    public Date getFormdate() {
-        return formdate;
-    }
-
-    public void setFormdate(Date formdate) {
-        this.formdate = formdate;
-    }
-
-    public String getFormid() {
-        return formid;
-    }
-
-    public void setFormid(String formid) {
-        this.formid = formid;
-    }
-
     public String getModulName() {
         return modulName;
     }
@@ -333,22 +250,6 @@ public class Demands implements Serializable {
 
     public void setOid(String oid) {
         this.oid = oid;
-    }
-
-    public Date getOptdate() {
-        return optdate;
-    }
-
-    public void setOptdate(Date optdate) {
-        this.optdate = optdate;
-    }
-
-    public String getOptuser() {
-        return optuser;
-    }
-
-    public void setOptuser(String optuser) {
-        this.optuser = optuser;
     }
 
     public Date getPlanEndDate() {
@@ -391,14 +292,6 @@ public class Demands implements Serializable {
         this.realStartDate = realStartDate;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getSystemName() {
         return systemName;
     }
@@ -431,14 +324,6 @@ public class Demands implements Serializable {
         this.writerName = writerName;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -463,5 +348,5 @@ public class Demands implements Serializable {
     public String toString() {
         return "cn.hanbell.eap.entity.Demands[ id=" + id + " ]";
     }
-    
+
 }

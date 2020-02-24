@@ -16,10 +16,10 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class IssuesBean extends SuperEJBForEAP<Issues>{
-    
+public class IssuesBean extends SuperEJBForEAP<Issues> {
+
     public IssuesBean() {
         super(Issues.class);
     }
-    
+
 }

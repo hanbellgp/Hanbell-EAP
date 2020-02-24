@@ -24,7 +24,7 @@ public class CodeInfoBean extends SuperEJBForHRM<CodeInfo> {
         super(CodeInfo.class);
     }
 
-    public List<CodeInfo> findByKindCodeForWechatTag() {
+    public List<CodeInfo> findByDecisionLevel() {
         Query query = this.getEntityManager().createNamedQuery("CodeInfo.findByKindCode");
         query.setParameter("kindCode", "DecisionLevel");
         return query.getResultList();

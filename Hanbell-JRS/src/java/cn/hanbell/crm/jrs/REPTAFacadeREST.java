@@ -30,11 +30,12 @@ import javax.ws.rs.core.Response;
  */
 @Path("crm/repta")
 @javax.enterprise.context.RequestScoped
-public class REPTAFacadeREST extends SuperRESTForCRM<REPTA>{
+public class REPTAFacadeREST extends SuperRESTForCRM<REPTA> {
+
     @EJB
     private REPTABean reptaBean;
-    
-    public REPTAFacadeREST(){
+
+    public REPTAFacadeREST() {
         super(REPTA.class);
     }
 
@@ -74,10 +75,10 @@ public class REPTAFacadeREST extends SuperRESTForCRM<REPTA>{
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     @Override
     protected SuperEJB getSuperEJB() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
