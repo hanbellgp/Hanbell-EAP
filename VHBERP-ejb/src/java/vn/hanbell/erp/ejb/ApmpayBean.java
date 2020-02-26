@@ -90,8 +90,8 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             h.setUsrno(v.getCreator());                                         //OA表单输入人员
             //h.setAppuserno(b.getAppUser());                                   //OA请款人
             h.setTaxym(BaseLib.formatDate("yyyyMM", date));                     //取得OA请款日期设置申报年月
-            //h.setBilltype("VH_TV003");                                        //取得OA表单名称
-            //h.setSrcno(v.getProcessSerialNumber());                           //取得OA表单序列号
+            h.setBilltype("VH_TV003");                                          //取得OA表单名称
+            h.setSrcno(v.getProcessSerialNumber());                             //取得OA表单序列号
             h.setPaystat('0');                                                  //设置付款状态
             h.setSrckind("3");                                                  //设置来源区分码
 
@@ -279,8 +279,8 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             h.setUsrno(j.getCreator());                                         //OA表单输入人员
             //h.setAppuserno(j.getLoanUser());                                  //OA请款人
             h.setTaxym(BaseLib.formatDate("yyyyMM", date));                     //取得OA请款日期设置申报年月
-            //h.setBilltype("HZ_CW017");                                        //取得OA表单名称
-            //h.setSrcno(j.getProcessSerialNumber());                           //取得OA表单序列号
+            h.setBilltype("VH_TV001");                                          //取得OA表单名称
+            h.setSrcno(j.getProcessSerialNumber());                             //取得OA表单序列号
             h.setPaystat('0');                                                  //设置付款状态
             h.setSrckind("3");                                                  //设置来源区分码
 
@@ -402,8 +402,8 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             h.setUsrno(g.getCreator());                                         //OA表单输入人员
             //h.setAppuserno(g.getAppUser());                                   //OA请款人
             h.setTaxym(BaseLib.formatDate("yyyyMM", date));                     //取得OA请款日期设置申报年月
-            //h.setBilltype("HZ_CW033");                                        //取得OA表单名称
-            //h.setSrcno(g.getProcessSerialNumber());                           //取得OA表单序列号
+            h.setBilltype("VH_TV002");                                          //取得OA表单名称
+            h.setSrcno(g.getProcessSerialNumber());                             //取得OA表单序列号
             h.setPaystat('0');                                                  //设置付款状态
             h.setSrckind("3");                                                  //设置来源区分码
 
