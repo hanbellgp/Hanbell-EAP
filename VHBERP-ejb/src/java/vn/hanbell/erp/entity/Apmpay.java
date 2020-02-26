@@ -119,7 +119,7 @@ public class Apmpay implements Serializable {
     @Size(max = 18)
     @Column(name = "billtype")
     private String billtype;
-    @Size(max = 18)
+    @Size(max = 20)
     @Column(name = "srcno")
     private String srcno;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "apmpay")
