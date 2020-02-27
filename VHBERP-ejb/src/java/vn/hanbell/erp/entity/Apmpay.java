@@ -32,27 +32,27 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "apmpay")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Apmpay.findAll", query = "SELECT a FROM Apmpay a")
-    , @NamedQuery(name = "Apmpay.findByFacno", query = "SELECT a FROM Apmpay a WHERE a.apmpayPK.facno = :facno")
-    , @NamedQuery(name = "Apmpay.findByPaycode", query = "SELECT a FROM Apmpay a WHERE a.apmpayPK.paycode = :paycode")
-    , @NamedQuery(name = "Apmpay.findByPayno", query = "SELECT a FROM Apmpay a WHERE a.apmpayPK.payno = :payno")
-    , @NamedQuery(name = "Apmpay.findByRkd", query = "SELECT a FROM Apmpay a WHERE a.rkd = :rkd")
-    , @NamedQuery(name = "Apmpay.findByPayda", query = "SELECT a FROM Apmpay a WHERE a.payda = :payda")
-    , @NamedQuery(name = "Apmpay.findByRitm1", query = "SELECT a FROM Apmpay a WHERE a.ritm1 = :ritm1")
-    , @NamedQuery(name = "Apmpay.findByRitm2", query = "SELECT a FROM Apmpay a WHERE a.ritm2 = :ritm2")
-    , @NamedQuery(name = "Apmpay.findByRitm3", query = "SELECT a FROM Apmpay a WHERE a.ritm3 = :ritm3")
-    , @NamedQuery(name = "Apmpay.findByRitm4", query = "SELECT a FROM Apmpay a WHERE a.ritm4 = :ritm4")
-    , @NamedQuery(name = "Apmpay.findByRitm5", query = "SELECT a FROM Apmpay a WHERE a.ritm5 = :ritm5")
-    , @NamedQuery(name = "Apmpay.findByRitm6", query = "SELECT a FROM Apmpay a WHERE a.ritm6 = :ritm6")
-    , @NamedQuery(name = "Apmpay.findByRitm7", query = "SELECT a FROM Apmpay a WHERE a.ritm7 = :ritm7")
-    , @NamedQuery(name = "Apmpay.findByRitm8", query = "SELECT a FROM Apmpay a WHERE a.ritm8 = :ritm8")
-    , @NamedQuery(name = "Apmpay.findByUsrno", query = "SELECT a FROM Apmpay a WHERE a.usrno = :usrno")
-    , @NamedQuery(name = "Apmpay.findByDepno", query = "SELECT a FROM Apmpay a WHERE a.depno = :depno")
-    , @NamedQuery(name = "Apmpay.findByPaystat", query = "SELECT a FROM Apmpay a WHERE a.paystat = :paystat")
-    , @NamedQuery(name = "Apmpay.findByVouno", query = "SELECT a FROM Apmpay a WHERE a.vouno = :vouno")
-    , @NamedQuery(name = "Apmpay.findBySumry", query = "SELECT a FROM Apmpay a WHERE a.sumry = :sumry")
-    , @NamedQuery(name = "Apmpay.findByTaxym", query = "SELECT a FROM Apmpay a WHERE a.taxym = :taxym")
-    , @NamedQuery(name = "Apmpay.findBySrckind", query = "SELECT a FROM Apmpay a WHERE a.srckind = :srckind")})
+    @NamedQuery(name = "Apmpay.findAll", query = "SELECT a FROM Apmpay a"),
+    @NamedQuery(name = "Apmpay.findByFacno", query = "SELECT a FROM Apmpay a WHERE a.apmpayPK.facno = :facno"),
+    @NamedQuery(name = "Apmpay.findByPaycode", query = "SELECT a FROM Apmpay a WHERE a.apmpayPK.paycode = :paycode"),
+    @NamedQuery(name = "Apmpay.findByPayno", query = "SELECT a FROM Apmpay a WHERE a.apmpayPK.payno = :payno"),
+    @NamedQuery(name = "Apmpay.findByRkd", query = "SELECT a FROM Apmpay a WHERE a.rkd = :rkd"),
+    @NamedQuery(name = "Apmpay.findByPayda", query = "SELECT a FROM Apmpay a WHERE a.payda = :payda"),
+    @NamedQuery(name = "Apmpay.findByRitm1", query = "SELECT a FROM Apmpay a WHERE a.ritm1 = :ritm1"),
+    @NamedQuery(name = "Apmpay.findByRitm2", query = "SELECT a FROM Apmpay a WHERE a.ritm2 = :ritm2"),
+    @NamedQuery(name = "Apmpay.findByRitm3", query = "SELECT a FROM Apmpay a WHERE a.ritm3 = :ritm3"),
+    @NamedQuery(name = "Apmpay.findByRitm4", query = "SELECT a FROM Apmpay a WHERE a.ritm4 = :ritm4"),
+    @NamedQuery(name = "Apmpay.findByRitm5", query = "SELECT a FROM Apmpay a WHERE a.ritm5 = :ritm5"),
+    @NamedQuery(name = "Apmpay.findByRitm6", query = "SELECT a FROM Apmpay a WHERE a.ritm6 = :ritm6"),
+    @NamedQuery(name = "Apmpay.findByRitm7", query = "SELECT a FROM Apmpay a WHERE a.ritm7 = :ritm7"),
+    @NamedQuery(name = "Apmpay.findByRitm8", query = "SELECT a FROM Apmpay a WHERE a.ritm8 = :ritm8"),
+    @NamedQuery(name = "Apmpay.findByUsrno", query = "SELECT a FROM Apmpay a WHERE a.usrno = :usrno"),
+    @NamedQuery(name = "Apmpay.findByDepno", query = "SELECT a FROM Apmpay a WHERE a.depno = :depno"),
+    @NamedQuery(name = "Apmpay.findByPaystat", query = "SELECT a FROM Apmpay a WHERE a.paystat = :paystat"),
+    @NamedQuery(name = "Apmpay.findByVouno", query = "SELECT a FROM Apmpay a WHERE a.vouno = :vouno"),
+    @NamedQuery(name = "Apmpay.findBySumry", query = "SELECT a FROM Apmpay a WHERE a.sumry = :sumry"),
+    @NamedQuery(name = "Apmpay.findByTaxym", query = "SELECT a FROM Apmpay a WHERE a.taxym = :taxym"),
+    @NamedQuery(name = "Apmpay.findBySrckind", query = "SELECT a FROM Apmpay a WHERE a.srckind = :srckind")})
 public class Apmpay implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -116,6 +116,12 @@ public class Apmpay implements Serializable {
     @Size(max = 1)
     @Column(name = "srckind")
     private String srckind;
+    @Size(max = 18)
+    @Column(name = "billtype")
+    private String billtype;
+    @Size(max = 20)
+    @Column(name = "srcno")
+    private String srcno;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "apmpay")
     private List<Apmpad> apmpadList;
 
@@ -315,5 +321,21 @@ public class Apmpay implements Serializable {
     public String toString() {
         return "vn.hanbell.erp.entity.Apmpay[ apmpayPK=" + apmpayPK + " ]";
     }
-    
+
+    public String getBilltype() {
+        return billtype;
+    }
+
+    public void setBilltype(String billtype) {
+        this.billtype = billtype;
+    }
+
+    public String getSrcno() {
+        return srcno;
+    }
+
+    public void setSrcno(String srcno) {
+        this.srcno = srcno;
+    }
+
 }
