@@ -175,6 +175,9 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 invdta.setTrtype(trtype);
                 invmasBean.setCompany(facno);
                 Invmas m = invmasBean.findByItnbr(detail.getItnbr());
+                if(m == null){
+                    throw new RuntimeException(detail.getItnbr() + "ERP中不存在");
+                }
                 invdta.setItcls(m.getItcls());
                 invdta.setItclscode(m.getItclscode());
                 invdta.setTrnqy1(BigDecimal.valueOf(Double.parseDouble(detail.getNum())));

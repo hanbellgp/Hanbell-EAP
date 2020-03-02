@@ -936,7 +936,7 @@ public class TimerBean {
         log4j.info("PLM件号抛转轮询");
     }
 
-    @Schedule(minute = "0", hour = "15", persistent = false)
+    //@Schedule(minute = "0", hour = "15", persistent = false)
     public void createOASHBERPINV325ByERPWSQ() {
         SHBERPINV325Model s;
         SHBERPINV325DetailModel dm;
