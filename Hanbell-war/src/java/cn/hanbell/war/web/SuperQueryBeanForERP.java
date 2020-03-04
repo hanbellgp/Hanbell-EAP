@@ -18,7 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -97,7 +97,7 @@ public abstract class SuperQueryBeanForERP<T> implements Serializable {
 
     public void closeDialog(T entity) {
         if (entity != null) {
-            RequestContext.getCurrentInstance().closeDialog(entity);
+            PrimeFaces.current().dialog().closeDynamic(entity);
         } else {
             showMsg(FacesMessage.SEVERITY_WARN, "Warn", "没有选择数据");
         }
