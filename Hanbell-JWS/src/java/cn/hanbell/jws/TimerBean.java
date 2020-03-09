@@ -342,6 +342,7 @@ public class TimerBean {
                     cn.hanbell.eap.entity.Department ed = eapDepartmentBean.findByDeptno(hd.getCode());
                     if (ed == null) {
                         ed = new cn.hanbell.eap.entity.Department();
+                        ed.setCompany(workFlowBean.getCompanyByDeptId(hd.getCode()));
                         ed.setDeptno(hd.getCode());
                         ed.setDept(hd.getName());
                         if (ep != null) {
