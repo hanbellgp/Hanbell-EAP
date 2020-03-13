@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrqbomsub.findByCdrno", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.cdrno = :cdrno"),
     @NamedQuery(name = "Cdrqbomsub.findByTrseq", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.trseq = :trseq"),
     @NamedQuery(name = "Cdrqbomsub.findByItnbrf", query = "SELECT c FROM Cdrqbomsub c WHERE c.itnbrf = :itnbrf"),
-    @NamedQuery(name = "Cdrqbomsub.findByItnbrfAndCdrno", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.facno = :facno AND c.cdrqbomsubPK.cdrno = :cdrno AND c.itnbrf = :itnbrf")})
+    @NamedQuery(name = "Cdrqbomsub.findByItnbrfAndCdrno", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.facno = :facno AND c.cdrqbomsubPK.cdrno = :cdrno AND c.itnbrf = :itnbrf"),
+    @NamedQuery(name = "Cdrqbomsub.findByPK", query = "SELECT c FROM Cdrqbomsub c WHERE c.cdrqbomsubPK.facno = :facno AND c.cdrqbomsubPK.cdrno = :cdrno AND c.cdrqbomsubPK.trseq = :trseq")})
 public class Cdrqbomsub implements Serializable {
 
     private static final long serialVersionUID = 1L;
