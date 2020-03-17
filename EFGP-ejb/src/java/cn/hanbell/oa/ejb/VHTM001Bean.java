@@ -19,15 +19,16 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class VHTM001Bean extends  SuperEJBForEFGP<VHTM001>{
+public class VHTM001Bean extends SuperEJBForEFGP<VHTM001> {
+
     @EJB
     private VHTM001purDetailBean vhtm001purDetailBean;
 
     public VHTM001Bean() {
         super(VHTM001.class);
     }
-    
-    public List<VHTM001purDetail> getPurDetails(String fsn){
+
+    public List<VHTM001purDetail> getPurDetails(String fsn) {
         return vhtm001purDetailBean.findByFSN(fsn);
     }
 

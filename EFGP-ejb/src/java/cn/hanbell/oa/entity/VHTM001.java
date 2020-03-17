@@ -28,9 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "VH_TM001")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "VHTM001.findAll", query = "SELECT v FROM VHTM001 v")
-    , @NamedQuery(name = "VHTM001.findByPSN", query = "SELECT v FROM VHTM001 v WHERE v.processSerialNumber = :psn")
-    , @NamedQuery(name = "VHTM001.findByFSN", query = "SELECT v FROM VHTM001 v WHERE v.formSerialNumber = :fsn")})
+    @NamedQuery(name = "VHTM001.findAll", query = "SELECT v FROM VHTM001 v"),
+    @NamedQuery(name = "VHTM001.findByPSN", query = "SELECT v FROM VHTM001 v WHERE v.processSerialNumber = :psn"),
+    @NamedQuery(name = "VHTM001.findByFSN", query = "SELECT v FROM VHTM001 v WHERE v.formSerialNumber = :fsn")})
 public class VHTM001 implements Serializable {
 
     private static final long serialVersionUID = 1L;

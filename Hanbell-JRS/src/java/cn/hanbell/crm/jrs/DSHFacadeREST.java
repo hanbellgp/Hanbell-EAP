@@ -32,6 +32,7 @@ import javax.ws.rs.core.Response;
 @Path("crm/dsh")
 @javax.enterprise.context.RequestScoped
 public class DSHFacadeREST extends SuperRESTForCRM<DSH> {
+
     @EJB
     private DSHBean dshBean;
 

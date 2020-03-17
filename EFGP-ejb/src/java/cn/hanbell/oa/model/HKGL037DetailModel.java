@@ -13,7 +13,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Administrator
  */
 @XmlRootElement
-public class HKGL037DetailModel implements Serializable{
+public class HKGL037DetailModel implements Serializable {
+
     private String seq;
     private String ghuser_txt;
     private String ghuser_lbl;
@@ -31,7 +32,6 @@ public class HKGL037DetailModel implements Serializable{
     private String address2;
     private String sy;
     private String gsmc;
-
 
     public String getContact() {
         return contact;

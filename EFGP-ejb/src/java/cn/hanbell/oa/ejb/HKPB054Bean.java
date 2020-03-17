@@ -31,11 +31,11 @@ public class HKPB054Bean extends SuperEJBForEFGP<HKPB054> {
         super(HKPB054.class);
     }
 
-    public List<HKPB054WLDetail> getHkpb054WLDetailList() {
+    public List<HKPB054WLDetail> getHKPB054WLDetailList() {
         return hkpb054WLDetailList;
     }
 
-    public void setHkpb054WLDetailList(Object value) {
+    public void setHKPB054WLDetailList(Object value) {
         hkpb054WLDetailList = hkpb054WLDetailBean.findByFSN(value.toString());
         if (hkpb054WLDetailList == null) {
             hkpb054WLDetailList = new ArrayList<>();
