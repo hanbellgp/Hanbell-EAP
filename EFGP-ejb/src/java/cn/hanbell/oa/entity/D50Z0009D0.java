@@ -229,7 +229,8 @@ import javax.xml.bind.annotation.XmlRootElement;
             name = "D50Z0009D0.findByHdnglb",
             query = "SELECT d FROM D50Z0009D0 d WHERE d.hdnglb = :hdnglb"
     )})
-public class D50Z0009D0 implements Serializable {     
+public class D50Z0009D0 implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(
@@ -1009,8 +1010,6 @@ public class D50Z0009D0 implements Serializable {
         this.startout = startout;
     }
 
- 
-
     public Date getStaydate1() {
         return staydate1;
     }
@@ -1239,9 +1238,9 @@ public class D50Z0009D0 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.D50Z0009D0[ oid=" + this.oid + " ]";
     }
-    
-    public String getComapntName(String name){
-        WorkFlowBean WorkFlowBean=new WorkFlowBean();
-    return WorkFlowBean.getCompanyName(name);
+
+    public String getComapntName(String name) {
+        WorkFlowBean WorkFlowBean = new WorkFlowBean();
+        return WorkFlowBean.getCompanyName(name);
     }
 }

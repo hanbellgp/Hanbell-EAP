@@ -268,5 +268,5 @@ public class HKPB054Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKPB054Detail[ oid=" + oid + " ]";
     }
-    
+
 }

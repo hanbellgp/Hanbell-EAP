@@ -25,36 +25,36 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "VH_TV003_tDetail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "VHTV003tDetail.findAll", query = "SELECT v FROM VHTV003tDetail v")
-    , @NamedQuery(name = "VHTV003tDetail.findByOid", query = "SELECT v FROM VHTV003tDetail v WHERE v.oid = :oid")
-    , @NamedQuery(name = "VHTV003tDetail.findByEndMileage", query = "SELECT v FROM VHTV003tDetail v WHERE v.endMileage = :endMileage")
-    , @NamedQuery(name = "VHTV003tDetail.findByTaxi", query = "SELECT v FROM VHTV003tDetail v WHERE v.taxi = :taxi")
-    , @NamedQuery(name = "VHTV003tDetail.findByAllowance", query = "SELECT v FROM VHTV003tDetail v WHERE v.allowance = :allowance")
-    , @NamedQuery(name = "VHTV003tDetail.findByNo", query = "SELECT v FROM VHTV003tDetail v WHERE v.no = :no")
-    , @NamedQuery(name = "VHTV003tDetail.findByTrafficSummary", query = "SELECT v FROM VHTV003tDetail v WHERE v.trafficSummary = :trafficSummary")
-    , @NamedQuery(name = "VHTV003tDetail.findByBh3", query = "SELECT v FROM VHTV003tDetail v WHERE v.bh3 = :bh3")
-    , @NamedQuery(name = "VHTV003tDetail.findByBh2", query = "SELECT v FROM VHTV003tDetail v WHERE v.bh2 = :bh2")
-    , @NamedQuery(name = "VHTV003tDetail.findByReceipt", query = "SELECT v FROM VHTV003tDetail v WHERE v.receipt = :receipt")
-    , @NamedQuery(name = "VHTV003tDetail.findByCarUse", query = "SELECT v FROM VHTV003tDetail v WHERE v.carUse = :carUse")
-    , @NamedQuery(name = "VHTV003tDetail.findByStartMileage", query = "SELECT v FROM VHTV003tDetail v WHERE v.startMileage = :startMileage")
-    , @NamedQuery(name = "VHTV003tDetail.findByTrafficfee", query = "SELECT v FROM VHTV003tDetail v WHERE v.trafficfee = :trafficfee")
-    , @NamedQuery(name = "VHTV003tDetail.findByBh1", query = "SELECT v FROM VHTV003tDetail v WHERE v.bh1 = :bh1")
-    , @NamedQuery(name = "VHTV003tDetail.findByTravelReport", query = "SELECT v FROM VHTV003tDetail v WHERE v.travelReport = :travelReport")
-    , @NamedQuery(name = "VHTV003tDetail.findByJc2", query = "SELECT v FROM VHTV003tDetail v WHERE v.jc2 = :jc2")
-    , @NamedQuery(name = "VHTV003tDetail.findByJc1", query = "SELECT v FROM VHTV003tDetail v WHERE v.jc1 = :jc1")
-    , @NamedQuery(name = "VHTV003tDetail.findByJc3", query = "SELECT v FROM VHTV003tDetail v WHERE v.jc3 = :jc3")
-    , @NamedQuery(name = "VHTV003tDetail.findByTrafficPlace", query = "SELECT v FROM VHTV003tDetail v WHERE v.trafficPlace = :trafficPlace")
-    , @NamedQuery(name = "VHTV003tDetail.findByTotalMileage", query = "SELECT v FROM VHTV003tDetail v WHERE v.totalMileage = :totalMileage")
-    , @NamedQuery(name = "VHTV003tDetail.findBySubtotal", query = "SELECT v FROM VHTV003tDetail v WHERE v.subtotal = :subtotal")
-    , @NamedQuery(name = "VHTV003tDetail.findByTrafficDatetxt", query = "SELECT v FROM VHTV003tDetail v WHERE v.trafficDatetxt = :trafficDatetxt")
-    , @NamedQuery(name = "VHTV003tDetail.findBySort3", query = "SELECT v FROM VHTV003tDetail v WHERE v.sort3 = :sort3")
-    , @NamedQuery(name = "VHTV003tDetail.findBySort2", query = "SELECT v FROM VHTV003tDetail v WHERE v.sort2 = :sort2")
-    , @NamedQuery(name = "VHTV003tDetail.findByIsFree", query = "SELECT v FROM VHTV003tDetail v WHERE v.isFree = :isFree")
-    , @NamedQuery(name = "VHTV003tDetail.findByAccommodation", query = "SELECT v FROM VHTV003tDetail v WHERE v.accommodation = :accommodation")
-    , @NamedQuery(name = "VHTV003tDetail.findBySort1", query = "SELECT v FROM VHTV003tDetail v WHERE v.sort1 = :sort1")
-    , @NamedQuery(name = "VHTV003tDetail.findByCustomerSno2", query = "SELECT v FROM VHTV003tDetail v WHERE v.customerSno2 = :customerSno2")
-    , @NamedQuery(name = "VHTV003tDetail.findByServiceno2", query = "SELECT v FROM VHTV003tDetail v WHERE v.serviceno2 = :serviceno2")
-    , @NamedQuery(name = "VHTV003tDetail.findByFormSerialNumber", query = "SELECT v FROM VHTV003tDetail v WHERE v.formSerialNumber = :formSerialNumber")})
+    @NamedQuery(name = "VHTV003tDetail.findAll", query = "SELECT v FROM VHTV003tDetail v"),
+    @NamedQuery(name = "VHTV003tDetail.findByOid", query = "SELECT v FROM VHTV003tDetail v WHERE v.oid = :oid"),
+    @NamedQuery(name = "VHTV003tDetail.findByEndMileage", query = "SELECT v FROM VHTV003tDetail v WHERE v.endMileage = :endMileage"),
+    @NamedQuery(name = "VHTV003tDetail.findByTaxi", query = "SELECT v FROM VHTV003tDetail v WHERE v.taxi = :taxi"),
+    @NamedQuery(name = "VHTV003tDetail.findByAllowance", query = "SELECT v FROM VHTV003tDetail v WHERE v.allowance = :allowance"),
+    @NamedQuery(name = "VHTV003tDetail.findByNo", query = "SELECT v FROM VHTV003tDetail v WHERE v.no = :no"),
+    @NamedQuery(name = "VHTV003tDetail.findByTrafficSummary", query = "SELECT v FROM VHTV003tDetail v WHERE v.trafficSummary = :trafficSummary"),
+    @NamedQuery(name = "VHTV003tDetail.findByBh3", query = "SELECT v FROM VHTV003tDetail v WHERE v.bh3 = :bh3"),
+    @NamedQuery(name = "VHTV003tDetail.findByBh2", query = "SELECT v FROM VHTV003tDetail v WHERE v.bh2 = :bh2"),
+    @NamedQuery(name = "VHTV003tDetail.findByReceipt", query = "SELECT v FROM VHTV003tDetail v WHERE v.receipt = :receipt"),
+    @NamedQuery(name = "VHTV003tDetail.findByCarUse", query = "SELECT v FROM VHTV003tDetail v WHERE v.carUse = :carUse"),
+    @NamedQuery(name = "VHTV003tDetail.findByStartMileage", query = "SELECT v FROM VHTV003tDetail v WHERE v.startMileage = :startMileage"),
+    @NamedQuery(name = "VHTV003tDetail.findByTrafficfee", query = "SELECT v FROM VHTV003tDetail v WHERE v.trafficfee = :trafficfee"),
+    @NamedQuery(name = "VHTV003tDetail.findByBh1", query = "SELECT v FROM VHTV003tDetail v WHERE v.bh1 = :bh1"),
+    @NamedQuery(name = "VHTV003tDetail.findByTravelReport", query = "SELECT v FROM VHTV003tDetail v WHERE v.travelReport = :travelReport"),
+    @NamedQuery(name = "VHTV003tDetail.findByJc2", query = "SELECT v FROM VHTV003tDetail v WHERE v.jc2 = :jc2"),
+    @NamedQuery(name = "VHTV003tDetail.findByJc1", query = "SELECT v FROM VHTV003tDetail v WHERE v.jc1 = :jc1"),
+    @NamedQuery(name = "VHTV003tDetail.findByJc3", query = "SELECT v FROM VHTV003tDetail v WHERE v.jc3 = :jc3"),
+    @NamedQuery(name = "VHTV003tDetail.findByTrafficPlace", query = "SELECT v FROM VHTV003tDetail v WHERE v.trafficPlace = :trafficPlace"),
+    @NamedQuery(name = "VHTV003tDetail.findByTotalMileage", query = "SELECT v FROM VHTV003tDetail v WHERE v.totalMileage = :totalMileage"),
+    @NamedQuery(name = "VHTV003tDetail.findBySubtotal", query = "SELECT v FROM VHTV003tDetail v WHERE v.subtotal = :subtotal"),
+    @NamedQuery(name = "VHTV003tDetail.findByTrafficDatetxt", query = "SELECT v FROM VHTV003tDetail v WHERE v.trafficDatetxt = :trafficDatetxt"),
+    @NamedQuery(name = "VHTV003tDetail.findBySort3", query = "SELECT v FROM VHTV003tDetail v WHERE v.sort3 = :sort3"),
+    @NamedQuery(name = "VHTV003tDetail.findBySort2", query = "SELECT v FROM VHTV003tDetail v WHERE v.sort2 = :sort2"),
+    @NamedQuery(name = "VHTV003tDetail.findByIsFree", query = "SELECT v FROM VHTV003tDetail v WHERE v.isFree = :isFree"),
+    @NamedQuery(name = "VHTV003tDetail.findByAccommodation", query = "SELECT v FROM VHTV003tDetail v WHERE v.accommodation = :accommodation"),
+    @NamedQuery(name = "VHTV003tDetail.findBySort1", query = "SELECT v FROM VHTV003tDetail v WHERE v.sort1 = :sort1"),
+    @NamedQuery(name = "VHTV003tDetail.findByCustomerSno2", query = "SELECT v FROM VHTV003tDetail v WHERE v.customerSno2 = :customerSno2"),
+    @NamedQuery(name = "VHTV003tDetail.findByServiceno2", query = "SELECT v FROM VHTV003tDetail v WHERE v.serviceno2 = :serviceno2"),
+    @NamedQuery(name = "VHTV003tDetail.findByFormSerialNumber", query = "SELECT v FROM VHTV003tDetail v WHERE v.formSerialNumber = :formSerialNumber")})
 public class VHTV003tDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -412,5 +412,5 @@ public class VHTV003tDetail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.VHTV003tDetail[ oid=" + oid + " ]";
     }
-    
+
 }

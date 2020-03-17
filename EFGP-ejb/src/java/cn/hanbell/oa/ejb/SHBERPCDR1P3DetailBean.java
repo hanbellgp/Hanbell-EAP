@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class SHBERPCDR1P3DetailBean extends SuperEJBForEFGP<SHBERPCDR1P3Detail>{
+public class SHBERPCDR1P3DetailBean extends SuperEJBForEFGP<SHBERPCDR1P3Detail> {
 
     public SHBERPCDR1P3DetailBean() {
         super(SHBERPCDR1P3Detail.class);

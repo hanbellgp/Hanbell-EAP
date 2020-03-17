@@ -6,8 +6,8 @@
 package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
-import cn.hanbell.oa.entity.VHTV003;
-import cn.hanbell.oa.entity.VHTV003reDetail;
+import cn.hanbell.oa.entity.HKJH007;
+import cn.hanbell.oa.entity.HKJH007Detail;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -15,21 +15,21 @@ import javax.ejb.LocalBean;
 
 /**
  *
- * @author Administrator
+ * @author C0160
  */
 @Stateless
 @LocalBean
-public class VHTV003Bean extends SuperEJBForEFGP<VHTV003> {
+public class HKJH007Bean extends SuperEJBForEFGP<HKJH007> {
 
     @EJB
-    private VHTV003reDetailBean vhtv003reDetailBean;
+    private HKJH007DetailBean hkjh007DetailBean;
 
-    public VHTV003Bean() {
-        super(VHTV003.class);
+    public HKJH007Bean() {
+        super(HKJH007.class);
     }
 
-    public List<VHTV003reDetail> getDetailList(Object value) {
-        return vhtv003reDetailBean.findByFSN(value);
+    public List<HKJH007Detail> getDetailList(String fsn) {
+        return hkjh007DetailBean.findByFSN(fsn);
     }
 
 }

@@ -178,18 +178,24 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 return "W";
         }
         switch (deptId.substring(0, 1)) {
+            case "1":
+                return "C";
             case "2":
                 return "H";
+            case "3":
+                return "V";
             case "4":
                 return "Q";
             case "5":
                 return "K";
+            case "6":
+                return "R";
             case "7":
                 return "Y";
             case "9":
                 return "L";
         }
-        return "C";
+        return "";
     }
 
     public String getCompanyName(String facno) {

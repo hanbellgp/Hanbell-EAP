@@ -25,9 +25,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "VH_TV003_reDetail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "VHTV003reDetail.findAll", query = "SELECT v FROM VHTV003reDetail v")
-    , @NamedQuery(name = "VHTV003reDetail.findByOid", query = "SELECT v FROM VHTV003reDetail v WHERE v.oid = :oid")
-    , @NamedQuery(name = "VHTV003reDetail.findByFSN", query = "SELECT v FROM VHTV003reDetail v WHERE v.formSerialNumber = :fsn")})
+    @NamedQuery(name = "VHTV003reDetail.findAll", query = "SELECT v FROM VHTV003reDetail v"),
+    @NamedQuery(name = "VHTV003reDetail.findByOid", query = "SELECT v FROM VHTV003reDetail v WHERE v.oid = :oid"),
+    @NamedQuery(name = "VHTV003reDetail.findByFSN", query = "SELECT v FROM VHTV003reDetail v WHERE v.formSerialNumber = :fsn")})
 public class VHTV003reDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -319,5 +319,5 @@ public class VHTV003reDetail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.VHTV003reDetail[ oid=" + oid + " ]";
     }
-    
+
 }
