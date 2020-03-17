@@ -188,6 +188,8 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 return "Q";
             case "5":
                 return "K";
+            case "6":
+                return "R";
             case "7":
                 return "Y";
             case "9":
