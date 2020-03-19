@@ -38,6 +38,7 @@ public class HKGL037Application implements Serializable {
     private String privatecarno;
     private String purpose;
     private String purposeDesc;
+    private String hmark1;
     private List<HKGL037DetailApplication> detailList;
 
     public Long getId() {
@@ -175,6 +176,14 @@ public class HKGL037Application implements Serializable {
 
     public void setPurposeDesc(String purposeDesc) {
         this.purposeDesc = purposeDesc;
+    }
+
+    public String getHmark1() {
+        return hmark1;
+    }
+
+    public void setHmark1(String hmark1) {
+        this.hmark1 = hmark1;
     }
 
 }

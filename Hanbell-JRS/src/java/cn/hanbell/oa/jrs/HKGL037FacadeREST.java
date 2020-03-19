@@ -118,7 +118,7 @@ public class HKGL037FacadeREST extends SuperRESTForEFGP<KV> {
                 }
                 m.setCpno(entity.getPrivatecarno());
                 m.setYcyy(entity.getPurpose());
-                m.setBzsm("");
+                m.setBzsm(entity.getHmark1());
                 m.setAccommodation("2");
                 m.setAccommRegistration("2");
                 m.setDeparture("1");
