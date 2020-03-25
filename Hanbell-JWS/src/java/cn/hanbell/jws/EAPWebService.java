@@ -145,12 +145,15 @@ import cn.hanbell.oa.ejb.HKGC003Bean;
 import cn.hanbell.oa.ejb.HKGL060Bean;
 import cn.hanbell.oa.ejb.HKCG019Bean;
 import cn.hanbell.oa.ejb.HKXQB001Bean;
+import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.ejb.SHBCRMREPI13Bean;
 import cn.hanbell.oa.ejb.SHBCRMSERI12Bean;
 import cn.hanbell.oa.ejb.SHBINV140Bean;
+import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.ejb.VHTV002Bean;
 import cn.hanbell.oa.ejb.WARMI05Bean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
+import cn.hanbell.oa.ejb.WorkItemBean;
 import cn.hanbell.oa.entity.HKCG016;
 import cn.hanbell.oa.entity.HKCG019;
 import cn.hanbell.oa.entity.HKCW002;
@@ -163,12 +166,15 @@ import cn.hanbell.oa.entity.HZCW034Detail;
 import cn.hanbell.oa.entity.HZJS034;
 import cn.hanbell.oa.entity.HZJS034Detail;
 import cn.hanbell.oa.entity.OrganizationUnit;
+import cn.hanbell.oa.entity.ProcessInstance;
 import cn.hanbell.oa.entity.SERI12;
 import cn.hanbell.oa.entity.SERI12grid2SERI12;
 import cn.hanbell.oa.entity.SHBCRMREPI13;
 import cn.hanbell.oa.entity.SHBCRMSERI12;
 import cn.hanbell.oa.entity.SHBERPINV140;
 import cn.hanbell.oa.entity.SHBERPINV140Detail;
+import cn.hanbell.oa.entity.Users;
+import cn.hanbell.oa.entity.WorkItem;
 import cn.hanbell.util.BaseLib;
 import com.lightshell.comm.SuperEJB;
 import java.lang.reflect.Field;
@@ -301,9 +307,13 @@ public class EAPWebService {
     @EJB
     private HZJS034Bean hzjs034Bean;
     @EJB
+    private ProcessInstanceBean processInstanceBean;
+    @EJB
     private SERI12Bean seri12Bean;
     @EJB
     private SHBINV140Bean shbinv140Bean;
+    @EJB
+    private UsersBean usersBean;
     @EJB
     private VHTV002Bean vhtv002Bean;
     @EJB
@@ -2098,6 +2108,21 @@ public class EAPWebService {
                                         cqasry.setBadrat(BigDecimal.ZERO);
                                         cqasryadd.add(cqasry);
                                         // cdrqasryBean.persist(cqasry);
+                                        //维修品号，重算levelp
+                                        if (invmasBean.findByItnbr(qdadd.getItnbr()).getItdsc().contains("维修品号")) {
+                                            String temlp = cdrqhadBean.getLevelp(reppbasry.get(j).getPb013(), reppbasry.get(j).getPb004(), pricingtype, quodate, qh.getCoin());
+                                            if (!"".equals(temlp)) {
+                                                if (null == qh.getLevelp() || "".equals(qh.getLevelp())) {
+                                                    qh.setLevelp(temlp);
+                                                } else {
+                                                    int Ap = Integer.parseInt(temlp.substring(1));
+                                                    int hp = Integer.parseInt(qh.getLevelp().substring(1));
+                                                    if (Ap < hp) {
+                                                        qh.setLevelp(temlp);
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -2996,8 +3021,20 @@ public class EAPWebService {
             String tag = p.getTag();
             JSONObject jsonObject = new JSONObject();
             if ("1".equals(status)) {
+                //加入撤销或终止人员、意见 ,"|"
+                String execComment = "";
+                List<WorkItem> wiList = processInstanceBean.getWorkItemListBySerialNumber(psn);
+                if(!wiList.isEmpty()){
+                    for(WorkItem wi :wiList){
+                        if(5==wi.getCurrentState() || 1 == wi.getCurrentState()){
+                           Users u = usersBean.findByOID(wi.getPerformerOID());
+                           execComment = execComment+u.getId()+"|"+wi.getExecutiveComment();
+                           break;
+                        }
+                    }              
+                }
                 jsonObject.put("Code", "101");
-                jsonObject.put("Message", "OA审核不通过");
+                jsonObject.put("Message", execComment);
                 jsonObject.put("Tag", tag);
             } else if ("3".equals(status)) {
                 jsonObject.put("Code", "200");
@@ -3409,7 +3446,7 @@ public class EAPWebService {
             return "404";
         }
     }
-    
+
     @WebMethod(operationName = "updateOAHKXQB001")
     public String updateOAHKXQB001(@WebParam(name = "psn") String psn) {
         HKXQB001 b = hkxqB001Bean.findByPSN(psn);

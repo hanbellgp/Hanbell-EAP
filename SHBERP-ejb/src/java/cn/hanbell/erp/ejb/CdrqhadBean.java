@@ -7,8 +7,10 @@ package cn.hanbell.erp.ejb;
 
 import cn.hanbell.crm.ejb.REPPABean;
 import cn.hanbell.crm.entity.REPPA;
+import cn.hanbell.crm.entity.REPPB;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Cdrcorman;
+import cn.hanbell.erp.entity.Cdrqasry;
 import cn.hanbell.erp.entity.Cdrqdta;
 import cn.hanbell.erp.entity.Cdrqhad;
 import cn.hanbell.erp.entity.Invmas;
@@ -16,8 +18,10 @@ import cn.hanbell.oa.ejb.HKYX009Bean;
 import cn.hanbell.oa.ejb.ProcessCheckBean;
 import cn.hanbell.oa.entity.HKYX009;
 import cn.hanbell.oa.entity.ProcessCheck;
+import cn.hanbell.oa.model.CdrqasryModel;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,6 +43,8 @@ public class CdrqhadBean extends SuperEJBForERP<Cdrqhad> {
     private CdrqdtaBean cdrqdtaBean;
     @EJB
     private CdrqsysBean cdrqsysBean;
+    @EJB
+    private CdrqasryBean cdrqasryBean;
     @EJB
     private InvmasBean invmasBean;
     @EJB
@@ -417,6 +423,71 @@ public class CdrqhadBean extends SuperEJBForERP<Cdrqhad> {
     public Cdrcorman findByItcls(String facno, String itcls) {
         cdrcormanBean.setCompany(facno);
         return cdrcormanBean.findByItcls(itcls);
+    }
+
+    public String getLevelp(BigDecimal price0, String itnbr, String pricingtype, Date quodate, String currency) {
+        String defaultlp = "A8";
+        Object[] prarr = getByPricingPolicy(itnbr, pricingtype, quodate, currency);
+        if (prarr == null) {
+            return "";
+        }
+        for (int i = 1; i < 9; i++) {
+            if (prarr[10 + i] == null) {
+                continue;
+            }
+            BigDecimal pi = BigDecimal.valueOf(Double.valueOf(prarr[10 + i].toString()));
+            if (price0.compareTo(pi) < 0) {
+                return "A" + i;
+            }
+        }
+        return defaultlp;
+    }
+
+    public List<CdrqasryModel> queryCdrqasryModelList(String facno, String quono, short trseq) {
+        if (facno == null || quono == null) {
+            return null;
+        }
+        cdrqasryBean.setCompany(facno);
+        this.setCompany(facno);
+        List<Cdrqasry> list = cdrqasryBean.findByQuonoAndTrseq(facno, quono, trseq);
+        if (!list.isEmpty()) {
+            List<CdrqasryModel> listCdrqasryModel = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                Cdrqasry cqasry = list.get(i);
+                CdrqasryModel m = new CdrqasryModel();
+                m.setFacno(facno);
+                m.setQuono(quono);
+                m.setTrseq(trseq);
+                m.setSeq((short) (i + 1));
+                m.setItnbr(cqasry.getItnbr());
+                Invmas invmas = invmasBean.findByItnbr(m.getItnbr());
+                if (invmas != null) {
+                    m.setItdsc(invmas.getItdsc());
+                }
+                m.setStdqty(cqasry.getStdqty());
+                //配件价格
+                Cdrqhad qh = findByQuono(quono);
+                String bcrmno = qh.getCopyquono();
+                if (bcrmno.length() > 8) {
+                    //判断是不是从CRM过来的维修配件
+                    String pa001 = bcrmno.substring(0, 2);
+                    String pa002 = bcrmno.substring(2);
+                    List<REPPB> reppbList = reppaBean.getDetailList(pa001, pa002);
+                    for (REPPB reppb : reppbList) {
+                        if (reppb.getPb004().equals(m.getItnbr())) {
+                            m.setQuoprice(reppb.getPb011());  //CRM配件单价
+                            break;
+                        }
+                    }
+
+                }
+
+                listCdrqasryModel.add(m);
+            }
+            return listCdrqasryModel;
+        } else {
+            return null;
+        }
     }
 
 }

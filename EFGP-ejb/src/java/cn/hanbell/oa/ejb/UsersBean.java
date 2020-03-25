@@ -10,6 +10,7 @@ import cn.hanbell.oa.entity.Users;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.inject.Named;
+import javax.persistence.Query;
 
 /**
  *
@@ -22,6 +23,16 @@ public class UsersBean extends SuperEJBForEFGP<Users> {
 
     public UsersBean() {
         super(Users.class);
+    }
+
+    public Users findByOID(String oid) {
+        Query query = getEntityManager().createNamedQuery("Users.findByOID");
+        query.setParameter("oid", oid);
+        try {
+            return (Users) query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
 }
