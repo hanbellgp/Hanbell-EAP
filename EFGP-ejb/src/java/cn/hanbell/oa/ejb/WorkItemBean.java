@@ -6,10 +6,12 @@
 package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
+import cn.hanbell.oa.entity.ProcessInstance;
 import cn.hanbell.oa.entity.WorkItem;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -49,5 +51,11 @@ public class WorkItemBean extends SuperEJBForEFGP<WorkItem> {
             return null;
         }
     }
-
+    
+    public List<WorkItem> findByContextOID(String contextOID) {
+        Query query = getEntityManager().createNamedQuery("WorkItem.findByContextOID");
+        query.setParameter("contextOID", contextOID);
+        return query.getResultList();
+    }
+    
 }

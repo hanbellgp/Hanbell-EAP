@@ -30,14 +30,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrqasry.findByFacno", query = "SELECT c FROM Cdrqasry c WHERE c.cdrqasryPK.facno = :facno"),
     @NamedQuery(name = "Cdrqasry.findByQuono", query = "SELECT c FROM Cdrqasry c WHERE c.cdrqasryPK.quono = :quono"),
     @NamedQuery(name = "Cdrqasry.findByTrseq", query = "SELECT c FROM Cdrqasry c WHERE c.cdrqasryPK.trseq = :trseq"),
-    @NamedQuery(name = "Cdrqasry.findBySeq", query = "SELECT c FROM Cdrqasry c WHERE c.cdrqasryPK.seq = :seq"),
     @NamedQuery(name = "Cdrqasry.findByItnbr", query = "SELECT c FROM Cdrqasry c WHERE c.itnbr = :itnbr"),
     @NamedQuery(name = "Cdrqasry.findByItnbrf", query = "SELECT c FROM Cdrqasry c WHERE c.itnbrf = :itnbrf"),
-    @NamedQuery(name = "Cdrqasry.findByProsscode", query = "SELECT c FROM Cdrqasry c WHERE c.prosscode = :prosscode"),
-    @NamedQuery(name = "Cdrqasry.findByStdqty", query = "SELECT c FROM Cdrqasry c WHERE c.stdqty = :stdqty"),
-    @NamedQuery(name = "Cdrqasry.findByStdpar", query = "SELECT c FROM Cdrqasry c WHERE c.stdpar = :stdpar"),
-    @NamedQuery(name = "Cdrqasry.findByBadrat", query = "SELECT c FROM Cdrqasry c WHERE c.badrat = :badrat"),
-    @NamedQuery(name = "Cdrqasry.findByCmccode", query = "SELECT c FROM Cdrqasry c WHERE c.cdrqasryPK.cmccode = :cmccode")})
+    @NamedQuery(name = "Cdrqasry.findByQuonoAndTrseq", query = "SELECT c FROM Cdrqasry c WHERE c.cdrqasryPK.facno = :facno "
+            + "AND c.cdrqasryPK.quono = :quono AND c.cdrqasryPK.trseq = :trseq")})
 public class Cdrqasry implements Serializable {
 
     private static final long serialVersionUID = 1L;
