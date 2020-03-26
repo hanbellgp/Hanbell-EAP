@@ -497,6 +497,7 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
                     Secmemb m = secmembBean.findByPK(h.getFacno(), h.getDept(), h.getApplyuser());
                     if (m == null) {
                         // 增加部门
+                        miscodeBean.setCompany(h.getFacno());
                         misdeptBean.setCompany(h.getFacno());
                         Misdept dept = misdeptBean.findByDepno(h.getDept());
                         if (dept == null) {
