@@ -14,66 +14,89 @@
             <list-property name="resultSetHints">
                 <structure>
                     <property name="position">1</property>
-                    <property name="name">customerno</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">2</property>
-                    <property name="name">customer</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">3</property>
-                    <property name="name">customeritem</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">4</property>
-                    <property name="name">customeritemdesc</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">5</property>
-                    <property name="name">itemno</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">6</property>
-                    <property name="name">itemmodel</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">7</property>
-                    <property name="name">fixnr</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">8</property>
-                    <property name="name">varnr</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">9</property>
-                    <property name="name">varnrbarcode</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">10</property>
-                    <property name="name">varnrqrcode</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">11</property>
                     <property name="name">shpdate</property>
                     <property name="dataType">date</property>
                 </structure>
                 <structure>
+                    <property name="position">2</property>
+                    <property name="name">customerno</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">customer</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">customeritem</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">customeritemdesc</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">itemno</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">itemmodel</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">itemdesc</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">itemspec</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">fixnr</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">varnr</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
                     <property name="position">12</property>
-                    <property name="name">shpqrcode</property>
+                    <property name="name">itembarcode</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">varnrbarcode</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">qty</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">remark</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">relformid</property>
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
             <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">shpdate</property>
+                </structure>
                 <structure>
                     <property name="columnName">customerno</property>
                 </structure>
@@ -93,84 +116,113 @@
                     <property name="columnName">itemmodel</property>
                 </structure>
                 <structure>
+                    <property name="columnName">itemdesc</property>
+                </structure>
+                <structure>
+                    <property name="columnName">itemspec</property>
+                </structure>
+                <structure>
                     <property name="columnName">fixnr</property>
                 </structure>
                 <structure>
                     <property name="columnName">varnr</property>
                 </structure>
                 <structure>
+                    <property name="columnName">itembarcode</property>
+                </structure>
+                <structure>
                     <property name="columnName">varnrbarcode</property>
                 </structure>
                 <structure>
-                    <property name="columnName">varnrqrcode</property>
+                    <property name="columnName">qty</property>
                 </structure>
                 <structure>
-                    <property name="columnName">shpdate</property>
+                    <property name="columnName">remark</property>
                 </structure>
                 <structure>
-                    <property name="columnName">shpqrcode</property>
+                    <property name="columnName">relformid</property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
                     <structure>
                         <property name="position">1</property>
-                        <property name="name">customerno</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">2</property>
-                        <property name="name">customer</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">3</property>
-                        <property name="name">customeritem</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">4</property>
-                        <property name="name">customeritemdesc</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">5</property>
-                        <property name="name">itemno</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">6</property>
-                        <property name="name">itemmodel</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">7</property>
-                        <property name="name">fixnr</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">8</property>
-                        <property name="name">varnr</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">9</property>
-                        <property name="name">varnrbarcode</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">10</property>
-                        <property name="name">varnrqrcode</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">11</property>
                         <property name="name">shpdate</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
+                        <property name="position">2</property>
+                        <property name="name">customerno</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">customer</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">customeritem</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">customeritemdesc</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">itemno</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">itemmodel</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">itemdesc</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">itemspec</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">fixnr</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">varnr</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
                         <property name="position">12</property>
-                        <property name="name">shpqrcode</property>
+                        <property name="name">itembarcode</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">varnrbarcode</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">qty</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">remark</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">relformid</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -195,12 +247,14 @@ currentRow = 0;]]></method>
     dataSetRow["customeritem"] = detail.get(currentRow).getCustomerItem();
     dataSetRow["customeritemdesc"] = detail.get(currentRow).getCustomerItemDesc();
     dataSetRow["itemno"] = detail.get(currentRow).getItemno();
+    dataSetRow["itemdesc"] = detail.get(currentRow).getItemDesc();
+    dataSetRow["itemspec"] = detail.get(currentRow).getItemSpec();
     dataSetRow["fixnr"] = detail.get(currentRow).getFixnr();
     dataSetRow["varnr"] = detail.get(currentRow).getVarnr();
-    dataSetRow["varnrbarcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/" + detail.get(currentRow).getVarnr()+ ".png";
-    dataSetRow["varnrqrcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + detail.get(currentRow).getVarnr()+ ".png";
     dataSetRow["shpdate"] = detail.get(currentRow).getShpdate();
-    dataSetRow["shpqrcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png";
+    dataSetRow["qty"] = detail.get(currentRow).getQty();
+    dataSetRow["remark"] = detail.get(currentRow).getRemark();
+    dataSetRow["relformid"] = detail.get(currentRow).getRelformid();
     currentRow++;
     return true;
 }
@@ -218,15 +272,15 @@ return false;
     </styles>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
-            <property name="type">custom</property>
+            <property name="type">a4</property>
             <property name="orientation">portrait</property>
             <property name="topMargin">0.25cm</property>
             <property name="leftMargin">0.25cm</property>
             <property name="bottomMargin">0.25cm</property>
             <property name="rightMargin">0.25cm</property>
             <property name="letterSpacing">normal</property>
-            <property name="height">3cm</property>
-            <property name="width">6cm</property>
+            <property name="height">6.8cm</property>
+            <property name="width">10cm</property>
             <property name="showHeaderOnFirst">false</property>
             <property name="showFooterOnLast">false</property>
             <property name="headerHeight">0cm</property>
@@ -235,8 +289,9 @@ return false;
     </page-setup>
     <body>
         <list id="70">
+            <property name="fontFamily">"宋体"</property>
             <property name="fontSize">10pt</property>
-            <property name="textAlign">left</property>
+            <property name="textAlign">center</property>
             <property name="display">block</property>
             <property name="masterPage">Simple MasterPage</property>
             <property name="dataSet">dataDetail</property>
@@ -245,6 +300,12 @@ return false;
                     <property name="name">customeritem</property>
                     <text-property name="displayName">customeritem</text-property>
                     <expression name="expression" type="javascript">dataSetRow["customeritem"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">itembarcode</property>
+                    <text-property name="displayName">itembarcode</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["itembarcode"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
@@ -290,6 +351,12 @@ return false;
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
+                    <property name="name">qty</property>
+                    <text-property name="displayName">qty</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["qty"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
                     <property name="name">shpdate</property>
                     <text-property name="displayName">shpdate</text-property>
                     <expression name="expression" type="javascript">dataSetRow["shpdate"]</expression>
@@ -302,95 +369,187 @@ return false;
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">varnrqrcode</property>
-                    <text-property name="displayName">varnrqrcode</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["varnrqrcode"]</expression>
+                    <property name="name">remark</property>
+                    <text-property name="displayName">remark</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["remark"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">shpqrcode</property>
-                    <text-property name="displayName">shpqrcode</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["shpqrcode"]</expression>
+                    <property name="name">itemdesc</property>
+                    <text-property name="displayName">itemdesc</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["itemdesc"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">relformid</property>
+                    <text-property name="displayName">relformid</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["relformid"]</expression>
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
-            <property name="repeatHeader">false</property>
             <property name="pageBreakInterval">0</property>
+            <header>
+                <label id="179">
+                    <property name="fontSize">3.5cm</property>
+                    <property name="fontWeight">bold</property>
+                    <property name="textAlign">left</property>
+                    <text-property name="text"></text-property>
+                </label>
+            </header>
             <detail>
                 <grid id="115">
                     <property name="marginTop">1pt</property>
                     <property name="marginRight">1pt</property>
-                    <property name="pageBreakAfter">always</property>
-                    <column id="177">
-                        <property name="width">2.1cm</property>
+                    <property name="width">7.885416666666667in</property>
+                    <column id="217">
+                        <property name="width">4cm</property>
                     </column>
-                    <column id="117"/>
-                    <row id="156">
-                        <cell id="174">
+                    <column id="174"/>
+                    <column id="230">
+                        <property name="width">4cm</property>
+                    </column>
+                    <row id="148">
+                        <property name="height">2.5cm</property>
+                        <cell id="205">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                        </cell>
+                        <cell id="218"/>
+                    </row>
+                    <row id="201">
+                        <property name="height">2cm</property>
+                        <cell id="206"/>
+                        <cell id="202"/>
+                        <cell id="219"/>
+                    </row>
+                    <row id="118">
+                        <property name="height">0.8cm</property>
+                        <cell id="207"/>
+                        <cell id="120">
                             <property name="colSpan">1</property>
-                            <property name="rowSpan">4</property>
-                            <property name="paddingTop">0pt</property>
-                            <property name="paddingBottom">0pt</property>
-                            <property name="textAlign">left</property>
-                            <image id="165">
-                                <property name="height">2cm</property>
-                                <property name="width">2cm</property>
-                                <property name="source">url</property>
-                                <expression name="uri" type="javascript">row["shpqrcode"]</expression>
-                            </image>
-                        </cell>
-                        <cell id="158">
-                            <property name="paddingTop">0pt</property>
-                            <property name="paddingBottom">0pt</property>
-                            <data id="163">
-                                <property name="fontWeight">normal</property>
-                                <property name="marginTop">2pt</property>
-                                <property name="whiteSpace">nowrap</property>
-                                <property name="pageBreakAfter">avoid</property>
-                                <property name="resultSetColumn">customeritem</property>
+                            <property name="rowSpan">2</property>
+                            <data id="242">
+                                <property name="fontSize">26pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="marginTop">0pt</property>
+                                <property name="textAlign">center</property>
+                                <property name="resultSetColumn">customer</property>
                             </data>
                         </cell>
+                        <cell id="220"/>
                     </row>
-                    <row id="183">
-                        <cell id="185">
-                            <property name="paddingTop">0pt</property>
-                            <property name="paddingBottom">0pt</property>
-                            <data id="153">
-                                <property name="fontSize">10pt</property>
-                                <property name="fontWeight">normal</property>
-                                <property name="marginTop">2pt</property>
-                                <structure name="dateTimeFormat">
-                                    <property name="category">Custom</property>
-                                    <property name="pattern">yyyy/MM/dd</property>
-                                </structure>
-                                <property name="whiteSpace">nowrap</property>
-                                <property name="pageBreakAfter">auto</property>
-                                <property name="resultSetColumn">shpdate</property>
+                    <row id="186">
+                        <property name="height">1.9cm</property>
+                        <cell id="208"/>
+                        <cell id="221"/>
+                    </row>
+                    <row id="132">
+                        <property name="height">0.8cm</property>
+                        <cell id="209"/>
+                        <cell id="134">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">2</property>
+                            <data id="243">
+                                <property name="fontSize">18pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="marginTop">0pt</property>
+                                <property name="textAlign">center</property>
+                                <property name="resultSetColumn">remark</property>
                             </data>
                         </cell>
+                        <cell id="222"/>
                     </row>
-                    <row id="166">
-                        <cell id="167">
-                            <property name="paddingTop">0pt</property>
-                            <property name="paddingBottom">0pt</property>
-                            <data id="148">
-                                <property name="fontSize">10pt</property>
-                                <property name="fontWeight">normal</property>
-                                <property name="marginTop">2pt</property>
-                                <property name="whiteSpace">nowrap</property>
-                                <property name="pageBreakAfter">auto</property>
+                    <row id="189">
+                        <property name="height">1.9cm</property>
+                        <cell id="210"/>
+                        <cell id="223"/>
+                    </row>
+                    <row id="144">
+                        <property name="height">0.8cm</property>
+                        <cell id="211"/>
+                        <cell id="146">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">2</property>
+                            <data id="244">
+                                <property name="fontSize">26pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="marginTop">0pt</property>
+                                <property name="textAlign">center</property>
                                 <property name="resultSetColumn">itemmodel</property>
                             </data>
                         </cell>
+                        <cell id="224"/>
                     </row>
-                    <row id="179">
-                        <cell id="181">
-                            <property name="paddingTop">0pt</property>
-                            <property name="paddingBottom">0pt</property>
-                            <data id="186">
+                    <row id="192">
+                        <property name="height">1.9cm</property>
+                        <cell id="212"/>
+                        <cell id="225"/>
+                    </row>
+                    <row id="195">
+                        <property name="height">0.8cm</property>
+                        <cell id="213"/>
+                        <cell id="197">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">2</property>
+                            <data id="245">
+                                <property name="fontSize">26pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="marginTop">0pt</property>
+                                <property name="textAlign">center</property>
                                 <property name="resultSetColumn">varnr</property>
                             </data>
                         </cell>
+                        <cell id="226"/>
+                    </row>
+                    <row id="153">
+                        <property name="height">1.9cm</property>
+                        <cell id="214"/>
+                        <cell id="227"/>
+                    </row>
+                    <row id="198">
+                        <property name="pageBreakAfter">auto</property>
+                        <property name="height">0.8cm</property>
+                        <cell id="215"/>
+                        <cell id="200">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">2</property>
+                            <data id="246">
+                                <property name="fontSize">26pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="marginTop">0pt</property>
+                                <property name="textAlign">center</property>
+                                <property name="resultSetColumn">itemdesc</property>
+                            </data>
+                        </cell>
+                        <cell id="228"/>
+                    </row>
+                    <row id="157">
+                        <property name="pageBreakAfter">auto</property>
+                        <property name="height">1.9cm</property>
+                        <cell id="216"/>
+                        <cell id="229"/>
+                    </row>
+                    <row id="233">
+                        <property name="pageBreakAfter">auto</property>
+                        <property name="height">0.8cm</property>
+                        <cell id="234"/>
+                        <cell id="235">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">2</property>
+                            <data id="262">
+                                <property name="fontSize">26pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">center</property>
+                                <property name="resultSetColumn">relformid</property>
+                            </data>
+                        </cell>
+                        <cell id="236"/>
+                    </row>
+                    <row id="237">
+                        <property name="pageBreakAfter">always</property>
+                        <property name="height">2cm</property>
+                        <cell id="238"/>
+                        <cell id="240"/>
                     </row>
                 </grid>
             </detail>
@@ -1533,7 +1692,7 @@ return false;
                 9ucwCGkt5AShG3UUqJVaqZVa6TYh5rBcn7dSK7XSZ5yuXkyDXYjoruV0nIu3+Bw0wEuUz2q1fex1MjdX
                 LLJKDdzQkUm5Pmul25Eovm81JanZt36Z3UzDjVeUcgHocjKWXF2iuuTEZG7ptU4srdRKrdRKrdRKrdQC
                 yMDuJ/L/AeGX86pPjru2AAAAAElFTkSuQmCC
-            </property>
+</property>
         </structure>
         <structure>
             <property name="name">HanbellLogo.jpg</property>
@@ -11230,7 +11389,7 @@ return false;
                 /h5f2tOXn1+LskR/8GfoP1D8PDMH/lU3f6Z2N/8ACmx/5VL/AKZ2OHX/AKafoenywj/kkv8ApnYR6N9u
                 5/46nT/pX/a/56Zl6jp9H+d+hqxdefwdh1/4U2Yn/Kpt/wBM7L/8KbEf8kl6/wATsDzf39n/AMpD/ev/
                 AHn2/sH+69/H2rlseUv7v8Hr5IPT6nZ//9k=
-            </property>
+</property>
         </structure>
         <structure>
             <property name="name">HanbellLogo.png</property>
@@ -11728,7 +11887,97 @@ return false;
                 lepS93Jp20P4CZML11B1195vcsGrM8dLPbnUretfs9DhXxiMVrnxw6XfQzoQ6eJ/sfp4sDBYsuKTec/Z
                 ACTw0sH7Z13rWieun4R3/2t+XWpo8c97KJtLzL1ffW1Zlc9Prgn+xWENftrsG7FqIsxP/5mL1+r/v35d
                 XANc+t/8PBjN/8mrMpR9s2tX6P87AGqG8QW/l5+gAAAAAElFTkSuQmCC
-            </property>
+</property>
+        </structure>
+        <structure>
+            <property name="name">MediaLogo.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAAGUAAAAiCAQAAADsKN+QAAAACXBIWXMAAAsTAAALEwEAmpwYAAADGWlD
+                Q1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjaY2BgnuDo4uTKJMDAUFBUUuQe5BgZERmlwH6egY2BmYGB
+                gYGBITG5uMAxIMCHgYGBIS8/L5UBA3y7xsDIwMDAcFnX0cXJlYE0wJpcUFTCwMBwgIGBwSgltTiZgYHh
+                CwMDQ3p5SUEJAwNjDAMDg0hSdkEJAwNjAQMDg0h2SJAzAwNjCwMDE09JakUJAwMDg3N+QWVRZnpGiYKh
+                paWlgmNKflKqQnBlcUlqbrGCZ15yflFBflFiSWoKAwMD1A4GBgYGXpf8EgX3xMw8BUNTVQYqg4jIKAX0
+                8EGIIUByaVEZhMXIwMDAIMCgxeDHUMmwiuEBozRjFOM8xqdMhkwNTJeYNZgbme+y2LDMY2VmzWa9yubE
+                toldhX0mhwBHJycrZzMXM1cbNzf3RB4pnqW8xryH+IL5nvFXCwgJrBZ0E3wk1CisKHxYJF2UV3SrWJw4
+                p/hWiRRJYcmjUhXSutJPZObIhsoJyp2V71HwUeRVvKA0RTlKRUnltepWtUZ1Pw1Zjbea+7QmaqfqWOsK
+                6b7SO6I/36DGMMrI0ljS+LfJPdPDZivM+y0qLBOtfKwtbFRtRexY7L7aP3e47XjB6ZjzXpetruvdVrov
+                9VjkudBrgfdCn8W+y/xW+a8P2Bq4N+hY8PmQW6HPwr5EMEUKRilFG8e4xUbF5cW3JMxO3Jx0Nvl5KlOa
+                XLpNRlRmVdas7D059/KY8tULfAqLi2YXHy55WyZR7lJRWDmv6mz131q9uvj6SQ3HGn83G7Skt85ru94h
+                2Ond1d59uJehz76/bsK+if8nO05pnXpiOu+M4JmzZj2aozW3ZN6+BVwLwxYtXvxxqcOyCcsfrjRe1br6
+                5lrddU3rb2402NSx+cFWq21Tt3/Y6btr1R6Oven7jh9QP9h56PURv6Obj4ufqD355LT3mS3nZM+3X/h0
+                Ke7yqasW15bdEL3ZeuvrnfS7N+/7PDjwyPTx6qeKz2a+EHzZ9Zr5Td3bn+9LP3z6VPD53de8b+9+5P/8
+                8Lv4z7d/Vf//AwAqvx2K829RWwAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+S
+                X8VGAAAFeUlEQVR42uzYe2zW9RXH8dfveXh6RQYtCLQMWacBKshNgcWZBRZgc7K5AeoCLlummclc1GqW
+                BeYumbINNwka5hbHFlkU7GIQyAAHEUcGiNzGpEK51CqUNlwK9MLTy/P0u3+aplzqskmTsfT8+zu/k+/7
+                +znfc77nG4Xg/8Ri9KD0oHSf9eq+0C2apER6yRG/VlFa1Dhgt8POi/Q33FgjDb72UCr8Wak9iMsRIa3R
+                ZA+aaUA3okRXtxi3ecOP7cSn3Gy0YWJo8K5djptigXHdxxKuqi0P/YPw6VASdlzypS78KUwNk8PW0F12
+                VVE2heuDML3L5SbDU+Hr4WBo6xaUq5hgp9zlHXM8a8hHeL2qzv2y/pcTLB1eClGYGk7+W8+DoaVbVLlq
+                FaxZqf6e7qJGVVon0xx9kO9FcXPkSdmownQ3XRTnNQ1my/t4qqRCQ9gYfhuOhxDOhRXhlXAuNId0x/fV
+                YX27AivDXy7Zk6pQGOaG1i4UWxqEeHspWBcEYUMIIRk+H4TfX3R2zoRBQdjz8VRp9gcnbfO2txWqVypf
+                mWz3uhE1ysx1s2FGqPKAIVpM8MmOv6u1mtVFV0+pQEyliYhkalFumoRvGG/0Rb595f6XJ+miBDvhr7JN
+                sNkHBhghYYNh7kHSfPvdrs0CD9iq2BCL5Slxe/s1LhjqFtGVlXcUwfvS4mJignIpCX3kyRKhyha7pfXT
+                KNEeZ78tyiRM8aX2hf7DWpV6m2rGZcCdUDLNUycpIUON4UYJIp9ThKQ1ir3sQ3c47Qtelm2zb0sbLxcU
+                uM0nutiv0/6JtEPS4qq14RBSfucNg4x20Hyr5evtlEZ9xfGWH9qv2Fkvedh8Wdb5pb7ybFXqYY9fAhO7
+                ePcikbaOzk0kEiEyyHX2OibHKNPtVmieAlXS7d55JmsSrqjJW44hqJDCds2oVI+ETNma/dTrvqhUqaX6
+                Ssl0UokyL3rTJtP82gYtqt3tBUss0WqxM12rcsEp/fQWaRCXK18kJq1Wf3EJ71mhXpNicY/Y5zuy2u9Y
+                pBw2SeYVNWm0TJtblDkupc52w3zgpGNGiovLcsp6CU+YgvGeVi1hu33y7bBT5Jyk5Wa42xrfd1qOtIRU
+                1/NKuedt966j9rvglCpH7LHSWtBkrMc8KlONmzxom+NCR7jIGQcMuOJZecUWM5XIUOusP0p4SJYLjkiJ
+                ENOoRaw9PS+0L6pahrgTKpQboMSdgmWe0GyKYrGO83RFVQa5B9n+boWJGtT5mnythiKIqXNUvbSUDD8w
+                W66zCtoDxg23UMrsy0A2+5FRfq5NL/UWe82T7vALSeWmiQnS+slTbaPxqJcUBKM1iytxq7Q2f9NbkxcE
+                y+VgvcrLkrkTymBf8b7N9rrf4w5ZZpVJbjSwPU22ydDoLMg1xhLnzZPdsREz/Uy9b3UKXmeF500y3wjV
+                Bqiw1AxzXdALu7Ro1qJBP9+00DPek2+n47IkTXCvlR7xWZmq7LFIlhHe9BM3OOOw8FEoJyxxVoZZ7lRo
+                jHyrrZW0yGBZvifLOK32+YzIVmtss8B9HZ0kMt0Jv3LAowrQZq93lHvIVxVioKEqjPaMXG0m2a1ZUOAG
+                mTI8Jnjdqwa6zRhJQZZFhlvlNyJF5pkox1OetVyGoQbJvWzU6nSdbLBPQqHCTtPgYbWK5aNFRqeadEyl
+                hHGX1fZST8o1y5cVq3NGH9cjrcwqz5lgoVvR5ojTco30oVpF+iPpiHMyFanWpFguWlWo0WawEe3xaxzW
+                LB8UX1Jmoqv9DrbDc9bLU2CUIjENKh1SI+k+31V07UyRUGuXTTap1IQg0zAz3GWs67p1to+653WyWbVa
+                5xHpI8/gLnrONYDS86TXg9KD0oPSg/Kf2L8GAMK9tgHVY9AYAAAAAElFTkSuQmCC
+</property>
+        </structure>
+        <structure>
+            <property name="name">MedeaLogo.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAAGUAAAAiCAQAAADsKN+QAAAACXBIWXMAAAsTAAALEwEAmpwYAAADGWlD
+                Q1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjaY2BgnuDo4uTKJMDAUFBUUuQe5BgZERmlwH6egY2BmYGB
+                gYGBITG5uMAxIMCHgYGBIS8/L5UBA3y7xsDIwMDAcFnX0cXJlYE0wJpcUFTCwMBwgIGBwSgltTiZgYHh
+                CwMDQ3p5SUEJAwNjDAMDg0hSdkEJAwNjAQMDg0h2SJAzAwNjCwMDE09JakUJAwMDg3N+QWVRZnpGiYKh
+                paWlgmNKflKqQnBlcUlqbrGCZ15yflFBflFiSWoKAwMD1A4GBgYGXpf8EgX3xMw8BUNTVQYqg4jIKAX0
+                8EGIIUByaVEZhMXIwMDAIMCgxeDHUMmwiuEBozRjFOM8xqdMhkwNTJeYNZgbme+y2LDMY2VmzWa9yubE
+                toldhX0mhwBHJycrZzMXM1cbNzf3RB4pnqW8xryH+IL5nvFXCwgJrBZ0E3wk1CisKHxYJF2UV3SrWJw4
+                p/hWiRRJYcmjUhXSutJPZObIhsoJyp2V71HwUeRVvKA0RTlKRUnltepWtUZ1Pw1Zjbea+7QmaqfqWOsK
+                6b7SO6I/36DGMMrI0ljS+LfJPdPDZivM+y0qLBOtfKwtbFRtRexY7L7aP3e47XjB6ZjzXpetruvdVrov
+                9VjkudBrgfdCn8W+y/xW+a8P2Bq4N+hY8PmQW6HPwr5EMEUKRilFG8e4xUbF5cW3JMxO3Jx0Nvl5KlOa
+                XLpNRlRmVdas7D059/KY8tULfAqLi2YXHy55WyZR7lJRWDmv6mz131q9uvj6SQ3HGn83G7Skt85ru94h
+                2Ond1d59uJehz76/bsK+if8nO05pnXpiOu+M4JmzZj2aozW3ZN6+BVwLwxYtXvxxqcOyCcsfrjRe1br6
+                5lrddU3rb2402NSx+cFWq21Tt3/Y6btr1R6Oven7jh9QP9h56PURv6Obj4ufqD355LT3mS3nZM+3X/h0
+                Ke7yqasW15bdEL3ZeuvrnfS7N+/7PDjwyPTx6qeKz2a+EHzZ9Zr5Td3bn+9LP3z6VPD53de8b+9+5P/8
+                8Lv4z7d/Vf//AwAqvx2K829RWwAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+S
+                X8VGAAAFeUlEQVR42uzYe2zW9RXH8dfveXh6RQYtCLQMWacBKshNgcWZBRZgc7K5AeoCLlummclc1GqW
+                BeYumbINNwka5hbHFlkU7GIQyAAHEUcGiNzGpEK51CqUNlwK9MLTy/P0u3+aplzqskmTsfT8+zu/k+/7
+                +znfc77nG4Xg/8Ri9KD0oHSf9eq+0C2apER6yRG/VlFa1Dhgt8POi/Q33FgjDb72UCr8Wak9iMsRIa3R
+                ZA+aaUA3okRXtxi3ecOP7cSn3Gy0YWJo8K5djptigXHdxxKuqi0P/YPw6VASdlzypS78KUwNk8PW0F12
+                VVE2heuDML3L5SbDU+Hr4WBo6xaUq5hgp9zlHXM8a8hHeL2qzv2y/pcTLB1eClGYGk7+W8+DoaVbVLlq
+                FaxZqf6e7qJGVVon0xx9kO9FcXPkSdmownQ3XRTnNQ1my/t4qqRCQ9gYfhuOhxDOhRXhlXAuNId0x/fV
+                YX27AivDXy7Zk6pQGOaG1i4UWxqEeHspWBcEYUMIIRk+H4TfX3R2zoRBQdjz8VRp9gcnbfO2txWqVypf
+                mWz3uhE1ysx1s2FGqPKAIVpM8MmOv6u1mtVFV0+pQEyliYhkalFumoRvGG/0Rb595f6XJ+miBDvhr7JN
+                sNkHBhghYYNh7kHSfPvdrs0CD9iq2BCL5Slxe/s1LhjqFtGVlXcUwfvS4mJignIpCX3kyRKhyha7pfXT
+                KNEeZ78tyiRM8aX2hf7DWpV6m2rGZcCdUDLNUycpIUON4UYJIp9ThKQ1ir3sQ3c47Qtelm2zb0sbLxcU
+                uM0nutiv0/6JtEPS4qq14RBSfucNg4x20Hyr5evtlEZ9xfGWH9qv2Fkvedh8Wdb5pb7ybFXqYY9fAhO7
+                ePcikbaOzk0kEiEyyHX2OibHKNPtVmieAlXS7d55JmsSrqjJW44hqJDCds2oVI+ETNma/dTrvqhUqaX6
+                Ssl0UokyL3rTJtP82gYtqt3tBUss0WqxM12rcsEp/fQWaRCXK18kJq1Wf3EJ71mhXpNicY/Y5zuy2u9Y
+                pBw2SeYVNWm0TJtblDkupc52w3zgpGNGiovLcsp6CU+YgvGeVi1hu33y7bBT5Jyk5Wa42xrfd1qOtIRU
+                1/NKuedt966j9rvglCpH7LHSWtBkrMc8KlONmzxom+NCR7jIGQcMuOJZecUWM5XIUOusP0p4SJYLjkiJ
+                ENOoRaw9PS+0L6pahrgTKpQboMSdgmWe0GyKYrGO83RFVQa5B9n+boWJGtT5mnythiKIqXNUvbSUDD8w
+                W66zCtoDxg23UMrsy0A2+5FRfq5NL/UWe82T7vALSeWmiQnS+slTbaPxqJcUBKM1iytxq7Q2f9NbkxcE
+                y+VgvcrLkrkTymBf8b7N9rrf4w5ZZpVJbjSwPU22ydDoLMg1xhLnzZPdsREz/Uy9b3UKXmeF500y3wjV
+                Bqiw1AxzXdALu7Ro1qJBP9+00DPek2+n47IkTXCvlR7xWZmq7LFIlhHe9BM3OOOw8FEoJyxxVoZZ7lRo
+                jHyrrZW0yGBZvifLOK32+YzIVmtss8B9HZ0kMt0Jv3LAowrQZq93lHvIVxVioKEqjPaMXG0m2a1ZUOAG
+                mTI8Jnjdqwa6zRhJQZZFhlvlNyJF5pkox1OetVyGoQbJvWzU6nSdbLBPQqHCTtPgYbWK5aNFRqeadEyl
+                hHGX1fZST8o1y5cVq3NGH9cjrcwqz5lgoVvR5ojTco30oVpF+iPpiHMyFanWpFguWlWo0WawEe3xaxzW
+                LB8UX1Jmoqv9DrbDc9bLU2CUIjENKh1SI+k+31V07UyRUGuXTTap1IQg0zAz3GWs67p1to+653WyWbVa
+                5xHpI8/gLnrONYDS86TXg9KD0oPSg/Kf2L8GAMK9tgHVY9AYAAAAAElFTkSuQmCC
+</property>
         </structure>
     </list-property>
 </report>

@@ -11,6 +11,7 @@ import cn.hanbell.eap.entity.Shipment;
 import cn.hanbell.eap.entity.ShipmentDetail;
 import cn.hanbell.erp.ejb.CdrcitnbrBean;
 import cn.hanbell.erp.ejb.CdrhadBean;
+import cn.hanbell.erp.ejb.CdrscusBean;
 import cn.hanbell.erp.entity.Cdrhad;
 import cn.hanbell.erp.entity.Cdrcus;
 import cn.hanbell.erp.entity.Cdrlot;
@@ -40,6 +41,8 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
     private CdrcitnbrBean cdrcitnbrBean;
     @EJB
     private CdrhadBean cdrhadBean;
+    @EJB
+    private CdrscusBean cdrscusBean;
     @EJB
     private DepartmentBean departmentBean;
 
@@ -136,7 +139,7 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
             showWarnMsg("Warn", "没有选择任何单据");
             return;
         }
-        String formid;
+        String formid, shipAddress;
         List<String> shpnoList = new ArrayList<>();
         int seq = 0;
         ShipmentDetail sd;
@@ -163,6 +166,10 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
         List<Cdrlot> cdrlotList;
         cdrhadBean.setCompany(this.userManagedBean.getCompany());
         for (Cdrhad h : cdrhadSelected) {
+            // 获取送货地址
+            cdrscusBean.setCompany(h.getCdrhadPK().getFacno());
+            shipAddress = cdrscusBean.getAddress(h.getCusno(), h.getShptrseq());
+
             this.fileName = this.getAppResPath() + h.getCdrhadPK().getShpno() + ".png";
             this.generateCode128(h.getCdrhadPK().getShpno(), 1.5f, 8d, this.fileName);
             this.generateQRCode(h.getCdrhadPK().getShpno(), 300, 300, this.getAppResPath(), "QR" + h.getCdrhadPK().getShpno() + ".png");
@@ -218,7 +225,9 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                             .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc());
                                     break;
                             }
-                            this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + l.getVarnr() + ".png");
+                            if (content.length() > 0) {
+                                this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + l.getVarnr() + ".png");
+                            }
                         }
                     }
                     // 汉钟制造号码条码
@@ -230,6 +239,9 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                     sd.setFixnr(l.getFixnr());
                     sd.setWareh(l.getWareh());
                     sd.setQty(l.getShpqy1());
+                    sd.setRemark(shipAddress);
+                    sd.setRelformid(l.getCdrdta().getCdrno());
+                    sd.setRelseq(l.getCdrdta().getCtrseq().intValue());
                     // 加入明细新增列表
                     shipmentDetails.add(sd);
                 }

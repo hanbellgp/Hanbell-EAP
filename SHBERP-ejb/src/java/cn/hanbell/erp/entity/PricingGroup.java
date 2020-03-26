@@ -28,10 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "pricinggroup")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PricingGroup.findAll", query = "SELECT p FROM PricingGroup p")
-    , @NamedQuery(name = "PricingGroup.findByGroupid", query = "SELECT p FROM PricingGroup p WHERE p.pricingGroupPK.groupid = :groupid")
-    , @NamedQuery(name = "PricingGroup.findByGroupname", query = "SELECT p FROM PricingGroup p WHERE p.groupname = :groupname")
-    , @NamedQuery(name = "PricingGroup.findByPricingtype", query = "SELECT p FROM PricingGroup p WHERE p.pricingGroupPK.pricingtype = :pricingtype")})
+    @NamedQuery(name = "PricingGroup.findAll", query = "SELECT p FROM PricingGroup p"),
+    @NamedQuery(name = "PricingGroup.findByGroupid", query = "SELECT p FROM PricingGroup p WHERE p.pricingGroupPK.groupid = :groupid"),
+    @NamedQuery(name = "PricingGroup.findByGroupname", query = "SELECT p FROM PricingGroup p WHERE p.groupname = :groupname"),
+    @NamedQuery(name = "PricingGroup.findByPricingtype", query = "SELECT p FROM PricingGroup p WHERE p.pricingGroupPK.pricingtype = :pricingtype")})
 public class PricingGroup implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -126,7 +126,7 @@ public class PricingGroup implements Serializable {
         this.price02 = price02;
         this.price01 = price01;
     }
-    
+
     public PricingGroupPK getPricingGroupPK() {
         return pricingGroupPK;
     }
@@ -311,5 +311,5 @@ public class PricingGroup implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.PricingGroup[ pricingGroupPK=" + pricingGroupPK + " ]";
     }
-    
+
 }

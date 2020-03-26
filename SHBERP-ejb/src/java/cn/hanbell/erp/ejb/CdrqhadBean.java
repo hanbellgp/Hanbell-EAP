@@ -369,7 +369,7 @@ public class CdrqhadBean extends SuperEJBForERP<Cdrqhad> {
         }
     }
 
-    //获取用户价格权限
+    // 获取用户价格权限
     // 业务员在单一群组中抓取定价权限级别
     // 程式设定，同一业务员在一个类别中只能存在一次
     public String getUserPricelevel(String ls_pricingtype, String user) {
@@ -425,7 +425,7 @@ public class CdrqhadBean extends SuperEJBForERP<Cdrqhad> {
         return cdrcormanBean.findByItcls(itcls);
     }
 
-    public String getLevelp(BigDecimal price0, String itnbr, String pricingtype, Date quodate, String currency) {
+    public String getPricingLevel(BigDecimal price0, String itnbr, String pricingtype, Date quodate, String currency) {
         String defaultlp = "A8";
         Object[] prarr = getByPricingPolicy(itnbr, pricingtype, quodate, currency);
         if (prarr == null) {

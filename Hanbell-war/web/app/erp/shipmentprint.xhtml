@@ -9,7 +9,7 @@
     <ui:define name="content">
 
         <h:form id="formList">
-            <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
             <p:panelGrid id="plgQuery" columns="4" columnClasses="Wid20,Wid30,Wid20,Wid30" styleClass="plgQuery Wid100">
                 <f:facet name="header">
                     查询条件
@@ -40,9 +40,11 @@
                 </f:facet>
                 <f:facet name="right">
                     <p:splitButton id="btnPrint" value="打印" icon="ui-icon-menu">
-                        <p:menuitem id="btnPrintBarcode" value="条码" actionListener="#{shipmentPrintManagedBean.print('Barcode')}" icon="ui-icon-print"
+                        <p:menuitem id="btnPrintBarcode" value="客户条码" actionListener="#{shipmentPrintManagedBean.print('Barcode')}" icon="ui-icon-print"
                                     rendered="#{shipmentPrintManagedBean.doPrt}"/>
-                        <p:menuitem id="btnPrintLable" value="标签" actionListener="#{shipmentPrintManagedBean.print('Lable')}" icon="ui-icon-print"
+                        <p:menuitem id="btnPrintLable" value="客户标签" actionListener="#{shipmentPrintManagedBean.print('Lable')}" icon="ui-icon-print"
+                                    rendered="#{shipmentPrintManagedBean.doPrt}"/>
+                        <p:menuitem id="btnShipmentLable" value="汉钟标签" actionListener="#{shipmentPrintManagedBean.print('ShipmentLable')}" icon="ui-icon-print"
                                     rendered="#{shipmentPrintManagedBean.doPrt}"/>
                         <p:menuitem id="btnPrintService" value="零件" actionListener="#{shipmentPrintManagedBean.print()}" icon="ui-icon-print"
                                     rendered="#{shipmentPrintManagedBean.doPrt}"/>
@@ -131,7 +133,7 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            <p:blockUI id="blockUI" block="formList" trigger="btnPrintBarcode,btnPrintLable,btnPrintService,btnUnverify">
+            <p:blockUI id="blockUI" block="formList" trigger="btnPrintBarcode,btnPrintLable,btnShipmentLable,btnPrintService,btnUnverify">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>
