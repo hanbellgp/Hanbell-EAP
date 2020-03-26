@@ -28,14 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "pricinguser")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PricingUser.findAll", query = "SELECT p FROM PricingUser p")
-    ,
-    @NamedQuery(name = "PricingUser.findByGroupid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.groupid = :groupid")
-    ,
-    @NamedQuery(name = "PricingUser.findByPricingtype", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.pricingtype = :pricingtype")
-    ,
-    @NamedQuery(name = "PricingUser.findByUserid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.userid = :userid")
-    ,
+    @NamedQuery(name = "PricingUser.findAll", query = "SELECT p FROM PricingUser p"),
+    @NamedQuery(name = "PricingUser.findByGroupid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.groupid = :groupid"),
+    @NamedQuery(name = "PricingUser.findByPricingtype", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.pricingtype = :pricingtype"),
+    @NamedQuery(name = "PricingUser.findByUserid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.userid = :userid"),
     @NamedQuery(name = "PricingUser.findByGroupidAndUserid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.groupid = :groupid AND p.pricingUserPK.userid = :userid")})
 public class PricingUser implements Serializable {
 
@@ -43,9 +39,8 @@ public class PricingUser implements Serializable {
     @EmbeddedId
     protected PricingUserPK pricingUserPK;
     @JoinColumns({
-        @JoinColumn(name = "groupid", referencedColumnName = "groupid", insertable = false, updatable = false)
-        ,
-      @JoinColumn(name = "pricingtype", referencedColumnName = "pricingtype", insertable = false, updatable = false)
+        @JoinColumn(name = "groupid", referencedColumnName = "groupid", insertable = false, updatable = false),
+        @JoinColumn(name = "pricingtype", referencedColumnName = "pricingtype", insertable = false, updatable = false)
     })
     @ManyToOne(optional = true)
     private PricingGroup pricingGroup;

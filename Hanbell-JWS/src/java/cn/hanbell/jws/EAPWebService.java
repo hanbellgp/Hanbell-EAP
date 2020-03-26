@@ -2110,7 +2110,7 @@ public class EAPWebService {
                                         // cdrqasryBean.persist(cqasry);
                                         //维修品号，重算levelp
                                         if (invmasBean.findByItnbr(qdadd.getItnbr()).getItdsc().contains("维修品号")) {
-                                            String temlp = cdrqhadBean.getLevelp(reppbasry.get(j).getPb013(), reppbasry.get(j).getPb004(), pricingtype, quodate, qh.getCoin());
+                                            String temlp = cdrqhadBean.getPricingLevel(reppbasry.get(j).getPb013(), reppbasry.get(j).getPb004(), pricingtype, quodate, qh.getCoin());
                                             if (!"".equals(temlp)) {
                                                 if (null == qh.getLevelp() || "".equals(qh.getLevelp())) {
                                                     qh.setLevelp(temlp);

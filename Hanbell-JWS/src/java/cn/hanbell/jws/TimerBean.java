@@ -325,7 +325,7 @@ public class TimerBean {
 
     }
 
-    @Schedule(minute = "23", hour = "23", persistent = false)
+    @Schedule(minute = "23", hour = "7,23", persistent = false)
     public void syncOrganizationByHRM() {
         try {
             // 同步部门
