@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "HZCW033reDetail.findAll", query = "SELECT j FROM HZCW033reDetail j"),
     @NamedQuery(name = "HZCW033reDetail.findBySummary", query = "SELECT j FROM HZCW033reDetail j WHERE j.summary = :summary"),
-    @NamedQuery(name = "HZCW033reDetail.findByOid", query = "SELECT j FROM HZCW033reDetail j WHERE j.oid = :oid"),
+    @NamedQuery(name = "HZCW033reDetail.findByOID", query = "SELECT j FROM HZCW033reDetail j WHERE j.oid = :oid"),
     @NamedQuery(name = "HZCW033reDetail.findByLoanAmount", query = "SELECT j FROM HZCW033reDetail j WHERE j.loanAmount = :loanAmount"),
     @NamedQuery(name = "HZCW033reDetail.findByNotaxes", query = "SELECT j FROM HZCW033reDetail j WHERE j.notaxes = :notaxes"),
     @NamedQuery(name = "HZCW033reDetail.findByRemark", query = "SELECT j FROM HZCW033reDetail j WHERE j.remark = :remark"),

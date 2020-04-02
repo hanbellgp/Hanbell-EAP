@@ -8,6 +8,7 @@ package cn.hanbell.rpt.control;
 import cn.hanbell.eap.ejb.SystemProgramBean;
 import cn.hanbell.eap.entity.SystemProgram;
 import cn.hanbell.oa.ejb.HZCW028Bean;
+import cn.hanbell.oa.ejb.HZCW033Bean;
 import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.entity.ProcessInstance;
 import cn.hanbell.util.BaseLib;
@@ -40,6 +41,8 @@ public class ReportManagedBean extends SuperReportManagedBean {
     private ProcessInstanceBean processInstanceBean;
     @EJB
     private HZCW028Bean hzcw028Bean;
+    @EJB
+    private HZCW033Bean hzcw033Bean;
 
     private String msg;
     private Map<String, String[]> paramMap;
@@ -128,6 +131,15 @@ public class ReportManagedBean extends SuperReportManagedBean {
                     if (hzcw028Bean.getTrafficDetail(formSerialNumber).size() > 0) {
                         baos = new ByteArrayOutputStream();
                         this.reportRunAndOutput(reportPath + "hzcw02802.rptdesign", reportParams, null, "pdf", baos);
+                        pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+                    }
+                }
+                //借支归还单有差旅明细单独列印
+                if("HZCW033".equals(api)){
+                       String formSerialNumber = hzcw033Bean.findByPSN(reportParams.get("formid")).getFormSerialNumber();
+                        if (hzcw033Bean.getTrafficDetail(formSerialNumber).size() > 0) {
+                        baos = new ByteArrayOutputStream();
+                        this.reportRunAndOutput(reportPath + "hzcw03301.rptdesign", reportParams, null, "pdf", baos);
                         pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
                     }
                 }

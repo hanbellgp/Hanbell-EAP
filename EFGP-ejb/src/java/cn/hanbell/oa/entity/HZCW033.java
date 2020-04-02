@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HZCW033.findByRatio", query = "SELECT j FROM HZCW033 j WHERE j.ratio = :ratio"),
     @NamedQuery(name = "HZCW033.findByAccName", query = "SELECT j FROM HZCW033 j WHERE j.accName = :accName"),
     @NamedQuery(name = "HZCW033.findByApplyAmount", query = "SELECT j FROM HZCW033 j WHERE j.applyAmount = :applyAmount"),
-    @NamedQuery(name = "HZCW033.findByOid", query = "SELECT j FROM HZCW033 j WHERE j.oid = :oid"),
+    @NamedQuery(name = "HZCW033.findByOID", query = "SELECT j FROM HZCW033 j WHERE j.oid = :oid"),
     @NamedQuery(name = "HZCW033.findByEndMileage", query = "SELECT j FROM HZCW033 j WHERE j.endMileage = :endMileage"),
     @NamedQuery(name = "HZCW033.findByTaxi", query = "SELECT j FROM HZCW033 j WHERE j.taxi = :taxi"),
     @NamedQuery(name = "HZCW033.findByLoanAmount", query = "SELECT j FROM HZCW033 j WHERE j.loanAmount = :loanAmount"),
@@ -98,7 +98,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HZCW033.findBySort1", query = "SELECT j FROM HZCW033 j WHERE j.sort1 = :sort1"),
     @NamedQuery(name = "HZCW033.findByBudgetAccname", query = "SELECT j FROM HZCW033 j WHERE j.budgetAccname = :budgetAccname"),
     @NamedQuery(name = "HZCW033.findByTaxes", query = "SELECT j FROM HZCW033 j WHERE j.taxes = :taxes"),
-    @NamedQuery(name = "HZCW033.findByFormSerialNumber", query = "SELECT j FROM HZCW033 j WHERE j.formSerialNumber = :formSerialNumber")})
+    @NamedQuery(name = "HZCW033.findByFSN", query = "SELECT j FROM HZCW033 j WHERE j.formSerialNumber = :fsn")})
 public class HZCW033 implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -294,6 +294,16 @@ public class HZCW033 implements Serializable {
     @Size(max = 255)
     @Column(name = "formSerialNumber")
     private String formSerialNumber;
+
+    @Size(max = 255)
+    @Column(name = "hdnappUser")
+    private String hdnappUser;
+    @Size(max = 255)
+    @Column(name = "Textbox6")
+    private String textbox6;
+    @Size(max = 255)
+    @Column(name = "hdtrafficAmount")
+    private String hdtrafficAmount;
 
     public HZCW033() {
     }
@@ -868,6 +878,30 @@ public class HZCW033 implements Serializable {
 
     public void setFormSerialNumber(String formSerialNumber) {
         this.formSerialNumber = formSerialNumber;
+    }
+
+    public String getHdnappUser() {
+        return hdnappUser;
+    }
+
+    public void setHdnappUser(String hdnappUser) {
+        this.hdnappUser = hdnappUser;
+    }
+
+    public String getTextbox6() {
+        return textbox6;
+    }
+
+    public void setTextbox6(String textbox6) {
+        this.textbox6 = textbox6;
+    }
+
+    public String getHdtrafficAmount() {
+        return hdtrafficAmount;
+    }
+
+    public void setHdtrafficAmount(String hdtrafficAmount) {
+        this.hdtrafficAmount = hdtrafficAmount;
     }
 
     @Override
