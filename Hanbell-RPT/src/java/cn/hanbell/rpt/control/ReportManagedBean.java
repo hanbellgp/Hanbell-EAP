@@ -134,7 +134,7 @@ public class ReportManagedBean extends SuperReportManagedBean {
                         pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
                     }
                 }
-                //借支归还单有差率明细单独列印
+                //借支归还单有差旅明细单独列印
                 if("HZCW033".equals(api)){
                        String formSerialNumber = hzcw033Bean.findByPSN(reportParams.get("formid")).getFormSerialNumber();
                         if (hzcw033Bean.getTrafficDetail(formSerialNumber).size() > 0) {

@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HZCW033.findByRatio", query = "SELECT j FROM HZCW033 j WHERE j.ratio = :ratio"),
     @NamedQuery(name = "HZCW033.findByAccName", query = "SELECT j FROM HZCW033 j WHERE j.accName = :accName"),
     @NamedQuery(name = "HZCW033.findByApplyAmount", query = "SELECT j FROM HZCW033 j WHERE j.applyAmount = :applyAmount"),
-    @NamedQuery(name = "HZCW033.findByOid", query = "SELECT j FROM HZCW033 j WHERE j.oid = :oid"),
+    @NamedQuery(name = "HZCW033.findByOID", query = "SELECT j FROM HZCW033 j WHERE j.oid = :oid"),
     @NamedQuery(name = "HZCW033.findByEndMileage", query = "SELECT j FROM HZCW033 j WHERE j.endMileage = :endMileage"),
     @NamedQuery(name = "HZCW033.findByTaxi", query = "SELECT j FROM HZCW033 j WHERE j.taxi = :taxi"),
     @NamedQuery(name = "HZCW033.findByLoanAmount", query = "SELECT j FROM HZCW033 j WHERE j.loanAmount = :loanAmount"),
@@ -98,10 +98,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HZCW033.findBySort1", query = "SELECT j FROM HZCW033 j WHERE j.sort1 = :sort1"),
     @NamedQuery(name = "HZCW033.findByBudgetAccname", query = "SELECT j FROM HZCW033 j WHERE j.budgetAccname = :budgetAccname"),
     @NamedQuery(name = "HZCW033.findByTaxes", query = "SELECT j FROM HZCW033 j WHERE j.taxes = :taxes"),
-    @NamedQuery(name = "HZCW033.findByFormSerialNumber", query = "SELECT j FROM HZCW033 j WHERE j.formSerialNumber = :formSerialNumber"),
-    @NamedQuery(name = "HZCW033.findByHdnappUser", query = "SELECT j FROM HZCW033 j WHERE j.hdnappUser = :hdnappUser"),
-    @NamedQuery(name = "HZCW033.findByTextbox6", query = "SELECT j FROM HZCW033 j WHERE j.textbox6 = :textbox6"),
-    @NamedQuery(name = "HZCW033.findByHdtrafficAmount", query = "SELECT j FROM HZCW033 j WHERE j.hdtrafficAmount = :hdtrafficAmount")})
+    @NamedQuery(name = "HZCW033.findByFSN", query = "SELECT j FROM HZCW033 j WHERE j.formSerialNumber = :fsn")})
 public class HZCW033 implements Serializable {
 
     private static final long serialVersionUID = 1L;
