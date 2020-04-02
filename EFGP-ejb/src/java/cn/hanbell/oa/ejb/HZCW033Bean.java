@@ -3,8 +3,11 @@ package cn.hanbell.oa.ejb;
 import cn.hanbell.crm.ejb.PormyBean;
 import cn.hanbell.crm.entity.Pormy;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
+import cn.hanbell.oa.entity.HZCW028reDetail;
+import cn.hanbell.oa.entity.HZCW028tDetail;
 import cn.hanbell.oa.entity.HZCW033;
 import cn.hanbell.oa.entity.HZCW033reDetail;
+import cn.hanbell.oa.entity.HZCW033tDetail;
 import cn.hanbell.util.BaseLib;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,6 +24,8 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
     private HZCW033reDetailBean hzcw033reDetailBean;
     @EJB
     private PormyBean pormyBean;
+    @EJB
+    private HZCW033tDetailBean hzcw033tDetailBean;
 
     public HZCW033Bean() {
         super(HZCW033.class);
@@ -176,4 +181,11 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
 
     }
 
+    public List<HZCW033reDetail> getDetailList(Object value) {
+        return hzcw033reDetailBean.findByFSN(value);
+    }
+
+    public List<HZCW033tDetail> getTrafficDetail(Object value) {
+        return hzcw033tDetailBean.findByFSN(value);
+    }
 }
