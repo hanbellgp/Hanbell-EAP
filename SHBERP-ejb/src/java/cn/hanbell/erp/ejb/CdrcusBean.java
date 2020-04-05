@@ -334,16 +334,31 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         cdrcus.setDecode(oa.getDecode().charAt(0));
         cdrcus.setCuskind(oa.getGg011());
         cdrcus.setDmcode(oa.getDmcode().charAt(0));
-        if (oa.getGg036().length() <= 40) {
-            cdrcus.setAddress1(oa.getGg036());
-        } else if (oa.getGg036().length() > 40) {
-            String str = oa.getGg036();
-            str = str.replace('(', '（');
-            str = str.replace(')', '）');
-            String str1 = str.substring(0, 40);
-            String[] split = str.split(str1);
-            cdrcus.setAddress1(str1);
-            cdrcus.setAddress2(split[1]);
+        //对包含中文的字符长度做处理
+        List<String> ss = getStringArray(oa.getGg036(), 40, new ArrayList<>());
+        if (!ss.isEmpty()) {
+            for (int i = 0; i < ss.size() && i < 5; i++) {
+                switch (i) {
+                    case 0:
+                        cdrcus.setAddress1(ss.get(i));
+                        break;
+                    case 1:
+                        cdrcus.setAddress2(ss.get(i));
+                        break;
+                    case 2:
+                        cdrcus.setAddress3(ss.get(i));
+                        break;
+                    case 3:
+                        cdrcus.setAddress4(ss.get(i));
+                        break;
+                    case 4:
+                        cdrcus.setAddress5(ss.get(i));
+                        break;
+                    default:
+                        cdrcus.setAddress1(ss.get(0));
+                        break;
+                }
+            }
         }
         cdrcus.setUniform(oa.getGg030());
         cdrcus.setBilnum(oa.getGg109());
@@ -689,11 +704,31 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             }
         }
         if (Objects.equals(oa.getChkaddress(), "1") && (oa.getAddress() != null) && !"".equals(oa.getAddress())) {
-            if (oa.getAddress().length() <= 40) {
-                cdrcus.setAddress1(oa.getAddress());
-            } else if (oa.getAddress().length() > 40) {
-                cdrcus.setAddress1(oa.getAddress().substring(0, 40));
-                cdrcus.setAddress2(oa.getAddress().substring(40));
+            //对包含中文的字符长度做处理
+            List<String> ss = getStringArray(oa.getAddress(), 40, new ArrayList<>());
+            if (!ss.isEmpty()) {
+                for (int i = 0; i < ss.size() && i < 5; i++) {
+                    switch (i) {
+                        case 0:
+                            cdrcus.setAddress1(ss.get(i));
+                            break;
+                        case 1:
+                            cdrcus.setAddress2(ss.get(i));
+                            break;
+                        case 2:
+                            cdrcus.setAddress3(ss.get(i));
+                            break;
+                        case 3:
+                            cdrcus.setAddress4(ss.get(i));
+                            break;
+                        case 4:
+                            cdrcus.setAddress5(ss.get(i));
+                            break;
+                        default:
+                            cdrcus.setAddress1(ss.get(0));
+                            break;
+                    }
+                }
             }
             if (crmgg != null) {
                 crmgg.setGg036(oa.getAddress());
@@ -821,4 +856,25 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         return query.executeUpdate();
     }
 
+    public List<String> getStringArray(String s, int slength, List<String> arrList) {
+        int k = 0;
+        for (int i = 0; i < s.length(); i++) {
+            String si = s.substring(i, i + 1);
+            if (si.matches("[^\\x00-\\xff]")) { //匹配中文字符
+                k += 2;
+            } else {
+                k += 1;
+            }
+            if (k >= slength) {
+                arrList.add(s.substring(0, i + 1));
+                if (!s.substring(i + 1).trim().equals("")) {
+                    return getStringArray(s.substring(i + 1), slength, arrList);
+                }
+            }
+        }
+        if (k < slength) {
+            arrList.add(s.substring(0));
+        }
+        return arrList;
+    }
 }
