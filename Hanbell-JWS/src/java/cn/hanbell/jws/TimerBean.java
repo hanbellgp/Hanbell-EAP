@@ -1035,6 +1035,8 @@ public class TimerBean {
         log4j.info("ERP-APM811进货请款抛转EFGP签核轮询开始");
         createOASHBERPAPM811ByERPAPM811("C");
         createOASHBERPAPM811ByERPAPM811("K");
+        createOASHBERPAPM811ByERPAPM811("H");
+        //createOASHBERPAPM811ByERPAPM811("Y");
         log4j.info("ERP-APM811进货请款抛转EFGP签核轮询结束");
     }
 
@@ -1109,7 +1111,7 @@ public class TimerBean {
                         hm.setCfmdate(h.getCfmdate());
                         hm.setIsspecial(h.getIsspecial());
                         hm.setPricingtype(h.getPricingtype());
-                        hm.setQuotype(h.getQuotype().toString());            
+                        hm.setQuotype(h.getQuotype().toString());
                         Miscode miscode = miscodeBean.findByPK("1C", h.getPricingtype());
                         hm.setPricingtypedsc(miscode.getCdesc());
                         hm.setCoin(h.getCoin());
@@ -1897,19 +1899,19 @@ public class TimerBean {
         this.createERPCDR310ByERPPUR410("C", "SSD00107", "00", "J", "SSH00307", "20191223");// 济南->SHB
         this.createERPCDR310ByERPPUR410("C", "SJS00254", "00", "N", "SSH00307", "20191223");// 南京->SHB
         this.createERPCDR310ByERPPUR410("C", "SCQ00146", "00", "C4", "SSH00307", "20191223");// 重庆->SHB
-        //this.createERPCDR310ByExchPUR415("C", "STW00003", "00", "A", "86005", "20190901");// THB->SHB
-        //this.createERPCDR310ByExchPUR415("K", "KTW00004", "00", "A", "86010 ", "20190901");// THB->Comer
-        //this.createERPCDR310ByExchPUR415("H", "HTW00001", "00", "A", "1139 ", "20190901");// THB->Hanson
+        this.createERPCDR310ByExchPUR415("C", "STW00003", "00", "A", "86005", "20200408");// THB->SHB
+        this.createERPCDR310ByExchPUR415("K", "KTW00004", "00", "A", "86010 ", "20200408");// THB->Comer
+        this.createERPCDR310ByExchPUR415("H", "HTW00001", "00", "A", "1139 ", "20200408");// THB->Hanson
         this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HZJ00030", "C", "SZJ00065", "SZJ00101", "20190901", false);// 科恩特
         this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00247", "C", "SZJ00065", "SSH01164", "20190901", false);// 卓准
         this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HHB00007", "C", "SZJ00065", "SHB00016", "20190901", false);// 恒工
         this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HJS00129", "C", "SZJ00065", "SJS00291", "20200101", false);// 腾达
         //this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00087", "C", "SZJ00065", "SSH00229", "20190801", true);// 海光
         this.syncThirdPartyTradingByERPMAN275("H", "C", "20190901");// 催料
-        //this.syncERPPUR410ToExchange("C", "STW00007", "20190801");// SHB->Exch
-        //this.syncERPPUR410ToExchange("C", "STW00035", "20190801");// SHB->Exch
-        //this.syncERPPUR410ToExchange("C", "SXG00007", "20190801");// SHB->Exch
-        //this.syncERPPUR410ToExchange("K", "KTW00001", "20190801");// Comer->Exch
+        this.syncERPPUR410ToExchange("C", "STW00007", "20200408");// SHB->Exch
+        this.syncERPPUR410ToExchange("C", "STW00035", "20200408");// SHB->Exch
+        this.syncERPPUR410ToExchange("C", "SXG00007", "20200408");// SHB->Exch
+        this.syncERPPUR410ToExchange("K", "KTW00001", "20200408");// Comer->Exch
         log4j.info("ERP集团内部交易互转轮询结束");
     }
 
