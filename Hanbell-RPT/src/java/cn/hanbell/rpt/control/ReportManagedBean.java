@@ -135,7 +135,7 @@ public class ReportManagedBean extends SuperReportManagedBean {
                     }
                 }
                 //借支归还单有差旅明细单独列印
-                if("HZCW033".equals(api)){
+                if("HZ_CW033".equals(api)){
                        String formSerialNumber = hzcw033Bean.findByPSN(reportParams.get("formid")).getFormSerialNumber();
                         if (hzcw033Bean.getTrafficDetail(formSerialNumber).size() > 0) {
                         baos = new ByteArrayOutputStream();
