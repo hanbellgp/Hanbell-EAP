@@ -2359,7 +2359,7 @@ public class TimerBean {
                 throw new RuntimeException(errorBuilder.toString());
             } finally {
                 if (!eapMailBean.getTo().isEmpty() || !eapMailBean.getCc().isEmpty()) {
-                    eapMailBean.setMailSubject("（测试）ERP系统新订单" + cdrno);
+                    eapMailBean.setMailSubject("ERP系统新订单" + cdrno);
                     msgBuilder.append("<div>").append(errorBuilder.toString()).append("</div>");
                     eapMailBean.setHTMLMailContent(msgBuilder.toString());
                     eapMailBean.notify(new cn.hanbell.eap.comm.MailNotify());
