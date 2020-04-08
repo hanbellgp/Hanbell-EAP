@@ -202,20 +202,12 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT d FROM D50Z0009D0 d WHERE d.formSerialNumber = :fsn"
     ),
     @NamedQuery(
-            name = "D50Z0009D0.findByHdnApplydept",
-            query = "SELECT d FROM D50Z0009D0 d WHERE d.hdnApplydept = :hdnApplydept"
-    ),
-    @NamedQuery(
             name = "D50Z0009D0.findByHdnAmanager",
             query = "SELECT d FROM D50Z0009D0 d WHERE d.hdnAmanager = :hdnAmanager"
     ),
     @NamedQuery(
             name = "D50Z0009D0.findByHdnSmanager",
             query = "SELECT d FROM D50Z0009D0 d WHERE d.hdnSmanager = :hdnSmanager"
-    ),
-    @NamedQuery(
-            name = "D50Z0009D0.findByHdnSupportdept",
-            query = "SELECT d FROM D50Z0009D0 d WHERE d.hdnSupportdept = :hdnSupportdept"
     ),
     @NamedQuery(
             name = "D50Z0009D0.findByHdnSboss",
@@ -540,13 +532,6 @@ public class D50Z0009D0 implements Serializable {
             max = 255
     )
     @Column(
-            name = "hdnApplydept"
-    )
-    private String hdnApplydept;
-    @Size(
-            max = 255
-    )
-    @Column(
             name = "hdnAmanager"
     )
     private String hdnAmanager;
@@ -557,13 +542,6 @@ public class D50Z0009D0 implements Serializable {
             name = "hdnSmanager"
     )
     private String hdnSmanager;
-    @Size(
-            max = 255
-    )
-    @Column(
-            name = "hdnSupportdept"
-    )
-    private String hdnSupportdept;
     @Size(
             max = 255
     )
@@ -921,14 +899,6 @@ public class D50Z0009D0 implements Serializable {
         this.formSerialNumber = formSerialNumber;
     }
 
-    public String getHdnApplydept() {
-        return this.hdnApplydept;
-    }
-
-    public void setHdnApplydept(String hdnApplydept) {
-        this.hdnApplydept = hdnApplydept;
-    }
-
     public String getHdnAmanager() {
         return this.hdnAmanager;
     }
@@ -944,15 +914,6 @@ public class D50Z0009D0 implements Serializable {
     public void setHdnSmanager(String hdnSmanager) {
         this.hdnSmanager = hdnSmanager;
     }
-
-    public String getHdnSupportdept() {
-        return this.hdnSupportdept;
-    }
-
-    public void setHdnSupportdept(String hdnSupportdept) {
-        this.hdnSupportdept = hdnSupportdept;
-    }
-
     public String getHdnSboss() {
         return this.hdnSboss;
     }
@@ -1070,10 +1031,8 @@ public class D50Z0009D0 implements Serializable {
         hash = 41 * hash + Objects.hashCode(this.jsjneed2);
         hash = 41 * hash + Objects.hashCode(this.supportUser);
         hash = 41 * hash + Objects.hashCode(this.formSerialNumber);
-        hash = 41 * hash + Objects.hashCode(this.hdnApplydept);
         hash = 41 * hash + Objects.hashCode(this.hdnAmanager);
         hash = 41 * hash + Objects.hashCode(this.hdnSmanager);
-        hash = 41 * hash + Objects.hashCode(this.hdnSupportdept);
         hash = 41 * hash + Objects.hashCode(this.hdnSboss);
         hash = 41 * hash + Objects.hashCode(this.hdnAboss);
         hash = 41 * hash + Objects.hashCode(this.hdnglb);
@@ -1200,16 +1159,10 @@ public class D50Z0009D0 implements Serializable {
         if (!Objects.equals(this.formSerialNumber, other.formSerialNumber)) {
             return false;
         }
-        if (!Objects.equals(this.hdnApplydept, other.hdnApplydept)) {
-            return false;
-        }
         if (!Objects.equals(this.hdnAmanager, other.hdnAmanager)) {
             return false;
         }
         if (!Objects.equals(this.hdnSmanager, other.hdnSmanager)) {
-            return false;
-        }
-        if (!Objects.equals(this.hdnSupportdept, other.hdnSupportdept)) {
             return false;
         }
         if (!Objects.equals(this.hdnSboss, other.hdnSboss)) {
