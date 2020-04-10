@@ -688,10 +688,10 @@ return false ;
                 <property name="width">2.604in</property>
             </column>
             <column id="2278">
-                <property name="width">1.5in</property>
+                <property name="width">1.322in</property>
             </column>
             <column id="2279">
-                <property name="width">1.296in</property>
+                <property name="width">1.474in</property>
             </column>
             <row id="2280">
                 <property name="height">0.24in</property>
@@ -716,6 +716,10 @@ return false ;
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
                     <data id="2361">
+                        <structure name="numberFormat">
+                            <property name="category">Custom</property>
+                            <property name="pattern">#0.00</property>
+                        </structure>
                         <property name="textAlign">center</property>
                         <property name="dataSet">dataDeatil</property>
                         <list-property name="boundDataColumns">
@@ -749,6 +753,10 @@ return false ;
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
                     <data id="2347">
+                        <structure name="numberFormat">
+                            <property name="category">Custom</property>
+                            <property name="pattern">#0.00</property>
+                        </structure>
                         <property name="textAlign">center</property>
                         <property name="dataSet">dataDeatil</property>
                         <list-property name="boundDataColumns">
@@ -771,6 +779,7 @@ return false ;
             <property name="borderLeftWidth">thin</property>
             <property name="borderRightStyle">solid</property>
             <property name="borderRightWidth">thin</property>
+            <property name="verticalAlign">middle</property>
             <property name="dataSet">dataDeatil</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -865,19 +874,19 @@ return false ;
                 </structure>
             </list-property>
             <column id="2328">
-                <property name="width">3.4in</property>
+                <property name="width">2.907in</property>
             </column>
             <column id="2329">
-                <property name="width">0.906in</property>
+                <property name="width">0.98325in</property>
             </column>
             <column id="2330">
-                <property name="width">0.8in</property>
+                <property name="width">1.016in</property>
             </column>
             <column id="2331">
-                <property name="width">0.8in</property>
+                <property name="width">1.016in</property>
             </column>
             <column id="2332">
-                <property name="width">1.796in</property>
+                <property name="width">1.78in</property>
             </column>
             <header>
                 <row id="2310">
@@ -889,6 +898,8 @@ return false ;
                         <property name="borderLeftWidth">thin</property>
                         <property name="borderRightStyle">solid</property>
                         <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
                         <property name="verticalAlign">middle</property>
                         <text id="2336">
                             <property name="contentType">auto</property>
@@ -902,6 +913,8 @@ return false ;
                         <property name="borderLeftWidth">thin</property>
                         <property name="borderRightStyle">solid</property>
                         <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
                         <property name="verticalAlign">middle</property>
                         <text id="2337">
                             <property name="contentType">auto</property>
@@ -915,6 +928,8 @@ return false ;
                         <property name="borderLeftWidth">thin</property>
                         <property name="borderRightStyle">solid</property>
                         <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
                         <text id="2333">
                             <property name="contentType">auto</property>
                             <text-property name="content"><![CDATA[报销金额]]></text-property>
@@ -927,6 +942,8 @@ return false ;
                         <property name="borderLeftWidth">thin</property>
                         <property name="borderRightStyle">solid</property>
                         <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
                         <text id="2338">
                             <property name="contentType">auto</property>
                             <text-property name="content"><![CDATA[退款金额]]></text-property>
@@ -939,6 +956,8 @@ return false ;
                         <property name="borderLeftWidth">thin</property>
                         <property name="borderRightStyle">solid</property>
                         <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
                         <property name="verticalAlign">middle</property>
                         <text id="2334">
                             <property name="contentType">auto</property>
@@ -957,6 +976,8 @@ return false ;
                         <property name="borderLeftWidth">thin</property>
                         <property name="borderRightStyle">solid</property>
                         <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
                         <data id="2362">
                             <property name="textAlign">center</property>
                             <property name="resultSetColumn">summary</property>
@@ -969,7 +990,10 @@ return false ;
                         <property name="borderLeftWidth">thin</property>
                         <property name="borderRightStyle">solid</property>
                         <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
                         <data id="2363">
+                            <property name="textAlign">center</property>
                             <property name="resultSetColumn">budgetDept</property>
                         </data>
                     </cell>
@@ -980,7 +1004,14 @@ return false ;
                         <property name="borderLeftWidth">thin</property>
                         <property name="borderRightStyle">solid</property>
                         <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
                         <data id="2364">
+                            <structure name="numberFormat">
+                                <property name="category">Custom</property>
+                                <property name="pattern">#0.00</property>
+                            </structure>
+                            <property name="textAlign">right</property>
                             <property name="resultSetColumn">taxInclusive</property>
                         </data>
                     </cell>
@@ -991,8 +1022,14 @@ return false ;
                         <property name="borderLeftWidth">thin</property>
                         <property name="borderRightStyle">solid</property>
                         <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
                         <data id="2365">
-                            <property name="textAlign">center</property>
+                            <structure name="numberFormat">
+                                <property name="category">Custom</property>
+                                <property name="pattern">#0.00</property>
+                            </structure>
+                            <property name="textAlign">right</property>
                             <property name="resultSetColumn">refund</property>
                         </data>
                     </cell>
@@ -1003,7 +1040,11 @@ return false ;
                         <property name="borderLeftWidth">thin</property>
                         <property name="borderRightStyle">solid</property>
                         <property name="borderRightWidth">thin</property>
-                        <data id="2366">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="verticalAlign">middle</property>
+                        <data id="2378">
+                            <property name="fontSize">80%</property>
                             <property name="textAlign">center</property>
                             <property name="resultSetColumn">loanNo</property>
                         </data>
@@ -1013,22 +1054,22 @@ return false ;
         </table>
         <grid id="2286">
             <column id="2287">
-                <property name="width">2.8in</property>
+                <property name="width">2.907in</property>
             </column>
             <column id="2288">
-                <property name="width">1.706in</property>
+                <property name="width">0.983in</property>
             </column>
             <column id="2289">
-                <property name="width">0.8in</property>
+                <property name="width">1.016in</property>
             </column>
             <column id="2290">
-                <property name="width">0.8in</property>
+                <property name="width">1.016in</property>
             </column>
             <column id="2291">
-                <property name="width">0.7in</property>
+                <property name="width">0.944in</property>
             </column>
             <column id="2292">
-                <property name="width">0.896in</property>
+                <property name="width">0.836in</property>
             </column>
             <row id="2293">
                 <property name="height">0.24in</property>
@@ -1039,6 +1080,8 @@ return false ;
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
                     <text id="2307">
                         <property name="textAlign">center</property>
                         <property name="contentType">auto</property>
@@ -1052,8 +1095,14 @@ return false ;
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
                     <data id="2368">
-                        <property name="textAlign">center</property>
+                        <structure name="numberFormat">
+                            <property name="category">Custom</property>
+                            <property name="pattern">#0.00</property>
+                        </structure>
+                        <property name="textAlign">right</property>
                         <property name="dataSet">dataDeatil</property>
                         <list-property name="boundDataColumns">
                             <structure>
@@ -1073,7 +1122,10 @@ return false ;
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
                     <text id="2339">
+                        <property name="textAlign">center</property>
                         <property name="contentType">auto</property>
                         <text-property name="content"><![CDATA[币别]]></text-property>
                     </text>
@@ -1085,6 +1137,8 @@ return false ;
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
                     <data id="2355">
                         <property name="textAlign">center</property>
                         <property name="dataSet">dataDeatil</property>
@@ -1106,7 +1160,10 @@ return false ;
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
                     <text id="2341">
+                        <property name="textAlign">center</property>
                         <property name="contentType">auto</property>
                         <text-property name="content"><![CDATA[汇率]]></text-property>
                     </text>
@@ -1118,7 +1175,14 @@ return false ;
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
                     <data id="2371">
+                        <structure name="numberFormat">
+                            <property name="category">Custom</property>
+                            <property name="pattern">#0.0000</property>
+                        </structure>
+                        <property name="textAlign">center</property>
                         <property name="dataSet">dataDeatil</property>
                         <list-property name="boundDataColumns">
                             <structure>
@@ -1140,6 +1204,8 @@ return false ;
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
                     <text id="2308">
                         <property name="textAlign">center</property>
                         <property name="contentType">auto</property>
@@ -1153,8 +1219,14 @@ return false ;
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
                     <data id="2369">
-                        <property name="textAlign">center</property>
+                        <structure name="numberFormat">
+                            <property name="category">Custom</property>
+                            <property name="pattern">#0.00</property>
+                        </structure>
+                        <property name="textAlign">right</property>
                         <property name="dataSet">dataDeatil</property>
                         <list-property name="boundDataColumns">
                             <structure>
@@ -1174,7 +1246,10 @@ return false ;
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
                     <text id="2340">
+                        <property name="textAlign">center</property>
                         <property name="contentType">auto</property>
                         <text-property name="content"><![CDATA[大写金额]]></text-property>
                     </text>
@@ -1188,6 +1263,8 @@ return false ;
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
                     <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
                     <data id="2370">
                         <property name="textAlign">center</property>
                         <property name="dataSet">dataDeatil</property>
@@ -1226,16 +1303,16 @@ return false ;
                 <property name="width">0.96875in</property>
             </column>
             <column id="1689">
-                <property name="width">0.96875in</property>
+                <property name="width">1.03in</property>
             </column>
             <column id="1690">
                 <property name="width">0.96875in</property>
             </column>
             <column id="1691">
-                <property name="width">0.96875in</property>
+                <property name="width">0.908in</property>
             </column>
             <column id="1692">
-                <property name="width">0.9166666666666666in</property>
+                <property name="width">0.919in</property>
             </column>
             <row id="1693">
                 <property name="borderBottomStyle">solid</property>
