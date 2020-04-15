@@ -409,7 +409,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                 //加入apusrno,cfmusrno 为OA审核人20200411
                 List<ProcessCheck> processList;
                 processList = processCheckBean.findByPSN(psn);
-                if (processList.size() > 0) {
+                if (processList.size() > 1) {
                     ProcessCheck pc1 = processList.get(processList.size() - 1);
                     ProcessCheck pc2 = processList.get(processList.size() - 2);
                     erph.setCfmusrno(pc1.getUserID());
