@@ -874,10 +874,10 @@ return false ;
                 </structure>
             </list-property>
             <column id="2328">
-                <property name="width">2.907in</property>
+                <property name="width">2.302in</property>
             </column>
             <column id="2329">
-                <property name="width">0.98325in</property>
+                <property name="width">1.588in</property>
             </column>
             <column id="2330">
                 <property name="width">1.016in</property>
@@ -1054,10 +1054,10 @@ return false ;
         </table>
         <grid id="2286">
             <column id="2287">
-                <property name="width">2.907in</property>
+                <property name="width">2.302in</property>
             </column>
             <column id="2288">
-                <property name="width">0.983in</property>
+                <property name="width">1.588in</property>
             </column>
             <column id="2289">
                 <property name="width">1.016in</property>
