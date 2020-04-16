@@ -376,5 +376,5 @@ public class HZCW033tDetail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HZCW033tDetail[ oid=" + oid + " ]";
     }
-    
+
 }

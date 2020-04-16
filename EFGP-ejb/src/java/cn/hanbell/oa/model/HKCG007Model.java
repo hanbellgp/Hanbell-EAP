@@ -7,10 +7,6 @@ package cn.hanbell.oa.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -20,202 +16,91 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class HKCG007Model implements Serializable {
 
-    @Size(max = 255)
-    @Column(name = "centerid")
+    private String applyDept;
     private String centerid;
-    @Size(max = 255)
-    @Column(name = "budgetcode")
     private String budgetcode;
-    @Size(max = 255)
-    @Column(name = "purhaskdscs")
     private String purhaskdscs;
-    @Size(max = 255)
-    @Column(name = "isNine")
     private String isNine;
-    @Column(name = "ctotaly")
     private Double ctotaly;
-    @Size(max = 255)
-    @Column(name = "prono")
     private String prono;
-    @Column(name = "deptYear")
     private Double deptYear;
-    @Size(max = 255)
-    @Column(name = "cfmuserno")
     private String cfmuserno;
-    @Column(name = "qtotaly")
     private Double qtotaly;
-    @Size(max = 255)
-    @Column(name = "prkind")
     private String prkind;
-    @Size(max = 255)
-    @Column(name = "mastbuyer")
     private String mastbuyer;
-    @Column(name = "rate")
     private Double rate;
-    @Size(max = 255)
-    @Column(name = "mastbuyername")
     private String mastbuyername;
-    @Size(max = 255)
-    @Column(name = "appuser")
     private String appuser;
-    @Size(max = 255)
-    @Column(name = "facno")
     private String facno;
-    @Size(max = 255)
-    @Column(name = "currency")
     private String currency;
-    @Size(max = 255)
-    @Column(name = "creator")
     private String creator;
-    @Column(name = "qtotalyRMB")
     private Double qtotalyRMB;
-    @Column(name = "ctotalyRMB")
     private Double ctotalyRMB;
-    @Size(max = 255)
-    @Column(name = "hmark1")
     private String hmark1;
-    @Column(name = "appDate")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date appDate;
-    @Column(name = "deptPeriod")
     private Double deptPeriod;
-    @Size(max = 255)
-    @Column(name = "formid")
     private String formid;
-    @Size(max = 255)
-    @Column(name = "depno")
     private String depno;
-    @Size(max = 255)
-    @Column(name = "istechnique")
     private String istechnique;
-    @Size(max = 255)
-    @Column(name = "yfPrice")
     private String yfPrice;
-    @Size(max = 255)
-    @Column(name = "addcode")
     private String addcode;
-
-    @Size(max = 255)
-    @Column(name = "formulateDept")
     private String formulateDept;
-    @Size(max = 255)
-    @Column(name = "formulateUser")
     private String formulateUser;
-    @Column(name = "formulateDate")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date formulateDate;
-    @Size(max = 255)
-    @Column(name = "equipmentName")
     private String equipmentName;
-    @Size(max = 255)
-    @Column(name = "equipmentName2")
     private String equipmentName2;
-    @Size(max = 255)
-    @Column(name = "equipmentSpec")
     private String equipmentSpec;
-    @Size(max = 255)
-    @Column(name = "adviceBrand")
     private String adviceBrand;
-    @Size(max = 255)
-    @Column(name = "planqty")
     private String planqty;
-    @Size(max = 255)
-    @Column(name = "used")
     private String used;
-    @Size(max = 255)
-    @Column(name = "property")
     private String property;
-    @Size(max = 255)
-    @Column(name = "vendor")
     private String vendor;
-    @Size(max = 255)
-    @Column(name = "attribute")
     private String attribute;
-    @Size(max = 255)
-    @Column(name = "source")
     private String source;
-    @Size(max = 255)
-    @Column(name = "remark")
     private String remark;
-    @Size(max = 255)
-    @Column(name = "factor01")
     private String factor01;
-    @Size(max = 255)
-    @Column(name = "factor02")
     private String factor02;
-    @Size(max = 255)
-    @Column(name = "factor03")
     private String factor03;
-    @Size(max = 255)
-    @Column(name = "factor04")
     private String factor04;
-    @Size(max = 255)
-    @Column(name = "factor05")
     private String factor05;
-    @Size(max = 255)
-    @Column(name = "factor06")
     private String factor06;
-    @Size(max = 255)
-    @Column(name = "factor07")
     private String factor07;
-    @Size(max = 255)
-    @Column(name = "factor08")
     private String factor08;
-    @Size(max = 255)
-    @Column(name = "factor09")
     private String factor09;
-    @Size(max = 255)
-    @Column(name = "factor10")
     private String factor10;
-    @Size(max = 255)
-    @Column(name = "factor11")
     private String factor11;
-    @Size(max = 255)
-    @Column(name = "factor12")
     private String factor12;
-    @Size(max = 255)
-    @Column(name = "conclusion")
     private String conclusion;
-    @Size(max = 255)
-    @Column(name = "origproject1")
     private String origproject1;
-    @Size(max = 255)
-    @Column(name = "origqty1")
     private String origqty1;
-    @Size(max = 255)
-    @Column(name = "origrate1")
     private String origrate1;
-    @Size(max = 255)
-    @Column(name = "newrate1")
     private String newrate1;
 
-    @Size(max = 255)
-    @Column(name = "origproject2")
     private String origproject2;
-    @Size(max = 255)
-    @Column(name = "origqty2")
     private String origqty2;
-    @Size(max = 255)
-    @Column(name = "origrate2")
     private String origrate2;
-    @Size(max = 255)
-    @Column(name = "newrate2")
     private String newrate2;
 
-    @Size(max = 255)
-    @Column(name = "newproject1")
     private String newproject1;
-    @Size(max = 255)
-    @Column(name = "newqty1")
     private String newqty1;
-    @Size(max = 255)
-    @Column(name = "newproject2")
     private String newproject2;
-    @Size(max = 255)
-    @Column(name = "newqty2")
     private String newqty2;
 
     public HKCG007Model() {
+    }
+
+    /**
+     * @return the applyDept
+     */
+    public String getApplyDept() {
+        return applyDept;
+    }
+
+    /**
+     * @param applyDept the applyDept to set
+     */
+    public void setApplyDept(String applyDept) {
+        this.applyDept = applyDept;
     }
 
     public String getOrigqty2() {

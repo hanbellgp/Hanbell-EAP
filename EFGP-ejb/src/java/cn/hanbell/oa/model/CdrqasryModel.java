@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class CdrqasryModel {
+
     private String facno;
     private String quono;
     private short trseq;

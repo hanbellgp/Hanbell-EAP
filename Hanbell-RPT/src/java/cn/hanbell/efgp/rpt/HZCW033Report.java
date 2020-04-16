@@ -5,11 +5,7 @@
  */
 package cn.hanbell.efgp.rpt;
 
-import cn.hanbell.oa.ejb.HZCW028Bean;
 import cn.hanbell.oa.ejb.HZCW033Bean;
-import cn.hanbell.oa.entity.HZCW028;
-import cn.hanbell.oa.entity.HZCW028reDetail;
-import cn.hanbell.oa.entity.HZCW028tDetail;
 import cn.hanbell.oa.entity.HZCW033;
 import cn.hanbell.oa.entity.HZCW033reDetail;
 import cn.hanbell.oa.entity.HZCW033tDetail;

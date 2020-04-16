@@ -5,6 +5,7 @@
  */
 package cn.hanbell.jrs;
 
+import cn.hanbell.util.BaseLib;
 import com.lightshell.comm.SuperEJB;
 import java.util.HashMap;
 import java.util.List;
@@ -162,11 +163,17 @@ public abstract class SuperRESTForEAP<T> {
                 Map<String, Object> filterFields = new HashMap<>();
                 Map<String, String> sortFields = new HashMap<>();
                 String key, value;
+                Object obj;
                 if (filtersMM != null) {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
-                        filterFields.put(key, value);
+                        if (key.endsWith("dateBegin") || key.endsWith("DateBegin") || key.endsWith("dateEnd") || key.endsWith("DateEnd")) {
+                            obj = BaseLib.getDate("yyyy-MM-dd", value);
+                            filterFields.put(key, obj);
+                        } else {
+                            filterFields.put(key, value);
+                        }
                     }
                 }
                 if (sortsMM != null) {
