@@ -5,6 +5,7 @@
  */
 package cn.hanbell.eap.entity;
 
+import com.lightshell.comm.FormEntity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -30,78 +31,73 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Demands.findAll", query = "SELECT d FROM Demands d"),
-    @NamedQuery(name = "Demands.findByAppendix", query = "SELECT d FROM Demands d WHERE d.appendix = :appendix"),
-    @NamedQuery(name = "Demands.findByCfmdate", query = "SELECT d FROM Demands d WHERE d.cfmdate = :cfmdate"),
-    @NamedQuery(name = "Demands.findByCfmuser", query = "SELECT d FROM Demands d WHERE d.cfmuser = :cfmuser"),
-    @NamedQuery(name = "Demands.findByCreator", query = "SELECT d FROM Demands d WHERE d.creator = :creator"),
-    @NamedQuery(name = "Demands.findByCredate", query = "SELECT d FROM Demands d WHERE d.credate = :credate"),
-    @NamedQuery(name = "Demands.findByDemandContent", query = "SELECT d FROM Demands d WHERE d.demandContent = :demandContent"),
+    @NamedQuery(name = "Demands.findById", query = "SELECT d FROM Demands d WHERE d.id = :id"),
+    @NamedQuery(name = "Demands.findByFormid", query = "SELECT d FROM Demands d WHERE d.formid = :formid"),
+    @NamedQuery(name = "Demands.findByFormdate", query = "SELECT d FROM Demands d WHERE d.formdate = :formdate"),
+    @NamedQuery(name = "Demands.findBySystemName", query = "SELECT d FROM Demands d WHERE d.systemName = :systemName"),
+    @NamedQuery(name = "Demands.findByModuleName", query = "SELECT d FROM Demands d WHERE d.moduleName = :moduleName"),
+    @NamedQuery(name = "Demands.findByProcedureName", query = "SELECT d FROM Demands d WHERE d.procedureName = :procedureName"),
+    @NamedQuery(name = "Demands.findByDemandResume", query = "SELECT d FROM Demands d WHERE d.demandResume = :demandResume"),
     @NamedQuery(name = "Demands.findByDemandDate", query = "SELECT d FROM Demands d WHERE d.demandDate = :demandDate"),
-    @NamedQuery(name = "Demands.findByDemandDeptName", query = "SELECT d FROM Demands d WHERE d.demandDeptName = :demandDeptName"),
-    @NamedQuery(name = "Demands.findByDemandDeptno", query = "SELECT d FROM Demands d WHERE d.demandDeptno = :demandDeptno"),
-    @NamedQuery(name = "Demands.findByDemandName", query = "SELECT d FROM Demands d WHERE d.demandName = :demandName"),
-    @NamedQuery(name = "Demands.findByDemandNameID", query = "SELECT d FROM Demands d WHERE d.demandNameID = :demandNameID"),
-    @NamedQuery(name = "Demands.findByDemandsResume", query = "SELECT d FROM Demands d WHERE d.demandsResume = :demandsResume"),
+    @NamedQuery(name = "Demands.findByDemanderNameID", query = "SELECT d FROM Demands d WHERE d.demanderNameID = :demanderNameID"),
+    @NamedQuery(name = "Demands.findByDemanderName", query = "SELECT d FROM Demands d WHERE d.demanderName = :demanderName"),
+    @NamedQuery(name = "Demands.findByDemanderDeptID", query = "SELECT d FROM Demands d WHERE d.demanderDeptID = :demanderDeptID"),
+    @NamedQuery(name = "Demands.findByDemanderDeptName", query = "SELECT d FROM Demands d WHERE d.demanderDeptName = :demanderDeptName"),
+    @NamedQuery(name = "Demands.findByDemandContent", query = "SELECT d FROM Demands d WHERE d.demandContent = :demandContent"),
     @NamedQuery(name = "Demands.findByDirectorID", query = "SELECT d FROM Demands d WHERE d.directorID = :directorID"),
     @NamedQuery(name = "Demands.findByDirectorName", query = "SELECT d FROM Demands d WHERE d.directorName = :directorName"),
     @NamedQuery(name = "Demands.findByDirectorDeptID", query = "SELECT d FROM Demands d WHERE d.directorDeptID = :directorDeptID"),
     @NamedQuery(name = "Demands.findByDirectorDeptName", query = "SELECT d FROM Demands d WHERE d.directorDeptName = :directorDeptName"),
-    @NamedQuery(name = "Demands.findByFormdate", query = "SELECT d FROM Demands d WHERE d.formdate = :formdate"),
-    @NamedQuery(name = "Demands.findByFormid", query = "SELECT d FROM Demands d WHERE d.formid = :formid"),
-    @NamedQuery(name = "Demands.findByModulName", query = "SELECT d FROM Demands d WHERE d.modulName = :modulName"),
-    @NamedQuery(name = "Demands.findByOid", query = "SELECT d FROM Demands d WHERE d.oid = :oid"),
-    @NamedQuery(name = "Demands.findByOptdate", query = "SELECT d FROM Demands d WHERE d.optdate = :optdate"),
-    @NamedQuery(name = "Demands.findByOptuser", query = "SELECT d FROM Demands d WHERE d.optuser = :optuser"),
-    @NamedQuery(name = "Demands.findByPlanEndDate", query = "SELECT d FROM Demands d WHERE d.planEndDate = :planEndDate"),
     @NamedQuery(name = "Demands.findByPlanStartDate", query = "SELECT d FROM Demands d WHERE d.planStartDate = :planStartDate"),
-    @NamedQuery(name = "Demands.findByProcedureName", query = "SELECT d FROM Demands d WHERE d.procedureName = :procedureName"),
-    @NamedQuery(name = "Demands.findByRealOverDate", query = "SELECT d FROM Demands d WHERE d.realOverDate = :realOverDate"),
+    @NamedQuery(name = "Demands.findByPlanOverDate", query = "SELECT d FROM Demands d WHERE d.planOverDate = :planOverDate"),
     @NamedQuery(name = "Demands.findByRealStartDate", query = "SELECT d FROM Demands d WHERE d.realStartDate = :realStartDate"),
-    @NamedQuery(name = "Demands.findByStatus", query = "SELECT d FROM Demands d WHERE d.status = :status"),
-    @NamedQuery(name = "Demands.findBySystemName", query = "SELECT d FROM Demands d WHERE d.systemName = :systemName"),
-    @NamedQuery(name = "Demands.findByWriteDate", query = "SELECT d FROM Demands d WHERE d.writeDate = :writeDate"),
+    @NamedQuery(name = "Demands.findByRealOverDate", query = "SELECT d FROM Demands d WHERE d.realOverDate = :realOverDate"),
     @NamedQuery(name = "Demands.findByWriterID", query = "SELECT d FROM Demands d WHERE d.writerID = :writerID"),
     @NamedQuery(name = "Demands.findByWriterName", query = "SELECT d FROM Demands d WHERE d.writerName = :writerName"),
-    @NamedQuery(name = "Demands.findById", query = "SELECT d FROM Demands d WHERE d.id = :id")})
-public class Demands implements Serializable {
+    @NamedQuery(name = "Demands.findByWriteDate", query = "SELECT d FROM Demands d WHERE d.writeDate = :writeDate"),
+    @NamedQuery(name = "Demands.findByAppendix", query = "SELECT d FROM Demands d WHERE d.appendix = :appendix"),
+    @NamedQuery(name = "Demands.findByOid", query = "SELECT d FROM Demands d WHERE d.oid = :oid"),
+    @NamedQuery(name = "Demands.findByStatus", query = "SELECT d FROM Demands d WHERE d.status = :status"),
+    @NamedQuery(name = "Demands.findByCreator", query = "SELECT d FROM Demands d WHERE d.creator = :creator"),
+    @NamedQuery(name = "Demands.findByCredate", query = "SELECT d FROM Demands d WHERE d.credate = :credate"),
+    @NamedQuery(name = "Demands.findByOptuser", query = "SELECT d FROM Demands d WHERE d.optuser = :optuser"),
+    @NamedQuery(name = "Demands.findByOptdate", query = "SELECT d FROM Demands d WHERE d.optdate = :optdate"),
+    @NamedQuery(name = "Demands.findByCfmuser", query = "SELECT d FROM Demands d WHERE d.cfmuser = :cfmuser"),
+    @NamedQuery(name = "Demands.findByCfmdate", query = "SELECT d FROM Demands d WHERE d.cfmdate = :cfmdate"),
+    @NamedQuery(name = "Demands.findByEmergencyDegree", query = "SELECT d FROM Demands d WHERE d.emergencyDegree = :emergencyDegree")})
+public class Demands extends FormEntity {
 
     private static final long serialVersionUID = 1L;
     @Size(max = 255)
-    @Column(name = "appendix")
-    private String appendix;
-    @Column(name = "cfmdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date cfmdate;
+    @Column(name = "systemName")
+    private String systemName;
     @Size(max = 255)
-    @Column(name = "cfmuser")
-    private String cfmuser;
+    @Column(name = "moduleName")
+    private String moduleName;
     @Size(max = 255)
-    @Column(name = "creator")
-    private String creator;
-    @Column(name = "credate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date credate;
+    @Column(name = "procedureName")
+    private String procedureName;
     @Size(max = 255)
-    @Column(name = "demandContent")
-    private String demandContent;
+    @Column(name = "demandResume")
+    private String demandResume;
     @Column(name = "demandDate")
     @Temporal(TemporalType.DATE)
     private Date demandDate;
     @Size(max = 255)
-    @Column(name = "demandDeptName")
-    private String demandDeptName;
+    @Column(name = "demanderNameID")
+    private String demanderNameID;
     @Size(max = 255)
-    @Column(name = "demandDeptno")
-    private String demandDeptno;
+    @Column(name = "demanderName")
+    private String demanderName;
     @Size(max = 255)
-    @Column(name = "demandName")
-    private String demandName;
+    @Column(name = "demanderDeptID")
+    private String demanderDeptID;
     @Size(max = 255)
-    @Column(name = "demandNameID")
-    private String demandNameID;
+    @Column(name = "demanderDeptName")
+    private String demanderDeptName;
     @Size(max = 255)
-    @Column(name = "demandsResume")
-    private String demandsResume;
+    @Column(name = "demandContent")
+    private String demandContent;
     @Size(max = 255)
     @Column(name = "directorID")
     private String directorID;
@@ -114,59 +110,36 @@ public class Demands implements Serializable {
     @Size(max = 10)
     @Column(name = "directorDeptName")
     private String directorDeptName;
-    @Column(name = "formdate")
-    @Temporal(TemporalType.DATE)
-    private Date formdate;
-    @Size(max = 255)
-    @Column(name = "formid")
-    private String formid;
-    @Size(max = 255)
-    @Column(name = "modulName")
-    private String modulName;
-    @Size(max = 255)
-    @Column(name = "oid")
-    private String oid;
-    @Column(name = "optdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date optdate;
-    @Size(max = 255)
-    @Column(name = "optuser")
-    private String optuser;
-    @Column(name = "planEndDate")
-    @Temporal(TemporalType.DATE)
-    private Date planEndDate;
     @Column(name = "planStartDate")
     @Temporal(TemporalType.DATE)
     private Date planStartDate;
-    @Size(max = 255)
-    @Column(name = "procedureName")
-    private String procedureName;
-    @Column(name = "realOverDate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date realOverDate;
+    @Column(name = "planOverDate")
+    @Temporal(TemporalType.DATE)
+    private Date planOverDate;
     @Column(name = "realStartDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date realStartDate;
-    @Size(max = 255)
-    @Column(name = "status")
-    private String status;
-    @Size(max = 255)
-    @Column(name = "systemName")
-    private String systemName;
-    @Column(name = "writeDate")
-    @Temporal(TemporalType.DATE)
-    private Date writeDate;
+    @Column(name = "realOverDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date realOverDate;
     @Size(max = 255)
     @Column(name = "writerID")
     private String writerID;
     @Size(max = 255)
     @Column(name = "writerName")
     private String writerName;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "writeDate")
+    @Temporal(TemporalType.DATE)
+    private Date writeDate;
+    @Size(max = 255)
+    @Column(name = "appendix")
+    private String appendix;
+    @Size(max = 255)
+    @Column(name = "oid")
+    private String oid;
+    @Size(max = 5)
+    @Column(name = "emergencyDegree")
+    private String emergencyDegree;
 
     public Demands() {
     }
@@ -175,52 +148,36 @@ public class Demands implements Serializable {
         this.id = id;
     }
 
-    public String getAppendix() {
-        return appendix;
+    public String getSystemName() {
+        return systemName;
     }
 
-    public void setAppendix(String appendix) {
-        this.appendix = appendix;
+    public void setSystemName(String systemName) {
+        this.systemName = systemName;
     }
 
-    public Date getCfmdate() {
-        return cfmdate;
+    public String getModuleName() {
+        return moduleName;
     }
 
-    public void setCfmdate(Date cfmdate) {
-        this.cfmdate = cfmdate;
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 
-    public String getCfmuser() {
-        return cfmuser;
+    public String getProcedureName() {
+        return procedureName;
     }
 
-    public void setCfmuser(String cfmuser) {
-        this.cfmuser = cfmuser;
+    public void setProcedureName(String procedureName) {
+        this.procedureName = procedureName;
     }
 
-    public String getCreator() {
-        return creator;
+    public String getDemandResume() {
+        return demandResume;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public Date getCredate() {
-        return credate;
-    }
-
-    public void setCredate(Date credate) {
-        this.credate = credate;
-    }
-
-    public String getDemandContent() {
-        return demandContent;
-    }
-
-    public void setDemandContent(String demandContent) {
-        this.demandContent = demandContent;
+    public void setDemandResume(String demandResume) {
+        this.demandResume = demandResume;
     }
 
     public Date getDemandDate() {
@@ -231,44 +188,44 @@ public class Demands implements Serializable {
         this.demandDate = demandDate;
     }
 
-    public String getDemandDeptName() {
-        return demandDeptName;
+    public String getDemanderNameID() {
+        return demanderNameID;
     }
 
-    public void setDemandDeptName(String demandDeptName) {
-        this.demandDeptName = demandDeptName;
+    public void setDemanderNameID(String demanderNameID) {
+        this.demanderNameID = demanderNameID;
     }
 
-    public String getDemandDeptno() {
-        return demandDeptno;
+    public String getDemanderName() {
+        return demanderName;
     }
 
-    public void setDemandDeptno(String demandDeptno) {
-        this.demandDeptno = demandDeptno;
+    public void setDemanderName(String demanderName) {
+        this.demanderName = demanderName;
     }
 
-    public String getDemandName() {
-        return demandName;
+    public String getDemanderDeptID() {
+        return demanderDeptID;
     }
 
-    public void setDemandName(String demandName) {
-        this.demandName = demandName;
+    public void setDemanderDeptID(String demanderDeptID) {
+        this.demanderDeptID = demanderDeptID;
     }
 
-    public String getDemandNameID() {
-        return demandNameID;
+    public String getDemanderDeptName() {
+        return demanderDeptName;
     }
 
-    public void setDemandNameID(String demandNameID) {
-        this.demandNameID = demandNameID;
+    public void setDemanderDeptName(String demanderDeptName) {
+        this.demanderDeptName = demanderDeptName;
     }
 
-    public String getDemandsResume() {
-        return demandsResume;
+    public String getDemandContent() {
+        return demandContent;
     }
 
-    public void setDemandsResume(String demandsResume) {
-        this.demandsResume = demandsResume;
+    public void setDemandContent(String demandContent) {
+        this.demandContent = demandContent;
     }
 
     public String getDirectorID() {
@@ -303,62 +260,6 @@ public class Demands implements Serializable {
         this.directorDeptName = directorDeptName;
     }
 
-    public Date getFormdate() {
-        return formdate;
-    }
-
-    public void setFormdate(Date formdate) {
-        this.formdate = formdate;
-    }
-
-    public String getFormid() {
-        return formid;
-    }
-
-    public void setFormid(String formid) {
-        this.formid = formid;
-    }
-
-    public String getModulName() {
-        return modulName;
-    }
-
-    public void setModulName(String modulName) {
-        this.modulName = modulName;
-    }
-
-    public String getOid() {
-        return oid;
-    }
-
-    public void setOid(String oid) {
-        this.oid = oid;
-    }
-
-    public Date getOptdate() {
-        return optdate;
-    }
-
-    public void setOptdate(Date optdate) {
-        this.optdate = optdate;
-    }
-
-    public String getOptuser() {
-        return optuser;
-    }
-
-    public void setOptuser(String optuser) {
-        this.optuser = optuser;
-    }
-
-    public Date getPlanEndDate() {
-        return planEndDate;
-    }
-
-    public void setPlanEndDate(Date planEndDate) {
-        this.planEndDate = planEndDate;
-    }
-
     public Date getPlanStartDate() {
         return planStartDate;
     }
@@ -367,20 +268,12 @@ public class Demands implements Serializable {
         this.planStartDate = planStartDate;
     }
 
-    public String getProcedureName() {
-        return procedureName;
+    public Date getPlanOverDate() {
+        return planOverDate;
     }
 
-    public void setProcedureName(String procedureName) {
-        this.procedureName = procedureName;
-    }
-
-    public Date getRealOverDate() {
-        return realOverDate;
-    }
-
-    public void setRealOverDate(Date realOverDate) {
-        this.realOverDate = realOverDate;
+    public void setPlanOverDate(Date planOverDate) {
+        this.planOverDate = planOverDate;
     }
 
     public Date getRealStartDate() {
@@ -391,28 +284,12 @@ public class Demands implements Serializable {
         this.realStartDate = realStartDate;
     }
 
-    public String getStatus() {
-        return status;
+    public Date getRealOverDate() {
+        return realOverDate;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getSystemName() {
-        return systemName;
-    }
-
-    public void setSystemName(String systemName) {
-        this.systemName = systemName;
-    }
-
-    public Date getWriteDate() {
-        return writeDate;
-    }
-
-    public void setWriteDate(Date writeDate) {
-        this.writeDate = writeDate;
+    public void setRealOverDate(Date realOverDate) {
+        this.realOverDate = realOverDate;
     }
 
     public String getWriterID() {
@@ -431,12 +308,36 @@ public class Demands implements Serializable {
         this.writerName = writerName;
     }
 
-    public Integer getId() {
-        return id;
+    public Date getWriteDate() {
+        return writeDate;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setWriteDate(Date writeDate) {
+        this.writeDate = writeDate;
+    }
+
+    public String getAppendix() {
+        return appendix;
+    }
+
+    public void setAppendix(String appendix) {
+        this.appendix = appendix;
+    }
+
+    public String getOid() {
+        return oid;
+    }
+
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
+    public String getEmergencyDegree() {
+        return emergencyDegree;
+    }
+
+    public void setEmergencyDegree(String emergencyDegree) {
+        this.emergencyDegree = emergencyDegree;
     }
 
     @Override
