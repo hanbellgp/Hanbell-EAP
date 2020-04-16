@@ -18,8 +18,8 @@ import javax.ejb.Stateless;
 @Stateless
 @LocalBean
 public class HZCW033tDetailBean extends SuperEJBForEFGP<HZCW033tDetail> {
-    
-     public HZCW033tDetailBean() {
+
+    public HZCW033tDetailBean() {
         super(HZCW033tDetail.class);
     }
 }

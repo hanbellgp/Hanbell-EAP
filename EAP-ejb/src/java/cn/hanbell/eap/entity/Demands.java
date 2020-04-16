@@ -7,6 +7,7 @@ package cn.hanbell.eap.entity;
 
 import com.lightshell.comm.FormEntity;
 import java.util.Date;
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -26,66 +27,50 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Demands.findAll", query = "SELECT d FROM Demands d"),
-    @NamedQuery(name = "Demands.findByAppendix", query = "SELECT d FROM Demands d WHERE d.appendix = :appendix"),
-    @NamedQuery(name = "Demands.findByCfmdate", query = "SELECT d FROM Demands d WHERE d.cfmdate = :cfmdate"),
-    @NamedQuery(name = "Demands.findByCfmuser", query = "SELECT d FROM Demands d WHERE d.cfmuser = :cfmuser"),
-    @NamedQuery(name = "Demands.findByCreator", query = "SELECT d FROM Demands d WHERE d.creator = :creator"),
-    @NamedQuery(name = "Demands.findByCredate", query = "SELECT d FROM Demands d WHERE d.credate = :credate"),
     @NamedQuery(name = "Demands.findByDemandContent", query = "SELECT d FROM Demands d WHERE d.demandContent = :demandContent"),
     @NamedQuery(name = "Demands.findByDemandDate", query = "SELECT d FROM Demands d WHERE d.demandDate = :demandDate"),
-    @NamedQuery(name = "Demands.findByDemandDeptName", query = "SELECT d FROM Demands d WHERE d.demandDeptName = :demandDeptName"),
-    @NamedQuery(name = "Demands.findByDemandDeptno", query = "SELECT d FROM Demands d WHERE d.demandDeptno = :demandDeptno"),
-    @NamedQuery(name = "Demands.findByDemandName", query = "SELECT d FROM Demands d WHERE d.demandName = :demandName"),
-    @NamedQuery(name = "Demands.findByDemandNameID", query = "SELECT d FROM Demands d WHERE d.demandNameID = :demandNameID"),
-    @NamedQuery(name = "Demands.findByDemandsResume", query = "SELECT d FROM Demands d WHERE d.demandsResume = :demandsResume"),
     @NamedQuery(name = "Demands.findByDirectorID", query = "SELECT d FROM Demands d WHERE d.directorID = :directorID"),
     @NamedQuery(name = "Demands.findByDirectorName", query = "SELECT d FROM Demands d WHERE d.directorName = :directorName"),
     @NamedQuery(name = "Demands.findByDirectorDeptID", query = "SELECT d FROM Demands d WHERE d.directorDeptID = :directorDeptID"),
     @NamedQuery(name = "Demands.findByDirectorDeptName", query = "SELECT d FROM Demands d WHERE d.directorDeptName = :directorDeptName"),
     @NamedQuery(name = "Demands.findByFormdate", query = "SELECT d FROM Demands d WHERE d.formdate = :formdate"),
     @NamedQuery(name = "Demands.findByFormid", query = "SELECT d FROM Demands d WHERE d.formid = :formid"),
-    @NamedQuery(name = "Demands.findByModulName", query = "SELECT d FROM Demands d WHERE d.modulName = :modulName"),
-    @NamedQuery(name = "Demands.findByOid", query = "SELECT d FROM Demands d WHERE d.oid = :oid"),
-    @NamedQuery(name = "Demands.findByOptdate", query = "SELECT d FROM Demands d WHERE d.optdate = :optdate"),
-    @NamedQuery(name = "Demands.findByOptuser", query = "SELECT d FROM Demands d WHERE d.optuser = :optuser"),
-    @NamedQuery(name = "Demands.findByPlanEndDate", query = "SELECT d FROM Demands d WHERE d.planEndDate = :planEndDate"),
-    @NamedQuery(name = "Demands.findByPlanStartDate", query = "SELECT d FROM Demands d WHERE d.planStartDate = :planStartDate"),
-    @NamedQuery(name = "Demands.findByProcedureName", query = "SELECT d FROM Demands d WHERE d.procedureName = :procedureName"),
-    @NamedQuery(name = "Demands.findByRealOverDate", query = "SELECT d FROM Demands d WHERE d.realOverDate = :realOverDate"),
-    @NamedQuery(name = "Demands.findByRealStartDate", query = "SELECT d FROM Demands d WHERE d.realStartDate = :realStartDate"),
     @NamedQuery(name = "Demands.findByStatus", query = "SELECT d FROM Demands d WHERE d.status = :status"),
     @NamedQuery(name = "Demands.findBySystemName", query = "SELECT d FROM Demands d WHERE d.systemName = :systemName"),
-    @NamedQuery(name = "Demands.findByWriteDate", query = "SELECT d FROM Demands d WHERE d.writeDate = :writeDate"),
-    @NamedQuery(name = "Demands.findByWriterID", query = "SELECT d FROM Demands d WHERE d.writerID = :writerID"),
-    @NamedQuery(name = "Demands.findByWriterName", query = "SELECT d FROM Demands d WHERE d.writerName = :writerName"),
     @NamedQuery(name = "Demands.findById", query = "SELECT d FROM Demands d WHERE d.id = :id")})
 public class Demands extends FormEntity {
 
     @Size(max = 255)
-    @Column(name = "appendix")
-    private String appendix;
-
+    @Column(name = "systemName")
+    private String systemName;
+    @Size(max = 255)
+    @Column(name = "moduleName")
+    private String moduleName;
+    @Size(max = 255)
+    @Column(name = "procedureName")
+    private String procedureName;
+    @Size(max = 255)
+    @Column(name = "demandResume")
+    private String demandResume;
+    @Column(name = "demandDate")
+    @Temporal(TemporalType.DATE)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private Date demandDate;
+    @Size(max = 255)
+    @Column(name = "demanderNameID")
+    private String demanderID;
+    @Size(max = 255)
+    @Column(name = "demanderName")
+    private String demanderName;
+    @Size(max = 255)
+    @Column(name = "demanderDeptID")
+    private String demanderDeptID;
+    @Size(max = 255)
+    @Column(name = "demanderDeptName")
+    private String demanderDeptName;
     @Size(max = 255)
     @Column(name = "demandContent")
     private String demandContent;
-    @Column(name = "demandDate")
-    @Temporal(TemporalType.DATE)
-    private Date demandDate;
-    @Size(max = 255)
-    @Column(name = "demandDeptName")
-    private String demandDeptName;
-    @Size(max = 255)
-    @Column(name = "demandDeptno")
-    private String demandDeptno;
-    @Size(max = 255)
-    @Column(name = "demandName")
-    private String demandName;
-    @Size(max = 255)
-    @Column(name = "demandNameID")
-    private String demandNameID;
-    @Size(max = 255)
-    @Column(name = "demandsResume")
-    private String demandsResume;
     @Size(max = 255)
     @Column(name = "directorID")
     private String directorID;
@@ -98,46 +83,51 @@ public class Demands extends FormEntity {
     @Size(max = 10)
     @Column(name = "directorDeptName")
     private String directorDeptName;
-
-    @Size(max = 255)
-    @Column(name = "modulName")
-    private String modulName;
-    @Size(max = 255)
-    @Column(name = "oid")
-    private String oid;
-    @Column(name = "planEndDate")
-    @Temporal(TemporalType.DATE)
-    private Date planEndDate;
     @Column(name = "planStartDate")
     @Temporal(TemporalType.DATE)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date planStartDate;
-    @Size(max = 255)
-    @Column(name = "procedureName")
-    private String procedureName;
-    @Column(name = "realOverDate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date realOverDate;
+    @Column(name = "planOverDate")
+    @Temporal(TemporalType.DATE)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private Date planOverDate;
     @Column(name = "realStartDate")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date realStartDate;
-    @Size(max = 255)
-    @Column(name = "systemName")
-    private String systemName;
-    @Column(name = "writeDate")
-    @Temporal(TemporalType.DATE)
-    private Date writeDate;
+    @Column(name = "realOverDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private Date realOverDate;
     @Size(max = 255)
     @Column(name = "writerID")
     private String writerID;
     @Size(max = 255)
     @Column(name = "writerName")
     private String writerName;
+    @Column(name = "writeDate")
+    @Temporal(TemporalType.DATE)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private Date writeDate;
+    @Size(max = 255)
+    @Column(name = "appendix")
+    private String appendix;
+
+    @Size(max = 255)
+    @Column(name = "oid")
+    private String oid;
 
     public Demands() {
     }
 
     public Demands(Integer id) {
         this.id = id;
+    }
+
+    @Override
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    public Date getFormdate() {
+        return super.getFormdate();
     }
 
     public String getAppendix() {
@@ -164,44 +154,44 @@ public class Demands extends FormEntity {
         this.demandDate = demandDate;
     }
 
-    public String getDemandDeptName() {
-        return demandDeptName;
+    public String getDemanderDeptName() {
+        return demanderDeptName;
     }
 
-    public void setDemandDeptName(String demandDeptName) {
-        this.demandDeptName = demandDeptName;
+    public void setDemanderDeptName(String demanderDeptName) {
+        this.demanderDeptName = demanderDeptName;
     }
 
-    public String getDemandDeptno() {
-        return demandDeptno;
+    public String getDemanderDeptID() {
+        return demanderDeptID;
     }
 
-    public void setDemandDeptno(String demandDeptno) {
-        this.demandDeptno = demandDeptno;
+    public void setDemanderDeptID(String demanderDeptID) {
+        this.demanderDeptID = demanderDeptID;
     }
 
-    public String getDemandName() {
-        return demandName;
+    public String getDemanderName() {
+        return demanderName;
     }
 
-    public void setDemandName(String demandName) {
-        this.demandName = demandName;
+    public void setDemanderName(String demanderName) {
+        this.demanderName = demanderName;
     }
 
-    public String getDemandNameID() {
-        return demandNameID;
+    public String getDemanderID() {
+        return demanderID;
     }
 
-    public void setDemandNameID(String demandNameID) {
-        this.demandNameID = demandNameID;
+    public void setDemanderID(String demanderID) {
+        this.demanderID = demanderID;
     }
 
-    public String getDemandsResume() {
-        return demandsResume;
+    public String getDemandResume() {
+        return demandResume;
     }
 
-    public void setDemandsResume(String demandsResume) {
-        this.demandsResume = demandsResume;
+    public void setDemandResume(String demandResume) {
+        this.demandResume = demandResume;
     }
 
     public String getDirectorID() {
@@ -236,12 +226,12 @@ public class Demands extends FormEntity {
         this.directorDeptName = directorDeptName;
     }
 
-    public String getModulName() {
-        return modulName;
+    public String getModuleName() {
+        return moduleName;
     }
 
-    public void setModulName(String modulName) {
-        this.modulName = modulName;
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 
     public String getOid() {
@@ -252,12 +242,12 @@ public class Demands extends FormEntity {
         this.oid = oid;
     }
 
-    public Date getPlanEndDate() {
-        return planEndDate;
+    public Date getPlanOverDate() {
+        return planOverDate;
     }
 
-    public void setPlanEndDate(Date planEndDate) {
-        this.planEndDate = planEndDate;
+    public void setPlanOverDate(Date planOverDate) {
+        this.planOverDate = planOverDate;
     }
 
     public Date getPlanStartDate() {

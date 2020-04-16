@@ -49,11 +49,11 @@ public class WorkItemBean extends SuperEJBForEFGP<WorkItem> {
             return null;
         }
     }
-    
+
     public List<WorkItem> findByContextOID(String contextOID) {
         Query query = getEntityManager().createNamedQuery("WorkItem.findByContextOID");
         query.setParameter("contextOID", contextOID);
         return query.getResultList();
     }
-    
+
 }
