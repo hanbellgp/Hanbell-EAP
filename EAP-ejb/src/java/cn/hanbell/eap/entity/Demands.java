@@ -7,6 +7,7 @@ package cn.hanbell.eap.entity;
 
 import com.lightshell.comm.FormEntity;
 import java.util.Date;
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -34,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Demands.findByProcedureName", query = "SELECT d FROM Demands d WHERE d.procedureName = :procedureName"),
     @NamedQuery(name = "Demands.findByDemandResume", query = "SELECT d FROM Demands d WHERE d.demandResume = :demandResume"),
     @NamedQuery(name = "Demands.findByDemandDate", query = "SELECT d FROM Demands d WHERE d.demandDate = :demandDate"),
-    @NamedQuery(name = "Demands.findByDemanderNameID", query = "SELECT d FROM Demands d WHERE d.demanderNameID = :demanderNameID"),
+    @NamedQuery(name = "Demands.findByDemanderID", query = "SELECT d FROM Demands d WHERE d.demanderID = :demanderID"),
     @NamedQuery(name = "Demands.findByDemanderName", query = "SELECT d FROM Demands d WHERE d.demanderName = :demanderName"),
     @NamedQuery(name = "Demands.findByDemanderDeptID", query = "SELECT d FROM Demands d WHERE d.demanderDeptID = :demanderDeptID"),
     @NamedQuery(name = "Demands.findByDemanderDeptName", query = "SELECT d FROM Demands d WHERE d.demanderDeptName = :demanderDeptName"),
@@ -77,10 +78,11 @@ public class Demands extends FormEntity {
     private String demandResume;
     @Column(name = "demandDate")
     @Temporal(TemporalType.DATE)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date demandDate;
     @Size(max = 255)
-    @Column(name = "demanderNameID")
-    private String demanderNameID;
+    @Column(name = "demanderID")
+    private String demanderID;
     @Size(max = 255)
     @Column(name = "demanderName")
     private String demanderName;
@@ -107,15 +109,19 @@ public class Demands extends FormEntity {
     private String directorDeptName;
     @Column(name = "planStartDate")
     @Temporal(TemporalType.DATE)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date planStartDate;
     @Column(name = "planOverDate")
     @Temporal(TemporalType.DATE)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date planOverDate;
     @Column(name = "realStartDate")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date realStartDate;
     @Column(name = "realOverDate")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date realOverDate;
     @Size(max = 255)
     @Column(name = "writerID")
@@ -125,6 +131,7 @@ public class Demands extends FormEntity {
     private String writerName;
     @Column(name = "writeDate")
     @Temporal(TemporalType.DATE)
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date writeDate;
     @Size(max = 255)
     @Column(name = "appendix")
@@ -142,7 +149,7 @@ public class Demands extends FormEntity {
     public Demands(Integer id) {
         this.id = id;
     }
-
+    
     public String getSystemName() {
         return systemName;
     }
@@ -183,12 +190,12 @@ public class Demands extends FormEntity {
         this.demandDate = demandDate;
     }
 
-    public String getDemanderNameID() {
-        return demanderNameID;
+    public String getDemanderID() {
+        return demanderID;
     }
 
-    public void setDemanderNameID(String demanderNameID) {
-        this.demanderNameID = demanderNameID;
+    public void setDemanderID(String demanderID) {
+        this.demanderID = demanderID;
     }
 
     public String getDemanderName() {
@@ -359,5 +366,5 @@ public class Demands extends FormEntity {
     public String toString() {
         return "cn.hanbell.eap.entity.Demands[ id=" + id + " ]";
     }
-
+    
 }

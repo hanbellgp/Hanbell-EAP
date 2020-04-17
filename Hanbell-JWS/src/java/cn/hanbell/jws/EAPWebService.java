@@ -3474,7 +3474,7 @@ public class EAPWebService {
             d.setStatus("N");
             d.setEmergencyDegree(jjd == null ? "" : jjd);
             if (user1 != null && !"".equals(user1)) {
-                d.setDemanderNameID(user1);//需求人
+                d.setDemanderID(user1);//需求人
                 s = systemUserBean.findByUserId(user1);
                 d.setDemanderName(s.getUsername());
             }
