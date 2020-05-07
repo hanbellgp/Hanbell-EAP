@@ -11,8 +11,6 @@ import cn.hanbell.oa.entity.HKGC001Detail;
 import cn.hanbell.oa.entity.HKGC002;
 import cn.hanbell.oa.model.HKGC002Model;
 import cn.hanbell.util.BaseLib;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -98,7 +96,7 @@ public class HKGC002Bean extends SuperEJBForEFGP<HKGC002> {
             }
             return "200";
         } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
         return "";
     }

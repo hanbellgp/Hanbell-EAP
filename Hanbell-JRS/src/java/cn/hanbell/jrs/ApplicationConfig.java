@@ -28,9 +28,19 @@ public class ApplicationConfig extends Application {
      * out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(cn.hanbell.crm.jrs.CRMGGFacadeREST.class);
+        resources.add(cn.hanbell.crm.jrs.DCSFacadeREST.class);
+        resources.add(cn.hanbell.crm.jrs.DSHFacadeREST.class);
+        resources.add(cn.hanbell.crm.jrs.REPMAFacadeREST.class);
+        resources.add(cn.hanbell.crm.jrs.REPMQFacadeREST.class);
+        resources.add(cn.hanbell.crm.jrs.REPPWFacadeREST.class);
+        resources.add(cn.hanbell.crm.jrs.REPTAFacadeREST.class);
         resources.add(cn.hanbell.eap.jrs.BookingFacadeREST.class);
         resources.add(cn.hanbell.eap.jrs.BookingKindFacadeREST.class);
         resources.add(cn.hanbell.eap.jrs.CompanyFacadeREST.class);
+        resources.add(cn.hanbell.eap.jrs.DemandsFacadeREST.class);
+        resources.add(cn.hanbell.eap.jrs.SystemNameFacadeREST.class);
+        resources.add(cn.hanbell.eap.jrs.SystemUserFacadeREST.class);
         resources.add(cn.hanbell.erp.jrs.ArmhadFacadeREST.class);
         resources.add(cn.hanbell.erp.jrs.ArmhadSumFacadeREST.class);
         resources.add(cn.hanbell.erp.jrs.BudgetCenterAccFacadeREST.class);
@@ -40,6 +50,7 @@ public class ApplicationConfig extends Application {
         resources.add(cn.hanbell.erp.jrs.CdrscheduleFacadeREST.class);
         resources.add(cn.hanbell.erp.jrs.CoinFacadeREST.class);
         resources.add(cn.hanbell.erp.jrs.InvbalFacadeREST.class);
+        resources.add(cn.hanbell.erp.jrs.InvmasFacadeREST.class);
         resources.add(cn.hanbell.erp.jrs.InvwhFacadeREST.class);
         resources.add(cn.hanbell.erp.jrs.ItemCategoryFacadeREST.class);
         resources.add(cn.hanbell.erp.jrs.ItemFaultFacadeREST.class);
@@ -57,6 +68,7 @@ public class ApplicationConfig extends Application {
         resources.add(cn.hanbell.oa.jrs.FunctionsFacadeREST.class);
         resources.add(cn.hanbell.oa.jrs.HKGL004FacadeREST.class);
         resources.add(cn.hanbell.oa.jrs.HKGL034FacadeREST.class);
+        resources.add(cn.hanbell.oa.jrs.HKGL037FacadeREST.class);
         resources.add(cn.hanbell.oa.jrs.HZCW017FacadeREST.class);
         resources.add(cn.hanbell.oa.jrs.HZGL004FacadeREST.class);
         resources.add(cn.hanbell.oa.jrs.LeaveKindFacadeREST.class);

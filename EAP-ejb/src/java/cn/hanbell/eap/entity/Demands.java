@@ -63,7 +63,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Demands.findByEmergencyDegree", query = "SELECT d FROM Demands d WHERE d.emergencyDegree = :emergencyDegree")})
 public class Demands extends FormEntity {
 
-    private static final long serialVersionUID = 1L;
     @Size(max = 255)
     @Column(name = "systemName")
     private String systemName;
@@ -149,7 +148,13 @@ public class Demands extends FormEntity {
     public Demands(Integer id) {
         this.id = id;
     }
-    
+
+    @Override
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    public Date getFormdate() {
+        return super.getFormdate();
+    }
+
     public String getSystemName() {
         return systemName;
     }
@@ -366,5 +371,5 @@ public class Demands extends FormEntity {
     public String toString() {
         return "cn.hanbell.eap.entity.Demands[ id=" + id + " ]";
     }
-    
+
 }

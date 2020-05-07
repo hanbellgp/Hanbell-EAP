@@ -7,6 +7,7 @@ package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
 import cn.hanbell.eap.entity.SystemName;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.persistence.Query;
@@ -33,6 +34,17 @@ public class SystemNameBean extends SuperEJBForEAP<SystemName> {
         try {
             Object o = query.getSingleResult();
             return (SystemName) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<SystemName> findByNameOrDescript(String q) {
+        Query query = getEntityManager().createNamedQuery("SystemName.findByNameOrDescript");
+        query.setParameter("name", q);
+        query.setParameter("descript", q);
+        try {
+            return query.getResultList();
         } catch (Exception ex) {
             return null;
         }
