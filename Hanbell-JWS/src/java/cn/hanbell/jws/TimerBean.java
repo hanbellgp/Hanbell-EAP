@@ -1900,6 +1900,7 @@ public class TimerBean {
         this.createERPCDR310ByERPPUR410("C", "SJS00254", "00", "N", "SSH00307", "20191223");// 南京->SHB
         this.createERPCDR310ByERPPUR410("C", "SCQ00146", "00", "C4", "SSH00307", "20191223");// 重庆->SHB
         this.createERPCDR310ByExchPUR415("C", "STW00003", "00", "A", "86005", "20200408");// THB->SHB
+        this.createERPCDR310ByExchPUR415("C", "STW00003", "00", "A", "86005-1", "20200430");// THB->SHB Service
         this.createERPCDR310ByExchPUR415("K", "KTW00004", "00", "A", "86010 ", "20200408");// THB->Comer
         this.createERPCDR310ByExchPUR415("H", "HTW00001", "00", "A", "1139 ", "20200408");// THB->Hanson
         this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HZJ00030", "C", "SZJ00065", "SZJ00101", "20190901", false);// 科恩特

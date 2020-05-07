@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SystemName.findAll", query = "SELECT s FROM SystemName s ORDER BY s.sortid"),
     @NamedQuery(name = "SystemName.findById", query = "SELECT s FROM SystemName s WHERE s.id = :id"),
     @NamedQuery(name = "SystemName.findByName", query = "SELECT s FROM SystemName s WHERE s.name = :name"),
+    @NamedQuery(name = "SystemName.findByNameOrDescript", query = "SELECT s FROM SystemName s WHERE s.name = :name OR s.descript = :descript ORDER BY s.sortid"),
     @NamedQuery(name = "SystemName.findByAppidAndToken", query = "SELECT s FROM SystemName s WHERE s.appid = :appid AND s.token =:token"),
     @NamedQuery(name = "SystemName.findByStatus", query = "SELECT s FROM SystemName s WHERE s.status = :status ORDER BY s.sortid")})
 public class SystemName extends SuperEntity {

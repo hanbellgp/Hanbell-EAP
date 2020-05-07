@@ -7,6 +7,7 @@ package cn.hanbell.eap.jrs;
 
 import cn.hanbell.eap.ejb.DemandsBean;
 import cn.hanbell.eap.entity.Demands;
+import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEAP;
 import com.lightshell.comm.SuperEJB;
 import javax.ejb.EJB;
@@ -30,6 +31,12 @@ public class DemandsFacadeREST extends SuperRESTForEAP<Demands> {
     @Override
     protected SuperEJB getSuperEJB() {
         return demandsBean;
+    }
+
+    @Override
+    public ResponseMessage create(Demands entity, String appid, String token) {
+        entity.setFormid(demandsBean.getFormId(entity.getFormdate()));
+        return super.create(entity, appid, token);
     }
 
 }
