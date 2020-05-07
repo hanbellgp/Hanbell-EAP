@@ -3007,6 +3007,8 @@ public class EAPWebService {
 
     @WebMethod(operationName = "updateECNGByOAHKCG019")
     public String updateECNGByOAHKCG019(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+        //加入请求日志起
+        log4j.info(String.format("拟购申请单发起webservice,状态:%s,psn:%s",status,psn));
         Boolean ret = false;
         try {
             HKCG019 p = hkcg019Bean.findByPSN(psn);
@@ -3040,6 +3042,7 @@ public class EAPWebService {
                 jsonObject.put("Tag", tag);
             }
             jsonObject.put("Data", psn);
+            log4j.info(String.format("拟购申请单发起请求电采接口,状态:%s,jsonObject:%s",status,jsonObject));
             String response = ecpurvdrBean.ECPostBack(url, jsonObject);
             ret = !(response == null || "".equals(response));
         } catch (NullPointerException | JSONException ex) {
