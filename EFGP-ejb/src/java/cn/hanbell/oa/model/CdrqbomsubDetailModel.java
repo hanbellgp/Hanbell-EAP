@@ -16,7 +16,7 @@ public class CdrqbomsubDetailModel {
 
     private String trseq;
     private String itdesc;
-    private String itnbr; 
+    private String itnbr;
     private String itscode;
     private String itsdesc;
     private String itnbrs;
@@ -77,5 +77,5 @@ public class CdrqbomsubDetailModel {
     public void setItdsc(String itdsc) {
         this.itdsc = itdsc;
     }
-    
+
 }

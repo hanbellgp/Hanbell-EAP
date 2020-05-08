@@ -915,6 +915,7 @@ public class D50Z0009D0 implements Serializable {
     public void setHdnSmanager(String hdnSmanager) {
         this.hdnSmanager = hdnSmanager;
     }
+
     public String getHdnSboss() {
         return this.hdnSboss;
     }

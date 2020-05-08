@@ -2298,21 +2298,6 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "createOAHKCG007ByOAHKCW002P")
-    public String createOAHKCG007ByOAHKCW002P(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hkcg007Bean.initByHKCW002P(psn);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "createOAHKCG007ByOAHKCW002P", psn), ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
     /**
      * Web 服务操作
      *
@@ -3024,14 +3009,14 @@ public class EAPWebService {
                 //加入撤销或终止人员、意见 ,"|"
                 String execComment = "";
                 List<WorkItem> wiList = processInstanceBean.getWorkItemListBySerialNumber(psn);
-                if(!wiList.isEmpty()){
-                    for(WorkItem wi :wiList){
-                        if(5==wi.getCurrentState() || 1 == wi.getCurrentState()){
-                           Users u = usersBean.findByOID(wi.getPerformerOID());
-                           execComment = execComment+u.getId()+"|"+wi.getExecutiveComment();
-                           break;
+                if (!wiList.isEmpty()) {
+                    for (WorkItem wi : wiList) {
+                        if (5 == wi.getCurrentState() || 1 == wi.getCurrentState()) {
+                            Users u = usersBean.findByOID(wi.getPerformerOID());
+                            execComment = execComment + u.getId() + "|" + wi.getExecutiveComment();
+                            break;
                         }
-                    }              
+                    }
                 }
                 jsonObject.put("Code", "101");
                 jsonObject.put("Message", execComment);
@@ -3450,6 +3435,7 @@ public class EAPWebService {
 
     @WebMethod(operationName = "updateOAHKXQB001")
     public String updateOAHKXQB001(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
         HKXQB001 b = hkxqB001Bean.findByPSN(psn);
         if (b == null) {
             throw new NullPointerException();
@@ -3462,35 +3448,38 @@ public class EAPWebService {
             String ssmk = b.getSsmk();//所属模块
             String cxmc = b.getCxmc();//程序名称
             String appuser = b.getApplyuser();
-            String user1 = b.getUser1();//需求人
-            String user2 = b.getUser2();//负责人
-            String dept1 = b.getDept1();//需求部门
+            String user1 = b.getUser1().trim();//需求人
+            String user2 = b.getUser2().trim();//负责人
+            String dept1 = b.getDept1().trim();//需求部门
             Date date2 = b.getTime1();//需求日期
             String xqnr = b.getXqnr();//需求内容
+            String zsd = b.getZsd();//重视度
+            String jjd = b.getJjd();//紧急度
+            String sypl = b.getSypl();//使用频率
+            String xxpg = b.getXypg();//效益评估
             //抛转EAP的Demands
             Demands d = new Demands();
             SystemUser s;
             Department t;
-            Date date;
             Date formDate;
-            date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
             formDate = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
             //单号
             String formid;
-            formid = demandsBean.getFormId(date, "PL", "yyMM", 3, "formid");
+            formid = demandsBean.setFormIdNumber();
             d.setFormid(formid);
             d.setOid(SerialNumber);//OA表单单号
-            d.setDemandContent(xqjs);
-            d.setDemandsResume(xqnr);
+            d.setDemandResume(xqjs);
+            d.setDemandContent(xqnr);
             d.setSystemName(ssxt);
-            d.setModulName(ssmk);
+            d.setModuleName(ssmk);
             d.setProcedureName(cxmc);
             d.setDemandDate(date2);
-            d.setStatus("未完成");
+            d.setStatus("N");
+            d.setEmergencyDegree(jjd == null ? "" : jjd);
             if (user1 != null && !"".equals(user1)) {
-                d.setDemandNameID(user1);//需求人
+                d.setDemanderID(user1);//需求人
                 s = systemUserBean.findByUserId(user1);
-                d.setDemandName(s.getUsername());
+                d.setDemanderName(s.getUsername());
             }
             if (appuser != null && !"".equals(appuser)) {
                 d.setWriterID(appuser);//创建需求人
@@ -3500,9 +3489,9 @@ public class EAPWebService {
             d.setFormdate(formDate);//表单日期为SQL的日期
             d.setWriteDate(date1);//创建时间
             if (dept1 != null && !"".equals(dept1)) {
-                d.setDemandDeptno(dept1);//需求部门
+                d.setDemanderDeptID(dept1);//需求部门
                 t = departmentBean.findByDeptno(dept1);
-                d.setDemandDeptName(t.getDept());
+                d.setDemanderDeptName(t.getDept());
             }
             if (user2 != null && !"".equals(user2)) {
                 /*负责人*/
@@ -3521,9 +3510,13 @@ public class EAPWebService {
                 d.setDirectorDeptName("");
             }
             demandsBean.persist(d);
-            return "200";
-        } catch (ParseException | NullPointerException | NumberFormatException ex) {
+            ret = true;
+        } catch (ParseException ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKXQB001", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
             return "404";
         }
     }

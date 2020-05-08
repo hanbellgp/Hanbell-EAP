@@ -284,10 +284,11 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     m.setFacno(aa.getFacno());
                     m.setProno("1");
                     m.setAppDate(BaseLib.getDate());
+                    m.setCreator(aa.getApplyUserno());
+                    m.setApplyDept(aa.getApplyDeptno());
                     m.setAppuser(aa.getRequireUserno());
                     m.setDepno(aa.getRequireDeptno());
                     m.setCenterid(aa.getCenterid());
-                    m.setCreator(aa.getApplyUserno());
                     m.setPrkind(aa.getPrkind());
                     m.setHmark1(aa.getHmark1());
                     m.setCurrency(aa.getCurrency());
