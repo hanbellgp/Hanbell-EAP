@@ -37,4 +37,13 @@ public class DemandsBean extends SuperEJBForEAP<Demands> {
         }
         return formid;
     }
+
+    public String getFormId(Date d) {
+        try {
+            return this.getFormId(d, "PL", "yyMM", 3, "formid");
+        } catch (Exception ex) {
+            return "";
+        }
+    }
+
 }

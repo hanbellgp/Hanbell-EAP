@@ -42,4 +42,8 @@ public class SHBERPINV325Bean extends SuperEJBForEFGP<SHBERPINV325> {
         return detailList;
     }
 
+    public List<SHBERPINV325Detail> getDetail(Object value) {
+        return shberpinv325DetailBean.findByFSN(value);
+    }
+
 }
