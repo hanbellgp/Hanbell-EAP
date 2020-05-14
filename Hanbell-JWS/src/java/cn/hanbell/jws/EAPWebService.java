@@ -3011,10 +3011,15 @@ public class EAPWebService {
                 List<WorkItem> wiList = processInstanceBean.getWorkItemListBySerialNumber(psn);
                 if (!wiList.isEmpty()) {
                     for (WorkItem wi : wiList) {
-                        if (5 == wi.getCurrentState() || 1 == wi.getCurrentState()) {
-                            Users u = usersBean.findByOID(wi.getPerformerOID());
-                            execComment = execComment + u.getId() + "|" + wi.getExecutiveComment();
-                            break;
+                        if (5 == wi.getCurrentState() || 4 == wi.getCurrentState()) {
+                            Users u;
+                            if(null == wi.getPerformerOID()){
+                                //修正取回重办后撤销，人员取流程发起人
+                                u = usersBean.findByOID(processInstanceBean.findBySerialNumber(psn).getRequesterOID());
+                            }else{
+                                u = usersBean.findByOID(wi.getPerformerOID());
+                            }
+                            execComment = execComment + u.getId() + "|" + wi.getExecutiveComment();                        
                         }
                     }
                 }
