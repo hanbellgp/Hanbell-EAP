@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.util.Date;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 /**
  *
@@ -46,4 +47,14 @@ public class DemandsBean extends SuperEJBForEAP<Demands> {
         }
     }
 
+    public Demands findByOID(String value) {
+        Query query = getEntityManager().createNamedQuery("Demands.findByOID");
+        query.setParameter("oid", value);
+        try {
+            Object o = query.getSingleResult();
+            return (Demands) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 }
