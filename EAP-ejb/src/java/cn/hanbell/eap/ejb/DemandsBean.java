@@ -47,8 +47,8 @@ public class DemandsBean extends SuperEJBForEAP<Demands> {
         }
     }
 
-    public Demands findByOid(String value) {
-        Query query = getEntityManager().createNamedQuery("Demands.findByOid");
+    public Demands findByOID(String value) {
+        Query query = getEntityManager().createNamedQuery("Demands.findByOID");
         query.setParameter("oid", value);
         try {
             Object o = query.getSingleResult();

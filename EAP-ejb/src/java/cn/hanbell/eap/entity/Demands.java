@@ -52,7 +52,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Demands.findByWriterName", query = "SELECT d FROM Demands d WHERE d.writerName = :writerName"),
     @NamedQuery(name = "Demands.findByWriteDate", query = "SELECT d FROM Demands d WHERE d.writeDate = :writeDate"),
     @NamedQuery(name = "Demands.findByAppendix", query = "SELECT d FROM Demands d WHERE d.appendix = :appendix"),
-    @NamedQuery(name = "Demands.findByOid", query = "SELECT d FROM Demands d WHERE d.oid = :oid"),
+    @NamedQuery(name = "Demands.findByOID", query = "SELECT d FROM Demands d WHERE d.oid = :oid"),
     @NamedQuery(name = "Demands.findByStatus", query = "SELECT d FROM Demands d WHERE d.status = :status"),
     @NamedQuery(name = "Demands.findByCreator", query = "SELECT d FROM Demands d WHERE d.creator = :creator"),
     @NamedQuery(name = "Demands.findByCredate", query = "SELECT d FROM Demands d WHERE d.credate = :credate"),
