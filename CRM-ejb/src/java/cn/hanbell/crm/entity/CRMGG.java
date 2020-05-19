@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CRMGG.findByCustomer", query = "SELECT c FROM CRMGG c WHERE c.customer = :customer"),
     @NamedQuery(name = "CRMGG.findByProduct", query = "SELECT c FROM CRMGG c WHERE c.product = :product"),
     @NamedQuery(name = "CRMGG.findByRegion", query = "SELECT c FROM CRMGG c WHERE c.region = :region"),
-    @NamedQuery(name = "CRMGG.findByERPCusno", query = "SELECT c FROM CRMGG c WHERE c.gg043 = :cusno")})
+    @NamedQuery(name = "CRMGG.findByERPCusno", query = "SELECT c FROM CRMGG c WHERE c.gg043 = :cusno")
+})
 public class CRMGG implements Serializable {
 
     @Size(max = 1)

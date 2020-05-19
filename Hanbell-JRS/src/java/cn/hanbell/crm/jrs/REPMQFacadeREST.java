@@ -81,4 +81,10 @@ public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @GET
+    @Path("wechat/form")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Map<String,Object>> findForm() {
+        return repmqBean.findForm();
+    }
 }

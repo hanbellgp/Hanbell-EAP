@@ -7,6 +7,7 @@ package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.CRMGGBean;
 import cn.hanbell.crm.entity.CRMGG;
+import cn.hanbell.crm.entity.WARMA;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.oa.app.KV;
 import cn.hanbell.util.SuperEJB;
@@ -88,5 +89,11 @@ public class CRMGGFacadeREST extends SuperRESTForCRM<KV> {
     protected SuperEJB getSuperEJB() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    @GET
+    @Path("wechat/caller")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Map<String,Object>> findCallerList(String BQ002_value) {
+        return crmggBean.findCaller(BQ002_value);
+    }
 }

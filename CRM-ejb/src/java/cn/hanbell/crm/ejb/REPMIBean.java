@@ -6,13 +6,21 @@
 package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
+import cn.hanbell.crm.comm.JSONModel;
+import cn.hanbell.crm.entity.CRMGG;
 import cn.hanbell.crm.entity.REPMI;
+import com.alibaba.fastjson.JSONObject;
+import com.sun.xml.xsom.impl.scd.Iterators.Map;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 /**
@@ -118,5 +126,26 @@ public class REPMIBean extends SuperEJBForCRM<REPMI> {
         }
         return null;
     }
-
+    public  List<JSONModel>  findProductNumber(){
+         Query query1 = getEntityManager().createNativeQuery("Select top 200 MI002,MI001,MB002,MB003 from REPMI "
+                 + "left join WARMB ON MB001 = MI001  Where  N'' IN (MI001,'')  AND N'' IN (MI002,'')  "
+                 + "AND MI005='N' AND MI011='N' AND ISNULL(MI010,'') = '' ");
+        try {
+            List<JSONModel> listmap =new ArrayList<>();
+            List<Object[]> list=query1.getResultList();
+            JSONModel jsonobject=null;
+            for(int i=0;i<list.size();i++){
+//               list.get(i);
+               jsonobject=new JSONModel();
+                System.out.println("数据有="+list.get(i)[0]);
+               jsonobject.put("MI002",list.get(i)[0]);
+               jsonobject.put("MB002",list.get(i)[2]);
+               listmap.add(jsonobject);
+            }
+            return listmap;
+        } catch (Exception ex) {
+            System.out.println("ex="+ex);
+            return null;
+        }
+    }
 }

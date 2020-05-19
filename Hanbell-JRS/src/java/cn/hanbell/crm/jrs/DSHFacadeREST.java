@@ -7,6 +7,7 @@ package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.DSHBean;
 import cn.hanbell.crm.entity.DSH;
+import cn.hanbell.crm.entity.SERAC;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.SuperEJB;
 import java.util.HashMap;
@@ -81,4 +82,10 @@ public class DSHFacadeREST extends SuperRESTForCRM<DSH> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @GET
+    @Path("wechat/incidentArea")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<DSH> findIncidentArea() {
+        return dshBean.findAll();
+    }
 }
