@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.hanbell.eap.model;
+package cn.hanbell.eap.jrs.model;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -15,8 +18,11 @@ public class YunLogin {
     private String password;
     private String type;
 
-    public YunLogin() {
+    private String status;
+    private List<String> currentAuthority;
 
+    public YunLogin() {
+        currentAuthority = new ArrayList<>();
     }
 
     /**
@@ -59,6 +65,34 @@ public class YunLogin {
      */
     public void setType(String type) {
         this.type = type;
+    }
+
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the currentAuthority
+     */
+    public List<String> getCurrentAuthority() {
+        return currentAuthority;
+    }
+
+    /**
+     * @param currentAuthority the currentAuthority to set
+     */
+    public void setCurrentAuthority(List<String> currentAuthority) {
+        this.currentAuthority = currentAuthority;
     }
 
 }

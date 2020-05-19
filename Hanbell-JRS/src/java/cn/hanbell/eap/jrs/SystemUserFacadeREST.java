@@ -7,8 +7,8 @@ package cn.hanbell.eap.jrs;
 
 import cn.hanbell.eap.ejb.SystemUserBean;
 import cn.hanbell.eap.entity.SystemUser;
-import cn.hanbell.eap.model.LoginYun;
-import cn.hanbell.eap.model.YunLogin;
+import cn.hanbell.eap.jrs.model.YunUser;
+import cn.hanbell.eap.jrs.model.YunLogin;
 import cn.hanbell.jrs.ResponseObject;
 import cn.hanbell.jrs.SuperRESTForEAP;
 import com.lightshell.comm.SuperEJB;
@@ -59,14 +59,15 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
             type = entity.getType();
             try {
                 if (cn.hanbell.util.BaseLib.ADAuth("172.16.10.6:389", userid + "@hanbell.com.cn", pwd)) {
-                    LoginYun login = new LoginYun();
+                    YunLogin login = new YunLogin();
+                    login.setUserName(userid);
                     login.setStatus("success");
                     login.setType(type);
                     login.getCurrentAuthority().add("admin");
                     res = new ResponseObject<>("200", "验证成功", login);
                 }
             } catch (Exception ex) {
-                LoginYun login = new LoginYun();
+                YunLogin login = new YunLogin();
                 login.setStatus("error");
                 login.setType(type);
                 res = new ResponseObject<>("401", ex.getMessage(), login);
@@ -119,6 +120,38 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
             data.add(route);
 
             return data;
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @GET
+    @Path("yun")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseObject fetchYun(@QueryParam("userid") String userid, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            ResponseObject res = null;
+            YunUser yu = new YunUser();
+            SystemUser su = systemUserBean.findByUserId(userid);
+            if (su != null) {
+                yu.setUserid(su.getUserid());
+                yu.setName(su.getUsername());
+                yu.setEmail(su.getEmail());
+                yu.setGroup(su.getDept().getDept());
+                yu.setTitle("Some Title");
+                yu.setPhone(su.getPhone());
+                yu.setAddress("湖滨大道");
+                Map<String, String> tag = new HashMap<>();
+                tag.put("1", "Java EE");
+                tag.put("2", "React");
+                yu.setTags(tag);
+
+                res = new ResponseObject<>("200", "success", yu);
+            } else {
+                res = new ResponseObject<>("404", "此用戶不存在", null);
+            }
+            return res;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
