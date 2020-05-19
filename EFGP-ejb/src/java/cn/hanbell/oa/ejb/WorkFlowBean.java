@@ -17,8 +17,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.DependsOn;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -70,7 +68,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                     if (f.get(master) != null && !"".equals(f.get(master))) {
                         Users user = this.findUserByUserno(f.get(master).toString());
                         if (user == null) {
-                            Logger.getLogger(this.getClass().getName()).log(Level.INFO, null, f.get(master).toString() + "用户不存在");
+                            log4j.error(f.get(master).toString() + "用户不存在");
                             throw new RuntimeException();
                         }
                         builder.append("<").append(f.getName()).append("  id=\"").append(f.getName()).append("\" label=\"").append(user.getUserName()).append("\"");
@@ -83,7 +81,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                     if (f.get(master) != null && !"".equals(f.get(master))) {
                         OrganizationUnit dept = this.findOrgUnitByDeptno(f.get(master).toString());
                         if (dept == null) {
-                            Logger.getLogger(this.getClass().getName()).log(Level.INFO, null, f.get(master).toString() + "部门不存在");
+                            log4j.error(f.get(master).toString() + "部门不存在");
                             throw new RuntimeException();
                         }
                         builder.append("<").append(f.getName()).append("  id=\"").append(f.getName()).append("\" label=\"").append(dept.getOrganizationUnitName()).append("\"");
@@ -104,7 +102,8 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                     builder.append(f.get(master)).append("</").append(f.getName()).append(">");
                 }
             } catch (IllegalArgumentException | IllegalAccessException ex) {
-                Logger.getLogger(formName).log(Level.SEVERE, null, ex);
+                log4j.error(ex);
+                throw new RuntimeException(ex);
             }
         }
 
@@ -138,7 +137,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 builder.append("<item id=\"").append(f.getName()).append("\"");
                 builder.append(" dataType=\"").append(f.getType().getName()).append("\" perDataProId=\"\">").append(f.get(detail)).append("</item>");
             } catch (IllegalArgumentException | IllegalAccessException ex) {
-                Logger.getLogger(detailName).log(Level.SEVERE, null, ex);
+                log4j.error(ex);
             }
         }
         builder.append("</record>");
@@ -178,18 +177,24 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 return "W";
         }
         switch (deptId.substring(0, 1)) {
+            case "1":
+                return "C";
             case "2":
                 return "H";
+            case "3":
+                return "V";
             case "4":
                 return "Q";
             case "5":
                 return "K";
+            case "6":
+                return "R";
             case "7":
                 return "Y";
             case "9":
                 return "L";
         }
-        return "C";
+        return "";
     }
 
     public String getCompanyName(String facno) {
@@ -216,6 +221,10 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 return "顺德涡旋";
             case "L":
                 return "真空技术";
+            case "V":
+                return "越南汉钟";
+            case "R":
+                return "韩国汉钟";
         }
         return "上海汉钟";
     }
@@ -241,7 +250,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
 
     public String invokeProcess(String host, String port, String processId, String formFieldValue, String subject) throws Exception {
         if ((getCurrentUser() == null) || (getUserFunction() == null)) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, "用户或部门不存在");
+            log4j.error("用户或部门不存在");
             return "401$用户或部门不存在";
         }
         return invokeProcess(host, port, processId, getCurrentUser().getId(), getUserFunction().getOrganizationUnit().getId(), formFieldValue, subject);
@@ -251,12 +260,12 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
 
         currentUser = usersBean.findById(userId);
         if (getCurrentUser() == null) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, userId + "不存在");
+            log4j.error("用户" + userId + "不存在");
             return "401$用户不存在";
         }
         organizationUnit = organizationUnitBean.findById(orgUnitId);
         if (getOrganizationUnit() == null) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, orgUnitId + "不存在");
+            log4j.error("部门" + orgUnitId + "不存在");
             return "401$部门不存在";
         }
 

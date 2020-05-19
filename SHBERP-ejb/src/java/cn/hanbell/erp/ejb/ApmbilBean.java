@@ -14,7 +14,9 @@ import cn.hanbell.erp.entity.Apmpur;
 import cn.hanbell.erp.entity.ApmpurPK;
 import cn.hanbell.erp.entity.Apmpyh;
 import cn.hanbell.erp.entity.Apmtbil;
+import cn.hanbell.oa.ejb.ProcessCheckBean;
 import cn.hanbell.oa.ejb.SHBERPAPM811Bean;
+import cn.hanbell.oa.entity.ProcessCheck;
 import cn.hanbell.oa.entity.SHBERPAPM811;
 import cn.hanbell.oa.entity.SHBERPAPM811Detail;
 import cn.hanbell.util.BaseLib;
@@ -59,6 +61,8 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
     private ApmsysBean apmsysBean;
     @EJB
     private ApmpyhBean apmpyhBean;
+    @EJB
+    private ProcessCheckBean processCheckBean;
 
     public ApmbilBean() {
         super(Apmbil.class);
@@ -320,7 +324,8 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                             apmpur.setIvomsfs(ldc_ivomsfs);
                             apmpur.setCoin(atb.getCoin());
                             apmpur.setRatio(erpd.getRatio());
-                            apmpur.setUsrno(erph.getApusrno());
+                            //由apusrno调整为userno,
+                            apmpur.setUsrno(erph.getUserno());
                             apmpur.setSponr(erpd.getSponr());
                             apmpur.setSrckind(ls_trapyh);
                             apmpur.setSeqno((short) li_seq);
@@ -401,6 +406,15 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                 //抛转单号为OA表单代号
                 erph.setOano(oah.getFormSerialNumber());
                 erph.setApsta("30");
+                //加入apusrno,cfmusrno 为OA审核人20200411
+                List<ProcessCheck> processList;
+                processList = processCheckBean.findByPSN(psn);
+                if (processList.size() > 1) {
+                    ProcessCheck pc1 = processList.get(processList.size() - 1);
+                    ProcessCheck pc2 = processList.get(processList.size() - 2);
+                    erph.setCfmusrno(pc1.getUserID());
+                    erph.setApusrno(pc2.getUserID());
+                }
                 apmaphBean.update(erph);
             }
             return true;

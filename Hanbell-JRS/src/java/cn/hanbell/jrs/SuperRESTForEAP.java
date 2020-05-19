@@ -5,6 +5,7 @@
  */
 package cn.hanbell.jrs;
 
+import cn.hanbell.util.BaseLib;
 import com.lightshell.comm.SuperEJB;
 import java.util.HashMap;
 import java.util.List;
@@ -66,6 +67,10 @@ public abstract class SuperRESTForEAP<T> {
     public ResponseMessage edit(@PathParam("id") PathSegment id, T entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
+                T t = (T) getSuperEJB().findById(Integer.parseInt(id.getPath()));
+                if (t == null) {
+                    return new ResponseMessage("404", "找不到对象");
+                }
                 getSuperEJB().update(entity);
                 return new ResponseMessage("200", "更新成功");
             } catch (Exception ex) {
@@ -84,7 +89,7 @@ public abstract class SuperRESTForEAP<T> {
             try {
                 T t = (T) getSuperEJB().findById(Integer.parseInt(id.getPath()));
                 if (t == null) {
-                    return new ResponseMessage("404", "内容为空");
+                    return new ResponseMessage("404", "找不到对象");
                 }
                 getSuperEJB().delete(t);
                 return new ResponseMessage("200", "更新成功");
@@ -115,9 +120,9 @@ public abstract class SuperRESTForEAP<T> {
     }
 
     @GET
-    @Path("{offset}/{pageSize}")
+    @Path("pagination")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData findAll(@PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData findByPagination(@QueryParam("offset") Integer offset, @QueryParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 List<T> list = getSuperEJB().findAll(offset, pageSize);
@@ -152,8 +157,75 @@ public abstract class SuperRESTForEAP<T> {
     }
 
     @GET
+    @Path("{offset}/{pageSize}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Deprecated
+    public ResponseData findAll(@PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                List<T> list = getSuperEJB().findAll(offset, pageSize);
+                int count = getSuperEJB().getRowCount();
+                ResponseData res = new ResponseData<T>("200", "success");
+                res.setData(list);
+                res.setCount(count);
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @GET
+    @Path("pagination/{filters}/{sorts}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData findByFiltering(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @QueryParam("offset") Integer offset, @QueryParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
+                MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
+                Map<String, Object> filterFields = new HashMap<>();
+                Map<String, String> sortFields = new HashMap<>();
+                String key, value;
+                Object obj;
+                if (filtersMM != null) {
+                    for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
+                        key = entrySet.getKey();
+                        value = entrySet.getValue().get(0);
+                        if (key.endsWith("dateBegin") || key.endsWith("DateBegin") || key.endsWith("dateEnd") || key.endsWith("DateEnd")) {
+                            obj = BaseLib.getDate("yyyy-MM-dd", value);
+                            filterFields.put(key, obj);
+                        } else {
+                            filterFields.put(key, value);
+                        }
+                    }
+                }
+                if (sortsMM != null) {
+                    for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
+                        key = entrySet.getKey();
+                        value = entrySet.getValue().get(0);
+                        sortFields.put(key, value);
+                    }
+                }
+                List<T> list = getSuperEJB().findByFilters(filterFields, offset, pageSize, sortFields);
+                int count = getSuperEJB().getRowCount(filterFields);
+                ResponseData res = new ResponseData<T>("200", "success");
+                res.setData(list);
+                res.setCount(count);
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @GET
     @Path("{filters}/{sorts}/{offset}/{pageSize}")
     @Produces({MediaType.APPLICATION_JSON})
+    @Deprecated
     public ResponseData findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
@@ -162,11 +234,17 @@ public abstract class SuperRESTForEAP<T> {
                 Map<String, Object> filterFields = new HashMap<>();
                 Map<String, String> sortFields = new HashMap<>();
                 String key, value;
+                Object obj;
                 if (filtersMM != null) {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
-                        filterFields.put(key, value);
+                        if (key.endsWith("dateBegin") || key.endsWith("DateBegin") || key.endsWith("dateEnd") || key.endsWith("DateEnd")) {
+                            obj = BaseLib.getDate("yyyy-MM-dd", value);
+                            filterFields.put(key, obj);
+                        } else {
+                            filterFields.put(key, value);
+                        }
                     }
                 }
                 if (sortsMM != null) {

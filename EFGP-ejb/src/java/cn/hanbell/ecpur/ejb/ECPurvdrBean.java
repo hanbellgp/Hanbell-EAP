@@ -46,8 +46,7 @@ public class ECPurvdrBean {
                 //log4j.info(String.format("执行RootCloudBean中的方法updateAlarm成功,参数1:%s,参数2:%s,参数3:%s,返回内容:%s", deviceId, alarmId, status, "200"));
                 return "200";
             } else {
-                //log4j.info(String.format("执行RootCloudBean中的方法updateAlarm异常,参数1:%s,参数2:%s,参数3:%s,返回内容:%s", deviceId, alarmId, status, String.valueOf(response.getStatusLine().getStatusCode())));
-
+                log4j.info(String.format("执行ECPurvdrBean中的方法ECPostBack异常,参数1:%s,参数2:%s,返回内容:%s", url, jsonObject, String.valueOf(response.getStatusLine().getStatusCode())));
             }
 
         } catch (IOException | UnsupportedCharsetException ex) {

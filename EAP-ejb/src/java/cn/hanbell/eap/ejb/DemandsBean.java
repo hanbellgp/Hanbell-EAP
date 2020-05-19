@@ -7,8 +7,12 @@ package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
 import cn.hanbell.eap.entity.Demands;
+import cn.hanbell.util.BaseLib;
+import java.text.ParseException;
+import java.util.Date;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 /**
  *
@@ -22,4 +26,35 @@ public class DemandsBean extends SuperEJBForEAP<Demands> {
         super(Demands.class);
     }
 
+    //得到需有优化单号
+    public String setFormIdNumber() {
+        Date date;
+        String formid;
+        try {
+            date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
+            formid = this.getFormId(date, "PL", "yyMM", 3, "formid");
+        } catch (ParseException ex) {
+            return ex.toString();
+        }
+        return formid;
+    }
+
+    public String getFormId(Date d) {
+        try {
+            return this.getFormId(d, "PL", "yyMM", 3, "formid");
+        } catch (Exception ex) {
+            return "";
+        }
+    }
+
+    public Demands findByOID(String value) {
+        Query query = getEntityManager().createNamedQuery("Demands.findByOID");
+        query.setParameter("oid", value);
+        try {
+            Object o = query.getSingleResult();
+            return (Demands) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 }

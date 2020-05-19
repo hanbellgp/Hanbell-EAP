@@ -28,20 +28,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SHB_ERP_CDR1P3")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SHBERPCDR1P3.findAll", query = "SELECT s FROM SHBERPCDR1P3 s")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByPSN", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.processSerialNumber = :psn")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByArea1", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.area1 = :area1")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByCusno", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.cusno = :cusno")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByOid", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.oid = :oid")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByMancode", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.mancode = :mancode")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByCuslevel1", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.cuslevel1 = :cuslevel1")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByApplyUser", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.applyUser = :applyUser")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByCuslevel2", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.cuslevel2 = :cuslevel2")
-    , @NamedQuery(name = "SHBERPCDR1P3.findBySerialNumber", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.serialNumber = :serialNumber")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByChangetype", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.changetype = :changetype")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByFSN", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.formSerialNumber = :fsn")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByAppres", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.appres = :appres")
-    , @NamedQuery(name = "SHBERPCDR1P3.findByApplyDate", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.applyDate = :applyDate")})
+    @NamedQuery(name = "SHBERPCDR1P3.findAll", query = "SELECT s FROM SHBERPCDR1P3 s"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByPSN", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.processSerialNumber = :psn"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByArea1", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.area1 = :area1"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByCusno", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.cusno = :cusno"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByOid", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.oid = :oid"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByMancode", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.mancode = :mancode"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByCuslevel1", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.cuslevel1 = :cuslevel1"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByApplyUser", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.applyUser = :applyUser"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByCuslevel2", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.cuslevel2 = :cuslevel2"),
+    @NamedQuery(name = "SHBERPCDR1P3.findBySerialNumber", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.serialNumber = :serialNumber"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByChangetype", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.changetype = :changetype"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByFSN", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.formSerialNumber = :fsn"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByAppres", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.appres = :appres"),
+    @NamedQuery(name = "SHBERPCDR1P3.findByApplyDate", query = "SELECT s FROM SHBERPCDR1P3 s WHERE s.applyDate = :applyDate")})
 public class SHBERPCDR1P3 implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -218,6 +218,7 @@ public class SHBERPCDR1P3 implements Serializable {
     public void setFormSerialNumber(String formSerialNumber) {
         this.formSerialNumber = formSerialNumber;
     }
+
     public String getAppres() {
         return appres;
     }
@@ -266,5 +267,5 @@ public class SHBERPCDR1P3 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.SHBERPCDR1P3[ oid=" + oid + " ]";
     }
-    
+
 }

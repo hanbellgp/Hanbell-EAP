@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class VHTM001purDetailBean extends SuperEJBForEFGP<VHTM001purDetail>{
+public class VHTM001purDetailBean extends SuperEJBForEFGP<VHTM001purDetail> {
 
     public VHTM001purDetailBean() {
         super(VHTM001purDetail.class);

@@ -17,8 +17,8 @@ import javax.ejb.Stateless;
 @Stateless
 @LocalBean
 public class D50Z0009D0DetailBean extends SuperEJBForEFGP<D50Z0009D0> {
+
     public D50Z0009D0DetailBean() {
         super(D50Z0009D0.class);
     }
 }
-

@@ -19,15 +19,15 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class VHTV003Bean extends SuperEJBForEFGP<VHTV003>{
+public class VHTV003Bean extends SuperEJBForEFGP<VHTV003> {
+
     @EJB
     private VHTV003reDetailBean vhtv003reDetailBean;
-    
 
     public VHTV003Bean() {
         super(VHTV003.class);
     }
-    
+
     public List<VHTV003reDetail> getDetailList(Object value) {
         return vhtv003reDetailBean.findByFSN(value);
     }

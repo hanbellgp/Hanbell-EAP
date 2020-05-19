@@ -167,6 +167,21 @@ public class SHBERPWebService {
         }
     }
 
+    @WebMethod(operationName = "createCDRN20ByOAHKJH007")
+    public String createCDRN20ByOAHKJH007(@WebParam(name = "psn") String psn) {
+        String ret = null;
+        try {
+            ret = cdrlnhadBean.initByOAHKJH007(psn);
+        } catch (Exception ex) {
+            log4j.error("createCDRN20ByOAHKJH007", ex);
+        }
+        if (ret != null && !"".equals(ret)) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "createCDRN20ByOAWARMI05")
     public String createCDRN20ByOAWARMI05(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -197,7 +212,7 @@ public class SHBERPWebService {
         }
     }
 
-    // 客户
+    // 客户拷贝
     @WebMethod(operationName = "createCustomerByOAHKJH003")
     public String createCustomerByOAHKJH003(@WebParam(name = "psn") String psn) {
         Boolean ret = false;

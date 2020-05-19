@@ -16,7 +16,7 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class VHTV003reDetailBean extends SuperEJBForEFGP<VHTV003reDetail>{
+public class VHTV003reDetailBean extends SuperEJBForEFGP<VHTV003reDetail> {
 
     public VHTV003reDetailBean() {
         super(VHTV003reDetail.class);

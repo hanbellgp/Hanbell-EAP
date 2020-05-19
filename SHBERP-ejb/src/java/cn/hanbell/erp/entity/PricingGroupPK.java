@@ -82,5 +82,5 @@ public class PricingGroupPK implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.PricingGroupPK[ groupid=" + groupid + ", pricingtype=" + pricingtype + " ]";
     }
-    
+
 }

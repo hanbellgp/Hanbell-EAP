@@ -104,4 +104,16 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             return null;
         }
     }
+
+    public List<SystemUser> findByUserIdOrName(String str) {
+        Query query = getEntityManager().createNamedQuery("SystemUser.findByUserIdOrName");
+        query.setParameter("userid", "%" + str + "%");
+        query.setParameter("username", "%" + str + "%");
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

@@ -20,7 +20,8 @@ import javax.ejb.Stateless;
 @Stateless
 @LocalBean
 public class D50Z0009D0Bean extends SuperEJBForEFGP<D50Z0009D0> {
-     @EJB
+
+    @EJB
     private D50Z0009D0DetailBean d50Z0009D0DetailBean;
     @EJB
     private REPTCBean reptcBean;

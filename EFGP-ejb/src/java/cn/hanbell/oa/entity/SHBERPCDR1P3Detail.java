@@ -25,14 +25,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "SHB_ERP_CDR1P3_Detail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SHBERPCDR1P3Detail.findAll", query = "SELECT s FROM SHBERPCDR1P3Detail s")
-    , @NamedQuery(name = "SHBERPCDR1P3Detail.findByArea", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.area = :area")
-    , @NamedQuery(name = "SHBERPCDR1P3Detail.findByArea1", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.area1 = :area1")
-    , @NamedQuery(name = "SHBERPCDR1P3Detail.findByCusno", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.cusno = :cusno")
-    , @NamedQuery(name = "SHBERPCDR1P3Detail.findByMancodesc", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.mancodesc = :mancodesc")
-    , @NamedQuery(name = "SHBERPCDR1P3Detail.findByOid", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.oid = :oid")
-    , @NamedQuery(name = "SHBERPCDR1P3Detail.findByChangetype", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.changetype = :changetype")
-    , @NamedQuery(name = "SHBERPCDR1P3Detail.findByFSN", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.formSerialNumber = :fsn")})
+    @NamedQuery(name = "SHBERPCDR1P3Detail.findAll", query = "SELECT s FROM SHBERPCDR1P3Detail s"),
+    @NamedQuery(name = "SHBERPCDR1P3Detail.findByArea", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.area = :area"),
+    @NamedQuery(name = "SHBERPCDR1P3Detail.findByArea1", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.area1 = :area1"),
+    @NamedQuery(name = "SHBERPCDR1P3Detail.findByCusno", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.cusno = :cusno"),
+    @NamedQuery(name = "SHBERPCDR1P3Detail.findByMancodesc", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.mancodesc = :mancodesc"),
+    @NamedQuery(name = "SHBERPCDR1P3Detail.findByOid", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.oid = :oid"),
+    @NamedQuery(name = "SHBERPCDR1P3Detail.findByChangetype", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.changetype = :changetype"),
+    @NamedQuery(name = "SHBERPCDR1P3Detail.findByFSN", query = "SELECT s FROM SHBERPCDR1P3Detail s WHERE s.formSerialNumber = :fsn")})
 public class SHBERPCDR1P3Detail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -214,5 +214,5 @@ public class SHBERPCDR1P3Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.SHBERPCDR1P3Detail[ oid=" + oid + " ]";
     }
-    
+
 }

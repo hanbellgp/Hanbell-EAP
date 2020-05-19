@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Cdrscus.findAll", query = "SELECT c FROM Cdrscus c"),
     @NamedQuery(name = "Cdrscus.findByCusno", query = "SELECT c FROM Cdrscus c WHERE c.cdrscusPK.cusno = :cusno"),
-    @NamedQuery(name = "Cdrscus.findByTrseq", query = "SELECT c FROM Cdrscus c WHERE c.cdrscusPK.trseq = :trseq"),
+    @NamedQuery(name = "Cdrscus.findByPK", query = "SELECT c FROM Cdrscus c WHERE c.cdrscusPK.cusno = :cusno AND c.cdrscusPK.trseq = :trseq"),
     @NamedQuery(name = "Cdrscus.findByShpcusno", query = "SELECT c FROM Cdrscus c WHERE c.shpcusno = :shpcusno"),
     @NamedQuery(name = "Cdrscus.findByCusna", query = "SELECT c FROM Cdrscus c WHERE c.cusna = :cusna"),
     @NamedQuery(name = "Cdrscus.findByAreacode", query = "SELECT c FROM Cdrscus c WHERE c.areacode = :areacode"),

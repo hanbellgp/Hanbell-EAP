@@ -9,6 +9,7 @@ import cn.hanbell.eap.ejb.ShipmentBean;
 import cn.hanbell.eap.ejb.ShipmentDetailBean;
 import cn.hanbell.eap.entity.Shipment;
 import cn.hanbell.eap.entity.ShipmentDetail;
+import cn.hanbell.erp.ejb.CdrscusBean;
 import cn.hanbell.war.lazy.ShipmentModel;
 import cn.hanbell.war.web.FormMultiBean;
 import com.google.zxing.BarcodeFormat;
@@ -127,7 +128,9 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
                                         .append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(".").append(sd.getCustomerItemDesc());
                                 break;
                         }
-                        this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + currentEntity.getCustomerno() + sd.getVarnr() + ".png");
+                        if (content.length() > 0) {
+                            this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + currentEntity.getCustomerno() + sd.getVarnr() + ".png");
+                        }
                     }
                 }
                 if (sd.getVarnr() != null) {
@@ -232,8 +235,12 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
             reportParams.put("formid", c.getFormid());
             reportParams.put("JNDIName", currentPrgGrant.getSysprg().getRptjndi());
             try {
-                // 按每个客户打印不同格式
-                reportName = reportPath + c.getCustomerno() + rptdesign + ".rptdesign";
+                if (!rptdesign.equals("ShipmentLable")) {
+                    // 按每个客户打印不同格式
+                    reportName = reportPath + c.getCustomerno() + rptdesign + ".rptdesign";
+                } else {
+                    reportName = reportPath + rptdesign + ".rptdesign";
+                }
                 // 初始配置
                 this.reportInitAndConfig();
                 // 生成报表

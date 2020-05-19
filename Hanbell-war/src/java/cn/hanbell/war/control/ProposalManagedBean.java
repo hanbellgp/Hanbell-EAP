@@ -48,16 +48,17 @@ public class ProposalManagedBean extends SuperMultiBean<Proposal, ProposalAttach
     public ProposalManagedBean() {
         super(Proposal.class, ProposalAttach.class);
     }
+
     // 自动获取案件编号
-     @Override
-     protected boolean doBeforePersist() throws Exception {
-     if (super.doBeforePersist()) {
-     String fomrid = proposalBean.getFormId(BaseLib.getDate());
-     newEntity.setProposalid(fomrid);
-     return true;
-     }
-     return false;
-     }
+    @Override
+    protected boolean doBeforePersist() throws Exception {
+        if (super.doBeforePersist()) {
+            String fomrid = proposalBean.getFormId(BaseLib.getDate());
+            newEntity.setProposalid(fomrid);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void reset() {
