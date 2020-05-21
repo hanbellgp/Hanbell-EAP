@@ -34,6 +34,7 @@ public class HKYX009Model implements Serializable {
     private String depno;
     private String cfmuser;
     private String apprresno;
+    private String paycodedsc;
 
     public HKYX009Model() {
 
@@ -192,6 +193,14 @@ public class HKYX009Model implements Serializable {
 
     public void setMancodesc(String mancodesc) {
         this.mancodesc = mancodesc;
+    }
+
+    public String getPaycodedsc() {
+        return paycodedsc;
+    }
+
+    public void setPaycodedsc(String paycodedsc) {
+        this.paycodedsc = paycodedsc;
     }
 
 }
