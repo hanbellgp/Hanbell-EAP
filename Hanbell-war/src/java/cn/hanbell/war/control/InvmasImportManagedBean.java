@@ -21,8 +21,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -136,6 +134,12 @@ public class InvmasImportManagedBean extends SuperSingleBean<InvmasImport> {
                     e.setUnmsr1(BaseLib.convertExcelCell(String.class, c).trim());
                     c = r.getCell(8);
                     e.setUsed(BaseLib.convertExcelCell(String.class, c).trim());
+                    c = r.getCell(9);
+                    e.setProducttype(BaseLib.convertExcelCell(String.class, c).trim());
+                    c = r.getCell(10);
+                    e.setLevel1(BaseLib.convertExcelCell(String.class, c).trim());
+                    c = r.getCell(11);
+                    e.setLevel2(BaseLib.convertExcelCell(String.class, c).trim());
                     e.setStatus("N");
                     e.setCreator(userManagedBean.getCurrentUser().getUsername());
                     e.setCredateToNow();
@@ -145,7 +149,7 @@ public class InvmasImportManagedBean extends SuperSingleBean<InvmasImport> {
                 showInfoMsg("Info", "导入成功");
             } catch (IOException | InvalidFormatException ex) {
                 showErrorMsg("Info", "导入失败,找不到文件或格式错误");
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+                log4j.error(ex);
             }
         }
     }
@@ -242,6 +246,9 @@ public class InvmasImportManagedBean extends SuperSingleBean<InvmasImport> {
                 d.setUnmsr2("");
                 d.setIsDUnit("N");
                 d.setYt(e.getUsed());
+                d.setProducttype(e.getProducttype());
+                d.setLevel1(e.getLevel1());
+                d.setLevel2(e.getLevel2());
                 d.setRemark("");
                 detailList.add(d);
             }
@@ -258,7 +265,7 @@ public class InvmasImportManagedBean extends SuperSingleBean<InvmasImport> {
             String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "HZ_JS034", formInstance, subject);
             String[] rm = msg.split("\\$");
             if (rm != null) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, rm);
+                log4j.error(rm);
             }
             if (rm.length == 2 && rm[0].equals("200")) {
                 //更新导入内容状态
@@ -271,7 +278,7 @@ public class InvmasImportManagedBean extends SuperSingleBean<InvmasImport> {
                 showInfoMsg("Info", "流程序号" + formid);
             }
         } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
     }
 
