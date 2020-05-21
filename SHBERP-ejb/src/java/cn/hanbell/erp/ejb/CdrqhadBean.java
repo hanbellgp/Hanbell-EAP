@@ -10,6 +10,8 @@ import cn.hanbell.crm.entity.REPPA;
 import cn.hanbell.crm.entity.REPPB;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Cdrcorman;
+import cn.hanbell.erp.entity.Cdrcus;
+import cn.hanbell.erp.entity.Cdrpaydsc;
 import cn.hanbell.erp.entity.Cdrqasry;
 import cn.hanbell.erp.entity.Cdrqdta;
 import cn.hanbell.erp.entity.Cdrqhad;
@@ -49,6 +51,8 @@ public class CdrqhadBean extends SuperEJBForERP<Cdrqhad> {
     private InvmasBean invmasBean;
     @EJB
     private CdrcormanBean cdrcormanBean;
+    @EJB
+    private CdrpaydscBean cdrpaydscBean;
     @EJB
     private HKYX009Bean hkyx009Bean;
     @EJB
@@ -488,6 +492,113 @@ public class CdrqhadBean extends SuperEJBForERP<Cdrqhad> {
         } else {
             return null;
         }
+    }
+
+    //获得报价付款叙述条件
+    public String getPaycodedsc(String facno, Cdrcus c) {
+        String paycodedsc = "";
+        Character paycode = c.getPaycode();
+        int tickdays = c.getTickdays();
+        Character decode = c.getDecode();
+        cdrpaydscBean.setCompany(facno);
+        if (null == c.getSkfs()) {
+            if ('1' == paycode) {
+                if ('1' == decode) {
+                    paycodedsc = " 现金付款";
+                } else {
+                    Cdrpaydsc cdrpaydsc = cdrpaydscBean.findByPK('1', paycode.toString());
+                    if (null != cdrpaydsc) {
+                        paycodedsc = (cdrpaydsc.getAllcodedsc() == null) ? "" : cdrpaydsc.getAllcodedsc();
+                    }
+                }
+            } else if ('2' == paycode) {
+                if ('1' == decode) {
+                    if (tickdays == 0) {
+                        paycodedsc = " 即期支票";
+                    } else {
+                        paycodedsc = "支票" + " " + String.valueOf(tickdays) + "天";
+                    }
+                } else {
+                    Cdrpaydsc cdrpaydsc = cdrpaydscBean.findByPK('1', paycode.toString());
+                    if (null != cdrpaydsc) {
+                        if (null != cdrpaydsc.getAllcodedsc()) {
+                            if (tickdays == 0) {
+                            } else {
+                                paycodedsc = cdrpaydsc.getAllcodedsc() + " " + String.valueOf(tickdays) + " days";
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (tickdays >= 0) {
+                    if (decode == '1') {
+                        String ls_text;
+                        switch (paycode) {
+                            case '1':
+                                ls_text = "现金";
+                                break;
+                            case '2':
+                                ls_text = "支票";
+                                break;
+                            case '3':
+                                ls_text = "国内T/T";
+                                break;
+                            case '4':
+                                ls_text = "国~外T/T";
+                                break;
+                            case '5':
+                                ls_text = "国内L/C";
+                                break;
+                            case '6':
+                                ls_text = "国~外L/C";
+                                break;
+                            case '7':
+                                ls_text = "D/A";
+                                break;
+                            case '8':
+                                ls_text = "D/P";
+                                break;
+                            default:
+                                ls_text = "";
+                                break;
+                        }
+                        paycodedsc = ls_text + " " + String.valueOf(tickdays) + "天";
+                    } else {
+                        Cdrpaydsc cdrpaydsc = cdrpaydscBean.findByPK('1', paycode.toString());
+                        if (null != cdrpaydsc) {
+                            paycodedsc = cdrpaydsc.getAllcodedsc() + " " + String.valueOf(tickdays) + " days";
+                        } else {
+                            paycodedsc = String.valueOf(tickdays) + " days";
+                        }
+                    }
+                }
+            }
+            if (paycode == '3') {
+                if (tickdays == 0) {
+                    paycodedsc = "T/T IN ADVANCE";
+                }
+            }
+            if (paycode == '4') {
+                if (tickdays == 0) {
+                    paycodedsc = "T/T IN ADVANCE";
+                }
+            }
+            if (paycode == '5') {
+                if (tickdays == 0) {
+                    paycodedsc = "L/C AT SIGHT";
+                }
+            }
+            if (paycode == '6') {
+                if (tickdays == 0) {
+                    paycodedsc = "L/C AT SIGHT";
+                }
+            }
+
+        } else {
+            paycodedsc = c.getSkfs();
+        }
+
+        return paycodedsc;
     }
 
 }
