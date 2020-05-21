@@ -2202,8 +2202,7 @@ public class TimerBean {
                 for (tw.hanbell.exch.entity.Purhad ph : exchPurhadList) {
                     pono = ph.getPurhadPK().getPono();
                     seq = 0;
-                    exchPurhadBean.setDetail(ph.getPurhadPK().getPono());
-                    List<tw.hanbell.exch.entity.Purdta> exchPurdtaList = exchPurhadBean.getDetailList();
+                    List<tw.hanbell.exch.entity.Purdta> exchPurdtaList = exchPurhadBean.getDetailList(ph.getPurhadPK().getPono());
                     if (exchPurdtaList == null || exchPurdtaList.isEmpty()) {
                         continue;
                     }
@@ -2211,7 +2210,7 @@ public class TimerBean {
                     for (tw.hanbell.exch.entity.Purdta pd : exchPurdtaList) {
                         if (pd.getDposta().equals("20") || pd.getDposta().equals("30")) {
                             item = invmasBean.findByItnbr(pd.getItnbr());
-                            if (item == null) {
+                            if (item == null || Objects.equals("N", item.getNStopyn())) {
                                 j = pd.getItnbr().indexOf("-");
                                 k = pd.getItnbr().substring(0, 1);
                                 if (j == 4 && (k.equals("1") || k.equals("2") || k.equals("3"))) {
