@@ -1129,7 +1129,9 @@ public class TimerBean {
                         hm.setCfmuser(h.getCfmuserno());
                         // 设置审批原因
                         hm.setApprresno(miscodeBean.findByPK("1O", h.getApprresno()).getCdesc());
-
+                        //加入付款条件叙述
+                        String  paycodedsc = cdrqhadBean.getPaycodedsc(facno,cdrcus);
+                        hm.setPaycodedsc(paycodedsc);
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);
                         String subject = "客户:" + hm.getCusna() + "申请原因： " + hm.getApprresno() + ".  业务员:" + hm.getMancode() + hm.getMancodesc();
