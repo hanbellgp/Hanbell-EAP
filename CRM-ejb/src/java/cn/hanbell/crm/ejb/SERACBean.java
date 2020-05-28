@@ -27,15 +27,15 @@ public class SERACBean extends SuperEJBForCRM<SERAC> {
         super(SERAC.class);
     }
 
-    public List<Map<String, String>> findProblemType(String BQ003_value) {
-//        Query query = getEntityManager().createNativeQuery("Select * FROM SERAC s, SERAK c WHERE AK013 <> 'Y'  AND AK001=:BQ003_value AND AK006 = AC001");
-//        query.setParameter("BQ003_value", BQ003_value);
-//        try {
-//          List<Map<String,String>>  o = query.getResultList();
-//            return  o;
-//        } catch (Exception ex) {
-//            return null;
-//        }
-        return null;
+    public List<Object[]> findProblemType(String BQ003_value,String AK003) {
+        Query query = getEntityManager().createNativeQuery("Select AK002,AK003,AK006,AC002 FROM SERAC, SERAK WHERE AK013 <> 'Y'  AND AK001=? AND AK006 = AC001 And AK003 like ?");
+        query.setParameter(1, BQ003_value);
+        query.setParameter(2, new StringBuffer("%").append(AK003).append("%").toString());
+        try {
+            List<Object[]> o = query.getResultList();
+            return o;
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }

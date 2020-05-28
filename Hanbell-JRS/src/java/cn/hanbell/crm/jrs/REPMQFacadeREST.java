@@ -7,8 +7,11 @@ package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.REPMQBean;
 import cn.hanbell.crm.entity.REPMQ;
+import cn.hanbell.crm.jrs.model.JSONObject;
+import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.SuperEJB;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +87,22 @@ public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ> {
     @GET
     @Path("wechat/form")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Map<String,Object>> findForm() {
-        return repmqBean.findForm();
+    public ResponseData findForm() {
+      List<Object[]> list=  repmqBean.findForm();
+      if(list==null){
+          throw new WebApplicationException(Response.Status.NOT_FOUND);
+      } 
+      List<JSONObject> objs = new ArrayList<>();
+      JSONObject js = null;
+        for (int i = 0; i < list.size(); i++) {
+            js = new JSONObject();
+            js.put("key", list.get(i)[0]);
+            js.put("value", list.get(i)[1]);
+            objs.add(js);
+        }
+        ResponseData responseData = new ResponseData("200", "seccess");
+        responseData.setData(objs);
+        responseData.setCount(objs.size());
+        return responseData;
     }
 }

@@ -55,18 +55,31 @@ public class CRMGGBean extends SuperEJBForCRM<CRMGG> {
     public List<CRMGD> getDetaiList(String gg001) {
         return crmgdBean.findByCRMGG(gg001);
     }
-    
-    public List<Map<String,Object>> findCaller(String BQ002_value) {
-        Query query = getEntityManager().createNativeQuery("Select GG003,GG020,GG021,GG024,'' AS GD027,'' AS GD012,'' AS GD004 from CRMGG Where GG001 = N'2016120702' AND GG002='2' " +
-                        "AND  (GG025>=GETDATE() OR GG025 IS NULL OR GG025 = '') AND (ISNULL(GG136,'N')='N' OR GG136='') " +
-                        "UNION ALL SELECT GD005,GD025,GD026,'' AS GD004, " +
-                        "(CASE WHEN GD010 <> '' THEN RTRIM(GD007)+ '@'+GD010 ELSE GD007 END) AS  GD007,GD027,GD012 " +
-                        "FROM  CRMGD WHERE GD002 ="+"N".concat(BQ002_value));
+
+    public List<Object[]> findCaller(String BQ002_value) {
+         //公司简称，来电者,公司电话国码，公司电话区码，行动电话国码，行动电话区码,经销商
+        Query query = getEntityManager().createNativeQuery("SELECT GG003,GD005,GD025,GD026,GD027,GD012,GD199,GG001 FROM CRMGG LEFT JOIN CRMGD ON GG001=GD002 where GG043= ?");
+        query.setParameter(1, BQ002_value);
         try {
-           List<Map<String,Object>> list= query.getResultList();
+            List<Object[]> list = query.getResultList();
             return list;
         } catch (Exception ex) {
-            System.out.print("ex="+ex);
+            return null;
+        }
+    }
+
+    //微信小程序中寻找客户编号
+    public List<Object[]> findCustomerCode(String GG003) {
+        String sql = "SELECT top(100)GG001,GG003,GG043,GG004,GD022,GG022+GG024 AS GG024D,GG115 FROM CRMGG "
+                + "LEFT JOIN CRMDB..CRMGD AS D ON D.GD020=GG001 "
+                + "WHERE  (GG025>=GETDATE() OR GG025 IS NULL OR GG025 = '') "
+                + "AND (ISNULL(GG136,'N')='N' OR GG136='') AND GG043 IS NOT NULL AND GG043 != ''AND GG003 like ? ";
+        try {
+            Query query = getEntityManager().createNativeQuery(sql);
+            query.setParameter(1, new StringBuffer("%").append(GG003).append("%").toString());
+            List<Object[]> list = query.getResultList();
+            return list;
+        } catch (Exception e) {
             return null;
         }
     }

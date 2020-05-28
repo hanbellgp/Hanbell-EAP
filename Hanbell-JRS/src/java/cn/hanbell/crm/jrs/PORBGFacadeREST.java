@@ -6,10 +6,14 @@
 package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.PORBGBean;
+import cn.hanbell.crm.entity.DFWEL;
 import cn.hanbell.crm.entity.PORBG;
 import cn.hanbell.crm.entity.WARMA;
+import cn.hanbell.crm.jrs.model.JSONObject;
+import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.SuperEJB;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
@@ -23,12 +27,12 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("crm/porbg")
 @javax.enterprise.context.RequestScoped
-public class PORBGFacadeREST extends SuperRESTForCRM<PORBG>{
+public class PORBGFacadeREST extends SuperRESTForCRM<PORBG> {
 
     @EJB
     private PORBGBean porbgbean;
-    
-    public PORBGFacadeREST(Class<PORBG> entityClass) {
+
+    public PORBGFacadeREST() {
         super(PORBG.class);
     }
 
@@ -36,15 +40,27 @@ public class PORBGFacadeREST extends SuperRESTForCRM<PORBG>{
     protected SuperEJB getSuperEJB() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
      *
      * @return
      */
     @GET
-    @Path("wechat/product")
+    @Path("wechat/area")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<PORBG> findProduct(){
-      return porbgbean.findAll();
+    public ResponseData<PORBG> findProduct() {
+        ResponseData response = new ResponseData("200", "success");
+        List<PORBG> list = porbgbean.findAll();
+          List<JSONObject> objs=new ArrayList<>();
+        JSONObject js=null;
+        for(PORBG p:list){
+        js=new JSONObject();
+        js.put("key", p.getBg001());
+        js.put("value", p.getBg002());
+        objs.add(js);
+        }
+        response.setCount(objs.size());
+        response.setData(objs);
+        return response;
     }
 }

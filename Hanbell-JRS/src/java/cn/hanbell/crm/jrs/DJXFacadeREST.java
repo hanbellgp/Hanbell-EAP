@@ -5,16 +5,16 @@
  */
 package cn.hanbell.crm.jrs;
 
-import cn.hanbell.crm.ejb.SERACBean;
-import cn.hanbell.crm.entity.REPPW;
-import cn.hanbell.crm.entity.SERAC;
+import cn.hanbell.crm.ejb.DJXBean;
+import cn.hanbell.crm.entity.DFWEL;
+import cn.hanbell.crm.entity.DJX;
 import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.SuperEJB;
+import com.sun.xml.fastinfoset.tools.StAX2SAXReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -29,27 +29,28 @@ import javax.ws.rs.core.Response;
  *
  * @author C2082
  */
-@Path("crm/serac")
+@Path("crm/djx")
 @javax.enterprise.context.RequestScoped
-public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
-    
+public class DJXFacadeREST extends SuperRESTForCRM<DJX>{
+
     @EJB
-    private SERACBean seracbean;
+    private DJXBean djxbean;
     
-    public SERACFacadeREST() {
-        super(SERAC.class);
+    public DJXFacadeREST() {
+        super(DJX.class);
     }
-    
+
     @Override
     protected SuperEJB getSuperEJB() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    @GET
-    @Path("wechat/problemtype/{BQ003_value}")
+    
+     @GET
+    @Path("wechat/machinetype/{JX003}")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<JSONObject> findProblemType(@PathParam("BQ003_value") String BQ003_value,@QueryParam("searchWord")String AK003) {
-        List<Object[]> list = seracbean.findProblemType(BQ003_value,AK003);
+    public ResponseData<JSONObject> findByJX003(@PathParam("JX003") String JX003,@QueryParam("searchWord") String JX002){
+       List<Object[]> list= djxbean.findByJX003(JX003,JX002);
         if (list == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
@@ -59,8 +60,6 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
             js = new JSONObject();
             js.put("key", list.get(i)[0]);
             js.put("value", list.get(i)[1]);
-            js.put("value1", list.get(i)[2]);//紧急度
-            js.put("value2", list.get(i)[3]);//紧急度名称
             objs.add(js);
         }
         ResponseData responseData = new ResponseData("200", "seccess");
