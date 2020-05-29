@@ -1129,7 +1129,8 @@ public class TimerBean {
                         hm.setCfmuser(h.getCfmuserno());
                         // 设置审批原因
                         hm.setApprresno(miscodeBean.findByPK("1O", h.getApprresno()).getCdesc());
-
+                        //加入付款条件叙述                        
+                        hm.setPaycodedsc(h.getPaycodedsc());
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);
                         String subject = "客户:" + hm.getCusna() + "申请原因： " + hm.getApprresno() + ".  业务员:" + hm.getMancode() + hm.getMancodesc();
@@ -2202,8 +2203,7 @@ public class TimerBean {
                 for (tw.hanbell.exch.entity.Purhad ph : exchPurhadList) {
                     pono = ph.getPurhadPK().getPono();
                     seq = 0;
-                    exchPurhadBean.setDetail(ph.getPurhadPK().getPono());
-                    List<tw.hanbell.exch.entity.Purdta> exchPurdtaList = exchPurhadBean.getDetailList();
+                    List<tw.hanbell.exch.entity.Purdta> exchPurdtaList = exchPurhadBean.getDetailList(ph.getPurhadPK().getPono());
                     if (exchPurdtaList == null || exchPurdtaList.isEmpty()) {
                         continue;
                     }
@@ -2211,7 +2211,7 @@ public class TimerBean {
                     for (tw.hanbell.exch.entity.Purdta pd : exchPurdtaList) {
                         if (pd.getDposta().equals("20") || pd.getDposta().equals("30")) {
                             item = invmasBean.findByItnbr(pd.getItnbr());
-                            if (item == null) {
+                            if (item == null || Objects.equals("N", item.getNStopyn())) {
                                 j = pd.getItnbr().indexOf("-");
                                 k = pd.getItnbr().substring(0, 1);
                                 if (j == 4 && (k.equals("1") || k.equals("2") || k.equals("3"))) {

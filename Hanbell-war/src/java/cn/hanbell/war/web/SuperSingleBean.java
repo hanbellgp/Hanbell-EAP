@@ -11,12 +11,12 @@ import cn.hanbell.eap.ejb.SystemProgramBean;
 import cn.hanbell.eap.entity.SystemGrantPrg;
 import com.lightshell.comm.SuperSingleManagedBean;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -36,8 +36,7 @@ public abstract class SuperSingleBean<T extends SuperEntity> extends SuperSingle
     protected String appResPath;
     protected SystemGrantPrg currentPrgGrant;
 
-    protected Map<String, Object> openOptions;
-    protected Map<String, List<String>> openParams;
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.eap");
 
     /**
      * @param entityClass

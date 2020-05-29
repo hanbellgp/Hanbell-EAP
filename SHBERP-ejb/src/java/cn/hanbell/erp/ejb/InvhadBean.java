@@ -604,8 +604,9 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         if (e.getRelformid() != null && !"".equals(e.getRelformid())) {
             return e.getRelformid();
         }
-        shberpinv325Bean.setDetail(e.getFormSerialNumber());
-        if (shberpinv325Bean.getDetailList() == null || shberpinv325Bean.getDetailList().isEmpty()) {
+
+        List<SHBERPINV325Detail> details = shberpinv325Bean.getDetail(e.getFormSerialNumber());
+        if (details == null || details.isEmpty()) {
             throw new NullPointerException();
         }
         String facno;
@@ -649,11 +650,11 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 c.set(Calendar.DATE, 1);
                 trdate = c.getTime();
             }
-            for (SHBERPINV325Detail d : shberpinv325Bean.getDetailList()) {
+            for (SHBERPINV325Detail d : details) {
                 //获取品号资料
                 m = invmasBean.findByItnbr(d.getItnbr());
                 if (m == null) {
-                    throw new RuntimeException(d.getItnbr() + "ERP中不存在");
+                    throw new RuntimeException(psn + "流程序号" + d.getItnbr() + "ERP中不存在");
                 }
                 trseq++;
                 invdta = new Invdta(d.getItnbr(), facno, prono, "", trseq);
@@ -712,9 +713,9 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             shberpinv325Bean.update(e);
             return trno;
         } catch (ParseException | RuntimeException ex) {
-            log4j.error("initByOASHBERPINV325", ex);
+            log4j.error(psn + "流程序号initByOASHBERPINV325异常", ex);
+            throw new RuntimeException(ex);
         }
-        return "";
     }
 
     public Boolean initByOAWARMI05(String psn) {

@@ -61,6 +61,15 @@ public class InvmasImport extends SuperEntity {
     @Size(max = 100)
     @Column(name = "used")
     private String used;
+    @Size(max = 20)
+    @Column(name = "producttype")
+    private String producttype;
+    @Size(max = 20)
+    @Column(name = "level1")
+    private String level1;
+    @Size(max = 20)
+    @Column(name = "level2")
+    private String level2;
     @Size(max = 45)
     @Column(name = "remark")
     private String remark;
@@ -138,6 +147,48 @@ public class InvmasImport extends SuperEntity {
 
     public void setUsed(String used) {
         this.used = used;
+    }
+
+    /**
+     * @return the producttype
+     */
+    public String getProducttype() {
+        return producttype;
+    }
+
+    /**
+     * @param producttype the producttype to set
+     */
+    public void setProducttype(String producttype) {
+        this.producttype = producttype;
+    }
+
+    /**
+     * @return the level1
+     */
+    public String getLevel1() {
+        return level1;
+    }
+
+    /**
+     * @param level1 the level1 to set
+     */
+    public void setLevel1(String level1) {
+        this.level1 = level1;
+    }
+
+    /**
+     * @return the level2
+     */
+    public String getLevel2() {
+        return level2;
+    }
+
+    /**
+     * @param level2 the level2 to set
+     */
+    public void setLevel2(String level2) {
+        this.level2 = level2;
     }
 
     @Override

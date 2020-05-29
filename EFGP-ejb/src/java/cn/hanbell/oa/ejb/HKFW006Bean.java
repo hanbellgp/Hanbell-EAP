@@ -82,11 +82,17 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                 REPTD td = reptdBean.findByPK(td001, td002, td003);
                 if ("1".equals(status)) {
                     //判断回退数量 by C1491 2019/06/20
-                    td.setTd500(BigDecimal.ONE);                                    //整机退货一台
-                    td.setTd502(h.getFormSerialNumber());                           //退货OA单号
+                    td.setTd500(BigDecimal.ONE);                                //整机退货一台
+                    td.setTd502(h.getFormSerialNumber());                       //退货OA单号
                     td.setTd047("Y");
                 } else if ("3".equals(status)) {
                     td.setTd501(h.getPzno());
+                } else if ("4".equals(status)) {
+                    //加入OA发起主管审核后撤销，刷回CRM状态
+                    td.setTd500(BigDecimal.ZERO);
+                    td.setTd501("");
+                    td.setTd502("");
+                    td.setTd047("N");
                 }
                 reptdBean.update(td);
             }
@@ -120,13 +126,23 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                     } else if ("3".equals(status)) {
                         //OA流程结案抛转ERP后，写入CRM中ERP单号
                         td.setTd501(h.getPzno() + ";" + td.getTd501());
+                    } else if ("4".equals(status)) {
+                        //加入OA发起主管审核后撤销，刷回CRM状态
+                        if (td.getTd502() != null) {
+                            if (td.getTd502().contains(h.getFormSerialNumber())) {
+                                td.setTd500(td.getTd500().subtract(BigDecimal.valueOf(Double.valueOf(detail.getRetqty()))));
+                                td.setTd502(td.getTd502().replace(h.getFormSerialNumber(), ""));
+                                if (td.getTd500().compareTo(td.getTd020()) < 0) {
+                                    td.setTd047("N");
+                                }
+                            }
+                        }
                     }
                     reptdBean.update(td);
                 }
             }
             return true;
         } catch (Exception ex) {
-
             Logger.getLogger(HKFW006Bean.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
