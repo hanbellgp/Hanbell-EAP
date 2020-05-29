@@ -224,6 +224,9 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                     content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
                                             .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc());
                                     break;
+                                case "SLN00028":
+                                    content.append(sd.getCustomerItem());
+                                    break;
                             }
                             if (content.length() > 0) {
                                 this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + l.getVarnr() + ".png");
