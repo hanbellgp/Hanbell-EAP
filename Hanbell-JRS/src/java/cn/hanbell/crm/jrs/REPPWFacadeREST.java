@@ -91,7 +91,7 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                                 String date4 = ad.getDate4().substring(0, 4) + ad.getDate4().substring(5, 7) + ad.getDate4().substring(8, 10);
                                 m.setPw007(BaseLib.formatString("yyyyMMdd", date4));
                             }
-                            m.setPw010("0");    //派工状态码
+                            m.setPw010("1");    //派工状态码
                             m.setPw011(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
                             m.setPw012(m.getCreator());
                             m.setPw021("0000");
@@ -115,10 +115,12 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                     ra.setTa015(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
                     ra.setTa016(entity.getDetailList().get(0).getEmployeeId());
                     ra.setTa030("Y");
+                    ra.setTa031("1");
                     reptaBean.update(ra);
                 }
                 return new ResponseMessage("200", "更新派工资料成功！");
             } catch (Exception ex) {
+                    System.out.println("ex=="+ex);
                 return new ResponseMessage("500", "系统错误更新失败");
             }
         } else {

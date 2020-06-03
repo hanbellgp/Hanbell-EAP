@@ -49,7 +49,16 @@ public class SERBQApplication implements Serializable {
     private String problemTypeName;
     private String incidentCityId;
     private String machineTypeId;
+    private String currency;
+    private String companyName;
+    private String invoiceAdress1;
+    private String invoiceAdress2;
+    private String invoiceMail;
+    private String unifyNum;
+    private String warrantyStart;
+    private String warrantyEnd;
     @Override
+
     public int hashCode() {
         int hash = 3;
         return hash;
@@ -295,6 +304,70 @@ public class SERBQApplication implements Serializable {
 
     public void setMachineTypeId(String machineTypeId) {
         this.machineTypeId = machineTypeId;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getInvoiceAdress1() {
+        return invoiceAdress1;
+    }
+
+    public void setInvoiceAdress1(String invoiceAdress1) {
+        this.invoiceAdress1 = invoiceAdress1;
+    }
+
+    public String getInvoiceAdress2() {
+        return invoiceAdress2;
+    }
+
+    public void setInvoiceAdress2(String invoiceAdress2) {
+        this.invoiceAdress2 = invoiceAdress2;
+    }
+
+    public String getInvoiceMail() {
+        return invoiceMail;
+    }
+
+    public void setInvoiceMail(String invoiceMail) {
+        this.invoiceMail = invoiceMail;
+    }
+
+    public String getUnifyNum() {
+        return unifyNum;
+    }
+
+    public void setUnifyNum(String unifyNum) {
+        this.unifyNum = unifyNum;
+    }
+
+    public String getWarrantyStart() {
+        return warrantyStart;
+    }
+
+    public void setWarrantyStart(String warrantyStart) {
+        this.warrantyStart = warrantyStart;
+    }
+
+    public String getWarrantyEnd() {
+        return warrantyEnd;
+    }
+
+    public void setWarrantyEnd(String warrantyEnd) {
+        this.warrantyEnd = warrantyEnd;
     }
 
 }

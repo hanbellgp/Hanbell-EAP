@@ -19,7 +19,10 @@ import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -48,19 +51,23 @@ public class PORBGFacadeREST extends SuperRESTForCRM<PORBG> {
     @GET
     @Path("wechat/area")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<PORBG> findProduct() {
-        ResponseData response = new ResponseData("200", "success");
-        List<PORBG> list = porbgbean.findAll();
-          List<JSONObject> objs=new ArrayList<>();
-        JSONObject js=null;
-        for(PORBG p:list){
-        js=new JSONObject();
-        js.put("key", p.getBg001());
-        js.put("value", p.getBg002());
-        objs.add(js);
+    public ResponseData<PORBG> findProduct(@QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            ResponseData response = new ResponseData("200", "success");
+            List<PORBG> list = porbgbean.findAll();
+            List<JSONObject> objs = new ArrayList<>();
+            JSONObject js = null;
+            for (PORBG p : list) {
+                js = new JSONObject();
+                js.put("key", p.getBg001());
+                js.put("value", p.getBg002());
+                objs.add(js);
+            }
+            response.setCount(objs.size());
+            response.setData(objs);
+            return response;
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
-        response.setCount(objs.size());
-        response.setData(objs);
-        return response;
     }
 }

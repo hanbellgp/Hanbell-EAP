@@ -127,12 +127,12 @@ public class REPMIBean extends SuperEJBForCRM<REPMI> {
 
     public List<Object[]> findProductNumber(String MI001) {
 
-        StringBuffer sql = new StringBuffer("Select top 200 MI002,MI001,MB002,MB003 from REPMI "
+        StringBuffer sql = new StringBuffer("Select top 200 MI002,MI001,MB002,MB003,MI008,MI009 from REPMI "
                 + "left join WARMB ON MB001 = MI001  Where  N'' IN (MI001,'')  AND N'' IN (MI002,'')  "
                 + "AND MI005='N' AND MI011='N' AND ISNULL(MI010,'') = '' ");
         Query query = null;
         if (!"undefined".equals(MI001) && !"".equals(MI001) && MI001 != null) {
-            sql = new StringBuffer("Select top 200 MI002,MI001,MB002,MB003 from REPMI "
+            sql = new StringBuffer("Select top 200 MI002,MI001,MB002,MB003,MI008,MI009 from REPMI "
                 + "left join WARMB ON MB001 = MI001  Where  N'' IN (MI001,'')  AND N'' IN (MI002,'')  "
                 + "AND MI005='N' AND MI011='N' AND ISNULL(MI010,'') = '' And MB002 Like ");
             query = getEntityManager().createNativeQuery(sql.append(new StringBuffer("'%").append(MI001).append("%'")).toString());

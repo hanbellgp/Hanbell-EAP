@@ -19,6 +19,7 @@ import javax.ejb.Stateless;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -46,22 +47,26 @@ public class DFWELFacadeREST extends SuperRESTForCRM<DFWEL> {
     @GET
     @Path("wechat/product")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<DFWEL> findProduct() {
-        List<DFWEL> list = dfwelbaean.findAll();
-        if (list == null) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+    public ResponseData<DFWEL> findProduct(@QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            List<DFWEL> list = dfwelbaean.findAll();
+            if (list == null) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+            ResponseData responseData = new ResponseData("200", "seccess");
+            List<JSONObject> objs = new ArrayList<>();
+            JSONObject js = null;
+            for (DFWEL d : list) {
+                js = new JSONObject();
+                js.put("key", d.getEl001());
+                js.put("value", d.getEl002());
+                objs.add(js);
+            }
+            responseData.setData(objs);
+            responseData.setCount(objs.size());
+            return responseData;
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
-        ResponseData responseData = new ResponseData("200", "seccess");
-        List<JSONObject> objs=new ArrayList<>();
-        JSONObject js=null;
-        for(DFWEL d:list){
-        js=new JSONObject();
-        js.put("key", d.getEl001());
-        js.put("value", d.getEl002());
-        objs.add(js);
-        }
-        responseData.setData(objs);
-        responseData.setCount(objs.size());
-        return responseData;
     }
 }
