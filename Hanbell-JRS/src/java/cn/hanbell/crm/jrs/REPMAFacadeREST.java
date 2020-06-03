@@ -66,7 +66,7 @@ public class REPMAFacadeREST extends SuperRESTForCRM<REPMA> {
                         sortFields.put(key, value);
                     }
                 }
-                repmaList = repmaBean.findByFilters(filterFields, offset, pageSize, sortFields);
+                repmaList = repmaBean.findByFilters(filterFields, offset, 0, sortFields);
                 return repmaList;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);

@@ -89,7 +89,8 @@ public class DSHFacadeREST extends SuperRESTForCRM<DSH> {
     @GET
     @Path("wechat/incidentProvince")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<JSONObject> findIncidentArea(@QueryParam("searchWord") String provincename) {
+    public ResponseData<JSONObject> findIncidentArea(@QueryParam("searchWord") String provincename, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+          if (isAuthorized(appid, token)) {
         List<Object[]> list = dshBean.findIncidentArea(provincename);
         if (list == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -106,5 +107,8 @@ public class DSHFacadeREST extends SuperRESTForCRM<DSH> {
         responseData.setData(objs);
         responseData.setCount(objs.size());
         return responseData;
+         } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
     }
 }

@@ -25,11 +25,6 @@ public class DCSBean extends SuperEJBForCRM<DCS> {
     }
 
     public List<Object[]> findIncidentCity(String city, String cityname) {
-//        StringBuffer s = new StringBuffer("SELECT cityid,cityname from DCS where provinceid = ? and cityname LIKE ?");
-//        s =s.append(city).append("' ");
-//        if (cityname != null&&!"".equals(cityname)) {
-//         s = s.append(" and cityname LIKE '").append(cityname).append("'");
-//        }
         String s = "SELECT cityid,cityname from DCS where provinceid = ? and cityname LIKE ?";
         if (cityname == null) {
             cityname = "";

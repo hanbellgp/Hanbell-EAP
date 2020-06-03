@@ -31,11 +31,11 @@ import javax.ws.rs.core.Response;
  */
 @Path("crm/djx")
 @javax.enterprise.context.RequestScoped
-public class DJXFacadeREST extends SuperRESTForCRM<DJX>{
+public class DJXFacadeREST extends SuperRESTForCRM<DJX> {
 
     @EJB
     private DJXBean djxbean;
-    
+
     public DJXFacadeREST() {
         super(DJX.class);
     }
@@ -44,27 +44,30 @@ public class DJXFacadeREST extends SuperRESTForCRM<DJX>{
     protected SuperEJB getSuperEJB() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-     @GET
+
+    @GET
     @Path("wechat/machinetype/{JX003}")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<JSONObject> findByJX003(@PathParam("JX003") String JX003,@QueryParam("searchWord") String JX002){
-       List<Object[]> list= djxbean.findByJX003(JX003,JX002);
-        if (list == null) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+    public ResponseData<JSONObject> findByJX003(@PathParam("JX003") String JX003, @QueryParam("searchWord") String JX002, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            List<Object[]> list = djxbean.findByJX003(JX003, JX002);
+            if (list == null) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+            List<JSONObject> objs = new ArrayList<>();
+            JSONObject js = null;
+            for (int i = 0; i < list.size(); i++) {
+                js = new JSONObject();
+                js.put("key", list.get(i)[0]);
+                js.put("value", list.get(i)[1]);
+                objs.add(js);
+            }
+            ResponseData responseData = new ResponseData("200", "seccess");
+            responseData.setData(objs);
+            responseData.setCount(objs.size());
+            return responseData;
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
-        List<JSONObject> objs = new ArrayList<>();
-        JSONObject js = null;
-        for (int i = 0; i < list.size(); i++) {
-            js = new JSONObject();
-            js.put("key", list.get(i)[0]);
-            js.put("value", list.get(i)[1]);
-            objs.add(js);
-        }
-        ResponseData responseData = new ResponseData("200", "seccess");
-        responseData.setData(objs);
-        responseData.setCount(objs.size());
-        return responseData;
     }
 }

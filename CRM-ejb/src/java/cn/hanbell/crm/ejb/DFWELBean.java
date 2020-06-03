@@ -7,6 +7,7 @@ package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
 import cn.hanbell.crm.entity.DFWEL;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -31,7 +32,6 @@ public class DFWELBean extends SuperEJBForCRM<DFWEL> {
         } catch (Exception ex) {
             return null;
         }
-
     }
-
+   
 }

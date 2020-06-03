@@ -7,6 +7,7 @@ package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
 import cn.hanbell.crm.entity.PORBG;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -31,7 +32,5 @@ public class PORBGBean extends SuperEJBForCRM<PORBG> {
         } catch (Exception ex) {
             return null;
         }
-
     }
-
 }
