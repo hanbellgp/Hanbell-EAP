@@ -7,6 +7,9 @@ package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.CRMGGBean;
 import cn.hanbell.crm.entity.CRMGG;
+import cn.hanbell.crm.entity.WARMA;
+import cn.hanbell.crm.jrs.model.JSONObject;
+import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.oa.app.KV;
 import cn.hanbell.util.SuperEJB;
@@ -89,4 +92,56 @@ public class CRMGGFacadeREST extends SuperRESTForCRM<KV> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @GET
+    @Path("wechat/caller/{BQ002_value}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData<JSONObject> findCaller(@PathParam("BQ002_value") String BQ002_value) {
+        List<Object[]> list = crmggBean.findCaller(BQ002_value);
+        if (list == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        JSONObject js = null;
+            js = new JSONObject();
+            List<JSONObject> objs=new ArrayList<>();
+            //公司简称，来电者,公司电话国码，公司电话区码，行动电话国码，行动电话区码，经销商
+            //GG003,GD005,GD025,GD026,GD027,GD012，GD199
+            for(int i=0;i<list.size();i++){
+            js=new JSONObject();
+            js.put("GG003", list.get(i)[0]);
+            js.put("GD005", list.get(i)[1]);
+            js.put("GD025", list.get(i)[2]);
+            js.put("GD026", list.get(i)[3]);
+            js.put("GD027", list.get(i)[4]);
+            js.put("GD012", list.get(i)[5]);
+            js.put("GD199", list.get(i)[6]);
+            js.put("GG001", list.get(i)[7]);
+            objs.add(js);
+            }
+        ResponseData responseData = new ResponseData("200", "seccess");
+        responseData.setData(objs);
+        responseData.setCount(objs.size());
+        return responseData;
+    }
+
+    @GET
+    @Path("wechat/customercode/")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData<JSONObject> findCustomerCode(@QueryParam("searchWord") String GG003) {
+        List<Object[]> list = crmggBean.findCustomerCode(GG003);
+        if (list == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        List<JSONObject> objs = new ArrayList<>();
+        JSONObject js = null;
+        for (int i = 0; i < list.size(); i++) {
+            js = new JSONObject();
+            js.put("key", list.get(i)[2]);
+            js.put("value", list.get(i)[1]);
+            objs.add(js);
+        }
+        ResponseData responseData = new ResponseData("200", "seccess");
+        responseData.setData(objs);
+        responseData.setCount(objs.size());
+        return responseData;
+    }
 }

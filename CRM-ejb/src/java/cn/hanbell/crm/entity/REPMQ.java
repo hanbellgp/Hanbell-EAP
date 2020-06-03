@@ -88,7 +88,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "REPMQ.findByRepmq18", query = "SELECT r FROM REPMQ r WHERE r.repmq18 = :repmq18")
     , @NamedQuery(name = "REPMQ.findByRepmq19", query = "SELECT r FROM REPMQ r WHERE r.repmq19 = :repmq19")
     , @NamedQuery(name = "REPMQ.findByRepmq20", query = "SELECT r FROM REPMQ r WHERE r.repmq20 = :repmq20")
-    , @NamedQuery(name = "REPMQ.findByMq032", query = "SELECT r FROM REPMQ r WHERE r.mq032 = :mq032")})
+    , @NamedQuery(name = "REPMQ.findByMq032", query = "SELECT r FROM REPMQ r WHERE r.mq032 = :mq032")
+   
+})
 public class REPMQ implements Serializable {
 
     private static final long serialVersionUID = 1L;

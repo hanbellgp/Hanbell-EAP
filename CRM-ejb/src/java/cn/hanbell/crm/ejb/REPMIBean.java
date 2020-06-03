@@ -6,13 +6,19 @@
 package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
+import cn.hanbell.crm.entity.CRMGG;
 import cn.hanbell.crm.entity.REPMI;
+import com.sun.xml.xsom.impl.scd.Iterators.Map;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 /**
@@ -119,4 +125,26 @@ public class REPMIBean extends SuperEJBForCRM<REPMI> {
         return null;
     }
 
+    public List<Object[]> findProductNumber(String MI001) {
+
+        StringBuffer sql = new StringBuffer("Select top 200 MI002,MI001,MB002,MB003 from REPMI "
+                + "left join WARMB ON MB001 = MI001  Where  N'' IN (MI001,'')  AND N'' IN (MI002,'')  "
+                + "AND MI005='N' AND MI011='N' AND ISNULL(MI010,'') = '' ");
+        Query query = null;
+        if (!"undefined".equals(MI001) && !"".equals(MI001) && MI001 != null) {
+            sql = new StringBuffer("Select top 200 MI002,MI001,MB002,MB003 from REPMI "
+                + "left join WARMB ON MB001 = MI001  Where  N'' IN (MI001,'')  AND N'' IN (MI002,'')  "
+                + "AND MI005='N' AND MI011='N' AND ISNULL(MI010,'') = '' And MB002 Like ");
+            query = getEntityManager().createNativeQuery(sql.append(new StringBuffer("'%").append(MI001).append("%'")).toString());
+        } else {
+            query = getEntityManager().createNativeQuery(sql.toString());
+        }
+        try {
+            List<Object[]> list = query.getResultList();
+            return list;
+        } catch (Exception ex) {
+            System.out.println("ex=" + ex);
+            return null;
+        }
+    }
 }
