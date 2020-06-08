@@ -216,7 +216,7 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                             switch (h.getCusno()) {
                                 case "SCQ00011":
                                     // 美的专属二维码
-                                    content.append("A0007001").append("|").append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append("|")
+                                    content.append("A0007001").append("|").append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append("|").append(sd.getLotseq()).append("|")
                                             .append(sd.getVarnr()).append("|").append(sd.getCustomerItem()).append("|").append(sd.getItemModel());
                                     break;
                                 case "SSD00103":
@@ -224,6 +224,13 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                     content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
                                             .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc());
                                     break;
+                                case "SSD00886":
+                                    // 海达诚专属二维码
+                                    content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
+                                            .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc());
+                                    break;    
+                                    
+                                    //冰山冷热专属二维码
                                 case "SLN00028":
                                     content.append(sd.getCustomerItem());
                                     break;

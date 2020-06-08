@@ -5,8 +5,10 @@
  */
 package cn.hanbell.eap.entity;
 
+import com.lightshell.comm.BaseLib;
 import com.lightshell.comm.FormDetailEntity;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -267,6 +269,11 @@ public class ShipmentDetail extends FormDetailEntity {
      */
     public void setRelseq(Integer relseq) {
         this.relseq = relseq;
+    }
+    //由于得到的shpdate是日期格式， 报表中无法追加字符串，报表fetch事件中引用该方法
+    public String getShpdateAndLotseq(){
+        String date=BaseLib.formatDate("yyyyMMdd", this.getShpdate());
+        return new StringBuffer(date).append("-").append(this.getLotseq()).toString();
     }
 
     @Override

@@ -118,8 +118,8 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
                         StringBuilder content = new StringBuilder();
                         switch (currentEntity.getCustomerno()) {
                             case "SCQ00011":
-                                // 美的专属二维码
-                                content.append("A0007001").append("|").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append("|")
+                                // 美的专属二维码，备注：如果需要修改日期格式，修改ShipmentDetail类中的getShpdateAndLotseq()方法
+                                content.append("A0007001").append("|").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append("-").append(sd.getLotseq()).append("|")
                                         .append(sd.getVarnr()).append("|").append(sd.getCustomerItem()).append("|").append(sd.getItemModel());
                                 break;
                             case "SSD00103":
@@ -127,6 +127,12 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
                                 content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
                                         .append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(".").append(sd.getCustomerItemDesc());
                                 break;
+                             case "SSD00886":
+                                // 海达诚专属二维码
+                                content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
+                                        .append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(".").append(sd.getCustomerItemDesc());
+                                break;
+                                //冰山冷热专属二维码
                             case "SLN00028":
                                 content.append(sd.getCustomerItem());
                                 break;
