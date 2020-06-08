@@ -216,8 +216,8 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                             switch (h.getCusno()) {
                                 case "SCQ00011":
                                     // 美的专属二维码
-                                    content.append("A0007001").append("|").append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append("|").append(sd.getLotseq()).append("|")
-                                            .append(sd.getVarnr()).append("|").append(sd.getCustomerItem()).append("|").append(sd.getItemModel());
+                                    content.append("A0007001").append("|").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append("-").append(sd.getLotseq()).append("|")
+                                        .append(sd.getVarnr()).append("|").append(sd.getCustomerItem()).append("|").append(sd.getItemModel());
                                     break;
                                 case "SSD00103":
                                     // 海达瑞专属二维码
