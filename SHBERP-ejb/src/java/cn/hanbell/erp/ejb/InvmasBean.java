@@ -243,6 +243,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setJityn('N');
                     m.setNEcnnewitnbr("");
                     m.setNEcnno("");
+                    m.setCccode("");
                 } else {
                     m = findByItnbr(detail.getItnbr());
                 }
