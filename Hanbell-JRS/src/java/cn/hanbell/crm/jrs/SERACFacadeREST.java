@@ -6,7 +6,6 @@
 package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.SERACBean;
-import cn.hanbell.crm.entity.REPPW;
 import cn.hanbell.crm.entity.SERAC;
 import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.jrs.ResponseData;
@@ -14,7 +13,6 @@ import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.SuperEJB;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -32,24 +30,24 @@ import javax.ws.rs.core.Response;
 @Path("crm/serac")
 @javax.enterprise.context.RequestScoped
 public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
-    
+
     @EJB
     private SERACBean seracbean;
-    
+
     public SERACFacadeREST() {
         super(SERAC.class);
     }
-    
+
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return seracbean;
     }
-    
+
     @GET
     @Path("wechat/problemtype/{BQ003_value}")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<JSONObject> findProblemType(@PathParam("BQ003_value") String BQ003_value,@QueryParam("searchWord")String AK003) {
-        List<Object[]> list = seracbean.findProblemType(BQ003_value,AK003);
+    public ResponseData<JSONObject> findProblemType(@PathParam("BQ003_value") String BQ003_value, @QueryParam("searchWord") String AK003) {
+        List<Object[]> list = seracbean.findProblemType(BQ003_value, AK003);
         if (list == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
@@ -68,4 +66,5 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
         responseData.setCount(objs.size());
         return responseData;
     }
+
 }

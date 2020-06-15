@@ -48,7 +48,8 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
     @Path("wechat")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public ResponseMessage create(REPTAApplication entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseMessage create(REPTAApplication entity, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             if (entity == null || entity.getDetailList() == null || entity.getDetailList().isEmpty()) {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
@@ -84,14 +85,16 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                                 m.setPw005(ad.getStationname().split("-")[0]);
                             }
                             if (ad.getDate3() != null && !"".equals(ad.getDate3())) {
-                                String date3 = ad.getDate3().substring(0, 4) + ad.getDate3().substring(5, 7) + ad.getDate3().substring(8, 10);
+                                String date3 = ad.getDate3().substring(0, 4) + ad.getDate3().substring(5, 7)
+                                        + ad.getDate3().substring(8, 10);
                                 m.setPw006(BaseLib.formatString("yyyyMMdd", date3));
                             }
                             if (ad.getDate4() != null && !"".equals(ad.getDate4())) {
-                                String date4 = ad.getDate4().substring(0, 4) + ad.getDate4().substring(5, 7) + ad.getDate4().substring(8, 10);
+                                String date4 = ad.getDate4().substring(0, 4) + ad.getDate4().substring(5, 7)
+                                        + ad.getDate4().substring(8, 10);
                                 m.setPw007(BaseLib.formatString("yyyyMMdd", date4));
                             }
-                            m.setPw010("1");    //派工状态码
+                            m.setPw010("1"); // 派工状态码
                             m.setPw011(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
                             m.setPw012(m.getCreator());
                             m.setPw021("0000");
@@ -108,9 +111,9 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                     reppw.setPw026(pw026);
                     reppwBean.persist(reppw);
                 }
-                //更新叫修单状态为确认
+                // 更新叫修单状态为确认
                 if (ra != null) {
-                    ra.setTa035("1");  //派工码显示转维修站
+                    ra.setTa035("1"); // 派工码显示转维修站
                     ra.setTa014("Y");
                     ra.setTa015(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
                     ra.setTa016(entity.getDetailList().get(0).getEmployeeId());
@@ -120,7 +123,7 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                 }
                 return new ResponseMessage("200", "更新派工资料成功！");
             } catch (Exception ex) {
-                    System.out.println("ex=="+ex);
+                System.out.println("ex==" + ex);
                 return new ResponseMessage("500", "系统错误更新失败");
             }
         } else {
@@ -130,7 +133,8 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+        // Tools | Templates.
     }
 
 }

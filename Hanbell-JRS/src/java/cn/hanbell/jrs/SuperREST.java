@@ -5,6 +5,7 @@
  */
 package cn.hanbell.jrs;
 
+import cn.hanbell.util.BaseLib;
 import cn.hanbell.util.SuperEJB;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
@@ -31,7 +34,6 @@ import javax.ws.rs.core.Response;
 public abstract class SuperREST<T> {
 
     protected Class<T> entityClass;
-    protected Map<Integer, List<T>> data;
 
     @EJB
     protected cn.hanbell.eap.ejb.SystemNameBean systemNameBean;
@@ -43,99 +45,239 @@ public abstract class SuperREST<T> {
     }
 
     @POST
-    @Consumes({"application/json"})
-    @Produces({"application/json"})
-    public ResponseMessage create(T entity) {
-        try {
-            getSuperEJB().persist(entity);
-            return new ResponseMessage("200", "更新成功");
-        } catch (Exception ex) {
-            return new ResponseMessage("500", "系统错误更新失败");
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseMessage create(T entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                getSuperEJB().persist(entity);
+                return new ResponseMessage("200", "更新成功");
+            } catch (Exception ex) {
+                return new ResponseMessage("500", "系统错误更新失败");
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
 
     @PUT
     @Path("{id}")
-    @Consumes({"application/json"})
-    @Produces({"application/json"})
-    public ResponseMessage edit(@PathParam("id") PathSegment id, T entity) {
-        try {
-            getSuperEJB().update(entity);
-            return new ResponseMessage("200", "更新成功");
-        } catch (Exception ex) {
-            return new ResponseMessage("500", "系统错误更新失败");
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseMessage edit(@PathParam("id") PathSegment id, T entity, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                T t = (T) getSuperEJB().findById(Integer.parseInt(id.getPath()));
+                if (t == null) {
+                    return new ResponseMessage("404", "找不到对象");
+                }
+                getSuperEJB().update(entity);
+                return new ResponseMessage("200", "更新成功");
+            } catch (Exception ex) {
+                return new ResponseMessage("500", "系统错误更新失败");
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
 
     @DELETE
     @Path("{id}")
-    @Produces({"application/json"})
-    public ResponseMessage remove(@PathParam("id") PathSegment id) {
-        try {
-            T t = (T) getSuperEJB().findById(id.getPath());
-            if (t == null) {
-                return new ResponseMessage("404", "内容为空");
-            }
-            getSuperEJB().delete(t);
-            return new ResponseMessage("200", "更新成功");
-        } catch (Exception ex) {
-            return new ResponseMessage("500", "系统错误更新失败");
-        }
-    }
-
-    public Map<Integer, List<T>> find(PathSegment filters, PathSegment sorts, Integer offset, Integer pageSize) {
-        try {
-            MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
-            MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
-            Map<String, Object> filterFields = new HashMap<>();
-            Map<String, String> sortFields = new HashMap<>();
-            String key, value;
-            if (filtersMM != null) {
-                for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
-                    key = entrySet.getKey();
-                    value = entrySet.getValue().get(0);
-                    filterFields.put(key, value);
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseMessage remove(@PathParam("id") PathSegment id, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                T t = (T) getSuperEJB().findById(Integer.parseInt(id.getPath()));
+                if (t == null) {
+                    return new ResponseMessage("404", "找不到对象");
                 }
+                getSuperEJB().delete(t);
+                return new ResponseMessage("200", "更新成功");
+            } catch (Exception ex) {
+                return new ResponseMessage("500", "系统错误更新失败");
             }
-            if (sortsMM != null) {
-                for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
-                    key = entrySet.getKey();
-                    value = entrySet.getValue().get(0);
-                    sortFields.put(key, value);
-                }
-            }
-            int size = getSuperEJB().getRowCount(filterFields);
-            List<T> list = getSuperEJB().findByFilters(filterFields, offset, pageSize, sortFields);
-            Map<Integer, List<T>> map = new HashMap<>();
-            map.put(size, list);
-            return map;
-        } catch (Exception ex) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
 
     @GET
-    @Produces({"application/json"})
-    public List<T> findAll() {
-        return getSuperEJB().findAll();
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData findAll(@QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                List<T> list = getSuperEJB().findAll();
+                ResponseData res = new ResponseData<T>("200", "success");
+                res.setData(list);
+                res.setCount(list.size());
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @GET
+    @Path("pagination")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData findByPagination(@QueryParam("offset") Integer offset, @QueryParam("pageSize") Integer pageSize,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                List<T> list = getSuperEJB().findAll(offset, pageSize);
+                int count = getSuperEJB().getRowCount();
+                ResponseData res = new ResponseData<T>("200", "success");
+                res.setData(list);
+                res.setCount(count);
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
     }
 
     @GET
     @Path("{id}")
-    @Produces({"application/json"})
-    public T findById(@PathParam("id") PathSegment id) {
-        return (T) getSuperEJB().findById(id.getPath());
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseObject findById(@PathParam("id") PathSegment id, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                T t = (T) getSuperEJB().findById(Integer.parseInt(id.getPath()));
+                ResponseObject res = new ResponseObject<>("200", "success", t);
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
     }
 
     @GET
     @Path("{offset}/{pageSize}")
-    @Produces({"application/json"})
-    public List<T> findAll(@PathParam("offset") int offset, @PathParam("pageSize") int pageSize) {
-        return getSuperEJB().findAll(offset, pageSize);
+    @Produces({MediaType.APPLICATION_JSON})
+    @Deprecated
+    public ResponseData findAll(@PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                List<T> list = getSuperEJB().findAll(offset, pageSize);
+                int count = getSuperEJB().getRowCount();
+                ResponseData res = new ResponseData<T>("200", "success");
+                res.setData(list);
+                res.setCount(count);
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
     }
 
-    public int getRowCount() {
-        return getSuperEJB().getRowCount();
+    @GET
+    @Path("pagination/{filters}/{sorts}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData findByFiltering(@PathParam("filters") PathSegment filters,
+            @PathParam("sorts") PathSegment sorts, @QueryParam("offset") Integer offset,
+            @QueryParam("pageSize") Integer pageSize, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
+                MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
+                Map<String, Object> filterFields = new HashMap<>();
+                Map<String, String> sortFields = new HashMap<>();
+                String key, value;
+                Object obj;
+                if (filtersMM != null) {
+                    for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
+                        key = entrySet.getKey();
+                        value = entrySet.getValue().get(0);
+                        if (key.endsWith("dateBegin") || key.endsWith("DateBegin") || key.endsWith("dateEnd")
+                                || key.endsWith("DateEnd")) {
+                            obj = BaseLib.getDate("yyyy-MM-dd", value);
+                            filterFields.put(key, obj);
+                        } else {
+                            filterFields.put(key, value);
+                        }
+                    }
+                }
+                if (sortsMM != null) {
+                    for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
+                        key = entrySet.getKey();
+                        value = entrySet.getValue().get(0);
+                        sortFields.put(key, value);
+                    }
+                }
+                List<T> list = getSuperEJB().findByFilters(filterFields, offset, pageSize, sortFields);
+                int count = getSuperEJB().getRowCount(filterFields);
+                ResponseData res = new ResponseData<T>("200", "success");
+                res.setData(list);
+                res.setCount(count);
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @GET
+    @Path("{filters}/{sorts}/{offset}/{pageSize}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Deprecated
+    public ResponseData findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts,
+            @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
+                MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
+                Map<String, Object> filterFields = new HashMap<>();
+                Map<String, String> sortFields = new HashMap<>();
+                String key, value;
+                Object obj;
+                if (filtersMM != null) {
+                    for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
+                        key = entrySet.getKey();
+                        value = entrySet.getValue().get(0);
+                        if (key.endsWith("dateBegin") || key.endsWith("DateBegin") || key.endsWith("dateEnd")
+                                || key.endsWith("DateEnd")) {
+                            obj = BaseLib.getDate("yyyy-MM-dd", value);
+                            filterFields.put(key, obj);
+                        } else {
+                            filterFields.put(key, value);
+                        }
+                    }
+                }
+                if (sortsMM != null) {
+                    for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
+                        key = entrySet.getKey();
+                        value = entrySet.getValue().get(0);
+                        sortFields.put(key, value);
+                    }
+                }
+                List<T> data = getSuperEJB().findByFilters(filterFields, offset, pageSize, sortFields);
+                int count = getSuperEJB().getRowCount(filterFields);
+                ResponseData res = new ResponseData<T>("200", "success");
+                res.setData(data);
+                res.setCount(count);
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
     }
 
     protected boolean isAuthorized(String appid, String token) {

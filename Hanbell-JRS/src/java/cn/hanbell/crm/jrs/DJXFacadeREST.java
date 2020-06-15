@@ -6,13 +6,11 @@
 package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.DJXBean;
-import cn.hanbell.crm.entity.DFWEL;
 import cn.hanbell.crm.entity.DJX;
 import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.SuperEJB;
-import com.sun.xml.fastinfoset.tools.StAX2SAXReader;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -42,7 +40,7 @@ public class DJXFacadeREST extends SuperRESTForCRM<DJX> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return djxbean;
     }
 
     @GET
