@@ -6,7 +6,6 @@
 package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.WARMABean;
-import cn.hanbell.crm.entity.REPTA;
 import cn.hanbell.crm.entity.WARMA;
 import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.jrs.ResponseData;
@@ -17,7 +16,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
@@ -41,7 +39,7 @@ public class WARMAFacadeREST extends SuperRESTForCRM<WARMA> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return warmaBean;
     }
 
     @GET

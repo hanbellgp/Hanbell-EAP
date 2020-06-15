@@ -12,28 +12,22 @@ import cn.hanbell.crm.entity.CRMGD;
 import cn.hanbell.crm.entity.CRMGG;
 import cn.hanbell.crm.entity.REPTA;
 import cn.hanbell.crm.entity.REPTAPK;
-import cn.hanbell.crm.entity.SERAC;
 import cn.hanbell.crm.entity.SERBQ;
 import cn.hanbell.crm.entity.SERCA;
 import cn.hanbell.crm.entity.SERCAPK;
 import cn.hanbell.crm.entity.SYSNN;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForCRM;
-import cn.hanbell.oa.app.LeaveApplication;
 import cn.hanbell.util.BaseLib;
 import cn.hanbell.util.SuperEJB;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.persistence.Query;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -201,7 +195,8 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
             ta.setTa036(entity.getUnifyNum());
             ta.setTa049(bq.getBq001());
             ta.setTa051(entity.getEmergencyDrgree());
-            if (entity.getWarrantyStart() != null && !"".equals(entity.getWarrantyStart()) && entity.getWarrantyEnd() != null && !"".equals(entity.getWarrantyEnd())) {
+            if (entity.getWarrantyStart() != null && !"".equals(entity.getWarrantyStart())
+                    && entity.getWarrantyEnd() != null && !"".equals(entity.getWarrantyEnd())) {
                 Date start = BaseLib.getDate("yyyyMMdd", entity.getWarrantyStart());
                 Date end = BaseLib.getDate("yyyyMMdd", entity.getWarrantyEnd());
                 Date now = BaseLib.getDate();

@@ -64,7 +64,8 @@ public abstract class SuperRESTForEAP<T> {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseMessage edit(@PathParam("id") PathSegment id, T entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseMessage edit(@PathParam("id") PathSegment id, T entity, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 T t = (T) getSuperEJB().findById(Integer.parseInt(id.getPath()));
@@ -84,7 +85,8 @@ public abstract class SuperRESTForEAP<T> {
     @DELETE
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseMessage remove(@PathParam("id") PathSegment id, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseMessage remove(@PathParam("id") PathSegment id, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 T t = (T) getSuperEJB().findById(Integer.parseInt(id.getPath()));
@@ -122,7 +124,8 @@ public abstract class SuperRESTForEAP<T> {
     @GET
     @Path("pagination")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData findByPagination(@QueryParam("offset") Integer offset, @QueryParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData findByPagination(@QueryParam("offset") Integer offset, @QueryParam("pageSize") Integer pageSize,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 List<T> list = getSuperEJB().findAll(offset, pageSize);
@@ -142,7 +145,8 @@ public abstract class SuperRESTForEAP<T> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseObject findById(@PathParam("id") PathSegment id, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseObject findById(@PathParam("id") PathSegment id, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 T t = (T) getSuperEJB().findById(Integer.parseInt(id.getPath()));
@@ -160,7 +164,8 @@ public abstract class SuperRESTForEAP<T> {
     @Path("{offset}/{pageSize}")
     @Produces({MediaType.APPLICATION_JSON})
     @Deprecated
-    public ResponseData findAll(@PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData findAll(@PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 List<T> list = getSuperEJB().findAll(offset, pageSize);
@@ -180,7 +185,10 @@ public abstract class SuperRESTForEAP<T> {
     @GET
     @Path("pagination/{filters}/{sorts}")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData findByFiltering(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @QueryParam("offset") Integer offset, @QueryParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData findByFiltering(@PathParam("filters") PathSegment filters,
+            @PathParam("sorts") PathSegment sorts, @QueryParam("offset") Integer offset,
+            @QueryParam("pageSize") Integer pageSize, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
@@ -193,7 +201,8 @@ public abstract class SuperRESTForEAP<T> {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
-                        if (key.endsWith("dateBegin") || key.endsWith("DateBegin") || key.endsWith("dateEnd") || key.endsWith("DateEnd")) {
+                        if (key.endsWith("dateBegin") || key.endsWith("DateBegin") || key.endsWith("dateEnd")
+                                || key.endsWith("DateEnd")) {
                             obj = BaseLib.getDate("yyyy-MM-dd", value);
                             filterFields.put(key, obj);
                         } else {
@@ -226,7 +235,9 @@ public abstract class SuperRESTForEAP<T> {
     @Path("{filters}/{sorts}/{offset}/{pageSize}")
     @Produces({MediaType.APPLICATION_JSON})
     @Deprecated
-    public ResponseData findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts,
+            @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
@@ -239,7 +250,8 @@ public abstract class SuperRESTForEAP<T> {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
-                        if (key.endsWith("dateBegin") || key.endsWith("DateBegin") || key.endsWith("dateEnd") || key.endsWith("DateEnd")) {
+                        if (key.endsWith("dateBegin") || key.endsWith("DateBegin") || key.endsWith("dateEnd")
+                                || key.endsWith("DateEnd")) {
                             obj = BaseLib.getDate("yyyy-MM-dd", value);
                             filterFields.put(key, obj);
                         } else {

@@ -9,13 +9,10 @@ import cn.hanbell.crm.ejb.REPTABean;
 import cn.hanbell.crm.entity.REPTA;
 import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.jrs.ResponseData;
-import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.SuperEJB;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,8 +21,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 
 /**
@@ -43,52 +38,16 @@ public class REPTAFacadeREST extends SuperRESTForCRM<REPTA> {
         super(REPTA.class);
     }
 
-    @GET
-    @Path("{filters}/{sorts}/{offset}/{pageSize}")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Override
-    public List<REPTA> findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-//        if (isAuthorized(appid, token)) {
-        List<REPTA> reptaList;
-        try {
-            MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
-            MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
-            Map<String, Object> filterFields = new HashMap<>();
-            Map<String, String> sortFields = new HashMap<>();
-            String key, value;
-            if (filtersMM != null) {
-                for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
-                    key = entrySet.getKey();
-                    value = entrySet.getValue().get(0);
-                    filterFields.put(key, value);
-                }
-            }
-            if (sortsMM != null) {
-                for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
-                    key = entrySet.getKey();
-                    value = entrySet.getValue().get(0);
-                    sortFields.put(key, value);
-                }
-            }
-            reptaList = reptaBean.findByFilters(filterFields, offset, pageSize, sortFields);
-            return reptaList;
-        } catch (Exception ex) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
-//        } else {
-//            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-//        }
-    }
-
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return reptaBean;
     }
 
     @GET
     @Path("wechat/repair/{ta001}")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<JSONObject> findByTA001(@PathParam("ta001") String ta001, @QueryParam("searchWord") String ta002, @QueryParam("appid") String appid, @QueryParam("token") String token) throws Exception {
+    public ResponseData<JSONObject> findByTA001(@PathParam("ta001") String ta001, @QueryParam("searchWord") String ta002,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) throws Exception {
         if (isAuthorized(appid, token)) {
             List<Object[]> list = reptaBean.getReptaByTA001AndTA031(ta001, ta002);
             if (list == null) {
@@ -98,8 +57,9 @@ public class REPTAFacadeREST extends SuperRESTForCRM<REPTA> {
             JSONObject js;
             for (Object[] o : list) {
                 js = new JSONObject();
-//          -- 叫修单号，单据日期，客户编号,接单人员,产品品号，产品品名，产品规格，产品序号,机型,产品别，区域别,问题代号，问题描述
-//       TA002,TA003,TA004,TA009,TA005,TA006,TA007,TA013, TA500 ,TA197,TA198,TA071,TA010 
+                // -- 叫修单号，单据日期，客户编号,接单人员,产品品号，产品品名，产品规格，产品序号,机型,产品别，区域别,问题代号，问题描述
+                // TA002,TA003,TA004,TA009,TA005,TA006,TA007,TA013, TA500
+                // ,TA197,TA198,TA071,TA010
                 js.put("key", o[0]);
                 js.put("value", o[1]);
                 js.put("ta004", o[2]);
@@ -138,4 +98,5 @@ public class REPTAFacadeREST extends SuperRESTForCRM<REPTA> {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
+
 }

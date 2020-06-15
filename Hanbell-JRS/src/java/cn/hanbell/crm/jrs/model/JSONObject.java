@@ -18,30 +18,30 @@ import java.util.Set;
  *
  * @author C2082
  */
-public class JSONObject  implements Map<String, Object>, Cloneable, Serializable, InvocationHandler {
+public class JSONObject implements Map<String, Object>, Cloneable, Serializable, InvocationHandler {
 
-    private static final long         serialVersionUID         = 1L;
-    private static final int          DEFAULT_INITIAL_CAPACITY = 16;
+    private static final long serialVersionUID = 1L;
+    private static final int DEFAULT_INITIAL_CAPACITY = 16;
 
     private final Map<String, Object> map;
 
-    public JSONObject(){
+    public JSONObject() {
         this(DEFAULT_INITIAL_CAPACITY, false);
     }
 
-    public JSONObject(Map<String, Object> map){
+    public JSONObject(Map<String, Object> map) {
         this.map = map;
     }
 
-    public JSONObject(boolean ordered){
+    public JSONObject(boolean ordered) {
         this(DEFAULT_INITIAL_CAPACITY, ordered);
     }
 
-    public JSONObject(int initialCapacity){
+    public JSONObject(int initialCapacity) {
         this(initialCapacity, false);
     }
 
-    public JSONObject(int initialCapacity, boolean ordered){
+    public JSONObject(int initialCapacity, boolean ordered) {
         if (ordered) {
             map = new LinkedHashMap<String, Object>(initialCapacity);
         } else {
@@ -78,7 +78,6 @@ public class JSONObject  implements Map<String, Object>, Cloneable, Serializable
 //
 //        return (JSONObject) toJSON(value);
 //    }
-
 //    public JSONArray getJSONArray(String key) {
 //        Object value = map.get(key);
 //
@@ -93,7 +92,6 @@ public class JSONObject  implements Map<String, Object>, Cloneable, Serializable
 //        Object obj = map.get(key);
 //        return TypeUtils.castToJavaBean(obj, clazz);
 //    }
-
 //    public Boolean getBoolean(String key) {
 //        Object value = get(key);
 //
@@ -231,7 +229,6 @@ public class JSONObject  implements Map<String, Object>, Cloneable, Serializable
 //
 //        return castToBigInteger(value);
 //    }
-
     public String getString(String key) {
         Object value = get(key);
 
@@ -259,7 +256,6 @@ public class JSONObject  implements Map<String, Object>, Cloneable, Serializable
 //
 //        return castToTimestamp(value);
 //    }
-
     public Object put(String key, Object value) {
         return map.put(key, value);
     }
@@ -306,4 +302,3 @@ public class JSONObject  implements Map<String, Object>, Cloneable, Serializable
         return null;
     }
 }
-

@@ -6,9 +6,7 @@
 package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.PORBGBean;
-import cn.hanbell.crm.entity.DFWEL;
 import cn.hanbell.crm.entity.PORBG;
-import cn.hanbell.crm.entity.WARMA;
 import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
@@ -41,7 +39,7 @@ public class PORBGFacadeREST extends SuperRESTForCRM<PORBG> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return porbgbean;
     }
 
     /**

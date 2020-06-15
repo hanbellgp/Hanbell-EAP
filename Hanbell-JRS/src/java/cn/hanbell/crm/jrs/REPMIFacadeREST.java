@@ -6,24 +6,20 @@
 package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.REPMIBean;
-import cn.hanbell.crm.entity.REPMA;
 import cn.hanbell.crm.entity.REPMI;
 import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.SuperEJB;
-import com.sun.xml.xsom.impl.scd.Iterators;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 
 /**
@@ -35,7 +31,7 @@ import javax.ws.rs.core.Response;
 public class REPMIFacadeREST extends SuperRESTForCRM<REPMI> {
 
     @EJB
-    private REPMIBean eromibean;
+    private REPMIBean repmiBean;
 
     public REPMIFacadeREST() {
         super(REPMI.class);
@@ -43,7 +39,7 @@ public class REPMIFacadeREST extends SuperRESTForCRM<REPMI> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return repmiBean;
     }
 
     @GET
@@ -51,7 +47,7 @@ public class REPMIFacadeREST extends SuperRESTForCRM<REPMI> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findProductNumber(@QueryParam("searchWord") String MI001, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<Object[]> list = eromibean.findProductNumber(MI001);
+            List<Object[]> list = repmiBean.findProductNumber(MI001);
             List<JSONObject> jsonobjects = new ArrayList<>();
             JSONObject js = new JSONObject();
             for (int i = 0; i < list.size(); i++) {
@@ -72,4 +68,5 @@ public class REPMIFacadeREST extends SuperRESTForCRM<REPMI> {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
+
 }
