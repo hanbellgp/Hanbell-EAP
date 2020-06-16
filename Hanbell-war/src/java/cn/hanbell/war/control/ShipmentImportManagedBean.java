@@ -232,7 +232,7 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                     
                                     //冰山冷热专属二维码
                                 case "SLN00028":
-                                    content.append(sd.getCustomerItem());
+                                    content.append(sd.getCustomerItem()).append(" ").append(sd.getItemDesc()).append("|").append(sd.getItemModel());
                                     break;
                             }
                             if (content.length() > 0) {
