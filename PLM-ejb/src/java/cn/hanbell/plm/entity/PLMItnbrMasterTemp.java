@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PLMItnbrMasterTemp.findByItemNumber", query = "SELECT p FROM PLMItnbrMasterTemp p WHERE p.itemNumber = :itemNumber"),
     @NamedQuery(name = "PLMItnbrMasterTemp.findById", query = "SELECT p FROM PLMItnbrMasterTemp p WHERE p.id = :id"),
     @NamedQuery(name = "PLMItnbrMasterTemp.findByProno", query = "SELECT p FROM PLMItnbrMasterTemp p WHERE p.prono = :prono"),
-    @NamedQuery(name = "PLMItnbrMasterTemp.findNeedThrow", query = "SELECT p FROM PLMItnbrMasterTemp p WHERE p.prono<>'A' AND p.prono<>'B' AND (p.cTriggerYn <> 'Y' OR p.cTriggerYn is null)")})
+    @NamedQuery(name = "PLMItnbrMasterTemp.findNeedThrow", query = "SELECT p FROM PLMItnbrMasterTemp p WHERE p.prono<>'A' AND p.prono<>'B' AND p.prono<>'' AND (p.cTriggerYn <> 'Y' OR p.cTriggerYn is null)")})
 public class PLMItnbrMasterTemp implements Serializable {
 
     private static final long serialVersionUID = 1L;
