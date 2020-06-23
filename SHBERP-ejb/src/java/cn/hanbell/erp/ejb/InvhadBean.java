@@ -14,6 +14,8 @@ import cn.hanbell.erp.entity.Invdta;
 import cn.hanbell.erp.entity.InvdtaPK;
 import cn.hanbell.erp.entity.Invhad;
 import cn.hanbell.erp.entity.InvhadPK;
+import cn.hanbell.erp.entity.Invhdsc;
+import cn.hanbell.erp.entity.InvhdscPK;
 import cn.hanbell.erp.entity.Invmas;
 import cn.hanbell.erp.entity.Invsys;
 import cn.hanbell.erp.entity.Invtrn;
@@ -96,6 +98,8 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
     private InvtrnBean invtrnBean;
     @EJB
     private InvdtaBean invdtaBean;
+    @EJB
+    private InvhdscBean invhdscBean;
 
     public InvhadBean() {
         super(Invhad.class);
@@ -207,6 +211,17 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 invdtaBean.getEntityManager().flush();
 
             }
+            //加入表头备注栏位说明
+            Invhdsc invhdsc = new Invhdsc();
+            InvhdscPK invhdscPK = new InvhdscPK();
+            invhdscPK.setFacno(facno);
+            invhdscPK.setProno(prono);
+            invhdscPK.setTrno(trno);
+            invhdsc.setInvhdscPK(invhdscPK);
+            invhdsc.setMark1(h.getMark1());
+            invhdscBean.setCompany(facno);
+            invhdscBean.persist(invhdsc);
+            //回写ERP单号到OA
             h.setPzno(trno);
             hkfw006inv310Bean.update(h);
             HKFW006 fw006 = hkfw006Bean.findByPSN(psn);
