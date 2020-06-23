@@ -72,7 +72,7 @@ public class Demands extends FormEntity {
     @Size(max = 255)
     @Column(name = "procedureName")
     private String procedureName;
-    @Size(max = 255)
+    @Size(max = 45)
     @Column(name = "demandResume")
     private String demandResume;
     @Column(name = "demandDate")

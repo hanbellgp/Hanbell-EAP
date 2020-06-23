@@ -132,9 +132,9 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
     public ResponseObject fetchYun(@QueryParam("userid") String userid, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             ResponseObject res = null;
-            YunUser yu = new YunUser();
             SystemUser su = systemUserBean.findByUserId(userid);
             if (su != null) {
+                YunUser yu = new YunUser();
                 yu.setUserid(su.getUserid());
                 yu.setName(su.getUsername());
                 yu.setEmail(su.getEmail());
@@ -142,10 +142,22 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
                 yu.setTitle("Some Title");
                 yu.setPhone(su.getPhone());
                 yu.setAddress("湖滨大道");
-                Map<String, String> tag = new HashMap<>();
-                tag.put("1", "Java EE");
-                tag.put("2", "React");
-                yu.setTags(tag);
+                List<Map<String, String>> tags = new ArrayList<>();
+                Map<String, String> tag;
+                tag = new HashMap<>();
+                tag.put("key", "0");
+                tag.put("label", "ERP问题专家");
+                tags.add(tag);
+                tag = new HashMap<>();
+                tag.put("key", "1");
+                tag.put("label", "Java架构师");
+                tags.add(tag);
+                tag = new HashMap<>();
+                tag.put("key", "3");
+                tag.put("label", "React先行者");
+                tags.add(tag);
+
+                yu.setTags(tags);
 
                 res = new ResponseObject<>("200", "success", yu);
             } else {

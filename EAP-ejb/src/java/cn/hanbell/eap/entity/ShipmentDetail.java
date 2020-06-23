@@ -270,9 +270,10 @@ public class ShipmentDetail extends FormDetailEntity {
     public void setRelseq(Integer relseq) {
         this.relseq = relseq;
     }
+
     //由于得到的shpdate是日期格式， 报表中无法追加字符串，报表fetch事件中引用该方法
-    public String getShpdateAndLotseq(){
-        String date=BaseLib.formatDate("yyyyMMdd", this.getShpdate());
+    public String getShpdateAndLotseq() {
+        String date = BaseLib.formatDate("yyyyMMdd", this.getShpdate());
         return new StringBuffer(date).append("-").append(this.getLotseq()).toString();
     }
 
