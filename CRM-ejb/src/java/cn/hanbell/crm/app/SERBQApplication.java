@@ -21,6 +21,7 @@ public class SERBQApplication implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+   
     private Long id;
     private String employeeId;
     private String deptId;
@@ -57,8 +58,9 @@ public class SERBQApplication implements Serializable {
     private String unifyNum;
     private String warrantyStart;
     private String warrantyEnd;
+    private String sessionkey;
+    private String openId;
     @Override
-
     public int hashCode() {
         int hash = 3;
         return hash;
@@ -368,6 +370,22 @@ public class SERBQApplication implements Serializable {
 
     public void setWarrantyEnd(String warrantyEnd) {
         this.warrantyEnd = warrantyEnd;
+    }
+
+    public String getSessionkey() {
+        return sessionkey;
+    }
+
+    public void setSessionkey(String sessionkey) {
+        this.sessionkey = sessionkey;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 
 }

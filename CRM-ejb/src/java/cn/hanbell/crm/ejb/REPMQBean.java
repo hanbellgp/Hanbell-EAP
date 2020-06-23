@@ -20,17 +20,29 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class REPMQBean extends SuperEJBForCRM<REPMQ>{
+public class REPMQBean extends SuperEJBForCRM<REPMQ> {
 
     public REPMQBean() {
         super(REPMQ.class);
     }
-    
+
+    //客诉单别
     public List<Object[]> findForm() {
-       Query query=getEntityManager().createNativeQuery( "Select DISTINCT MQ001,MQ002 from REPMQ Left join  REPMU on MQ001=MU001 Where MQ003=N'a1'and (( MU003=N'CRMDS' and MQ010='Y' )  or MQ010='N' )");
+        Query query = getEntityManager().createNativeQuery("Select DISTINCT MQ001,MQ002 from REPMQ Left join  REPMU on MQ001=MU001 Where MQ003=N'a1'and (( MU003=N'CRMDS' and MQ010='Y' )  or MQ010='N' )");
         try {
-           List<Object[]> list = query.getResultList();
-            return  list;
+            List<Object[]> list = query.getResultList();
+            return list;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    //维修单别
+    public List<Object[]> findMaintainForm() {
+        Query query = getEntityManager().createNativeQuery("SELECT  TOP 50 * FROM ( Select DISTINCT MQ001,MQ002,MQ008 from CRMDB..REPMQ REPMQ Left join CRMDB..REPMU  as REPMU on MQ001=MU001 Where MQ003=N'a2' and (( MU003=N'CRMDS' and MQ010='Y' )  or MQ010='N' ) ) AS tData  order by MQ001");
+        try {
+            List<Object[]> list = query.getResultList();
+            return list;
         } catch (Exception ex) {
             return null;
         }

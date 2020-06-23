@@ -42,7 +42,7 @@ public class REPTABean extends SuperEJBForCRM<REPTA> {
         String ls_no = "";
         String ls_ta002 = "";
         String serial = "000";
-        ls_ta002 = BaseLib.formatDate("yyyyMMdd", date);
+        ls_ta002 = BaseLib.formatDate("yyyyMM", date);
         String sql = "SELECT * FROM REPTA WHERE TA001 = '" + ta001 + "' and TA002 LIKE '" + ls_ta002 + "%' ORDER BY TA002 DESC ";
         Query query = getEntityManager().createNativeQuery(sql);
         List result = query.getResultList();
@@ -61,9 +61,9 @@ public class REPTABean extends SuperEJBForCRM<REPTA> {
     }
 
     public List<Object[]> getReptaByTA001AndTA031(String ta001, String ta002) {
-        StringBuffer sql = new StringBuffer("SELECT TA002,TA003,TA004,TA009,TA005,TA006,TA007,TA013, TA500 ,TA197,TA198,TA071,TA010 FROM REPTA WHERE TA001=? and TA031='0'");
+        StringBuffer sql = new StringBuffer("SELECT TA002,TA003,TA004,TA009,TA005,TA006,TA007,TA013, TA500 ,TA197,TA198,TA071,TA010,TA017 FROM REPTA WHERE TA001=? and TA031='0'");
         if (ta002 != null && !"".equals(ta002)) {
-            sql = sql.append("and TA003 like '%").append(ta002).append("%'");
+            sql = sql.append("and TA002 like '%").append(ta002).append("%'");
         }
         try {
             Query query = getEntityManager().createNativeQuery(sql.toString());

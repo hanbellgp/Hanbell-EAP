@@ -25,10 +25,10 @@ public class DJXBean extends SuperEJBForCRM<DJX> {
         super(DJX.class);
     }
 
-    public List<Object[]> findByJX003(String JX003,String JX002) {
+    public List<Object[]> findByJX003(String JX003,String JX001) {
         StringBuffer sql=new StringBuffer("SELECT JX001,JX002 FROM DJX WHERE JX003 = ? ");
-        if(JX002!=null&&!"".equals(JX002)){
-            sql=sql.append("AND JX002 like").append("'%"+JX002+"%'");
+        if(JX001!=null&&!"".equals(JX001)){
+            sql=sql.append("AND JX001 like").append("'%"+JX001+"%'");
         }
         Query query = getEntityManager().createNativeQuery(sql.toString());
         query.setParameter(1, JX003);

@@ -125,20 +125,46 @@ public class REPMIBean extends SuperEJBForCRM<REPMI> {
         return null;
     }
 
-    public List<Object[]> findProductNumber(String MI001) {
-
-        StringBuffer sql = new StringBuffer("Select top 200 MI002,MI001,MB002,MB003,MI008,MI009 from REPMI "
+    public List<Object[]> findProductNumber(String MI002) {
+        StringBuffer sql = new StringBuffer("Select top 200 MI002,MI001,MB002,MB003,MI008,MI009,MB004 from REPMI "
                 + "left join WARMB ON MB001 = MI001  Where  N'' IN (MI001,'')  AND N'' IN (MI002,'')  "
                 + "AND MI005='N' AND MI011='N' AND ISNULL(MI010,'') = '' ");
         Query query = null;
-        if (!"undefined".equals(MI001) && !"".equals(MI001) && MI001 != null) {
-            sql = new StringBuffer("Select top 200 MI002,MI001,MB002,MB003,MI008,MI009 from REPMI "
-                + "left join WARMB ON MB001 = MI001  Where  N'' IN (MI001,'')  AND N'' IN (MI002,'')  "
-                + "AND MI005='N' AND MI011='N' AND ISNULL(MI010,'') = '' And MB002 Like ");
-            query = getEntityManager().createNativeQuery(sql.append(new StringBuffer("'%").append(MI001).append("%'")).toString());
-        } else {
-            query = getEntityManager().createNativeQuery(sql.toString());
+        if (!"undefined".equals(MI002) && !"".equals(MI002) && MI002 != null) {
+            sql = sql.append(new StringBuffer(" And MI002 Like"));
+            sql = sql.append(new StringBuffer("'%").append(MI002).append("%'"));
+
         }
+
+        query = getEntityManager().createNativeQuery(sql.toString());
+
+        try {
+            List<Object[]> list = query.getResultList();
+            return list;
+        } catch (Exception ex) {
+            System.out.println("ex=" + ex);
+            return null;
+        }
+    }
+
+    public List<Object[]> findProductQuality(String MB001) {
+        SimpleDateFormat sim = new SimpleDateFormat("yyyyMMdd");
+        String data = sim.format(new Date());
+        StringBuffer sql = new StringBuffer("SELECT  TOP 50 * FROM ( SELECT MB001,MB002,MB003,MB057,MB058,MB004\n"
+                + "FROM CRMDB..WARMB WARMB INNER JOIN CRMDB..WARMA WARMA ON (MA001 = '1' AND MA002 = MB008 AND MA006 <> 'Y') OR (MA001 = '2' AND MA002 =MB009 AND MA006 <> 'Y')\n"
+                + "WHERE MB010 <> 'Y' AND MA001 = (SELECT AA001 FROM CRMDB..SERAA) AND ((ISNULL(MB057,'') = '' AND ISNULL(MB058,'') = '') OR\n"
+                + "(ISNULL(MB057,'') = '' AND CONVERT(CHAR(8), ");
+        sql = sql.append(data).append(",112) <= MB058) OR (ISNULL(MB058,'') = '' AND MB057 <= CONVERT(CHAR(8), ").append(data).append(" ,112)) OR (CONVERT(CHAR(8), ").append(data);
+        sql.append(" ,112) <= MB058 AND MB057 <= CONVERT(CHAR(8), ").append(data).append(",112)) )");
+        Query query = null;
+        if (!"undefined".equals(MB001) && !"".equals(MB001) && MB001 != null) {
+            sql = sql.append(" AND MB001 LIKE '%").append(MB001).append("%') AS tData");
+
+        }else{
+        sql=sql.append(")AS tData");
+        }
+        query = getEntityManager().createNativeQuery(sql.toString());
+
         try {
             List<Object[]> list = query.getResultList();
             return list;

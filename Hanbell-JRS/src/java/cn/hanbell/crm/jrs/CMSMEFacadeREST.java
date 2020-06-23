@@ -5,8 +5,8 @@
  */
 package cn.hanbell.crm.jrs;
 
-import cn.hanbell.crm.ejb.SERACBean;
-import cn.hanbell.crm.entity.SERAC;
+import cn.hanbell.crm.ejb.CMSMEBean;
+import cn.hanbell.crm.entity.CMSME;
 import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
@@ -16,7 +16,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
@@ -27,15 +26,15 @@ import javax.ws.rs.core.Response;
  *
  * @author C2082
  */
-@Path("crm/serac")
+@Path("crm/cmsme")
 @javax.enterprise.context.RequestScoped
-public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
+public class CMSMEFacadeREST extends SuperRESTForCRM<CMSME> {
 
     @EJB
-    private SERACBean seracbean;
+    private CMSMEBean cmsmebean;
 
-    public SERACFacadeREST() {
-        super(SERAC.class);
+    public CMSMEFacadeREST() {
+        super(CMSME.class);
     }
 
     @Override
@@ -44,20 +43,19 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
     }
 
     /**
-     * 问题内容开窗
+     * 发货部门
      * 
-     * @param BQ003_value
-     * @param AK003
+     * @param me001
      * @param appid
      * @param token
      * @return 
      */
     @GET
-    @Path("wechat/problemtype/{BQ003_value}")
+    @Path("wechat/deliverydept/")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<JSONObject> findProblemType(@PathParam("BQ003_value") String BQ003_value, @QueryParam("searchWord") String AK003, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData<JSONObject> findDeliverydept(@QueryParam("searchWord") String me001, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<Object[]> list = seracbean.findProblemType(BQ003_value, AK003);
+            List<Object[]> list = cmsmebean.findByLikeId(me001);
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
@@ -67,8 +65,6 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
                 js = new JSONObject();
                 js.put("key", list.get(i)[0]);
                 js.put("value", list.get(i)[1]);
-                js.put("value1", list.get(i)[2]);//紧急度
-                js.put("value2", list.get(i)[3]);//紧急度名称
                 objs.add(js);
             }
             ResponseData responseData = new ResponseData("200", "seccess");
@@ -79,4 +75,5 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
+
 }

@@ -336,6 +336,9 @@ public class WARTA implements Serializable {
     @Size(max = 30)
     @Column(name = "TA043")
     private String ta043;
+    @Size(max = 30)
+    @Column(name = "TA519")
+    private String ta519;
 
     public WARTA() {
     }
@@ -954,6 +957,14 @@ public class WARTA implements Serializable {
 
     public void setTa043(String ta043) {
         this.ta043 = ta043;
+    }
+
+    public String getTa519() {
+        return ta519;
+    }
+
+    public void setTa519(String ta519) {
+        this.ta519 = ta519;
     }
 
     @Override

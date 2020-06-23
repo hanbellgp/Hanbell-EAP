@@ -6,7 +6,10 @@
 package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.REPMQBean;
+import cn.hanbell.crm.ejb.REPMUBean;
 import cn.hanbell.crm.entity.REPMQ;
+import cn.hanbell.crm.entity.REPMU;
+
 import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
@@ -37,16 +40,65 @@ public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ> {
 
     @EJB
     private REPMQBean repmqBean;
+    @EJB
+    private REPMUBean repmuban;
 
     public REPMQFacadeREST() {
         super(REPMQ.class);
     }
 
+    @GET
+    @Path("{filters}/{sorts}/{offset}/{pageSize}")
+    @Produces({MediaType.APPLICATION_JSON})
     @Override
-    protected SuperEJB getSuperEJB() {
-        return repmqBean;
+    public ResponseData findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            List<REPMQ> repmqList;
+            try {
+                MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
+                MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
+                Map<String, Object> filterFields = new HashMap<>();
+                Map<String, String> sortFields = new HashMap<>();
+                String key, value;
+                if (filtersMM != null) {
+                    for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
+                        key = entrySet.getKey();
+                        value = entrySet.getValue().get(0);
+                        filterFields.put(key, value);
+                    }
+                }
+                if (sortsMM != null) {
+                    for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
+                        key = entrySet.getKey();
+                        value = entrySet.getValue().get(0);
+                        sortFields.put(key, value);
+                    }
+                }
+                repmqList = repmqBean.findByFilters(filterFields, offset, pageSize, sortFields);
+                ResponseData responseData = new ResponseData("200", "seccess");
+                responseData.setData(repmqList);
+                responseData.setCount(repmqList.size());
+                return responseData;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
     }
 
+    @Override
+    protected SuperEJB getSuperEJB() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * 客诉单别
+     *
+     * @param appid
+     * @param token
+     * @return
+     */
     @GET
     @Path("wechat/form")
     @Produces({MediaType.APPLICATION_JSON})
@@ -73,4 +125,37 @@ public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ> {
         }
     }
 
+    /**
+     * 维修单别
+     *
+     * @param employeeId
+     * @param appid
+     * @param token
+     * @return
+     */
+    @GET
+    @Path("wechat/maintainform/{employeeId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData findMaintainForm(@PathParam("employeeId") String employeeId, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            List<REPMU> list = repmuban.findByMu001(employeeId);
+            if (list == null) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+            List<JSONObject> objs = new ArrayList<>();
+            JSONObject js = null;
+            for (REPMU r : list) {
+                js = new JSONObject();
+                js.put("key", r.getRepmq().getMq001());
+                js.put("value", r.getRepmq().getMq002());
+                objs.add(js);
+            }
+            ResponseData responseData = new ResponseData("200", "seccess");
+            responseData.setData(objs);
+            responseData.setCount(objs.size());
+            return responseData;
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
 }

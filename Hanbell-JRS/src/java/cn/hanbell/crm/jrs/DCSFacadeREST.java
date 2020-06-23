@@ -42,11 +42,57 @@ public class DCSFacadeREST extends SuperRESTForCRM<DCS> {
         super(DCS.class);
     }
 
+    @GET
+    @Path("{filters}/{sorts}/{offset}/{pageSize}")
+    @Produces({MediaType.APPLICATION_JSON})
     @Override
-    protected SuperEJB getSuperEJB() {
-        return dcsBean;
+    public ResponseData findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            List<DCS> dcsList;
+            try {
+                MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
+                MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
+                Map<String, Object> filterFields = new HashMap<>();
+                Map<String, String> sortFields = new HashMap<>();
+                String key, value;
+                if (filtersMM != null) {
+                    for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
+                        key = entrySet.getKey();
+                        value = entrySet.getValue().get(0);
+                        filterFields.put(key, value);
+                    }
+                }
+                if (sortsMM != null) {
+                    for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
+                        key = entrySet.getKey();
+                        value = entrySet.getValue().get(0);
+                        sortFields.put(key, value);
+                    }
+                }
+
+                ResponseData responseData = new ResponseData("200", "seccess");
+                dcsList = dcsBean.findByFilters(filterFields, offset, pageSize, sortFields);
+                responseData.setCount(dcsList.size());
+                responseData.setData(dcsList);
+
+                return responseData;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
     }
 
+    /**
+     * 事发区
+     *
+     * @param city
+     * @param cityname
+     * @param appid
+     * @param token
+     * @return
+     */
     @GET
     @Path("wechat/incidentCity/{city}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -71,6 +117,11 @@ public class DCSFacadeREST extends SuperRESTForCRM<DCS> {
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
+    }
+
+    @Override
+    protected SuperEJB getSuperEJB() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

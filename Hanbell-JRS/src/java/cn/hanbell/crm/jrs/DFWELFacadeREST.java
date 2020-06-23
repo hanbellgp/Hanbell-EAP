@@ -31,7 +31,7 @@ import javax.ws.rs.core.Response;
 public class DFWELFacadeREST extends SuperRESTForCRM<DFWEL> {
 
     @EJB
-    private DFWELBean dfwelBean;
+    private DFWELBean dfwelbaean;
 
     public DFWELFacadeREST() {
         super(DFWEL.class);
@@ -39,15 +39,23 @@ public class DFWELFacadeREST extends SuperRESTForCRM<DFWEL> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        return dfwelBean;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    
+    /**
+     * 产普别选择
+     * 
+     * @param appid
+     * @param token
+     * @return 
+     */
     @GET
     @Path("wechat/product")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<DFWEL> findProduct(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<DFWEL> list = dfwelBean.findAll();
+            List<DFWEL> list = dfwelbaean.findAll();
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
@@ -67,5 +75,4 @@ public class DFWELFacadeREST extends SuperRESTForCRM<DFWEL> {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-
 }
