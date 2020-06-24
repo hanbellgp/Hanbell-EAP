@@ -9,8 +9,6 @@ import cn.hanbell.eap.ejb.DemandsBean;
 import cn.hanbell.eap.ejb.TaskBean;
 import cn.hanbell.eap.entity.Demands;
 import cn.hanbell.eap.entity.Task;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -19,7 +17,7 @@ import javax.naming.NamingException;
  *
  * @author C0160
  */
-public class DemandTaskContext implements TaskContext<Demands> {
+public class TaskContextDemand implements TaskContext<Demands> {
 
     DemandsBean demandsBean = lookupDemandsBean();
 
@@ -93,7 +91,6 @@ public class DemandTaskContext implements TaskContext<Demands> {
             Context c = new InitialContext();
             return (DemandsBean) c.lookup("java:global/Hanbell-EAP/EAP-ejb/DemandsBean!cn.hanbell.eap.ejb.DemandsBean");
         } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
@@ -103,7 +100,6 @@ public class DemandTaskContext implements TaskContext<Demands> {
             Context c = new InitialContext();
             return (TaskBean) c.lookup("java:global/Hanbell-EAP/EAP-ejb/TaskBean!cn.hanbell.eap.ejb.TaskBean");
         } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }

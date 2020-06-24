@@ -5,7 +5,7 @@
  */
 package cn.hanbell.eap.comm;
 
-import cn.hanbell.eap.context.DemandTaskContext;
+import cn.hanbell.eap.context.TaskContextDemand;
 import cn.hanbell.eap.context.TaskContext;
 
 /**
@@ -21,7 +21,7 @@ public class TaskContextFactory {
                 return null;
             case "D":
             case "DEMAND":
-                return new DemandTaskContext();
+                return new TaskContextDemand();
             case "T":
             case "TASK":
                 return null;
