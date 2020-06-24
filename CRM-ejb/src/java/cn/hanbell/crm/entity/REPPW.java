@@ -9,8 +9,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,64 +25,68 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "REPPW")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "REPPW.findAll", query = "SELECT r FROM REPPW r")
-    , @NamedQuery(name = "REPPW.findByCompany", query = "SELECT r FROM REPPW r WHERE r.company = :company")
-    , @NamedQuery(name = "REPPW.findByCreator", query = "SELECT r FROM REPPW r WHERE r.creator = :creator")
-    , @NamedQuery(name = "REPPW.findByUsrGroup", query = "SELECT r FROM REPPW r WHERE r.usrGroup = :usrGroup")
-    , @NamedQuery(name = "REPPW.findByCreateDate", query = "SELECT r FROM REPPW r WHERE r.createDate = :createDate")
-    , @NamedQuery(name = "REPPW.findByModifier", query = "SELECT r FROM REPPW r WHERE r.modifier = :modifier")
-    , @NamedQuery(name = "REPPW.findByModiDate", query = "SELECT r FROM REPPW r WHERE r.modiDate = :modiDate")
-    , @NamedQuery(name = "REPPW.findByFlag", query = "SELECT r FROM REPPW r WHERE r.flag = :flag")
-    , @NamedQuery(name = "REPPW.findByReppw01", query = "SELECT r FROM REPPW r WHERE r.reppw01 = :reppw01")
-    , @NamedQuery(name = "REPPW.findByReppw02", query = "SELECT r FROM REPPW r WHERE r.reppw02 = :reppw02")
-    , @NamedQuery(name = "REPPW.findByReppw03", query = "SELECT r FROM REPPW r WHERE r.reppw03 = :reppw03")
-    , @NamedQuery(name = "REPPW.findByReppw04", query = "SELECT r FROM REPPW r WHERE r.reppw04 = :reppw04")
-    , @NamedQuery(name = "REPPW.findByReppw05", query = "SELECT r FROM REPPW r WHERE r.reppw05 = :reppw05")
-    , @NamedQuery(name = "REPPW.findByReppw06", query = "SELECT r FROM REPPW r WHERE r.reppw06 = :reppw06")
-    , @NamedQuery(name = "REPPW.findByReppw07", query = "SELECT r FROM REPPW r WHERE r.reppw07 = :reppw07")
-    , @NamedQuery(name = "REPPW.findByReppw08", query = "SELECT r FROM REPPW r WHERE r.reppw08 = :reppw08")
-    , @NamedQuery(name = "REPPW.findByReppw09", query = "SELECT r FROM REPPW r WHERE r.reppw09 = :reppw09")
-    , @NamedQuery(name = "REPPW.findByReppw10", query = "SELECT r FROM REPPW r WHERE r.reppw10 = :reppw10")
-    , @NamedQuery(name = "REPPW.findByReppw11", query = "SELECT r FROM REPPW r WHERE r.reppw11 = :reppw11")
-    , @NamedQuery(name = "REPPW.findByReppw12", query = "SELECT r FROM REPPW r WHERE r.reppw12 = :reppw12")
-    , @NamedQuery(name = "REPPW.findByReppw13", query = "SELECT r FROM REPPW r WHERE r.reppw13 = :reppw13")
-    , @NamedQuery(name = "REPPW.findByReppw14", query = "SELECT r FROM REPPW r WHERE r.reppw14 = :reppw14")
-    , @NamedQuery(name = "REPPW.findByReppw15", query = "SELECT r FROM REPPW r WHERE r.reppw15 = :reppw15")
-    , @NamedQuery(name = "REPPW.findByReppw16", query = "SELECT r FROM REPPW r WHERE r.reppw16 = :reppw16")
-    , @NamedQuery(name = "REPPW.findByReppw17", query = "SELECT r FROM REPPW r WHERE r.reppw17 = :reppw17")
-    , @NamedQuery(name = "REPPW.findByReppw18", query = "SELECT r FROM REPPW r WHERE r.reppw18 = :reppw18")
-    , @NamedQuery(name = "REPPW.findByReppw19", query = "SELECT r FROM REPPW r WHERE r.reppw19 = :reppw19")
-    , @NamedQuery(name = "REPPW.findByReppw20", query = "SELECT r FROM REPPW r WHERE r.reppw20 = :reppw20")
-    , @NamedQuery(name = "REPPW.findByCustomer", query = "SELECT r FROM REPPW r WHERE r.customer = :customer")
-    , @NamedQuery(name = "REPPW.findByProduct", query = "SELECT r FROM REPPW r WHERE r.product = :product")
-    , @NamedQuery(name = "REPPW.findByRegion", query = "SELECT r FROM REPPW r WHERE r.region = :region")
-    , @NamedQuery(name = "REPPW.findByDealer", query = "SELECT r FROM REPPW r WHERE r.dealer = :dealer")
-    , @NamedQuery(name = "REPPW.findByPw001", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw001 = :pw001")
-    , @NamedQuery(name = "REPPW.findByPw002", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw002 = :pw002")
-    , @NamedQuery(name = "REPPW.findByPw003", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw003 = :pw003")
-    , @NamedQuery(name = "REPPW.findByPw004", query = "SELECT r FROM REPPW r WHERE r.pw004 = :pw004")
-    , @NamedQuery(name = "REPPW.findByPw005", query = "SELECT r FROM REPPW r WHERE r.pw005 = :pw005")
-    , @NamedQuery(name = "REPPW.findByPw006", query = "SELECT r FROM REPPW r WHERE r.pw006 = :pw006")
-    , @NamedQuery(name = "REPPW.findByPw007", query = "SELECT r FROM REPPW r WHERE r.pw007 = :pw007")
-    , @NamedQuery(name = "REPPW.findByPw008", query = "SELECT r FROM REPPW r WHERE r.pw008 = :pw008")
-    , @NamedQuery(name = "REPPW.findByPw009", query = "SELECT r FROM REPPW r WHERE r.pw009 = :pw009")
-    , @NamedQuery(name = "REPPW.findByPw010", query = "SELECT r FROM REPPW r WHERE r.pw010 = :pw010")
-    , @NamedQuery(name = "REPPW.findByPw011", query = "SELECT r FROM REPPW r WHERE r.pw011 = :pw011")
-    , @NamedQuery(name = "REPPW.findByPw012", query = "SELECT r FROM REPPW r WHERE r.pw012 = :pw012")
-    , @NamedQuery(name = "REPPW.findByPw013", query = "SELECT r FROM REPPW r WHERE r.pw013 = :pw013")
-    , @NamedQuery(name = "REPPW.findByPw014", query = "SELECT r FROM REPPW r WHERE r.pw014 = :pw014")
-    , @NamedQuery(name = "REPPW.findByPw015", query = "SELECT r FROM REPPW r WHERE r.pw015 = :pw015")
-    , @NamedQuery(name = "REPPW.findByPw016", query = "SELECT r FROM REPPW r WHERE r.pw016 = :pw016")
-    , @NamedQuery(name = "REPPW.findByPw017", query = "SELECT r FROM REPPW r WHERE r.pw017 = :pw017")
-    , @NamedQuery(name = "REPPW.findByPw018", query = "SELECT r FROM REPPW r WHERE r.pw018 = :pw018")
-    , @NamedQuery(name = "REPPW.findByPw019", query = "SELECT r FROM REPPW r WHERE r.pw019 = :pw019")
-    , @NamedQuery(name = "REPPW.findByPw020", query = "SELECT r FROM REPPW r WHERE r.pw020 = :pw020")
-    , @NamedQuery(name = "REPPW.findByPw021", query = "SELECT r FROM REPPW r WHERE r.pw021 = :pw021")
-    , @NamedQuery(name = "REPPW.findByPw022", query = "SELECT r FROM REPPW r WHERE r.pw022 = :pw022")
-    , @NamedQuery(name = "REPPW.findByPw023", query = "SELECT r FROM REPPW r WHERE r.pw023 = :pw023")
-    , @NamedQuery(name = "REPPW.findByPw024", query = "SELECT r FROM REPPW r WHERE r.pw024 = :pw024")
-    , @NamedQuery(name = "REPPW.findByPw025", query = "SELECT r FROM REPPW r WHERE r.pw025 = :pw025")
-    , @NamedQuery(name = "REPPW.findByPw026", query = "SELECT r FROM REPPW r WHERE r.pw026 = :pw026")})
+    @NamedQuery(name = "REPPW.findAll", query = "SELECT r FROM REPPW r"),
+    @NamedQuery(name = "REPPW.findByCompany", query = "SELECT r FROM REPPW r WHERE r.company = :company"),
+    @NamedQuery(name = "REPPW.findByCreator", query = "SELECT r FROM REPPW r WHERE r.creator = :creator"),
+    @NamedQuery(name = "REPPW.findByUsrGroup", query = "SELECT r FROM REPPW r WHERE r.usrGroup = :usrGroup"),
+    @NamedQuery(name = "REPPW.findByCreateDate", query = "SELECT r FROM REPPW r WHERE r.createDate = :createDate"),
+    @NamedQuery(name = "REPPW.findByModifier", query = "SELECT r FROM REPPW r WHERE r.modifier = :modifier"),
+    @NamedQuery(name = "REPPW.findByModiDate", query = "SELECT r FROM REPPW r WHERE r.modiDate = :modiDate"),
+    @NamedQuery(name = "REPPW.findByFlag", query = "SELECT r FROM REPPW r WHERE r.flag = :flag"),
+    @NamedQuery(name = "REPPW.findByReppw01", query = "SELECT r FROM REPPW r WHERE r.reppw01 = :reppw01"),
+    @NamedQuery(name = "REPPW.findByReppw02", query = "SELECT r FROM REPPW r WHERE r.reppw02 = :reppw02"),
+    @NamedQuery(name = "REPPW.findByReppw03", query = "SELECT r FROM REPPW r WHERE r.reppw03 = :reppw03"),
+    @NamedQuery(name = "REPPW.findByReppw04", query = "SELECT r FROM REPPW r WHERE r.reppw04 = :reppw04"),
+    @NamedQuery(name = "REPPW.findByReppw05", query = "SELECT r FROM REPPW r WHERE r.reppw05 = :reppw05"),
+    @NamedQuery(name = "REPPW.findByReppw06", query = "SELECT r FROM REPPW r WHERE r.reppw06 = :reppw06"),
+    @NamedQuery(name = "REPPW.findByReppw07", query = "SELECT r FROM REPPW r WHERE r.reppw07 = :reppw07"),
+    @NamedQuery(name = "REPPW.findByReppw08", query = "SELECT r FROM REPPW r WHERE r.reppw08 = :reppw08"),
+    @NamedQuery(name = "REPPW.findByReppw09", query = "SELECT r FROM REPPW r WHERE r.reppw09 = :reppw09"),
+    @NamedQuery(name = "REPPW.findByReppw10", query = "SELECT r FROM REPPW r WHERE r.reppw10 = :reppw10"),
+    @NamedQuery(name = "REPPW.findByReppw11", query = "SELECT r FROM REPPW r WHERE r.reppw11 = :reppw11"),
+    @NamedQuery(name = "REPPW.findByReppw12", query = "SELECT r FROM REPPW r WHERE r.reppw12 = :reppw12"),
+    @NamedQuery(name = "REPPW.findByReppw13", query = "SELECT r FROM REPPW r WHERE r.reppw13 = :reppw13"),
+    @NamedQuery(name = "REPPW.findByReppw14", query = "SELECT r FROM REPPW r WHERE r.reppw14 = :reppw14"),
+    @NamedQuery(name = "REPPW.findByReppw15", query = "SELECT r FROM REPPW r WHERE r.reppw15 = :reppw15"),
+    @NamedQuery(name = "REPPW.findByReppw16", query = "SELECT r FROM REPPW r WHERE r.reppw16 = :reppw16"),
+    @NamedQuery(name = "REPPW.findByReppw17", query = "SELECT r FROM REPPW r WHERE r.reppw17 = :reppw17"),
+    @NamedQuery(name = "REPPW.findByReppw18", query = "SELECT r FROM REPPW r WHERE r.reppw18 = :reppw18"),
+    @NamedQuery(name = "REPPW.findByReppw19", query = "SELECT r FROM REPPW r WHERE r.reppw19 = :reppw19"),
+    @NamedQuery(name = "REPPW.findByReppw20", query = "SELECT r FROM REPPW r WHERE r.reppw20 = :reppw20"),
+    @NamedQuery(name = "REPPW.findByCustomer", query = "SELECT r FROM REPPW r WHERE r.customer = :customer"),
+    @NamedQuery(name = "REPPW.findByProduct", query = "SELECT r FROM REPPW r WHERE r.product = :product"),
+    @NamedQuery(name = "REPPW.findByRegion", query = "SELECT r FROM REPPW r WHERE r.region = :region"),
+    @NamedQuery(name = "REPPW.findByDealer", query = "SELECT r FROM REPPW r WHERE r.dealer = :dealer"),
+    @NamedQuery(name = "REPPW.findByPw001", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw001 = :pw001"),
+    @NamedQuery(name = "REPPW.findByPw002", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw002 = :pw002"),
+    @NamedQuery(name = "REPPW.findByPw003", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw003 = :pw003"),
+    @NamedQuery(name = "REPPW.findByPw004", query = "SELECT r FROM REPPW r WHERE r.pw004 = :pw004"),
+    @NamedQuery(name = "REPPW.findByPw005", query = "SELECT r FROM REPPW r WHERE r.pw005 = :pw005"),
+    @NamedQuery(name = "REPPW.findByPw006", query = "SELECT r FROM REPPW r WHERE r.pw006 = :pw006"),
+    @NamedQuery(name = "REPPW.findByPw007", query = "SELECT r FROM REPPW r WHERE r.pw007 = :pw007"),
+    @NamedQuery(name = "REPPW.findByPw008", query = "SELECT r FROM REPPW r WHERE r.pw008 = :pw008"),
+    @NamedQuery(name = "REPPW.findByPw009", query = "SELECT r FROM REPPW r WHERE r.pw009 = :pw009"),
+    @NamedQuery(name = "REPPW.findByPw010", query = "SELECT r FROM REPPW r WHERE r.pw010 = :pw010"),
+    @NamedQuery(name = "REPPW.findByPw011", query = "SELECT r FROM REPPW r WHERE r.pw011 = :pw011"),
+    @NamedQuery(name = "REPPW.findByPw012", query = "SELECT r FROM REPPW r WHERE r.pw012 = :pw012"),
+    @NamedQuery(name = "REPPW.findByPw013", query = "SELECT r FROM REPPW r WHERE r.pw013 = :pw013"),
+    @NamedQuery(name = "REPPW.findByPw014", query = "SELECT r FROM REPPW r WHERE r.pw014 = :pw014"),
+    @NamedQuery(name = "REPPW.findByPw015", query = "SELECT r FROM REPPW r WHERE r.pw015 = :pw015"),
+    @NamedQuery(name = "REPPW.findByPw016", query = "SELECT r FROM REPPW r WHERE r.pw016 = :pw016"),
+    @NamedQuery(name = "REPPW.findByPw017", query = "SELECT r FROM REPPW r WHERE r.pw017 = :pw017"),
+    @NamedQuery(name = "REPPW.findByPw018", query = "SELECT r FROM REPPW r WHERE r.pw018 = :pw018"),
+    @NamedQuery(name = "REPPW.findByPw019", query = "SELECT r FROM REPPW r WHERE r.pw019 = :pw019"),
+    @NamedQuery(name = "REPPW.findByPw020", query = "SELECT r FROM REPPW r WHERE r.pw020 = :pw020"),
+    @NamedQuery(name = "REPPW.findByPw021", query = "SELECT r FROM REPPW r WHERE r.pw021 = :pw021"),
+    @NamedQuery(name = "REPPW.findByPw022", query = "SELECT r FROM REPPW r WHERE r.pw022 = :pw022"),
+    @NamedQuery(name = "REPPW.findByPw023", query = "SELECT r FROM REPPW r WHERE r.pw023 = :pw023"),
+    @NamedQuery(name = "REPPW.findByPw024", query = "SELECT r FROM REPPW r WHERE r.pw024 = :pw024"),
+    @NamedQuery(name = "REPPW.findByPw025", query = "SELECT r FROM REPPW r WHERE r.pw025 = :pw025"),
+    @NamedQuery(name = "REPPW.findByPw026", query = "SELECT r FROM REPPW r WHERE r.pw026 = :pw026"),
+    @NamedQuery(name = "REPPW.findByPw001AndPw002", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw001 = :pw001 AND r.rEPPWPK.pw002 = :pw002"),
+    @NamedQuery(name = "REPPW.findByPw001AndPw002AndPw010AndPw019", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw001 = :pw001 AND r.rEPPWPK.pw002 = :pw002 AND r.pw010 = :pw010 AND r.pw019 = :pw019"),
+     @NamedQuery(name = "REPPW.findByPw001AndPw002AndPw010", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw001 = :pw001 AND r.rEPPWPK.pw002 = :pw002 AND r.pw010 = :pw010")
+})
 public class REPPW implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -246,7 +252,9 @@ public class REPPW implements Serializable {
     @Size(max = 20)
     @Column(name = "PW026")
     private String pw026;
-
+    @JoinColumn(name = "PW004", referencedColumnName = "MV001", insertable = false, updatable = false)
+    @OneToOne(optional = true)
+    private CMSMV cmsmv;
     public REPPW() {
     }
 
@@ -698,6 +706,14 @@ public class REPPW implements Serializable {
         this.pw026 = pw026;
     }
 
+    public CMSMV getCmsmv() {
+        return cmsmv;
+    }
+
+    public void setCmsmv(CMSMV cmsmv) {
+        this.cmsmv = cmsmv;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -722,5 +738,5 @@ public class REPPW implements Serializable {
     public String toString() {
         return "cn.hanbell.crm.entity.REPPW[ rEPPWPK=" + rEPPWPK + " ]";
     }
-    
+
 }

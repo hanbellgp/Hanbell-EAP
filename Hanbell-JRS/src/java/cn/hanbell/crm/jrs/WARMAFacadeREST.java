@@ -39,11 +39,19 @@ public class WARMAFacadeREST extends SuperRESTForCRM<WARMA> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        return warmaBean;
+      return warmaBean;
     }
 
+    /**
+     * 产品类型开窗
+     *
+     * @param MA003
+     * @param appid
+     * @param token
+     * @return
+     */
     @GET
-    @Path("wechat/producttype/")
+    @Path("producttype/")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findProductType(@QueryParam("searchWord") String MA003, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
@@ -68,8 +76,16 @@ public class WARMAFacadeREST extends SuperRESTForCRM<WARMA> {
         }
     }
 
+    /**
+     * 品号开窗
+     * 
+     * @param MB002
+     * @param appid
+     * @param token
+     * @return 
+     */
     @GET
-    @Path("wechat/productquality")
+    @Path("productquality")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findProductQuality(@QueryParam("searchWord") String MB002, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

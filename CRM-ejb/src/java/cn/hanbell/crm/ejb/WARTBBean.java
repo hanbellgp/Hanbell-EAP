@@ -7,6 +7,8 @@ package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
 import cn.hanbell.crm.entity.WARTB;
+import java.text.DecimalFormat;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -31,6 +33,24 @@ public class WARTBBean extends SuperEJBForCRM<WARTB> {
         try {
             Object o = query.getSingleResult();
             return (WARTB) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public String getDetailSerlByTA001AndTA002(String TA001, String TA002) {
+        Query query = getEntityManager().createNativeQuery("Select TB003 from WARTB WHERE TB001=? and TB002=?");
+        query.setParameter(1, TA001);
+        query.setParameter(2, TA002);
+        try {
+            List<Object[]> o = query.getResultList();
+            DecimalFormat decimalFormat = new DecimalFormat("0000");
+            int i = 0;
+            if (o != null) {
+                i = o.size() + 1;
+            }
+            String k = decimalFormat.format(i);
+            return k;
         } catch (Exception ex) {
             return null;
         }

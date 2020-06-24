@@ -7,6 +7,7 @@ package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
 import cn.hanbell.crm.entity.CMSME;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -35,4 +36,19 @@ public class CMSMEBean extends SuperEJBForCRM<CMSME> {
         }
     }
 
+    public List<Object[]> findByLikeId(String M2001) {
+        StringBuffer s2 = new StringBuffer("SELECT  TOP 50 * FROM ( Select ME001,ME002 from CRMDB..CMSME CMSME where ME001 like '%000%' ");
+        try {
+
+            if (M2001 != null && !"".equals(M2001)) {
+                s2.append("and  ME002 like '%").append(M2001).append("%'");
+            }
+            s2.append(") AS tData  order by ME001");
+            Query query = getEntityManager().createNativeQuery(s2.toString());
+            List<Object[]> list = query.getResultList();
+            return list;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 }

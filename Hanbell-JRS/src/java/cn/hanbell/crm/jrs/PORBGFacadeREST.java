@@ -39,17 +39,20 @@ public class PORBGFacadeREST extends SuperRESTForCRM<PORBG> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        return porbgbean;
+      return porbgbean;
     }
 
     /**
-     *
-     * @return
+     * 区域别开窗
+     * 
+     * @param appid
+     * @param token
+     * @return 
      */
     @GET
-    @Path("wechat/area")
+    @Path("area")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<PORBG> findProduct(@QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData<PORBG> findArea(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             ResponseData response = new ResponseData("200", "success");
             List<PORBG> list = porbgbean.findAll();

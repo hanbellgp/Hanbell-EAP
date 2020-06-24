@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.hanbell.crm.jrs;
+package cn.hanbell.erp.jrs;
 
-import cn.hanbell.crm.ejb.SERACBean;
-import cn.hanbell.crm.entity.SERAC;
 import cn.hanbell.crm.jrs.model.JSONObject;
+import cn.hanbell.erp.comm.SuperEJBForERP;
+import cn.hanbell.erp.ejb.MiscodeBean;
+import cn.hanbell.erp.entity.ArmhadSum;
+import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.jrs.ResponseData;
-import cn.hanbell.jrs.SuperRESTForCRM;
-import cn.hanbell.util.SuperEJB;
+import cn.hanbell.jrs.SuperRESTForERP;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -27,37 +28,34 @@ import javax.ws.rs.core.Response;
  *
  * @author C2082
  */
-@Path("crm/serac")
+@Path("shberp/miscode")
 @javax.enterprise.context.RequestScoped
-public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
-
+public class MiscodeFacadeREST  extends SuperRESTForERP<Miscode> {
+    
     @EJB
-    private SERACBean seracbean;
+    private MiscodeBean misodebean;
 
-    public SERACFacadeREST() {
-        super(SERAC.class);
+    public MiscodeFacadeREST() {
+        super(Miscode.class);
     }
 
     @Override
-    protected SuperEJB getSuperEJB() {
-      return seracbean;
+    protected SuperEJBForERP getERPEJB() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     * 问题内容开窗
-     * 
-     * @param BQ003_value
-     * @param AK003
-     * @param appid
-     * @param token
-     * @return 
-     */
     @GET
-    @Path("problemtype/{BQ003_value}")
+    @Path("tradingreason/{incentoryform}")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<JSONObject> findProblemType(@PathParam("BQ003_value") String BQ003_value, @QueryParam("searchWord") String AK003, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData<JSONObject> findProductType(@PathParam("incentoryform") String incentoryform, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<Object[]> list = seracbean.findProblemType(BQ003_value, AK003);
+            String ckind = "";
+            if ("FWLL".equals(incentoryform)) {
+                ckind = "1A";
+            } else if ("JCDF".equals(incentoryform) || "JCDX".equals(incentoryform)) {
+                ckind = "1I";
+            }
+            List<Miscode> list = misodebean.findByCkind(ckind, 'Y');
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
@@ -65,10 +63,8 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
             JSONObject js = null;
             for (int i = 0; i < list.size(); i++) {
                 js = new JSONObject();
-                js.put("key", list.get(i)[0]);
-                js.put("value", list.get(i)[1]);
-                js.put("value1", list.get(i)[2]);//紧急度
-                js.put("value2", list.get(i)[3]);//紧急度名称
+                js.put("key", list.get(i).getMiscodePK().getCode());
+                js.put("value", list.get(i).getCdesc());
                 objs.add(js);
             }
             ResponseData responseData = new ResponseData("200", "seccess");
@@ -79,4 +75,5 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
+
 }

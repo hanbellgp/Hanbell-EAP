@@ -7,6 +7,8 @@ package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
 import cn.hanbell.crm.entity.REPTC;
+import cn.hanbell.util.BaseLib;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -59,4 +61,26 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
         }
     }
 
+     public String getTC002ByTC001AndDate(String tc001, Date date) {
+        String ls_no = "";
+        String ls_ta002 = "";
+        String serial = "0000";
+        ls_ta002 = BaseLib.formatDate("yyyyMM", date);
+        String sql = "SELECT * FROM REPTC WHERE TC001 = '" + tc001 + "' and TC002 LIKE '" + ls_ta002 + "%' ORDER BY TC002 DESC ";
+        Query query = getEntityManager().createNativeQuery(sql);
+        List result = query.getResultList();
+        int m = 0;
+        if (null != result && !result.isEmpty()) {
+            m = result.size();
+            m = m + 1;
+        } else {
+            m = 1;
+        }
+        serial = serial + m;
+        serial = serial.substring(String.valueOf(m).length());
+        ls_no += ls_ta002;
+        ls_no += serial;
+        return ls_no;
+    }
+    
 }
