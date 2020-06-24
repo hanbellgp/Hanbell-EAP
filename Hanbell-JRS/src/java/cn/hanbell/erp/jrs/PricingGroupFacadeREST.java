@@ -29,7 +29,7 @@ public class PricingGroupFacadeREST extends SuperRESTForERP<PricingGroup> {
     private PricingGroupBean pricinGroupBean;
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         company = "C";
         return pricinGroupBean;
     }

@@ -34,7 +34,7 @@ public class SecuserFacadeREST extends SuperRESTForERP<Secuser> {
     private SecuserBean secuserBean;
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         company = "C";
         return secuserBean;
     }

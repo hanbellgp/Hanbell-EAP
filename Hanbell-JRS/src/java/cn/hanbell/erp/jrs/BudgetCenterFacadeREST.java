@@ -40,7 +40,7 @@ public class BudgetCenterFacadeREST extends SuperRESTForERP<BudgetCenter> {
     }
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         return budgetCenterBean;
     }
 

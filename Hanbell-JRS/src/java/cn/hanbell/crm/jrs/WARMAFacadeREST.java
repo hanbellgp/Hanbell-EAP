@@ -39,7 +39,7 @@ public class WARMAFacadeREST extends SuperRESTForCRM<WARMA> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-      return warmaBean;
+        return warmaBean;
     }
 
     /**
@@ -78,11 +78,11 @@ public class WARMAFacadeREST extends SuperRESTForCRM<WARMA> {
 
     /**
      * 品号开窗
-     * 
+     *
      * @param MB002
      * @param appid
      * @param token
-     * @return 
+     * @return
      */
     @GET
     @Path("productquality")

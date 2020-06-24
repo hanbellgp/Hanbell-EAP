@@ -33,7 +33,7 @@ public class InvbalFacadeREST extends SuperRESTForERP<Invbal> {
     private InvbalBean invbalBean;
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         company = "C";
         return invbalBean;
     }

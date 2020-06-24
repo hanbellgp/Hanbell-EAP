@@ -32,7 +32,7 @@ import javax.ws.rs.core.Response;
 public class DJXFacadeREST extends SuperRESTForCRM<DJX> {
 
     @EJB
-    private DJXBean djxbean;
+    private DJXBean djxBean;
 
     public DJXFacadeREST() {
         super(DJX.class);
@@ -40,7 +40,7 @@ public class DJXFacadeREST extends SuperRESTForCRM<DJX> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-      return djxbean;
+      return djxBean;
     }
 
     /**
@@ -57,7 +57,7 @@ public class DJXFacadeREST extends SuperRESTForCRM<DJX> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findMachinetype(@PathParam("JX003") String JX003, @QueryParam("searchWord") String JX001, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<Object[]> list = djxbean.findByJX003(JX003, JX001);
+            List<Object[]> list = djxBean.findByJX003(JX003, JX001);
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

@@ -40,49 +40,9 @@ public class REPMAFacadeREST extends SuperRESTForCRM<REPMA> {
         super(REPMA.class);
     }
 
-    @GET
-    @Path("{filters}/{sorts}/{offset}/{pageSize}")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Override
-    public ResponseData findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-        if (isAuthorized(appid, token)) {
-            List<REPMA> repmaList;
-            try {
-                MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
-                MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
-                Map<String, Object> filterFields = new HashMap<>();
-                Map<String, String> sortFields = new HashMap<>();
-                String key, value;
-                if (filtersMM != null) {
-                    for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
-                        key = entrySet.getKey();
-                        value = entrySet.getValue().get(0);
-                        filterFields.put(key, value);
-                    }
-                }
-                if (sortsMM != null) {
-                    for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
-                        key = entrySet.getKey();
-                        value = entrySet.getValue().get(0);
-                        sortFields.put(key, value);
-                    }
-                }
-                repmaList = repmaBean.findByFilters(filterFields, offset, 0, sortFields);
-                ResponseData responseData = new ResponseData("200", "seccess");
-                responseData.setData(repmaList);
-                responseData.setCount(repmaList.size());
-                return responseData;
-            } catch (Exception ex) {
-                throw new WebApplicationException(Response.Status.NOT_FOUND);
-            }
-        } else {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        }
-    }
-
     @Override
     protected SuperEJB getSuperEJB() {
-       return repmaBean;
+        return repmaBean;
     }
 
 }

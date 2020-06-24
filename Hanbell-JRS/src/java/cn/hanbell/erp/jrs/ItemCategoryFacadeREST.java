@@ -26,7 +26,7 @@ public class ItemCategoryFacadeREST extends SuperRESTForERP<ItemCategory> {
     private ItemCategoryBean itemCategoryBean;
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         company = "C";
         return itemCategoryBean;
     }

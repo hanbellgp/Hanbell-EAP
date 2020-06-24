@@ -61,13 +61,13 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
     private REPTABean reptaBean;
 
     @EJB
-    private SERCABean sercaean;
+    private SERCABean sercaBean;
 
     @EJB
     private SYSNNBean sysnnBean;
 
     @EJB
-    private CMSMGBean cmsmgbean;
+    private CMSMGBean cmsmgBean;
 
     public SERBQFacadeREST() {
         super(SERBQ.class);
@@ -238,7 +238,7 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 ta.setCustomer(entity.getCustomerCodeId());
                 ta.setTa199(entity.getDealer());//10
                 bq.setBq088(entity.getCurrency());
-                List<CMSMG> list = cmsmgbean.findByMG001(entity.getCurrency());
+                List<CMSMG> list = cmsmgBean.findByMG001(entity.getCurrency());
                 if (list != null && list.size() != 0) {
                     ta.setTa063(list.get(0).getMg003());//汇率
                     bq.setBq089(list.get(0).getMg003());
@@ -272,7 +272,7 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 }
                 ta.setTa500(entity.getMachineTypeId());
                 serbqBean.persist(bq);
-                sercaean.persist(ca);
+                sercaBean.persist(ca);
                 repiaBean.persist(ta);
                 ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");
                 msg = msg.append(bq001).append("  派工单号:" + serl);

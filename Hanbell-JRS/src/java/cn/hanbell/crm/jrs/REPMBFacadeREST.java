@@ -33,10 +33,10 @@ import javax.ws.rs.core.Response;
 public class REPMBFacadeREST extends SuperRESTForCRM<REPMB> {
 
     @EJB
-    private REPMBBean repmbbean;
+    private REPMBBean repmbBean;
 
     @EJB
-    private REPPWBean rEPPWBean;
+    private REPPWBean reppwBean;
 
     public REPMBFacadeREST() {
         super(REPMB.class);
@@ -44,7 +44,7 @@ public class REPMBFacadeREST extends SuperRESTForCRM<REPMB> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-       return repmbbean;
+       return repmbBean;
     }
 
     /**
@@ -60,7 +60,7 @@ public class REPMBFacadeREST extends SuperRESTForCRM<REPMB> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData findMaintainerson(@PathParam("deptno") String deptno, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<REPMB> list = repmbbean.findByMB003(deptno);
+            List<REPMB> list = repmbBean.findByMB003(deptno);
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

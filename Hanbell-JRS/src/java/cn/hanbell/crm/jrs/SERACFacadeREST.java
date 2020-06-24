@@ -32,7 +32,7 @@ import javax.ws.rs.core.Response;
 public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
 
     @EJB
-    private SERACBean seracbean;
+    private SERACBean seracBean;
 
     public SERACFacadeREST() {
         super(SERAC.class);
@@ -40,7 +40,7 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-      return seracbean;
+      return seracBean;
     }
 
     /**
@@ -57,7 +57,7 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findProblemType(@PathParam("BQ003_value") String BQ003_value, @QueryParam("searchWord") String AK003, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<Object[]> list = seracbean.findProblemType(BQ003_value, AK003);
+            List<Object[]> list = seracBean.findProblemType(BQ003_value, AK003);
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

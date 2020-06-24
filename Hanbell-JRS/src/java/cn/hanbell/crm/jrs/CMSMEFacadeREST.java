@@ -31,7 +31,7 @@ import javax.ws.rs.core.Response;
 public class CMSMEFacadeREST extends SuperRESTForCRM<CMSME> {
 
     @EJB
-    private CMSMEBean cmsmebean;
+    private CMSMEBean cmsmeBean;
 
     public CMSMEFacadeREST() {
         super(CMSME.class);
@@ -39,7 +39,7 @@ public class CMSMEFacadeREST extends SuperRESTForCRM<CMSME> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-       return cmsmebean;
+       return cmsmeBean;
     }
 
     /**
@@ -55,7 +55,7 @@ public class CMSMEFacadeREST extends SuperRESTForCRM<CMSME> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findDeliverydept(@QueryParam("searchWord") String me001, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<Object[]> list = cmsmebean.findByLikeId(me001);
+            List<Object[]> list = cmsmeBean.findByLikeId(me001);
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

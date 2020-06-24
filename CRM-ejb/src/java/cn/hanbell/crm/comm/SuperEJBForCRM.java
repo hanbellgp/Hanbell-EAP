@@ -24,9 +24,10 @@ import org.json.JSONObject;
  * @param <T>
  */
 public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
-
-//    private final String url = "http://localhost:8480/Hanbell-WCO/api/sendmsg/send/";//本地测试区
-    private final String url = "https://i2.hanbell.com.cn/Hanbell-WCO/api/sendmsg/send/";
+    // 测试环境
+    private final String URL = "http://localhost:8480/Hanbell-WCO/api/sendmsg/send/";
+    // 生产环境
+    // private final String URL = "https://jrs.hanbell.com.cn/Hanbell-WCO/api/sendmsg/send/";
 
     @PersistenceContext(unitName = "CRM-ejbPU")
     private EntityManager em;
@@ -40,14 +41,14 @@ public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
         return em;
     }
 
-    //发送企业微信信息
+    // 发送企业微信信息
     public String sendMsgString(String userId, String msg, String sessionkey, String openid) {
         try {
             CloseableHttpClient httpclient = HttpClients.createDefault();
-            HttpPost httpPost = new HttpPost(url+"compltaint");
-            StringBuilder jsonString = new StringBuilder("{"
-                    + "'userId':'");
-            jsonString.append(userId).append("','msg':'").append(msg).append("','sessionkey':'").append(sessionkey).append("','openid':'").append(openid).append("'}");
+            HttpPost httpPost = new HttpPost(URL + "compltaint");
+            StringBuilder jsonString = new StringBuilder("{" + "'userId':'");
+            jsonString.append(userId).append("','msg':'").append(msg).append("','sessionkey':'").append(sessionkey)
+                    .append("','openid':'").append(openid).append("'}");
             JSONObject jo = new JSONObject(jsonString.toString());
             httpPost.setHeader("content-type", "application/json");
             httpPost.setEntity(new StringEntity(jo.toString(), "UTF-8"));
