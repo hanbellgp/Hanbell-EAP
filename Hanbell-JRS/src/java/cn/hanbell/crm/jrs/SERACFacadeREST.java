@@ -40,7 +40,7 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      return seracbean;
     }
 
     /**
@@ -53,7 +53,7 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
      * @return 
      */
     @GET
-    @Path("wechat/problemtype/{BQ003_value}")
+    @Path("problemtype/{BQ003_value}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findProblemType(@PathParam("BQ003_value") String BQ003_value, @QueryParam("searchWord") String AK003, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

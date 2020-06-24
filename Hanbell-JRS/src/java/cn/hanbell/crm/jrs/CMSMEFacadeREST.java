@@ -39,7 +39,7 @@ public class CMSMEFacadeREST extends SuperRESTForCRM<CMSME> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return cmsmebean;
     }
 
     /**
@@ -51,7 +51,7 @@ public class CMSMEFacadeREST extends SuperRESTForCRM<CMSME> {
      * @return 
      */
     @GET
-    @Path("wechat/deliverydept/")
+    @Path("deliverydept/")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findDeliverydept(@QueryParam("searchWord") String me001, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

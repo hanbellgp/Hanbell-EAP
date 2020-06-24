@@ -85,7 +85,7 @@ public class REPTAFacadeREST extends SuperRESTForCRM<REPTA> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return reptaBean;
     }
 
     /**
@@ -98,7 +98,7 @@ public class REPTAFacadeREST extends SuperRESTForCRM<REPTA> {
      * @throws Exception 
      */
     @GET
-    @Path("wechat/repair/{ta001}")
+    @Path("repair/{ta001}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findRepair(@PathParam("ta001") String ta001, @QueryParam("searchWord") String ta002, @QueryParam("appid") String appid, @QueryParam("token") String token) throws Exception {
         if (isAuthorized(appid, token)) {

@@ -39,7 +39,7 @@ public class WARMAFacadeREST extends SuperRESTForCRM<WARMA> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      return warmaBean;
     }
 
     /**
@@ -51,7 +51,7 @@ public class WARMAFacadeREST extends SuperRESTForCRM<WARMA> {
      * @return
      */
     @GET
-    @Path("wechat/producttype/")
+    @Path("producttype/")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findProductType(@QueryParam("searchWord") String MA003, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
@@ -85,7 +85,7 @@ public class WARMAFacadeREST extends SuperRESTForCRM<WARMA> {
      * @return 
      */
     @GET
-    @Path("wechat/productquality")
+    @Path("productquality")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findProductQuality(@QueryParam("searchWord") String MB002, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

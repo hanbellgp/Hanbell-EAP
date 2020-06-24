@@ -89,7 +89,7 @@ public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return repmqBean;
     }
 
     /**
@@ -100,7 +100,7 @@ public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ> {
      * @return
      */
     @GET
-    @Path("wechat/form")
+    @Path("form")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData findForm(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
@@ -134,7 +134,7 @@ public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ> {
      * @return
      */
     @GET
-    @Path("wechat/maintainform/{employeeId}")
+    @Path("maintainform/{employeeId}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData findMaintainForm(@PathParam("employeeId") String employeeId, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

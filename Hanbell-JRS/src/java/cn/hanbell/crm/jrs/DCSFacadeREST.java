@@ -94,7 +94,7 @@ public class DCSFacadeREST extends SuperRESTForCRM<DCS> {
      * @return
      */
     @GET
-    @Path("wechat/incidentCity/{city}")
+    @Path("incidentCity/{city}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findIncidentCity(@PathParam("city") String city, @QueryParam("searchWord") String cityname, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
@@ -121,7 +121,7 @@ public class DCSFacadeREST extends SuperRESTForCRM<DCS> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return dcsBean;
     }
 
 }

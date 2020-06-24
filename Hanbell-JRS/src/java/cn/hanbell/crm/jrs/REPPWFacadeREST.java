@@ -153,7 +153,7 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
      * @return 
      */
     @GET
-    @Path("wechat/maintainNumber/{SerialNumber}")
+    @Path("maintainNumber/{SerialNumber}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> getMaintainPersonSerialNumber(@PathParam("SerialNumber") String SerialNumber, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
@@ -195,6 +195,6 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return reppwBean;
     }
 }

@@ -85,7 +85,7 @@ public class DSHFacadeREST extends SuperRESTForCRM<DSH> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return dshBean;
     }
 
     /**
@@ -97,7 +97,7 @@ public class DSHFacadeREST extends SuperRESTForCRM<DSH> {
      * @return
      */
     @GET
-    @Path("wechat/incidentProvince")
+    @Path("incidentProvince")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findIncidentArea(@QueryParam("searchWord") String provincename, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

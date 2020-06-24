@@ -39,7 +39,7 @@ public class WARMJFacadeREST extends SuperRESTForCRM<WARMJ> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return warmjbean;
     }
 
     /**
@@ -51,7 +51,7 @@ public class WARMJFacadeREST extends SuperRESTForCRM<WARMJ> {
      * @return
      */
     @GET
-    @Path("wechat/warehouse")
+    @Path("warehouse")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData findWarehouse(@QueryParam("searchWord") String searchWord, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

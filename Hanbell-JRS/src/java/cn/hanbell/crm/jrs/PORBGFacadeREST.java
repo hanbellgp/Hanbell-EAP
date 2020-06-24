@@ -39,7 +39,7 @@ public class PORBGFacadeREST extends SuperRESTForCRM<PORBG> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      return porbgbean;
     }
 
     /**
@@ -50,7 +50,7 @@ public class PORBGFacadeREST extends SuperRESTForCRM<PORBG> {
      * @return 
      */
     @GET
-    @Path("wechat/area")
+    @Path("area")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<PORBG> findArea(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

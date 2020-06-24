@@ -4,7 +4,6 @@ import cn.hanbell.crm.app.SERBQApplication;
 import cn.hanbell.crm.ejb.CMSMGBean;
 import cn.hanbell.crm.ejb.CRMGGBean;
 import cn.hanbell.crm.ejb.REPTABean;
-import cn.hanbell.crm.ejb.SENDMSGBean;
 import cn.hanbell.crm.ejb.SERBQBean;
 import cn.hanbell.crm.ejb.SERCABean;
 import cn.hanbell.crm.ejb.SYSNNBean;
@@ -53,9 +52,6 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
     private SERBQBean serbqBean;
 
     @EJB
-    private SENDMSGBean sendmsgbean;
-
-    @EJB
     private REPTABean repiaBean;
 
     @EJB
@@ -79,24 +75,25 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return serbqBean;
     }
 
     /**
      * 创建客诉单和派工单
-     * 
+     *
      * @param entity
      * @param appid
      * @param token
-     * @return 
+     * @return
      */
     @POST
-    @Path("wechat/create")
+    @Path("create")
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public ResponseMessage createSERBQFromWechat(SERBQApplication entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             Date date;
+            StringBuffer msg = new StringBuffer("【汉钟精机】 客诉单号:");
             try {
                 date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
                 String bq001 = serbqBean.getBQ001ByDeptAndDate(entity.getDeptId(), date);
@@ -278,12 +275,16 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 sercaean.persist(ca);
                 repiaBean.persist(ta);
                 ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");
-                StringBuffer msg = new StringBuffer("【汉钟精机】 客诉单号:");
                 msg = msg.append(bq001).append("  派工单号:" + serl);
-                sendmsgbean.sendMsgString("ShenXin", msg.toString(), entity.getSessionkey(), entity.getOpenId());
+//                String errmsg = serbqBean.sendMsgString(entity.getEmployeeId(), msg.toString(), entity.getSessionkey(), entity.getOpenId());
+                String errmsg = serbqBean.sendMsgString("ShenXin|FeiFei", msg.toString(), entity.getSessionkey(), entity.getOpenId());
+                if (!"200".equals(errmsg)) {
+                    throw new RuntimeException("发送失败,请联系管理员");
+                }
                 return responseMessage;
             } catch (Exception e) {
-                e.printStackTrace();
+//                  log4j.info(msg);
+                System.out.println("msg=" + msg);
                 ResponseMessage responseMessage = new ResponseMessage("500", "申请失败");
                 return responseMessage;
             }

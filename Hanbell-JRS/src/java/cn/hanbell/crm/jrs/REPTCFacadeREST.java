@@ -14,7 +14,6 @@ import cn.hanbell.crm.ejb.REPPWBean;
 import cn.hanbell.crm.ejb.REPTABean;
 import cn.hanbell.crm.ejb.REPTCBean;
 import cn.hanbell.crm.ejb.REPTDBean;
-import cn.hanbell.crm.ejb.SENDMSGBean;
 import cn.hanbell.crm.ejb.SERCABean;
 import cn.hanbell.crm.ejb.WARTABean;
 import cn.hanbell.crm.ejb.WARTBBean;
@@ -65,8 +64,6 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
     private final org.apache.logging.log4j.Logger log4j = LogManager.getLogger();
     @EJB
     protected cn.hanbell.oa.ejb.WorkFlowBean workFlowBean;
-    @EJB
-    private SENDMSGBean sendmsgbean;
 
     @EJB
     private SystemUserBean userbean;
@@ -103,7 +100,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      return  reptcbean;
     }
 
     /**
@@ -115,7 +112,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
      * @return
      */
     @POST
-    @Path("wechat/createMaintain")
+    @Path("createMaintain")
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public ResponseMessage createMaintain(REPTCApplication reptcapplication, @QueryParam("appid") String appid, @QueryParam("token") String token) {
@@ -346,25 +343,23 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                  if(!reptcapplication.getEmployeeId().equals(reptcapplication.getMaintainer())){
                      userid.append("|").append(reptcapplication.getMaintainer());
                 }
-                String errormsg = sendmsgbean.sendMsgString(userid.toString(), msg.toString(), reptcapplication.getSessionkey(), reptcapplication.getOpenId());
+                String errmsg=wartabean.sendMsgString("ShenXin",  msg.toString(), reptcapplication.getSessionkey(),  reptcapplication.getOpenId());
                 //发送失败，抛异常，使事务回滚
-                if (!"success".equals(errormsg)) {
+                if (!"200".equals(errmsg)) {
                     throw new RuntimeException("发送失败,请联系管理员");
                 }
                
                 ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");
                 System.out.println("创建成功");
-                return responseMessage;
+                return null;
             } catch (ParseException ex) {
-                ex.printStackTrace();
                 log4j.info(msg);
                 ResponseMessage responseMessage = new ResponseMessage("500", ex.getMessage());
                 return responseMessage;
             } catch (RuntimeException ex) {
-                ex.printStackTrace();
                 log4j.info(msg);
                 ResponseMessage responseMessage = new ResponseMessage("500", ex.getMessage());
-                return responseMessage;
+                return null;
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);

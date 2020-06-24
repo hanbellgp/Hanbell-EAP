@@ -45,7 +45,7 @@ public class MiscodeFacadeREST  extends SuperRESTForERP<Miscode> {
     }
 
     @GET
-    @Path("wechat/tradingreason/{incentoryform}")
+    @Path("tradingreason/{incentoryform}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findProductType(@PathParam("incentoryform") String incentoryform, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

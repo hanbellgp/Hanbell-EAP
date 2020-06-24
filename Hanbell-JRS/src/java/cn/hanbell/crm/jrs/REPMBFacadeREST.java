@@ -44,7 +44,7 @@ public class REPMBFacadeREST extends SuperRESTForCRM<REPMB> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return repmbbean;
     }
 
     /**
@@ -56,7 +56,7 @@ public class REPMBFacadeREST extends SuperRESTForCRM<REPMB> {
      * @return 
      */
     @GET
-    @Path("wechat/maintainperson/{deptno}")
+    @Path("maintainperson/{deptno}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData findMaintainerson(@PathParam("deptno") String deptno, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
@@ -90,7 +90,7 @@ public class REPMBFacadeREST extends SuperRESTForCRM<REPMB> {
      * @return 
      */
     @GET
-    @Path("wechat/maintainType")
+    @Path("maintainType")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData findMaintainType(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

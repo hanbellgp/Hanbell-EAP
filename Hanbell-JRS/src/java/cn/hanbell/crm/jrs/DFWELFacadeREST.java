@@ -39,7 +39,7 @@ public class DFWELFacadeREST extends SuperRESTForCRM<DFWEL> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return dfwelbaean;
     }
 
     
@@ -51,7 +51,7 @@ public class DFWELFacadeREST extends SuperRESTForCRM<DFWEL> {
      * @return 
      */
     @GET
-    @Path("wechat/product")
+    @Path("product")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<DFWEL> findProduct(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

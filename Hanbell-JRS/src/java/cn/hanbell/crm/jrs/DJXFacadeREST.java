@@ -40,7 +40,7 @@ public class DJXFacadeREST extends SuperRESTForCRM<DJX> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      return djxbean;
     }
 
     /**
@@ -53,7 +53,7 @@ public class DJXFacadeREST extends SuperRESTForCRM<DJX> {
      * @return 
      */
     @GET
-    @Path("wechat/machinetype/{JX003}")
+    @Path("machinetype/{JX003}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findMachinetype(@PathParam("JX003") String JX003, @QueryParam("searchWord") String JX001, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {

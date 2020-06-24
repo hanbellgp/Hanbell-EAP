@@ -34,13 +34,13 @@ import javax.ws.rs.core.Response;
  */
 @Path("crm/crmgg")
 @javax.enterprise.context.RequestScoped
-public class CRMGGFacadeREST extends SuperRESTForCRM<KV> {
+public class CRMGGFacadeREST extends SuperRESTForCRM<CRMGG> {
 
     @EJB
     private CRMGGBean crmggBean;
 
     public CRMGGFacadeREST() {
-        super(KV.class);
+        super(CRMGG.class);
     }
 
     @GET
@@ -91,11 +91,11 @@ public class CRMGGFacadeREST extends SuperRESTForCRM<KV> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return crmggBean;
     }
 
     @GET
-    @Path("wechat/caller/{BQ002_value}")
+    @Path("caller/{BQ002_value}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findCaller(@PathParam("BQ002_value") String BQ002_value, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
@@ -136,7 +136,7 @@ public class CRMGGFacadeREST extends SuperRESTForCRM<KV> {
      * @return
      */
     @GET
-    @Path("wechat/customercode/")
+    @Path("customercode/")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findCustomerCode(@QueryParam("searchWord") String GG003, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
