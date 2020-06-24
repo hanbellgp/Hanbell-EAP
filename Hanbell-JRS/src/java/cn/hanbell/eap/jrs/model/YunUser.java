@@ -5,7 +5,8 @@
  */
 package cn.hanbell.eap.jrs.model;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +26,7 @@ public class YunUser {
 
     private String avatar;
     private String signature;
-    private Map<String, String> tags;
+    private List<Map<String, String>> tags;
     private int notifyCount;
     private int unreadCount;
 
@@ -34,7 +35,7 @@ public class YunUser {
     public YunUser() {
         this.avatar = "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png";
         this.signature = "";
-        tags = new HashMap<>();
+        this.tags = new ArrayList<>();
         this.notifyCount = 0;
         this.unreadCount = 0;
     }
@@ -168,14 +169,14 @@ public class YunUser {
     /**
      * @return the tags
      */
-    public Map<String, String> getTags() {
+    public List<Map<String, String>> getTags() {
         return tags;
     }
 
     /**
      * @param tags the tags to set
      */
-    public void setTags(Map<String, String> tags) {
+    public void setTags(List<Map<String, String>> tags) {
         this.tags = tags;
     }
 
