@@ -343,7 +343,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                  if(!reptcapplication.getEmployeeId().equals(reptcapplication.getMaintainer())){
                      userid.append("|").append(reptcapplication.getMaintainer());
                 }
-                String errmsg=wartabean.sendMsgString("ShenXin",  msg.toString(), reptcapplication.getSessionkey(),  reptcapplication.getOpenId());
+                String errmsg=wartabean.sendMsgString(userid.toString(),  msg.toString(), reptcapplication.getSessionkey(),  reptcapplication.getOpenId());
                 //发送失败，抛异常，使事务回滚
                 if (!"200".equals(errmsg)) {
                     throw new RuntimeException("发送失败,请联系管理员");

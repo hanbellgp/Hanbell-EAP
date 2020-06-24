@@ -277,7 +277,7 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");
                 msg = msg.append(bq001).append("  派工单号:" + serl);
 //                String errmsg = serbqBean.sendMsgString(entity.getEmployeeId(), msg.toString(), entity.getSessionkey(), entity.getOpenId());
-                String errmsg = serbqBean.sendMsgString("ShenXin|FeiFei", msg.toString(), entity.getSessionkey(), entity.getOpenId());
+                String errmsg = serbqBean.sendMsgString(entity.getEmployeeId(), msg.toString(), entity.getSessionkey(), entity.getOpenId());
                 if (!"200".equals(errmsg)) {
                     throw new RuntimeException("发送失败,请联系管理员");
                 }
