@@ -6,6 +6,7 @@
 package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
+import cn.hanbell.eap.context.TaskContext;
 import cn.hanbell.eap.entity.Demands;
 import cn.hanbell.util.BaseLib;
 import java.text.ParseException;
@@ -21,6 +22,8 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class DemandsBean extends SuperEJBForEAP<Demands> {
+
+    private TaskContext taskContext;
 
     public DemandsBean() {
         super(Demands.class);
