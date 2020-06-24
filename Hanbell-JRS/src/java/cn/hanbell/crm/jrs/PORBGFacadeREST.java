@@ -31,7 +31,7 @@ import javax.ws.rs.core.Response;
 public class PORBGFacadeREST extends SuperRESTForCRM<PORBG> {
 
     @EJB
-    private PORBGBean porbgbean;
+    private PORBGBean porbgBean;
 
     public PORBGFacadeREST() {
         super(PORBG.class);
@@ -39,7 +39,7 @@ public class PORBGFacadeREST extends SuperRESTForCRM<PORBG> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-      return porbgbean;
+      return porbgBean;
     }
 
     /**
@@ -55,7 +55,7 @@ public class PORBGFacadeREST extends SuperRESTForCRM<PORBG> {
     public ResponseData<PORBG> findArea(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             ResponseData response = new ResponseData("200", "success");
-            List<PORBG> list = porbgbean.findAll();
+            List<PORBG> list = porbgBean.findAll();
             List<JSONObject> objs = new ArrayList<>();
             JSONObject js = null;
             for (PORBG p : list) {

@@ -43,7 +43,7 @@ import javax.ws.rs.core.Response;
 public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
 
     @EJB
-    private REPMBBean repmbbean;
+    private REPMBBean repmbBean;
 
     @EJB
     private REPPWBean reppwBean;
@@ -166,7 +166,7 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                 List<REPPW> rs = reppwBean.findByPw001AndPw002AndPW010AndPW019(sers[0], sers[1], "0", "N");
                 for (REPPW r : rs) {
                     js = new JSONObject();
-                    REPMB repmb = repmbbean.findByMB001(r.getPw004());
+                    REPMB repmb = repmbBean.findByMB001(r.getPw004());
                     js.put("key", r.getPw004());
                     js.put("value", r.getCmsmv().getMv002());
                     js.put("value1", repmb.getWarmj().getMj001());
@@ -179,7 +179,7 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                 js = new JSONObject();
                 js.put("key", reppws.get(0).getPw004());
                 js.put("value", reppws.get(0).getCmsmv().getMv002());
-                REPMB repmb = repmbbean.findByMB001(reppws.get(0).getPw004());
+                REPMB repmb = repmbBean.findByMB001(reppws.get(0).getPw004());
                 js.put("value1", repmb.getWarmj().getMj001());
                 js.put("value2", repmb.getWarmj().getMj002());
                 objs.add(js);

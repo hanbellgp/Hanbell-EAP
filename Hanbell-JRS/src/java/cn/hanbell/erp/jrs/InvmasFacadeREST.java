@@ -77,7 +77,7 @@ public class InvmasFacadeREST extends SuperRESTForERP<Invmas> {
     }
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

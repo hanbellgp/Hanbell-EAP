@@ -9,7 +9,6 @@ import cn.hanbell.crm.ejb.REPMQBean;
 import cn.hanbell.crm.ejb.REPMUBean;
 import cn.hanbell.crm.entity.REPMQ;
 import cn.hanbell.crm.entity.REPMU;
-
 import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
@@ -41,7 +40,7 @@ public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ> {
     @EJB
     private REPMQBean repmqBean;
     @EJB
-    private REPMUBean repmuban;
+    private REPMUBean repmuBean;
 
     public REPMQFacadeREST() {
         super(REPMQ.class);
@@ -138,7 +137,7 @@ public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData findMaintainForm(@PathParam("employeeId") String employeeId, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<REPMU> list = repmuban.findByMu001(employeeId);
+            List<REPMU> list = repmuBean.findByMu001(employeeId);
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

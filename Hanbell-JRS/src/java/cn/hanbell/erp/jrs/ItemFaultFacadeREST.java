@@ -24,7 +24,7 @@ public class ItemFaultFacadeREST extends SuperRESTForERP<ItemFault> {
     private ItemFaultBean itemFaultBean;
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         company = "C";
         return itemFaultBean;
     }

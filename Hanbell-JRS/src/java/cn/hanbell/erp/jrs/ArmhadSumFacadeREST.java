@@ -63,7 +63,7 @@ public class ArmhadSumFacadeREST extends SuperRESTForERP<ArmhadSum> {
     }
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         company = "C";
         return armhadBean;
     }

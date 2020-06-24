@@ -31,7 +31,7 @@ import javax.ws.rs.core.Response;
 public class WARMJFacadeREST extends SuperRESTForCRM<WARMJ> {
 
     @EJB
-    private WARMJBean warmjbean;
+    private WARMJBean warmjBean;
 
     public WARMJFacadeREST() {
         super(WARMJ.class);
@@ -39,7 +39,7 @@ public class WARMJFacadeREST extends SuperRESTForCRM<WARMJ> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        return warmjbean;
+        return warmjBean;
     }
 
     /**
@@ -55,7 +55,7 @@ public class WARMJFacadeREST extends SuperRESTForCRM<WARMJ> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData findWarehouse(@QueryParam("searchWord") String searchWord, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<Object[]> list = warmjbean.findLikeMJ002(searchWord);
+            List<Object[]> list = warmjBean.findLikeMJ002(searchWord);
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

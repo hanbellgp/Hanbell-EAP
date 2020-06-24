@@ -31,7 +31,7 @@ import javax.ws.rs.core.Response;
 public class DFWELFacadeREST extends SuperRESTForCRM<DFWEL> {
 
     @EJB
-    private DFWELBean dfwelbaean;
+    private DFWELBean dfwelBean;
 
     public DFWELFacadeREST() {
         super(DFWEL.class);
@@ -39,7 +39,7 @@ public class DFWELFacadeREST extends SuperRESTForCRM<DFWEL> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-       return dfwelbaean;
+       return dfwelBean;
     }
 
     
@@ -55,7 +55,7 @@ public class DFWELFacadeREST extends SuperRESTForCRM<DFWEL> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<DFWEL> findProduct(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<DFWEL> list = dfwelbaean.findAll();
+            List<DFWEL> list = dfwelBean.findAll();
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

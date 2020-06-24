@@ -40,11 +40,10 @@ public abstract class SuperRESTForERP<T> {
     protected Map<Integer, List<T>> data;
     protected String company;
 
-    protected abstract SuperEJBForERP getERPEJB();
+    protected abstract SuperEJBForERP getSuperEJBForERP();
 
     protected SuperEJB getSuperEJB() {
-        getERPEJB().setCompany(getCompany());
-        return getERPEJB();
+        return getSuperEJBForERP();
     }
 
     public SuperRESTForERP(Class<T> entityClass) {
