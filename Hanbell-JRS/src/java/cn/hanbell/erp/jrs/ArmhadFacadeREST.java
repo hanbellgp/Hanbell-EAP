@@ -110,7 +110,7 @@ public class ArmhadFacadeREST extends SuperRESTForERP<Armhad> {
     }
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         company = "C";
         return armhadBean;
     }

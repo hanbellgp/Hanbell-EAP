@@ -32,7 +32,7 @@ public class CdrcusFacadeREST extends SuperRESTForERP<Cdrcus> {
     private CdrcusBean cdrcusBean;
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         company = "C";
         return cdrcusBean;
     }

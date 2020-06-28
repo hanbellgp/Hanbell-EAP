@@ -51,7 +51,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -61,38 +60,32 @@ import org.apache.logging.log4j.LogManager;
 @javax.enterprise.context.RequestScoped
 public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
 
-    private final org.apache.logging.log4j.Logger log4j = LogManager.getLogger();
     @EJB
     protected cn.hanbell.oa.ejb.WorkFlowBean workFlowBean;
 
     @EJB
-    private SystemUserBean userbean;
-    @EJB
-    private CMSMVBean cmsmvbean;
-    @EJB
-    private REPTCBean reptcbean;
+    private SystemUserBean userBean;
 
     @EJB
-    private REPTABean reptabean;
+    private CMSMVBean cmsmvBean;
     @EJB
-    private REPPWBean reppwbean;
-
+    private REPTCBean reptcBean;
     @EJB
-    private CRMGGBean crmggbean;
-
+    private REPTABean reptaBean;
     @EJB
-    private SERCABean sercabean;
-
+    private REPPWBean reppwBean;
     @EJB
-    private REPTDBean reptdbean;
-
+    private CRMGGBean crmggBean;
     @EJB
-    private WARTABean wartabean;
-
+    private SERCABean sercaBean;
     @EJB
-    private WARTBBean wartbbean;
+    private REPTDBean reptdBean;
     @EJB
-    private REPMFBean repmfbean;
+    private WARTABean wartaBean;
+    @EJB
+    private WARTBBean wartbBean;
+    @EJB
+    private REPMFBean repmfBean;
 
     public REPTCFacadeREST() {
         super(REPTC.class);
@@ -100,7 +93,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-        return reptcbean;
+        return reptcBean;
     }
 
     /**
@@ -117,9 +110,9 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
     @Produces({"application/json"})
     public ResponseMessage createMaintain(REPTCApplication reptcapplication, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            String seal = reptcbean.getTC002ByTC001AndDate(reptcapplication.getMaintainTypeId(), new Date());
+            String seal = reptcBean.getTC002ByTC001AndDate(reptcapplication.getMaintainTypeId(), new Date());
             StringBuffer msg = new StringBuffer("【汉钟精机】 维修单号:");
-            String serializableNumber = wartabean.getTA002ByTA001AndDate(reptcapplication.getIncentoryform(), new Date());
+            String serializableNumber = wartaBean.getTA002ByTA001AndDate(reptcapplication.getIncentoryform(), new Date());
             msg = msg.append(seal).append("库存异动单号:" + serializableNumber);
             try {
                 Date date;
@@ -138,9 +131,9 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 reptc.setTc003(simpleDateFormat.format(new Date()));
                 reptc.setTc005(reptcapplication.getRepairKindId());//叫修单别
                 reptc.setTc006(reptcapplication.getRepairno());//叫修单号
-                reptc.setTc007(reptcapplication.getCustomer());//客户   
+                reptc.setTc007(reptcapplication.getCustomer());//客户
                 //叫修单信息
-                REPTA repta = reptabean.findByPK(reptcapplication.getRepairKindId(), reptcapplication.getRepairno());
+                REPTA repta = reptaBean.findByPK(reptcapplication.getRepairKindId(), reptcapplication.getRepairno());
                 reptc.setTc008(repta.getTa005());
                 reptc.setTc009(repta.getTa006());
                 reptc.setTc010(repta.getTa007());
@@ -150,7 +143,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 reptc.setTc014(repta.getTa011());
                 reptc.setTc015(repta.getTa012());
                 reptc.setTc016(reptcapplication.getMaintainer());//维修人员
-                SystemUser user = userbean.findByUserId(reptc.getTc016());
+                SystemUser user = userBean.findByUserId(reptc.getTc016());
                 reptc.setTc017(user.getDeptno());//维修人员部门/站别
                 reptc.setTc018("1");
                 reptc.setTc023(repta.getTa017());
@@ -160,7 +153,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
 //            reptc.setTc035(reptcapplication.getDeptId());
                 reptc.setTc035(user.getDeptno());
                 //客户厂商信息
-                CRMGG crmgg = crmggbean.findByERPCusno(reptcapplication.getCustomer());
+                CRMGG crmgg = crmggBean.findByERPCusno(reptcapplication.getCustomer());
                 reptc.setTc036(crmgg.getGg004());
                 reptc.setTc037(crmgg.getGg101());
                 reptc.setTc038(crmgg.getGg030());
@@ -181,7 +174,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 reptc.setTc077(repta.getTa071());
                 reptc.setTc198(repta.getTa198());
                 reptc.setTc199(repta.getTa199());
-                String serca = sercabean.findByAC010AndAC011(reptcapplication.getRepairKindId(), reptcapplication.getRepairno());//获得客诉单号
+                String serca = sercaBean.findByAC010AndAC011(reptcapplication.getRepairKindId(), reptcapplication.getRepairno());//获得客诉单号
                 reptc.setTc054(serca);
                 reptc.setCustomer(reptcapplication.getCustomer());//客户ID
                 reptc.setProduct(repta.getTa197());//产品
@@ -197,7 +190,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 int count = 0;
                 BigDecimal sumMoney = new BigDecimal(0);
                 LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
-//        
+//
                 List<WARTB> detailList = new ArrayList<WARTB>();
                 for (REPTDApplication rept : reptcapplication.getReptds()) {
                     reptd = new REPTD();
@@ -210,7 +203,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                     reptdpk.setTd001(reptcapplication.getMaintainTypeId());//维修单别
                     reptdpk.setTd002(seal);//维修单号
                     reptd.setREPTDPK(reptdpk);
-                    String serl = reptdbean.getTD003ByTD001AndTD002(reptdpk.getTd001(), reptdpk.getTd002());
+                    String serl = reptdBean.getTD003ByTD001AndTD002(reptdpk.getTd001(), reptdpk.getTd002());
                     reptdpk.setTd003(serl);//维修单序号
                     reptd.setTd004(rept.getProductQuality());
                     reptd.setTd005(rept.getProduct_name());
@@ -258,7 +251,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                     wartb.setFlag(new Short("1"));
                     wartbpk.setTb001(wartapk.getTa001());
                     wartbpk.setTb002(serializableNumber);
-                    wartbpk.setTb003(wartbbean.getDetailSerlByTA001AndTA002(wartapk.getTa001(), serializableNumber));//维修单序号，作为库存交易单序号
+                    wartbpk.setTb003(wartbBean.getDetailSerlByTA001AndTA002(wartapk.getTa001(), serializableNumber));//维修单序号，作为库存交易单序号
                     wartb.setWARTBPK(wartbpk);
                     wartb.setTb004(reptd.getTd004());
                     wartb.setTb005(reptd.getTd005());
@@ -267,7 +260,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                     wartb.setTb008(reptd.getTd007());
                     wartb.setTb009(reptd.getTd009());
                     wartb.setTb010(reptd.getTd008());
-                    REPMF repmf = repmfbean.findByItnbr(wartb.getTb004());
+                    REPMF repmf = repmfBean.findByItnbr(wartb.getTb004());
                     wartb.setTb013("N");
                     wartb.setTb014(BaseLib.formatDate("yyyyMMdd", new Date()));
                     wartb.setTb015(reptdpk.getTd001());
@@ -285,22 +278,22 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                     wartb.setTb034("0");
                     wartb.setTb042("0");
                     detailList.add(wartb);
-                    reptdbean.persist(reptd);
-                    wartbbean.persist(wartb);
+                    reptdBean.persist(reptd);
+                    wartbBean.persist(wartb);
                 }
-                reptcbean.persist(reptc);
+                reptcBean.persist(reptc);
                 //设置当前员工的维修人员的状态为1
-                List<REPPW> list = reppwbean.findByPw001AndPw002AndPW010(repta.getREPTAPK().getTa001(), repta.getREPTAPK().getTa002(), "0");
+                List<REPPW> list = reppwBean.findByPw001AndPw002AndPW010(repta.getREPTAPK().getTa001(), repta.getREPTAPK().getTa002(), "0");
                 for (REPPW r : list) {
                     if (r.getPw004().equals(reptcapplication.getMaintainer())) {
                         r.setPw010("1");
-                        reppwbean.update(r);
+                        reppwBean.update(r);
                     }
                 }
                 //当完成最后一个维修人员的维修单时，反写叫修单
                 if (list.size() == 1) {
                     repta.setTa031("1");
-                    reptabean.update(repta);
+                    reptaBean.update(repta);
                 }
 
                 //产生库存异动单头
@@ -319,7 +312,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 warta.setTa008(new BigDecimal(count));//总数量
                 warta.setTa009(BaseLib.formatDate("yyyyMMdd", new Date()));
                 warta.setTa012(reptc.getTc016());
-                CMSMV cmsmv = cmsmvbean.findById(reptc.getTc016());
+                CMSMV cmsmv = cmsmvBean.findById(reptc.getTc016());
                 warta.setTa014(user.getDept().getCompany());//厂别
                 warta.setTa020("N");
                 warta.setTa023(sumMoney);
@@ -336,18 +329,19 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 warta.setTa043(reptcapplication.getTradingreason());
                 warta.setTa041(seal);
                 warta.setTa519(reptcapplication.getDeliverydeptId());
-                wartabean.persist(warta);
+                wartaBean.persist(warta);
                 StringBuffer userid = null;
                 userid = new StringBuffer(reptcapplication.getEmployeeId());
                 //同一个人发送一条数据
                 if (!reptcapplication.getEmployeeId().equals(reptcapplication.getMaintainer())) {
                     userid.append("|").append(reptcapplication.getMaintainer());
                 }
-                String errmsg = wartabean.sendMsgString(userid.toString(), msg.toString(), reptcapplication.getSessionkey(), reptcapplication.getOpenId());
+                String errmsg = wartaBean.sendMsgString(userid.toString(), msg.toString(), reptcapplication.getSessionkey(), reptcapplication.getOpenId());
                 //发送失败，抛异常，使事务回滚
                 if (!"200".equals(errmsg)) {
                     throw new RuntimeException("发送失败,请联系管理员");
                 }
+
                 ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");
                 return responseMessage;
             } catch (Exception ex) {

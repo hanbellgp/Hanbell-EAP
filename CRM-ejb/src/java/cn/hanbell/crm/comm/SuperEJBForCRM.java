@@ -46,8 +46,6 @@ public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
     public EntityManager getEntityManager() {
         return em;
     }
-   
-   
 
     //发送企业微信信息
     public String sendMsgString(String userId, String msg, String sessionkey, String openid) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {

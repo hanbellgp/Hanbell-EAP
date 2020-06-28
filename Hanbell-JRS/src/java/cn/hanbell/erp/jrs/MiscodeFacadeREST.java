@@ -8,7 +8,6 @@ package cn.hanbell.erp.jrs;
 import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.MiscodeBean;
-import cn.hanbell.erp.entity.ArmhadSum;
 import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForERP;
@@ -30,18 +29,18 @@ import javax.ws.rs.core.Response;
  */
 @Path("shberp/miscode")
 @javax.enterprise.context.RequestScoped
-public class MiscodeFacadeREST  extends SuperRESTForERP<Miscode> {
-    
+public class MiscodeFacadeREST extends SuperRESTForERP<Miscode> {
+
     @EJB
-    private MiscodeBean misodebean;
+    private MiscodeBean misodeBean;
 
     public MiscodeFacadeREST() {
         super(Miscode.class);
     }
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected SuperEJBForERP getSuperEJBForERP() {
+        return misodeBean;
     }
 
     @GET
@@ -55,7 +54,7 @@ public class MiscodeFacadeREST  extends SuperRESTForERP<Miscode> {
             } else if ("JCDF".equals(incentoryform) || "JCDX".equals(incentoryform)) {
                 ckind = "1I";
             }
-            List<Miscode> list = misodebean.findByCkind(ckind, 'Y');
+            List<Miscode> list = misodeBean.findByCkind(ckind, 'Y');
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

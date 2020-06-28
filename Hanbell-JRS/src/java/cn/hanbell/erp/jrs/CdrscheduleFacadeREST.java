@@ -36,7 +36,7 @@ public class CdrscheduleFacadeREST extends SuperRESTForERP<Cdrschedule> {
     private CdrscheduleBean cdrscheduleBean;
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         company = "C";
         return cdrscheduleBean;
     }

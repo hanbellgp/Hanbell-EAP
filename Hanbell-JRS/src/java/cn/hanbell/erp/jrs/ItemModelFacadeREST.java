@@ -34,7 +34,7 @@ public class ItemModelFacadeREST extends SuperRESTForERP<ItemModel> {
     private ItemModelBean itemModelBean;
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         company = "C";
         return itemModelBean;
     }

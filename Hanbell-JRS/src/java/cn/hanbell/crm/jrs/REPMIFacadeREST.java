@@ -31,7 +31,7 @@ import javax.ws.rs.core.Response;
 public class REPMIFacadeREST extends SuperRESTForCRM<REPMI> {
 
     @EJB
-    private REPMIBean repmibean;
+    private REPMIBean repmiBean;
 
     public REPMIFacadeREST() {
         super(REPMI.class);
@@ -39,7 +39,7 @@ public class REPMIFacadeREST extends SuperRESTForCRM<REPMI> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-      return repmibean;
+      return repmiBean;
     }
 
    /**
@@ -55,7 +55,7 @@ public class REPMIFacadeREST extends SuperRESTForCRM<REPMI> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findProductNumber(@QueryParam("searchWord") String MI002, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<Object[]> list = repmibean.findProductNumber(MI002);
+            List<Object[]> list = repmiBean.findProductNumber(MI002);
             List<JSONObject> jsonobjects = new ArrayList<>();
             JSONObject js = new JSONObject();
             for (int i = 0; i < list.size(); i++) {
@@ -91,7 +91,7 @@ public class REPMIFacadeREST extends SuperRESTForCRM<REPMI> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findProductQuality(@QueryParam("searchWord") String MB001, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<Object[]> list = repmibean.findProductQuality(MB001);
+            List<Object[]> list = repmiBean.findProductQuality(MB001);
             List<JSONObject> jsonobjects = new ArrayList<>();
             JSONObject js = new JSONObject();
             for (int i = 0; i < list.size(); i++) {

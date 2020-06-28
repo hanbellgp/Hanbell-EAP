@@ -80,7 +80,7 @@ public class CdrdmasFacadeREST extends SuperRESTForERP<Cdrdmas> {
     }
 
     @Override
-    protected SuperEJBForERP getERPEJB() {
+    protected SuperEJBForERP getSuperEJBForERP() {
         company = "C";
         return cdrdmasBean;
     }
