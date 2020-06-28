@@ -21,7 +21,6 @@ public class SERBQApplication implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-   
     private Long id;
     private String employeeId;
     private String deptId;

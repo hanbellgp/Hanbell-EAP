@@ -5,16 +5,14 @@
  */
 package cn.hanbell.crm.app;
 
-import cn.hanbell.crm.entity.WARTBPK;
 import java.math.BigDecimal;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author C2082
  */
+@XmlRootElement
 public class WARMI05DEATILApplication {
 
     private static final long serialVersionUID = 1L;
