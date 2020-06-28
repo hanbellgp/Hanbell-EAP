@@ -12,18 +12,11 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import javax.ejb.EJB;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.SSLContextBuilder;
 import org.json.JSONObject;
 
 /**
@@ -32,7 +25,10 @@ import org.json.JSONObject;
  * @param <T>
  */
 public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
-//    private final String URL = "http://localhost:8480/Hanbell-WCO/api/sendmsg/send/";//本地测试区
+
+    // 生产环境
+    // private final String URL = "http://jrs.hanbell.com.cn/Hanbell-WCO/api/sendmsg/send";
+    // 测试环境
     private final String URL = "http://i2.hanbell.com.cn:8480/Hanbell-WCO/api/sendmsg/send";
 
     @PersistenceContext(unitName = "CRM-ejbPU")
@@ -47,17 +43,18 @@ public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
         return em;
     }
 
-    //发送企业微信信息
-    public String sendMsgString(String userId, String msg, String sessionkey, String openid) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
-        StringBuilder jsonString = new StringBuilder("{"
-                + "'userId':'");
-        jsonString.append(userId).append("','msg':'").append(msg).append("','sessionkey':'").append(sessionkey).append("','openid':'").append(openid).append("'}");
+    // 发送企业微信信息
+    public String sendMsgString(String userId, String msg, String sessionkey, String openid)
+            throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
+        StringBuilder jsonString = new StringBuilder("{'userId':'");
+        jsonString.append(userId).append("','msg':'").append(msg).append("','sessionkey':'").append(sessionkey)
+                .append("','openid':'").append(openid).append("'}");
         JSONObject jo = new JSONObject(jsonString.toString());
         HttpPost httpPost = new HttpPost(URL);
         httpPost.setHeader("content-type", "application/json");
         httpPost.setEntity(new StringEntity(jo.toString(), "UTF-8"));
         try {
-            CloseableHttpClient httpClient=HttpClients.createDefault();
+            CloseableHttpClient httpClient = HttpClients.createDefault();
             CloseableHttpResponse response = httpClient.execute(httpPost);
             if (response.getStatusLine().getStatusCode() == 200) {
                 return "200";

@@ -1,10 +1,8 @@
 package cn.hanbell.crm.app;
 
-
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Column;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,6 +13,7 @@ import javax.validation.constraints.Size;
  *
  * @author C2082
  */
+@XmlRootElement
 public class WARMI05Application implements Serializable {
 
     private String TA001;
@@ -160,7 +159,6 @@ public class WARMI05Application implements Serializable {
     public WARMI05Application() {
     }
 
-    
     public String getTA001() {
         return TA001;
     }
@@ -720,7 +718,5 @@ public class WARMI05Application implements Serializable {
     public void setTA043(String TA043) {
         this.TA043 = TA043;
     }
-
-   
 
 }
