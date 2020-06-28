@@ -343,16 +343,12 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 }
 
                 ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");
-                System.out.println("创建成功");
-                return null;
-            } catch (ParseException ex) {
+                return responseMessage;
+            } catch (Exception ex) {
                 log4j.info(msg);
+                log4j.error(ex.getMessage());
                 ResponseMessage responseMessage = new ResponseMessage("500", ex.getMessage());
                 return responseMessage;
-            } catch (RuntimeException ex) {
-                log4j.info(msg);
-                ResponseMessage responseMessage = new ResponseMessage("500", ex.getMessage());
-                return null;
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);

@@ -52,7 +52,7 @@ public class MiscodeFacadeREST extends SuperRESTForERP<Miscode> {
             if ("FWLL".equals(incentoryform)) {
                 ckind = "1A";
             } else if ("JCDF".equals(incentoryform) || "JCDX".equals(incentoryform)) {
-                ckind = "1I";
+                ckind = "IL";
             }
             List<Miscode> list = misodeBean.findByCkind(ckind, 'Y');
             if (list == null) {
