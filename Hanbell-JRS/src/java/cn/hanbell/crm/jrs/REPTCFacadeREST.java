@@ -100,7 +100,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
 
     @Override
     protected SuperEJB getSuperEJB() {
-      return  reptcbean;
+        return reptcbean;
     }
 
     /**
@@ -337,29 +337,24 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 warta.setTa041(seal);
                 warta.setTa519(reptcapplication.getDeliverydeptId());
                 wartabean.persist(warta);
-                StringBuffer userid=null;
-                 userid=new StringBuffer(reptcapplication.getEmployeeId());
+                StringBuffer userid = null;
+                userid = new StringBuffer(reptcapplication.getEmployeeId());
                 //同一个人发送一条数据
-                 if(!reptcapplication.getEmployeeId().equals(reptcapplication.getMaintainer())){
-                     userid.append("|").append(reptcapplication.getMaintainer());
+                if (!reptcapplication.getEmployeeId().equals(reptcapplication.getMaintainer())) {
+                    userid.append("|").append(reptcapplication.getMaintainer());
                 }
-                String errmsg=wartabean.sendMsgString(userid.toString(),  msg.toString(), reptcapplication.getSessionkey(),  reptcapplication.getOpenId());
+                String errmsg = wartabean.sendMsgString(userid.toString(), msg.toString(), reptcapplication.getSessionkey(), reptcapplication.getOpenId());
                 //发送失败，抛异常，使事务回滚
                 if (!"200".equals(errmsg)) {
                     throw new RuntimeException("发送失败,请联系管理员");
                 }
-               
                 ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");
-                System.out.println("创建成功");
-                return null;
-            } catch (ParseException ex) {
+                return responseMessage;
+            } catch (Exception ex) {
                 log4j.info(msg);
+                log4j.error(ex.getMessage());
                 ResponseMessage responseMessage = new ResponseMessage("500", ex.getMessage());
                 return responseMessage;
-            } catch (RuntimeException ex) {
-                log4j.info(msg);
-                ResponseMessage responseMessage = new ResponseMessage("500", ex.getMessage());
-                return null;
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
