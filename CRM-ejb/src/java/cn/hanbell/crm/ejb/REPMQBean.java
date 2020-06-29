@@ -27,8 +27,12 @@ public class REPMQBean extends SuperEJBForCRM<REPMQ> {
     }
 
     //客诉单别
-    public List<Object[]> findForm() {
-        Query query = getEntityManager().createNativeQuery("Select DISTINCT MQ001,MQ002 from REPMQ Left join  REPMU on MQ001=MU001 Where MQ003=N'a1'and (( MU003=N'CRMDS' and MQ010='Y' )  or MQ010='N' )");
+    public List<Object[]> findForm(String MQ001) {
+        StringBuffer sql=new StringBuffer("Select DISTINCT MQ001,MQ002 from REPMQ Left join  REPMU on MQ001=MU001 Where MQ003=N'a1'and (( MU003=N'CRMDS' and MQ010='Y' )  or MQ010='N' )");
+        if(MQ001!=null&&!"".equals(MQ001)){
+            sql.append(" AND  MQ001='").append(MQ001).append("'");
+        }
+         Query query = getEntityManager().createNativeQuery(sql.toString());
         try {
             List<Object[]> list = query.getResultList();
             return list;

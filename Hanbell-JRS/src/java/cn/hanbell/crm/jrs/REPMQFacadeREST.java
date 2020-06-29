@@ -103,7 +103,7 @@ public class REPMQFacadeREST extends SuperRESTForCRM<REPMQ> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData findForm(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<Object[]> list = repmqBean.findForm();
+            List<Object[]> list = repmqBean.findForm("");
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

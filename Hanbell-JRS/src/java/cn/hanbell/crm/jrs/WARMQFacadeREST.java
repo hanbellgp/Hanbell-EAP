@@ -48,7 +48,7 @@ public class WARMQFacadeREST extends SuperRESTForCRM<WARMQ>{
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> findIncentoryForm(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<Object[]> list = warmqBean.findByMQ003();
+            List<Object[]> list = warmqBean.findByMQ003("");
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

@@ -10,11 +10,13 @@ import cn.hanbell.crm.app.REPTDApplication;
 import cn.hanbell.crm.ejb.CMSMVBean;
 import cn.hanbell.crm.ejb.CRMGGBean;
 import cn.hanbell.crm.ejb.REPMFBean;
+import cn.hanbell.crm.ejb.REPMUBean;
 import cn.hanbell.crm.ejb.REPPWBean;
 import cn.hanbell.crm.ejb.REPTABean;
 import cn.hanbell.crm.ejb.REPTCBean;
 import cn.hanbell.crm.ejb.REPTDBean;
 import cn.hanbell.crm.ejb.SERCABean;
+import cn.hanbell.crm.ejb.WARMQBean;
 import cn.hanbell.crm.ejb.WARTABean;
 import cn.hanbell.crm.ejb.WARTBBean;
 import cn.hanbell.crm.entity.CMSMV;
@@ -65,7 +67,6 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
 
     @EJB
     private SystemUserBean userBean;
-
     @EJB
     private CMSMVBean cmsmvBean;
     @EJB
@@ -86,6 +87,10 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
     private WARTBBean wartbBean;
     @EJB
     private REPMFBean repmfBean;
+    @EJB
+    private WARMQBean warmqBean;
+    @EJB
+    private REPMUBean repmuBean;
 
     public REPTCFacadeREST() {
         super(REPTC.class);
@@ -111,9 +116,14 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
     public ResponseMessage createMaintain(REPTCApplication reptcapplication, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             String seal = reptcBean.getTC002ByTC001AndDate(reptcapplication.getMaintainTypeId(), new Date());
-            StringBuffer msg = new StringBuffer("【汉钟精机】 维修单号:");
+            StringBuffer msg = new StringBuffer("【汉钟精机】 维修单别:");
             String serializableNumber = wartaBean.getTA002ByTA001AndDate(reptcapplication.getIncentoryform(), new Date());
-            msg = msg.append(seal).append("库存异动单号:" + serializableNumber);
+            List<Object[]> warmqs = warmqBean.findByMQ003(reptcapplication.getIncentoryform());
+            msg.append(reptcapplication.getMaintainTypeId()).append("-").append(repmuBean.findByMu001(reptcapplication.getMaintainer()).get(0).getRepmq().getMq002());
+            msg.append("。 维修单号:");
+            msg.append(seal);
+            msg.append("。 库存异动单别:" + reptcapplication.getIncentoryform()).append("-").append(warmqs.get(0)[1]);
+            msg.append("。 库存异动单号:" + serializableNumber).append("。");
             try {
                 Date date;
                 date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
@@ -326,12 +336,16 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 warta.setTa037(reptc.getTc013());
                 warta.setTa039(reptc.getTc054());
                 warta.setTa040(reptc.getTc005());
-                warta.setTa043(reptcapplication.getTradingreason());
                 warta.setTa041(seal);
+                if ("JCDF".equals(reptcapplication.getIncentoryform()) || "JCDX".equals(reptcapplication.getIncentoryform())) {
+                    warta.setTa043(reptcapplication.getTradingreason());
+                } else if ("FWLL".equals(reptcapplication.getIncentoryform())) {
+                    warta.setTa042(reptcapplication.getTradingreason());
+                }
                 warta.setTa519(reptcapplication.getDeliverydeptId());
                 wartaBean.persist(warta);
                 StringBuffer userid = null;
-                userid = new StringBuffer(reptcapplication.getEmployeeId());
+                userid = new StringBuffer(reptcapplication.getEmployeeId());         
                 //同一个人发送一条数据
                 if (!reptcapplication.getEmployeeId().equals(reptcapplication.getMaintainer())) {
                     userid.append("|").append(reptcapplication.getMaintainer());
@@ -341,8 +355,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 if (!"200".equals(errmsg)) {
                     throw new RuntimeException("发送失败,请联系管理员");
                 }
-
-                ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");
+                ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");               
                 return responseMessage;
             } catch (Exception ex) {
                 log4j.info(msg);

@@ -64,8 +64,8 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
      public String getTC002ByTC001AndDate(String tc001, Date date) {
         String ls_no = "";
         String ls_ta002 = "";
-        String serial = "0000";
-        ls_ta002 = BaseLib.formatDate("yyyyMM", date);
+        String serial = "000";
+        ls_ta002 = BaseLib.formatDate("yyyyMMdd", date);
         String sql = "SELECT * FROM REPTC WHERE TC001 = '" + tc001 + "' and TC002 LIKE '" + ls_ta002 + "%' ORDER BY TC002 DESC ";
         Query query = getEntityManager().createNativeQuery(sql);
         List result = query.getResultList();
