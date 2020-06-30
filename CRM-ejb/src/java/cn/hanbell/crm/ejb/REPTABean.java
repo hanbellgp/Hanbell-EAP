@@ -42,7 +42,7 @@ public class REPTABean extends SuperEJBForCRM<REPTA> {
         String ls_no = "";
         String ls_ta002 = "";
         String serial = "000";
-        ls_ta002 = BaseLib.formatDate("yyyyMM", date);
+        ls_ta002 = BaseLib.formatDate("yyyyMMdd", date);
         String sql = "SELECT * FROM REPTA WHERE TA001 = '" + ta001 + "' and TA002 LIKE '" + ls_ta002 + "%' ORDER BY TA002 DESC ";
         Query query = getEntityManager().createNativeQuery(sql);
         List result = query.getResultList();

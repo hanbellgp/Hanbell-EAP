@@ -3,6 +3,7 @@ package cn.hanbell.crm.jrs;
 import cn.hanbell.crm.app.SERBQApplication;
 import cn.hanbell.crm.ejb.CMSMGBean;
 import cn.hanbell.crm.ejb.CRMGGBean;
+import cn.hanbell.crm.ejb.REPMQBean;
 import cn.hanbell.crm.ejb.REPTABean;
 import cn.hanbell.crm.ejb.SERBQBean;
 import cn.hanbell.crm.ejb.SERCABean;
@@ -68,6 +69,8 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
 
     @EJB
     private CMSMGBean cmsmgBean;
+    @EJB
+    private REPMQBean repmqBean;
 
     public SERBQFacadeREST() {
         super(SERBQ.class);
@@ -93,7 +96,10 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
     public ResponseMessage createSERBQFromWechat(SERBQApplication entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             Date date;
-            StringBuffer msg = new StringBuffer("【汉钟精机】 客诉单号:");
+            StringBuffer msg = new StringBuffer("【汉钟精机】 客诉单别:");
+             List<Object[]> forms=repmqBean.findForm(entity.getFormId());
+            msg.append(entity.getFormId()).append("-").append(forms.get(0)[1]);
+            msg.append("。 客诉单号:");
             try {
                 date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
                 String bq001 = serbqBean.getBQ001ByDeptAndDate(entity.getDeptId(), date);
@@ -151,7 +157,7 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 bq.setBq128(BigDecimal.ZERO);
                 bq.setBq197(entity.getProductId() == null ? "" : entity.getProductId());
                 bq.setBq198(entity.getAreaId() == null ? "" : entity.getAreaId());
-                bq.setBq199(entity.getDealer() == null ? "" : entity.getDealer());//經銷商 
+//                bq.setBq199(entity.getDealer() == null ? "" : entity.getDealer());//經銷商 
                 bq.setBq500(entity.getComplaintTypeId() == null ? "" : entity.getComplaintTypeId()); //客诉单类型
                 bq.setBq506(entity.getIncidentProvinceId() == null ? "" : entity.getIncidentProvinceId()); //事发省
                 bq.setBq507(entity.getIncidentCityId() == null ? "" : entity.getIncidentCityId());//事发市
@@ -236,7 +242,7 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 ta.setTa071(entity.getProblemTypeId()); // 问题代号
                 ta.setTa062(entity.getCurrency());//币别
                 ta.setCustomer(entity.getCustomerCodeId());
-                ta.setTa199(entity.getDealer());//10
+//                ta.setTa199(entity.getDealer());//10
                 bq.setBq088(entity.getCurrency());
                 List<CMSMG> list = cmsmgBean.findByMG001(entity.getCurrency());
                 if (list != null && list.size() != 0) {
@@ -275,16 +281,13 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 sercaBean.persist(ca);
                 repiaBean.persist(ta);
                 ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");
-                msg = msg.append(bq001).append("  派工单号:" + serl);
-//                String errmsg = serbqBean.sendMsgString(entity.getEmployeeId(), msg.toString(), entity.getSessionkey(), entity.getOpenId());
+                msg = msg.append(bq001).append("。  派工单号:" + serl).append("。");
                 String errmsg = serbqBean.sendMsgString(entity.getEmployeeId(), msg.toString(), entity.getSessionkey(), entity.getOpenId());
                 if (!"200".equals(errmsg)) {
                     throw new RuntimeException("发送失败,请联系管理员");
                 }
                 return responseMessage;
             } catch (Exception e) {
-//                  log4j.info(msg);
-                System.out.println("msg=" + msg);
                 ResponseMessage responseMessage = new ResponseMessage("500", "申请失败");
                 return responseMessage;
             }
