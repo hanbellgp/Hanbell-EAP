@@ -91,7 +91,7 @@ public class Demands extends FormEntity {
     @Size(max = 255)
     @Column(name = "demanderDeptName")
     private String demanderDeptName;
-    @Size(max = 255)
+    @Size(max = 400)
     @Column(name = "demandContent")
     private String demandContent;
     @Size(max = 255)

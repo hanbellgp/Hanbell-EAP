@@ -432,7 +432,7 @@ public class TimerBean {
                 employeeList.forEach((e) -> {
                     boolean flag = false;
                     String company = e.getCode().substring(0, 1);
-                    if ("C".equals(company) || "H".equals(company) || "K".equals(company) || "Q".equals(company) || "Y".equals(company)) {
+                    if ("C".equals(company) || "H".equals(company) || "K".equals(company) || "E".equals(company) || "Y".equals(company) || "Q".equals(company)) {
                         // EAP
                         cn.hanbell.eap.entity.SystemUser eu = eapSystemUserBean.findByUserId(e.getCode());
                         if (eu == null) {
@@ -1129,7 +1129,7 @@ public class TimerBean {
                         hm.setCfmuser(h.getCfmuserno());
                         // 设置审批原因
                         hm.setApprresno(miscodeBean.findByPK("1O", h.getApprresno()).getCdesc());
-                        //加入付款条件叙述                        
+                        //加入付款条件叙述
                         hm.setPaycodedsc(h.getPaycodedsc());
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);

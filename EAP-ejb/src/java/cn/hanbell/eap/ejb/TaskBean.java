@@ -9,6 +9,7 @@ import cn.hanbell.eap.comm.SuperEJBForEAP;
 import cn.hanbell.eap.comm.TaskContextFactory;
 import cn.hanbell.eap.entity.Task;
 import cn.hanbell.eap.context.TaskContext;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -33,6 +34,17 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         try {
             Object o = query.getSingleResult();
             return (Task) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Task> findByExecutorIdAndStatus(String executorid, String status) {
+        Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndStatus");
+        query.setParameter("executorId", executorid);
+        query.setParameter("status", status);
+        try {
+            return query.getResultList();
         } catch (Exception ex) {
             return null;
         }
