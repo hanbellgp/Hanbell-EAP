@@ -7,23 +7,10 @@ package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.ejb.REPMABean;
 import cn.hanbell.crm.entity.REPMA;
-import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.SuperEJB;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.PathSegment;
-import javax.ws.rs.core.Response;
 
 /**
  *

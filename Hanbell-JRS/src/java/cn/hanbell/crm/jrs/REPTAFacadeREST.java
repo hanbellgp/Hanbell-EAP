@@ -12,9 +12,7 @@ import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.SuperEJB;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,8 +21,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 
 /**
@@ -60,7 +56,8 @@ public class REPTAFacadeREST extends SuperRESTForCRM<REPTA> {
     @GET
     @Path("repair/{ta001}")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<JSONObject> findRepair(@PathParam("ta001") String ta001, @QueryParam("searchWord") String ta002, @QueryParam("appid") String appid, @QueryParam("token") String token) throws Exception {
+    public ResponseData<JSONObject> findRepair(@PathParam("ta001") String ta001, @QueryParam("searchWord") String ta002,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) throws Exception {
         if (isAuthorized(appid, token)) {
             List<Object[]> list = reptaBean.getReptaByTA001AndTA031(ta001, ta002);
             if (list == null) {
@@ -70,8 +67,9 @@ public class REPTAFacadeREST extends SuperRESTForCRM<REPTA> {
             JSONObject js;
             for (Object[] o : list) {
                 js = new JSONObject();
-//          -- 叫修单号，单据日期，客户编号,接单人员,产品品号，产品品名，产品规格，产品序号,机型,产品别，区域别,问题代号，问题描述，备注
-//       TA002,TA003,TA004,TA009,TA005,TA006,TA007,TA013, TA500 ,TA197,TA198,TA071,TA010 ，TA009，TA017
+                // -- 叫修单号，单据日期，客户编号,接单人员,产品品号，产品品名，产品规格，产品序号,机型,产品别，区域别,问题代号，问题描述，备注
+                // TA002,TA003,TA004,TA009,TA005,TA006,TA007,TA013, TA500
+                // ,TA197,TA198,TA071,TA010 ，TA009，TA017
                 js.put("key", o[0]);
                 js.put("value", o[1]);
                 js.put("ta004", o[2]);

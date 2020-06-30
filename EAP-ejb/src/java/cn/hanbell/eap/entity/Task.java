@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Task.findAll", query = "SELECT j FROM Task j"),
     @NamedQuery(name = "Task.findById", query = "SELECT j FROM Task j WHERE j.id = :id"),
     @NamedQuery(name = "Task.findByName", query = "SELECT j FROM Task j WHERE j.name = :name"),
-    @NamedQuery(name = "Task.findByDescription", query = "SELECT j FROM Task j WHERE j.description = :description"),
+    @NamedQuery(name = "Task.findByExecutorIdAndStatus", query = "SELECT j FROM Task j WHERE j.executorId = :executorId AND j.status =:status"),
     @NamedQuery(name = "Task.findByExecutorId", query = "SELECT j FROM Task j WHERE j.executorId = :executorId"),
     @NamedQuery(name = "Task.findByExecutor", query = "SELECT j FROM Task j WHERE j.executor = :executor"),
     @NamedQuery(name = "Task.findByPlannedStartDate", query = "SELECT j FROM Task j WHERE j.plannedStartDate = :plannedStartDate"),
@@ -59,7 +59,7 @@ public class Task extends SuperEntity {
     @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
-    @Size(max = 200)
+    @Size(max = 400)
     @Column(name = "description")
     private String description;
     @Size(max = 20)

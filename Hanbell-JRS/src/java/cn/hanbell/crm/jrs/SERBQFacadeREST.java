@@ -69,6 +69,7 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
 
     @EJB
     private CMSMGBean cmsmgBean;
+
     @EJB
     private REPMQBean repmqBean;
 
@@ -93,11 +94,12 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
     @Path("create")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public ResponseMessage createSERBQFromWechat(SERBQApplication entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseMessage createSERBQFromWeChat(SERBQApplication entity, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             Date date;
             StringBuffer msg = new StringBuffer("【汉钟精机】 客诉单别:");
-             List<Object[]> forms=repmqBean.findForm(entity.getFormId());
+            List<Object[]> forms = repmqBean.findForm(entity.getFormId());
             msg.append(entity.getFormId()).append("-").append(forms.get(0)[1]);
             msg.append("。 客诉单号:");
             try {
@@ -107,9 +109,9 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 bq.setBq001(bq001 == null ? "" : bq001);
                 bq.setBq002(entity.getCustomerCodeId() == null ? "" : entity.getCustomerCodeId());
                 bq.setBq003(entity.getProductTypeId() == null ? "" : entity.getProductTypeId());
-                bq.setBq005(entity.getEmergencyDrgree() == null ? "" : entity.getEmergencyDrgree());//紧急度
+                bq.setBq005(entity.getEmergencyDrgree() == null ? "" : entity.getEmergencyDrgree());// 紧急度
                 bq.setBq007(entity.getCallerUnit() == null ? "" : entity.getCallerUnit());
-                bq.setBq009(entity.getCallerPhone() == null ? "" : entity.getCallerPhone());//来电者，非来电单位
+                bq.setBq009(entity.getCallerPhone() == null ? "" : entity.getCallerPhone());// 来电者，非来电单位
                 String ti = BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", BaseLib.getDate());
                 bq.setBq008(ti.substring(11) == null ? "" : ti.substring(11));
                 bq.setBq017(entity.getDeptId() == null ? "" : entity.getDeptId());
@@ -127,18 +129,18 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 bq.setBq034("");
                 bq.setBq035("N");
                 bq.setBq036("");
-                bq.setBq042(new BigDecimal(0.00));
-                bq.setBq043(new BigDecimal(0.00));
+                bq.setBq042(BigDecimal.ZERO);
+                bq.setBq043(BigDecimal.ZERO);
                 bq.setBq044("N");
                 bq.setBq047("2");
                 bq.setBq049("");
                 bq.setBq052("2");
-                bq.setBq055(entity.getPhoneCountry() == null ? "" : entity.getPhoneCountry());//電話過嗎
-                bq.setBq056(entity.getPhoneArea() == null ? "" : entity.getPhoneArea());//電話區碼
+                bq.setBq055(entity.getPhoneCountry() == null ? "" : entity.getPhoneCountry());// 電話過嗎
+                bq.setBq056(entity.getPhoneArea() == null ? "" : entity.getPhoneArea());// 電話區碼
                 bq.setBq058("");
                 bq.setBq059("");
-                bq.setBq060(entity.getPhoneCountry1() == null ? "" : entity.getPhoneCountry1());//行動電話國碼
-                bq.setBq061(entity.getPhoneArea1() == null ? "" : entity.getPhoneArea1());//行動電話號碼
+                bq.setBq060(entity.getPhoneCountry1() == null ? "" : entity.getPhoneCountry1());// 行動電話國碼
+                bq.setBq061(entity.getPhoneArea1() == null ? "" : entity.getPhoneArea1());// 行動電話號碼
                 bq.setBq064("");
                 bq.setBq065("");
                 bq.setBq068(BigDecimal.ZERO);
@@ -157,11 +159,11 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 bq.setBq128(BigDecimal.ZERO);
                 bq.setBq197(entity.getProductId() == null ? "" : entity.getProductId());
                 bq.setBq198(entity.getAreaId() == null ? "" : entity.getAreaId());
-//                bq.setBq199(entity.getDealer() == null ? "" : entity.getDealer());//經銷商 
-                bq.setBq500(entity.getComplaintTypeId() == null ? "" : entity.getComplaintTypeId()); //客诉单类型
-                bq.setBq506(entity.getIncidentProvinceId() == null ? "" : entity.getIncidentProvinceId()); //事发省
-                bq.setBq507(entity.getIncidentCityId() == null ? "" : entity.getIncidentCityId());//事发市
-                //客诉类型是否是其他，其他则不是客诉单
+                // bq.setBq199(entity.getDealer() == null ? "" : entity.getDealer());//經銷商
+                bq.setBq500(entity.getComplaintTypeId() == null ? "" : entity.getComplaintTypeId()); // 客诉单类型
+                bq.setBq506(entity.getIncidentProvinceId() == null ? "" : entity.getIncidentProvinceId()); // 事发省
+                bq.setBq507(entity.getIncidentCityId() == null ? "" : entity.getIncidentCityId());// 事发市
+                // 客诉类型是否是其他，其他则不是客诉单
                 if ("1".equals(bq.getBq500())) {
                     bq.setBq110("Y");
                 } else {
@@ -172,16 +174,16 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 bq.setUsrGroup(entity.getDeptId() == null ? "" : entity.getDeptId());
                 bq.setFlag((short) 1);
                 bq.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                //品号资料单身
+                // 品号资料单身
                 SERCA ca = new SERCA();
                 SERCAPK capk = new SERCAPK();
                 capk.setCa001(bq.getBq001());
                 capk.setCa002("0001"); // 手机端发单明细只有1笔资料
                 ca.setSERCAPK(capk);
                 ca.setCa003(entity.getProductQuality());
-                ca.setCa004(entity.getProduct_name());
+                ca.setCa004(entity.getProductName());
                 ca.setCa005(entity.getProductStandard());
-                ca.setCa009(entity.getProductNumberId());//制造号码
+                ca.setCa009(entity.getProductNumberId());// 制造号码
                 ca.setCa010(entity.getFormId()); // 叫修单单别
                 String serl = repiaBean.getTA002ByTA001AndDate(entity.getFormId(), BaseLib.getDate());
                 ca.setCa011(serl); // 叫修单单号（派工单号）
@@ -206,16 +208,16 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 ta.setTa003(bq.getCreateDate());
                 ta.setTa004(entity.getCustomerCodeId()); // 客户代号
                 ta.setTa005(entity.getProductQuality()); // 产品品号
-                ta.setTa006(entity.getProduct_name()); // 产品品名
+                ta.setTa006(entity.getProductName()); // 产品品名
                 ta.setTa007(entity.getProductStandard()); // 产品规格
                 ta.setTa009(entity.getEmployeeId()); // 接单人员
                 ta.setTa010(entity.getProblemTypeName());
-//            ta.setTa012(entity.getCompanyName());//######数据字段长度不够
+                // ta.setTa012(entity.getCompanyName());//######数据字段长度不够
                 ta.setTa017(entity.getReason());
                 ta.setTa022(entity.getInvoiceAdress1());
                 ta.setTa023(entity.getInvoiceAdress2());
                 ta.setTa024(entity.getInvoiceMail());
-                ta.setTa013(entity.getProductNumberId());//产品序号
+                ta.setTa013(entity.getProductNumberId());// 产品序号
                 ta.setTa031("0");
                 ta.setTa036(entity.getUnifyNum());
                 ta.setTa049(bq.getBq001());
@@ -240,16 +242,16 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 ta.setTa057(entity.getWarrantyEnd());
                 ta.setTa058("1");
                 ta.setTa071(entity.getProblemTypeId()); // 问题代号
-                ta.setTa062(entity.getCurrency());//币别
+                ta.setTa062(entity.getCurrency());// 币别
                 ta.setCustomer(entity.getCustomerCodeId());
-//                ta.setTa199(entity.getDealer());//10
+                // ta.setTa199(entity.getDealer());//10
                 bq.setBq088(entity.getCurrency());
                 List<CMSMG> list = cmsmgBean.findByMG001(entity.getCurrency());
                 if (list != null && list.size() != 0) {
-                    ta.setTa063(list.get(0).getMg003());//汇率
+                    ta.setTa063(list.get(0).getMg003());// 汇率
                     bq.setBq089(list.get(0).getMg003());
                 }
-                ta.setTa197(entity.getProductId()); //  产品别AA
+                ta.setTa197(entity.getProductId()); // 产品别AA
                 ta.setTa198(entity.getAreaId()); // 区域别
                 ta.setTa020(entity.getCaller()); // 联络人
                 ta.setTa054("3");
@@ -260,7 +262,7 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                     ta.setTa068(gg.getGg109());
                     ta.setTa037(gg.getGg089());
                     ta.setTa044(gg.getGg098());
-//                ##税别码##发票连数##课税别
+                    // ##税别码##发票连数##课税别
                     bq.setBq094(gg.getGg109());
                     bq.setBq095(gg.getGg089());
                     bq.setBq096(gg.getGg098());
@@ -281,8 +283,9 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 sercaBean.persist(ca);
                 repiaBean.persist(ta);
                 ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");
-                msg = msg.append(bq001).append("。  派工单号:" + serl).append("。");
-                String errmsg = serbqBean.sendMsgString(entity.getEmployeeId(), msg.toString(), entity.getSessionkey(), entity.getOpenId());
+                msg = msg.append(bq001).append(".  派工单号:").append(serl).append("。");
+                String errmsg = serbqBean.sendMsgString(entity.getEmployeeId(), msg.toString(), entity.getSessionkey(),
+                        entity.getOpenId());
                 if (!"200".equals(errmsg)) {
                     throw new RuntimeException("发送失败,请联系管理员");
                 }
@@ -295,4 +298,5 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
+
 }
