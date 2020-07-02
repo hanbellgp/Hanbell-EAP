@@ -85,7 +85,7 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
 
                 String formInstance = workFlowBean.buildXmlForEFGP("HK_GL004", la, null);
                 String subject = la.getHdn_employee() + entity.getDate1() + "开始请假" + entity.getLeaveDay() + "天" + entity.getLeaveHour() + "时" + entity.getLeaveMinute() + "分";
-                String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_GL004", formInstance, subject);
+                String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL004", formInstance, subject);
                 String[] rm = msg.split("\\$");
                 if (rm.length == 2) {
                     return new ResponseMessage(rm[0], rm[1]);
@@ -145,7 +145,7 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
             //发起流程
             String formInstance = workFlowBean.buildXmlForEFGP("HK_GL004", la, null);
             String subject = la.getHdn_employee() + entity.getStartDate() + "开始请假" + entity.getLeaveDay() + "天" + entity.getLeaveHour() + "时" + entity.getLeaveMinute() + "分";
-            String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_GL004", formInstance, subject);
+            String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL004", formInstance, subject);
             String[] rm = msg.split("\\$");
             if (rm.length == 2) {
                 return new ResponseMessage(rm[0], rm[1]);

@@ -35,9 +35,6 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
     @PersistenceContext(unitName = "PU_shberp")
     private EntityManager em_shberp;
 
-    @PersistenceContext(unitName = "PU_cqerp")
-    private EntityManager em_cqerp;
-
     @PersistenceContext(unitName = "PU_gzerp")
     private EntityManager em_gzerp;
 
@@ -47,14 +44,20 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
     @PersistenceContext(unitName = "PU_njerp")
     private EntityManager em_njerp;
 
+    @PersistenceContext(unitName = "PU_cqerp")
+    private EntityManager em_cqerp;
+
+    @PersistenceContext(unitName = "PU_comererp")
+    private EntityManager em_comererp;
+
+    @PersistenceContext(unitName = "PU_zjcomererp")
+    private EntityManager em_zjcomererp;
+
     @PersistenceContext(unitName = "PU_hansonerp")
     private EntityManager em_hansonerp;
 
     @PersistenceContext(unitName = "PU_hanyoungerp")
     private EntityManager em_hanyoungerp;
-
-    @PersistenceContext(unitName = "PU_comererp")
-    private EntityManager em_comererp;
 
     @PersistenceContext(unitName = "PU_qtcerp")
     private EntityManager em_qtcerp;
@@ -158,10 +161,14 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
                 return em_njerp;
             case "C4":
                 return em_cqerp;
-            case "H":
-                return em_hansonerp;
             case "K":
                 return em_comererp;
+            case "E":
+                return em_zjcomererp;
+            case "H":
+                return em_hansonerp;
+            case "Y":
+                return em_hanyoungerp;
             case "L":
                 return em_zkerp;
             case "Q":
@@ -170,8 +177,6 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
                 return em_sderp;
             case "X":
                 return em_hkerp;
-            case "Y":
-                return em_hanyoungerp;
             default:
                 return em_shberp;
         }

@@ -35,9 +35,9 @@ import org.apache.axis.client.Call;
 @DependsOn({"UsersBean", "FunctionsBean", "TitleBean"})
 public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Serializable {
 
-    //public final String hostAdd = "http://oa.hanbell.com.cn";
-    public final String hostAdd = "http://172.16.10.157";
-    public final String hostPort = "8086";
+    //public final String HOST_ADD = "http://oa.hanbell.com.cn";
+    public final String HOST_ADD = "http://172.16.10.157";
+    public final String HOST_PORT = "8086";
 
     public WorkFlowBean() {
         super(FormInstance.class);
@@ -150,7 +150,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
         String formOID = null;
         try {
             //建立一个WebServices调用连接
-            Call call = BaseLib.getAXISCall(this.hostAdd, this.hostPort, "/NaNaWeb/services/WorkflowService?wsdl");
+            Call call = BaseLib.getAXISCall(this.HOST_ADD, this.HOST_PORT, "/NaNaWeb/services/WorkflowService?wsdl");
             call.setOperationName(new QName("WorkflowService", "findFormOIDsOfProcess"));
             //转入流程代号
             params = new Object[]{processId};
@@ -191,6 +191,8 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 return "R";
             case "7":
                 return "Y";
+            case "8":
+                return "E";
             case "9":
                 return "L";
         }
@@ -215,16 +217,20 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 return "安徽汉扬";
             case "K":
                 return "上海柯茂";
+            case "E":
+                return "浙江柯茂";
             case "Q":
                 return "世纪东元";
-            case "W":
-                return "顺德涡旋";
             case "L":
                 return "真空技术";
+            case "X":
+                return "香港汉钟";
             case "V":
                 return "越南汉钟";
             case "R":
                 return "韩国汉钟";
+            case "W":
+                return "顺德涡旋";
         }
         return "上海汉钟";
     }
@@ -235,7 +241,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
         String formXml = null;
         try {
             //建立一个WebServices调用连接
-            Call call = BaseLib.getAXISCall(this.hostAdd, this.hostPort, "/NaNaWeb/services/WorkflowService?wsdl");
+            Call call = BaseLib.getAXISCall(this.HOST_ADD, this.HOST_PORT, "/NaNaWeb/services/WorkflowService?wsdl");
             call.setOperationName(new QName("WorkflowService", "getFormFieldTemplate"));
             //转入FormOID
             params = new Object[]{formOID};

@@ -104,7 +104,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
 
                 String formInstance = workFlowBean.buildXmlForEFGP("HK_GL034", m, details);
                 String subject = entity.getEmployee() + "加班申请";
-                String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_GL034", formInstance, subject);
+                String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL034", formInstance, subject);
                 String[] rm = msg.split("\\$");
                 if (rm.length == 2) {
                     return new ResponseMessage(rm[0], rm[1]);
@@ -181,7 +181,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                 //发起流程
                 String formInstance = workFlowBean.buildXmlForEFGP("HK_GL034", m, details);
                 String subject = workFlowBean.getCurrentUser().getUserName() + "加班申请";
-                String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_GL034", formInstance, subject);
+                String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL034", formInstance, subject);
                 String[] rm = msg.split("\\$");
                 if (rm.length == 2) {
                     return new ResponseMessage(rm[0], rm[1]);

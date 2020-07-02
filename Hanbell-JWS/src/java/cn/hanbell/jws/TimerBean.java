@@ -916,7 +916,7 @@ public class TimerBean {
                         if (fromTHB) {
                             subject += "_THB";
                         }
-                        String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "HZ_JS034",
+                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "HZ_JS034",
                                 formInstance, subject);
                         String[] rm = msg.split("\\$");
                         if (rm != null) {
@@ -1012,7 +1012,7 @@ public class TimerBean {
             if (detailList.size() > 0) {
                 String formInstance = workFlowBean.buildXmlForEFGP("SHB_ERP_INV325", s, details);
                 String subject = "生产制程领料" + BaseLib.formatDate("yyyyMMdd", s.getCreatedate());
-                String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_SHB_ERP_INV325",
+                String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_SHB_ERP_INV325",
                         formInstance, subject);
             }
         } catch (Exception ex) {
@@ -1134,7 +1134,7 @@ public class TimerBean {
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);
                         String subject = "客户:" + hm.getCusna() + "申请原因： " + hm.getApprresno() + ".  业务员:" + hm.getMancode() + hm.getMancodesc();
-                        String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_YX009",
+                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_YX009",
                                 formInstance, subject);
                         String[] rm = msg.split("\\$");
                         if (rm != null) {
@@ -1301,7 +1301,7 @@ public class TimerBean {
                         String formInstance = workFlowBean.buildXmlForEFGP("SHB_ERP_APM811", hm, details);
                         String subject = "进货请款申请单：" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款天数（" + hm.getTickdays() + "),"
                                 + "请款金额：" + hm.getTotal();
-                        String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_SHB_ERP_APM811",
+                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_SHB_ERP_APM811",
                                 formInstance, subject);
                         String[] rm = msg.split("\\$");
                         if (rm != null) {

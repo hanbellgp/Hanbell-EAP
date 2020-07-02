@@ -86,7 +86,7 @@ public class HKGC002Bean extends SuperEJBForEFGP<HKGC002> {
                 workFlowBean.initUserInfo(e.getApplyUser());
                 String formInstance = workFlowBean.buildXmlForEFGP("HK_GC002", m, null);
                 String subject = "研发工作支援单_" + e.getProcessSerialNumber();
-                String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_GC002", formInstance, subject);
+                String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GC002", formInstance, subject);
                 String[] rm = msg.split("\\$");
                 if (rm != null && rm.length == 2 && rm[0].equals("200")) {
                     //更新状态

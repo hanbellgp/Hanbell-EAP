@@ -167,7 +167,7 @@ public class HKGL037FacadeREST extends SuperRESTForEFGP<KV> {
                 }
                 String formInstance = workFlowBean.buildXmlForEFGP("HK_GL037", m, details);
                 String subject = entity.getEmployeeName() + "派车申请";
-                String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_GL037", formInstance, subject);
+                String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL037", formInstance, subject);
                 String[] rm = msg.split("\\$");
                 if (rm.length == 2) {
                     return new ResponseMessage(rm[0], rm[1]);

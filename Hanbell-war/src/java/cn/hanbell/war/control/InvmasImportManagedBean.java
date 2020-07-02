@@ -262,7 +262,7 @@ public class InvmasImportManagedBean extends SuperSingleBean<InvmasImport> {
             m.setPLMNO(formid);
             String formInstance = workFlowBean.buildXmlForEFGP("HZ_JS034", m, details);
             String subject = "批量导入_" + formid;
-            String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "HZ_JS034", formInstance, subject);
+            String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "HZ_JS034", formInstance, subject);
             String[] rm = msg.split("\\$");
             if (rm != null) {
                 log4j.error(rm);

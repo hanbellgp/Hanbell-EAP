@@ -183,7 +183,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     workFlowBean.initUserInfo(pm.getApplyUser());
                     String formInstance = workFlowBean.buildXmlForEFGP("HK_CG007", m, details);
                     String subject = "资产申请单_" + pm.getProcessSerialNumber();
-                    String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_CG007", formInstance, subject);
+                    String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_CG007", formInstance, subject);
                     String[] rm = msg.split("\\$");
                     if (rm.length == 2 && rm[0].equals("200")) {
                         //更新资产申请单状态
@@ -364,7 +364,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     }
 
                     String subject = "资产申请单_" + aa.getProcessSerialNumber();
-                    String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HK_CG007", formInstance, subject);
+                    String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_CG007", formInstance, subject);
                     String[] rm = msg.split("\\$");
                     if (rm.length == 2 && rm[0].equals("200")) {
                         //更新资产申请单状态
