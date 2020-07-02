@@ -125,7 +125,7 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
                 //发起流程
                 String formInstance = workFlowBean.buildXmlForEFGP("HZ_CW017", la, null);
                 String subject = la.getHdnloanUser() + "申请借支";
-                String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HZ_CW017", formInstance, subject);
+                String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HZ_CW017", formInstance, subject);
                 String[] rm = msg.split("\\$");
                 if (rm.length == 2) {
                     return new ResponseMessage(rm[0], rm[1]);
@@ -210,7 +210,7 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
             //发起流程
             String formInstance = workFlowBean.buildXmlForEFGP("HZ_CW017", la, null);
             String subject = la.getHdnloanUser() + "申请借支";
-            String msg = workFlowBean.invokeProcess(workFlowBean.hostAdd, workFlowBean.hostPort, "PKG_HZ_CW017", formInstance, subject);
+            String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HZ_CW017", formInstance, subject);
             String[] rm = msg.split("\\$");
             if (rm.length == 2) {
                 return new ResponseMessage(rm[0], rm[1]);

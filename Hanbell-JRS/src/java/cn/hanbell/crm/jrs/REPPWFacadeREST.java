@@ -44,7 +44,6 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
 
     @EJB
     private REPMBBean repmbBean;
-
     @EJB
     private REPPWBean reppwBean;
     @EJB
@@ -56,11 +55,11 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
 
     /**
      * 派工单分配多人派工
-     * 
+     *
      * @param entity
      * @param appid
      * @param token
-     * @return 
+     * @return
      */
     @POST
     @Path("wechat")
@@ -147,10 +146,11 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
 
     /**
      * 获取维修人员，优先分配主维修人员，其次为其他的维修人员。
+     *
      * @param SerialNumber
      * @param appid
      * @param token
-     * @return 
+     * @return
      */
     @GET
     @Path("maintainNumber/{SerialNumber}")
@@ -162,7 +162,7 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
             List<REPPW> reppws = reppwBean.findByPw001AndPw002AndPW010AndPW019(sers[0], sers[1], "0", "Y");
             JSONObject js = null;
             List<JSONObject> objs = new ArrayList<>();
-            if (reppws == null || reppws.size() == 0) {
+            if (reppws == null || reppws.isEmpty()) {
                 List<REPPW> rs = reppwBean.findByPw001AndPw002AndPW010AndPW019(sers[0], sers[1], "0", "N");
                 for (REPPW r : rs) {
                     js = new JSONObject();

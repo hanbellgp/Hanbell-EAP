@@ -48,6 +48,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -100,6 +101,8 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
     private InvdtaBean invdtaBean;
     @EJB
     private InvhdscBean invhdscBean;
+    @EJB
+    private InvwhBean invwhBean;
 
     public InvhadBean() {
         super(Invhad.class);
@@ -653,6 +656,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         invmasBean.setCompany(facno);
         invsernoBean.setCompany(facno);
         invsysBean.setCompany(facno);
+        invwhBean.setCompany(facno);
         try {
             trdate = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
             String mon = BaseLib.formatDate("yyyyMM", trdate);
@@ -671,6 +675,11 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 if (m == null) {
                     throw new RuntimeException(psn + "流程序号" + d.getItnbr() + "ERP中不存在");
                 }
+                // 增加调拨库号成本属性是否一致判断
+                if (!Objects.equals(invwhBean.findByWareh(d.getDfromwareh()).getCostyn(), invwhBean.findByWareh(d.getDtowareh()).getCostyn())) {
+                    throw new RuntimeException(psn + "流程序号，调拨来源仓和目的仓成本属性不一致");
+                }
+
                 trseq++;
                 invdta = new Invdta(d.getItnbr(), facno, prono, "", trseq);
                 invdta.setTrtype(trtype);
