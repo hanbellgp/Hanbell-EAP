@@ -8,6 +8,7 @@ package cn.hanbell.rpt.control;
 import cn.hanbell.eap.ejb.SystemProgramBean;
 import cn.hanbell.eap.entity.SystemProgram;
 import cn.hanbell.oa.ejb.HZCW028Bean;
+import cn.hanbell.oa.ejb.HZCW030Bean;
 import cn.hanbell.oa.ejb.HZCW033Bean;
 import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.entity.ProcessInstance;
@@ -43,7 +44,8 @@ public class ReportManagedBean extends SuperReportManagedBean {
     private HZCW028Bean hzcw028Bean;
     @EJB
     private HZCW033Bean hzcw033Bean;
-
+    @EJB
+    private HZCW030Bean hzcw030Bean;
     private String msg;
     private Map<String, String[]> paramMap;
 
@@ -135,12 +137,41 @@ public class ReportManagedBean extends SuperReportManagedBean {
                     }
                 }
                 //借支归还单有差旅明细单独列印
-                if("HZ_CW033".equals(api)){
-                       String formSerialNumber = hzcw033Bean.findByPSN(reportParams.get("formid")).getFormSerialNumber();
-                        if (hzcw033Bean.getTrafficDetail(formSerialNumber).size() > 0) {
+                if ("HZ_CW033".equals(api)) {
+                    String formSerialNumber = hzcw033Bean.findByPSN(reportParams.get("formid")).getFormSerialNumber();
+                    if (hzcw033Bean.getTrafficDetail(formSerialNumber).size() > 0) {
                         baos = new ByteArrayOutputStream();
                         this.reportRunAndOutput(reportPath + "hzcw03301.rptdesign", reportParams, null, "pdf", baos);
                         pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+                    }
+                }
+                if ("HZ_CW030".equals(api)) {
+                    String formSerialNumber = hzcw030Bean.findByPSN(reportParams.get("formid")).getFormSerialNumber();
+                    String projecttype = hzcw030Bean.findByPSN(reportParams.get("formid")).getProject();
+                    //费用预算追加
+                    if ("1".equals(projecttype)) {
+                        if (hzcw030Bean.getDetailList1(formSerialNumber).size() > 0) {
+                            baos = new ByteArrayOutputStream();
+                            this.reportRunAndOutput(reportPath + "hzcw03001.rptdesign", reportParams, null, "pdf", baos);
+                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+                        }
+                        if (hzcw030Bean.getDetailList2(formSerialNumber).size() > 0) {
+                            baos = new ByteArrayOutputStream();
+                            this.reportRunAndOutput(reportPath + "hzcw03002.rptdesign", reportParams, null, "pdf", baos);
+                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+                        }
+                        //费用预算调拨
+                    } else if ("2".equals(projecttype)) {
+                        if (hzcw030Bean.getDetailList3(formSerialNumber).size() > 0) {
+                            baos = new ByteArrayOutputStream();
+                            this.reportRunAndOutput(reportPath + "hzcw03003.rptdesign", reportParams, null, "pdf", baos);
+                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+                        }
+                        if (hzcw030Bean.getDetailList4(formSerialNumber).size() > 0) {
+                            baos = new ByteArrayOutputStream();
+                            this.reportRunAndOutput(reportPath + "hzcw03004.rptdesign", reportParams, null, "pdf", baos);
+                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+                        }
                     }
                 }
 
