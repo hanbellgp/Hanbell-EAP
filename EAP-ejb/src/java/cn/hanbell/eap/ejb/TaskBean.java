@@ -9,6 +9,7 @@ import cn.hanbell.eap.comm.SuperEJBForEAP;
 import cn.hanbell.eap.comm.TaskContextFactory;
 import cn.hanbell.eap.entity.Task;
 import cn.hanbell.eap.context.TaskContext;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -39,6 +40,28 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         }
     }
 
+    public List<Task> findByExecutorIdAndActualFinishDate(String executorid, Date date, Integer offset, Integer size) {
+        Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndActualFinishDate").setFirstResult(offset).setMaxResults(size);
+        query.setParameter("executorId", executorid);
+        query.setParameter("actualFinishDate", date);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Task> findByExecutorIdAndPlannedStartDate(String executorid, Date date, Integer offset, Integer size) {
+        Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndPlannedStartDate").setFirstResult(offset).setMaxResults(size);
+        query.setParameter("executorId", executorid);
+        query.setParameter("plannedStartDate", date);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<Task> findByExecutorIdAndStatus(String executorid, String status) {
         Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndStatus");
         query.setParameter("executorId", executorid);
@@ -47,6 +70,28 @@ public class TaskBean extends SuperEJBForEAP<Task> {
             return query.getResultList();
         } catch (Exception ex) {
             return null;
+        }
+    }
+
+    public Integer getRowCountByExecutorIdAndActualFinishDate(String executorid, Date date) {
+        Query query = getEntityManager().createNamedQuery("Task.getRowCountByExecutorIdAndActualFinishDate");
+        query.setParameter("executorId", executorid);
+        query.setParameter("actualFinishDate", date);
+        try {
+            return Integer.valueOf(query.getSingleResult().toString());
+        } catch (Exception ex) {
+            return 0;
+        }
+    }
+
+    public Integer getRowCountByExecutorIdAndPlannedStartDate(String executorid, Date date) {
+        Query query = getEntityManager().createNamedQuery("Task.getRowCountByExecutorIdAndPlannedStartDate");
+        query.setParameter("executorId", executorid);
+        query.setParameter("plannedStartDate", date);
+        try {
+            return Integer.valueOf(query.getSingleResult().toString());
+        } catch (Exception ex) {
+            return 0;
         }
     }
 
