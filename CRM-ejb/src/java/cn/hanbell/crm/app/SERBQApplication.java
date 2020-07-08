@@ -6,6 +6,7 @@
 package cn.hanbell.crm.app;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,12 +27,10 @@ public class SERBQApplication implements Serializable {
     private String deptId;
     private String complaintTypeId;
     private String customerCodeId;
-    private String productTypeId;
-    private String emergencyDrgree;
+    private String complaintTypeName;
     private String caller;
     private String callerUnit;
     private String callerPhone;
-    private String problemTypeId;
     private String reason;
     private String phoneCountry;
     private String phoneArea;
@@ -41,11 +40,8 @@ public class SERBQApplication implements Serializable {
     private String areaId;
     private String dealer;
     private String incidentProvinceId;
-    private String formId;
-    private String productQuality;
-    private String product_name;
-    private String productStandard;
-    private String productNumberId;
+    private String emergencyDrgreeId;
+    private String problemTypeId;
     private String problemTypeName;
     private String incidentCityId;
     private String machineTypeId;
@@ -55,10 +51,11 @@ public class SERBQApplication implements Serializable {
     private String invoiceAdress2;
     private String invoiceMail;
     private String unifyNum;
-    private String warrantyStart;
-    private String warrantyEnd;
     private String sessionkey;
     private String openId;
+    private String productTypeId;
+    private List<SERBQDETAILLApplication> sercadetails;
+
     @Override
     public int hashCode() {
         int hash = 3;
@@ -123,20 +120,12 @@ public class SERBQApplication implements Serializable {
         this.customerCodeId = customerCodeId;
     }
 
-    public String getProductTypeId() {
-        return productTypeId;
+    public String getComplaintTypeName() {
+        return complaintTypeName;
     }
 
-    public void setProductTypeId(String productTypeId) {
-        this.productTypeId = productTypeId;
-    }
-
-    public String getEmergencyDrgree() {
-        return emergencyDrgree;
-    }
-
-    public void setEmergencyDrgree(String emergencyDrgree) {
-        this.emergencyDrgree = emergencyDrgree;
+    public void setComplaintTypeName(String complaintTypeName) {
+        this.complaintTypeName = complaintTypeName;
     }
 
     public String getCaller() {
@@ -161,14 +150,6 @@ public class SERBQApplication implements Serializable {
 
     public void setCallerPhone(String callerPhone) {
         this.callerPhone = callerPhone;
-    }
-
-    public String getProblemTypeId() {
-        return problemTypeId;
-    }
-
-    public void setProblemTypeId(String problemTypeId) {
-        this.problemTypeId = problemTypeId;
     }
 
     public String getReason() {
@@ -243,52 +224,20 @@ public class SERBQApplication implements Serializable {
         this.incidentProvinceId = incidentProvinceId;
     }
 
-    public String getFormId() {
-        return formId;
+    public String getEmergencyDrgreeId() {
+        return emergencyDrgreeId;
     }
 
-    public void setFormId(String formId) {
-        this.formId = formId;
+    public void setEmergencyDrgreeId(String emergencyDrgreeId) {
+        this.emergencyDrgreeId = emergencyDrgreeId;
     }
 
-    public String getProductQuality() {
-        return productQuality;
+    public String getProblemTypeId() {
+        return problemTypeId;
     }
 
-    public void setProductQuality(String productQuality) {
-        this.productQuality = productQuality;
-    }
-
-    public String getProductName() {
-        return product_name;
-    }
-
-    public void setProductName(String product_name) {
-        this.product_name = product_name;
-    }
-
-    public String getProductStandard() {
-        return productStandard;
-    }
-
-    public void setProductStandard(String productStandard) {
-        this.productStandard = productStandard;
-    }
-
-    public String getProductNumberId() {
-        return productNumberId;
-    }
-
-    public void setProductNumberId(String productNumberId) {
-        this.productNumberId = productNumberId;
-    }
-
-    public String getProblemTypeName() {
-        return problemTypeName;
-    }
-
-    public void setProblemTypeName(String problemTypeName) {
-        this.problemTypeName = problemTypeName;
+    public void setProblemTypeId(String problemTypeId) {
+        this.problemTypeId = problemTypeId;
     }
 
     public String getIncidentCityId() {
@@ -355,22 +304,6 @@ public class SERBQApplication implements Serializable {
         this.unifyNum = unifyNum;
     }
 
-    public String getWarrantyStart() {
-        return warrantyStart;
-    }
-
-    public void setWarrantyStart(String warrantyStart) {
-        this.warrantyStart = warrantyStart;
-    }
-
-    public String getWarrantyEnd() {
-        return warrantyEnd;
-    }
-
-    public void setWarrantyEnd(String warrantyEnd) {
-        this.warrantyEnd = warrantyEnd;
-    }
-
     public String getSessionkey() {
         return sessionkey;
     }
@@ -385,6 +318,30 @@ public class SERBQApplication implements Serializable {
 
     public void setOpenId(String openId) {
         this.openId = openId;
+    }
+
+    public String getProductTypeId() {
+        return productTypeId;
+    }
+
+    public void setProductTypeId(String productTypeId) {
+        this.productTypeId = productTypeId;
+    }
+
+    public List<SERBQDETAILLApplication> getSercadetails() {
+        return sercadetails;
+    }
+
+    public void setSercadetails(List<SERBQDETAILLApplication> sercadetails) {
+        this.sercadetails = sercadetails;
+    }
+
+    public String getProblemTypeName() {
+        return problemTypeName;
+    }
+
+    public void setProblemTypeName(String problemTypeName) {
+        this.problemTypeName = problemTypeName;
     }
 
 }

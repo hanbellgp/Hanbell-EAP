@@ -116,15 +116,12 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
             @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             String seal = reptcBean.getTC002ByTC001AndDate(reptcapplication.getMaintainTypeId(), new Date());
-            StringBuffer msg = new StringBuffer("【汉钟精机】 维修单别:");
+            StringBuffer msg = new StringBuffer("【汉钟精机】 维修单:");
             String serializableNumber = wartaBean.getTA002ByTA001AndDate(reptcapplication.getIncentoryform(),
                     new Date());
             List<Object[]> warmqs = warmqBean.findByMQ003(reptcapplication.getIncentoryform());
-            msg.append(reptcapplication.getMaintainTypeId()).append("-")
-                    .append(repmuBean.findByMu001(reptcapplication.getMaintainer()).get(0).getRepmq().getMq002())
-                    .append("。 维修单号:").append(seal).append("。 库存异动单别:")
-                    .append(reptcapplication.getIncentoryform()).append("-").append(warmqs.get(0)[1])
-                    .append("。 库存异动单号:").append(serializableNumber).append("。");
+            msg.append(reptcapplication.getMaintainTypeId()).append("-").append("。 维修单号:").append(seal);
+            msg.append("。 库存异动单:")  .append(reptcapplication.getIncentoryform()).append("-").append(serializableNumber).append("。");
             try {
                 Date date;
                 date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
@@ -360,7 +357,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 if (!"200".equals(errmsg)) {
                     throw new RuntimeException("发送失败,请联系管理员");
                 }
-                ResponseMessage responseMessage = new ResponseMessage("200", "创建成功，单号已发至企业微信，请查收!");
+                ResponseMessage responseMessage = new ResponseMessage("200", msg.toString());
                 return responseMessage;
             } catch (Exception ex) {
                 log4j.info(msg);
