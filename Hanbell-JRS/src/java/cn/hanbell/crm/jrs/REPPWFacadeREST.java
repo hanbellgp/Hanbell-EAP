@@ -66,13 +66,18 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public ResponseMessage create(REPTAApplication entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        StringBuffer msg=new StringBuffer("【汉钟精机】 叫修单:").append(entity.getRepairKindname().split("-")[0]);
+        msg.append("-").append(entity.getRepairno()).append("已派工。 ");
+        msg.append("维修人员：");
         if (isAuthorized(appid, token)) {
             if (entity == null || entity.getDetailList() == null || entity.getDetailList().isEmpty()) {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
             List<REPPW> reppwList = new ArrayList<>();
             String pw026 = "";
+            StringBuffer sendUser=new StringBuffer();
             try {
+                int a=1;
                 for (REPPWApplication ad : entity.getDetailList()) {
                     if (null != ad.getRepairmanname2() && !"".equals(ad.getRepairmanname2())) {
                         String[] repmen = ad.getRepairmanname2().split(";");
@@ -89,7 +94,15 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                                 continue;
                             }
                             m.setPw004(pw004.split("-")[0]);
-                            mk.setPw003(("0000" + i).substring(String.valueOf(i).length()));
+                             //拼装消息和发送人
+                            if(a!=1){
+                                msg.append(",");
+                                sendUser.append("|");
+                            }
+                            a++;
+                            msg.append(pw004.split("-")[1]);
+                            sendUser.append(pw004.split("-")[0]);
+                          
                             m.setREPPWPK(mk);
                             if (pw004.equals(ad.getRepairmanname())) {
                                 m.setPw019("Y");
@@ -121,8 +134,12 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                 }
 
                 REPTA ra = reptaBean.findByPK(entity.getRepairKindname().split("-")[0], entity.getRepairno());
+                int size=1;
                 for (REPPW reppw : reppwList) {
                     reppw.setPw026(pw026);
+                      StringBuffer serial = new StringBuffer("000");
+                      reppw.getREPPWPK().setPw003(serial.append(size).toString());
+                      size++;
                     reppwBean.persist(reppw);
                 }
                 //更新叫修单状态为确认
@@ -135,9 +152,14 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                     ra.setTa031("0");
                     reptaBean.update(ra);
                 }
+                  String errmsg = reptaBean.sendMsgString(sendUser.toString(), msg.toString(),
+                        entity.getSessionkey(), entity.getOpenId());
+                if (!"200".equals(errmsg)) {
+                    throw new RuntimeException("发送失败,请联系管理员");
+                }
                 return new ResponseMessage("200", "更新派工资料成功！");
             } catch (Exception ex) {
-                return new ResponseMessage("500", "系统错误更新失败");
+                return new ResponseMessage("500", "更新失败");
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);

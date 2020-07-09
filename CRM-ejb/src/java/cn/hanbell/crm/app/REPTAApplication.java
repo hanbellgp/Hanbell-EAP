@@ -25,6 +25,8 @@ public class REPTAApplication implements Serializable {
     private Long id;
     private String repairKindname;
     private String repairno;
+    private String sessionkey;
+    private String openId;
     private List<REPPWApplication> detailList;
     
 
@@ -83,6 +85,22 @@ public class REPTAApplication implements Serializable {
 
     public void setDetailList(List<REPPWApplication> detailList) {
         this.detailList = detailList;
+    }
+
+    public String getSessionkey() {
+        return sessionkey;
+    }
+
+    public void setSessionkey(String sessionkey) {
+        this.sessionkey = sessionkey;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
     
 }
