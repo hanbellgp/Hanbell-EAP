@@ -37,7 +37,7 @@ public class CMSMEBean extends SuperEJBForCRM<CMSME> {
     }
 
     public List<Object[]> findByLikeId(String M2001) {
-        StringBuffer s2 = new StringBuffer("SELECT  TOP 50 * FROM ( Select ME001,ME002 from CRMDB..CMSME CMSME where ME001 like '%000%' ");
+        StringBuffer s2 = new StringBuffer("SELECT  TOP 50 * FROM ( Select ME001,ME002 from CMSME CMSME where ME001 like '%000%' ");
         try {
 
             if (M2001 != null && !"".equals(M2001)) {

@@ -150,9 +150,9 @@ public class REPMIBean extends SuperEJBForCRM<REPMI> {
     public List<Object[]> findProductQuality(String MB001) {
         SimpleDateFormat sim = new SimpleDateFormat("yyyyMMdd");
         String data = sim.format(new Date());
-        StringBuffer sql = new StringBuffer("SELECT  TOP 50 * FROM ( SELECT MB001,MB002,MB003,MB057,MB058,MB004\n"
-                + "FROM CRMDB..WARMB WARMB INNER JOIN CRMDB..WARMA WARMA ON (MA001 = '1' AND MA002 = MB008 AND MA006 <> 'Y') OR (MA001 = '2' AND MA002 =MB009 AND MA006 <> 'Y')\n"
-                + "WHERE MB010 <> 'Y' AND MA001 = (SELECT AA001 FROM CRMDB..SERAA) AND ((ISNULL(MB057,'') = '' AND ISNULL(MB058,'') = '') OR\n"
+        StringBuffer sql = new StringBuffer("SELECT  TOP 50 * FROM ( SELECT MB001,MB002,MB003,MB057,MB058,MB004 "
+                + "FROM WARMB WARMB INNER JOIN WARMA WARMA ON (MA001 = '1' AND MA002 = MB008 AND MA006 <> 'Y') OR (MA001 = '2' AND MA002 =MB009 AND MA006 <> 'Y') "
+                + "WHERE MB010 <> 'Y' AND MA001 = (SELECT AA001 FROM SERAA) AND ((ISNULL(MB057,'') = '' AND ISNULL(MB058,'') = '') OR "
                 + "(ISNULL(MB057,'') = '' AND CONVERT(CHAR(8), ");
         sql = sql.append(data).append(",112) <= MB058) OR (ISNULL(MB058,'') = '' AND MB057 <= CONVERT(CHAR(8), ").append(data).append(" ,112)) OR (CONVERT(CHAR(8), ").append(data);
         sql.append(" ,112) <= MB058 AND MB057 <= CONVERT(CHAR(8), ").append(data).append(",112)) )");
