@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HZCW030Detail2.findByBudgetAccname2", query = "SELECT h FROM HZCW030Detail2 h WHERE h.budgetAccname2 = :budgetAccname2"),
     @NamedQuery(name = "HZCW030Detail2.findByNeedUserlbl", query = "SELECT h FROM HZCW030Detail2 h WHERE h.needUserlbl = :needUserlbl"),
     @NamedQuery(name = "HZCW030Detail2.findByFSN", query = "SELECT h FROM HZCW030Detail2 h WHERE h.formSerialNumber = :fsn"),
-    @NamedQuery(name = "HZCW030Detail2.findByOid", query = "SELECT h FROM HZCW030Detail2 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HZCW030Detail2.findByOID", query = "SELECT h FROM HZCW030Detail2 h WHERE h.oid = :oid"),
     @NamedQuery(name = "HZCW030Detail2.findBySeq", query = "SELECT h FROM HZCW030Detail2 h WHERE h.seq = :seq"),
     @NamedQuery(name = "HZCW030Detail2.findByBudgetDate2txt", query = "SELECT h FROM HZCW030Detail2 h WHERE h.budgetDate2txt = :budgetDate2txt"),
     @NamedQuery(name = "HZCW030Detail2.findByRemark2", query = "SELECT h FROM HZCW030Detail2 h WHERE h.remark2 = :remark2")})

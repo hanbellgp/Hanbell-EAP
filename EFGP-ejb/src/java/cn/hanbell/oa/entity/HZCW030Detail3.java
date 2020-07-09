@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HZCW030Detail3.findByTransfercenterName", query = "SELECT h FROM HZCW030Detail3 h WHERE h.transfercenterName = :transfercenterName"),
     @NamedQuery(name = "HZCW030Detail3.findByTransferamount", query = "SELECT h FROM HZCW030Detail3 h WHERE h.transferamount = :transferamount"),
     @NamedQuery(name = "HZCW030Detail3.findByTransferResearchno", query = "SELECT h FROM HZCW030Detail3 h WHERE h.transferResearchno = :transferResearchno"),
-    @NamedQuery(name = "HZCW030Detail3.findByOid", query = "SELECT h FROM HZCW030Detail3 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HZCW030Detail3.findByOID", query = "SELECT h FROM HZCW030Detail3 h WHERE h.oid = :oid"),
     @NamedQuery(name = "HZCW030Detail3.findByRecallamount", query = "SELECT h FROM HZCW030Detail3 h WHERE h.recallamount = :recallamount"),
     @NamedQuery(name = "HZCW030Detail3.findByRecallcenterName", query = "SELECT h FROM HZCW030Detail3 h WHERE h.recallcenterName = :recallcenterName"),
     @NamedQuery(name = "HZCW030Detail3.findByTransfercenterid", query = "SELECT h FROM HZCW030Detail3 h WHERE h.transfercenterid = :transfercenterid"),
