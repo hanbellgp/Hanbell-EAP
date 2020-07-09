@@ -73,7 +73,7 @@ public class CRMGGBean extends SuperEJBForCRM<CRMGG> {
         //公司简称，来电者,公司电话国码，公司电话区码，行动电话国码，行动电话区码,交易币别，公司全名,发票地址一，发票地址二，发票邮政区号，统一编号。经销商
         //GG003,GD005,GD025,GD026,GD027,GD012，GD199,GG084,GG004,GG096,GG097,GG101,GG030,GG132
         String sql = "SELECT top(100)GG001,GG003,GG043,GG003,GD005,GD025,GD026,GD027,GD012,GD199,GG084,GG004,GG096,GG097,GG101,GG030,GG132 FROM CRMGG "
-                + "LEFT JOIN CRMDB..CRMGD AS D ON D.GD002=GG001 "
+                + "LEFT JOIN CRMGD AS D ON D.GD002=GG001 "
                 + "WHERE  (GG025>=GETDATE() OR GG025 IS NULL OR GG025 = '') "
                 + "AND (ISNULL(GG136,'N')='N' OR GG136='') AND GG043 IS NOT NULL AND GG043 != ''AND GG003 like ? ";
         try {
