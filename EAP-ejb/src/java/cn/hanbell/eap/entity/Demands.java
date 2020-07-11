@@ -7,7 +7,6 @@ package cn.hanbell.eap.entity;
 
 import com.lightshell.comm.FormEntity;
 import java.util.Date;
-import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -77,7 +76,6 @@ public class Demands extends FormEntity {
     private String demandResume;
     @Column(name = "demandDate")
     @Temporal(TemporalType.DATE)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date demandDate;
     @Size(max = 255)
     @Column(name = "demanderID")
@@ -108,19 +106,15 @@ public class Demands extends FormEntity {
     private String directorDeptName;
     @Column(name = "planStartDate")
     @Temporal(TemporalType.DATE)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date planStartDate;
     @Column(name = "planOverDate")
     @Temporal(TemporalType.DATE)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date planOverDate;
     @Column(name = "realStartDate")
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date realStartDate;
     @Column(name = "realOverDate")
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date realOverDate;
     @Size(max = 255)
     @Column(name = "writerID")
@@ -130,7 +124,6 @@ public class Demands extends FormEntity {
     private String writerName;
     @Column(name = "writeDate")
     @Temporal(TemporalType.DATE)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date writeDate;
     @Size(max = 255)
     @Column(name = "appendix")
@@ -147,12 +140,6 @@ public class Demands extends FormEntity {
 
     public Demands(Integer id) {
         this.id = id;
-    }
-
-    @Override
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-    public Date getFormdate() {
-        return super.getFormdate();
     }
 
     public String getSystemName() {

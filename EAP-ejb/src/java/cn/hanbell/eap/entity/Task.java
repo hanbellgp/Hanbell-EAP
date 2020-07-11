@@ -7,7 +7,6 @@ package cn.hanbell.eap.entity;
 
 import com.lightshell.comm.SuperEntity;
 import java.util.Date;
-import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -75,29 +74,23 @@ public class Task extends SuperEntity {
     @NotNull
     @Column(name = "plannedStartDate")
     @Temporal(TemporalType.DATE)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date plannedStartDate;
     @Column(name = "plannedStartTime")
     @Temporal(TemporalType.TIME)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date plannedStartTime;
     @Basic(optional = false)
     @NotNull
     @Column(name = "plannedFinishDate")
     @Temporal(TemporalType.DATE)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date plannedFinishDate;
     @Column(name = "plannedFinishTime")
     @Temporal(TemporalType.TIME)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date plannedFinishTime;
     @Column(name = "actualStartDate")
     @Temporal(TemporalType.DATE)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date actualStartDate;
     @Column(name = "actualStartTime")
     @Temporal(TemporalType.TIME)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date actualStartTime;
     @Column(name = "actualFinishDate")
     @Temporal(TemporalType.DATE)
