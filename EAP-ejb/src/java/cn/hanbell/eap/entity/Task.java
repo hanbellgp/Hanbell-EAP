@@ -7,7 +7,6 @@ package cn.hanbell.eap.entity;
 
 import com.lightshell.comm.SuperEntity;
 import java.util.Date;
-import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,23 +27,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "task")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Task.getRowCountByExecutorIdAndPlannedStartDate", query = "SELECT COUNT(j) FROM Task j WHERE j.status = 'N' AND j.executorId = :executorId AND j.plannedStartDate <= :plannedStartDate"),
+    @NamedQuery(name = "Task.getRowCountByExecutorIdAndActualFinishDate", query = "SELECT COUNT(j) FROM Task j WHERE j.status = 'N' AND j.executorId = :executorId AND j.actualFinishDate >= :actualFinishDate"),
     @NamedQuery(name = "Task.findAll", query = "SELECT j FROM Task j"),
     @NamedQuery(name = "Task.findById", query = "SELECT j FROM Task j WHERE j.id = :id"),
     @NamedQuery(name = "Task.findByName", query = "SELECT j FROM Task j WHERE j.name = :name"),
     @NamedQuery(name = "Task.findByExecutorIdAndStatus", query = "SELECT j FROM Task j WHERE j.executorId = :executorId AND j.status =:status"),
     @NamedQuery(name = "Task.findByExecutorId", query = "SELECT j FROM Task j WHERE j.executorId = :executorId"),
     @NamedQuery(name = "Task.findByExecutor", query = "SELECT j FROM Task j WHERE j.executor = :executor"),
-    @NamedQuery(name = "Task.findByPlannedStartDate", query = "SELECT j FROM Task j WHERE j.plannedStartDate = :plannedStartDate"),
-    @NamedQuery(name = "Task.findByPlannedStartTime", query = "SELECT j FROM Task j WHERE j.plannedStartTime = :plannedStartTime"),
+    @NamedQuery(name = "Task.findByExecutorIdAndPlannedStartDate", query = "SELECT j FROM Task j WHERE j.status = 'N' AND j.executorId = :executorId AND j.plannedStartDate <= :plannedStartDate ORDER BY j.plannedStartDate,j.priority"),
+    @NamedQuery(name = "Task.findByExecutorIdAndActualFinishDate", query = "SELECT j FROM Task j WHERE j.status = 'N' AND j.executorId = :executorId AND j.actualFinishDate >= :actualFinishDate ORDER BY j.actualFinishDate,j.priority"),
     @NamedQuery(name = "Task.findByPlannedFinishDate", query = "SELECT j FROM Task j WHERE j.plannedFinishDate = :plannedFinishDate"),
-    @NamedQuery(name = "Task.findByPlannedFinishTime", query = "SELECT j FROM Task j WHERE j.plannedFinishTime = :plannedFinishTime"),
     @NamedQuery(name = "Task.findByActualStartDate", query = "SELECT j FROM Task j WHERE j.actualStartDate = :actualStartDate"),
-    @NamedQuery(name = "Task.findByActualStartTime", query = "SELECT j FROM Task j WHERE j.actualStartTime = :actualStartTime"),
     @NamedQuery(name = "Task.findByActualFinishDate", query = "SELECT j FROM Task j WHERE j.actualFinishDate = :actualFinishDate"),
-    @NamedQuery(name = "Task.findByActualFinishTime", query = "SELECT j FROM Task j WHERE j.actualFinishTime = :actualFinishTime"),
     @NamedQuery(name = "Task.findByPriority", query = "SELECT j FROM Task j WHERE j.priority = :priority"),
-    @NamedQuery(name = "Task.findByLevel", query = "SELECT j FROM Task j WHERE j.level = :level"),
-    @NamedQuery(name = "Task.findByContextId", query = "SELECT j FROM Task j WHERE j.contextId = :contextId"),
     @NamedQuery(name = "Task.findByStatus", query = "SELECT j FROM Task j WHERE j.status = :status")})
 public class Task extends SuperEntity {
 
@@ -78,7 +74,6 @@ public class Task extends SuperEntity {
     @NotNull
     @Column(name = "plannedStartDate")
     @Temporal(TemporalType.DATE)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date plannedStartDate;
     @Column(name = "plannedStartTime")
     @Temporal(TemporalType.TIME)
@@ -87,21 +82,18 @@ public class Task extends SuperEntity {
     @NotNull
     @Column(name = "plannedFinishDate")
     @Temporal(TemporalType.DATE)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date plannedFinishDate;
     @Column(name = "plannedFinishTime")
     @Temporal(TemporalType.TIME)
     private Date plannedFinishTime;
     @Column(name = "actualStartDate")
     @Temporal(TemporalType.DATE)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date actualStartDate;
     @Column(name = "actualStartTime")
     @Temporal(TemporalType.TIME)
     private Date actualStartTime;
     @Column(name = "actualFinishDate")
     @Temporal(TemporalType.DATE)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date actualFinishDate;
     @Column(name = "actualFinishTime")
     @Temporal(TemporalType.TIME)
@@ -110,10 +102,12 @@ public class Task extends SuperEntity {
     @Column(name = "priority")
     private String priority;
     @Size(max = 2)
-    @Column(name = "level")
-    private String level;
+    @Column(name = "lvl")
+    private String lvl;
     @Column(name = "sortid")
     private Integer sortid;
+    @Column(name = "progress")
+    private Integer progress;
     @Size(max = 300)
     @Column(name = "location")
     private String location;
@@ -126,6 +120,8 @@ public class Task extends SuperEntity {
     private Integer accuracy;
 
     public Task() {
+        this.sortid = 0;
+        this.progress = 0;
     }
 
     public String getName() {
@@ -260,12 +256,12 @@ public class Task extends SuperEntity {
         this.priority = priority;
     }
 
-    public String getLevel() {
-        return level;
+    public String getLvl() {
+        return lvl;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setLvl(String lvl) {
+        this.lvl = lvl;
     }
 
     public Integer getSortid() {
@@ -274,6 +270,20 @@ public class Task extends SuperEntity {
 
     public void setSortid(Integer sortid) {
         this.sortid = sortid;
+    }
+
+    /**
+     * @return the progress
+     */
+    public Integer getProgress() {
+        return progress;
+    }
+
+    /**
+     * @param progress the progress to set
+     */
+    public void setProgress(Integer progress) {
+        this.progress = progress;
     }
 
     public String getLocation() {

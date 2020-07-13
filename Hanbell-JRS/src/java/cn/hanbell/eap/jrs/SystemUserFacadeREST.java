@@ -131,7 +131,7 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseObject fetchYun(@QueryParam("userid") String userid, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            ResponseObject res = null;
+            ResponseObject res;
             SystemUser su = systemUserBean.findByUserId(userid);
             if (su != null) {
                 YunUser yu = new YunUser();
@@ -160,6 +160,91 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
                 yu.setTags(tags);
 
                 res = new ResponseObject<>("200", "success", yu);
+            } else {
+                res = new ResponseObject<>("404", "此用戶不存在", null);
+            }
+            return res;
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @GET
+    @Path("chart")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseObject fetchChart(@QueryParam("userid") String userid, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            ResponseObject res = null;
+            SystemUser su = systemUserBean.findByUserId(userid);
+            if (su != null) {
+                List<Map<String, Object>> radarData = new ArrayList<>();
+                Map<String, Object> data;
+
+                data = new HashMap<>();
+                data.put("name", "个人");
+                data.put("label", "技术");
+                data.put("value", 10);
+                radarData.add(data);
+
+                data = new HashMap<>();
+                data.put("name", "个人");
+                data.put("label", "口碑");
+                data.put("value", 8);
+                radarData.add(data);
+
+                data = new HashMap<>();
+                data.put("name", "个人");
+                data.put("label", "产量");
+                data.put("value", 4);
+                radarData.add(data);
+
+                data = new HashMap<>();
+                data.put("name", "个人");
+                data.put("label", "贡献");
+                data.put("value", 5);
+                radarData.add(data);
+
+                data = new HashMap<>();
+                data.put("name", "个人");
+                data.put("label", "热度");
+                data.put("value", 7);
+                radarData.add(data);
+
+                data = new HashMap<>();
+                data.put("name", "部门");
+                data.put("label", "技术");
+                data.put("value", 5);
+                radarData.add(data);
+
+                data = new HashMap<>();
+                data.put("name", "部门");
+                data.put("label", "口碑");
+                data.put("value", 7);
+                radarData.add(data);
+
+                data = new HashMap<>();
+                data.put("name", "部门");
+                data.put("label", "产量");
+                data.put("value", 10);
+                radarData.add(data);
+
+                data = new HashMap<>();
+                data.put("name", "部门");
+                data.put("label", "贡献");
+                data.put("value", 5);
+                radarData.add(data);
+
+                data = new HashMap<>();
+                data.put("name", "部门");
+                data.put("label", "热度");
+                data.put("value", 2);
+                radarData.add(data);
+
+                Map<String, Object> object = new HashMap<>();
+                object.put("radarData", radarData);
+                // 返回
+                res = new ResponseObject<>("200", "success", object);
             } else {
                 res = new ResponseObject<>("404", "此用戶不存在", null);
             }
