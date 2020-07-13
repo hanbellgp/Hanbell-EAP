@@ -94,39 +94,6 @@ public class CRMGGFacadeREST extends SuperRESTForCRM<CRMGG> {
        return crmggBean;
     }
 
-    @GET
-    @Path("caller/{BQ002_value}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData<JSONObject> findCaller(@PathParam("BQ002_value") String BQ002_value, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-        if (isAuthorized(appid, token)) {
-            List<Object[]> list = crmggBean.findCaller(BQ002_value);
-            if (list == null) {
-                throw new WebApplicationException(Response.Status.NOT_FOUND);
-            }
-            JSONObject js = null;
-            js = new JSONObject();
-            List<JSONObject> objs = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                js = new JSONObject();
-                js.put("GG003", list.get(i)[0]);
-                js.put("GD005", list.get(i)[1]);
-                js.put("GD025", list.get(i)[2]);
-                js.put("GD026", list.get(i)[3]);
-                js.put("GD027", list.get(i)[4]);
-                js.put("GD012", list.get(i)[5]);
-                js.put("GD199", list.get(i)[6]);
-                js.put("GG001", list.get(i)[7]);
-                objs.add(js);
-            }
-            ResponseData responseData = new ResponseData("200", "seccess");
-            responseData.setData(objs);
-            responseData.setCount(objs.size());
-            return responseData;
-        } else {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        }
-    }
-
     /**
      * 客户信息
      *
