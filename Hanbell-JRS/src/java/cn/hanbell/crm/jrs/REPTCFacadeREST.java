@@ -16,6 +16,7 @@ import cn.hanbell.crm.ejb.REPTABean;
 import cn.hanbell.crm.ejb.REPTCBean;
 import cn.hanbell.crm.ejb.REPTDBean;
 import cn.hanbell.crm.ejb.SERCABean;
+import cn.hanbell.crm.ejb.SYSNNBean;
 import cn.hanbell.crm.ejb.WARMQBean;
 import cn.hanbell.crm.ejb.WARTABean;
 import cn.hanbell.crm.ejb.WARTBBean;
@@ -28,6 +29,7 @@ import cn.hanbell.crm.entity.REPTC;
 import cn.hanbell.crm.entity.REPTCPK;
 import cn.hanbell.crm.entity.REPTD;
 import cn.hanbell.crm.entity.REPTDPK;
+import cn.hanbell.crm.entity.SYSNN;
 import cn.hanbell.crm.entity.WARTA;
 import cn.hanbell.crm.entity.WARTAPK;
 import cn.hanbell.crm.entity.WARTB;
@@ -64,6 +66,8 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
     @EJB
     protected cn.hanbell.oa.ejb.WorkFlowBean workFlowBean;
 
+    @EJB
+    private SYSNNBean sysnnBean;
     @EJB
     private SystemUserBean userBean;
     @EJB
@@ -120,8 +124,9 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
             String serializableNumber = wartaBean.getTA002ByTA001AndDate(reptcapplication.getIncentoryform(),
                     new Date());
             List<Object[]> warmqs = warmqBean.findByMQ003(reptcapplication.getIncentoryform());
-            msg.append(reptcapplication.getMaintainTypeId()).append("-").append("。 维修单号:").append(seal);
+            msg.append(reptcapplication.getMaintainTypeId()).append("-" ).append(seal);
             msg.append("。 库存异动单:")  .append(reptcapplication.getIncentoryform()).append("-").append(serializableNumber).append("。");
+              CRMGG crmgg = crmggBean.findByGG001(reptcapplication.getCustomer());
             try {
                 Date date;
                 date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
@@ -161,7 +166,6 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 // reptc.setTc035(reptcapplication.getDeptId());
                 reptc.setTc035(user.getDeptno());
                 // 客户厂商信息
-                CRMGG crmgg = crmggBean.findByERPCusno(reptcapplication.getCustomer());
                 reptc.setTc036(crmgg.getGg004());
                 reptc.setTc037(crmgg.getGg101());
                 reptc.setTc038(crmgg.getGg030());
@@ -170,6 +174,8 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 reptc.setTc041(crmgg.getGg097());
                 reptc.setTc042("N");
                 reptc.setTc045(BaseLib.formatDate("yyyyMM", new Date()));
+                 SYSNN sysnn = sysnnBean.findById(repta.getTa068());
+                 reptc.setTc046(sysnn.getNn003());//营业税率
                 reptc.setTc048("N");
                 reptc.setTc051(crmgg.getGg098());
                 reptc.setTc063(repta.getTa055());
@@ -180,6 +186,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 reptc.setTc070(repta.getTa063());
                 reptc.setTc074(repta.getTa068());
                 reptc.setTc077(repta.getTa071());
+                 reptc.setTc078("来至微信小程序");
                 reptc.setTc198(repta.getTa198());
                 reptc.setTc199(repta.getTa199());
                 String serca = sercaBean.findByAC010AndAC011(reptcapplication.getRepairKindId(),
@@ -324,11 +331,12 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 warta.setTa012(reptc.getTc016());
                 CMSMV cmsmv = cmsmvBean.findById(reptc.getTc016());
                 warta.setTa014(user.getDept().getCompany());// 厂别
+                warta.setTa018("来至微信小程序");
                 warta.setTa020("N");
                 warta.setTa023(sumMoney);
                 warta.setTa030(reptc.getProduct());
                 warta.setTa031(reptc.getTc197());
-                warta.setTa032(reptc.getCustomer());
+                warta.setTa032(crmgg.getGg043());
                 warta.setTa033(reptc.getTc008());
                 warta.setTa034(reptc.getTc009());
                 warta.setTa035(reptc.getTc010());
