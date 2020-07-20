@@ -95,6 +95,43 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         }
     }
 
+    public Integer getRowCountByExecutorIdAndStatus(String executorid, String status) {
+        Query query = getEntityManager().createNamedQuery("Task.getRowCountByExecutorIdAndStatus");
+        query.setParameter("executorId", executorid);
+        query.setParameter("status", status);
+        try {
+            return Integer.valueOf(query.getSingleResult().toString());
+        } catch (Exception ex) {
+            log4j.error(ex);
+            return 0;
+        }
+    }
+
+    public Integer getRowCountByExecutorIdAndYear(String executorid, Integer y) {
+        Query query = getEntityManager().createNamedQuery("Task.getRowCountByExecutorIdAndYear");
+        query.setParameter("executorId", executorid);
+        query.setParameter("y", y);
+        try {
+            return Integer.valueOf(query.getSingleResult().toString());
+        } catch (Exception ex) {
+            log4j.error(ex);
+            return 0;
+        }
+    }
+
+    public Integer getRowCountByExecutorIdYearAndMonth(String executorid, Integer y, Integer m) {
+        Query query = getEntityManager().createNamedQuery("Task.getRowCountByExecutorIdYearAndMonth");
+        query.setParameter("executorId", executorid);
+        query.setParameter("y", y);
+        query.setParameter("m", m);
+        try {
+            return Integer.valueOf(query.getSingleResult().toString());
+        } catch (Exception ex) {
+            log4j.error(ex);
+            return 0;
+        }
+    }
+
     public void updateTaskContext(Task task) {
         if (task.getContextObject() != null && !"".equals(task.getContextObject())) {
             taskContext = TaskContextFactory.createTaskContext(task.getContextObject());
