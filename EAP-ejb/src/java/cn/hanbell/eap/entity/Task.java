@@ -28,7 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Task.getRowCountByExecutorIdAndPlannedStartDate", query = "SELECT COUNT(j) FROM Task j WHERE j.status = 'N' AND j.executorId = :executorId AND j.plannedStartDate <= :plannedStartDate"),
-    @NamedQuery(name = "Task.getRowCountByExecutorIdAndActualFinishDate", query = "SELECT COUNT(j) FROM Task j WHERE j.status = 'N' AND j.executorId = :executorId AND j.actualFinishDate >= :actualFinishDate"),
+    @NamedQuery(name = "Task.getRowCountByExecutorIdAndActualFinishDate", query = "SELECT COUNT(j) FROM Task j WHERE j.status = 'V' AND j.executorId = :executorId AND j.actualFinishDate >= :actualFinishDate"),
+    @NamedQuery(name = "Task.getRowCountByExecutorIdAndYear", query = "SELECT COUNT(j) FROM Task j WHERE j.status = 'V' AND j.executorId = :executorId AND FUNC('YEAR',j.actualFinishDate) = :y"),
+    @NamedQuery(name = "Task.getRowCountByExecutorIdYearAndMonth", query = "SELECT COUNT(j) FROM Task j WHERE j.status = 'V' AND j.executorId = :executorId AND FUNC('YEAR',j.actualFinishDate) = :y AND FUNC('MONTH',j.actualFinishDate) = :m"),
+    @NamedQuery(name = "Task.getRowCountByExecutorIdAndStatus", query = "SELECT COUNT(j) FROM Task j WHERE j.executorId = :executorId AND j.status =:status"),
     @NamedQuery(name = "Task.findAll", query = "SELECT j FROM Task j"),
     @NamedQuery(name = "Task.findById", query = "SELECT j FROM Task j WHERE j.id = :id"),
     @NamedQuery(name = "Task.findByName", query = "SELECT j FROM Task j WHERE j.name = :name"),
@@ -36,7 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Task.findByExecutorId", query = "SELECT j FROM Task j WHERE j.executorId = :executorId"),
     @NamedQuery(name = "Task.findByExecutor", query = "SELECT j FROM Task j WHERE j.executor = :executor"),
     @NamedQuery(name = "Task.findByExecutorIdAndPlannedStartDate", query = "SELECT j FROM Task j WHERE j.status = 'N' AND j.executorId = :executorId AND j.plannedStartDate <= :plannedStartDate ORDER BY j.plannedStartDate,j.priority"),
-    @NamedQuery(name = "Task.findByExecutorIdAndActualFinishDate", query = "SELECT j FROM Task j WHERE j.status = 'N' AND j.executorId = :executorId AND j.actualFinishDate >= :actualFinishDate ORDER BY j.actualFinishDate,j.priority"),
+    @NamedQuery(name = "Task.findByExecutorIdAndActualFinishDate", query = "SELECT j FROM Task j WHERE j.status = 'V' AND j.executorId = :executorId AND j.actualFinishDate >= :actualFinishDate ORDER BY j.actualFinishDate,j.priority"),
     @NamedQuery(name = "Task.findByPlannedFinishDate", query = "SELECT j FROM Task j WHERE j.plannedFinishDate = :plannedFinishDate"),
     @NamedQuery(name = "Task.findByActualStartDate", query = "SELECT j FROM Task j WHERE j.actualStartDate = :actualStartDate"),
     @NamedQuery(name = "Task.findByActualFinishDate", query = "SELECT j FROM Task j WHERE j.actualFinishDate = :actualFinishDate"),
