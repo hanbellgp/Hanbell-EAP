@@ -15,6 +15,10 @@ import cn.hanbell.oa.entity.HKGL004;
 import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.oa.model.HKGL004Model;
 import cn.hanbell.util.BaseLib;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -54,6 +58,13 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
             try {
+                Calendar c = Calendar.getInstance();
+                c.add(Calendar.DATE, - 5);
+                Date time = c.getTime();
+                Date date1 = BaseLib.getDate("yyyy-MM-dd", entity.getDate1());
+                if (time.getTime() > date1.getTime()) {
+                    return new ResponseMessage("500", "请假日期截止超过5天不可申请");
+                }
                 workFlowBean.initUserInfo(entity.getEmployee());
                 HKGL004Model la = new HKGL004Model();
                 la.setApplyDate(BaseLib.getDate());
@@ -81,8 +92,10 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                 la.setLeaday2(entity.getLeaveHour());
                 la.setLeaday3(entity.getLeaveMinute());
                 la.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
-                la.setReason(entity.getReason());
-
+                Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+                Matcher m = p.matcher(entity.getReason());
+                String finishedReplaceStr = m.replaceAll("");
+                la.setReason(finishedReplaceStr);
                 String formInstance = workFlowBean.buildXmlForEFGP("HK_GL004", la, null);
                 String subject = la.getHdn_employee() + entity.getDate1() + "开始请假" + entity.getLeaveDay() + "天" + entity.getLeaveHour() + "时" + entity.getLeaveMinute() + "分";
                 String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL004", formInstance, subject);

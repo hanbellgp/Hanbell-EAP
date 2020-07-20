@@ -34,5 +34,4 @@ public class HKGC001DetailBean extends SuperEJBForEFGP<HKGC001Detail> {
             return null;
         }
     }
-
 }

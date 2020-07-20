@@ -5,7 +5,7 @@
  */
 package cn.hanbell.eap.jrs;
 
-import cn.hanbell.eap.ejb.TaskBean;
+
 import cn.hanbell.eap.entity.Task;
 import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.ResponseObject;

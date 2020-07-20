@@ -18,8 +18,12 @@ import cn.hanbell.oa.app.OvertimeApplicationDetail;
 import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.util.BaseLib;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -76,15 +80,24 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                 //根据部门设置公司
                 m.setFacno(workFlowBean.getCompanyByDeptId(m.getApplyDept()));
                 m.setHdn_facno(m.getFacno());
-
                 for (OvertimeApplicationDetail oad : entity.getDetailList()) {
+                    Calendar c = Calendar.getInstance();
+                    c.add(Calendar.DATE, - 5);
+                    Date time = c.getTime();
+                    Date date1 = BaseLib.getDate("yyyy-MM-dd", oad.getDate1());
+                    if (time.getTime() > date1.getTime()) {
+                        return new ResponseMessage("500", "请假日期截止超过5天不可申请");
+                    }
                     d = new HKGL034DetailModel();
                     d.setSeq(oad.getSeq());
                     d.setDept_txt(workFlowBean.getUserFunction().getOrganizationUnit().getId());
                     d.setDept_lbl(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
                     d.setEmployee(workFlowBean.getCurrentUser().getId());
                     d.setEmployeeName(workFlowBean.getCurrentUser().getUserName());
-                    d.setContent(oad.getContent());
+                    Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+                    Matcher matcher = p.matcher(oad.getContent());
+                    String finishedReplaceStr = matcher.replaceAll("");
+                    d.setContent(finishedReplaceStr);
                     d.setDate1_txt(oad.getDate1());
                     d.setTime1_txt(oad.getTime1());
                     d.setTime2_txt(oad.getTime2());
