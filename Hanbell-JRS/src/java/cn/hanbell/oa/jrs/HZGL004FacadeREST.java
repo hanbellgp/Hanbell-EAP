@@ -19,6 +19,8 @@ import cn.hanbell.util.BaseLib;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -110,7 +112,10 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 d.setBizTime2_txt(mcd.getBizTime2());
                 d.setBizObject(mcd.getBizObject());
                 d.setBizAddress(mcd.getBizAddress());
-                d.setBizContent(mcd.getBizContent());
+                Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+                Matcher matcher = p.matcher(mcd.getBizContent());
+                String finishedReplaceStr = matcher.replaceAll("");
+                d.setBizContent(finishedReplaceStr);
                 d.setUserTitle(m.getUserTitle());
                 detailList.add(d);
             }

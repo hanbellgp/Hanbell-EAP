@@ -92,7 +92,12 @@ public class HKGC001Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "transno")
     private String transno;
-
+    @Size(max = 255)
+    @Column(name = "stockDate_txt")
+    private String stockDatetxt;
+    @Size(max = 255)
+    @Column(name = "endDate_txt")
+    private String endDatetxt;
     public HKGC001Detail() {
     }
 
@@ -243,6 +248,25 @@ public class HKGC001Detail implements Serializable {
     public void setFormSerialNumber(String formSerialNumber) {
         this.formSerialNumber = formSerialNumber;
     }
+
+    public String getStockDatetxt() {
+        return stockDatetxt;
+    }
+
+    public void setStockDatetxt(String stockDatetxt) {
+        this.stockDatetxt = stockDatetxt;
+    }
+
+    public String getEndDatetxt() {
+        return endDatetxt;
+    }
+
+    public void setEndDatetxt(String endDatetxt) {
+        this.endDatetxt = endDatetxt;
+    }
+
+
+    
 
     @Override
     public int hashCode() {
