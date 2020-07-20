@@ -6,8 +6,6 @@
 package cn.hanbell.rpt.control;
 
 import cn.hanbell.oa.ejb.D50Z0009D0Bean;
-import cn.hanbell.oa.ejb.WorkFlowBean;
-import cn.hanbell.oa.ejb.WorkItemBean;
 import cn.hanbell.oa.entity.D50Z0009D0;
 import cn.hanbell.rpt.lazy.D50Z0009D0Model;
 ;
@@ -19,13 +17,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -37,7 +31,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.jboss.logging.Logger;
 
 /**
  *
@@ -116,9 +109,9 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
                     Cell cell = row.createCell(0);
                     cell.setCellValue((double) (i - 2));
                     row.createCell(1).setCellValue(e.getFormSerialNumber() != null ? e.getFormSerialNumber() : "");
-                    row.createCell(2).setCellValue(e.getStartout() != null ? BaseLib.formatDate("MM", e.getEndout()) : "");
-                    row.createCell(3).setCellValue(e.getApplyfacno() != null ? e.getApplyfacno() : "");
-                    row.createCell(4).setCellValue(e.getSupportfacno() != null ? e.getSupportfacno() : "");
+                    row.createCell(2).setCellValue(e.getStartout() != null ? BaseLib.formatDate("MM", e.getEndout()) : "");                   
+                    row.createCell(3).setCellValue(e.getApplyfacno() != null ? e.getApplyfacno() : "");                 
+                    row.createCell(4).setCellValue(e.getSupportfacno() != null ? e.getSupportfacno() : "");                
                     row.createCell(5).setCellValue(e.getSupportDept().getOrganizationUnitName() != null ? e.getSupportDept().getOrganizationUnitName() : "");
                     row.createCell(6).setCellValue(e.getSupportUser().getUserName() != null ? e.getSupportUser().getUserName() : "");
                     row.createCell(8).setCellValue(e.getApplyDept().getOrganizationUnitName() != null ? e.getApplyDept().getOrganizationUnitName() : "");
@@ -139,8 +132,9 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
                     row.createCell(17).setCellValue(e.getApplypay() != null && e.getApplypay().contains("4") ? "√" : "");
                     row.createCell(18).setCellValue(e.getApplypay() != null && e.getApplypay().contains("6") ? "√" : "");
                     row.createCell(19).setCellValue(e.getApplypay() != null && e.getApplypay().contains("9") ? "√" : "");
+                    row.createCell(20).setCellValue(e.getOtherpay1()!= null ? e.getOtherpay1() : "");
                     if (e.getApplyfactory() != null && !"".equals(e.getApplyfactory())) {
-                        row.createCell(20).setCellValue(e.getApplyfactory() != null ? e.getApplyfactory().concat("%") : "");
+                        row.createCell(21).setCellValue(e.getApplyfactory() != null ? e.getApplyfactory().concat("%") : "");
                     }
 
                 }

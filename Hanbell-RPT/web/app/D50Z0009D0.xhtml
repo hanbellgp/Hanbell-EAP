@@ -6,6 +6,11 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="content">
+        <style>
+            body .ui-datatable tbody tr.ui-widget-content {
+                height: 62px;
+            }
+        </style>
         <h:form id="formList">
             <p:growl id="growl" showSummary="false" showDetail="true"/>
             <p:panelGrid id="plgQuery" styleClass="plgQuery Wid100">
@@ -39,43 +44,43 @@
             </p:toolbar>
             <p:dataTable value="#{d50Z0009D0ManagedBean.model}"  var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="15,30,45" lazy="true" selectionMode="single"  selection="#{d50Z0009D0ManagedBean.currentEntity}" rowKey="#{item.oid}" >
+                         rowsPerPageTemplate="15,30,45" lazy="true" selectionMode="single"  selection="#{d50Z0009D0ManagedBean.currentEntity}" rowKey="#{item.oid}">
                 <f:facet name="header">
                     集团工作支援单
                 </f:facet>
                 <p:ajax event="rowSelect"  update=":formList:toolbar" />
                 <p:ajax event="rowUnselect" update=":formList:toolbar" />
-                <p:column styleClass="Wid20">
+                <p:column styleClass="Wid15">
                     <f:facet name="header">
                         <h:outputText value="表单号"/>
                     </f:facet>
                     <h:outputText value="#{item.formSerialNumber}"/>
                 </p:column>
-                <p:column styleClass="Wid10">
+                <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="申请公司"/>
                     </f:facet>
                     <h:outputText value="#{item.applyfacno}"/>
                 </p:column>
-                 <p:column styleClass="Wid10">
+                <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="申请人"/>
                     </f:facet>
                     <h:outputText value="#{item.applyUser.userName}"/>
                 </p:column>
-                 <p:column styleClass="Wid10">
+                <p:column styleClass="Wid5" >
                     <f:facet name="header">
                         <h:outputText value="支援公司"/>
                     </f:facet>
                     <h:outputText value="#{item.supportfacno}"/>
-                 </p:column>
-                 <p:column styleClass="Wid10">
+                </p:column>
+                <p:column styleClass="Wid5" >
                     <f:facet name="header">
                         <h:outputText value="支援人员"/>
                     </f:facet>
                     <h:outputText value="#{item.supportUser.userName}"/>
                 </p:column>
-                <p:column styleClass="Wid10">
+                <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="创建时间"/>
                     </f:facet>
@@ -83,7 +88,7 @@
                         <f:convertDateTime pattern="yyyy/MM/dd"/>
                     </h:outputText>
                 </p:column>
-                <p:column styleClass="Wid10">
+                <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="实际支援时间"/>
                     </f:facet>
@@ -91,7 +96,7 @@
                         <f:convertDateTime pattern="yyyy/MM/dd"/>
                     </h:outputText>
                 </p:column>
-                 <p:column styleClass="Wid10">
+                <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="支援天数"/>
                     </f:facet>
