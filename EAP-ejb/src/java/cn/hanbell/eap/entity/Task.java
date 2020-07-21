@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Task.findByActualStartDate", query = "SELECT j FROM Task j WHERE j.actualStartDate = :actualStartDate"),
     @NamedQuery(name = "Task.findByActualFinishDate", query = "SELECT j FROM Task j WHERE j.actualFinishDate = :actualFinishDate"),
     @NamedQuery(name = "Task.findByPriority", query = "SELECT j FROM Task j WHERE j.priority = :priority"),
+    @NamedQuery(name = "Task.findByContextId", query = "SELECT j FROM Task j WHERE j.contextId = :contextId"),
     @NamedQuery(name = "Task.findByStatus", query = "SELECT j FROM Task j WHERE j.status = :status")})
 public class Task extends SuperEntity {
 
