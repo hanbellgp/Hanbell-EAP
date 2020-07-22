@@ -74,7 +74,7 @@ public class Employee implements Serializable {
     @JoinColumn(name = "JobId", referencedColumnName = "JobId", insertable = false, updatable = false)
     @ManyToOne(optional = true)
     private Job job;
-    
+
     @JoinColumn(name = "DecisionLevel", referencedColumnName = "CodeInfoId", insertable = false, updatable = false)
     @ManyToOne(optional = true)
     private CodeInfo decisionlevelInfo;
@@ -506,24 +506,10 @@ public class Employee implements Serializable {
     }
 
     /**
-     * @param department the department to set
-     */
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    /**
      * @return the job
      */
     public Job getJob() {
         return job;
-    }
-
-    /**
-     * @param job the job to set
-     */
-    public void setJob(Job job) {
-        this.job = job;
     }
 
     /**
@@ -532,19 +518,12 @@ public class Employee implements Serializable {
     public CodeInfo getDecisionlevelInfo() {
         return decisionlevelInfo;
     }
- 
+
     /**
      * @return the position
      */
     public Position getPosition() {
         return position;
-    }
-
-    /**
-     * @param position the position to set
-     */
-    public void setPosition(Position position) {
-        this.position = position;
     }
 
     public String getIsTowner() {

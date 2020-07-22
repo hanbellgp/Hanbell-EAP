@@ -74,11 +74,20 @@ public class SystemUser extends SuperEntity {
     @Column(name = "email")
     private String email;
     @Size(max = 10)
+    @Column(name = "jobCode")
+    private String jobCode;
+    @Size(max = 45)
+    @Column(name = "job")
+    private String job;
+    @Size(max = 10)
+    @Column(name = "positionCode")
+    private String positionCode;
+    @Size(max = 45)
     @Column(name = "position")
     private String position;
     @Size(max = 20)
-    @Column(name = "levelid")
-    private String levelid;
+    @Column(name = "levelId")
+    private String levelId;
     @Size(max = 45)
     @Column(name = "decisionLevel")
     private String decisionLevel;
@@ -174,6 +183,48 @@ public class SystemUser extends SuperEntity {
         this.email = email;
     }
 
+    /**
+     * @return the jobCode
+     */
+    public String getJobCode() {
+        return jobCode;
+    }
+
+    /**
+     * @param jobCode the jobCode to set
+     */
+    public void setJobCode(String jobCode) {
+        this.jobCode = jobCode;
+    }
+
+    /**
+     * @return the job
+     */
+    public String getJob() {
+        return job;
+    }
+
+    /**
+     * @param job the job to set
+     */
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    /**
+     * @return the positionCode
+     */
+    public String getPositionCode() {
+        return positionCode;
+    }
+
+    /**
+     * @param positionCode the positionCode to set
+     */
+    public void setPositionCode(String positionCode) {
+        this.positionCode = positionCode;
+    }
+
     public String getPosition() {
         return position;
     }
@@ -182,12 +233,12 @@ public class SystemUser extends SuperEntity {
         this.position = position;
     }
 
-    public String getLevelid() {
-        return levelid;
+    public String getLevelId() {
+        return levelId;
     }
 
-    public void setLevelid(String levelid) {
-        this.levelid = levelid;
+    public void setLevelId(String levelId) {
+        this.levelId = levelId;
     }
 
     public String getDecisionLevel() {
