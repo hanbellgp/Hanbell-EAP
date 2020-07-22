@@ -7,8 +7,10 @@ package cn.hanbell.hrm.ejb;
 
 import cn.hanbell.hrm.comm.SuperEJBForHRM;
 import cn.hanbell.hrm.entity.Employee;
+import cn.hanbell.hrm.entity.EmployeePartJob;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -20,6 +22,9 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class EmployeeBean extends SuperEJBForHRM<Employee> {
+
+    @EJB
+    private EmployeePartJobBean employeePartJobBean;
 
     public EmployeeBean() {
         super(Employee.class);
@@ -55,14 +60,8 @@ public class EmployeeBean extends SuperEJBForHRM<Employee> {
         }
     }
 
-    public List findByLevelIdForWechatTag() {
-        try {
-            Query query = getEntityManager().createNativeQuery("SELECT LevelId FROM Employee WHERE Flag=1 GROUP BY LevelId");
-            List list = query.getResultList();
-            return list;
-        } catch (Exception e) {
-            return null;
-        }
+    public List<EmployeePartJob> findPartJobByEmployeeId(String employeeId) {
+        return employeePartJobBean.findByEmployeeId(employeeId);
     }
 
 }

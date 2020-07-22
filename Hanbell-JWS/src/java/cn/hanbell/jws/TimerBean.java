@@ -432,13 +432,19 @@ public class TimerBean {
                 employeeList.forEach((e) -> {
                     boolean flag = false;
                     String company = e.getCode().substring(0, 1);
-                    if ("C".equals(company) || "H".equals(company) || "K".equals(company) || "E".equals(company) || "Y".equals(company) || "Q".equals(company)) {
+                    if ("C".equals(company) || "K".equals(company) || "E".equals(company) || "H".equals(company) || "Y".equals(company) || "Q".equals(company)) {
                         // EAP
                         cn.hanbell.eap.entity.SystemUser eu = eapSystemUserBean.findByUserId(e.getCode());
                         if (eu == null) {
                             eu = new cn.hanbell.eap.entity.SystemUser();
                             eu.setUserid(e.getCode());
                             eu.setUsername(e.getCnName());
+                            eu.setJobCode(e.getJob().getCode());
+                            eu.setJob(e.getJob().getName());
+                            eu.setPositionCode(e.getPosition().getCode());
+                            eu.setPosition(e.getPosition().getName());
+                            eu.setLevelId(e.getLevelId());
+                            eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
                             eu.setDeptno(e.getDepartment().getCode());
                             eu.setPhone(e.getMobilePhone());
                             eu.setEmail(e.getEmail());
@@ -449,6 +455,12 @@ public class TimerBean {
                         } else {
                             if (eu.getOptdate() != null && eu.getOptdate().before(e.getLastModifiedDate())) {
                                 eu.setUsername(e.getCnName());
+                                eu.setJobCode(e.getJob().getCode());
+                                eu.setJob(e.getJob().getName());
+                                eu.setPositionCode(e.getPosition().getCode());
+                                eu.setPosition(e.getPosition().getName());
+                                eu.setLevelId(e.getLevelId());
+                                eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
                                 eu.setDeptno(e.getDepartment().getCode());
                                 eu.setPhone(e.getMobilePhone());
                                 eu.setEmail(e.getEmail());
@@ -460,6 +472,7 @@ public class TimerBean {
                                 eu.setStatus("X");
                                 eu.setOptuserToSystem();
                                 eu.setOptdate(e.getLastModifiedDate());
+                                flag = true;
                             }
                             if (flag) {
                                 eapSystemUserBean.update(eu);

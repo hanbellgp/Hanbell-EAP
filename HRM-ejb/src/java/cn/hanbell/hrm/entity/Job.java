@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -61,6 +63,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Job.findByBeginEndDateEndDate", query = "SELECT j FROM Job j WHERE j.beginEndDateEndDate = :beginEndDateEndDate"),
     @NamedQuery(name = "Job.findByIsNullBeginEndDate", query = "SELECT j FROM Job j WHERE j.isNullBeginEndDate = :isNullBeginEndDate")})
 public class Job implements Serializable {
+
+    @JoinColumn(name = "PositionId", referencedColumnName = "PositionId", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private Position position;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -155,8 +161,11 @@ public class Job implements Serializable {
     public Job() {
     }
 
-    public Job(String jobId) {
-        this.jobId = jobId;
+    /**
+     * @return the position
+     */
+    public Position getPosition() {
+        return position;
     }
 
     public String getJobId() {
@@ -431,5 +440,5 @@ public class Job implements Serializable {
     public String toString() {
         return "cn.hanbell.hrm.entity.Job[ jobId=" + jobId + " ]";
     }
-    
+
 }
