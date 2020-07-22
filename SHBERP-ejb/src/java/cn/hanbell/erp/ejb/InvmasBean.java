@@ -265,7 +265,17 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 }
                 m.setMorpcode(detail.getMorpcode()); // 设置自制采购码
                 m.setFvco(detail.getFvco().charAt(0)); // 设置换算率属性
-                if (detail.getRate2().length() > 0) {
+                if (!"".equals(detail.getUnmsr2()) && detail.getRate2().length() > 0) {
+                    invunitBean.setCompany(h.getFacno2());
+                    Invunit iu = invunitBean.findByUnitcodsc(detail.getUnmsr2());
+                    if (iu != null) {
+                        m.setUnmsr2e(iu.getUnitcodsce());
+                    }
+                    if (h.getFacno2().equals("H") || h.getFacno2().equals("Y")) {
+                        m.setJudco("433333");
+                    } else {
+                        m.setJudco("41111");
+                    }
                     m.setRate2(BigDecimal.valueOf(Double.parseDouble(detail.getRate2()))); // 设置换算率
                 } else {
                     m.setRate2(null);
