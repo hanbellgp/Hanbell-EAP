@@ -85,7 +85,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HZCW030.findByTransferDate", query = "SELECT h FROM HZCW030 h WHERE h.transferDate = :transferDate"),
     @NamedQuery(name = "HZCW030.findByNeedUser", query = "SELECT h FROM HZCW030 h WHERE h.needUser = :needUser"),
     @NamedQuery(name = "HZCW030.findByRecallcenterid", query = "SELECT h FROM HZCW030 h WHERE h.recallcenterid = :recallcenterid"),
-    @NamedQuery(name = "HZCW030.findByDBcenterName", query = "SELECT h FROM HZCW030 h WHERE h.dBcenterName = :dBcenterName"),
     @NamedQuery(name = "HZCW030.findByRecallamount", query = "SELECT h FROM HZCW030 h WHERE h.recallamount = :recallamount"),
     @NamedQuery(name = "HZCW030.findByTransfercenterid", query = "SELECT h FROM HZCW030 h WHERE h.transfercenterid = :transfercenterid"),
     @NamedQuery(name = "HZCW030.findByRecallbudgetAcc", query = "SELECT h FROM HZCW030 h WHERE h.recallbudgetAcc = :recallbudgetAcc"),
@@ -113,7 +112,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HZCW030.findByAllamount", query = "SELECT h FROM HZCW030 h WHERE h.allamount = :allamount"),
     @NamedQuery(name = "HZCW030.findByTransferbudgetAcc", query = "SELECT h FROM HZCW030 h WHERE h.transferbudgetAcc = :transferbudgetAcc"),
     @NamedQuery(name = "HZCW030.findByTZcenterName", query = "SELECT h FROM HZCW030 h WHERE h.tZcenterName = :tZcenterName"),
-    @NamedQuery(name = "HZCW030.findByDBcenterid", query = "SELECT h FROM HZCW030 h WHERE h.dBcenterid = :dBcenterid"),
     @NamedQuery(name = "HZCW030.findByApplyDate", query = "SELECT h FROM HZCW030 h WHERE h.applyDate = :applyDate"),
     @NamedQuery(name = "HZCW030.findByTransferbudgetAcc2", query = "SELECT h FROM HZCW030 h WHERE h.transferbudgetAcc2 = :transferbudgetAcc2"),
     @NamedQuery(name = "HZCW030.findByRecallamount2", query = "SELECT h FROM HZCW030 h WHERE h.recallamount2 = :recallamount2"),
@@ -294,9 +292,6 @@ public class HZCW030 implements Serializable {
     @Size(max = 255)
     @Column(name = "recallcenterid")
     private String recallcenterid;
-    @Size(max = 255)
-    @Column(name = "DBcenterName")
-    private String dBcenterName;
     @Column(name = "recallamount")
     private Double recallamount;
     @Size(max = 255)
@@ -372,9 +367,6 @@ public class HZCW030 implements Serializable {
     @Size(max = 255)
     @Column(name = "TZcenterName")
     private String tZcenterName;
-    @Size(max = 255)
-    @Column(name = "DBcenterid")
-    private String dBcenterid;
     @Column(name = "applyDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date applyDate;
@@ -872,14 +864,6 @@ public class HZCW030 implements Serializable {
         this.recallcenterid = recallcenterid;
     }
 
-    public String getDBcenterName() {
-        return dBcenterName;
-    }
-
-    public void setDBcenterName(String dBcenterName) {
-        this.dBcenterName = dBcenterName;
-    }
-
     public Double getRecallamount() {
         return recallamount;
     }
@@ -1094,14 +1078,6 @@ public class HZCW030 implements Serializable {
 
     public void setTZcenterName(String tZcenterName) {
         this.tZcenterName = tZcenterName;
-    }
-
-    public String getDBcenterid() {
-        return dBcenterid;
-    }
-
-    public void setDBcenterid(String dBcenterid) {
-        this.dBcenterid = dBcenterid;
     }
 
     public Date getApplyDate() {
