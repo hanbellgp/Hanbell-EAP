@@ -59,8 +59,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HZCW035.findByStartDate", query = "SELECT h FROM HZCW035 h WHERE h.startDate = :startDate"),
     @NamedQuery(name = "HZCW035.findByHdnmanager", query = "SELECT h FROM HZCW035 h WHERE h.hdnmanager = :hdnmanager"),
     @NamedQuery(name = "HZCW035.findByHdnsamedept", query = "SELECT h FROM HZCW035 h WHERE h.hdnsamedept = :hdnsamedept"),
-    @NamedQuery(name = "HZCW035.findByBudgetDept", query = "SELECT h FROM HZCW035 h WHERE h.budgetDept = :budgetDept"),
-    @NamedQuery(name = "HZCW035.findByHdnapmanager", query = "SELECT h FROM HZCW035 h WHERE h.hdnapmanager = :hdnapmanager")})
+    @NamedQuery(name = "HZCW035.findByBudgetDept", query = "SELECT h FROM HZCW035 h WHERE h.budgetDept = :budgetDept")})
 public class HZCW035 implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -150,10 +149,6 @@ public class HZCW035 implements Serializable {
     @Size(max = 255)
     @Column(name = "budgetDept")
     private String budgetDept;
-    @Size(max = 255)
-    @Column(name = "hdnapmanager")
-    private String hdnapmanager;
-
      //申请人员
     @JoinColumn(name = "applyUser", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = true)
@@ -406,13 +401,6 @@ public class HZCW035 implements Serializable {
         this.budgetDept = budgetDept;
     }
 
-    public String getHdnapmanager() {
-        return hdnapmanager;
-    }
-
-    public void setHdnapmanager(String hdnapmanager) {
-        this.hdnapmanager = hdnapmanager;
-    }
 
     public Users getUser() {
         return user;
