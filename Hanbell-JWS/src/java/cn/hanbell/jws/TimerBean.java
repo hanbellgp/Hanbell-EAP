@@ -357,14 +357,17 @@ public class TimerBean {
                         ed.setCredateToNow();
                         eapDepartmentBean.persist(ed);
                     } else {
-                        if (!ed.getDept().equals(hd.getName()) || !Objects.equals(ed.getParentDept(), ep)) {
+                        if (!ed.getDept().equals(hd.getName()) || !Objects.equals(ed.getParentDept(), ep) || (ed.getOptdate() != null && ed.getOptdate().before(hd.getLastModifiedDate()))) {
                             ed.setDept(hd.getName());
                             if (ep != null) {
                                 ed.setParentDept(ep);
                             }
                             if (!hd.getFlag()) {
                                 ed.setStatus("X");
+                            } else {
+                                ed.setStatus("N");
                             }
+                            ed.setOptuserToSystem();
                             ed.setOptdate(hd.getLastModifiedDate());
                             eapDepartmentBean.update(ed);
                         }
