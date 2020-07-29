@@ -1,0 +1,47 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package cn.hanbell.eap.ejb;
+
+import cn.hanbell.eap.comm.SuperEJBForEAP;
+import cn.hanbell.eap.entity.*;
+import java.util.List;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.Query;
+
+/**
+ *
+ * @author C2082
+ */
+@Stateless
+@LocalBean
+public class SalarySendBean extends SuperEJBForEAP<SalarySend> {
+
+    public SalarySendBean() {
+        super(SalarySend.class);
+    }
+
+    public List<SalarySend> findByTaskidAndDeptno(String taskid, String deptno) {
+        Query query = getEntityManager().createNamedQuery("SalarySend.findByTaskidAndDeptno");
+        query.setParameter("taskid", taskid);
+        query.setParameter("deptno", deptno);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+       public SalarySend findByTaskidAndEmployeeid(String taskid, String employeeid) {
+        Query query = getEntityManager().createNamedQuery("SalarySend.findByTaskidAndEmployeeid");
+        query.setParameter("taskid", taskid);
+        query.setParameter("employeeid", employeeid);
+        try {
+            return (SalarySend)query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+}
