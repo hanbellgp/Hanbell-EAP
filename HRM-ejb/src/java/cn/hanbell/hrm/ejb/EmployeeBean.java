@@ -30,6 +30,17 @@ public class EmployeeBean extends SuperEJBForHRM<Employee> {
         super(Employee.class);
     }
 
+    public Employee findByCode(String code) {
+        Query query = getEntityManager().createNamedQuery("Employee.findByCode");
+        query.setParameter("code", code);
+        try {
+            Object o = query.getSingleResult();
+            return (Employee) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<Employee> findByCreateDate(Date value) {
         Query query = getEntityManager().createNamedQuery("Employee.findByCreateDate");
         query.setParameter("createDate", value);
@@ -45,6 +56,17 @@ public class EmployeeBean extends SuperEJBForHRM<Employee> {
         query.setParameter("code", code);
         try {
             return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Employee findByEmployeeId(String id) {
+        Query query = getEntityManager().createNamedQuery("Employee.findByEmployeeId");
+        query.setParameter("employeeId", id);
+        try {
+            Object o = query.getSingleResult();
+            return (Employee) o;
         } catch (Exception ex) {
             return null;
         }
