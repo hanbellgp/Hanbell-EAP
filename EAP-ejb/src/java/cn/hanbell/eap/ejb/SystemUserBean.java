@@ -73,6 +73,16 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
         }
     }
 
+    public List<SystemUser> findByManagerIdAndOnJob(String managerId) {
+        Query query = getEntityManager().createNamedQuery("SystemUser.findByManagerIdAndOnJob");
+        query.setParameter("managerId", managerId);
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public List<SystemUser> findByDeptnoAndSyncWeChatStatus(String deptno) {
         Query query = getEntityManager().createNamedQuery("SystemUser.findByDeptnoAndSyncWeChatStatus");
         query.setParameter("deptno", deptno);

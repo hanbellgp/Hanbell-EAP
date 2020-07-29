@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SystemUser.findByDeptno", query = "SELECT s FROM SystemUser s WHERE s.deptno = :deptno ORDER BY s.userid"),
     @NamedQuery(name = "SystemUser.findByDeptnoAndOnJob", query = "SELECT s FROM SystemUser s WHERE s.status<>'X' AND s.deptno = :deptno ORDER BY s.userid"),
     @NamedQuery(name = "SystemUser.findByDeptnoAndSyncWeChatStatus", query = "SELECT s FROM SystemUser s WHERE (s.syncWeChatStatus IS NULL OR s.syncWeChatStatus<>'X') AND s.deptno = :deptno ORDER BY s.userid"),
+    @NamedQuery(name = "SystemUser.findByManagerIdAndOnJob", query = "SELECT s FROM SystemUser s WHERE s.status<>'X' AND s.managerId = :managerId ORDER BY s.userid"),
     @NamedQuery(name = "SystemUser.findByUserId", query = "SELECT s FROM SystemUser s WHERE s.userid = :userid"),
     @NamedQuery(name = "SystemUser.findByUsername", query = "SELECT s FROM SystemUser s WHERE s.username = :username"),
     @NamedQuery(name = "SystemUser.findByUserIdAndPwd", query = "SELECT s FROM SystemUser s WHERE (s.userid = :userid OR s.email =:email) AND s.password = :pwd"),
@@ -94,6 +95,9 @@ public class SystemUser extends SuperEntity {
     @Size(max = 20)
     @Column(name = "deptno")
     private String deptno;
+    @Size(max = 20)
+    @Column(name = "managerId")
+    private String managerId;
     @Size(max = 45)
     @Column(name = "domainuser")
     private String domainuser;
@@ -261,6 +265,20 @@ public class SystemUser extends SuperEntity {
      */
     public void setDeptno(String deptno) {
         this.deptno = deptno;
+    }
+
+    /**
+     * @return the managerId
+     */
+    public String getManagerId() {
+        return managerId;
+    }
+
+    /**
+     * @param managerId the managerId to set
+     */
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
     }
 
     public String getDomainuser() {

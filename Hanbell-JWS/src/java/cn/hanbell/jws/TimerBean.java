@@ -431,9 +431,11 @@ public class TimerBean {
             log4j.info("syncOrganizationByHRM,同步EAP/CRM/MES部门资料结束");
             // 同步人员
             List<cn.hanbell.hrm.entity.Employee> employeeList = hrmEmployeeBean.findByLastModifiedDate(BaseLib.getDate("yyyy-MM-dd", BaseLib.formatDate("yyyy-MM-dd", BaseLib.getDate())));
+
             if (employeeList != null && !employeeList.isEmpty()) {
                 employeeList.forEach((e) -> {
                     boolean flag = false;
+                    cn.hanbell.hrm.entity.Employee manager = hrmEmployeeBean.findByEmployeeId(e.getDirectorId());
                     String company = e.getCode().substring(0, 1);
                     if ("C".equals(company) || "K".equals(company) || "E".equals(company) || "H".equals(company) || "Y".equals(company) || "Q".equals(company)) {
                         // EAP
@@ -449,6 +451,9 @@ public class TimerBean {
                             eu.setLevelId(e.getLevelId());
                             eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
                             eu.setDeptno(e.getDepartment().getCode());
+                            if (manager != null) {
+                                eu.setManagerId(manager.getCode());
+                            }
                             eu.setPhone(e.getMobilePhone());
                             eu.setEmail(e.getEmail());
                             eu.setCreatorToSystem();
@@ -465,6 +470,9 @@ public class TimerBean {
                                 eu.setLevelId(e.getLevelId());
                                 eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
                                 eu.setDeptno(e.getDepartment().getCode());
+                                if (manager != null) {
+                                    eu.setManagerId(manager.getCode());
+                                }
                                 eu.setPhone(e.getMobilePhone());
                                 eu.setEmail(e.getEmail());
                                 eu.setOptuserToSystem();
