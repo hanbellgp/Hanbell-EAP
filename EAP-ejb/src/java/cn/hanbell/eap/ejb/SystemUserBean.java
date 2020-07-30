@@ -125,5 +125,4 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             return null;
         }
     }
-
 }

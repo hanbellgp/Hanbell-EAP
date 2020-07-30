@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SalarySend.findAll", query = "SELECT s FROM SalarySend s"),
-     @NamedQuery(name = "SalarySend.findByTaskidAndDeptno", query = "SELECT s FROM SalarySend s WHERE s.salarySendPK.taskid = :taskid AND s.deptno = :deptno"),
+     @NamedQuery(name = "SalarySend.findByTaskidAndDeptno", query = "SELECT s FROM SalarySend s WHERE s.salarySendPK.taskid like :taskid AND s.deptno = :deptno"),
       @NamedQuery(name = "SalarySend.findByTaskidAndEmployeeid", query = "SELECT s FROM SalarySend s WHERE s.salarySendPK.taskid =:taskid AND s.salarySendPK.employeeid=:employeeid"),
     @NamedQuery(name = "SalarySend.findByTaskid", query = "SELECT s FROM SalarySend s WHERE s.salarySendPK.taskid = :taskid"),
     @NamedQuery(name = "SalarySend.findByTaskname", query = "SELECT s FROM SalarySend s WHERE s.taskname = :taskname"),

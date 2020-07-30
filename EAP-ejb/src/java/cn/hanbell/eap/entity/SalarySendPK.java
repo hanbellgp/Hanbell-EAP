@@ -21,7 +21,7 @@ public class SalarySendPK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 8)
+    @Size(min = 1, max = 20)
     @Column(name = "taskid")
     private String taskid;
     @Basic(optional = false)

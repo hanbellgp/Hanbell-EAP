@@ -7,6 +7,8 @@ package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
 import cn.hanbell.eap.entity.*;
+import com.lightshell.comm.BaseLib;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -26,7 +28,7 @@ public class SalarySendBean extends SuperEJBForEAP<SalarySend> {
 
     public List<SalarySend> findByTaskidAndDeptno(String taskid, String deptno) {
         Query query = getEntityManager().createNamedQuery("SalarySend.findByTaskidAndDeptno");
-        query.setParameter("taskid", taskid);
+        query.setParameter("taskid", taskid+"%");
         query.setParameter("deptno", deptno);
         try {
             return query.getResultList();
@@ -34,14 +36,37 @@ public class SalarySendBean extends SuperEJBForEAP<SalarySend> {
             return null;
         }
     }
-       public SalarySend findByTaskidAndEmployeeid(String taskid, String employeeid) {
+
+    public SalarySend findByTaskidAndEmployeeid(String taskid, String employeeid) {
         Query query = getEntityManager().createNamedQuery("SalarySend.findByTaskidAndEmployeeid");
         query.setParameter("taskid", taskid);
         query.setParameter("employeeid", employeeid);
         try {
-            return (SalarySend)query.getSingleResult();
+            return (SalarySend) query.getSingleResult();
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    public String getTaskId(String taskid) {
+        String ls_no = "";
+        String ls_ta002 = "";
+        String serial = "00";
+        ls_ta002 = BaseLib.formatDate("yyyyMMdd", new Date());
+        String sql = "SELECT * FROM salarysend WHERE taskid like '"+taskid+"%' GROUP BY taskid";
+        Query query = getEntityManager().createNativeQuery(sql);
+        List result = query.getResultList();
+        int m = 0;
+        if (null != result && !result.isEmpty()) {
+            m = result.size();
+            m = m + 1;
+        } else {
+            m = 1;
+        }
+        serial = serial + m;
+        serial = serial.substring(String.valueOf(m).length());
+        ls_no += taskid;
+        ls_no += serial;
+        return ls_no;
     }
 }
