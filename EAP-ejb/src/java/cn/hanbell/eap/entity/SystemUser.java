@@ -41,8 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SystemUser.findByUserIdAndPwd", query = "SELECT s FROM SystemUser s WHERE (s.userid = :userid OR s.email =:email) AND s.password = :pwd"),
     @NamedQuery(name = "SystemUser.findByUserIdOrName", query = "SELECT s FROM SystemUser s WHERE (s.userid LIKE :userid OR s.username LIKE :username) ORDER BY s.userid"),
     @NamedQuery(name = "SystemUser.findByLocked", query = "SELECT s FROM SystemUser s WHERE s.locked = :locked"),
-    @NamedQuery(name = "SystemUser.findByStatus", query = "SELECT s FROM SystemUser s WHERE s.status = :status"),
-    @NamedQuery(name = "SystemUser.findByDeptnoAndStatus", query = "SELECT s FROM SystemUser s WHERE  s.status='N' AND s.deptno = :deptno ORDER BY s.userid")})
+    @NamedQuery(name = "SystemUser.findByStatus", query = "SELECT s FROM SystemUser s WHERE s.status = :status")})
 public class SystemUser extends SuperEntity {
 
     @JoinColumn(name = "deptno", referencedColumnName = "deptno", insertable = false, updatable = false)
