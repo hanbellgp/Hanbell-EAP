@@ -382,8 +382,8 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 m.setSitdsc(detail.getSitdsc()); // 设置品号简名
                 m.setItdsc2(detail.getItdsc2());
                 m.setSpdsc2(detail.getSpdsc2());
-                m.setIndate(BaseLib.getDate());
-                m.setUserno(h.getApplyuser());
+                m.setModdate(BaseLib.getDate());
+                m.setModman(h.getApplyuser());
                 update(m);
                 this.getEntityManager().flush();
 
@@ -398,8 +398,8 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         gm.setSitdsc(detail.getSitdsc()); // 设置品号简名
                         gm.setItdsc2(detail.getItdsc2());
                         gm.setSpdsc2(detail.getSpdsc2());
-                        gm.setIndate(BaseLib.getDate());
-                        gm.setUserno(h.getApplyuser());
+                        gm.setModdate(BaseLib.getDate());
+                        gm.setModman(h.getApplyuser());
                         update(gm);
                         this.getEntityManager().flush();
                     }
@@ -414,8 +414,8 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         jm.setSitdsc(detail.getSitdsc()); // 设置品号简名
                         jm.setItdsc2(detail.getItdsc2());
                         jm.setSpdsc2(detail.getSpdsc2());
-                        jm.setIndate(BaseLib.getDate());
-                        jm.setUserno(h.getApplyuser());
+                        jm.setModdate(BaseLib.getDate());
+                        jm.setModman(h.getApplyuser());
                         update(jm);
                         this.getEntityManager().flush();
                     }
@@ -430,8 +430,8 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         nm.setSitdsc(detail.getSitdsc()); // 设置品号简名
                         nm.setItdsc2(detail.getItdsc2());
                         nm.setSpdsc2(detail.getSpdsc2());
-                        nm.setIndate(BaseLib.getDate());
-                        nm.setUserno(h.getApplyuser());
+                        nm.setModdate(BaseLib.getDate());
+                        nm.setModman(h.getApplyuser());
                         update(nm);
                         this.getEntityManager().flush();
                     }
@@ -446,8 +446,8 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         e.setSitdsc(detail.getSitdsc()); // 设置品号简名
                         e.setItdsc2(detail.getItdsc2());
                         e.setSpdsc2(detail.getSpdsc2());
-                        e.setIndate(BaseLib.getDate());
-                        e.setUserno(h.getApplyuser());
+                        e.setModdate(BaseLib.getDate());
+                        e.setModman(h.getApplyuser());
                         update(e);
                         this.getEntityManager().flush();
                     }
