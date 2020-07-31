@@ -343,6 +343,12 @@ public class Invmas implements Serializable {
     @Size(max = 6)
     @Column(name = "cstmon")
     private String cstmon;
+    @Size(min = 1, max = 8)
+    @Column(name = "modman")
+    private String modman;
+    @Column(name = "moddate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date moddate;
 //    @JoinColumn(name = "itcls", referencedColumnName = "itcls")
 //    @ManyToOne
     @Size(min = 1, max = 4)
@@ -1025,6 +1031,22 @@ public class Invmas implements Serializable {
      */
     public void setInvcls(Invcls invcls) {
         this.invcls = invcls;
+    }
+
+    public String getModman() {
+        return modman;
+    }
+
+    public void setModman(String modman) {
+        this.modman = modman;
+    }
+
+    public Date getModdate() {
+        return moddate;
+    }
+
+    public void setModdate(Date moddate) {
+        this.moddate = moddate;
     }
 
 }
