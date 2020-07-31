@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.persistence.Query;
 
@@ -45,10 +46,24 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             if (entity.getTel() != null && !"".equals(entity.getTel())) {
                 job.add("telephone", entity.getTel());
             }
-            if (entity.getPosition() != null & !"".equals(entity.getPosition())) {
-                job.add("position", entity.getPosition());
-            }
+            //职位暂时不更新
+//            if (entity.getPosition() != null & !"".equals(entity.getPosition())) {
+//                job.add("position", entity.getPosition());
+//            }
+            if (entity.getJob() != null && !"".equals(entity.getJob())) {
             job.add("to_invite", true);
+            JsonObjectBuilder textValue = Json.createObjectBuilder();
+            textValue.add("value", entity.getJob());
+            JsonObjectBuilder attr = Json.createObjectBuilder();
+            attr.add("type", 0);
+            attr.add("name", "岗位");
+            attr.add("text", textValue);
+            JsonArrayBuilder attrs = Json.createArrayBuilder();
+            attrs.add(attr);
+            JsonObjectBuilder attrsBean = Json.createObjectBuilder();
+            attrsBean.add("attrs", attrs);
+            job.add("extattr", attrsBean);
+            }
         }
         return job;
     }
