@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.hanbell.eap.model;
+package cn.hanbell.eap.jrs.model;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,9 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author C0160
  */
-@Entity
 @XmlRootElement
-public class GolfGame implements Serializable {
+public class BizTalk implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -31,19 +29,15 @@ public class GolfGame implements Serializable {
     private String email;
     private String company;
     private String title;
+    private String startDate;
+    private String startTime;
+    private int minutes;
+    private int num;
     private String contacter;
-    private int value1;
-    private boolean value2;//是否用晚餐
-    private boolean value3;//是否租球具
-    private String value4;//衣服尺码
-    private boolean value5;//是否坐巴士
-    private boolean value6;//是否自己开车
-    private String value7;
-    private String value8;
     private String remark;
 
-    public GolfGame() {
-
+    public BizTalk() {
+        this.num = 1;
     }
 
     /**
@@ -159,6 +153,48 @@ public class GolfGame implements Serializable {
     }
 
     /**
+     * @return the startDate
+     */
+    public String getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * @return the startTime
+     */
+    public String getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * @param startTime the startTime to set
+     */
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    /**
+     * @return the minutes
+     */
+    public int getMinutes() {
+        return minutes;
+    }
+
+    /**
+     * @param minutes the minutes to set
+     */
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
+    }
+
+    /**
      * @return the contacter
      */
     public String getContacter() {
@@ -173,115 +209,17 @@ public class GolfGame implements Serializable {
     }
 
     /**
-     * @return the value1
+     * @return the num
      */
-    public int getValue1() {
-        return value1;
+    public int getNum() {
+        return num;
     }
 
     /**
-     * @param value1 the value1 to set
+     * @param num the num to set
      */
-    public void setValue1(int value1) {
-        this.value1 = value1;
-    }
-
-    /**
-     * @return the value2
-     */
-    public boolean getValue2() {
-        return value2;
-    }
-
-    /**
-     * @param value2 the value2 to set
-     */
-    public void setValue2(boolean value2) {
-        this.value2 = value2;
-    }
-
-    /**
-     * @return the value3
-     */
-    public boolean getValue3() {
-        return value3;
-    }
-
-    /**
-     * @param value3 the value3 to set
-     */
-    public void setValue3(boolean value3) {
-        this.value3 = value3;
-    }
-
-    /**
-     * @return the value4
-     */
-    public String getValue4() {
-        return value4;
-    }
-
-    /**
-     * @param value4 the value4 to set
-     */
-    public void setValue4(String value4) {
-        this.value4 = value4;
-    }
-
-    /**
-     * @return the value5
-     */
-    public boolean getValue5() {
-        return value5;
-    }
-
-    /**
-     * @param value5 the value5 to set
-     */
-    public void setValue5(boolean value5) {
-        this.value5 = value5;
-    }
-
-    /**
-     * @return the value6
-     */
-    public boolean getValue6() {
-        return value6;
-    }
-
-    /**
-     * @param value6 the value6 to set
-     */
-    public void setValue6(boolean value6) {
-        this.value6 = value6;
-    }
-
-    /**
-     * @return the value7
-     */
-    public String getValue7() {
-        return value7;
-    }
-
-    /**
-     * @param value7 the value7 to set
-     */
-    public void setValue7(String value7) {
-        this.value7 = value7;
-    }
-
-    /**
-     * @return the value8
-     */
-    public String getValue8() {
-        return value8;
-    }
-
-    /**
-     * @param value8 the value8 to set
-     */
-    public void setValue8(String value8) {
-        this.value8 = value8;
+    public void setNum(int num) {
+        this.num = num;
     }
 
     /**

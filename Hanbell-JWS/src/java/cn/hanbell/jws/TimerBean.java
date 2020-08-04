@@ -325,7 +325,7 @@ public class TimerBean {
 
     }
 
-    @Schedule(minute = "23", hour = "7,23", persistent = false)
+    @Schedule(minute = "35", hour = "7,16,23", persistent = false)
     public void syncOrganizationByHRM() {
         try {
             // 同步部门
@@ -813,7 +813,7 @@ public class TimerBean {
                     addedDetail.clear();
                     try {
                         // 跨月单据使用当前日期
-                        if (trdate.getMonth() < indate.getMonth()) {
+                        if (trdate.getYear() < indate.getYear() || trdate.getMonth() < indate.getMonth()) {
                             trdate = BaseLib.getDate("yyyy-MM-dd", BaseLib.formatDate("yyyy-MM-dd", indate));
                         }
                         for (AssetDistributeDetail d : addList) {

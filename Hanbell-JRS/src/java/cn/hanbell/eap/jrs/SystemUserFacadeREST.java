@@ -9,6 +9,7 @@ import cn.hanbell.eap.ejb.SystemUserBean;
 import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.eap.jrs.model.YunUser;
 import cn.hanbell.eap.jrs.model.YunLogin;
+import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.ResponseObject;
 import cn.hanbell.jrs.SuperRESTForEAP;
 import com.lightshell.comm.SuperEJB;
@@ -249,6 +250,23 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
                 res = new ResponseObject<>("404", "此用戶不存在", null);
             }
             return res;
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @Override
+    public ResponseData findByQuery(String q, String appid, String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                List<SystemUser> list = systemUserBean.findByUserIdOrName(q);
+                ResponseData res = new ResponseData<SystemUser>("200", "success");
+                res.setData(list);
+                res.setCount(list.size());
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }

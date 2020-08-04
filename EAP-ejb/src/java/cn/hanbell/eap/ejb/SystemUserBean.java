@@ -30,8 +30,7 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
     public JsonObjectBuilder createJsonObjectBuilder(SystemUser entity) {
         JsonObjectBuilder job = Json.createObjectBuilder();
         if (entity != null) {
-            job.add("userid", entity.getUserid())
-                    .add("name", entity.getUsername());
+            job.add("userid", entity.getUserid()).add("name", entity.getUsername());
             if (entity.getPhone() != null) {
                 job.add("mobile", entity.getPhone());
             }
@@ -46,23 +45,23 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             if (entity.getTel() != null && !"".equals(entity.getTel())) {
                 job.add("telephone", entity.getTel());
             }
-            //职位暂时不更新
-//            if (entity.getPosition() != null & !"".equals(entity.getPosition())) {
-//                job.add("position", entity.getPosition());
-//            }
+            // 职位暂时不更新
+            // if (entity.getPosition() != null & !"".equals(entity.getPosition())) {
+            // job.add("position", entity.getPosition());
+            // }
             if (entity.getJob() != null && !"".equals(entity.getJob())) {
-            job.add("to_invite", true);
-            JsonObjectBuilder textValue = Json.createObjectBuilder();
-            textValue.add("value", entity.getJob());
-            JsonObjectBuilder attr = Json.createObjectBuilder();
-            attr.add("type", 0);
-            attr.add("name", "岗位");
-            attr.add("text", textValue);
-            JsonArrayBuilder attrs = Json.createArrayBuilder();
-            attrs.add(attr);
-            JsonObjectBuilder attrsBean = Json.createObjectBuilder();
-            attrsBean.add("attrs", attrs);
-            job.add("extattr", attrsBean);
+                job.add("to_invite", true);
+                JsonObjectBuilder textValue = Json.createObjectBuilder();
+                textValue.add("value", entity.getJob());
+                JsonObjectBuilder attr = Json.createObjectBuilder();
+                attr.add("type", 0);
+                attr.add("name", "岗位");
+                attr.add("text", textValue);
+                JsonArrayBuilder attrs = Json.createArrayBuilder();
+                attrs.add(attr);
+                JsonObjectBuilder extattr = Json.createObjectBuilder();
+                extattr.add("attrs", attrs);
+                job.add("extattr", extattr);
             }
         }
         return job;
