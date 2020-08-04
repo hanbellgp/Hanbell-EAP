@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.hanbell.eap.model;
+package cn.hanbell.eap.jrs.model;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,9 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author C0160
  */
-@Entity
 @XmlRootElement
-public class BizTalk implements Serializable {
+public class TechForum implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -31,15 +29,11 @@ public class BizTalk implements Serializable {
     private String email;
     private String company;
     private String title;
-    private String startDate;
-    private String startTime;
-    private int minutes;
-    private int num;
-    private String contacter;
+    private String value1;
     private String remark;
 
-    public BizTalk() {
-        this.num = 1;
+    public TechForum() {
+
     }
 
     /**
@@ -155,73 +149,17 @@ public class BizTalk implements Serializable {
     }
 
     /**
-     * @return the startDate
+     * @return the value1
      */
-    public String getStartDate() {
-        return startDate;
+    public String getValue1() {
+        return value1;
     }
 
     /**
-     * @param startDate the startDate to set
+     * @param value1 the value1 to set
      */
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    /**
-     * @return the startTime
-     */
-    public String getStartTime() {
-        return startTime;
-    }
-
-    /**
-     * @param startTime the startTime to set
-     */
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
-     * @return the minutes
-     */
-    public int getMinutes() {
-        return minutes;
-    }
-
-    /**
-     * @param minutes the minutes to set
-     */
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
-    }
-
-    /**
-     * @return the contacter
-     */
-    public String getContacter() {
-        return contacter;
-    }
-
-    /**
-     * @param contacter the contacter to set
-     */
-    public void setContacter(String contacter) {
-        this.contacter = contacter;
-    }
-
-    /**
-     * @return the num
-     */
-    public int getNum() {
-        return num;
-    }
-
-    /**
-     * @param num the num to set
-     */
-    public void setNum(int num) {
-        this.num = num;
+    public void setValue1(String value1) {
+        this.value1 = value1;
     }
 
     /**

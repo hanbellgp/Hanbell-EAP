@@ -7,9 +7,12 @@ package cn.hanbell.eap.entity;
 
 import com.lightshell.comm.SuperDetailEntity;
 import java.util.Objects;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -28,12 +31,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TaskParticipant.findAll", query = "SELECT t FROM TaskParticipant t"),
     @NamedQuery(name = "TaskParticipant.findById", query = "SELECT t FROM TaskParticipant t WHERE t.id = :id"),
     @NamedQuery(name = "TaskParticipant.findByPId", query = "SELECT t FROM TaskParticipant t WHERE t.pid = :pid"),
-    @NamedQuery(name = "TaskParticipant.findBySeq", query = "SELECT t FROM TaskParticipant t WHERE t.seq = :seq"),
     @NamedQuery(name = "TaskParticipant.findByParticipantId", query = "SELECT t FROM TaskParticipant t WHERE t.participantId = :participantId"),
     @NamedQuery(name = "TaskParticipant.findByParticipant", query = "SELECT t FROM TaskParticipant t WHERE t.participant = :participant"),
     @NamedQuery(name = "TaskParticipant.findByDeptId", query = "SELECT t FROM TaskParticipant t WHERE t.deptId = :deptId"),
     @NamedQuery(name = "TaskParticipant.findByDept", query = "SELECT t FROM TaskParticipant t WHERE t.dept = :dept")})
 public class TaskParticipant extends SuperDetailEntity {
+
+    @JsonbTransient
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "pid", referencedColumnName = "id", insertable = false, updatable = false)
+    private Task task;
 
     @Basic(optional = false)
     @NotNull
@@ -53,6 +60,13 @@ public class TaskParticipant extends SuperDetailEntity {
     private String dept;
 
     public TaskParticipant() {
+    }
+
+    /**
+     * @return the task
+     */
+    public Task getTask() {
+        return task;
     }
 
     public String getParticipantId() {

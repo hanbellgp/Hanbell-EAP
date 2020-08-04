@@ -143,6 +143,30 @@ public abstract class SuperRESTForEAP<T> {
     }
 
     @GET
+    @Path("pagination/query")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData findByPaginationQuery(@QueryParam("q") String q, @QueryParam("offset") Integer offset, @QueryParam("pageSize") Integer pageSize,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @GET
+    @Path("query")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData findByQuery(@QueryParam("q") String q,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseObject findById(@PathParam("id") PathSegment id, @QueryParam("appid") String appid,

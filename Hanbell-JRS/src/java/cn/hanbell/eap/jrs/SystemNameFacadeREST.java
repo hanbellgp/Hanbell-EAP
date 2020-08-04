@@ -10,12 +10,8 @@ import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForEAP;
 import com.lightshell.comm.SuperEJB;
 import java.util.List;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -34,10 +30,8 @@ public class SystemNameFacadeREST extends SuperRESTForEAP<SystemName> {
         return systemNameBean;
     }
 
-    @GET
-    @Path("query")
-    @Produces({MediaType.APPLICATION_JSON})
-    public ResponseData query(@QueryParam("q") String q, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    @Override
+    public ResponseData findByQuery(String q, String appid, String token) {
         if (isAuthorized(appid, token)) {
             try {
                 List<SystemName> list = systemNameBean.findByNameOrDescript(q);

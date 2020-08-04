@@ -6,12 +6,18 @@
 package cn.hanbell.eap.entity;
 
 import com.lightshell.comm.SuperEntity;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,6 +57,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Task.findByContextId", query = "SELECT j FROM Task j WHERE j.contextId = :contextId"),
     @NamedQuery(name = "Task.findByStatus", query = "SELECT j FROM Task j WHERE j.status = :status")})
 public class Task extends SuperEntity {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
+    @JoinTable(name = "taskparticipant")
+    private List<TaskParticipant> participants = new ArrayList<TaskParticipant>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
+    @JoinTable(name = "taskattachment")
+    private List<TaskAttachment> attachments = new ArrayList<TaskAttachment>();
 
     @Size(max = 45)
     @Column(name = "contextObject")
@@ -130,6 +144,34 @@ public class Task extends SuperEntity {
     public Task() {
         this.sortid = 0;
         this.progress = 0;
+    }
+
+    /**
+     * @return the participants
+     */
+    public List<TaskParticipant> getParticipants() {
+        return participants;
+    }
+
+    /**
+     * @param participants the participants to set
+     */
+    public void setParticipants(List<TaskParticipant> participants) {
+        this.participants = participants;
+    }
+
+    /**
+     * @return the attachments
+     */
+    public List<TaskAttachment> getAttachments() {
+        return attachments;
+    }
+
+    /**
+     * @param attachments the attachments to set
+     */
+    public void setAttachments(List<TaskAttachment> attachments) {
+        this.attachments = attachments;
     }
 
     public String getName() {
@@ -371,7 +413,7 @@ public class Task extends SuperEntity {
         if (this.id != null && other.id != null) {
             return this.id.equals(other.id);
         }
-        return true;
+        return Objects.equals(this.name, other.name);
     }
 
     @Override
