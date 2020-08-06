@@ -27,31 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "HZCW033tDetail.findAll", query = "SELECT h FROM HZCW033tDetail h"),
     @NamedQuery(name = "HZCW033tDetail.findByOID", query = "SELECT h FROM HZCW033tDetail h WHERE h.oid = :oid"),
-    @NamedQuery(name = "HZCW033tDetail.findByTaxi", query = "SELECT h FROM HZCW033tDetail h WHERE h.taxi = :taxi"),
-    @NamedQuery(name = "HZCW033tDetail.findByAllowance", query = "SELECT h FROM HZCW033tDetail h WHERE h.allowance = :allowance"),
-    @NamedQuery(name = "HZCW033tDetail.findByNo", query = "SELECT h FROM HZCW033tDetail h WHERE h.no = :no"),
-    @NamedQuery(name = "HZCW033tDetail.findByTrafficSummary", query = "SELECT h FROM HZCW033tDetail h WHERE h.trafficSummary = :trafficSummary"),
-    @NamedQuery(name = "HZCW033tDetail.findByBh3", query = "SELECT h FROM HZCW033tDetail h WHERE h.bh3 = :bh3"),
-    @NamedQuery(name = "HZCW033tDetail.findByBh2", query = "SELECT h FROM HZCW033tDetail h WHERE h.bh2 = :bh2"),
-    @NamedQuery(name = "HZCW033tDetail.findByReceipt", query = "SELECT h FROM HZCW033tDetail h WHERE h.receipt = :receipt"),
-    @NamedQuery(name = "HZCW033tDetail.findBySubtotal", query = "SELECT h FROM HZCW033tDetail h WHERE h.subtotal = :subtotal"),
-    @NamedQuery(name = "HZCW033tDetail.findByTrafficfee", query = "SELECT h FROM HZCW033tDetail h WHERE h.trafficfee = :trafficfee"),
-    @NamedQuery(name = "HZCW033tDetail.findByBh1", query = "SELECT h FROM HZCW033tDetail h WHERE h.bh1 = :bh1"),
-    @NamedQuery(name = "HZCW033tDetail.findByTrafficDatetxt", query = "SELECT h FROM HZCW033tDetail h WHERE h.trafficDatetxt = :trafficDatetxt"),
-    @NamedQuery(name = "HZCW033tDetail.findBySort3", query = "SELECT h FROM HZCW033tDetail h WHERE h.sort3 = :sort3"),
-    @NamedQuery(name = "HZCW033tDetail.findBySort2", query = "SELECT h FROM HZCW033tDetail h WHERE h.sort2 = :sort2"),
-    @NamedQuery(name = "HZCW033tDetail.findByTravelReport", query = "SELECT h FROM HZCW033tDetail h WHERE h.travelReport = :travelReport"),
-    @NamedQuery(name = "HZCW033tDetail.findByJc2", query = "SELECT h FROM HZCW033tDetail h WHERE h.jc2 = :jc2"),
-    @NamedQuery(name = "HZCW033tDetail.findByJc1", query = "SELECT h FROM HZCW033tDetail h WHERE h.jc1 = :jc1"),
-    @NamedQuery(name = "HZCW033tDetail.findByAccommodation", query = "SELECT h FROM HZCW033tDetail h WHERE h.accommodation = :accommodation"),
-    @NamedQuery(name = "HZCW033tDetail.findBySort1", query = "SELECT h FROM HZCW033tDetail h WHERE h.sort1 = :sort1"),
-    @NamedQuery(name = "HZCW033tDetail.findByJc3", query = "SELECT h FROM HZCW033tDetail h WHERE h.jc3 = :jc3"),
-    @NamedQuery(name = "HZCW033tDetail.findByTrafficPlace", query = "SELECT h FROM HZCW033tDetail h WHERE h.trafficPlace = :trafficPlace"),
-    @NamedQuery(name = "HZCW033tDetail.findByFSN", query = "SELECT h FROM HZCW033tDetail h WHERE h.formSerialNumber = :fsn"),
-    @NamedQuery(name = "HZCW033tDetail.findByEndMileage", query = "SELECT h FROM HZCW033tDetail h WHERE h.endMileage = :endMileage"),
-    @NamedQuery(name = "HZCW033tDetail.findByCarUse", query = "SELECT h FROM HZCW033tDetail h WHERE h.carUse = :carUse"),
-    @NamedQuery(name = "HZCW033tDetail.findByStartMileage", query = "SELECT h FROM HZCW033tDetail h WHERE h.startMileage = :startMileage"),
-    @NamedQuery(name = "HZCW033tDetail.findByTotalMileage", query = "SELECT h FROM HZCW033tDetail h WHERE h.totalMileage = :totalMileage")})
+    @NamedQuery(name = "HZCW033tDetail.findByFSN", query = "SELECT h FROM HZCW033tDetail h WHERE h.formSerialNumber = :fsn ORDER BY h.trafficDatetxt ASC")})
 public class HZCW033tDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
