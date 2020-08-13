@@ -138,21 +138,21 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
 
                 REPTA ra = reptaBean.findByPK(entity.getRepairKindname().split("-")[0], entity.getRepairno());
                 List<REPPW> reppws = reppwBean.findByPw001AndPw002(entity.getRepairKindname().split("-")[0], entity.getRepairno());
-                    int max=0;
-                  for (REPPW reppw : reppwList) {
-                      if(reppw.getPw013()>max){
-                          max=reppw.getPw013();
-                      }
-                  }
-                  int size = reppws.size();
-                for (REPPW reppw : reppwList) {  
-                     size++;
-                    reppw.setPw013((short)max);
+                int max = 0;
+                for (REPPW reppw : reppwList) {
+                    if (reppw.getPw013() > max) {
+                        max = reppw.getPw013();
+                    }
+                }
+                int size = reppws.size();
+                for (REPPW reppw : reppwList) {
+                    size++;
+                    reppw.setPw013((short) max);
                     String x = String.valueOf(size);
                     StringBuffer serial = new StringBuffer("000").append(x);
                     reppw.getREPPWPK().setPw003(serial.substring(x.length() - 1));
                     reppwBean.persist(reppw);
-                   
+
                 }
                 //更新叫修单状态为确认
                 if (ra != null) {
@@ -164,7 +164,7 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                     ra.setTa031("0");
                     reptaBean.update(ra);
                 }
-                  String errmsg = reptaBean.sendMsgString(sendUser.toString(), msg.toString(),
+                String errmsg = reptaBean.sendMsgString(sendUser.toString(), msg.toString(),
                         entity.getSessionkey(), entity.getOpenId());
                 if (!"200".equals(errmsg)) {
                     throw new RuntimeException("发送失败,请联系管理员");

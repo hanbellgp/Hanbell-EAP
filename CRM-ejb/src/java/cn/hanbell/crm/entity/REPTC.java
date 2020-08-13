@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -566,7 +568,12 @@ public class REPTC implements Serializable {
     @Size(max = 255)
     @Column(name = "REPTC20")
     private String reptc20;
-
+    
+    @JoinColumn(name = "TC007", referencedColumnName = "GG001", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private CRMGG crmgg;
+    
+ 
     public REPTC() {
     }
 
@@ -1737,6 +1744,14 @@ public class REPTC implements Serializable {
 
     public void setTc508(String tc508) {
         this.tc508 = tc508;
+    }
+
+    public CRMGG getCrmgg() {
+        return crmgg;
+    }
+
+    public void setCrmgg(CRMGG crmgg) {
+        this.crmgg = crmgg;
     }
 
 }

@@ -36,6 +36,7 @@ import cn.hanbell.crm.entity.WARTB;
 import cn.hanbell.crm.entity.WARTBPK;
 import cn.hanbell.eap.ejb.SystemUserBean;
 import cn.hanbell.eap.entity.SystemUser;
+import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.BaseLib;
@@ -48,11 +49,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -124,9 +128,9 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
             String serializableNumber = wartaBean.getTA002ByTA001AndDate(reptcapplication.getIncentoryform(),
                     new Date());
             List<Object[]> warmqs = warmqBean.findByMQ003(reptcapplication.getIncentoryform());
-            msg.append(reptcapplication.getMaintainTypeId()).append("-" ).append(seal);
-            msg.append("。 库存异动单:")  .append(reptcapplication.getIncentoryform()).append("-").append(serializableNumber).append("。");
-              CRMGG crmgg = crmggBean.findByGG001(reptcapplication.getCustomer());
+            msg.append(reptcapplication.getMaintainTypeId()).append("-").append(seal);
+            msg.append("。 库存异动单:").append(reptcapplication.getIncentoryform()).append("-").append(serializableNumber).append("。");
+            CRMGG crmgg = crmggBean.findByGG001(reptcapplication.getCustomer());
             try {
                 Date date;
                 date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
@@ -174,8 +178,8 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 reptc.setTc041(crmgg.getGg097());
                 reptc.setTc042("N");
                 reptc.setTc045(BaseLib.formatDate("yyyyMM", new Date()));
-                 SYSNN sysnn = sysnnBean.findById(repta.getTa068());
-                 reptc.setTc046(sysnn.getNn003());//营业税率
+                SYSNN sysnn = sysnnBean.findById(repta.getTa068());
+                reptc.setTc046(sysnn.getNn003());//营业税率
                 reptc.setTc048("N");
                 reptc.setTc051(crmgg.getGg098());
                 reptc.setTc063(repta.getTa055());
@@ -186,7 +190,18 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 reptc.setTc070(repta.getTa063());
                 reptc.setTc074(repta.getTa068());
                 reptc.setTc077(repta.getTa071());
-                 reptc.setTc078("来至微信小程序");
+                reptc.setTc078("来至微信小程序");
+                //从多人派工中带入
+                List<REPPW> reppes = reppwBean.findByPw001AndPw002(reptcapplication.getRepairKindId(), reptcapplication.getRepairno());
+                for (REPPW r : reppes) {
+                    if (r.getPw004().equals(reptcapplication.getMaintainer())) {
+                        r.setPw008(reptcapplication.getMaintainTypeId());
+                        r.setPw009(seal);
+                        reppwBean.update(r);
+                        reptc.setTc095(r.getPw026());
+                    }
+                }
+                reppwBean.findByPw001AndPw002(seal, seal);
                 reptc.setTc198(repta.getTa198());
                 reptc.setTc199(repta.getTa199());
                 String serca = sercaBean.findByAC010AndAC011(reptcapplication.getRepairKindId(),
@@ -312,7 +327,6 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                     repta.setTa031("1");
                     reptaBean.update(repta);
                 }
-
                 // 产生库存异动单头
                 wartapk.setTa002(serializableNumber);
                 warta.setWARTAPK(wartapk);
@@ -378,4 +392,28 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
         }
     }
 
+    @GET
+    @Path("maintainform/{maintainformtype}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData<REPTC> findRepair(@PathParam("maintainformtype") String maintainformtype, @QueryParam("searchWord") String maintainform,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) throws Exception {
+        if (isAuthorized(appid, token)) {
+            List<REPTC> list = reptcBean.getReptcByTC001OrTc002(maintainformtype, maintainform);
+            if (list == null) {
+                throw new WebApplicationException("没有未处理的维修单");
+            }
+            ResponseData<REPTC> rsd = new ResponseData<>("200", "sucess");
+            if (list.size() >= 50) {
+                List<REPTC> reptcs = list.subList(0, 49);
+                rsd.setCount(reptcs.size());
+                rsd.setData(reptcs);
+            } else {
+                rsd.setCount(list.size());
+                rsd.setData(list);
+            }
+            return rsd;
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
 }
