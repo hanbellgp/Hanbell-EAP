@@ -66,7 +66,7 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public ResponseMessage create(REPTAApplication entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-        StringBuffer msg=new StringBuffer("【汉钟精机】 叫修单:").append(entity.getRepairKindname().split("-")[0]);
+        StringBuffer msg = new StringBuffer("【汉钟精机】 叫修单:").append(entity.getRepairKindname().split("-")[0]);
         msg.append("-").append(entity.getRepairno()).append("已派工。 ");
         msg.append("维修人员：");
         if (isAuthorized(appid, token)) {
@@ -75,9 +75,9 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
             }
             List<REPPW> reppwList = new ArrayList<>();
             String pw026 = "";
-            StringBuffer sendUser=new StringBuffer();
+            StringBuffer sendUser = new StringBuffer();
             try {
-                int a=1;
+                int a = 1;
                 for (REPPWApplication ad : entity.getDetailList()) {
                     if (null != ad.getRepairmanname2() && !"".equals(ad.getRepairmanname2())) {
                         String[] repmen = ad.getRepairmanname2().split(";");
@@ -94,15 +94,15 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                                 continue;
                             }
                             m.setPw004(pw004.split("-")[0]);
-                             //拼装消息和发送人
-                            if(a!=1){
+                            //拼装消息和发送人
+                            if (a != 1) {
                                 msg.append(",");
                                 sendUser.append("|");
                             }
                             a++;
                             msg.append(pw004.split("-")[1]);
                             sendUser.append(pw004.split("-")[0]);
-                          
+
                             m.setREPPWPK(mk);
                             if (pw004.equals(ad.getRepairmanname())) {
                                 m.setPw019("Y");
@@ -124,8 +124,11 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                             m.setPw010("0");    //派工状态码
                             m.setPw011(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
                             m.setPw012(m.getCreator());
+                            m.setPw013(new Short("1"));
+                            m.setPw020("1");
                             m.setPw021("0000");
                             m.setPw022("0000");
+                            m.setPw026("0001");
                             reppwList.add(m);
                         }
                     } else {
@@ -134,17 +137,26 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                 }
 
                 REPTA ra = reptaBean.findByPK(entity.getRepairKindname().split("-")[0], entity.getRepairno());
-                int size=1;
-                for (REPPW reppw : reppwList) {
-                    reppw.setPw026(pw026);
-                      StringBuffer serial = new StringBuffer("000");
-                      reppw.getREPPWPK().setPw003(serial.append(size).toString());
-                      size++;
+                List<REPPW> reppws = reppwBean.findByPw001AndPw002(entity.getRepairKindname().split("-")[0], entity.getRepairno());
+                    int max=0;
+                  for (REPPW reppw : reppwList) {
+                      if(reppw.getPw013()>max){
+                          max=reppw.getPw013();
+                      }
+                  }
+                  int size = reppws.size();
+                for (REPPW reppw : reppwList) {  
+                     size++;
+                    reppw.setPw013((short)max);
+                    String x = String.valueOf(size);
+                    StringBuffer serial = new StringBuffer("000").append(x);
+                    reppw.getREPPWPK().setPw003(serial.substring(x.length() - 1));
                     reppwBean.persist(reppw);
+                   
                 }
                 //更新叫修单状态为确认
                 if (ra != null) {
-                    ra.setTa035("1");  //派工码显示转维修站
+                    ra.setTa035("1"); //派工码显示转维修站
                     ra.setTa014("Y");
                     ra.setTa015(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
                     ra.setTa016(entity.getDetailList().get(0).getEmployeeId());
