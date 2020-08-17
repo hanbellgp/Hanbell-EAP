@@ -1070,7 +1070,7 @@ public class TimerBean {
     }
 
     @Schedule(minute = "*/7", hour = "7-23", persistent = false)
-    public void createBPMProcessByERPTransaction() {
+    public void createBPMProcessByERPCDR220() {
         log4j.info("ERP-CDR220报价审批抛转EFGP签核轮询开始");
         createOAHKYX009ByERPCDR220("C");
         createOAHKYX009ByERPCDR220("G");
@@ -1078,11 +1078,17 @@ public class TimerBean {
         createOAHKYX009ByERPCDR220("N");
         createOAHKYX009ByERPCDR220("C4");
         createOAHKYX009ByERPCDR220("K");
+        createOAHKYX009ByERPCDR220("E");
         createOAHKYX009ByERPCDR220("L");
         log4j.info("ERP-CDR220报价审批抛转EFGP签核轮询结束");
+    }
+
+    @Schedule(minute = "*/9", hour = "7-23", persistent = false)
+    public void createBPMProcessByERPAPM811() {
         log4j.info("ERP-APM811进货请款抛转EFGP签核轮询开始");
         createOASHBERPAPM811ByERPAPM811("C");
         createOASHBERPAPM811ByERPAPM811("K");
+        createOASHBERPAPM811ByERPAPM811("E");
         createOASHBERPAPM811ByERPAPM811("H");
         // createOASHBERPAPM811ByERPAPM811("Y");
         log4j.info("ERP-APM811进货请款抛转EFGP签核轮询结束");

@@ -47,7 +47,8 @@ public class TaskBean extends SuperEJBForEAP<Task> {
     }
 
     public List<Task> findByExecutorIdAndActualFinishDate(String executorid, Date date, Integer offset, Integer size) {
-        Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndActualFinishDate").setFirstResult(offset).setMaxResults(size);
+        Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndActualFinishDate")
+                .setFirstResult(offset).setMaxResults(size);
         query.setParameter("executorId", executorid);
         query.setParameter("actualFinishDate", date);
         try {
@@ -57,8 +58,32 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         }
     }
 
+    public List<Task> findByExecutorIdAndName(String executorid, String name) {
+        Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndName");
+        query.setParameter("executorId", executorid);
+        query.setParameter("name", "%" + name + "%");
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Task> findByExecutorIdAndName(String executorid, String name, Integer offset, Integer size) {
+        Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndName").setFirstResult(offset)
+                .setMaxResults(size);
+        query.setParameter("executorId", executorid);
+        query.setParameter("name", "%" + name + "%");
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<Task> findByExecutorIdAndPlannedStartDate(String executorid, Date date, Integer offset, Integer size) {
-        Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndPlannedStartDate").setFirstResult(offset).setMaxResults(size);
+        Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndPlannedStartDate")
+                .setFirstResult(offset).setMaxResults(size);
         query.setParameter("executorId", executorid);
         query.setParameter("plannedStartDate", date);
         try {
@@ -69,7 +94,8 @@ public class TaskBean extends SuperEJBForEAP<Task> {
     }
 
     public List<Task> findByExecutorIdAndStatus(String executorid, String status, Integer offset, Integer size) {
-        Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndStatus").setFirstResult(offset).setMaxResults(size);;
+        Query query = getEntityManager().createNamedQuery("Task.findByExecutorIdAndStatus").setFirstResult(offset)
+                .setMaxResults(size);
         query.setParameter("executorId", executorid);
         query.setParameter("status", status);
         try {
@@ -83,13 +109,57 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         List<SystemUser> subordinates = systemUserBean.findByManagerIdAndOnJob(managerid);
         if (subordinates != null && !subordinates.isEmpty()) {
             List<String> executors = new ArrayList<>();
-            //下属列表
+            // 下属列表
             subordinates.stream().forEach((e) -> {
                 executors.add(e.getUserid());
             });
-            Query query = getEntityManager().createNamedQuery("Task.findByExecutorsAndActualFinishDate").setFirstResult(offset).setMaxResults(size);
+            Query query = getEntityManager().createNamedQuery("Task.findByExecutorsAndActualFinishDate")
+                    .setFirstResult(offset).setMaxResults(size);
             query.setParameter("executors", executors);
             query.setParameter("actualFinishDate", date);
+            try {
+                return query.getResultList();
+            } catch (Exception ex) {
+                return null;
+            }
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Task> findByManagerIdAndName(String managerid, String name) {
+        List<SystemUser> subordinates = systemUserBean.findByManagerIdAndOnJob(managerid);
+        if (subordinates != null && !subordinates.isEmpty()) {
+            List<String> executors = new ArrayList<>();
+            // 下属列表
+            subordinates.stream().forEach((e) -> {
+                executors.add(e.getUserid());
+            });
+            Query query = getEntityManager().createNamedQuery("Task.findByExecutorsAndName");
+            query.setParameter("executors", executors);
+            query.setParameter("name", "%" + name + "%");
+            try {
+                return query.getResultList();
+            } catch (Exception ex) {
+                return null;
+            }
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Task> findByManagerIdAndName(String managerid, String name, Integer offset, Integer size) {
+        List<SystemUser> subordinates = systemUserBean.findByManagerIdAndOnJob(managerid);
+        if (subordinates != null && !subordinates.isEmpty()) {
+            List<String> executors = new ArrayList<>();
+            // 下属列表
+            subordinates.stream().forEach((e) -> {
+                executors.add(e.getUserid());
+            });
+            Query query = getEntityManager().createNamedQuery("Task.findByExecutorsAndName").setFirstResult(offset)
+                    .setMaxResults(size);
+            query.setParameter("executors", executors);
+            query.setParameter("name", "%" + name + "%");
             try {
                 return query.getResultList();
             } catch (Exception ex) {
@@ -104,11 +174,12 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         List<SystemUser> subordinates = systemUserBean.findByManagerIdAndOnJob(managerid);
         if (subordinates != null && !subordinates.isEmpty()) {
             List<String> executors = new ArrayList<>();
-            //下属列表
+            // 下属列表
             subordinates.stream().forEach((e) -> {
                 executors.add(e.getUserid());
             });
-            Query query = getEntityManager().createNamedQuery("Task.findByExecutorsAndPlannedStartDate").setFirstResult(offset).setMaxResults(size);
+            Query query = getEntityManager().createNamedQuery("Task.findByExecutorsAndPlannedStartDate")
+                    .setFirstResult(offset).setMaxResults(size);
             query.setParameter("executors", executors);
             query.setParameter("plannedStartDate", date);
             try {
@@ -125,11 +196,12 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         List<SystemUser> subordinates = systemUserBean.findByManagerIdAndOnJob(managerid);
         if (subordinates != null && !subordinates.isEmpty()) {
             List<String> executors = new ArrayList<>();
-            //筛选条件
+            // 筛选条件
             subordinates.stream().forEach((e) -> {
                 executors.add(e.getUserid());
             });
-            Query query = getEntityManager().createNamedQuery("Task.findByExecutorsAndStatus").setFirstResult(offset).setMaxResults(size);
+            Query query = getEntityManager().createNamedQuery("Task.findByExecutorsAndStatus").setFirstResult(offset)
+                    .setMaxResults(size);
             query.setParameter("executors", executors);
             query.setParameter("status", status);
             try {
@@ -149,6 +221,18 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         try {
             return Integer.valueOf(query.getSingleResult().toString());
         } catch (Exception ex) {
+            return 0;
+        }
+    }
+
+    public Integer getRowCountByExecutorIdAndName(String executorid, String name) {
+        Query query = getEntityManager().createNamedQuery("Task.getRowCountByExecutorIdAndName");
+        query.setParameter("executorId", executorid);
+        query.setParameter("name", "%" + name + "%");
+        try {
+            return Integer.valueOf(query.getSingleResult().toString());
+        } catch (Exception ex) {
+            log4j.error(ex);
             return 0;
         }
     }
@@ -205,7 +289,7 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         List<SystemUser> subordinates = systemUserBean.findByManagerIdAndOnJob(managerid);
         if (subordinates != null && !subordinates.isEmpty()) {
             List<String> executors = new ArrayList<>();
-            //下属列表
+            // 下属列表
             subordinates.stream().forEach((e) -> {
                 executors.add(e.getUserid());
             });
@@ -222,11 +306,33 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         }
     }
 
+    public Integer getRowCountByManagerIdAndName(String managerid, String name) {
+        List<SystemUser> subordinates = systemUserBean.findByManagerIdAndOnJob(managerid);
+        if (subordinates != null && !subordinates.isEmpty()) {
+            List<String> executors = new ArrayList<>();
+            // 下属列表
+            subordinates.stream().forEach((e) -> {
+                executors.add(e.getUserid());
+            });
+            Query query = getEntityManager().createNamedQuery("Task.getRowCountByExecutorsAndName");
+            query.setParameter("executors", executors);
+            query.setParameter("name", "%" + name + "%");
+            try {
+                return Integer.valueOf(query.getSingleResult().toString());
+            } catch (Exception ex) {
+                log4j.error(ex);
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
     public Integer getRowCountByManagerIdAndPlannedStartDate(String managerid, Date date) {
         List<SystemUser> subordinates = systemUserBean.findByManagerIdAndOnJob(managerid);
         if (subordinates != null && !subordinates.isEmpty()) {
             List<String> executors = new ArrayList<>();
-            //下属列表
+            // 下属列表
             subordinates.stream().forEach((e) -> {
                 executors.add(e.getUserid());
             });
@@ -247,7 +353,7 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         List<SystemUser> subordinates = systemUserBean.findByManagerIdAndOnJob(managerid);
         if (subordinates != null && !subordinates.isEmpty()) {
             List<String> executors = new ArrayList<>();
-            //下属列表
+            // 下属列表
             subordinates.stream().forEach((e) -> {
                 executors.add(e.getUserid());
             });
@@ -269,7 +375,7 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         List<SystemUser> subordinates = systemUserBean.findByManagerIdAndOnJob(managerid);
         if (subordinates != null && !subordinates.isEmpty()) {
             List<String> executors = new ArrayList<>();
-            //下属列表
+            // 下属列表
             subordinates.stream().forEach((e) -> {
                 executors.add(e.getUserid());
             });
@@ -291,7 +397,7 @@ public class TaskBean extends SuperEJBForEAP<Task> {
         List<SystemUser> subordinates = systemUserBean.findByManagerIdAndOnJob(managerid);
         if (subordinates != null && !subordinates.isEmpty()) {
             List<String> executors = new ArrayList<>();
-            //下属列表
+            // 下属列表
             subordinates.stream().forEach((e) -> {
                 executors.add(e.getUserid());
             });

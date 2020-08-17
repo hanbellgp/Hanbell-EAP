@@ -201,6 +201,28 @@ public class TaskFacadeREST extends SuperRESTForEAP<Task> {
     }
 
     @GET
+    @Path("executor/{executorid}/pagination/query")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData findByExecutorIdAndPaginationQuery(@PathParam("executorid") String executorid,
+            @QueryParam("q") String q, @QueryParam("offset") Integer offset, @QueryParam("pageSize") Integer pageSize,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                List<Task> list = taskBean.findByExecutorIdAndName(executorid, q, offset, pageSize);
+                Integer count = taskBean.getRowCountByExecutorIdAndName(executorid, q);
+                ResponseData res = new ResponseData<Task>("200", "success");
+                res.setData(list);
+                res.setCount(count);
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @GET
     @Path("manager/{managerid}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData findByManagerId(@PathParam("managerid") String managerid, @QueryParam("status") String status,
@@ -291,6 +313,28 @@ public class TaskFacadeREST extends SuperRESTForEAP<Task> {
 
                 List<Task> list = taskBean.findByManagerIdAndPlannedStartDate(managerid, c.getTime(), offset, pageSize);
                 Integer count = taskBean.getRowCountByManagerIdAndPlannedStartDate(managerid, c.getTime());
+                ResponseData res = new ResponseData<Task>("200", "success");
+                res.setData(list);
+                res.setCount(count);
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @GET
+    @Path("manager/{managerid}/pagination/query")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData findByManagerIdAndPaginationQuery(@PathParam("managerid") String managerid,
+            @QueryParam("q") String q, @QueryParam("offset") Integer offset, @QueryParam("pageSize") Integer pageSize,
+            @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                List<Task> list = taskBean.findByManagerIdAndName(managerid, q, offset, pageSize);
+                Integer count = taskBean.getRowCountByManagerIdAndName(managerid, q);
                 ResponseData res = new ResponseData<Task>("200", "success");
                 res.setData(list);
                 res.setCount(count);
