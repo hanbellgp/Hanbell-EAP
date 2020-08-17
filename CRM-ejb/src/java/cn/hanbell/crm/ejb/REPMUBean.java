@@ -26,14 +26,16 @@ public class REPMUBean extends SuperEJBForCRM<REPMU> {
         super(REPMU.class);
     }
 
-    public List<REPMU> findByMu001(String Mu001) {
-        Query query = getEntityManager().createNamedQuery("REPMU.findByMu003");
-        query.setParameter("mu003", Mu001);
+    public List<Object[]> findByMu001(String Mu001) {
+         StringBuffer sql=new StringBuffer("Select DISTINCT MQ001,MQ002,MQ008 from REPMQ REPMQ Left join REPMU  as REPMU on MQ001=MU001 Where MQ003=N'a2'  AND (( MU003=N'CRMDS' and MQ010='Y' )  or MQ010='N' ) ");
+        if(Mu001!=null&&!"".equals(Mu001)){
+            sql.append(" AND  MU003='").append(Mu001).append("'");
+        }
+         Query query = getEntityManager().createNativeQuery(sql.toString());
         try {
-            List<REPMU> list=query.getResultList();
+            List<Object[]> list = query.getResultList();
             return list;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
             return null;
         }
     }

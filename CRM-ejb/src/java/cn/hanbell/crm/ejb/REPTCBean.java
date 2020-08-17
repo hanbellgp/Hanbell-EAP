@@ -6,6 +6,7 @@
 package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
+import cn.hanbell.crm.entity.CMSMV;
 import cn.hanbell.crm.entity.REPTC;
 import cn.hanbell.util.BaseLib;
 import java.util.Date;
@@ -61,7 +62,7 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
         }
     }
 
-     public String getTC002ByTC001AndDate(String tc001, Date date) {
+    public String getTC002ByTC001AndDate(String tc001, Date date) {
         String ls_no = "";
         String ls_ta002 = "";
         String serial = "000";
@@ -82,5 +83,24 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
         ls_no += serial;
         return ls_no;
     }
-    
+
+    public List<REPTC> getReptcByTC001OrTc002(String maintainformtype, String maintainform) {
+        Query query = null;
+        if (maintainform != null & !"".equals(maintainform)) {
+            StringBuffer sql=new StringBuffer("SELECT * FROM REPTC r WHERE r.TC001 = '");
+            sql.append(maintainformtype).append("' AND r.TC002 like '%").append(maintainform).append("%'");
+            query = getEntityManager().createNativeQuery(sql.toString(),REPTC.class);
+        } else {
+            query = getEntityManager().createNamedQuery("REPTC.findByTc001");
+            query.setParameter("tc001", maintainformtype);
+        }
+        try {
+             List<REPTC> list = query.getResultList();
+            return list;
+        } catch (Exception ex) {
+             ex.printStackTrace();
+            return null;
+        }
+    }
+
 }

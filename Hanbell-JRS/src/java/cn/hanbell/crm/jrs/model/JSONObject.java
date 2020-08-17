@@ -54,6 +54,9 @@ public class JSONObject implements Map<String, Object>, Cloneable, Serializable,
     }
 
     public boolean isEmpty() {
+        if(this.map==null){
+            return  true;
+        }
         return map.isEmpty();
     }
 
