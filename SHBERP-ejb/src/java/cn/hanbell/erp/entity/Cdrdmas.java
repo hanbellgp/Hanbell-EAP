@@ -12,6 +12,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -38,12 +41,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrdmas.findByOutdate", query = "SELECT c FROM Cdrdmas c WHERE c.outdate = :outdate"),
     @NamedQuery(name = "Cdrdmas.findByCdrdate", query = "SELECT c FROM Cdrdmas c WHERE c.cdrdate = :cdrdate"),
     @NamedQuery(name = "Cdrdmas.findByDrecsta", query = "SELECT c FROM Cdrdmas c WHERE c.drecsta = :drecsta"),
-    @NamedQuery(name = "Cdrdmas.findByCuspono", query = "SELECT c FROM Cdrdmas c WHERE c.cuspono = :cuspono")})
+    @NamedQuery(name = "Cdrdmas.findByCuspono", query = "SELECT c FROM Cdrdmas c WHERE c.cuspono = :cuspono"),
+    @NamedQuery(name = "Cdrdmas.findByCdrnoAndItnbr", query = "SELECT c FROM Cdrdmas c WHERE c.cdrdmasPK.cdrno = :cdrno AND c.itnbr = :itnbr")})
 public class Cdrdmas implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected CdrdmasPK cdrdmasPK;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -55,40 +56,28 @@ public class Cdrdmas implements Serializable {
     @Size(max = 3)
     @Column(name = "prono")
     private String prono;
-    @Column(name = "shptrseq")
-    private Short shptrseq;
-    @Column(name = "ivotrseq")
-    private Short ivotrseq;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "cdrqy1")
     private BigDecimal cdrqy1;
-    @Column(name = "cdrqy2")
-    private BigDecimal cdrqy2;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "preqy1")
     private BigDecimal preqy1;
-    @Column(name = "preqy2")
-    private BigDecimal preqy2;
     @Basic(optional = false)
     @NotNull
     @Column(name = "shpqy1")
     private BigDecimal shpqy1;
-    @Column(name = "shpqy2")
-    private BigDecimal shpqy2;
     @Basic(optional = false)
     @NotNull
     @Column(name = "armqy")
     private BigDecimal armqy;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "unpris")
     private BigDecimal unpris;
-    @Column(name = "outdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date outdate;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cdrdate")
@@ -139,7 +128,7 @@ public class Cdrdmas implements Serializable {
     @Column(name = "sftno")
     private String sftno;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "moqy")
     private BigDecimal moqy;
     @Size(max = 20)
@@ -148,6 +137,51 @@ public class Cdrdmas implements Serializable {
     @Size(max = 8)
     @Column(name = "enduserno")
     private String enduserno;
+    @Size(max = 60)
+    @Column(name = "cusmark")
+    private String cusmark;
+    @Size(max = 30)
+    @Column(name = "cuslable")
+    private String cuslable;
+    @Size(max = 30)
+    @Column(name = "matecode")
+    private String matecode;
+    @Size(max = 8)
+    @Column(name = "norm")
+    private String norm;
+    @Size(max = 8)
+    @Column(name = "n_code_DA")
+    private String ncodeDA;
+    @Size(max = 8)
+    @Column(name = "n_code_CD")
+    private String ncodeCD;
+    @Size(max = 8)
+    @Column(name = "n_code_DC")
+    private String ncodeDC;
+    @Size(max = 8)
+    @Column(name = "n_code_DD")
+    private String ncodeDD;
+    @JoinColumns({
+        @JoinColumn(name = "facno", referencedColumnName = "facno", insertable = false, updatable = false),
+        @JoinColumn(name = "cdrno", referencedColumnName = "cdrno", insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Cdrhmas cdrhmas;
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected CdrdmasPK cdrdmasPK;
+    @Column(name = "shptrseq")
+    private Short shptrseq;
+    @Column(name = "ivotrseq")
+    private Short ivotrseq;
+    @Column(name = "cdrqy2")
+    private BigDecimal cdrqy2;
+    @Column(name = "preqy2")
+    private BigDecimal preqy2;
+    @Column(name = "shpqy2")
+    private BigDecimal shpqy2;
+    @Column(name = "outdate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date outdate;
     @Column(name = "enddate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date enddate;
@@ -157,24 +191,12 @@ public class Cdrdmas implements Serializable {
     private BigDecimal focdrqy1;
     @Column(name = "focdrqy2")
     private BigDecimal focdrqy2;
-    @Size(max = 60)
-    @Column(name = "cusmark")
-    private String cusmark;
-    @Size(max = 30)
-    @Column(name = "cuslable")
-    private String cuslable;
     @Column(name = "islableprt")
     private Character islableprt;
-    @Size(max = 30)
-    @Column(name = "matecode")
-    private String matecode;
     @Column(name = "spcode")
     private Character spcode;
     @Column(name = "outdcfm")
     private Character outdcfm;
-    @Size(max = 8)
-    @Column(name = "norm")
-    private String norm;
 
     public Cdrdmas() {
         this.cdrqy1 = BigDecimal.ZERO;
@@ -233,6 +255,144 @@ public class Cdrdmas implements Serializable {
         this.cdrdmasPK = cdrdmasPK;
     }
 
+
+    public Short getShptrseq() {
+        return shptrseq;
+    }
+
+    public void setShptrseq(Short shptrseq) {
+        this.shptrseq = shptrseq;
+    }
+
+    public Short getIvotrseq() {
+        return ivotrseq;
+    }
+
+    public void setIvotrseq(Short ivotrseq) {
+        this.ivotrseq = ivotrseq;
+    }
+
+
+    public BigDecimal getCdrqy2() {
+        return cdrqy2;
+    }
+
+    public void setCdrqy2(BigDecimal cdrqy2) {
+        this.cdrqy2 = cdrqy2;
+    }
+
+
+    public BigDecimal getPreqy2() {
+        return preqy2;
+    }
+
+    public void setPreqy2(BigDecimal preqy2) {
+        this.preqy2 = preqy2;
+    }
+
+
+    public BigDecimal getShpqy2() {
+        return shpqy2;
+    }
+
+    public void setShpqy2(BigDecimal shpqy2) {
+        this.shpqy2 = shpqy2;
+    }
+
+
+    public Date getOutdate() {
+        return outdate;
+    }
+
+    public void setOutdate(Date outdate) {
+        this.outdate = outdate;
+    }
+
+
+    public Date getEnddate() {
+        return enddate;
+    }
+
+    public void setEnddate(Date enddate) {
+        this.enddate = enddate;
+    }
+
+    public Character getUnprisrccode() {
+        return unprisrccode;
+    }
+
+    public void setUnprisrccode(Character unprisrccode) {
+        this.unprisrccode = unprisrccode;
+    }
+
+    public BigDecimal getFocdrqy1() {
+        return focdrqy1;
+    }
+
+    public void setFocdrqy1(BigDecimal focdrqy1) {
+        this.focdrqy1 = focdrqy1;
+    }
+
+    public BigDecimal getFocdrqy2() {
+        return focdrqy2;
+    }
+
+    public void setFocdrqy2(BigDecimal focdrqy2) {
+        this.focdrqy2 = focdrqy2;
+    }
+
+
+    public Character getIslableprt() {
+        return islableprt;
+    }
+
+    public void setIslableprt(Character islableprt) {
+        this.islableprt = islableprt;
+    }
+
+
+    public Character getSpcode() {
+        return spcode;
+    }
+
+    public void setSpcode(Character spcode) {
+        this.spcode = spcode;
+    }
+
+    public Character getOutdcfm() {
+        return outdcfm;
+    }
+
+    public void setOutdcfm(Character outdcfm) {
+        this.outdcfm = outdcfm;
+    }
+
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (cdrdmasPK != null ? cdrdmasPK.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Cdrdmas)) {
+            return false;
+        }
+        Cdrdmas other = (Cdrdmas) object;
+        if ((this.cdrdmasPK == null && other.cdrdmasPK != null) || (this.cdrdmasPK != null && !this.cdrdmasPK.equals(other.cdrdmasPK))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "shberp.entity.Cdrdmas[ cdrdmasPK=" + cdrdmasPK + " ]";
+    }
+
     public String getItnbr() {
         return itnbr;
     }
@@ -257,36 +417,12 @@ public class Cdrdmas implements Serializable {
         this.prono = prono;
     }
 
-    public Short getShptrseq() {
-        return shptrseq;
-    }
-
-    public void setShptrseq(Short shptrseq) {
-        this.shptrseq = shptrseq;
-    }
-
-    public Short getIvotrseq() {
-        return ivotrseq;
-    }
-
-    public void setIvotrseq(Short ivotrseq) {
-        this.ivotrseq = ivotrseq;
-    }
-
     public BigDecimal getCdrqy1() {
         return cdrqy1;
     }
 
     public void setCdrqy1(BigDecimal cdrqy1) {
         this.cdrqy1 = cdrqy1;
-    }
-
-    public BigDecimal getCdrqy2() {
-        return cdrqy2;
-    }
-
-    public void setCdrqy2(BigDecimal cdrqy2) {
-        this.cdrqy2 = cdrqy2;
     }
 
     public BigDecimal getPreqy1() {
@@ -297,28 +433,12 @@ public class Cdrdmas implements Serializable {
         this.preqy1 = preqy1;
     }
 
-    public BigDecimal getPreqy2() {
-        return preqy2;
-    }
-
-    public void setPreqy2(BigDecimal preqy2) {
-        this.preqy2 = preqy2;
-    }
-
     public BigDecimal getShpqy1() {
         return shpqy1;
     }
 
     public void setShpqy1(BigDecimal shpqy1) {
         this.shpqy1 = shpqy1;
-    }
-
-    public BigDecimal getShpqy2() {
-        return shpqy2;
-    }
-
-    public void setShpqy2(BigDecimal shpqy2) {
-        this.shpqy2 = shpqy2;
     }
 
     public BigDecimal getArmqy() {
@@ -335,14 +455,6 @@ public class Cdrdmas implements Serializable {
 
     public void setUnpris(BigDecimal unpris) {
         this.unpris = unpris;
-    }
-
-    public Date getOutdate() {
-        return outdate;
-    }
-
-    public void setOutdate(Date outdate) {
-        this.outdate = outdate;
     }
 
     public Date getCdrdate() {
@@ -481,38 +593,6 @@ public class Cdrdmas implements Serializable {
         this.enduserno = enduserno;
     }
 
-    public Date getEnddate() {
-        return enddate;
-    }
-
-    public void setEnddate(Date enddate) {
-        this.enddate = enddate;
-    }
-
-    public Character getUnprisrccode() {
-        return unprisrccode;
-    }
-
-    public void setUnprisrccode(Character unprisrccode) {
-        this.unprisrccode = unprisrccode;
-    }
-
-    public BigDecimal getFocdrqy1() {
-        return focdrqy1;
-    }
-
-    public void setFocdrqy1(BigDecimal focdrqy1) {
-        this.focdrqy1 = focdrqy1;
-    }
-
-    public BigDecimal getFocdrqy2() {
-        return focdrqy2;
-    }
-
-    public void setFocdrqy2(BigDecimal focdrqy2) {
-        this.focdrqy2 = focdrqy2;
-    }
-
     public String getCusmark() {
         return cusmark;
     }
@@ -529,36 +609,12 @@ public class Cdrdmas implements Serializable {
         this.cuslable = cuslable;
     }
 
-    public Character getIslableprt() {
-        return islableprt;
-    }
-
-    public void setIslableprt(Character islableprt) {
-        this.islableprt = islableprt;
-    }
-
     public String getMatecode() {
         return matecode;
     }
 
     public void setMatecode(String matecode) {
         this.matecode = matecode;
-    }
-
-    public Character getSpcode() {
-        return spcode;
-    }
-
-    public void setSpcode(Character spcode) {
-        this.spcode = spcode;
-    }
-
-    public Character getOutdcfm() {
-        return outdcfm;
-    }
-
-    public void setOutdcfm(Character outdcfm) {
-        this.outdcfm = outdcfm;
     }
 
     public String getNorm() {
@@ -569,29 +625,44 @@ public class Cdrdmas implements Serializable {
         this.norm = norm;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (cdrdmasPK != null ? cdrdmasPK.hashCode() : 0);
-        return hash;
+    public String getNcodeDA() {
+        return ncodeDA;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cdrdmas)) {
-            return false;
-        }
-        Cdrdmas other = (Cdrdmas) object;
-        if ((this.cdrdmasPK == null && other.cdrdmasPK != null) || (this.cdrdmasPK != null && !this.cdrdmasPK.equals(other.cdrdmasPK))) {
-            return false;
-        }
-        return true;
+    public void setNcodeDA(String ncodeDA) {
+        this.ncodeDA = ncodeDA;
     }
 
-    @Override
-    public String toString() {
-        return "shberp.entity.Cdrdmas[ cdrdmasPK=" + cdrdmasPK + " ]";
+    public String getNcodeCD() {
+        return ncodeCD;
+    }
+
+    public void setNcodeCD(String ncodeCD) {
+        this.ncodeCD = ncodeCD;
+    }
+
+    public String getNcodeDC() {
+        return ncodeDC;
+    }
+
+    public void setNcodeDC(String ncodeDC) {
+        this.ncodeDC = ncodeDC;
+    }
+
+    public String getNcodeDD() {
+        return ncodeDD;
+    }
+
+    public void setNcodeDD(String ncodeDD) {
+        this.ncodeDD = ncodeDD;
+    }
+
+    public Cdrhmas getCdrhmas() {
+        return cdrhmas;
+    }
+
+    public void setCdrhmas(Cdrhmas cdrhmas) {
+        this.cdrhmas = cdrhmas;
     }
 
 }

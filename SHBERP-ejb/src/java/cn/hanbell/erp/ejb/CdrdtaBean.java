@@ -34,4 +34,16 @@ public class CdrdtaBean extends SuperEJBForERP<Cdrdta> {
         }
     }
 
+    public Cdrdta findByShpnoAndItnbr(String shpno, String itnbr) {
+        Query query = getEntityManager().createNamedQuery("Cdrdta.findByShpnoAndItnbr");
+        query.setParameter("shpno", shpno);
+        query.setParameter("itnbr", itnbr);
+        try {
+            Object o = query.getSingleResult();
+            return (Cdrdta) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
 }

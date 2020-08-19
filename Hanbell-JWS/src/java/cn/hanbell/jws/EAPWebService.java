@@ -73,9 +73,12 @@ import cn.hanbell.erp.ejb.ApmaphBean;
 import cn.hanbell.erp.ejb.ApmbilBean;
 import cn.hanbell.erp.ejb.BomasryBean;
 import cn.hanbell.erp.ejb.BomsubBean;
+import cn.hanbell.erp.ejb.CdrbhadBean;
 import cn.hanbell.erp.ejb.CdrbomsubDefaultBean;
 import cn.hanbell.erp.ejb.CdrcusBean;
 import cn.hanbell.erp.ejb.CdrcusmanBean;
+import cn.hanbell.erp.ejb.CdrhadBean;
+import cn.hanbell.erp.ejb.CdrhmasBean;
 import cn.hanbell.erp.ejb.CdrhpopsfkBean;
 import cn.hanbell.erp.ejb.CdrlndtaBean;
 import cn.hanbell.erp.ejb.CdrlnhadBean;
@@ -346,6 +349,12 @@ public class EAPWebService {
     private CdrlndtaBean cdrlndtaBean;
     @EJB
     private CdrlnhadBean cdrlnhadBean;
+    @EJB
+    private CdrhadBean cdrhadBean;
+    @EJB
+    private CdrhmasBean cdrhmasBean;
+    @EJB
+    private CdrbhadBean cdrbhadBean;
     @EJB
     private PurachBean purachBean;
     @EJB
@@ -2823,6 +2832,25 @@ public class EAPWebService {
             log4j.error(String.format("执行%s:参数%s时异常", "updateERPPUR120ByOAHKCG006", psn), ex);
         }
         if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateERPCDRByOAHKYX013") // by C1749 2020/7/23
+    public String updateERPCDRByOAHKYX013(@WebParam(name = "psn") String psn) {
+        Boolean ret1 = false;
+        Boolean ret2 = false;
+        Boolean ret3 = false;
+        try {
+            ret1 = cdrhadBean.updateByOAHKYX013(psn);
+            ret2 = cdrhmasBean.updateByOAHKYX013(psn);
+            ret3 = cdrbhadBean.updateByOAHKYX013(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateByOAHKYX013", psn), ex);
+        }
+        if (ret1 && ret2 && ret3) {
             return "200";
         } else {
             return "404";

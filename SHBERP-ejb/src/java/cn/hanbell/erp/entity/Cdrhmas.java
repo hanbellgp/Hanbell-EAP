@@ -8,18 +8,22 @@ package cn.hanbell.erp.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -43,9 +47,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 })
 public class Cdrhmas implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected CdrhmasPK cdrhmasPK;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 8)
@@ -95,6 +96,7 @@ public class Cdrhmas implements Serializable {
     @Size(min = 1, max = 4)
     @Column(name = "coin")
     private String coin;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "ratio")
@@ -122,26 +124,6 @@ public class Cdrhmas implements Serializable {
     @Size(max = 90)
     @Column(name = "termcodedsc")
     private String termcodedsc;
-    @Column(name = "paysepcode")
-    private Character paysepcode;
-    @Column(name = "seldate1")
-    private Short seldate1;
-    @Column(name = "seldate2")
-    private Short seldate2;
-    @Column(name = "seldate3")
-    private Short seldate3;
-    @Column(name = "seldate4")
-    private Short seldate4;
-    @Column(name = "handays1")
-    private Short handays1;
-    @Column(name = "handays2")
-    private Short handays2;
-    @Column(name = "handays3")
-    private Short handays3;
-    @Column(name = "handays4")
-    private Short handays4;
-    @Column(name = "tickdays")
-    private Short tickdays;
     @Size(max = 8)
     @Column(name = "sacode")
     private String sacode;
@@ -199,8 +181,6 @@ public class Cdrhmas implements Serializable {
     @NotNull
     @Column(name = "preamts")
     private BigDecimal preamts;
-    @Column(name = "ipreamts")
-    private BigDecimal ipreamts;
     @Basic(optional = false)
     @NotNull
     @Column(name = "mpreamts")
@@ -223,20 +203,12 @@ public class Cdrhmas implements Serializable {
     @Size(max = 8)
     @Column(name = "cfmuserno")
     private String cfmuserno;
-    @Column(name = "cfmdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date cfmdate;
-    @Column(name = "enddate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date enddate;
     @Size(max = 18)
     @Column(name = "copycdrno")
     private String copycdrno;
     @Size(max = 20)
     @Column(name = "cuspono")
     private String cuspono;
-    @Column(name = "ult_code")
-    private Character ultCode;
     @Basic(optional = false)
     @NotNull
     @Column(name = "invoiceyn")
@@ -244,22 +216,10 @@ public class Cdrhmas implements Serializable {
     @Size(max = 20)
     @Column(name = "pino")
     private String pino;
-    @Column(name = "piprtcnt")
-    private Short piprtcnt;
-    @Column(name = "rollkey")
-    private Character rollkey;
     @Basic(optional = false)
     @NotNull
     @Column(name = "mfgcode")
     private Character mfgcode;
-    @Column(name = "spcode")
-    private Character spcode;
-    @Column(name = "psamts")
-    private BigDecimal psamts;
-    @Column(name = "msamts")
-    private BigDecimal msamts;
-    @Column(name = "isspin")
-    private Character isspin;
     @Size(max = 18)
     @Column(name = "tocdrno")
     private String tocdrno;
@@ -274,6 +234,55 @@ public class Cdrhmas implements Serializable {
     @Size(max = 1)
     @Column(name = "isspecial")
     private String isspecial;
+    @Column(name = "discount")
+    private BigDecimal discount;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cdrhmas")
+    private List<Cdrdmas> cdrdmasList;
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected CdrhmasPK cdrhmasPK;
+    @Column(name = "paysepcode")
+    private Character paysepcode;
+    @Column(name = "seldate1")
+    private Short seldate1;
+    @Column(name = "seldate2")
+    private Short seldate2;
+    @Column(name = "seldate3")
+    private Short seldate3;
+    @Column(name = "seldate4")
+    private Short seldate4;
+    @Column(name = "handays1")
+    private Short handays1;
+    @Column(name = "handays2")
+    private Short handays2;
+    @Column(name = "handays3")
+    private Short handays3;
+    @Column(name = "handays4")
+    private Short handays4;
+    @Column(name = "tickdays")
+    private Short tickdays;
+    @Column(name = "ipreamts")
+    private BigDecimal ipreamts;
+    @Column(name = "cfmdate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date cfmdate;
+    @Column(name = "enddate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date enddate;
+    @Column(name = "ult_code")
+    private Character ultCode;
+    @Column(name = "piprtcnt")
+    private Short piprtcnt;
+    @Column(name = "rollkey")
+    private Character rollkey;
+    @Column(name = "spcode")
+    private Character spcode;
+    @Column(name = "psamts")
+    private BigDecimal psamts;
+    @Column(name = "msamts")
+    private BigDecimal msamts;
+    @Column(name = "isspin")
+    private Character isspin;
 
     public Cdrhmas() {
         this.prtcnt = (short) 0;
@@ -316,6 +325,198 @@ public class Cdrhmas implements Serializable {
 
     public void setCdrhmasPK(CdrhmasPK cdrhmasPK) {
         this.cdrhmasPK = cdrhmasPK;
+    }
+
+
+    public Character getPaysepcode() {
+        return paysepcode;
+    }
+
+    public void setPaysepcode(Character paysepcode) {
+        this.paysepcode = paysepcode;
+    }
+
+    public Short getSeldate1() {
+        return seldate1;
+    }
+
+    public void setSeldate1(Short seldate1) {
+        this.seldate1 = seldate1;
+    }
+
+    public Short getSeldate2() {
+        return seldate2;
+    }
+
+    public void setSeldate2(Short seldate2) {
+        this.seldate2 = seldate2;
+    }
+
+    public Short getSeldate3() {
+        return seldate3;
+    }
+
+    public void setSeldate3(Short seldate3) {
+        this.seldate3 = seldate3;
+    }
+
+    public Short getSeldate4() {
+        return seldate4;
+    }
+
+    public void setSeldate4(Short seldate4) {
+        this.seldate4 = seldate4;
+    }
+
+    public Short getHandays1() {
+        return handays1;
+    }
+
+    public void setHandays1(Short handays1) {
+        this.handays1 = handays1;
+    }
+
+    public Short getHandays2() {
+        return handays2;
+    }
+
+    public void setHandays2(Short handays2) {
+        this.handays2 = handays2;
+    }
+
+    public Short getHandays3() {
+        return handays3;
+    }
+
+    public void setHandays3(Short handays3) {
+        this.handays3 = handays3;
+    }
+
+    public Short getHandays4() {
+        return handays4;
+    }
+
+    public void setHandays4(Short handays4) {
+        this.handays4 = handays4;
+    }
+
+    public Short getTickdays() {
+        return tickdays;
+    }
+
+    public void setTickdays(Short tickdays) {
+        this.tickdays = tickdays;
+    }
+
+
+    public BigDecimal getIpreamts() {
+        return ipreamts;
+    }
+
+    public void setIpreamts(BigDecimal ipreamts) {
+        this.ipreamts = ipreamts;
+    }
+
+
+    public Date getCfmdate() {
+        return cfmdate;
+    }
+
+    public void setCfmdate(Date cfmdate) {
+        this.cfmdate = cfmdate;
+    }
+
+    public Date getEnddate() {
+        return enddate;
+    }
+
+    public void setEnddate(Date enddate) {
+        this.enddate = enddate;
+    }
+
+
+    public Character getUltCode() {
+        return ultCode;
+    }
+
+    public void setUltCode(Character ultCode) {
+        this.ultCode = ultCode;
+    }
+
+
+    public Short getPiprtcnt() {
+        return piprtcnt;
+    }
+
+    public void setPiprtcnt(Short piprtcnt) {
+        this.piprtcnt = piprtcnt;
+    }
+
+    public Character getRollkey() {
+        return rollkey;
+    }
+
+    public void setRollkey(Character rollkey) {
+        this.rollkey = rollkey;
+    }
+
+
+    public Character getSpcode() {
+        return spcode;
+    }
+
+    public void setSpcode(Character spcode) {
+        this.spcode = spcode;
+    }
+
+    public BigDecimal getPsamts() {
+        return psamts;
+    }
+
+    public void setPsamts(BigDecimal psamts) {
+        this.psamts = psamts;
+    }
+
+    public BigDecimal getMsamts() {
+        return msamts;
+    }
+
+    public void setMsamts(BigDecimal msamts) {
+        this.msamts = msamts;
+    }
+
+    public Character getIsspin() {
+        return isspin;
+    }
+
+    public void setIsspin(Character isspin) {
+        this.isspin = isspin;
+    }
+
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (cdrhmasPK != null ? cdrhmasPK.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Cdrhmas)) {
+            return false;
+        }
+        Cdrhmas other = (Cdrhmas) object;
+        if ((this.cdrhmasPK == null && other.cdrhmasPK != null) || (this.cdrhmasPK != null && !this.cdrhmasPK.equals(other.cdrhmasPK))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "shberp.entity.Cdrhmas[ cdrhmasPK=" + cdrhmasPK + " ]";
     }
 
     public String getCusno() {
@@ -462,86 +663,6 @@ public class Cdrhmas implements Serializable {
         this.termcodedsc = termcodedsc;
     }
 
-    public Character getPaysepcode() {
-        return paysepcode;
-    }
-
-    public void setPaysepcode(Character paysepcode) {
-        this.paysepcode = paysepcode;
-    }
-
-    public Short getSeldate1() {
-        return seldate1;
-    }
-
-    public void setSeldate1(Short seldate1) {
-        this.seldate1 = seldate1;
-    }
-
-    public Short getSeldate2() {
-        return seldate2;
-    }
-
-    public void setSeldate2(Short seldate2) {
-        this.seldate2 = seldate2;
-    }
-
-    public Short getSeldate3() {
-        return seldate3;
-    }
-
-    public void setSeldate3(Short seldate3) {
-        this.seldate3 = seldate3;
-    }
-
-    public Short getSeldate4() {
-        return seldate4;
-    }
-
-    public void setSeldate4(Short seldate4) {
-        this.seldate4 = seldate4;
-    }
-
-    public Short getHandays1() {
-        return handays1;
-    }
-
-    public void setHandays1(Short handays1) {
-        this.handays1 = handays1;
-    }
-
-    public Short getHandays2() {
-        return handays2;
-    }
-
-    public void setHandays2(Short handays2) {
-        this.handays2 = handays2;
-    }
-
-    public Short getHandays3() {
-        return handays3;
-    }
-
-    public void setHandays3(Short handays3) {
-        this.handays3 = handays3;
-    }
-
-    public Short getHandays4() {
-        return handays4;
-    }
-
-    public void setHandays4(Short handays4) {
-        this.handays4 = handays4;
-    }
-
-    public Short getTickdays() {
-        return tickdays;
-    }
-
-    public void setTickdays(Short tickdays) {
-        this.tickdays = tickdays;
-    }
-
     public String getSacode() {
         return sacode;
     }
@@ -670,14 +791,6 @@ public class Cdrhmas implements Serializable {
         this.preamts = preamts;
     }
 
-    public BigDecimal getIpreamts() {
-        return ipreamts;
-    }
-
-    public void setIpreamts(BigDecimal ipreamts) {
-        this.ipreamts = ipreamts;
-    }
-
     public BigDecimal getMpreamts() {
         return mpreamts;
     }
@@ -718,22 +831,6 @@ public class Cdrhmas implements Serializable {
         this.cfmuserno = cfmuserno;
     }
 
-    public Date getCfmdate() {
-        return cfmdate;
-    }
-
-    public void setCfmdate(Date cfmdate) {
-        this.cfmdate = cfmdate;
-    }
-
-    public Date getEnddate() {
-        return enddate;
-    }
-
-    public void setEnddate(Date enddate) {
-        this.enddate = enddate;
-    }
-
     public String getCopycdrno() {
         return copycdrno;
     }
@@ -748,14 +845,6 @@ public class Cdrhmas implements Serializable {
 
     public void setCuspono(String cuspono) {
         this.cuspono = cuspono;
-    }
-
-    public Character getUltCode() {
-        return ultCode;
-    }
-
-    public void setUltCode(Character ultCode) {
-        this.ultCode = ultCode;
     }
 
     public Character getInvoiceyn() {
@@ -774,60 +863,12 @@ public class Cdrhmas implements Serializable {
         this.pino = pino;
     }
 
-    public Short getPiprtcnt() {
-        return piprtcnt;
-    }
-
-    public void setPiprtcnt(Short piprtcnt) {
-        this.piprtcnt = piprtcnt;
-    }
-
-    public Character getRollkey() {
-        return rollkey;
-    }
-
-    public void setRollkey(Character rollkey) {
-        this.rollkey = rollkey;
-    }
-
     public Character getMfgcode() {
         return mfgcode;
     }
 
     public void setMfgcode(Character mfgcode) {
         this.mfgcode = mfgcode;
-    }
-
-    public Character getSpcode() {
-        return spcode;
-    }
-
-    public void setSpcode(Character spcode) {
-        this.spcode = spcode;
-    }
-
-    public BigDecimal getPsamts() {
-        return psamts;
-    }
-
-    public void setPsamts(BigDecimal psamts) {
-        this.psamts = psamts;
-    }
-
-    public BigDecimal getMsamts() {
-        return msamts;
-    }
-
-    public void setMsamts(BigDecimal msamts) {
-        this.msamts = msamts;
-    }
-
-    public Character getIsspin() {
-        return isspin;
-    }
-
-    public void setIsspin(Character isspin) {
-        this.isspin = isspin;
     }
 
     public String getTocdrno() {
@@ -862,29 +903,21 @@ public class Cdrhmas implements Serializable {
         this.isspecial = isspecial;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (cdrhmasPK != null ? cdrhmasPK.hashCode() : 0);
-        return hash;
+    public BigDecimal getDiscount() {
+        return discount;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cdrhmas)) {
-            return false;
-        }
-        Cdrhmas other = (Cdrhmas) object;
-        if ((this.cdrhmasPK == null && other.cdrhmasPK != null) || (this.cdrhmasPK != null && !this.cdrhmasPK.equals(other.cdrhmasPK))) {
-            return false;
-        }
-        return true;
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
     }
 
-    @Override
-    public String toString() {
-        return "shberp.entity.Cdrhmas[ cdrhmasPK=" + cdrhmasPK + " ]";
+    @XmlTransient
+    public List<Cdrdmas> getCdrdmasList() {
+        return cdrdmasList;
+    }
+
+    public void setCdrdmasList(List<Cdrdmas> cdrdmasList) {
+        this.cdrdmasList = cdrdmasList;
     }
 
 }
