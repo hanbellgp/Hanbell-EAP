@@ -26,34 +26,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "HKYX013Detail.findAll", query = "SELECT h FROM HKYX013Detail h"),
-    @NamedQuery(name = "HKYX013Detail.findByFacno", query = "SELECT h FROM HKYX013Detail h WHERE h.facno = :facno"),
+    @NamedQuery(name = "HKYX013Detail.findByOldMancodeNo", query = "SELECT h FROM HKYX013Detail h WHERE h.oldMancodeNo = :oldMancodeNo"),
     @NamedQuery(name = "HKYX013Detail.findByNewDeptName", query = "SELECT h FROM HKYX013Detail h WHERE h.newDeptName = :newDeptName"),
     @NamedQuery(name = "HKYX013Detail.findByNewMancodeName", query = "SELECT h FROM HKYX013Detail h WHERE h.newMancodeName = :newMancodeName"),
     @NamedQuery(name = "HKYX013Detail.findByNewMancodeNo", query = "SELECT h FROM HKYX013Detail h WHERE h.newMancodeNo = :newMancodeNo"),
-    @NamedQuery(name = "HKYX013Detail.findByOldDeptno", query = "SELECT h FROM HKYX013Detail h WHERE h.oldDeptno = :oldDeptno"),
+    @NamedQuery(name = "HKYX013Detail.findByOldDeptNo", query = "SELECT h FROM HKYX013Detail h WHERE h.oldDeptNo = :oldDeptNo"),
     @NamedQuery(name = "HKYX013Detail.findByOid", query = "SELECT h FROM HKYX013Detail h WHERE h.oid = :oid"),
     @NamedQuery(name = "HKYX013Detail.findByItnbr", query = "SELECT h FROM HKYX013Detail h WHERE h.itnbr = :itnbr"),
-    @NamedQuery(name = "HKYX013Detail.findByOldMancode", query = "SELECT h FROM HKYX013Detail h WHERE h.oldMancode = :oldMancode"),
     @NamedQuery(name = "HKYX013Detail.findByNcodeDA", query = "SELECT h FROM HKYX013Detail h WHERE h.ncodeDA = :ncodeDA"),
     @NamedQuery(name = "HKYX013Detail.findByOldMancodeName", query = "SELECT h FROM HKYX013Detail h WHERE h.oldMancodeName = :oldMancodeName"),
+    @NamedQuery(name = "HKYX013Detail.findByDifferenceAmount", query = "SELECT h FROM HKYX013Detail h WHERE h.differenceAmount = :differenceAmount"),
     @NamedQuery(name = "HKYX013Detail.findByNcodeDC", query = "SELECT h FROM HKYX013Detail h WHERE h.ncodeDC = :ncodeDC"),
     @NamedQuery(name = "HKYX013Detail.findBySingleNumber", query = "SELECT h FROM HKYX013Detail h WHERE h.singleNumber = :singleNumber"),
     @NamedQuery(name = "HKYX013Detail.findByNcodeDD", query = "SELECT h FROM HKYX013Detail h WHERE h.ncodeDD = :ncodeDD"),
     @NamedQuery(name = "HKYX013Detail.findByNcodeCD", query = "SELECT h FROM HKYX013Detail h WHERE h.ncodeCD = :ncodeCD"),
     @NamedQuery(name = "HKYX013Detail.findByNewDeptNo", query = "SELECT h FROM HKYX013Detail h WHERE h.newDeptNo = :newDeptNo"),
     @NamedQuery(name = "HKYX013Detail.findByInvoiceType", query = "SELECT h FROM HKYX013Detail h WHERE h.invoiceType = :invoiceType"),
+    @NamedQuery(name = "HKYX013Detail.findByTrseq", query = "SELECT h FROM HKYX013Detail h WHERE h.trseq = :trseq"),
     @NamedQuery(name = "HKYX013Detail.findByFSN", query = "SELECT h FROM HKYX013Detail h WHERE h.formSerialNumber = :fsn"),
     @NamedQuery(name = "HKYX013Detail.findByOldDeptName", query = "SELECT h FROM HKYX013Detail h WHERE h.oldDeptName = :oldDeptName"),
     @NamedQuery(name = "HKYX013Detail.findByIssevdta", query = "SELECT h FROM HKYX013Detail h WHERE h.issevdta = :issevdta"),
-    @NamedQuery(name = "HKYX013Detail.findBySeq", query = "SELECT h FROM HKYX013Detail h WHERE h.seq = :seq"),
-    @NamedQuery(name = "HKYX013Detail.findByDifferenceAmount", query = "SELECT h FROM HKYX013Detail h WHERE h.differenceAmount = :differenceAmount"),
-    @NamedQuery(name = "HKYX013Detail.findByTrseq", query = "SELECT h FROM HKYX013Detail h WHERE h.trseq = :trseq")})
+    @NamedQuery(name = "HKYX013Detail.findBySeq", query = "SELECT h FROM HKYX013Detail h WHERE h.seq = :seq")})
 public class HKYX013Detail implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Size(max = 255)
-    @Column(name = "facno")
-    private String facno;
+    @Column(name = "oldMancodeNo")
+    private String oldMancodeNo;
     @Size(max = 255)
     @Column(name = "newDeptName")
     private String newDeptName;
@@ -64,8 +63,8 @@ public class HKYX013Detail implements Serializable {
     @Column(name = "newMancodeNo")
     private String newMancodeNo;
     @Size(max = 255)
-    @Column(name = "oldDeptno")
-    private String oldDeptno;
+    @Column(name = "oldDeptNo")
+    private String oldDeptNo;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -76,14 +75,14 @@ public class HKYX013Detail implements Serializable {
     @Column(name = "itnbr")
     private String itnbr;
     @Size(max = 255)
-    @Column(name = "oldMancode")
-    private String oldMancode;
-    @Size(max = 255)
     @Column(name = "ncodeDA")
     private String ncodeDA;
     @Size(max = 255)
     @Column(name = "oldMancodeName")
     private String oldMancodeName;
+    @Size(max = 255)
+    @Column(name = "differenceAmount")
+    private String differenceAmount;
     @Size(max = 255)
     @Column(name = "ncodeDC")
     private String ncodeDC;
@@ -103,6 +102,9 @@ public class HKYX013Detail implements Serializable {
     @Column(name = "invoiceType")
     private String invoiceType;
     @Size(max = 255)
+    @Column(name = "trseq")
+    private String trseq;
+    @Size(max = 255)
     @Column(name = "formSerialNumber")
     private String formSerialNumber;
     @Size(max = 255)
@@ -114,12 +116,6 @@ public class HKYX013Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "seq")
     private String seq;
-    @Size(max = 255)
-    @Column(name = "differenceAmount")
-    private String differenceAmount;
-    @Size(max = 255)
-    @Column(name = "trseq")
-    private String trseq;
 
     public HKYX013Detail() {
     }
@@ -128,12 +124,12 @@ public class HKYX013Detail implements Serializable {
         this.oid = oid;
     }
 
-    public String getFacno() {
-        return facno;
+    public String getOldMancodeNo() {
+        return oldMancodeNo;
     }
 
-    public void setFacno(String facno) {
-        this.facno = facno;
+    public void setOldMancodeNo(String oldMancodeNo) {
+        this.oldMancodeNo = oldMancodeNo;
     }
 
     public String getNewDeptName() {
@@ -160,12 +156,12 @@ public class HKYX013Detail implements Serializable {
         this.newMancodeNo = newMancodeNo;
     }
 
-    public String getOldDeptno() {
-        return oldDeptno;
+    public String getOldDeptNo() {
+        return oldDeptNo;
     }
 
-    public void setOldDeptno(String oldDeptno) {
-        this.oldDeptno = oldDeptno;
+    public void setOldDeptNo(String oldDeptNo) {
+        this.oldDeptNo = oldDeptNo;
     }
 
     public String getOid() {
@@ -184,14 +180,6 @@ public class HKYX013Detail implements Serializable {
         this.itnbr = itnbr;
     }
 
-    public String getOldMancode() {
-        return oldMancode;
-    }
-
-    public void setOldMancode(String oldMancode) {
-        this.oldMancode = oldMancode;
-    }
-
     public String getNcodeDA() {
         return ncodeDA;
     }
@@ -206,6 +194,14 @@ public class HKYX013Detail implements Serializable {
 
     public void setOldMancodeName(String oldMancodeName) {
         this.oldMancodeName = oldMancodeName;
+    }
+
+    public String getDifferenceAmount() {
+        return differenceAmount;
+    }
+
+    public void setDifferenceAmount(String differenceAmount) {
+        this.differenceAmount = differenceAmount;
     }
 
     public String getNcodeDC() {
@@ -256,6 +252,14 @@ public class HKYX013Detail implements Serializable {
         this.invoiceType = invoiceType;
     }
 
+    public String getTrseq() {
+        return trseq;
+    }
+
+    public void setTrseq(String trseq) {
+        this.trseq = trseq;
+    }
+
     public String getFormSerialNumber() {
         return formSerialNumber;
     }
@@ -286,22 +290,6 @@ public class HKYX013Detail implements Serializable {
 
     public void setSeq(String seq) {
         this.seq = seq;
-    }
-
-    public String getDifferenceAmount() {
-        return differenceAmount;
-    }
-
-    public void setDifferenceAmount(String differenceAmount) {
-        this.differenceAmount = differenceAmount;
-    }
-
-    public String getTrseq() {
-        return trseq;
-    }
-
-    public void setTrseq(String trseq) {
-        this.trseq = trseq;
     }
 
     @Override
