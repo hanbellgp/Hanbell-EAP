@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrdta.findByItnbrcus", query = "SELECT c FROM Cdrdta c WHERE c.itnbrcus = :itnbrcus"),
     @NamedQuery(name = "Cdrdta.findByWareh", query = "SELECT c FROM Cdrdta c WHERE c.wareh = :wareh"),
     @NamedQuery(name = "Cdrdta.findByTrtype", query = "SELECT c FROM Cdrdta c WHERE c.trtype = :trtype"),
-    @NamedQuery(name = "Cdrdta.findByShpnoAndItnbr", query = "SELECT c FROM Cdrdta c WHERE c.cdrdtaPK.shpno = :shpno AND c.itnbr = :itnbr")})
+    @NamedQuery(name = "Cdrdta.findByFacnoAndShpnoAndItnbrAndTrseq", query = "SELECT c FROM Cdrdta c WHERE c.cdrdtaPK.facno = :facno AND c.cdrdtaPK.shpno = :shpno AND c.itnbr = :itnbr and c.cdrdtaPK.trseq = :trseq")})
 public class Cdrdta implements Serializable {
 
     @Size(max = 18)

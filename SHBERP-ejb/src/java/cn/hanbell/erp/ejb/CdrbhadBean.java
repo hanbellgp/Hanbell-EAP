@@ -66,6 +66,7 @@ public class CdrbhadBean extends SuperEJBForERP<Cdrbhad> {
             if (!details.isEmpty()) {
                 for (HKYX013Detail item : details) {
                     if ("3".equals(item.getInvoiceType())) {
+                        this.setCompany(h.getFacno());
                         Cdrbhad c = this.findById(item.getSingleNumber());
                         if (c != null) {
                             if (!"".equals(item.getNewDeptNo())) {
@@ -75,12 +76,12 @@ public class CdrbhadBean extends SuperEJBForERP<Cdrbhad> {
                                 c.setMancode(item.getNewMancodeNo());
                             }
                             if (!"".equals(item.getNewDeptNo()) || !"".equals(item.getNewMancodeNo())) {
-                                this.setCompany(item.getFacno());
                                 this.update(c);
                             }
                         }
                         //更新出货单表身明细
-                        Cdrbdta cdrbdta = cdrbdtaBean.findByBaknoAndItnbr(item.getSingleNumber(), item.getItnbr());
+                        cdrbdtaBean.setCompany(h.getFacno());
+                        Cdrbdta cdrbdta = cdrbdtaBean.findByFacnoAndBaknoAndItnbrAndTrseq(h.getFacno(), item.getSingleNumber(), item.getItnbr(), Integer.parseInt(item.getTrseq()));
                         if (cdrbdta != null) {
                             if (!"".equals(item.getNcodeDA()) && !"请选择".equals(item.getNcodeDA()) && !"0".equals(item.getNcodeDA())) {
                                 cdrbdta.setNcodeDA(item.getNcodeDA());
@@ -97,15 +98,13 @@ public class CdrbhadBean extends SuperEJBForERP<Cdrbhad> {
                             if (!"".equals(item.getIssevdta()) && !"请选择".equals(item.getIssevdta()) && !"0".equals(item.getIssevdta())) {
                                 cdrbdta.setIssevdta(item.getIssevdta().charAt(0));
                             }
-                            cdrbdtaBean.setCompany(item.getFacno());
                             cdrbdtaBean.update(cdrbdta);
                         }
-
                     }
                 }
             }
             return true;
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             return false;
         }
     }

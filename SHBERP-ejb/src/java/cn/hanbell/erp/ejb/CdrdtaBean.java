@@ -34,10 +34,12 @@ public class CdrdtaBean extends SuperEJBForERP<Cdrdta> {
         }
     }
 
-    public Cdrdta findByShpnoAndItnbr(String shpno, String itnbr) {
-        Query query = getEntityManager().createNamedQuery("Cdrdta.findByShpnoAndItnbr");
+    public Cdrdta findByFacnoAndShpnoAndItnbrAndTrseq(String facno,String shpno, String itnbr,int trseq) {
+        Query query = getEntityManager().createNamedQuery("Cdrdta.findByFacnoAndShpnoAndItnbrAndTrseq");
+        query.setParameter("facno", facno);
         query.setParameter("shpno", shpno);
         query.setParameter("itnbr", itnbr);
+        query.setParameter("trseq", trseq);
         try {
             Object o = query.getSingleResult();
             return (Cdrdta) o;

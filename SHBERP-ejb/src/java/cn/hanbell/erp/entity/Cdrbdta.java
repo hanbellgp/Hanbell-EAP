@@ -70,7 +70,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrbdta.findByNcodeCD", query = "SELECT c FROM Cdrbdta c WHERE c.ncodeCD = :ncodeCD"),
     @NamedQuery(name = "Cdrbdta.findByNcodeDC", query = "SELECT c FROM Cdrbdta c WHERE c.ncodeDC = :ncodeDC"),
     @NamedQuery(name = "Cdrbdta.findByNcodeDD", query = "SELECT c FROM Cdrbdta c WHERE c.ncodeDD = :ncodeDD"),
-    @NamedQuery(name = "Cdrbdta.findByBaknoAndItnbr", query = "SELECT c FROM Cdrbdta c WHERE c.cdrbdtaPK.bakno = :bakno AND c.itnbr = :itnbr")})
+    @NamedQuery(name = "Cdrbdta.findByFacnoAndBaknoAndItnbrAndTrseq", query = "SELECT c FROM Cdrbdta c WHERE c.cdrbdtaPK.facno = :facno AND c.cdrbdtaPK.bakno = :bakno AND c.itnbr = :itnbr AND c.cdrbdtaPK.trseq = :trseq")})
 public class Cdrbdta implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -533,10 +533,10 @@ public class Cdrbdta implements Serializable {
     public void setNcodeDD(String ncodeDD) {
         this.ncodeDD = ncodeDD;
     }
-
+    
     public Cdrbhad getCdrbhad() {
         return cdrbhad;
-    }
+}
 
     public void setCdrbhad(Cdrbhad cdrbhad) {
         this.cdrbhad = cdrbhad;

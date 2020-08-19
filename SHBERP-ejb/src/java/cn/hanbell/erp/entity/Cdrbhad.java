@@ -75,9 +75,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cdrbhad.findByIssevhad", query = "SELECT c FROM Cdrbhad c WHERE c.issevhad = :issevhad")})
 public class Cdrbhad implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected CdrbhadPK cdrbhadPK;
     @Basic(optional = false)
     @NotNull
     @Column(name = "bakdate")
@@ -128,6 +125,7 @@ public class Cdrbhad implements Serializable {
     @Size(min = 1, max = 4)
     @Column(name = "coin")
     private String coin;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "ratio")
@@ -200,21 +198,18 @@ public class Cdrbhad implements Serializable {
     @Column(name = "hmark2")
     private String hmark2;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "indate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date indate;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 8)
     @Column(name = "userno")
     private String userno;
     @Size(max = 8)
     @Column(name = "cfmuserno")
     private String cfmuserno;
-    @Column(name = "cfmdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date cfmdate;
     @Basic(optional = false)
     @NotNull
     @Column(name = "owarehyn")
@@ -229,6 +224,12 @@ public class Cdrbhad implements Serializable {
     @NotNull
     @Column(name = "replenish")
     private Character replenish;
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected CdrbhadPK cdrbhadPK;
+    @Column(name = "cfmdate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date cfmdate;
     @Column(name = "issevhad")
     private Character issevhad;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cdrbhad")
@@ -284,6 +285,47 @@ public class Cdrbhad implements Serializable {
 
     public void setCdrbhadPK(CdrbhadPK cdrbhadPK) {
         this.cdrbhadPK = cdrbhadPK;
+    }
+    public Date getCfmdate() {
+        return cfmdate;
+    }
+    public void setCfmdate(Date cfmdate) {
+        this.cfmdate = cfmdate;
+    }
+    public Character getIssevhad() {
+        return issevhad;
+    }
+    public void setIssevhad(Character issevhad) {
+        this.issevhad = issevhad;
+    }
+    @XmlTransient
+    public List<Cdrbdta> getCdrbdtaList() {
+        return cdrbdtaList;
+    }
+    public void setCdrbdtaList(List<Cdrbdta> cdrbdtaList) {
+        this.cdrbdtaList = cdrbdtaList;
+    }
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (cdrbhadPK != null ? cdrbhadPK.hashCode() : 0);
+        return hash;
+    }
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Cdrbhad)) {
+            return false;
+        }
+        Cdrbhad other = (Cdrbhad) object;
+        if ((this.cdrbhadPK == null && other.cdrbhadPK != null) || (this.cdrbhadPK != null && !this.cdrbhadPK.equals(other.cdrbhadPK))) {
+            return false;
+        }
+        return true;
+    }
+    @Override
+    public String toString() {
+        return "cn.hanbell.erp.entity.Cdrbhad[ cdrbhadPK=" + cdrbhadPK + " ]";
     }
 
     public Date getBakdate() {
@@ -534,14 +576,6 @@ public class Cdrbhad implements Serializable {
         this.cfmuserno = cfmuserno;
     }
 
-    public Date getCfmdate() {
-        return cfmdate;
-    }
-
-    public void setCfmdate(Date cfmdate) {
-        this.cfmdate = cfmdate;
-    }
-
     public Character getOwarehyn() {
         return owarehyn;
     }
@@ -572,48 +606,6 @@ public class Cdrbhad implements Serializable {
 
     public void setReplenish(Character replenish) {
         this.replenish = replenish;
-    }
-
-    public Character getIssevhad() {
-        return issevhad;
-    }
-
-    public void setIssevhad(Character issevhad) {
-        this.issevhad = issevhad;
-    }
-
-    @XmlTransient
-    public List<Cdrbdta> getCdrbdtaList() {
-        return cdrbdtaList;
-    }
-
-    public void setCdrbdtaList(List<Cdrbdta> cdrbdtaList) {
-        this.cdrbdtaList = cdrbdtaList;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (cdrbhadPK != null ? cdrbhadPK.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cdrbhad)) {
-            return false;
-        }
-        Cdrbhad other = (Cdrbhad) object;
-        if ((this.cdrbhadPK == null && other.cdrbhadPK != null) || (this.cdrbhadPK != null && !this.cdrbhadPK.equals(other.cdrbhadPK))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "cn.hanbell.erp.entity.Cdrbhad[ cdrbhadPK=" + cdrbhadPK + " ]";
     }
     
 }

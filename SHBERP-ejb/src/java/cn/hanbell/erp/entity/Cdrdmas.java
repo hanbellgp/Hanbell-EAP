@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrdmas.findByCdrdate", query = "SELECT c FROM Cdrdmas c WHERE c.cdrdate = :cdrdate"),
     @NamedQuery(name = "Cdrdmas.findByDrecsta", query = "SELECT c FROM Cdrdmas c WHERE c.drecsta = :drecsta"),
     @NamedQuery(name = "Cdrdmas.findByCuspono", query = "SELECT c FROM Cdrdmas c WHERE c.cuspono = :cuspono"),
-    @NamedQuery(name = "Cdrdmas.findByCdrnoAndItnbr", query = "SELECT c FROM Cdrdmas c WHERE c.cdrdmasPK.cdrno = :cdrno AND c.itnbr = :itnbr")})
+    @NamedQuery(name = "Cdrdmas.findByFacnoAndCdrnoAndItnbrAndTrseq", query = "SELECT c FROM Cdrdmas c WHERE c.cdrdmasPK.facno = :facno AND c.cdrdmasPK.cdrno = :cdrno AND c.itnbr = :itnbr AND c.cdrdmasPK.trseq = :trseq")})
 public class Cdrdmas implements Serializable {
 
     @Basic(optional = false)

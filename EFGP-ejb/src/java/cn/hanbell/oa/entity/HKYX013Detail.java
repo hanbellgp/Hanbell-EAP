@@ -46,7 +46,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKYX013Detail.findByOldDeptName", query = "SELECT h FROM HKYX013Detail h WHERE h.oldDeptName = :oldDeptName"),
     @NamedQuery(name = "HKYX013Detail.findByIssevdta", query = "SELECT h FROM HKYX013Detail h WHERE h.issevdta = :issevdta"),
     @NamedQuery(name = "HKYX013Detail.findBySeq", query = "SELECT h FROM HKYX013Detail h WHERE h.seq = :seq"),
-    @NamedQuery(name = "HKYX013Detail.findByDifferenceAmount", query = "SELECT h FROM HKYX013Detail h WHERE h.differenceAmount = :differenceAmount")})
+    @NamedQuery(name = "HKYX013Detail.findByDifferenceAmount", query = "SELECT h FROM HKYX013Detail h WHERE h.differenceAmount = :differenceAmount"),
+    @NamedQuery(name = "HKYX013Detail.findByTrseq", query = "SELECT h FROM HKYX013Detail h WHERE h.trseq = :trseq")})
 public class HKYX013Detail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -116,6 +117,9 @@ public class HKYX013Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "differenceAmount")
     private String differenceAmount;
+    @Size(max = 255)
+    @Column(name = "trseq")
+    private String trseq;
 
     public HKYX013Detail() {
     }
@@ -290,6 +294,14 @@ public class HKYX013Detail implements Serializable {
 
     public void setDifferenceAmount(String differenceAmount) {
         this.differenceAmount = differenceAmount;
+    }
+
+    public String getTrseq() {
+        return trseq;
+    }
+
+    public void setTrseq(String trseq) {
+        this.trseq = trseq;
     }
 
     @Override

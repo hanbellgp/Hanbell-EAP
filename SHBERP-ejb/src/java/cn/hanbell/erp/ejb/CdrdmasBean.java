@@ -23,10 +23,12 @@ public class CdrdmasBean extends SuperEJBForERP<Cdrdmas> {
         super(Cdrdmas.class);
     }
     
-    public Cdrdmas findByCdrnoAndItnbr(String cdrno,String itnbr){
-        Query query = getEntityManager().createNamedQuery("Cdrdmas.findByCdrnoAndItnbr");
+    public Cdrdmas findByFacnoAndCdrnoAndItnbrAndTrseq(String facno,String cdrno,String itnbr,int trseq){
+        Query query = getEntityManager().createNamedQuery("Cdrdmas.findByFacnoAndCdrnoAndItnbrAndTrseq");
+        query.setParameter("facno", facno);
         query.setParameter("cdrno", cdrno);
         query.setParameter("itnbr", itnbr);
+        query.setParameter("trseq", trseq);
         try {
             Object o = query.getSingleResult();
             return (Cdrdmas) o;
