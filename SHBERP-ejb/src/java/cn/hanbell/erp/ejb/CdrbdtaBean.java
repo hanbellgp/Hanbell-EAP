@@ -6,32 +6,32 @@
 package cn.hanbell.erp.ejb;
 
 import cn.hanbell.erp.comm.SuperEJBForERP;
-import cn.hanbell.erp.entity.Cdrdmas;
+import cn.hanbell.erp.entity.Cdrbdta;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
 
 /**
  *
- * @author C0160
+ * @author Administrator
  */
 @Stateless
 @LocalBean
-public class CdrdmasBean extends SuperEJBForERP<Cdrdmas> {
+public class CdrbdtaBean extends SuperEJBForERP<Cdrbdta> {
 
-    public CdrdmasBean() {
-        super(Cdrdmas.class);
+    public CdrbdtaBean() {
+        super(Cdrbdta.class);
     }
-    
-    public Cdrdmas findByFacnoAndCdrnoAndItnbrAndTrseq(String facno,String cdrno,String itnbr,int trseq){
-        Query query = getEntityManager().createNamedQuery("Cdrdmas.findByFacnoAndCdrnoAndItnbrAndTrseq");
+
+    public Cdrbdta findByFacnoAndBaknoAndItnbrAndTrseq(String facno,String bakno, String itnbr,int trseq) {
+        Query query = getEntityManager().createNamedQuery("Cdrbdta.findByFacnoAndBaknoAndItnbrAndTrseq");
         query.setParameter("facno", facno);
-        query.setParameter("cdrno", cdrno);
+        query.setParameter("bakno", bakno);
         query.setParameter("itnbr", itnbr);
         query.setParameter("trseq", trseq);
         try {
             Object o = query.getSingleResult();
-            return (Cdrdmas) o;
+            return (Cdrbdta) o;
         } catch (Exception ex) {
             return null;
         }

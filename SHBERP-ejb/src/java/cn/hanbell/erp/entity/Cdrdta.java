@@ -11,6 +11,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -33,24 +36,20 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrdta.findByItnbr", query = "SELECT c FROM Cdrdta c WHERE c.itnbr = :itnbr"),
     @NamedQuery(name = "Cdrdta.findByItnbrcus", query = "SELECT c FROM Cdrdta c WHERE c.itnbrcus = :itnbrcus"),
     @NamedQuery(name = "Cdrdta.findByWareh", query = "SELECT c FROM Cdrdta c WHERE c.wareh = :wareh"),
-    @NamedQuery(name = "Cdrdta.findByTrtype", query = "SELECT c FROM Cdrdta c WHERE c.trtype = :trtype")})
+    @NamedQuery(name = "Cdrdta.findByTrtype", query = "SELECT c FROM Cdrdta c WHERE c.trtype = :trtype"),
+    @NamedQuery(name = "Cdrdta.findByFacnoAndShpnoAndItnbrAndTrseq", query = "SELECT c FROM Cdrdta c WHERE c.cdrdtaPK.facno = :facno AND c.cdrdtaPK.shpno = :shpno AND c.itnbr = :itnbr and c.cdrdtaPK.trseq = :trseq")})
 public class Cdrdta implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected CdrdtaPK cdrdtaPK;
     @Size(max = 18)
     @Column(name = "cdrno")
     private String cdrno;
-    @Column(name = "ctrseq")
-    private Short ctrseq;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "itnbr")
     private String itnbr;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 30)
     @Column(name = "itdsc")
     private String itdsc;
@@ -76,19 +75,18 @@ public class Cdrdta implements Serializable {
     private String varnr;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "shpqy1")
     private BigDecimal shpqy1;
-    @Column(name = "shpqy2")
-    private BigDecimal shpqy2;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "armqy")
     private BigDecimal armqy;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "unpris")
     private BigDecimal unpris;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "unprisrccode")
@@ -125,11 +123,39 @@ public class Cdrdta implements Serializable {
     @Size(max = 30)
     @Column(name = "cuslable")
     private String cuslable;
-    @Column(name = "islableprt")
-    private Character islableprt;
     @Size(max = 30)
     @Column(name = "matecode")
     private String matecode;
+    @Size(max = 8)
+    @Column(name = "n_code_DA")
+    private String ncodeDA;
+    @Size(max = 8)
+    @Column(name = "n_code_CD")
+    private String ncodeCD;
+    @Size(max = 8)
+    @Column(name = "n_code_DC")
+    private String ncodeDC;
+    @Size(max = 8)
+    @Column(name = "n_code_DD")
+    private String ncodeDD;
+    @Column(name = "wms_qty")
+    private BigDecimal wmsQty;
+    @Column(name = "wms_sta")
+    private Character wmsSta;
+    @JoinColumns({
+        @JoinColumn(name = "facno", referencedColumnName = "facno", insertable = false, updatable = false),
+        @JoinColumn(name = "shpno", referencedColumnName = "shpno", insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Cdrhad cdrhad;
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected CdrdtaPK cdrdtaPK;
+    @Column(name = "ctrseq")
+    private Short ctrseq;
+    @Column(name = "shpqy2")
+    private BigDecimal shpqy2;
+    @Column(name = "islableprt")
+    private Character islableprt;
     @Column(name = "psamts")
     private BigDecimal psamts;
     @Column(name = "msamts")
@@ -409,6 +435,38 @@ public class Cdrdta implements Serializable {
         this.issevdta = issevdta;
     }
 
+    public String getNcodeDA() {
+        return ncodeDA;
+    }
+
+    public void setNcodeDA(String ncodeDA) {
+        this.ncodeDA = ncodeDA;
+    }
+
+    public String getNcodeCD() {
+        return ncodeCD;
+    }
+
+    public void setNcodeCD(String ncodeCD) {
+        this.ncodeCD = ncodeCD;
+    }
+
+    public String getNcodeDC() {
+        return ncodeDC;
+    }
+
+    public void setNcodeDC(String ncodeDC) {
+        this.ncodeDC = ncodeDC;
+    }
+
+    public String getNcodeDD() {
+        return ncodeDD;
+    }
+
+    public void setNcodeDD(String ncodeDD) {
+        this.ncodeDD = ncodeDD;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -421,11 +479,11 @@ public class Cdrdta implements Serializable {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Cdrdta)) {
             return false;
-        }
+    }
         Cdrdta other = (Cdrdta) object;
         if ((this.cdrdtaPK == null && other.cdrdtaPK != null) || (this.cdrdtaPK != null && !this.cdrdtaPK.equals(other.cdrdtaPK))) {
             return false;
-        }
+    }
         return true;
     }
 

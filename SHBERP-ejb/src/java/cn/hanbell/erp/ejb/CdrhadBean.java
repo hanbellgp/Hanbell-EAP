@@ -9,6 +9,10 @@ import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Cdrdta;
 import cn.hanbell.erp.entity.Cdrhad;
 import cn.hanbell.erp.entity.Cdrlot;
+import cn.hanbell.oa.ejb.HKYX013Bean;
+import cn.hanbell.oa.ejb.HKYX013DetailBean;
+import cn.hanbell.oa.entity.HKYX013;
+import cn.hanbell.oa.entity.HKYX013Detail;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -28,6 +32,10 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
     private CdrdtaBean cdrdtaBean;
     @EJB
     private CdrlotBean cdrlotBean;
+    @EJB
+    private HKYX013Bean hkyx013Bean;
+    @EJB
+    private HKYX013DetailBean hkyxDetail013Bean;
 
     private List<Cdrdta> detailList;
 
@@ -85,6 +93,65 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
             }
         }
         return shpdateList;
+    }
+
+    /**
+     * 修改订单出货单
+     *
+     * @param psn
+     * @return
+     */
+    public boolean updateByOAHKYX013(String psn) {
+        HKYX013 h = hkyx013Bean.findByPSN(psn);
+        if (h == null) {
+            throw new NullPointerException();
+        }
+        List<HKYX013Detail> details = hkyxDetail013Bean.findByFSN(h.getFormSerialNumber());
+        try {
+            if (!details.isEmpty()) {
+                for (HKYX013Detail item : details) {
+                    if ("2".equals(item.getInvoiceType())) {
+                        this.setCompany(h.getFacno());
+                        Cdrhad c = this.findById(item.getSingleNumber());
+                        if (c != null) {
+                            if (!"".equals(item.getNewDeptno())) {
+                                c.setDepno(item.getNewDeptno());
+                            }
+                            if (!"".equals(item.getNewMancode())) {
+                                c.setMancode(item.getNewMancode());
+                            }
+                            if (!"".equals(item.getNewDeptno()) || !"".equals(item.getNewMancode())) {
+                                this.update(c);
+                            }
+                        }
+                        //更新出货单表身明细
+                        cdrdtaBean.setCompany(h.getFacno());
+                        Cdrdta cdrdta = cdrdtaBean.findByFacnoAndShpnoAndItnbrAndTrseq(h.getFacno(),item.getSingleNumber(), item.getItnbr(),Integer.parseInt(item.getTrseq()));
+                        if (cdrdta != null) {
+                            if (!"".equals(item.getNcodeDA()) && !"请选择".equals(item.getNcodeDA()) && !"0".equals(item.getNcodeDA())) {
+                                cdrdta.setNcodeDA(item.getNcodeDA());
+                            }
+                            if (!"".equals(item.getNcodeCD()) && !"请选择".equals(item.getNcodeCD()) && !"0".equals(item.getNcodeCD())) {
+                                cdrdta.setNcodeCD(item.getNcodeCD());
+                            }
+                            if (!"".equals(item.getNcodeDC()) && !"请选择".equals(item.getNcodeDC()) && !"0".equals(item.getNcodeDC())) {
+                                cdrdta.setNcodeDC(item.getNcodeDC());
+                            }
+                            if (!"".equals(item.getNcodeDD()) && !"请选择".equals(item.getNcodeDD()) && !"0".equals(item.getNcodeDD())) {
+                                cdrdta.setNcodeDD(item.getNcodeDD());
+                            }
+                            if (!"".equals(item.getIssevdta()) && !"请选择".equals(item.getIssevdta()) && !"0".equals(item.getIssevdta())) {
+                                cdrdta.setIssevdta(item.getIssevdta().charAt(0));
+                            }
+                            cdrdtaBean.update(cdrdta);
+                        }
+                    }
+                }
+            }
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
     }
 
     public List<Cdrlot> findCdrlotList(String facno, String shpno) {

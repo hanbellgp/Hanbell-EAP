@@ -6,8 +6,8 @@
 package cn.hanbell.erp.ejb;
 
 import cn.hanbell.erp.comm.SuperEJBForERP;
-import cn.hanbell.erp.entity.Cdrdmas;
-import cn.hanbell.erp.entity.Cdrhmas;
+import cn.hanbell.erp.entity.Cdrbdta;
+import cn.hanbell.erp.entity.Cdrbhad;
 import cn.hanbell.oa.ejb.HKYX013Bean;
 import cn.hanbell.oa.ejb.HKYX013DetailBean;
 import cn.hanbell.oa.entity.HKYX013;
@@ -20,38 +20,38 @@ import javax.persistence.Query;
 
 /**
  *
- * @author C0160
+ * @author C1749
  */
 @Stateless
 @LocalBean
-public class CdrhmasBean extends SuperEJBForERP<Cdrhmas> {
-
-    @EJB
-    private CdrdmasBean cdrdmasBean;
+public class CdrbhadBean extends SuperEJBForERP<Cdrbhad> {
 
     @EJB
     private HKYX013Bean hkyx013Bean;
     @EJB
     private HKYX013DetailBean hkyxDetail013Bean;
 
-    public CdrhmasBean() {
-        super(Cdrhmas.class);
+    @EJB
+    private CdrbdtaBean cdrbdtaBean;
+
+    public CdrbhadBean() {
+        super(Cdrbhad.class);
     }
 
     @Override
-    public Cdrhmas findById(Object value) {
-        Query query = getEntityManager().createNamedQuery("Cdrhmas.findByCdrno");
-        query.setParameter("cdrno", value);
+    public Cdrbhad findById(Object value) {
+        Query query = getEntityManager().createNamedQuery("Cdrbhad.findByBakno");
+        query.setParameter("bakno", value);
         try {
             Object o = query.getSingleResult();
-            return (Cdrhmas) o;
+            return (Cdrbhad) o;
         } catch (Exception ex) {
             return null;
         }
     }
 
     /**
-     * 修改订单业务员或部门代号
+     * 修改订单出货单
      *
      * @param psn
      * @return
@@ -65,9 +65,9 @@ public class CdrhmasBean extends SuperEJBForERP<Cdrhmas> {
         try {
             if (!details.isEmpty()) {
                 for (HKYX013Detail item : details) {
-                    if ("1".equals(item.getInvoiceType())) {
+                    if ("3".equals(item.getInvoiceType())) {
                         this.setCompany(h.getFacno());
-                        Cdrhmas c = this.findById(item.getSingleNumber());
+                        Cdrbhad c = this.findById(item.getSingleNumber());
                         if (c != null) {
                             if (!"".equals(item.getNewDeptno())) {
                                 c.setDepno(item.getNewDeptno());
@@ -80,22 +80,25 @@ public class CdrhmasBean extends SuperEJBForERP<Cdrhmas> {
                             }
                         }
                         //更新出货单表身明细
-                        cdrdmasBean.setCompany(h.getFacno());
-                        Cdrdmas cdrdmas = cdrdmasBean.findByFacnoAndCdrnoAndItnbrAndTrseq(h.getFacno(), item.getSingleNumber(), item.getItnbr(), Integer.parseInt(item.getTrseq()));
-                        if (cdrdmas != null) {
+                        cdrbdtaBean.setCompany(h.getFacno());
+                        Cdrbdta cdrbdta = cdrbdtaBean.findByFacnoAndBaknoAndItnbrAndTrseq(h.getFacno(), item.getSingleNumber(), item.getItnbr(), Integer.parseInt(item.getTrseq()));
+                        if (cdrbdta != null) {
                             if (!"".equals(item.getNcodeDA()) && !"请选择".equals(item.getNcodeDA()) && !"0".equals(item.getNcodeDA())) {
-                                cdrdmas.setNcodeDA(item.getNcodeDA());
+                                cdrbdta.setNcodeDA(item.getNcodeDA());
                             }
                             if (!"".equals(item.getNcodeCD()) && !"请选择".equals(item.getNcodeCD()) && !"0".equals(item.getNcodeCD())) {
-                                cdrdmas.setNcodeCD(item.getNcodeCD());
+                                cdrbdta.setNcodeCD(item.getNcodeCD());
                             }
                             if (!"".equals(item.getNcodeDC()) && !"请选择".equals(item.getNcodeDC()) && !"0".equals(item.getNcodeDC())) {
-                                cdrdmas.setNcodeDC(item.getNcodeDC());
+                                cdrbdta.setNcodeDC(item.getNcodeDC());
                             }
                             if (!"".equals(item.getNcodeDD()) && !"请选择".equals(item.getNcodeDD()) && !"0".equals(item.getNcodeDD())) {
-                                cdrdmas.setNcodeDD(item.getNcodeDD());
+                                cdrbdta.setNcodeDD(item.getNcodeDD());
                             }
-                            cdrdmasBean.update(cdrdmas);
+                            if (!"".equals(item.getIssevdta()) && !"请选择".equals(item.getIssevdta()) && !"0".equals(item.getIssevdta())) {
+                                cdrbdta.setIssevdta(item.getIssevdta().charAt(0));
+                            }
+                            cdrbdtaBean.update(cdrbdta);
                         }
                     }
                 }
