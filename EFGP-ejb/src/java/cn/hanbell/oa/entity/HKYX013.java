@@ -30,21 +30,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "HKYX013.findAll", query = "SELECT h FROM HKYX013 h"),
     @NamedQuery(name = "HKYX013.findByFacno", query = "SELECT h FROM HKYX013 h WHERE h.facno = :facno"),
-    @NamedQuery(name = "HKYX013.findByOldMancodeNo", query = "SELECT h FROM HKYX013 h WHERE h.oldMancodeNo = :oldMancodeNo"),
     @NamedQuery(name = "HKYX013.findByPSN", query = "SELECT h FROM HKYX013 h WHERE h.processSerialNumber = :psn"),
-    @NamedQuery(name = "HKYX013.findByOldDeptNo", query = "SELECT h FROM HKYX013 h WHERE h.oldDeptNo = :oldDeptNo"),
     @NamedQuery(name = "HKYX013.findByRemark", query = "SELECT h FROM HKYX013 h WHERE h.remark = :remark"),
+    @NamedQuery(name = "HKYX013.findByOldDept", query = "SELECT h FROM HKYX013 h WHERE h.oldDept = :oldDept"),
     @NamedQuery(name = "HKYX013.findByItnbr", query = "SELECT h FROM HKYX013 h WHERE h.itnbr = :itnbr"),
-    @NamedQuery(name = "HKYX013.findByOldMancodeName", query = "SELECT h FROM HKYX013 h WHERE h.oldMancodeName = :oldMancodeName"),
+    @NamedQuery(name = "HKYX013.findByOldMancode", query = "SELECT h FROM HKYX013 h WHERE h.oldMancode = :oldMancode"),
     @NamedQuery(name = "HKYX013.findByApplyUser", query = "SELECT h FROM HKYX013 h WHERE h.applyUser = :applyUser"),
     @NamedQuery(name = "HKYX013.findByDifferenceAmount", query = "SELECT h FROM HKYX013 h WHERE h.differenceAmount = :differenceAmount"),
     @NamedQuery(name = "HKYX013.findByNcodeCD", query = "SELECT h FROM HKYX013 h WHERE h.ncodeCD = :ncodeCD"),
     @NamedQuery(name = "HKYX013.findByHdnNcodeCD", query = "SELECT h FROM HKYX013 h WHERE h.hdnNcodeCD = :hdnNcodeCD"),
     @NamedQuery(name = "HKYX013.findByInvoiceType", query = "SELECT h FROM HKYX013 h WHERE h.invoiceType = :invoiceType"),
     @NamedQuery(name = "HKYX013.findByFSN", query = "SELECT h FROM HKYX013 h WHERE h.formSerialNumber = :fsn"),
-    @NamedQuery(name = "HKYX013.findByOldDeptName", query = "SELECT h FROM HKYX013 h WHERE h.oldDeptName = :oldDeptName"),
     @NamedQuery(name = "HKYX013.findByIssevdta", query = "SELECT h FROM HKYX013 h WHERE h.issevdta = :issevdta"),
     @NamedQuery(name = "HKYX013.findByAppDept", query = "SELECT h FROM HKYX013 h WHERE h.appDept = :appDept"),
+    @NamedQuery(name = "HKYX013.findByOldDeptno", query = "SELECT h FROM HKYX013 h WHERE h.oldDeptno = :oldDeptno"),
     @NamedQuery(name = "HKYX013.findByOid", query = "SELECT h FROM HKYX013 h WHERE h.oid = :oid"),
     @NamedQuery(name = "HKYX013.findByNcodeDA", query = "SELECT h FROM HKYX013 h WHERE h.ncodeDA = :ncodeDA"),
     @NamedQuery(name = "HKYX013.findByNewDept", query = "SELECT h FROM HKYX013 h WHERE h.newDept = :newDept"),
@@ -56,6 +55,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKYX013.findByTrseq", query = "SELECT h FROM HKYX013 h WHERE h.trseq = :trseq"),
     @NamedQuery(name = "HKYX013.findByHdnNcodeDC", query = "SELECT h FROM HKYX013 h WHERE h.hdnNcodeDC = :hdnNcodeDC"),
     @NamedQuery(name = "HKYX013.findByNewMancode", query = "SELECT h FROM HKYX013 h WHERE h.newMancode = :newMancode"),
+    @NamedQuery(name = "HKYX013.findByOldManName", query = "SELECT h FROM HKYX013 h WHERE h.oldManName = :oldManName"),
     @NamedQuery(name = "HKYX013.findByApplyDate", query = "SELECT h FROM HKYX013 h WHERE h.applyDate = :applyDate")})
 public class HKYX013 implements Serializable {
 
@@ -64,23 +64,20 @@ public class HKYX013 implements Serializable {
     @Column(name = "facno")
     private String facno;
     @Size(max = 255)
-    @Column(name = "oldMancodeNo")
-    private String oldMancodeNo;
-    @Size(max = 255)
     @Column(name = "processSerialNumber")
     private String processSerialNumber;
-    @Size(max = 255)
-    @Column(name = "oldDeptNo")
-    private String oldDeptNo;
     @Size(max = 255)
     @Column(name = "remark")
     private String remark;
     @Size(max = 255)
+    @Column(name = "oldDept")
+    private String oldDept;
+    @Size(max = 255)
     @Column(name = "itnbr")
     private String itnbr;
     @Size(max = 255)
-    @Column(name = "oldMancodeName")
-    private String oldMancodeName;
+    @Column(name = "oldMancode")
+    private String oldMancode;
     @Size(max = 255)
     @Column(name = "applyUser")
     private String applyUser;
@@ -100,14 +97,14 @@ public class HKYX013 implements Serializable {
     @Column(name = "formSerialNumber")
     private String formSerialNumber;
     @Size(max = 255)
-    @Column(name = "oldDeptName")
-    private String oldDeptName;
-    @Size(max = 255)
     @Column(name = "issevdta")
     private String issevdta;
     @Size(max = 255)
     @Column(name = "appDept")
     private String appDept;
+    @Size(max = 255)
+    @Column(name = "oldDeptno")
+    private String oldDeptno;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -143,6 +140,9 @@ public class HKYX013 implements Serializable {
     @Size(max = 255)
     @Column(name = "newMancode")
     private String newMancode;
+    @Size(max = 255)
+    @Column(name = "oldManName")
+    private String oldManName;
     @Column(name = "applyDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date applyDate;
@@ -162,28 +162,12 @@ public class HKYX013 implements Serializable {
         this.facno = facno;
     }
 
-    public String getOldMancodeNo() {
-        return oldMancodeNo;
-    }
-
-    public void setOldMancodeNo(String oldMancodeNo) {
-        this.oldMancodeNo = oldMancodeNo;
-    }
-
     public String getProcessSerialNumber() {
         return processSerialNumber;
     }
 
     public void setProcessSerialNumber(String processSerialNumber) {
         this.processSerialNumber = processSerialNumber;
-    }
-
-    public String getOldDeptNo() {
-        return oldDeptNo;
-    }
-
-    public void setOldDeptNo(String oldDeptNo) {
-        this.oldDeptNo = oldDeptNo;
     }
 
     public String getRemark() {
@@ -194,6 +178,14 @@ public class HKYX013 implements Serializable {
         this.remark = remark;
     }
 
+    public String getOldDept() {
+        return oldDept;
+    }
+
+    public void setOldDept(String oldDept) {
+        this.oldDept = oldDept;
+    }
+
     public String getItnbr() {
         return itnbr;
     }
@@ -202,12 +194,12 @@ public class HKYX013 implements Serializable {
         this.itnbr = itnbr;
     }
 
-    public String getOldMancodeName() {
-        return oldMancodeName;
+    public String getOldMancode() {
+        return oldMancode;
     }
 
-    public void setOldMancodeName(String oldMancodeName) {
-        this.oldMancodeName = oldMancodeName;
+    public void setOldMancode(String oldMancode) {
+        this.oldMancode = oldMancode;
     }
 
     public String getApplyUser() {
@@ -258,14 +250,6 @@ public class HKYX013 implements Serializable {
         this.formSerialNumber = formSerialNumber;
     }
 
-    public String getOldDeptName() {
-        return oldDeptName;
-    }
-
-    public void setOldDeptName(String oldDeptName) {
-        this.oldDeptName = oldDeptName;
-    }
-
     public String getIssevdta() {
         return issevdta;
     }
@@ -280,6 +264,14 @@ public class HKYX013 implements Serializable {
 
     public void setAppDept(String appDept) {
         this.appDept = appDept;
+    }
+
+    public String getOldDeptno() {
+        return oldDeptno;
+    }
+
+    public void setOldDeptno(String oldDeptno) {
+        this.oldDeptno = oldDeptno;
     }
 
     public String getOid() {
@@ -368,6 +360,14 @@ public class HKYX013 implements Serializable {
 
     public void setNewMancode(String newMancode) {
         this.newMancode = newMancode;
+    }
+
+    public String getOldManName() {
+        return oldManName;
+    }
+
+    public void setOldManName(String oldManName) {
+        this.oldManName = oldManName;
     }
 
     public Date getApplyDate() {

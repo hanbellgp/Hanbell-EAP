@@ -26,45 +26,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "HKYX013Detail.findAll", query = "SELECT h FROM HKYX013Detail h"),
-    @NamedQuery(name = "HKYX013Detail.findByOldMancodeNo", query = "SELECT h FROM HKYX013Detail h WHERE h.oldMancodeNo = :oldMancodeNo"),
-    @NamedQuery(name = "HKYX013Detail.findByNewDeptName", query = "SELECT h FROM HKYX013Detail h WHERE h.newDeptName = :newDeptName"),
-    @NamedQuery(name = "HKYX013Detail.findByNewMancodeName", query = "SELECT h FROM HKYX013Detail h WHERE h.newMancodeName = :newMancodeName"),
-    @NamedQuery(name = "HKYX013Detail.findByNewMancodeNo", query = "SELECT h FROM HKYX013Detail h WHERE h.newMancodeNo = :newMancodeNo"),
-    @NamedQuery(name = "HKYX013Detail.findByOldDeptNo", query = "SELECT h FROM HKYX013Detail h WHERE h.oldDeptNo = :oldDeptNo"),
+    @NamedQuery(name = "HKYX013Detail.findByOldDeptno", query = "SELECT h FROM HKYX013Detail h WHERE h.oldDeptno = :oldDeptno"),
     @NamedQuery(name = "HKYX013Detail.findByOid", query = "SELECT h FROM HKYX013Detail h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKYX013Detail.findByOldDept", query = "SELECT h FROM HKYX013Detail h WHERE h.oldDept = :oldDept"),
     @NamedQuery(name = "HKYX013Detail.findByItnbr", query = "SELECT h FROM HKYX013Detail h WHERE h.itnbr = :itnbr"),
+    @NamedQuery(name = "HKYX013Detail.findByOldMancode", query = "SELECT h FROM HKYX013Detail h WHERE h.oldMancode = :oldMancode"),
     @NamedQuery(name = "HKYX013Detail.findByNcodeDA", query = "SELECT h FROM HKYX013Detail h WHERE h.ncodeDA = :ncodeDA"),
-    @NamedQuery(name = "HKYX013Detail.findByOldMancodeName", query = "SELECT h FROM HKYX013Detail h WHERE h.oldMancodeName = :oldMancodeName"),
     @NamedQuery(name = "HKYX013Detail.findByDifferenceAmount", query = "SELECT h FROM HKYX013Detail h WHERE h.differenceAmount = :differenceAmount"),
+    @NamedQuery(name = "HKYX013Detail.findByNewDept", query = "SELECT h FROM HKYX013Detail h WHERE h.newDept = :newDept"),
     @NamedQuery(name = "HKYX013Detail.findByNcodeDC", query = "SELECT h FROM HKYX013Detail h WHERE h.ncodeDC = :ncodeDC"),
     @NamedQuery(name = "HKYX013Detail.findBySingleNumber", query = "SELECT h FROM HKYX013Detail h WHERE h.singleNumber = :singleNumber"),
     @NamedQuery(name = "HKYX013Detail.findByNcodeDD", query = "SELECT h FROM HKYX013Detail h WHERE h.ncodeDD = :ncodeDD"),
     @NamedQuery(name = "HKYX013Detail.findByNcodeCD", query = "SELECT h FROM HKYX013Detail h WHERE h.ncodeCD = :ncodeCD"),
-    @NamedQuery(name = "HKYX013Detail.findByNewDeptNo", query = "SELECT h FROM HKYX013Detail h WHERE h.newDeptNo = :newDeptNo"),
+    @NamedQuery(name = "HKYX013Detail.findByNewManName", query = "SELECT h FROM HKYX013Detail h WHERE h.newManName = :newManName"),
+    @NamedQuery(name = "HKYX013Detail.findByNewDeptno", query = "SELECT h FROM HKYX013Detail h WHERE h.newDeptno = :newDeptno"),
     @NamedQuery(name = "HKYX013Detail.findByInvoiceType", query = "SELECT h FROM HKYX013Detail h WHERE h.invoiceType = :invoiceType"),
     @NamedQuery(name = "HKYX013Detail.findByTrseq", query = "SELECT h FROM HKYX013Detail h WHERE h.trseq = :trseq"),
     @NamedQuery(name = "HKYX013Detail.findByFSN", query = "SELECT h FROM HKYX013Detail h WHERE h.formSerialNumber = :fsn"),
-    @NamedQuery(name = "HKYX013Detail.findByOldDeptName", query = "SELECT h FROM HKYX013Detail h WHERE h.oldDeptName = :oldDeptName"),
+    @NamedQuery(name = "HKYX013Detail.findByNewMancode", query = "SELECT h FROM HKYX013Detail h WHERE h.newMancode = :newMancode"),
+    @NamedQuery(name = "HKYX013Detail.findByOldManName", query = "SELECT h FROM HKYX013Detail h WHERE h.oldManName = :oldManName"),
     @NamedQuery(name = "HKYX013Detail.findByIssevdta", query = "SELECT h FROM HKYX013Detail h WHERE h.issevdta = :issevdta"),
     @NamedQuery(name = "HKYX013Detail.findBySeq", query = "SELECT h FROM HKYX013Detail h WHERE h.seq = :seq")})
 public class HKYX013Detail implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Size(max = 255)
-    @Column(name = "oldMancodeNo")
-    private String oldMancodeNo;
-    @Size(max = 255)
-    @Column(name = "newDeptName")
-    private String newDeptName;
-    @Size(max = 255)
-    @Column(name = "newMancodeName")
-    private String newMancodeName;
-    @Size(max = 255)
-    @Column(name = "newMancodeNo")
-    private String newMancodeNo;
-    @Size(max = 255)
-    @Column(name = "oldDeptNo")
-    private String oldDeptNo;
+    @Column(name = "oldDeptno")
+    private String oldDeptno;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -72,17 +60,23 @@ public class HKYX013Detail implements Serializable {
     @Column(name = "OID")
     private String oid;
     @Size(max = 255)
+    @Column(name = "oldDept")
+    private String oldDept;
+    @Size(max = 255)
     @Column(name = "itnbr")
     private String itnbr;
+    @Size(max = 255)
+    @Column(name = "oldMancode")
+    private String oldMancode;
     @Size(max = 255)
     @Column(name = "ncodeDA")
     private String ncodeDA;
     @Size(max = 255)
-    @Column(name = "oldMancodeName")
-    private String oldMancodeName;
-    @Size(max = 255)
     @Column(name = "differenceAmount")
     private String differenceAmount;
+    @Size(max = 255)
+    @Column(name = "newDept")
+    private String newDept;
     @Size(max = 255)
     @Column(name = "ncodeDC")
     private String ncodeDC;
@@ -96,8 +90,11 @@ public class HKYX013Detail implements Serializable {
     @Column(name = "ncodeCD")
     private String ncodeCD;
     @Size(max = 255)
-    @Column(name = "newDeptNo")
-    private String newDeptNo;
+    @Column(name = "newManName")
+    private String newManName;
+    @Size(max = 255)
+    @Column(name = "newDeptno")
+    private String newDeptno;
     @Size(max = 255)
     @Column(name = "invoiceType")
     private String invoiceType;
@@ -108,8 +105,11 @@ public class HKYX013Detail implements Serializable {
     @Column(name = "formSerialNumber")
     private String formSerialNumber;
     @Size(max = 255)
-    @Column(name = "oldDeptName")
-    private String oldDeptName;
+    @Column(name = "newMancode")
+    private String newMancode;
+    @Size(max = 255)
+    @Column(name = "oldManName")
+    private String oldManName;
     @Size(max = 255)
     @Column(name = "issevdta")
     private String issevdta;
@@ -124,44 +124,12 @@ public class HKYX013Detail implements Serializable {
         this.oid = oid;
     }
 
-    public String getOldMancodeNo() {
-        return oldMancodeNo;
+    public String getOldDeptno() {
+        return oldDeptno;
     }
 
-    public void setOldMancodeNo(String oldMancodeNo) {
-        this.oldMancodeNo = oldMancodeNo;
-    }
-
-    public String getNewDeptName() {
-        return newDeptName;
-    }
-
-    public void setNewDeptName(String newDeptName) {
-        this.newDeptName = newDeptName;
-    }
-
-    public String getNewMancodeName() {
-        return newMancodeName;
-    }
-
-    public void setNewMancodeName(String newMancodeName) {
-        this.newMancodeName = newMancodeName;
-    }
-
-    public String getNewMancodeNo() {
-        return newMancodeNo;
-    }
-
-    public void setNewMancodeNo(String newMancodeNo) {
-        this.newMancodeNo = newMancodeNo;
-    }
-
-    public String getOldDeptNo() {
-        return oldDeptNo;
-    }
-
-    public void setOldDeptNo(String oldDeptNo) {
-        this.oldDeptNo = oldDeptNo;
+    public void setOldDeptno(String oldDeptno) {
+        this.oldDeptno = oldDeptno;
     }
 
     public String getOid() {
@@ -172,12 +140,28 @@ public class HKYX013Detail implements Serializable {
         this.oid = oid;
     }
 
+    public String getOldDept() {
+        return oldDept;
+    }
+
+    public void setOldDept(String oldDept) {
+        this.oldDept = oldDept;
+    }
+
     public String getItnbr() {
         return itnbr;
     }
 
     public void setItnbr(String itnbr) {
         this.itnbr = itnbr;
+    }
+
+    public String getOldMancode() {
+        return oldMancode;
+    }
+
+    public void setOldMancode(String oldMancode) {
+        this.oldMancode = oldMancode;
     }
 
     public String getNcodeDA() {
@@ -188,20 +172,20 @@ public class HKYX013Detail implements Serializable {
         this.ncodeDA = ncodeDA;
     }
 
-    public String getOldMancodeName() {
-        return oldMancodeName;
-    }
-
-    public void setOldMancodeName(String oldMancodeName) {
-        this.oldMancodeName = oldMancodeName;
-    }
-
     public String getDifferenceAmount() {
         return differenceAmount;
     }
 
     public void setDifferenceAmount(String differenceAmount) {
         this.differenceAmount = differenceAmount;
+    }
+
+    public String getNewDept() {
+        return newDept;
+    }
+
+    public void setNewDept(String newDept) {
+        this.newDept = newDept;
     }
 
     public String getNcodeDC() {
@@ -236,12 +220,20 @@ public class HKYX013Detail implements Serializable {
         this.ncodeCD = ncodeCD;
     }
 
-    public String getNewDeptNo() {
-        return newDeptNo;
+    public String getNewManName() {
+        return newManName;
     }
 
-    public void setNewDeptNo(String newDeptNo) {
-        this.newDeptNo = newDeptNo;
+    public void setNewManName(String newManName) {
+        this.newManName = newManName;
+    }
+
+    public String getNewDeptno() {
+        return newDeptno;
+    }
+
+    public void setNewDeptno(String newDeptno) {
+        this.newDeptno = newDeptno;
     }
 
     public String getInvoiceType() {
@@ -268,12 +260,20 @@ public class HKYX013Detail implements Serializable {
         this.formSerialNumber = formSerialNumber;
     }
 
-    public String getOldDeptName() {
-        return oldDeptName;
+    public String getNewMancode() {
+        return newMancode;
     }
 
-    public void setOldDeptName(String oldDeptName) {
-        this.oldDeptName = oldDeptName;
+    public void setNewMancode(String newMancode) {
+        this.newMancode = newMancode;
+    }
+
+    public String getOldManName() {
+        return oldManName;
+    }
+
+    public void setOldManName(String oldManName) {
+        this.oldManName = oldManName;
     }
 
     public String getIssevdta() {

@@ -69,13 +69,13 @@ public class CdrhmasBean extends SuperEJBForERP<Cdrhmas> {
                         this.setCompany(h.getFacno());
                         Cdrhmas c = this.findById(item.getSingleNumber());
                         if (c != null) {
-                            if (!"".equals(item.getNewDeptNo())) {
-                                c.setDepno(item.getNewDeptNo());
+                            if (!"".equals(item.getNewDeptno())) {
+                                c.setDepno(item.getNewDeptno());
                             }
-                            if (!"".equals(item.getNewMancodeNo())) {
-                                c.setMancode(item.getNewMancodeNo());
+                            if (!"".equals(item.getNewMancode())) {
+                                c.setMancode(item.getNewMancode());
                             }
-                            if (!"".equals(item.getNewDeptNo()) || !"".equals(item.getNewMancodeNo())) {
+                            if (!"".equals(item.getNewDeptno()) || !"".equals(item.getNewMancode())) {
                                 this.update(c);
                             }
                         }
