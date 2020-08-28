@@ -16,7 +16,17 @@
             <renderer-class>org.primefaces.ultima.component.menu.UltimaMenuRenderer</renderer-class>
         </renderer>
     </render-kit>
-
+    <application>
+        <action-listener>
+            org.primefaces.application.DialogActionListener
+        </action-listener>
+        <navigation-handler>
+            org.primefaces.application.DialogNavigationHandler
+        </navigation-handler>
+        <view-handler>
+            org.primefaces.application.DialogViewHandler
+        </view-handler>
+    </application>
     <navigation-rule>
         <from-view-id>/*</from-view-id>
         <navigation-case>
@@ -27,6 +37,18 @@
         <navigation-case>
             <from-outcome>404</from-outcome>
             <to-view-id>/404.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <description>CRM客户查询</description>
+            <from-outcome>crmggSelect</from-outcome>
+            <to-view-id>/app/df/crmggSelect.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <description>CRM用户查询</description>
+            <from-outcome>serviceStaffSelect</from-outcome>
+            <to-view-id>/app/df/cmsmvSelect.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
