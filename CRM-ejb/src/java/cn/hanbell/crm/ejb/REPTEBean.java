@@ -7,6 +7,7 @@ package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
 import cn.hanbell.crm.entity.REPTE;
+import cn.hanbell.crm.model.REPTEModel;
 import cn.hanbell.util.BaseLib;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -155,6 +156,17 @@ public class REPTEBean extends SuperEJBForCRM<REPTE> {
             return k;
         } catch (Exception ex) {
             return null;
+        }
+    }
+    
+    //根据前端打印条件获取数据
+    public List<REPTE> getREPTEBySql(String sql){
+        try{
+        Query query = getEntityManager().createNativeQuery(sql, REPTE.class);
+         List<REPTE> list = query.getResultList();
+         return  list;
+        }catch(Exception e){
+                return null;
         }
     }
 }

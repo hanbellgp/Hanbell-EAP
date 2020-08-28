@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+
+                    <p:row>
+                        <p:column colspan="4">查询条件</p:column>
+                    </p:row>
+                </f:facet>
+
+
+                <p:row>
+                    <p:column > <h:outputLabel value="维修单别" for="maintainType"/></p:column>
+                    <p:column >
+                        <p:selectOneMenu id="maintainType" value="#{repteManagedBean.maintainType}" title="关卡名称" >
+                            <f:selectItem itemLabel="全部" itemValue="ALL"/>
+                            <f:selectItem itemLabel="重庆服务维修单" itemValue="CQFW"/>
+                            <f:selectItem itemLabel="拆修维修单" itemValue="CXWX"/>
+                            <f:selectItem itemLabel="服务维修单" itemValue="FWWX"/>
+                            <f:selectItem itemLabel="华北服务维修单" itemValue="HBFW"/>
+                            <f:selectItem itemLabel="华东服务维修单" itemValue="HDFW"/>
+                            <f:selectItem itemLabel="华南服务维修单" itemValue="HNFW"/>
+                            <f:selectItem itemLabel="柯茂服务维修单   " itemValue="KMFW"/>
+                            <f:selectItem itemLabel="南京服务维修单   " itemValue="NJFW"/>
+                        </p:selectOneMenu>
+                    </p:column>
+
+                    <p:column > <h:outputLabel value="维修单号" for="maintainNumber"/></p:column>
+                    <p:column >
+                        <p:inputText id="maintainNumber"  value="#{repteManagedBean.maintainNumber}" title="录入查询报价单号" />
+                    </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column > <h:outputLabel value="客户编号" for="customerAbbreviation"/></p:column>
+                    <p:column >
+                        <p:inputText styleClass="inputWithButton" id="customerAbbreviation" value="#{repteManagedBean.customerAbbreviation}" title="录入查询报价单号" />
+                        <p:commandButton id="customerAbbreviationButton" actionListener="#{repteManagedBean.openDialog('crmggSelect')}" icon="ui-icon-extlink"
+                                         process="@this" >
+                            <p:ajax event="dialogReturn" listener="#{repteManagedBean.handleDialogReturnCRMGG}"
+                                    update="customerAbbreviation" />
+                        </p:commandButton>
+                    </p:column>
+
+
+
+
+                    <p:column > <h:outputLabel value="服务人员" for="serviceStaff"/></p:column>
+                    <p:column >
+                        <p:inputText  id="serviceStaff" value="#{repteManagedBean.serviceStaff}" title="录入查询报价单号" styleClass="inputWithButton" />
+                        <p:commandButton id="serviceStaffButton" actionListener="#{repteManagedBean.openDialog('serviceStaffSelect')}" icon="ui-icon-extlink"
+                                         process="@this" >
+                            <p:ajax event="dialogReturn" listener="#{repteManagedBean.handleDialogReturnCMSMV}"
+                                    update="serviceStaff" />
+                        </p:commandButton>
+                    </p:column>
+                </p:row>
+
+
+
+
+                <p:row>
+                    <p:column><h:outputLabel value="签核日期" for="startDate" /></p:column>
+                    <p:column>
+                        <p:calendar id="startDate" value="#{repteManagedBean.startDate}" title="开始日期" pattern="yyyy/MM/dd"
+                                    required="true" requiredMessage="请输入签核日期"/>
+                    </p:column>
+                    <p:column><h:outputLabel value="截止日期" for="endDate" /></p:column>
+                    <p:column>
+                        <p:calendar id="endDate" value="#{repteManagedBean.endDate}" title="结束日期" pattern="yyyy/MM/dd"
+                                    required="true" requiredMessage="请输入截止日期"/>
+                    </p:column>
+                </p:row>
+
+
+
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="right">
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{repteManagedBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{repteManagedBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                    <p:commandButton id="btnPrint" value="导出" actionListener="#{repteManagedBean.print()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable  value="#{repteManagedBean.reptemodels}" var="item" styleClass="tableList Mtop10" style="width: 100%" >
+                <f:facet name="header">
+                    服务维修打卡明细
+                </f:facet>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="维修单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.te001}#{item.te002}-#{item.te004}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="客户名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.customerAbbreviation}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="服务人员"/>
+                    </f:facet>
+                    <h:outputText value="#{item.serviceStaff}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="路程开始时间"/>
+                    </f:facet>
+                    <h:outputText value="#{item.roadStartDate}">
+                        <!--                        <f:convertDateTime pattern="yyyy/MM/dd"/>-->
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="到达时间"/>
+                    </f:facet>
+                    <h:outputText value="#{item.arrivalDate}">
+                        <!--                        <f:convertDateTime pattern="yyyy/MM/dd"/>-->
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="离开时间"/>
+                    </f:facet>
+                    <h:outputText value="#{item.leaveDate}">
+                        <!--                        <f:convertDateTime pattern="yyyy/MM/dd"/>-->
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="路程结束时间"/>
+                    </f:facet>
+                    <h:outputText value="#{item.roadEndDate}">
+                        <!--                        <f:convertDateTime pattern="yyyy/MM/dd"/>-->
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="维修工时"/>
+                    </f:facet>
+                    <h:outputText value="#{item.te010}">
+                        <!--                        <f:convertDateTime pattern="yyyy/MM/dd"/>-->
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="维修描述"/>
+                    </f:facet>
+                    <h:outputText value="#{item.te009}">
+                        <!--                        <f:convertDateTime pattern="yyyy/MM/dd"/>-->
+                    </h:outputText>
+                </p:column>
+
+
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+</ui:composition>
