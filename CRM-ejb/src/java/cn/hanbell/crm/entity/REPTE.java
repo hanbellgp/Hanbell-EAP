@@ -11,8 +11,10 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -278,7 +280,10 @@ public class REPTE implements Serializable {
     @Size(max = 255)
     @Column(name = "TE509")
     private String te509;
-    
+    //用户
+    @JoinColumn(name = "TE008", referencedColumnName = "MV001", insertable = false, updatable = false)
+    @OneToOne(optional = true)
+    private CMSMV cmsmv;
    
 
     public REPTE() {
@@ -799,6 +804,14 @@ public class REPTE implements Serializable {
 
     public void setTe509(String te509) {
         this.te509 = te509;
+    }
+
+    public CMSMV getCmsmv() {
+        return cmsmv;
+    }
+
+    public void setCmsmv(CMSMV cmsmv) {
+        this.cmsmv = cmsmv;
     }
 
     @Override

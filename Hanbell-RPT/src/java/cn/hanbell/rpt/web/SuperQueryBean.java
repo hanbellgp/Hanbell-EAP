@@ -9,15 +9,19 @@ import cn.hanbell.eap.ejb.SystemProgramBean;
 import cn.hanbell.eap.entity.SystemProgram;
 import com.lightshell.comm.SuperEJB;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.primefaces.PrimeFaces;
 
 /**
  *
@@ -133,6 +137,49 @@ public abstract class SuperQueryBean<T> {
         }
     }
 
+    //关窗
+      public void closeDialog() {
+        if (this.currentEntity != null) {
+            this.closeDialog(this.currentEntity);
+        } else {
+             this.showWarnMsg("Warn", "没有选择数据!");
+        }
+
+    }
+
+    public void closeDialog(Object entity) {
+        if (entity != null) {
+            PrimeFaces.current().dialog().closeDynamic(entity);
+        } else {
+            this.showWarnMsg("Warn", "没有选择数据!");
+        }
+    }
+    
+    //开窗
+public void openDialog(String view) {
+        this.openDialog(view, (Map) null);
+    }
+
+    protected void openDialog(String view, Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap();
+        options.put("modal", true);
+        this.openDialog(view, options, null);
+    }
+
+    protected void openDialog(String view, Map<String, Object> options, Map<String, List<String>> params) {
+        try {
+            PrimeFaces.current().dialog().openDynamic(view, options, params);
+        } catch (Exception var5) {
+           var5.printStackTrace();
+        }
+    }
+    //JSF警告
+     protected void showWarnMsg(String summary, String detail) {
+        this.showMsg(FacesMessage.SEVERITY_WARN, summary, detail);
+    }
+       protected void showMsg(Severity severity, String summary, String detail) {
+        FacesContext.getCurrentInstance().addMessage((String)null, new FacesMessage(severity, summary, detail));
+    }
     /**
      * @return the superEJB
      */
