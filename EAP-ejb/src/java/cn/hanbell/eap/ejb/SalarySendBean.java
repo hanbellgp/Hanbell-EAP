@@ -28,7 +28,7 @@ public class SalarySendBean extends SuperEJBForEAP<SalarySend> {
 
     public List<SalarySend> findByTaskidAndDeptno(String taskid, String deptno) {
         Query query = getEntityManager().createNamedQuery("SalarySend.findByTaskidAndDeptno");
-        query.setParameter("taskid", taskid+"%");
+        query.setParameter("taskid", taskid + "%");
         query.setParameter("deptno", deptno);
         try {
             return query.getResultList();
@@ -48,12 +48,23 @@ public class SalarySendBean extends SuperEJBForEAP<SalarySend> {
         }
     }
 
+    public SalarySend findByTaskNameAndEmployeeid(String taskname, String employeeid) {
+        StringBuffer sql=new StringBuffer("SELECT * FROM SalarySend s WHERE s.taskname ='");
+        sql.append(taskname).append("'");
+        sql.append( " and s.employeeid='").append(employeeid).append("'");
+        Query query = getEntityManager().createNativeQuery(sql.toString(),SalarySend.class);
+        try {
+            return (SalarySend) query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
     public String getTaskId(String taskid) {
         String ls_no = "";
         String ls_ta002 = "";
         String serial = "00";
         ls_ta002 = BaseLib.formatDate("yyyyMMdd", new Date());
-        String sql = "SELECT * FROM salarysend WHERE taskid like '"+taskid+"%' GROUP BY taskid";
+        String sql = "SELECT * FROM salarysend WHERE taskid like '" + taskid + "%' GROUP BY taskid";
         Query query = getEntityManager().createNativeQuery(sql);
         List result = query.getResultList();
         int m = 0;
