@@ -45,7 +45,7 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             if (entity.getTel() != null && !"".equals(entity.getTel())) {
                 job.add("telephone", entity.getTel());
             }
-            // 职位暂时不更新
+            // 职位暂时不更新sda
             // if (entity.getPosition() != null & !"".equals(entity.getPosition())) {
             // job.add("position", entity.getPosition());
             // }
@@ -136,6 +136,19 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
         try {
             return query.getResultList();
         } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    public List<SystemUser> findBySyncWeChatStatusAndDeptno(String deptno) {
+        //此方法与findByDeptnoAndSyncWeChatStatus判断的状态不同。获取SyncWeChatStatus为V的数据
+        StringBuffer sql=new StringBuffer("SELECT * FROM SystemUser s WHERE s.syncWeChatStatus='V' AND s.deptno ='");
+        sql.append(deptno).append("' ORDER BY s.userid");
+        try {
+            Query query = getEntityManager().createNativeQuery(sql.toString(),SystemUser.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
