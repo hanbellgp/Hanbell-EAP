@@ -6,8 +6,8 @@
 package cn.hanbell.eap.jrs;
 
 import cn.hanbell.eap.app.CardRecordListApplication;
-import cn.hanbell.eap.ejb.QyWechatCardRecordBean;
-import cn.hanbell.eap.entity.QyWechatCardRecord;
+import cn.hanbell.eap.ejb.WechatClockBean;
+import cn.hanbell.eap.entity.WechatClock;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEAP;
 import cn.hanbell.util.BaseLib;
@@ -25,16 +25,16 @@ import org.apache.logging.log4j.Logger;
  *
  * @author C2082
  */
-@Path("eap/qywechatcardrecord")
-public class QYWechatOARecordFacadeREST extends SuperRESTForEAP<QyWechatCardRecord> {
+@Path("eap/wechatclock")
+public class WechatClockFacadesREST extends SuperRESTForEAP<WechatClock> {
 
     @EJB
-    private QyWechatCardRecordBean qyWechatCardRecordBean;
+    private WechatClockBean qyWechatCardRecordBean;
 
     protected final Logger log4j = LogManager.getLogger("cn.hanbell.wco");
     
-    public QYWechatOARecordFacadeREST() {
-        super(QyWechatCardRecord.class);
+    public WechatClockFacadesREST() {
+        super(WechatClock.class);
     }
 
     @Override
@@ -47,14 +47,13 @@ public class QYWechatOARecordFacadeREST extends SuperRESTForEAP<QyWechatCardReco
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public ResponseMessage create(CardRecordListApplication records) {
-        for (QyWechatCardRecord r : records.getRecords()) {
+        for (WechatClock r : records.getRecords()) {
             long date = Long.valueOf(r.getCheckintime()) * 1000;
             r.setCheckintime(BaseLib.formatDate("yyyy/MM/dd HH:mm", new Date(date)));
             if (qyWechatCardRecordBean.hasExistPersist(r) == false) {
                 try {
                     qyWechatCardRecordBean.persist(r);
                 } catch (Exception e) {
-                    System.out.println("r=" + r);
                     log4j.warn(("抛转OA数据失败："+r.toString()));
                 }
 

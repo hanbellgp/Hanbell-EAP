@@ -5,7 +5,8 @@
  */
 package cn.hanbell.eap.app;
 
-import cn.hanbell.eap.entity.QyWechatCardRecord;
+
+import cn.hanbell.eap.entity.WechatClock;
 import java.util.List;
 
 /**
@@ -14,13 +15,13 @@ import java.util.List;
  */
 public class CardRecordListApplication {
 
-    private List<QyWechatCardRecord> records;
+    private List<WechatClock> records;
 
-    public List<QyWechatCardRecord> getRecords() {
+    public List<WechatClock> getRecords() {
         return records;
     }
 
-    public void setRecords(List<QyWechatCardRecord> records) {
+    public void setRecords(List<WechatClock> records) {
         this.records = records;
     }
 
