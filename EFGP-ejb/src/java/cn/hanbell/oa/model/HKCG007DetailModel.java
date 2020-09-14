@@ -31,7 +31,7 @@ public class HKCG007DetailModel implements Serializable {
     private String spdsc;
     @Size(max = 255)
     @Column(name = "rqtdate_txt")
-    private String rqtdateTxt;
+    private String rqtdate_txt;
     @Size(max = 255)
     @Column(name = "emgyn")
     private String emgyn;
@@ -82,7 +82,7 @@ public class HKCG007DetailModel implements Serializable {
     private String unpris;
     @Size(max = 255)
     @Column(name = "askdate_txt")
-    private String askdateTxt;
+    private String askdate_txt;
     @Size(max = 255)
     @Column(name = "tax")
     private String tax;
@@ -118,11 +118,11 @@ public class HKCG007DetailModel implements Serializable {
     }
 
     public String getRqtdateTxt() {
-        return rqtdateTxt;
+        return rqtdate_txt;
     }
 
     public void setRqtdateTxt(String rqtdateTxt) {
-        this.rqtdateTxt = rqtdateTxt;
+        this.rqtdate_txt = rqtdateTxt;
     }
 
     public String getBudgetaccname() {
@@ -230,11 +230,11 @@ public class HKCG007DetailModel implements Serializable {
     }
 
     public String getAskdateTxt() {
-        return askdateTxt;
+        return askdate_txt;
     }
 
     public void setAskdateTxt(String askdateTxt) {
-        this.askdateTxt = askdateTxt;
+        this.askdate_txt = askdateTxt;
     }
 
     public String getItnbr() {

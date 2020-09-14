@@ -94,6 +94,16 @@ public class TaskFacadeREST extends SuperRESTForEAP<Task> {
         }
     }
 
+    @Override
+    public ResponseObject findById(PathSegment id, String appid, String token) {
+        ResponseObject res = super.findById(id, appid, token);
+        List<Task> details = taskBean.findByPId(Integer.parseInt(id.getPath()));
+        if (details != null && !details.isEmpty()) {
+            res.getExtData().put("details", details);
+        }
+        return res;
+    }
+
     @GET
     @Path("executor/{executorid}")
     @Produces({MediaType.APPLICATION_JSON})
