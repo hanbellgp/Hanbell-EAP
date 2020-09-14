@@ -6,7 +6,7 @@
 package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
-import cn.hanbell.eap.entity.WechatClock;
+import cn.hanbell.eap.entity.WeChatClock;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -18,19 +18,19 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class WechatClockBean extends SuperEJBForEAP<WechatClock> {
+public class WeChatClockBean extends SuperEJBForEAP<WeChatClock> {
 
-    public WechatClockBean() {
-        super(WechatClock.class);
+    public WeChatClockBean() {
+        super(WeChatClock.class);
     }
 
-    public boolean hasExistPersist(WechatClock qy) {
+    public boolean hasExistPersist(WeChatClock qy) {
         StringBuffer sql = new StringBuffer("SELECT * FROM wechatclock where userid='");
         sql.append(qy.getUserid()).append("' and checkintime='").append(qy.getCheckintime()).append("'");
         sql.append(" and locationtitle='").append(qy.getLocationtitle()).append("' and locationdetail='").append(qy.getLocationdetail()).append("'");
-        Query query = getEntityManager().createNativeQuery(sql.toString(), WechatClock.class);
+        Query query = getEntityManager().createNativeQuery(sql.toString(), WeChatClock.class);
         try {
-            List<WechatClock> list = query.getResultList();
+            List<WeChatClock> list = query.getResultList();
             if (list == null || list.isEmpty()) {
                 return false;
             }

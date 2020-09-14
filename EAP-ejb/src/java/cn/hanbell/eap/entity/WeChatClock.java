@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "WechatClock.findByMediaids", query = "SELECT w FROM WechatClock w WHERE w.mediaids = :mediaids"),
     @NamedQuery(name = "WechatClock.findByLat", query = "SELECT w FROM WechatClock w WHERE w.lat = :lat"),
     @NamedQuery(name = "WechatClock.findByLng", query = "SELECT w FROM WechatClock w WHERE w.lng = :lng")})
-public class WechatClock implements Serializable {
+public class WeChatClock implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -92,14 +92,14 @@ public class WechatClock implements Serializable {
     @Column(name = "lng")
     private String lng;
 
-    public WechatClock() {
+    public WeChatClock() {
     }
 
-    public WechatClock(Integer id) {
+    public WeChatClock(Integer id) {
         this.id = id;
     }
 
-    public WechatClock(Integer id, String userid) {
+    public WeChatClock(Integer id, String userid) {
         this.id = id;
         this.userid = userid;
     }
@@ -226,10 +226,10 @@ public class WechatClock implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof WechatClock)) {
+        if (!(object instanceof WeChatClock)) {
             return false;
         }
-        WechatClock other = (WechatClock) object;
+        WeChatClock other = (WeChatClock) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
