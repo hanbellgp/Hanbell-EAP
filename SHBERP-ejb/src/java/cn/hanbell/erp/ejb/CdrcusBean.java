@@ -768,12 +768,13 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             cdrcus.setTickdays(oa.getTickdays());
         }
         if (Objects.equals(oa.getChkman(), "1") && (oa.getMan() != null) && !"".equals(oa.getMan())) {
+            origman = oa.getBman();
             cdrcusmanBean.setCompany(facno);
             // 删除原来负责业务
             Cdrcusman m;
             m = cdrcusmanBean.findByPK(facno, oa.getCusno());
             if (m != null) {
-                origman = m.getMan();
+                // origman = m.getMan();
                 cdrcusmanBean.delete(m);
                 cdrcusmanBean.getEntityManager().flush();
                 switch (facno) {
