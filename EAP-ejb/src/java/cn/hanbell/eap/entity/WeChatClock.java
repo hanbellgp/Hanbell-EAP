@@ -27,21 +27,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "wechatclock")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "WechatClock.findAll", query = "SELECT w FROM WechatClock w"),
-    @NamedQuery(name = "WechatClock.findById", query = "SELECT w FROM WechatClock w WHERE w.id = :id"),
-    @NamedQuery(name = "WechatClock.findByUserid", query = "SELECT w FROM WechatClock w WHERE w.userid = :userid"),
-    @NamedQuery(name = "WechatClock.findByGroupname", query = "SELECT w FROM WechatClock w WHERE w.groupname = :groupname"),
-    @NamedQuery(name = "WechatClock.findByCheckintype", query = "SELECT w FROM WechatClock w WHERE w.checkintype = :checkintype"),
-    @NamedQuery(name = "WechatClock.findByExceptiontype", query = "SELECT w FROM WechatClock w WHERE w.exceptiontype = :exceptiontype"),
-    @NamedQuery(name = "WechatClock.findByCheckintime", query = "SELECT w FROM WechatClock w WHERE w.checkintime = :checkintime"),
-    @NamedQuery(name = "WechatClock.findByLocationtitle", query = "SELECT w FROM WechatClock w WHERE w.locationtitle = :locationtitle"),
-    @NamedQuery(name = "WechatClock.findByLocationdetail", query = "SELECT w FROM WechatClock w WHERE w.locationdetail = :locationdetail"),
-    @NamedQuery(name = "WechatClock.findByWifiname", query = "SELECT w FROM WechatClock w WHERE w.wifiname = :wifiname"),
-    @NamedQuery(name = "WechatClock.findByNotes", query = "SELECT w FROM WechatClock w WHERE w.notes = :notes"),
-    @NamedQuery(name = "WechatClock.findByWifimac", query = "SELECT w FROM WechatClock w WHERE w.wifimac = :wifimac"),
-    @NamedQuery(name = "WechatClock.findByMediaids", query = "SELECT w FROM WechatClock w WHERE w.mediaids = :mediaids"),
-    @NamedQuery(name = "WechatClock.findByLat", query = "SELECT w FROM WechatClock w WHERE w.lat = :lat"),
-    @NamedQuery(name = "WechatClock.findByLng", query = "SELECT w FROM WechatClock w WHERE w.lng = :lng")})
+    @NamedQuery(name = "WeChatClock.findAll", query = "SELECT w FROM WeChatClock w"),
+    @NamedQuery(name = "WeChatClock.findById", query = "SELECT w FROM WeChatClock w WHERE w.id = :id"),
+    @NamedQuery(name = "WeChatClock.findByUserid", query = "SELECT w FROM WeChatClock w WHERE w.userid = :userid"),
+    @NamedQuery(name = "WeChatClock.findByGroupname", query = "SELECT w FROM WeChatClock w WHERE w.groupname = :groupname"),
+    @NamedQuery(name = "WeChatClock.findByCheckintype", query = "SELECT w FROM WeChatClock w WHERE w.checkintype = :checkintype"),
+    @NamedQuery(name = "WeChatClock.findByExceptiontype", query = "SELECT w FROM WeChatClock w WHERE w.exceptiontype = :exceptiontype"),
+    @NamedQuery(name = "WeChatClock.findByCheckintime", query = "SELECT w FROM WeChatClock w WHERE w.checkintime = :checkintime"),
+    @NamedQuery(name = "WeChatClock.findByLocationtitle", query = "SELECT w FROM WeChatClock w WHERE w.locationtitle = :locationtitle"),
+    @NamedQuery(name = "WeChatClock.findByLocationdetail", query = "SELECT w FROM WeChatClock w WHERE w.locationdetail = :locationdetail"),
+    @NamedQuery(name = "WeChatClock.findByWifiname", query = "SELECT w FROM WeChatClock w WHERE w.wifiname = :wifiname"),
+    @NamedQuery(name = "WeChatClock.findByNotes", query = "SELECT w FROM WeChatClock w WHERE w.notes = :notes"),
+    @NamedQuery(name = "WeChatClock.findByWifimac", query = "SELECT w FROM WeChatClock w WHERE w.wifimac = :wifimac"),
+    @NamedQuery(name = "WeChatClock.findByMediaids", query = "SELECT w FROM WeChatClock w WHERE w.mediaids = :mediaids"),
+    @NamedQuery(name = "WeChatClock.findByLat", query = "SELECT w FROM WeChatClock w WHERE w.lat = :lat"),
+    @NamedQuery(name = "WeChatClock.findByLng", query = "SELECT w FROM WeChatClock w WHERE w.lng = :lng")})
 public class WeChatClock implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -238,7 +238,7 @@ public class WeChatClock implements Serializable {
 
     @Override
     public String toString() {
-        return "cn.hanbell.eap.entity.WechatClock[ id=" + id + " ]";
+        return "cn.hanbell.eap.entity.WeChatClock[ id=" + id + " ]";
     }
     
 }
