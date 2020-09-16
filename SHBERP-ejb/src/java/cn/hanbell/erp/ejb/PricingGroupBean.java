@@ -173,13 +173,15 @@ public class PricingGroupBean extends SuperEJBForERP<PricingGroup> {
                 if (pg == null) {
                     continue;
                 }
+                //同类别删除，可以同时申请类别不一样的（LC、DC并存）
                 if (null != d.getCuslevel1() || !"".equals(d.getCuslevel1())) {
-                    PricingUser pricingUser = pricingUserBean.findByGroupidAndUserid(d.getCuslevel1(), d.getCusno());
-                    if (pricingUser != null) {
-                        pricingUserBean.delete(pricingUser);
+                    if (d.getCuslevel1().substring(0, 2).equals(d.getCuslevel2().substring(0, 2))) {
+                        PricingUser pricingUser = pricingUserBean.findByGroupidAndUserid(d.getCuslevel1(), d.getCusno());
+                        if (pricingUser != null) {
+                            pricingUserBean.delete(pricingUser);
+                        }
                     }
                 }
-
                 PricingUser pu = new PricingUser();
                 PricingUserPK pupk = new PricingUserPK();
                 pupk.setGroupid(d.getCuslevel2());
