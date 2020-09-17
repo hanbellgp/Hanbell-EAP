@@ -6,6 +6,7 @@
 package cn.hanbell.crm.jrs;
 
 import cn.hanbell.crm.app.REPTCApplication;
+import cn.hanbell.crm.app.REPTCSatisfaction;
 import cn.hanbell.crm.app.REPTDApplication;
 import cn.hanbell.crm.ejb.CMSMVBean;
 import cn.hanbell.crm.ejb.CRMGGBean;
@@ -414,6 +415,47 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
             return rsd;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    /**
+     * 客户提交的满意度调查 由于小程序传过来的数据超过微信规定的拼接url上的字符串字节数，此处暂时不做权限规定。
+     *
+     * @return
+     */
+    @POST
+    @Path("updateSatisfaction")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ResponseMessage updateSatisfaction(REPTCSatisfaction satisfaction) {
+        if (satisfaction.getOpenID() == null || "".equals(satisfaction.getOpenID())) {
+              ResponseMessage message = new ResponseMessage("500", "fail");
+                return message;
+        }
+        try {
+            REPTC reptc = reptcBean.findByPK(satisfaction.getMaintainType(), satisfaction.getMaintainNumber());
+            reptc.setTc082(satisfaction.getService());
+            reptc.setTc086(satisfaction.getProduct());
+            int sum = Integer.parseInt(satisfaction.getService()) + Integer.parseInt(satisfaction.getProduct());
+            reptc.setTc087(new BigDecimal(String.valueOf(sum / 2)));
+            StringBuffer remark = new StringBuffer("【");
+            remark.append(satisfaction.getOpenID());
+            remark.append("--").append(satisfaction.getNickname()).append("】\t").append(satisfaction.getRemark());
+            reptc.setTc088(remark.toString());
+            reptcBean.update(reptc);
+            //如果服务及产品满意度都小于4，则企业微信通知其上级
+            if (Integer.valueOf(satisfaction.getProduct()) < 4 && Integer.valueOf(satisfaction.getService()) < 4) {
+                StringBuffer msg = new StringBuffer("【上海汉钟】").append(satisfaction.getMaintainerId()).append("-").append(satisfaction.getMaintainer());
+                msg.append("的维修单（").append(satisfaction.getMaintainType()).append("-").append(satisfaction.getMaintainNumber()).append(")");
+                msg.append("。服务满意度:").append(satisfaction.getService()).append("。产品满意度:").append(satisfaction.getProduct()).append("。请协助回访！");
+                SystemUser user = userBean.findByUserId(satisfaction.getMaintainerId());
+                wartaBean.sendMsgString(user.getManagerId(), msg.toString(), satisfaction.getSessionKey(), satisfaction.getOpenID());
+            }
+            ResponseMessage message = new ResponseMessage("200", "success");
+            return message;
+        } catch (Exception e) {
+            ResponseMessage message = new ResponseMessage("500", "fail");
+            return message;
         }
     }
 }
