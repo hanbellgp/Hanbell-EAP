@@ -174,7 +174,7 @@ public class PricingGroupBean extends SuperEJBForERP<PricingGroup> {
                     continue;
                 }
                 //同类别删除，可以同时申请类别不一样的（LC、DC并存）
-                if (null != d.getCuslevel1() || !"".equals(d.getCuslevel1())) {
+                if (null != d.getCuslevel1() && !"".equals(d.getCuslevel1())) {
                     if (d.getCuslevel1().substring(0, 2).equals(d.getCuslevel2().substring(0, 2))) {
                         PricingUser pricingUser = pricingUserBean.findByGroupidAndUserid(d.getCuslevel1(), d.getCusno());
                         if (pricingUser != null) {
