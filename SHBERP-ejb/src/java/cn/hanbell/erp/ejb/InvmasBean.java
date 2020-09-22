@@ -250,6 +250,9 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 if (m == null) {
                     throw new RuntimeException("ERP中找不到" + detail.getBitnbr());
                 }
+                if(!m.getDirrvyn().equals('N') ){
+                    m.setDirrvyn('Y');
+                }
                 m.setPocode(' ');
                 m.setItcls(detail.getItcls()); // 设置品号大类
                 m.setItdsc(detail.getItdsc()); // 设置中文品名
