@@ -11,6 +11,7 @@ import cn.hanbell.eam.entity.AssetCard;
 import cn.hanbell.eam.ejb.AssetCardBean;
 import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.ejb.EquipmentRepairFileBean;
+import cn.hanbell.eam.ejb.EquipmentRepairHelpersBean;
 import cn.hanbell.eam.ejb.EquipmentRepairHisBean;
 import cn.hanbell.eam.ejb.EquipmentRepairSpareBean;
 import cn.hanbell.eam.ejb.EquipmentSpareBean;
@@ -19,6 +20,7 @@ import cn.hanbell.eam.ejb.SysCodeBean;
 import cn.hanbell.eam.ejb.UnitBean;
 import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eam.entity.EquipmentRepairFile;
+import cn.hanbell.eam.entity.EquipmentRepairHelpers;
 import cn.hanbell.eam.entity.EquipmentRepairHis;
 import cn.hanbell.eam.entity.EquipmentRepairSpare;
 import cn.hanbell.eam.entity.EquipmentSpare;
@@ -90,6 +92,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     
     @EJB
     private EquipmentRepairHisBean equipmentRepairHisBean;
+    
+    @EJB
+    private EquipmentRepairHelpersBean equipmentRepairHelpersBean;
     
     @EJB
     private AssetCardBean assetCardBeam;
@@ -250,14 +255,19 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 Map<String, Object> filterFields_spareUsed = new HashMap<>();
                 EquipmentRepair equipInvenTemp = new EquipmentRepair();
                 EquipmentRepairSpare eqpRepairSpareTemp = new EquipmentRepairSpare();
+                EquipmentRepairHelpers eqpRepairHelperTemp = new EquipmentRepairHelpers();
                 List<EquipmentSpare> eqpSpareListTemp = new ArrayList<EquipmentSpare>();
                 List<EquipmentRepairSpare>eqpRepairSpareListTemp = new ArrayList<EquipmentRepairSpare>();
                 EquipmentSpare eqpSpareTemp = new EquipmentSpare();
                 Unit unitTemp = new Unit();
                 
                 JSONArray jsonArray = new JSONArray(entity.getRemark());
+                
+                JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
+                JSONArray repairHelperList_jsonArray = jsonArray.getJSONArray(1);
+                
                 JSONObject jsonObj = new JSONObject();
-                for(Object jobj:jsonArray)
+                for(Object jobj:spareUsedList_jsonArray)
                 {
                     jsonObj = (JSONObject)jobj;
                     eqpRepairSpareTemp = new EquipmentRepairSpare();
@@ -317,6 +327,55 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     }
                 }
                 
+                for(Object jobj:repairHelperList_jsonArray)
+                {
+                    jsonObj = (JSONObject)jobj;
+                    eqpRepairHelperTemp = new EquipmentRepairHelpers();
+                    
+                    if(jsonObj.has("docId"))
+                    {
+                        eqpRepairHelperTemp = equipmentRepairHelpersBean.findById(jsonObj.getInt("docId"));
+                        if(eqpRepairHelperTemp != null)
+                        {
+                            eqpRepairHelperTemp.setUserno(jsonObj.getString("UserNo"));
+                            equipmentRepairHelpersBean.persist(eqpRepairHelperTemp);
+                        }
+                    }
+                    else
+                    {
+                        List<EquipmentRepairHelpers> eqpRepairHelperList = equipmentRepairHelpersBean.findByPId(entity.getFormid());
+                    
+                        int helperIndexMaxTemp = 0;
+
+                        if(eqpRepairHelperList == null || eqpRepairHelperList.size() < 1)
+                        {
+                            helperIndexMaxTemp = 1;
+                        }
+                        else
+                        {
+                            for(int i = 0 ; i < eqpRepairHelperList.size() ; i++)
+                            {
+                                if(eqpRepairHelperList.get(i).getSeq() >= helperIndexMaxTemp)
+                                {
+                                    helperIndexMaxTemp = eqpRepairHelperList.get(i).getSeq();
+                                }
+                            }
+                            helperIndexMaxTemp = helperIndexMaxTemp + 1;
+                        }
+
+                        eqpRepairHelperTemp.setCompany(entity.getCompany());
+                        eqpRepairHelperTemp.setPid(entity.getFormid());
+                        eqpRepairHelperTemp.setSeq(helperIndexMaxTemp);
+                        eqpRepairHelperTemp.setRtype("1");
+                        eqpRepairHelperTemp.setCurnode(jsonObj.getString("CurNode"));
+                        eqpRepairHelperTemp.setCurnode2(jsonObj.getString("CurNode2"));
+                        eqpRepairHelperTemp.setUserno(jsonObj.getString("UserNo"));
+                        eqpRepairHelperTemp.setStatus("N");
+                        eqpRepairHelperTemp.setCredate(new Date());
+
+                        equipmentRepairHelpersBean.persist(eqpRepairHelperTemp);
+                    }
+                }
                 
                 if(entity.getId() != null)
                 {
@@ -365,6 +424,49 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         equipInvenTemp.setLaborcost(laborCost);
                         equipInvenTemp.setStatus("N");
                         equipmentrepairBean.persist(equipInvenTemp);
+                        
+                        //在辅助人员表中插入维修人自己的信息方便报表开发
+                        List<EquipmentRepairHelpers> eqpRepairHelperList = equipmentRepairHelpersBean.findByPId(equipInvenTemp.getFormid());
+                        int helperIndexMaxTemp = 0;
+
+                        if(eqpRepairHelperList == null || eqpRepairHelperList.size() < 1)
+                        {
+                            helperIndexMaxTemp = 1;
+                        }
+                        else
+                        {
+                            for(int i = 0 ; i < eqpRepairHelperList.size() ; i++)
+                            {
+                                if(eqpRepairHelperList.get(i).getSeq() >= helperIndexMaxTemp)
+                                {
+                                    helperIndexMaxTemp = eqpRepairHelperList.get(i).getSeq();
+                                }
+                            }
+                            helperIndexMaxTemp = helperIndexMaxTemp + 1;
+                        }
+                        
+                        Date arriveDate = equipInvenTemp.getServicearrivetime();
+                        Date finishDate = equipInvenTemp.getCompletetime();
+
+                        long dateDiff = 0;
+                        if(finishDate != null)
+                        {
+                            dateDiff = finishDate.getTime() - arriveDate.getTime();
+                        }
+
+                        double minuteDiff = (dateDiff / (1000 * 60)) - equipInvenTemp.getExcepttime();
+                        eqpRepairHelperTemp = new EquipmentRepairHelpers();
+                        eqpRepairHelperTemp.setCompany(equipInvenTemp.getCompany());
+                        eqpRepairHelperTemp.setPid(equipInvenTemp.getFormid());
+                        eqpRepairHelperTemp.setSeq(helperIndexMaxTemp);
+                        eqpRepairHelperTemp.setRtype("0");
+                        eqpRepairHelperTemp.setCurnode(equipInvenTemp.getServiceuser());
+                        eqpRepairHelperTemp.setCurnode2(equipInvenTemp.getServiceusername());
+                        eqpRepairHelperTemp.setUserno(String.format("%.2f", minuteDiff));
+                        eqpRepairHelperTemp.setStatus("N");
+                        eqpRepairHelperTemp.setCredate(new Date());
+
+                        equipmentRepairHelpersBean.persist(eqpRepairHelperTemp);
                     }
                     else
                         return new ResponseMessage("301", "数据库异常");
@@ -418,14 +520,19 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 Map<String, Object> filterFields_spareUsed = new HashMap<>();
                 EquipmentRepair equipInvenTemp = new EquipmentRepair();
                 EquipmentRepairSpare eqpRepairSpareTemp = new EquipmentRepairSpare();
+                EquipmentRepairHelpers eqpRepairHelperTemp = new EquipmentRepairHelpers();
                 List<EquipmentSpare> eqpSpareListTemp = new ArrayList<EquipmentSpare>();
                 List<EquipmentRepairSpare>eqpRepairSpareListTemp = new ArrayList<EquipmentRepairSpare>();
                 EquipmentSpare eqpSpareTemp = new EquipmentSpare();
                 Unit unitTemp = new Unit();
                 
                 JSONArray jsonArray = new JSONArray(entity.getRemark());
+                
+                JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
+                JSONArray repairHelperList_jsonArray = jsonArray.getJSONArray(1);
+                
                 JSONObject jsonObj = new JSONObject();
-                for(Object jobj:jsonArray)
+                for(Object jobj:spareUsedList_jsonArray)
                 {
                     jsonObj = (JSONObject)jobj;
                     eqpRepairSpareTemp = new EquipmentRepairSpare();
@@ -485,7 +592,56 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     }
                 }
                 
-                
+                for(Object jobj:repairHelperList_jsonArray)
+                {
+                    jsonObj = (JSONObject)jobj;
+                    eqpRepairHelperTemp = new EquipmentRepairHelpers();
+                    
+                    if(jsonObj.has("docId"))
+                    {
+                        eqpRepairHelperTemp = equipmentRepairHelpersBean.findById(jsonObj.getInt("docId"));
+                        if(eqpRepairHelperTemp != null)
+                        {
+                            eqpRepairHelperTemp.setUserno(jsonObj.getString("UserNo"));
+                            equipmentRepairHelpersBean.persist(eqpRepairHelperTemp);
+                        }
+                    }
+                    else
+                    {
+                        List<EquipmentRepairHelpers> eqpRepairHelperList = equipmentRepairHelpersBean.findByPId(entity.getFormid());
+                    
+                        int helperIndexMaxTemp = 0;
+
+                        if(eqpRepairHelperList == null || eqpRepairHelperList.size() < 1)
+                        {
+                            helperIndexMaxTemp = 1;
+                        }
+                        else
+                        {
+                            for(int i = 0 ; i < eqpRepairHelperList.size() ; i++)
+                            {
+                                if(eqpRepairHelperList.get(i).getSeq() >= helperIndexMaxTemp)
+                                {
+                                    helperIndexMaxTemp = eqpRepairHelperList.get(i).getSeq();
+                                }
+                            }
+                            helperIndexMaxTemp = helperIndexMaxTemp + 1;
+                        }
+
+                        eqpRepairHelperTemp.setCompany(entity.getCompany());
+                        eqpRepairHelperTemp.setPid(entity.getFormid());
+                        eqpRepairHelperTemp.setSeq(helperIndexMaxTemp);
+                        eqpRepairHelperTemp.setRtype("1");
+                        eqpRepairHelperTemp.setCurnode(jsonObj.getString("CurNode"));
+                        eqpRepairHelperTemp.setCurnode2(jsonObj.getString("CurNode2"));
+                        eqpRepairHelperTemp.setUserno(jsonObj.getString("UserNo"));
+                        eqpRepairHelperTemp.setStatus("N");
+                        eqpRepairHelperTemp.setCredate(new Date());
+
+                        equipmentRepairHelpersBean.persist(eqpRepairHelperTemp);
+                    }
+                }
+
                 if(entity.getId() != null)
                 {
                     equipInvenTemp = equipmentrepairBean.findById(entity.getId());
@@ -506,8 +662,17 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         {
                             laborCost = sysLaborCostList.get(0).getCvalue();
                         }
+                        
+                        String rStatus = equipInvenTemp.getRstatus();
+                        if(rStatus.compareTo("30") < 0)
+                        {
+                            equipInvenTemp.setRstatus("25");
+                        }
+                        else
+                        {
+                            equipInvenTemp.setRstatus("40");
+                        }
 
-                        equipInvenTemp.setRstatus("40");
                         equipInvenTemp.setExcepttime(entity.getExcepttime());
                         equipInvenTemp.setStopworktime(entity.getStopworktime());
                         equipInvenTemp.setAbrasehitch(entity.getAbrasehitch());
@@ -786,6 +951,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             }
             
             String fileNameTemp = pidTemp + "_" + fileIndexTemp + "_" + System.currentTimeMillis() + "." + fileType;
+            String relativePath = "../../resources/app/res/" + fileNameTemp;
 //            byte[] bytes1 = decoder.decodeBuffer(fileStr);
 //            ByteArrayInputStream bais = new ByteArrayInputStream(bytes1);
 //            BufferedImage bi1 = ImageIO.read(bais);
@@ -801,7 +967,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             equipmentrepairfile.setSeq(fileIndexTemp);
             equipmentrepairfile.setFilefrom(fileFrom);
             equipmentrepairfile.setFilename(fileNameTemp);
-            equipmentrepairfile.setFilepath(filePathTemp);
+            equipmentrepairfile.setFilepath(relativePath);
             equipmentrepairfile.setStatus("Y");
             
             equipmentrepairfileBean.persist(equipmentrepairfile);
@@ -825,6 +991,26 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             try { 
                 eqpRepairSpareTemp = equipmentRepairSpareBean.findById(entity.getId());
                 equipmentRepairSpareBean.delete(eqpRepairSpareTemp);
+            } catch (Exception ex) {  
+                return new ResponseMessage("500", "删除失败");
+            }
+
+            return new ResponseMessage("200", "备件信息已删除");
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+    
+    @POST
+    @Path("deleteRepairHelperDta")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ResponseMessage deleteRepairHelperDta(EquipmentRepairHelpers entity,@QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            EquipmentRepairHelpers eqpRepairHelperTemp = new EquipmentRepairHelpers();
+            try { 
+                eqpRepairHelperTemp = equipmentRepairHelpersBean.findById(entity.getId());
+                equipmentRepairHelpersBean.delete(eqpRepairHelperTemp);
             } catch (Exception ex) {  
                 return new ResponseMessage("500", "删除失败");
             }
@@ -1193,6 +1379,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<EquipmentTrouble> equipmentTroubleListRes = new ArrayList<EquipmentTrouble>();
             List<EquipmentRepairFile> eqpRepairFileListRes = new ArrayList<EquipmentRepairFile>();
             List<EquipmentRepairSpare> eqpRepairSpareListRes = new ArrayList<EquipmentRepairSpare>();
+            List<EquipmentRepairHelpers> eqpRepairHelpersListRes = new ArrayList<EquipmentRepairHelpers>();
             List<SysCode> hitchUrgencyListRes = new ArrayList<SysCode>();
             EquipmentRepair equipmentRepairRes = new EquipmentRepair();
             this.superEJB = equipmentTroubleBean;
@@ -1222,6 +1409,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 filterFields_eqpFile.put("filefrom","维修图片");
                 eqpRepairFileListRes = equipmentrepairfileBean.findByFilters(filterFields_eqpFile);
                 eqpRepairSpareListRes = equipmentRepairSpareBean.findByPId(equipmentRepairRes.getFormid());
+                eqpRepairHelpersListRes = equipmentRepairHelpersBean.findByPId(equipmentRepairRes.getFormid());
                 
                 System.out.print(equipmentTroubleListRes);
             } catch (Exception ex) {
@@ -1233,6 +1421,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             initDtaRes.add(hitchUrgencyListRes);
             initDtaRes.add(eqpRepairFileListRes);
             initDtaRes.add(eqpRepairSpareListRes);
+            initDtaRes.add(eqpRepairHelpersListRes);
             
            return initDtaRes;
         } else {
