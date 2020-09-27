@@ -57,7 +57,7 @@ import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import sun.misc.BASE64Decoder;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  *
@@ -915,7 +915,6 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 //              fileDta: obj,
 //              fileMark: _this.data.troubleDetailInfo,
         
-        BASE64Decoder decoder = new sun.misc.BASE64Decoder();
         EquipmentRepairFile equipmentrepairfile = new EquipmentRepairFile();
         List<EquipmentRepairFile> eqpRepairImageListRes = new ArrayList<>();
         try { 
@@ -1715,12 +1714,11 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     public boolean GenerateImage(String imgData, String imgFilePath) throws IOException { // 对字节数组字符串进行Base64解码并生成图片
         if (imgData == null) // 图像数据为空
             return false;
-        BASE64Decoder decoder = new BASE64Decoder();
         OutputStream out = null;
         try {
             out = new FileOutputStream(imgFilePath);
             // Base64解码
-            byte[] b = decoder.decodeBuffer(imgData);
+            byte[] b = Base64.decodeBase64(imgData);
             for (int i = 0; i < b.length; ++i) {
                 if (b[i] < 0) {// 调整异常数据
                     b[i] += 256;

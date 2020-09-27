@@ -93,7 +93,7 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
     @Path("getAssetCardList/{filters}/{sorts}/{offset}/{pageSize}")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public List<AssetCard> findByNewFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public List<AssetCard> findByNewFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token, @QueryParam("searchInfo") String searchInfo) {
         if (isAuthorized(appid, token)) {
             this.superEJB = assetCardBean;
             List<AssetCard> assetCardListRes = new ArrayList<>();
@@ -108,6 +108,7 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
+                        filterFields.put(key,value);
                     }
                 }
                 if (sortsMM != null) {
@@ -117,7 +118,7 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
                         sortFields.put(key, value);
                     }
                 }
-                assetCardListRes = assetCardBean.getAssetCardList("C", value);
+                assetCardListRes = assetCardBean.getAssetCardList("C", searchInfo,filterFields);
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
