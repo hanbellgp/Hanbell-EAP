@@ -132,6 +132,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
             try {
+                List<SystemUser> sysUserList = new ArrayList<SystemUser>();
                 EquipmentRepair equipInvenTemp = new EquipmentRepair();
                 AssetCard assetCardTemp = new AssetCard();
                 assetCardTemp = assetCardBeam.findById(Integer.parseInt(assetCardId));
@@ -180,6 +181,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipmentrepairBean.persist(equipInvenTemp);
                 
                 StringBuffer msg = new StringBuffer("收到新的报修单:");
+                StringBuffer userStrTemp = new StringBuffer(entity.getServiceuser().toUpperCase());
                 msg.append(formid).append("<br/>");
                 msg.append("资产编号:").append(assetCardTemp.getFormid()).append("<br/>");
                 msg.append("设备名称:").append(assetCardTemp.getAssetDesc()).append("<br/>");
@@ -193,9 +195,25 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     msg.append("<br/>");
                 }
                 msg.append("报修人:").append(entity.getRepairuser()).append("-").append(entity.getRepairusername()).append("<br/>");
+                msg.append("维修人:").append(entity.getServiceuser()).append("-").append(entity.getServiceusername()).append("<br/>");
                 msg.append("详情请至微信小程序查看!");
                 
-                String errmsg = sendMsgString(entity.getServiceuser().toUpperCase(), msg.toString(), sessionKey, openId);
+                sysUserList = systemUserBean.findByDeptno("1W300");
+                if(sysUserList.size() > 0)
+                {
+                    userStrTemp.append("|").append(sysUserList.get(0).getUserid().toUpperCase());
+                }
+
+                if("C0-1".equalsIgnoreCase(assetCardTemp.getPosition2().getPosition()))
+                {
+                    userStrTemp.append("|").append("C0299");
+                }
+                else if("C0-2".equalsIgnoreCase(assetCardTemp.getPosition2().getPosition()))
+                {
+                    userStrTemp.append("|").append("C0141");
+                }
+                
+                String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
                 
                 // 发送失败，抛异常，使事务回滚
                 if (!"200".equals(errmsg)) {
@@ -453,6 +471,25 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                             equipInvenTemp.setHitchdutydeptname(entity.getHitchdutydeptname());
                             equipInvenTemp.setHitchdutyuser(entity.getHitchdutyuser());
                             equipInvenTemp.setHitchdutyusername(entity.getHitchdutyusername());
+                            
+                            StringBuffer msg = new StringBuffer("请填写故障改善措施!<br/>");
+                            msg.append("报修单号:").append(equipInvenTemp.getFormid()).append("<br/>");
+                            msg.append("资产编号:").append(equipInvenTemp.getAssetno().getFormid()).append("<br/>");
+                            msg.append("设备名称:").append(equipInvenTemp.getAssetno().getAssetDesc()).append("<br/>");
+                            msg.append("设备位置:").append(equipInvenTemp.getAssetno().getPosition1().getName()).append(equipInvenTemp.getAssetno().getPosition2().getName());
+                            if(equipInvenTemp.getAssetno().getPosition3() != null)
+                            {
+                                msg.append(equipInvenTemp.getAssetno().getPosition3().getName()).append("<br/>");
+                            }
+                            else
+                            {
+                                msg.append("<br/>");
+                            }
+                            msg.append("报修人:").append(equipInvenTemp.getRepairuser()).append("-").append(equipInvenTemp.getRepairusername()).append("<br/>");
+                            msg.append("维修人:").append(equipInvenTemp.getServiceuser()).append("-").append(equipInvenTemp.getServiceusername()).append("<br/>");
+                            msg.append("详情请至微信小程序查看!");
+
+                            String errmsg = sendMsgString(entity.getHitchdutyuser(), msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
                         }
                         else
                         {
