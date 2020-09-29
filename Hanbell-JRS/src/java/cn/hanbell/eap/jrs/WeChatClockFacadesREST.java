@@ -54,7 +54,11 @@ public class WeChatClockFacadesREST extends SuperRESTForEAP<WeChatClock> {
                 try {
                     weChatClockBean.persist(r);
                 } catch (Exception e) {
-                    log4j.warn(("抛转OA数据失败："+r.toString()));
+                    log4j.warn(("抛转OA数据失败："+e.getMessage()));
+                    StringBuffer warnMsg=new StringBuffer("---WeChatClock---:");
+                    warnMsg.append(r.getGroupname()).append("-").append(r.getUserid()).append("-").append(r.getLocationtitle()).append("-(");
+                    warnMsg.append(r.getLng()).append(",").append(r.getLat());
+                    log4j.warn(warnMsg.toString());
                 }
 
             }
