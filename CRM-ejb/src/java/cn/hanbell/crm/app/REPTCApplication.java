@@ -47,7 +47,7 @@ public class REPTCApplication implements Serializable {
 
     private String sessionkey;
     private String openId;
-
+    private String sendJobNum;
     List<REPTDApplication> reptds;
 
     public Long getId() {
@@ -168,6 +168,14 @@ public class REPTCApplication implements Serializable {
 
     public void setDeliverydeptId(String deliverydeptId) {
         this.deliverydeptId = deliverydeptId;
+    }
+
+    public String getSendJobNum() {
+        return sendJobNum;
+    }
+
+    public void setSendJobNum(String sendJobNum) {
+        this.sendJobNum = sendJobNum;
     }
 
 }

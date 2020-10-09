@@ -195,14 +195,17 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 //从多人派工中带入
                 List<REPPW> reppes = reppwBean.findByPw001AndPw002(reptcapplication.getRepairKindId(), reptcapplication.getRepairno());
                 for (REPPW r : reppes) {
-                    if (r.getPw004().equals(reptcapplication.getMaintainer())) {
+                    if (r.getREPPWPK().getPw003().equals(reptcapplication.getSendJobNum())) {
                         r.setPw008(reptcapplication.getMaintainTypeId());
                         r.setPw009(seal);
+                        r.setPw010("1");
                         reppwBean.update(r);
+                        //修改叫修单的状态         
+                        repta.setTa031("1");
+                        reptaBean.update(repta);
                         reptc.setTc095(r.getPw026());
                     }
                 }
-                reppwBean.findByPw001AndPw002(seal, seal);
                 reptc.setTc198(repta.getTa198());
                 reptc.setTc199(repta.getTa199());
                 String serca = sercaBean.findByAC010AndAC011(reptcapplication.getRepairKindId(),
@@ -314,20 +317,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                     wartbBean.persist(wartb);
                 }
                 reptcBean.persist(reptc);
-                // 设置当前员工的维修人员的状态为1
-                List<REPPW> list = reppwBean.findByPw001AndPw002AndPW010(repta.getREPTAPK().getTa001(),
-                        repta.getREPTAPK().getTa002(), "0");
-                for (REPPW r : list) {
-                    if (r.getPw004().equals(reptcapplication.getMaintainer())) {
-                        r.setPw010("1");
-                        reppwBean.update(r);
-                    }
-                }
-                // 当完成最后一个维修人员的维修单时，反写叫修单
-                if (list.size() == 1) {
-                    repta.setTa031("1");
-                    reptaBean.update(repta);
-                }
+
                 // 产生库存异动单头
                 wartapk.setTa002(serializableNumber);
                 warta.setWARTAPK(wartapk);
@@ -429,8 +419,8 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
     @Produces({"application/json"})
     public ResponseMessage updateSatisfaction(REPTCSatisfaction satisfaction) {
         if (satisfaction.getOpenID() == null || "".equals(satisfaction.getOpenID())) {
-              ResponseMessage message = new ResponseMessage("500", "fail");
-                return message;
+            ResponseMessage message = new ResponseMessage("500", "fail");
+            return message;
         }
         try {
             REPTC reptc = reptcBean.findByPK(satisfaction.getMaintainType(), satisfaction.getMaintainNumber());
@@ -444,7 +434,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
             reptc.setTc088(remark.toString());
             reptcBean.update(reptc);
             //如果服务及产品满意度都小于4，则企业微信通知其上级
-            if (Integer.valueOf(satisfaction.getProduct()) < 4 && Integer.valueOf(satisfaction.getService()) < 4) {
+            if (Integer.valueOf(satisfaction.getProduct()) + Integer.valueOf(satisfaction.getService()) < 8) {
                 StringBuffer msg = new StringBuffer("【上海汉钟】").append(satisfaction.getMaintainerId()).append("-").append(satisfaction.getMaintainer());
                 msg.append("的维修单（").append(satisfaction.getMaintainType()).append("-").append(satisfaction.getMaintainNumber()).append(")");
                 msg.append("。服务满意度:").append(satisfaction.getService()).append("。产品满意度:").append(satisfaction.getProduct()).append("。请协助回访！");

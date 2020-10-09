@@ -104,11 +104,13 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                             sendUser.append(pw004.split("-")[0]);
 
                             m.setREPPWPK(mk);
+                            m.setPw019("N");
                             if (pw004.equals(ad.getRepairmanname())) {
-                                m.setPw019("Y");
-                                pw026 = mk.getPw003();
-                            } else {
-                                m.setPw019("N");
+                                List<REPPW> reppws = reppwBean.findByPw001AndPw002AndPW019(mk.getPw001(), mk.getPw002(), "Y");
+                                if (reppws == null || reppws.isEmpty()) {
+                                    m.setPw019("Y");
+                                }
+
                             }
                             if (!"".equals(ad.getStationname())) {
                                 m.setPw005(ad.getStationname().split("-")[0]);
@@ -145,12 +147,18 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                     }
                 }
                 int size = reppws.size();
+                String isY=null;
                 for (REPPW reppw : reppwList) {
                     size++;
                     reppw.setPw013((short) max);
                     String x = String.valueOf(size);
                     StringBuffer serial = new StringBuffer("000").append(x);
                     reppw.getREPPWPK().setPw003(serial.substring(x.length() - 1));
+                    if("Y".equals(reppw.getPw019())&&isY==null){
+                        isY=reppw.getPw019();
+                    }else{
+                        reppw.setPw019("N");
+                    }
                     reppwBean.persist(reppw);
 
                 }
@@ -181,6 +189,8 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
     /**
      * 获取维修人员，优先分配主维修人员，其次为其他的维修人员。
      *
+     * 【需求修改】2020/9/29 ，直接获取主维修人员
+     *
      * @param SerialNumber
      * @param appid
      * @param token
@@ -191,32 +201,21 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<JSONObject> getMaintainPersonSerialNumber(@PathParam("SerialNumber") String SerialNumber, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            //主维修人员是否已填维修单
             String[] sers = SerialNumber.split("\\|");
             List<REPPW> reppws = reppwBean.findByPw001AndPw002AndPW010AndPW019(sers[0], sers[1], "0", "Y");
-            JSONObject js = null;
             List<JSONObject> objs = new ArrayList<>();
-            if (reppws == null || reppws.isEmpty()) {
-                List<REPPW> rs = reppwBean.findByPw001AndPw002AndPW010AndPW019(sers[0], sers[1], "0", "N");
-                for (REPPW r : rs) {
+            JSONObject js = null;
+            if (reppws != null && !reppws.isEmpty()) {
+                for (REPPW r : reppws) {
                     js = new JSONObject();
+                    js.put("key", reppws.get(0).getPw004());
+                    js.put("value", reppws.get(0).getCmsmv().getMv002());
                     REPMB repmb = repmbBean.findByMB001(r.getPw004());
-                    js.put("key", r.getPw004());
-                    js.put("value", r.getCmsmv().getMv002());
                     js.put("value1", repmb.getWarmj().getMj001());
                     js.put("value2", repmb.getWarmj().getMj002());
+                    js.put("value3", r.getREPPWPK().getPw003());
                     objs.add(js);
                 }
-
-            } else {
-                //负责人未分配维修单，优先分配
-                js = new JSONObject();
-                js.put("key", reppws.get(0).getPw004());
-                js.put("value", reppws.get(0).getCmsmv().getMv002());
-                REPMB repmb = repmbBean.findByMB001(reppws.get(0).getPw004());
-                js.put("value1", repmb.getWarmj().getMj001());
-                js.put("value2", repmb.getWarmj().getMj002());
-                objs.add(js);
             }
             ResponseData<JSONObject> respone = new ResponseData("200", "success");
             respone.setCount(objs.size());
