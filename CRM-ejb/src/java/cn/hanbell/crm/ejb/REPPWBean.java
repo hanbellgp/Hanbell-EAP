@@ -6,7 +6,6 @@
 package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
-import cn.hanbell.crm.entity.DDGC;
 import cn.hanbell.crm.entity.REPPW;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -49,11 +48,11 @@ public class REPPWBean extends SuperEJBForCRM<REPPW> {
         }
     }
     
-       public List<REPPW> findByPw001AndPw002AndPW010(String pw001, String pw002, String pw010) {
-        Query query = this.getEntityManager().createNamedQuery("REPPW.findByPw001AndPw002AndPw010");
+       public List<REPPW> findByPw001AndPw002AndPW019(String pw001, String pw002, String pw019) {
+        Query query = this.getEntityManager().createNamedQuery("REPPW.findByPw001AndPw002AndPw019");
         query.setParameter("pw001", pw001);
         query.setParameter("pw002", pw002);
-        query.setParameter("pw010", pw010);
+        query.setParameter("pw019", pw019);
         try {
             return query.getResultList();
         } catch (Exception e) {
