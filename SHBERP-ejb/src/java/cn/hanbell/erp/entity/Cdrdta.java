@@ -143,10 +143,6 @@ public class Cdrdta implements Serializable {
     @Size(max = 8)
     @Column(name = "n_code_DD")
     private String ncodeDD;
-    @Column(name = "psamts")
-    private BigDecimal psamts;
-    @Column(name = "msamts")
-    private BigDecimal msamts;
     @Column(name = "issevdta")
     private Character issevdta;
 
@@ -396,22 +392,6 @@ public class Cdrdta implements Serializable {
 
     public void setMatecode(String matecode) {
         this.matecode = matecode;
-    }
-
-    public BigDecimal getPsamts() {
-        return psamts;
-    }
-
-    public void setPsamts(BigDecimal psamts) {
-        this.psamts = psamts;
-    }
-
-    public BigDecimal getMsamts() {
-        return msamts;
-    }
-
-    public void setMsamts(BigDecimal msamts) {
-        this.msamts = msamts;
     }
 
     public Character getIssevdta() {
