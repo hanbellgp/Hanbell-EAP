@@ -85,7 +85,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "REPPW.findByPw026", query = "SELECT r FROM REPPW r WHERE r.pw026 = :pw026"),
     @NamedQuery(name = "REPPW.findByPw001AndPw002", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw001 = :pw001 AND r.rEPPWPK.pw002 = :pw002"),
     @NamedQuery(name = "REPPW.findByPw001AndPw002AndPw010AndPw019", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw001 = :pw001 AND r.rEPPWPK.pw002 = :pw002 AND r.pw010 = :pw010 AND r.pw019 = :pw019"),
-     @NamedQuery(name = "REPPW.findByPw001AndPw002AndPw010", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw001 = :pw001 AND r.rEPPWPK.pw002 = :pw002 AND r.pw010 = :pw010")
+     @NamedQuery(name = "REPPW.findByPw001AndPw002AndPw019", query = "SELECT r FROM REPPW r WHERE r.rEPPWPK.pw001 = :pw001 AND r.rEPPWPK.pw002 = :pw002 AND r.pw019 = :pw019")
 })
 public class REPPW implements Serializable {
 
