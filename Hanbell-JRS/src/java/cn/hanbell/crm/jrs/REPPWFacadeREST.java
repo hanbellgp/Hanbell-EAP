@@ -172,11 +172,11 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                     ra.setTa031("0");
                     reptaBean.update(ra);
                 }
-//                String errmsg = reptaBean.sendMsgString(sendUser.toString(), msg.toString(),
-//                        entity.getSessionkey(), entity.getOpenId());
-//                if (!"200".equals(errmsg)) {
-//                    throw new RuntimeException("发送失败,请联系管理员");
-//                }
+                String errmsg = reptaBean.sendMsgString(sendUser.toString(), msg.toString(),
+                        entity.getSessionkey(), entity.getOpenId());
+                if (!"200".equals(errmsg)) {
+                    throw new RuntimeException("发送失败,请联系管理员");
+                }
                 return new ResponseMessage("200", "更新派工资料成功！");
             } catch (Exception ex) {
                 return new ResponseMessage("500", "更新失败");
