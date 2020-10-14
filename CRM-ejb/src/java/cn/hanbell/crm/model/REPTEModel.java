@@ -6,7 +6,6 @@
 package cn.hanbell.crm.model;
 
 import cn.hanbell.crm.entity.REPTEPK;
-import cn.hanbell.util.BaseLib;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -19,14 +18,16 @@ public class REPTEModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private String id;
+
     private String serviceStaff;//服务人员名字
 
     private String customerAbbreviation;//客户简称
 
     private BigDecimal roadTime;//路程总时
-    
+
     private REPTEPK rEPTEPK;
-    
+
     private String roadStartDate;
 
     private String arrivalDate;
@@ -164,6 +165,16 @@ public class REPTEModel implements Serializable {
     private String te508;
 
     private String te509;
+
+    public String getId() {
+//        #{item.te001}#{item.te002}-#{item.te004}
+      
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getServiceStaff() {
         return serviceStaff;

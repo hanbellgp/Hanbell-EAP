@@ -47,6 +47,8 @@ public class ApplicationConfig extends Application {
         resources.add(cn.hanbell.crm.jrs.WARMAFacadeREST.class);
         resources.add(cn.hanbell.crm.jrs.WARMJFacadeREST.class);
         resources.add(cn.hanbell.crm.jrs.WARMQFacadeREST.class);
+        resources.add(cn.hanbell.eam.jrs.AssetcardFacadeREST.class);
+        resources.add(cn.hanbell.eam.jrs.EquipmentRepairFacadeREST.class);
         resources.add(cn.hanbell.eap.jrs.BookingFacadeREST.class);
         resources.add(cn.hanbell.eap.jrs.BookingKindFacadeREST.class);
         resources.add(cn.hanbell.eap.jrs.CompanyFacadeREST.class);
