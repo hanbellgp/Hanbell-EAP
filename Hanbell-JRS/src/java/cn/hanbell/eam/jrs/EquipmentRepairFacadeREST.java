@@ -149,14 +149,13 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipInvenTemp.setItemno(entity.getItemno());
                 equipInvenTemp.setFormid(formid);
                 equipInvenTemp.setTroublefrom(entity.getTroublefrom());
+                equipInvenTemp.setRepairmethodtype(entity.getRepairmethodtype());
                 equipInvenTemp.setHitchdesc(entity.getHitchdesc());
                 equipInvenTemp.setHitchurgency(entity.getHitchurgency());
-                equipInvenTemp.setServiceuser(entity.getServiceuser());
-                equipInvenTemp.setServiceusername(entity.getServiceusername());
-                equipInvenTemp.setRstatus("10");
                 equipInvenTemp.setStatus("N");
                 equipInvenTemp.setRepairdeptno(entity.getRepairdeptno());
                 equipInvenTemp.setRepairdeptname(entity.getRepairdeptname());
+                equipInvenTemp.setRemark(entity.getRemark());
                 equipInvenTemp.setCreator(entity.getCreator());
                 equipInvenTemp.setCredate(new Date());
                 //init value
@@ -177,50 +176,88 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 //                Date date = Date.from( localDateTime.atZone( ZoneId.systemDefault()).toInstant());
 //                equipInvenTemp.setFormdate(date);
 //                equipInvenTemp.setDmark(entity.getDmark());
-                
-                equipmentrepairBean.persist(equipInvenTemp);
-                
-                StringBuffer msg = new StringBuffer("收到新的报修单:");
-                StringBuffer userStrTemp = new StringBuffer(entity.getServiceuser().toUpperCase());
-                msg.append(formid).append("<br/>");
-                msg.append("资产编号:").append(assetCardTemp.getFormid()).append("<br/>");
-                msg.append("设备名称:").append(assetCardTemp.getAssetDesc()).append("<br/>");
-                msg.append("设备位置:").append(assetCardTemp.getPosition1().getName()).append(assetCardTemp.getPosition2().getName());
-                if(assetCardTemp.getPosition3() != null)
+
+                if("2".equals(entity.getRepairmethodtype()))
                 {
-                    msg.append(assetCardTemp.getPosition3().getName()).append("<br/>");
+                    equipInvenTemp.setServiceuser(entity.getRepairuser());
+                    equipInvenTemp.setServiceusername(entity.getRepairusername());
                 }
                 else
                 {
-                    msg.append("<br/>");
-                }
-                msg.append("报修人:").append(entity.getRepairuser()).append("-").append(entity.getRepairusername()).append("<br/>");
-                msg.append("维修人:").append(entity.getServiceuser()).append("-").append(entity.getServiceusername()).append("<br/>");
-                msg.append("详情请至微信小程序查看!");
-                
-                sysUserList = systemUserBean.findByDeptno("1W300");
-                if(sysUserList.size() > 0)
-                {
-                    userStrTemp.append("|").append(sysUserList.get(0).getUserid().toUpperCase());
+                    equipInvenTemp.setServiceuser(entity.getServiceuser());
+                    equipInvenTemp.setServiceusername(entity.getServiceusername());
                 }
 
-                if("C0-1".equalsIgnoreCase(assetCardTemp.getPosition2().getPosition()))
+                if(entity.getServicearrivetime() != null)
                 {
-                    userStrTemp.append("|").append("C0299");
+                    equipInvenTemp.setServicearrivetime(entity.getServicearrivetime());
+                    if(entity.getCompletetime() != null)
+                    {
+                        equipInvenTemp.setCompletetime(entity.getCompletetime());
+                        if("2".equals(entity.getRepairmethodtype()))
+                        {
+                            equipInvenTemp.setRstatus("95");
+                        }
+                        else
+                        {
+                            equipInvenTemp.setRstatus("30");
+                        }
+                    }
+                    else
+                    {
+                        equipInvenTemp.setRstatus("20");
+                    }
                 }
-                else if("C0-2".equalsIgnoreCase(assetCardTemp.getPosition2().getPosition()))
+                else
                 {
-                    userStrTemp.append("|").append("C0141");
+                    equipInvenTemp.setRstatus("10");
                 }
                 
-                String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
+                equipmentrepairBean.persist(equipInvenTemp);
                 
-                // 发送失败，抛异常，使事务回滚
-                if (!"200".equals(errmsg)) {
-                    //throw new RuntimeException("发送失败,请联系管理员");
-                    return new ResponseMessage("203", formid);
+                if(!"2".equals(entity.getRepairmethodtype()))
+                {
+                    StringBuffer msg = new StringBuffer("收到新的报修单:");
+                    StringBuffer userStrTemp = new StringBuffer(entity.getServiceuser().toUpperCase());
+                    msg.append(formid).append("<br/>");
+                    msg.append("资产编号:").append(assetCardTemp.getFormid()).append("<br/>");
+                    msg.append("设备名称:").append(assetCardTemp.getAssetDesc()).append("<br/>");
+                    msg.append("设备位置:").append(assetCardTemp.getPosition1().getName()).append(assetCardTemp.getPosition2().getName());
+                    if(assetCardTemp.getPosition3() != null)
+                    {
+                        msg.append(assetCardTemp.getPosition3().getName()).append("<br/>");
+                    }
+                    else
+                    {
+                        msg.append("<br/>");
+                    }
+                    msg.append("报修人:").append(entity.getRepairuser()).append("-").append(entity.getRepairusername()).append("<br/>");
+                    msg.append("维修人:").append(entity.getServiceuser()).append("-").append(entity.getServiceusername()).append("<br/>");
+                    msg.append("详情请至微信小程序查看!");
+
+                    sysUserList = systemUserBean.findByDeptno("1W300");
+                    if(sysUserList.size() > 0)
+                    {
+                        userStrTemp.append("|").append(sysUserList.get(0).getUserid().toUpperCase());
+                    }
+
+                    if("C0-1".equalsIgnoreCase(assetCardTemp.getPosition2().getPosition()))
+                    {
+                        userStrTemp.append("|").append("C0299");
+                    }
+                    else if("C0-2".equalsIgnoreCase(assetCardTemp.getPosition2().getPosition()))
+                    {
+                        userStrTemp.append("|").append("C0141");
+                    }
+
+                    String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
+
+                    // 发送失败，抛异常，使事务回滚
+                    if (!"200".equals(errmsg)) {
+                        //throw new RuntimeException("发送失败,请联系管理员");
+                        return new ResponseMessage("203", formid);
+                    }
                 }
-                
                 
                 return new ResponseMessage("200", formid);
             } catch (Exception ex) {
@@ -250,6 +287,36 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 }
                 
                 return new ResponseMessage("200", "发送成功");
+            } catch (Exception ex) {
+                return new ResponseMessage("500", "系统错误Insert失败");
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+    
+    @POST
+    @Path("deleteRepairDoc")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ResponseMessage updateEqpRepairHad_deleteRepairDoc(EquipmentRepair entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            if (entity == null) {
+                throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            }
+            try {
+                EquipmentRepair equipInvenTemp = new EquipmentRepair();
+                
+                if(entity.getId() != null)
+                {
+                    equipInvenTemp = equipmentrepairBean.findById(entity.getId());
+                    if(equipInvenTemp != null)
+                    {
+                        equipInvenTemp.setRstatus("98");
+                        equipmentrepairBean.persist(equipInvenTemp);
+                    }
+                }
+                return new ResponseMessage("200", "状态更新成功");
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误Insert失败");
             }
@@ -306,7 +373,14 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     equipInvenTemp = equipmentrepairBean.findById(entity.getId());
                     if(equipInvenTemp != null)
                     {
-                        equipInvenTemp.setRstatus("30");
+                        if("2".equals(equipInvenTemp.getRepairmethodtype()))
+                        {
+                            equipInvenTemp.setRstatus("95");
+                        }
+                        else
+                        {
+                            equipInvenTemp.setRstatus("30");
+                        }
 //                        equipInvenTemp.setHitchtype(entity.getHitchtype());
 //                        equipInvenTemp.setRepairmethod(entity.getRepairmethod());
                         equipInvenTemp.setCompletetime(new Date());
@@ -522,6 +596,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         equipInvenTemp.setRepaircost(entity.getRepaircost());
                         equipInvenTemp.setLaborcosts(entity.getLaborcosts());
                         equipInvenTemp.setLaborcost(laborCost);
+                        equipInvenTemp.setRemark(entity.getOptuser());
                         equipInvenTemp.setStatus("N");
                         equipmentrepairBean.persist(equipInvenTemp);
                         
@@ -532,7 +607,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 
                         if(eqpRepairHelperList == null || eqpRepairHelperList.size() < 1)
                         {
-                            helperIndexMaxTemp = 1;
+                            helperIndexMaxTemp = 0;
                         }
                         else
                         {
@@ -800,6 +875,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         equipInvenTemp.setRepaircost(entity.getRepaircost());
                         equipInvenTemp.setLaborcosts(entity.getLaborcosts());
                         equipInvenTemp.setLaborcost(laborCost);
+                        equipInvenTemp.setRemark(entity.getOptuser());
                         equipInvenTemp.setStatus("N");
                         equipmentrepairBean.persist(equipInvenTemp);
                     }
@@ -855,6 +931,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                             equipInvenList.get(0).setRstatus("95");
                         }
                     }
+                    equipInvenList.get(0).setRemark(entity.getRemark());
                     equipInvenList.get(0).setStatus("N");
                     equipmentrepairBean.persist(equipInvenList.get(0));
                 }
@@ -916,6 +993,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     {
                         equipInvenList.get(0).setRstatus("95");
                     }
+                    equipInvenList.get(0).setRemark(entity.getRemark());
                     equipInvenList.get(0).setStatus("N");
                     equipmentrepairBean.persist(equipInvenList.get(0));
                 }
@@ -1143,6 +1221,65 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 return new ResponseMessage("200", "状态更新成功");
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误Insert失败");
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+    
+    @POST
+    @Path("changeServiceUser")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ResponseMessage updateEqpRepairHad_changeServiceUser(EquipmentRepair entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            if (entity == null) {
+                throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            }
+            
+            try {           
+                EquipmentRepair eqpRepairTemp = new EquipmentRepair();
+                EquipmentRepairHis eqpRepairHisTemp = new EquipmentRepairHis();
+                List<EquipmentRepairHis> eqpRepairList = new ArrayList<EquipmentRepairHis>();
+                eqpRepairTemp = equipmentrepairBean.findById(entity.getId());
+                String rStatus = eqpRepairTemp.getRstatus();
+
+                if(!rStatus.equals("10"))
+                {
+                    return new ResponseMessage("301", "数据库异常");
+                }
+                
+                eqpRepairTemp.setServiceuser(entity.getServiceuser());
+                eqpRepairTemp.setServiceusername(entity.getServiceusername());
+                eqpRepairTemp.setStatus("N");
+                
+                equipmentrepairBean.persist(eqpRepairTemp);
+                
+                eqpRepairList = equipmentRepairHisBean.findByPId(eqpRepairTemp.getFormid());
+                int maxIndex = 0;
+                for(int i = 0;i<eqpRepairList.size();i++)
+                {
+                    if(eqpRepairList.get(i).getSeq() > i)
+                    {
+                        maxIndex = eqpRepairList.get(i).getSeq();
+                    }
+                }
+                maxIndex++;
+                
+                eqpRepairHisTemp.setCompany(eqpRepairTemp.getCompany());
+                eqpRepairHisTemp.setPid(eqpRepairTemp.getFormid());
+                eqpRepairHisTemp.setSeq(maxIndex);
+                eqpRepairHisTemp.setUserno(entity.getRepairuser());
+                eqpRepairHisTemp.setContenct("转派维修人");
+                eqpRepairHisTemp.setNote(entity.getRemark());
+                eqpRepairHisTemp.setStatus("N");
+                eqpRepairHisTemp.setCredate(new Date());
+                
+                equipmentRepairHisBean.persist(eqpRepairHisTemp);
+                
+                return new ResponseMessage("200", "状态更新成功");
+            } catch (Exception ex) {
+                return new ResponseMessage("500", "系统错误转派失败");
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
