@@ -5,23 +5,30 @@
  */
 package cn.hanbell.rpt.control;
 
+import cn.hanbell.crm.ejb.DUPLDBean;
 import cn.hanbell.crm.ejb.REPTCBean;
 import cn.hanbell.crm.ejb.REPTEBean;
 import cn.hanbell.crm.entity.CMSMV;
 import cn.hanbell.crm.entity.CRMGG;
+import cn.hanbell.crm.entity.DUPLD;
 import cn.hanbell.crm.entity.REPTC;
 import cn.hanbell.crm.entity.REPTE;
 import cn.hanbell.crm.model.REPTEModel;
 import cn.hanbell.rpt.web.SuperQueryBean;
 import cn.hanbell.util.BaseLib;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,14 +37,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -51,7 +65,8 @@ public class REPTEManagedBean extends SuperQueryBean<REPTEModel> {
     private REPTEBean repteBean;
     @EJB
     private REPTCBean reptcBean;
-
+    @EJB
+    private DUPLDBean dupldBean;
     private List<REPTEModel> reptemodels;
     private String maintainType;
     private String maintainNumber;
@@ -60,17 +75,22 @@ public class REPTEManagedBean extends SuperQueryBean<REPTEModel> {
     private String serviceStaff;
     private Date startDate;
     private Date endDate;
+    private REPTEModel selectRepteModel;
+    private StreamedContent file;
+    private InputStream rarInputStream;
 
     public REPTEManagedBean() {
         super(REPTEModel.class);
     }
 
     public void handleDialogReturnCRMGG(SelectEvent event) {
+        System.out.println("---+" + selectRepteModel);
         CRMGG u = (CRMGG) event.getObject();
         customerAbbreviation = u.getGg001() + "-" + u.getGg003();
     }
 
     public void handleDialogReturnCMSMV(SelectEvent event) {
+        System.out.println("---+" + selectRepteModel);
         CMSMV u = (CMSMV) event.getObject();
         serviceStaff = u.getMv001() + "-" + u.getMv002();
     }
@@ -78,15 +98,16 @@ public class REPTEManagedBean extends SuperQueryBean<REPTEModel> {
     @Override
     public void init() {
         try {
-            startDate=new Date();
-            endDate=new Date();
+            this.reportPath = fc.getExternalContext().getRealPath("/")
+                    + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportpath") + "压缩模板.rar";
+            startDate = new Date();
+            endDate = new Date();
             reptemodels = new ArrayList<REPTEModel>();
             List<REPTE> reptes = repteBean.findAll();
             setReptemodelList(reptes);
         } catch (ParseException ex) {
             Logger.getLogger(REPTEManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     @Override
@@ -96,11 +117,6 @@ public class REPTEManagedBean extends SuperQueryBean<REPTEModel> {
         try {
             try {
                 String finalFilePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-                //测试路径
-//                int index = finalFilePath.indexOf("dist/gfdeploy");
-                //正式路径
-//                D:\Java\glassfish5\glassfish\domains\domain1\applications\Hanbell-EAP\Hanbell-RPT_war\rpt
-//                D:\Java\glassfish5\glassfish\domains\domain1\applications\Hanbell-EAP\Hanbell-RPT_war\WEB-INF\classes\cn\hanbell\rpt\control
                 int index = finalFilePath.indexOf("WEB-INF");
                 String filePath = new String(finalFilePath.substring(1, index));
                 String pathString = new String(filePath.concat("rpt/"));
@@ -143,7 +159,6 @@ public class REPTEManagedBean extends SuperQueryBean<REPTEModel> {
                     this.preview();
                 } catch (Exception var38) {
                     var38.printStackTrace();
-//                    this.log4j.error(var38);
                 } finally {
                     try {
                         if (null != os) {
@@ -153,7 +168,6 @@ public class REPTEManagedBean extends SuperQueryBean<REPTEModel> {
                     } catch (IOException var37) {
                         this.log4j.error(var37.getMessage());
                     }
-
                 }
             } catch (FileNotFoundException var40) {
                 this.log4j.error(var40.getMessage());
@@ -185,16 +199,16 @@ public class REPTEManagedBean extends SuperQueryBean<REPTEModel> {
             sql.append(" and TE008 like '%").append(serviceStaff.split("-")[0]).append("%'");
         }
         List<REPTE> list = repteBean.getREPTEBySql(sql.toString());
-         List<REPTE> reptes = new ArrayList<REPTE>();
+        List<REPTE> reptes = new ArrayList<REPTE>();
         try {
             for (REPTE r : list) {
                 if (r.getTe502() != null && !"".equals(r.getTe502())
                         && r.getTe504() != null && !"".equals(r.getTe504())) {
                     Date date = BaseLib.getDate("yyyyMMddHHmm", new StringBuffer(r.getTe502()).append(r.getTe504()).toString());
-                    if (date.getTime()>= startDate.getTime() && date.getTime() <= endDate.getTime()) {
-                     reptes.add(r);
+                    if (date.getTime() >= startDate.getTime() && date.getTime() <= endDate.getTime()+1000*60*60*24) {
+                        reptes.add(r);
                     }
-                } 
+                }
             }
             setReptemodelList(reptes);
         } catch (ParseException ex) {
@@ -203,11 +217,19 @@ public class REPTEManagedBean extends SuperQueryBean<REPTEModel> {
     }
 
     public void reset() {
-    maintainType="ALL";
-    maintainNumber="";
-    passesName="";
-    customerAbbreviation="";
-    serviceStaff="";
+        maintainType = "ALL";
+        maintainNumber = "";
+        passesName = "";
+        customerAbbreviation = "";
+        serviceStaff = "";
+    }
+
+    public REPTEModel getSelectRepteModel() {
+        return selectRepteModel;
+    }
+
+    public void setSelectRepteModel(REPTEModel selectRepteModel) {
+        this.selectRepteModel = selectRepteModel;
     }
 
     public REPTEBean getRepteBean() {
@@ -341,7 +363,133 @@ public class REPTEManagedBean extends SuperQueryBean<REPTEModel> {
                     model.setRoadTime(bdmt);
                 }
             }
+
+            StringBuffer str = new StringBuffer(model.getTe001());
+            str.append("_").append(model.getTe002()).append("_").append(model.getTe004());
+            model.setId(str.toString());
             reptemodels.add(model);
         }
     }
+
+    public void downloadPhoto() {
+        file=null;
+        InputStream imgis = null;
+        File img = null;
+        img = new File(this.reportPath);
+        try {
+            boolean b=photoIntoRar();
+            //没有数据
+            if(!b){
+              FacesContext.getCurrentInstance().addMessage((String)null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "该维修单没有上传图片"));
+                return;
+            }
+            imgis = new FileInputStream(img);
+            //由于压缩直接给file类型，不能直接关流，会导致rar模板更新失败，使用字节数组组成流，放入file中
+            ByteArrayOutputStream bytestream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int ch;
+            while ((ch = imgis.read(buffer)) != -1) {
+                bytestream.write(buffer, 0, ch);
+            }
+                byte data[] = bytestream.toByteArray();
+                bytestream.close();
+            if (imgis != null) {
+                file = new DefaultStreamedContent(new ByteArrayInputStream(data), "application/x-rar-compressed", "downloaded_boromir.rar");
+            } else {
+                System.out.println("文件不存在");
+            }
+        } catch (IOException ex) {   
+            Logger.getLogger(REPTEManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+               img.delete();
+               img.createNewFile();
+//               imgis.close();
+            } catch (Exception e) {
+                System.out.println("关流失败");
+            }
+        }
+    }
+
+    public boolean photoIntoRar() {
+        List<DUPLD> duplds = dupldBean.findByLD002AndLd003(this.selectRepteModel.getTe001(), this.selectRepteModel.getTe002());
+        if (duplds == null || duplds.isEmpty()) {
+            return false;
+        }
+        InputStream imgis = null;
+        BufferedInputStream bInStream = null;
+        ZipOutputStream zip = null;
+        OutputStream rar = null;
+        File rarFile = new File(this.reportPath);
+        try {
+            rar = new FileOutputStream(rarFile);
+            zip = new ZipOutputStream(rar);
+            for (DUPLD d : duplds) {
+                HttpURLConnection connection = null;
+                URL connecUrl = new URL(d.getDs007());
+                connection = (HttpURLConnection) connecUrl.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setConnectTimeout(15000);
+                // 设置读取远程返回的数据时间：60000毫秒
+                connection.setReadTimeout(60000);
+                connection.connect();
+                if (connection.getResponseCode() == 200) {
+                    imgis = connection.getInputStream();
+                }
+                if (imgis != null) {
+                    bInStream = new BufferedInputStream(imgis);
+                    ZipEntry entry = new ZipEntry(d.getDs008());
+                    zip.putNextEntry(entry);
+                    int len = 0;
+                    byte[] buffer = new byte[10 * 1024];
+                    while ((len = imgis.read(buffer)) > 0) {
+                        zip.write(buffer, 0, len);
+                    }
+                } else {
+                    System.out.println("文件不存在");
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.getLogger(REPTEManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                zip.flush();
+                bInStream.close();
+                imgis.close();  
+                zip.close();
+                rar.close();
+            } catch (Exception ex) {
+                Logger.getLogger(REPTEManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return true;
+    }
+
+    public void onRowSelect(SelectEvent event) {
+        FacesMessage msg = new FacesMessage("Car Selected", "123");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onRowUnselect(UnselectEvent event) {
+        FacesMessage msg = new FacesMessage("Car Unselected", "124");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public StreamedContent getFile() {
+        return file;
+    }
+
+    public void setFile(StreamedContent file) {
+        this.file = file;
+    }
+
+    public InputStream getRarInputStream() {
+        return rarInputStream;
+    }
+
+    public void setRarInputStream(InputStream rarInputStream) {
+        this.rarInputStream = rarInputStream;
+    }
+
 }
