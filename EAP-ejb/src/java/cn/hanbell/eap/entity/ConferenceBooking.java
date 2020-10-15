@@ -5,12 +5,14 @@
  */
 package cn.hanbell.eap.entity;
 
-import com.lightshell.comm.FormEntity;
 import com.lightshell.comm.SuperEntity;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -33,6 +35,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ConferenceBooking.findByStatus", query = "SELECT c FROM ConferenceBooking c WHERE c.status = :status"),
     @NamedQuery(name = "ConferenceBooking.findByCreator", query = "SELECT c FROM ConferenceBooking c WHERE c.creator = :creator")})
 public class ConferenceBooking extends SuperEntity {
+
+    @ManyToOne(optional = true)
+    @JoinColumns({
+        @JoinColumn(name = "confName", referencedColumnName = "confName", insertable = false, updatable = false)
+    })
+    private ConferenceData conferenceDate;
 
     @Basic(optional = false)
     @NotNull
@@ -105,7 +113,7 @@ public class ConferenceBooking extends SuperEntity {
     @Size(max = 30)
     @Column(name = "hasWeChat")
     private String hasWeChat;
-  
+
     public ConferenceBooking() {
     }
 
@@ -295,6 +303,14 @@ public class ConferenceBooking extends SuperEntity {
 
     public void setHasWeChat(String hasWeChat) {
         this.hasWeChat = hasWeChat;
+    }
+
+    public ConferenceData getConferenceDate() {
+        return conferenceDate;
+    }
+
+    public void setConferenceDate(ConferenceData conferenceDate) {
+        this.conferenceDate = conferenceDate;
     }
 
 }
