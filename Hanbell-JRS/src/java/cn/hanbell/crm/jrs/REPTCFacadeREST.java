@@ -129,8 +129,10 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
             String serializableNumber = wartaBean.getTA002ByTA001AndDate(reptcapplication.getIncentoryform(),
                     new Date());
             List<Object[]> warmqs = warmqBean.findByMQ003(reptcapplication.getIncentoryform());
-            msg.append(reptcapplication.getMaintainTypeId()).append("-").append(seal);
-            msg.append("。 库存异动单:").append(reptcapplication.getIncentoryform()).append("-").append(serializableNumber).append("。");
+            msg.append(reptcapplication.getMaintainTypeId()).append("-").append(seal).append("。");
+            if(reptcapplication.isHasWartb()){
+              msg.append(" 库存异动单:").append(reptcapplication.getIncentoryform()).append("-").append(serializableNumber).append("。");
+            }
             CRMGG crmgg = crmggBean.findByGG001(reptcapplication.getCustomer());
             try {
                 Date date;
@@ -221,7 +223,6 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                 WARTA warta = new WARTA();
                 WARTAPK wartapk = new WARTAPK();
                 wartapk.setTa001(reptcapplication.getIncentoryform());
-
                 int count = 0;
                 BigDecimal sumMoney = new BigDecimal(0);
                 LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
@@ -314,7 +315,10 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                     wartb.setTb042("0");
                     detailList.add(wartb);
                     reptdBean.persist(reptd);
-                    wartbBean.persist(wartb);
+                    if(reptcapplication.isHasWartb()){
+                          wartbBean.persist(wartb);
+                    }
+                  
                 }
                 reptcBean.persist(reptc);
 
@@ -357,7 +361,9 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
                     warta.setTa042(reptcapplication.getTradingreason());
                 }
                 warta.setTa519(reptcapplication.getDeliverydeptId());
-                wartaBean.persist(warta);
+                if(reptcapplication.isHasWartb()){
+                    wartaBean.persist(warta);
+                }
                 StringBuffer userid = null;
                 userid = new StringBuffer(reptcapplication.getEmployeeId());
                 // 同一个人发送一条数据
