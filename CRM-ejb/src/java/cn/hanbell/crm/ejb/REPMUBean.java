@@ -6,7 +6,6 @@
 package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
-import cn.hanbell.crm.entity.REPMQ;
 import cn.hanbell.crm.entity.REPMU;
 
 import java.util.List;
@@ -26,11 +25,8 @@ public class REPMUBean extends SuperEJBForCRM<REPMU> {
         super(REPMU.class);
     }
 
-    public List<Object[]> findByMu001(String Mu001) {
-         StringBuffer sql=new StringBuffer("Select DISTINCT MQ001,MQ002,MQ008 from REPMQ REPMQ Left join REPMU  as REPMU on MQ001=MU001 Where MQ003=N'a2'  AND (( MU003=N'CRMDS' and MQ010='Y' )  or MQ010='N' ) ");
-        if(Mu001!=null&&!"".equals(Mu001)){
-            sql.append(" AND  MU003='").append(Mu001).append("'");
-        }
+    public List<Object[]> findByMu003(String Mu003) {
+         StringBuffer sql=new StringBuffer("Select DISTINCT MQ001,MQ002,MQ008 from REPMQ REPMQ Left join REPMU  as REPMU on MQ001=MU001 Where MQ003=N'a2'  AND (( MU003=N'"+Mu003+"' and MQ010='Y' )  or MQ010='N' ) ");
          Query query = getEntityManager().createNativeQuery(sql.toString());
         try {
             List<Object[]> list = query.getResultList();
