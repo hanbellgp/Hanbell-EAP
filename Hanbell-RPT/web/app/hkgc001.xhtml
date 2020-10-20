@@ -24,12 +24,12 @@
                     <p:column><h:outputLabel value="开始日期" for="queryDateBegin" /></p:column>
                     <p:column>
                         <p:calendar id="queryDateBegin" value="#{hkgc001ManagedQueryBean.queryDateBegin}" title="开始日期" pattern="yyyy/MM/dd"
-                                    required="true" requiredMessage="请输入签核日期"/>
+                                     requiredMessage="请输入签核日期"/>
                     </p:column>
                     <p:column><h:outputLabel value="截止日期" for="queryDateEnd" /></p:column>
                     <p:column>
                         <p:calendar id="queryDateEnd" value="#{hkgc001ManagedQueryBean.queryDateEnd}" title="结束日期" pattern="yyyy/MM/dd"
-                                    required="true" requiredMessage="请输入截止日期"/>
+                                   requiredMessage="请输入截止日期"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
@@ -43,7 +43,9 @@
                                      update=":formList"/>
                 </f:facet>
             </p:toolbar>
-            <p:dataTable  value="#{hkgc001ManagedQueryBean.list}" var="item" styleClass="tableList Mtop10" style="width: 100%" >
+            <p:dataTable  value="#{hkgc001ManagedQueryBean.list}" var="item" styleClass="tableList Mtop10" style="width: 100%" paginator="true" paginatorPosition="bottom" rows="15"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="15,30,45" lazy="true" >
                 <f:facet name="header">
                    研发制令申请及工作支援单
                 </f:facet>
