@@ -2280,9 +2280,25 @@ public class EAPWebService {
     public String createERPMIS226ByOAMIS226(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
         try {
-            ret = secgprgBean.initSECGPRG(psn);
+            ret = secgprgBean.initBySHBERPMIS226(psn);
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "createERPMIS226ByOAMIS226", psn), ex);
+            throw ex;
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "createERPMIS226ByOAHKGL066")
+    public String createERPMIS226ByOAHKGL066(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = secgprgBean.initByOAHKGL066(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "createERPMIS226ByOAHKGL066", psn), ex);
             throw ex;
         }
         if (ret) {

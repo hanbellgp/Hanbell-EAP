@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -66,6 +67,9 @@ public class TaskFacadeREST extends SuperRESTForEAP<Task> {
                 if (t == null) {
                     return new ResponseMessage("404", "找不到对象");
                 }
+                if (!Objects.equals(t.getOptdate(), entity.getOptdate())) {
+                    return new ResponseMessage("409", "修改冲突");
+                }
                 participantList = participantBean.findByPId(t.getId());
                 if (participantList != null && !participantList.isEmpty()) {
                     participantBean.delete(participantList);
@@ -74,6 +78,7 @@ public class TaskFacadeREST extends SuperRESTForEAP<Task> {
                 if (attachmentList != null && !attachmentList.isEmpty()) {
                     attachmentBean.delete(attachmentList);
                 }
+                entity.setOptdateToNow();
                 taskBean.update(entity);
                 return new ResponseMessage("200", "更新成功");
             } catch (Exception ex) {
@@ -92,6 +97,16 @@ public class TaskFacadeREST extends SuperRESTForEAP<Task> {
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
+    }
+
+    @Override
+    public ResponseObject findById(PathSegment id, String appid, String token) {
+        ResponseObject res = super.findById(id, appid, token);
+        List<Task> details = taskBean.findByPId(Integer.parseInt(id.getPath()));
+        if (details != null && !details.isEmpty()) {
+            res.getExtData().put("details", details);
+        }
+        return res;
     }
 
     @GET

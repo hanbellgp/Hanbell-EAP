@@ -5,7 +5,6 @@
  */
 package cn.hanbell.rpt.web;
 
-import cn.hanbell.oa.entity.HKFW005;
 import com.lightshell.comm.SuperEJB;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -17,6 +16,7 @@ import org.primefaces.model.SortOrder;
 /**
  *
  * @author C0160
+ * @param <T>
  */
 public abstract class SuperLazyModel<T> extends LazyDataModel<T> {
 

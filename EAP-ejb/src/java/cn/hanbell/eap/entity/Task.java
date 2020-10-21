@@ -48,6 +48,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Task.findAll", query = "SELECT j FROM Task j"),
     @NamedQuery(name = "Task.findById", query = "SELECT j FROM Task j WHERE j.id = :id"),
     @NamedQuery(name = "Task.findByName", query = "SELECT j FROM Task j WHERE j.name = :name"),
+    @NamedQuery(name = "Task.findByPId", query = "SELECT j FROM Task j WHERE j.pid = :pid  ORDER BY j.plannedStartDate,j.priority"),
     @NamedQuery(name = "Task.findByExecutorId", query = "SELECT j FROM Task j WHERE j.executorId = :executorId"),
     @NamedQuery(name = "Task.findByExecutorIdAndActualFinishDate", query = "SELECT j FROM Task j WHERE j.status = 'V' AND j.executorId = :executorId AND j.actualFinishDate >= :actualFinishDate ORDER BY j.actualFinishDate,j.priority"),
     @NamedQuery(name = "Task.findByExecutorIdAndName", query = "SELECT j FROM Task j WHERE j.executorId = :executorId AND j.name LIKE :name ORDER BY j.plannedStartDate,j.priority"),
@@ -84,6 +85,8 @@ public class Task extends SuperEntity {
     @Size(max = 400)
     @Column(name = "description")
     private String description;
+    @Column(name = "pid")
+    private Integer pid;
     @Size(max = 20)
     @Column(name = "executorId")
     private String executorId;
@@ -194,6 +197,14 @@ public class Task extends SuperEntity {
         this.description = description;
     }
 
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
     public String getExecutorId() {
         return executorId;
     }
@@ -210,30 +221,18 @@ public class Task extends SuperEntity {
         this.executor = executor;
     }
 
-    /**
-     * @return the deptId
-     */
     public String getDeptId() {
         return deptId;
     }
 
-    /**
-     * @param deptId the deptId to set
-     */
     public void setDeptId(String deptId) {
         this.deptId = deptId;
     }
 
-    /**
-     * @return the dept
-     */
     public String getDept() {
         return dept;
     }
 
-    /**
-     * @param dept the dept to set
-     */
     public void setDept(String dept) {
         this.dept = dept;
     }
@@ -246,20 +245,20 @@ public class Task extends SuperEntity {
         this.plannedStartDate = plannedStartDate;
     }
 
-    public Date getPlannedStartTime() {
-        return plannedStartTime;
-    }
-
-    public void setPlannedStartTime(Date plannedStartTime) {
-        this.plannedStartTime = plannedStartTime;
-    }
-
     public Date getPlannedFinishDate() {
         return plannedFinishDate;
     }
 
     public void setPlannedFinishDate(Date plannedFinishDate) {
         this.plannedFinishDate = plannedFinishDate;
+    }
+
+    public Date getPlannedStartTime() {
+        return plannedStartTime;
+    }
+
+    public void setPlannedStartTime(Date plannedStartTime) {
+        this.plannedStartTime = plannedStartTime;
     }
 
     public Date getPlannedFinishTime() {
@@ -372,16 +371,10 @@ public class Task extends SuperEntity {
         this.accuracy = accuracy;
     }
 
-    /**
-     * @return the contextObject
-     */
     public String getContextObject() {
         return contextObject;
     }
 
-    /**
-     * @param contextObject the contextObject to set
-     */
     public void setContextObject(String contextObject) {
         this.contextObject = contextObject;
     }
