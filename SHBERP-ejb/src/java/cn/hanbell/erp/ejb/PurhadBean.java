@@ -55,6 +55,18 @@ public class PurhadBean extends SuperEJBForERP<Purhad> {
         }
     }
 
+    public List<Purhad> findNeedThrowByVdrnoAndHmark1(String vdrno, Date podate, String hmark1) {
+        Query query = getEntityManager().createNamedQuery("Purhad.findNeedThrowByVdrnoAndHmark1").setFirstResult(0).setMaxResults(1);
+        query.setParameter("vdrno", vdrno);
+        query.setParameter("podate", podate);
+        query.setParameter("hmark1", hmark1);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     @Override
     public void setCompany(String company) {
         super.setCompany(company);

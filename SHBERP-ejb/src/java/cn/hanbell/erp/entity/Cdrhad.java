@@ -251,15 +251,8 @@ public class Cdrhad implements Serializable {
     @NotNull
     @Column(name = "replenish")
     private Character replenish;
-    @Column(name = "psamts")
-    private BigDecimal psamts;
-    @Column(name = "msamts")
-    private BigDecimal msamts;
     @Column(name = "issevhad")
     private Character issevhad;
-    @Size(max = 1)
-    @Column(name = "asrsstatus")
-    private String asrsstatus;
 
     public Cdrhad() {
     }
@@ -744,36 +737,12 @@ public class Cdrhad implements Serializable {
         this.replenish = replenish;
     }
 
-    public BigDecimal getPsamts() {
-        return psamts;
-    }
-
-    public void setPsamts(BigDecimal psamts) {
-        this.psamts = psamts;
-    }
-
-    public BigDecimal getMsamts() {
-        return msamts;
-    }
-
-    public void setMsamts(BigDecimal msamts) {
-        this.msamts = msamts;
-    }
-
     public Character getIssevhad() {
         return issevhad;
     }
 
     public void setIssevhad(Character issevhad) {
         this.issevhad = issevhad;
-    }
-
-    public String getAsrsstatus() {
-        return asrsstatus;
-    }
-
-    public void setAsrsstatus(String asrsstatus) {
-        this.asrsstatus = asrsstatus;
     }
 
     @Override
@@ -788,7 +757,7 @@ public class Cdrhad implements Serializable {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Cdrhad)) {
             return false;
-    }
+        }
         Cdrhad other = (Cdrhad) object;
         if ((this.cdrhadPK == null && other.cdrhadPK != null) || (this.cdrhadPK != null && !this.cdrhadPK.equals(other.cdrhadPK))) {
             return false;
@@ -799,7 +768,7 @@ public class Cdrhad implements Serializable {
     @Override
     public String toString() {
         return "shberp.entity.Cdrhad[ cdrhadPK=" + cdrhadPK + " ]";
-}
+    }
 
     /**
      * @return the cdrcus
