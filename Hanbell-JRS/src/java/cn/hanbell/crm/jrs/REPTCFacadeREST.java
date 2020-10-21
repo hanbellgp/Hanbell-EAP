@@ -128,7 +128,6 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
             StringBuffer msg = new StringBuffer("【汉钟精机】 维修单:");
             String serializableNumber = wartaBean.getTA002ByTA001AndDate(reptcapplication.getIncentoryform(),
                     new Date());
-            List<Object[]> warmqs = warmqBean.findByMQ003(reptcapplication.getIncentoryform());
             msg.append(reptcapplication.getMaintainTypeId()).append("-").append(seal).append("。");
             if(reptcapplication.isHasWartb()){
               msg.append(" 库存异动单:").append(reptcapplication.getIncentoryform()).append("-").append(serializableNumber).append("。");
