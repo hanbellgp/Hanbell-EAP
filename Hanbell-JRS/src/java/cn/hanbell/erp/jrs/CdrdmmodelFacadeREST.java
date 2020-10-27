@@ -7,7 +7,9 @@ package cn.hanbell.erp.jrs;
 
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.CdrcusBean;
+import cn.hanbell.erp.ejb.CdrdmmodelBean;
 import cn.hanbell.erp.entity.Cdrcus;
+import cn.hanbell.erp.entity.Cdrdmmodel;
 import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForERP;
 import java.util.HashMap;
@@ -25,28 +27,20 @@ import javax.ws.rs.core.PathSegment;
  *
  * @author C0160
  */
-@Path("shberp/cdrcus")
+@Path("shberp/cdrdmmodel")
 @javax.enterprise.context.RequestScoped
-public class CdrcusFacadeREST extends SuperRESTForERP<Cdrcus> {
+public class CdrdmmodelFacadeREST extends SuperRESTForERP<Cdrdmmodel> {
 
     @EJB
-    private CdrcusBean cdrcusBean;
+    private CdrdmmodelBean cdrdmmodelBean;
 
     @Override
     protected SuperEJBForERP getSuperEJBForERP() {
-        company = "C";
-        return cdrcusBean;
+        return cdrdmmodelBean;
     }
 
-    public CdrcusFacadeREST() {
-        super(Cdrcus.class);
-    }
-
-    @GET
-    @Path("list/{man}")
-    @Produces({"application/json"})
-    public List<Cdrcus> findByMan(@PathParam("man") String man) {
-        return cdrcusBean.findByMan(man);
+    public CdrdmmodelFacadeREST() {
+        super(Cdrdmmodel.class);
     }
 
 }

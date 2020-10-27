@@ -47,7 +47,6 @@ public class BudgetCenterFacadeREST extends SuperRESTForERP<BudgetCenter> {
     @GET
     @Path("{filters}/{sorts}/{offset}/{pageSize}")
     @Produces({MediaType.APPLICATION_JSON})
-    @Override
     public List<BudgetCenter> findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {

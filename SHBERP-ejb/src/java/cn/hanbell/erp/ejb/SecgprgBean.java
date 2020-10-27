@@ -600,7 +600,8 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
         secgroupBean.setCompany(facno);
         Secgroup group = secgroupBean.findByGroupno(h.getPost());
         if (group == null) {
-            throw new NullPointerException("流程序号" + psn + "ERP中找不到对应岗位群组" + h.getPost());
+            log4j.error("流程序号" + psn + "ERP中找不到对应岗位群组" + h.getPost());
+            return false;
         }
         secgsysBean.setCompany(facno);
         List<Secgsys> secgsysList = secgsysBean.findByGroupnoAndGtype(group.getSecgroupPK().getGroupno(), "G");
