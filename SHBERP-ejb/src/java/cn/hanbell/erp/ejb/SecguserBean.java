@@ -19,7 +19,6 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-@Named
 public class SecguserBean extends SuperEJBForERP<Secguser> {
 
     public SecguserBean() {
