@@ -25,7 +25,6 @@ public class PurvdrFacadeREST extends SuperRESTForERP<Purvdr> {
 
     @Override
     protected SuperEJBForERP getSuperEJBForERP() {
-        company = "C";
         return purvdrBean;
     }
 

@@ -43,8 +43,9 @@ public abstract class SuperRESTForERP<T> {
     protected abstract SuperEJBForERP getSuperEJBForERP();
 
     protected SuperEJB getSuperEJB() {
-        getSuperEJBForERP().setCompany(getCompany());
-        return getSuperEJBForERP();
+        SuperEJBForERP superEJB = getSuperEJBForERP();
+        superEJB.setCompany(getCompany());
+        return superEJB;
     }
 
     public SuperRESTForERP(Class<T> entityClass) {
