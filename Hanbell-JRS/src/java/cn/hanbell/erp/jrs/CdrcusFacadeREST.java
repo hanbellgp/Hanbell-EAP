@@ -8,18 +8,13 @@ package cn.hanbell.erp.jrs;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.CdrcusBean;
 import cn.hanbell.erp.entity.Cdrcus;
-import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForERP;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.PathSegment;
 
 /**
  *
