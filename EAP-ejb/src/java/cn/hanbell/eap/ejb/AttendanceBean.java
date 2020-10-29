@@ -41,7 +41,7 @@ public class AttendanceBean extends SuperEJBForEAP<Attendance> {
             sql.append("and  employeeName like '%").append(employeeid).append("%'");
         }
           if(date!=null&&!"".equals(date)){
-            sql.append("and  attendanceDate like '%").append(date).append("%'");
+            sql.append("and  date like '%").append(date).append("%'");
         }
         Query query = getEntityManager().createNativeQuery(sql.toString(),Attendance.class);
         try {

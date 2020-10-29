@@ -5,17 +5,16 @@
  */
 package cn.hanbell.eap.entity;
 
-import com.lightshell.comm.SuperEntity;
+import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -28,43 +27,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SalarySend.findAll", query = "SELECT s FROM SalarySend s"),
-    @NamedQuery(name = "SalarySend.findByTaskidAndDeptno", query = "SELECT s FROM SalarySend s WHERE s.taskid like :taskid AND s.deptno = :deptno"),
-    @NamedQuery(name = "SalarySend.findByTaskidAndEmployeeid", query = "SELECT s FROM SalarySend s WHERE s.taskid =:taskid AND s.employeeid=:employeeid"),
-    @NamedQuery(name = "SalarySend.findById", query = "SELECT s FROM SalarySend s WHERE s.id = :id"), 
-    @NamedQuery(name = "SalarySend.findByTaskid", query = "SELECT s FROM SalarySend s WHERE s.taskid = :taskid"),
+     @NamedQuery(name = "SalarySend.findByTaskidAndDeptno", query = "SELECT s FROM SalarySend s WHERE s.salarySendPK.taskid like :taskid AND s.deptno = :deptno"),
+      @NamedQuery(name = "SalarySend.findByTaskidAndEmployeeid", query = "SELECT s FROM SalarySend s WHERE s.salarySendPK.taskid =:taskid AND s.salarySendPK.employeeid=:employeeid"),
+    @NamedQuery(name = "SalarySend.findByTaskid", query = "SELECT s FROM SalarySend s WHERE s.salarySendPK.taskid = :taskid"),
     @NamedQuery(name = "SalarySend.findByTaskname", query = "SELECT s FROM SalarySend s WHERE s.taskname = :taskname"),
     @NamedQuery(name = "SalarySend.findBySendtime", query = "SELECT s FROM SalarySend s WHERE s.sendtime = :sendtime"),
-    @NamedQuery(name = "SalarySend.findByEmployeeid", query = "SELECT s FROM SalarySend s WHERE s.employeeid = :employeeid"),
+    @NamedQuery(name = "SalarySend.findByEmployeeid", query = "SELECT s FROM SalarySend s WHERE s.salarySendPK.employeeid = :employeeid"),
     @NamedQuery(name = "SalarySend.findByEmployeename", query = "SELECT s FROM SalarySend s WHERE s.employeename = :employeename"),
     @NamedQuery(name = "SalarySend.findByDeptno", query = "SELECT s FROM SalarySend s WHERE s.deptno = :deptno"),
     @NamedQuery(name = "SalarySend.findByDept", query = "SELECT s FROM SalarySend s WHERE s.dept = :dept"),
     @NamedQuery(name = "SalarySend.findByStatus", query = "SELECT s FROM SalarySend s WHERE s.status = :status"),
-    @NamedQuery(name = "SalarySend.findByConfirmtime", query = "SELECT s FROM SalarySend s WHERE s.confirmtime = :confirmtime"),
-    @NamedQuery(name = "SalarySend.findByCfmdate", query = "SELECT s FROM SalarySend s WHERE s.cfmdate = :cfmdate"),
-    @NamedQuery(name = "SalarySend.findByOptuser", query = "SELECT s FROM SalarySend s WHERE s.optuser = :optuser"),
-    @NamedQuery(name = "SalarySend.findByOptdate", query = "SELECT s FROM SalarySend s WHERE s.optdate = :optdate"),
-    @NamedQuery(name = "SalarySend.findByCfmuser", query = "SELECT s FROM SalarySend s WHERE s.cfmuser = :cfmuser"),
-    @NamedQuery(name = "SalarySend.findByCredate", query = "SELECT s FROM SalarySend s WHERE s.credate = :credate"),
-    @NamedQuery(name = "SalarySend.findByCreator", query = "SELECT s FROM SalarySend s WHERE s.creator = :creator")})
-public class SalarySend extends SuperEntity {
+    @NamedQuery(name = "SalarySend.findByConfirmtime", query = "SELECT s FROM SalarySend s WHERE s.confirmtime = :confirmtime")})
+public class SalarySend implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "taskid")
-    private String taskid;
+    @EmbeddedId
+    protected SalarySendPK salarySendPK;
     @Size(max = 20)
     @Column(name = "taskname")
     private String taskname;
     @Column(name = "sendtime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date sendtime;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "employeeid")
-    private String employeeid;
     @Size(max = 8)
     @Column(name = "employeename")
     private String employeename;
@@ -74,6 +58,9 @@ public class SalarySend extends SuperEntity {
     @Size(max = 20)
     @Column(name = "dept")
     private String dept;
+    @Size(max = 1)
+    @Column(name = "status")
+    private String status;
     @Column(name = "confirmtime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date confirmtime;
@@ -81,23 +68,20 @@ public class SalarySend extends SuperEntity {
     public SalarySend() {
     }
 
-    public SalarySend(Integer id) {
-        this.id = id;
+    public SalarySend(SalarySendPK salarySendPK) {
+        this.salarySendPK = salarySendPK;
     }
 
-    public SalarySend(Integer id, String taskid, String employeeid) {
-        this.id = id;
-        this.taskid = taskid;
-        this.employeeid = employeeid;
+    public SalarySend(String taskid, String employeeid) {
+        this.salarySendPK = new SalarySendPK(taskid, employeeid);
     }
 
-
-    public String getTaskid() {
-        return taskid;
+    public SalarySendPK getSalarySendPK() {
+        return salarySendPK;
     }
 
-    public void setTaskid(String taskid) {
-        this.taskid = taskid;
+    public void setSalarySendPK(SalarySendPK salarySendPK) {
+        this.salarySendPK = salarySendPK;
     }
 
     public String getTaskname() {
@@ -114,14 +98,6 @@ public class SalarySend extends SuperEntity {
 
     public void setSendtime(Date sendtime) {
         this.sendtime = sendtime;
-    }
-
-    public String getEmployeeid() {
-        return employeeid;
-    }
-
-    public void setEmployeeid(String employeeid) {
-        this.employeeid = employeeid;
     }
 
     public String getEmployeename() {
@@ -163,20 +139,22 @@ public class SalarySend extends SuperEntity {
     public void setConfirmtime(Date confirmtime) {
         this.confirmtime = confirmtime;
     }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (salarySendPK != null ? salarySendPK.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof SalarySend)) {
             return false;
         }
         SalarySend other = (SalarySend) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.salarySendPK == null && other.salarySendPK != null) || (this.salarySendPK != null && !this.salarySendPK.equals(other.salarySendPK))) {
             return false;
         }
         return true;
@@ -184,7 +162,7 @@ public class SalarySend extends SuperEntity {
 
     @Override
     public String toString() {
-        return "cn.hanbell.eap.entity.Salarysend[ id=" + id + " ]";
+        return "cn.hanbell.wco.entity.SalarySend[ salarySendPK=" + salarySendPK + " ]";
     }
     
 }
