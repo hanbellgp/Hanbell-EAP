@@ -10,7 +10,6 @@ import cn.hanbell.erp.entity.Secguser;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.inject.Named;
 import javax.persistence.Query;
 
 /**
@@ -30,6 +29,19 @@ public class SecguserBean extends SuperEJBForERP<Secguser> {
         query.setParameter("groupno", groupno);
         try {
             return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Secguser findByPK(String groupno, String gtype, String userno) {
+        Query query = getEntityManager().createNamedQuery("Secguser.findByPK");
+        query.setParameter("groupno", groupno);
+        query.setParameter("gtype", gtype);
+        query.setParameter("userno", userno);
+        try {
+            Object o = query.getSingleResult();
+            return (Secguser) o;
         } catch (Exception ex) {
             return null;
         }
