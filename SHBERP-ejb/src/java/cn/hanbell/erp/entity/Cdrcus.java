@@ -8,12 +8,16 @@ package cn.hanbell.erp.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrcus")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Cdrcus.getRowCount", query = "SELECT COUNT(c) FROM Cdrcus c"),
     @NamedQuery(name = "Cdrcus.findAll", query = "SELECT c FROM Cdrcus c"),
     @NamedQuery(name = "Cdrcus.findById", query = "SELECT c FROM Cdrcus c WHERE c.cusno = :id"),
     @NamedQuery(name = "Cdrcus.findByCusno", query = "SELECT c FROM Cdrcus c WHERE c.cusno = :cusno"),
@@ -38,6 +43,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrcus.findByDecode", query = "SELECT c FROM Cdrcus c WHERE c.decode = :decode"),
     @NamedQuery(name = "Cdrcus.findByCuskind", query = "SELECT c FROM Cdrcus c WHERE c.cuskind = :cuskind")})
 public class Cdrcus implements Serializable {
+
+    @OneToOne(cascade = CascadeType.REFRESH, mappedBy = "cdrcus")
+    @JoinTable(name = "cdrcusman")
+    private Cdrcusman cdrcusman;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -917,6 +926,13 @@ public class Cdrcus implements Serializable {
         this.skfs = skfs;
     }
 
+    /**
+     * @return the cdrcusman
+     */
+    public Cdrcusman getCdrcusman() {
+        return cdrcusman;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -931,10 +947,13 @@ public class Cdrcus implements Serializable {
             return false;
         }
         Cdrcus other = (Cdrcus) object;
-        if ((this.cusno == null && other.cusno != null) || (this.cusno != null && !this.cusno.equals(other.cusno))) {
-            return false;
+        if (this.cusno != null && other.cusno != null) {
+            return this.cusno.equals(other.cusno);
         }
-        return true;
+        if (this.cusna != null && other.cusna != null) {
+            return this.cusna.equals(other.cusna);
+        }
+        return Objects.equals(this.cusds, other.cusds);
     }
 
     @Override

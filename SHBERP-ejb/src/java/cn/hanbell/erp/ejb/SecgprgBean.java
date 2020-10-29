@@ -600,7 +600,8 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
         secgroupBean.setCompany(facno);
         Secgroup group = secgroupBean.findByGroupno(h.getPost());
         if (group == null) {
-            throw new NullPointerException("流程序号" + psn + "ERP中找不到对应岗位群组");
+            log4j.error("流程序号" + psn + "ERP中找不到对应岗位群组" + h.getPost());
+            return false;
         }
         secgsysBean.setCompany(facno);
         List<Secgsys> secgsysList = secgsysBean.findByGroupnoAndGtype(group.getSecgroupPK().getGroupno(), "G");
@@ -657,8 +658,14 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
                     secmembBean.persist(m);
                 }
             }
+            Secguser secguser;
+            secguserBean.setCompany(facno);
+            secguser = secguserBean.findByPK(group.getSecgroupPK().getGroupno(), "G", userno);
+            if (secguser != null) {
+                return true;
+            }
             // 加入岗位群组
-            Secguser secguser = new Secguser(group.getSecgroupPK().getGroupno(), "G", h.getApplyUser());
+            secguser = new Secguser(group.getSecgroupPK().getGroupno(), "G", h.getApplyUser());
             // 产生群组权限
             detailAdded.put(this, secgprgAdded);
             detailAdded.put(secusysBean, secusysAdded);
@@ -699,7 +706,6 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
                 secuprg.setPuserno("mis");
                 secuprgAdded.add(secuprg);
             }
-            secguserBean.setCompany(facno);
             secguserBean.persist(secguser, detailAdded);
             return true;
         } catch (Exception ex) {

@@ -7,6 +7,7 @@ package cn.hanbell.erp.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -37,11 +38,18 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrcusman.findByLatdate", query = "SELECT c FROM Cdrcusman c WHERE c.latdate = :latdate")})
 public class Cdrcusman implements Serializable {
 
+    @JsonbTransient
+    @OneToOne()
     @JoinColumns({
         @JoinColumn(name = "cusno", referencedColumnName = "cusno", insertable = false, updatable = false)
     })
-    @OneToOne()
     private Cdrcus cdrcus;
+
+    @OneToOne(optional = false)
+    @JoinColumns({
+        @JoinColumn(name = "man", referencedColumnName = "userno", insertable = false, updatable = false)
+    })
+    private Secuser secuser;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -120,6 +128,13 @@ public class Cdrcusman implements Serializable {
      */
     public Cdrcus getCdrcus() {
         return cdrcus;
+    }
+
+    /**
+     * @return the secuser
+     */
+    public Secuser getSecuser() {
+        return secuser;
     }
 
 }
