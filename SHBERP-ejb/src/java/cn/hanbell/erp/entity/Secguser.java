@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Secguser.findAll", query = "SELECT s FROM Secguser s"),
     @NamedQuery(name = "Secguser.findByGroupno", query = "SELECT s FROM Secguser s WHERE s.secguserPK.groupno = :groupno"),
-    @NamedQuery(name = "Secguser.findByGtype", query = "SELECT s FROM Secguser s WHERE s.secguserPK.gtype = :gtype"),
+    @NamedQuery(name = "Secguser.findByPK", query = "SELECT s FROM Secguser s WHERE s.secguserPK.groupno = :groupno AND s.secguserPK.gtype = :gtype AND s.secguserPK.userno = :userno"),
     @NamedQuery(name = "Secguser.findByUserno", query = "SELECT s FROM Secguser s WHERE s.secguserPK.userno = :userno")})
 public class Secguser implements Serializable {
 

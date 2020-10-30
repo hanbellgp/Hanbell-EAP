@@ -25,14 +25,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "cdrdmmodel")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Cdrdmmodel.getRowCount", query = "SELECT COUNT(c) FROM Cdrdmmodel c"),
     @NamedQuery(name = "Cdrdmmodel.findAll", query = "SELECT c FROM Cdrdmmodel c"),
     @NamedQuery(name = "Cdrdmmodel.findByFacno", query = "SELECT c FROM Cdrdmmodel c WHERE c.cdrdmmodelPK.facno = :facno"),
     @NamedQuery(name = "Cdrdmmodel.findByItnbr", query = "SELECT c FROM Cdrdmmodel c WHERE c.cdrdmmodelPK.itnbr = :itnbr"),
     @NamedQuery(name = "Cdrdmmodel.findByCmccode", query = "SELECT c FROM Cdrdmmodel c WHERE c.cdrdmmodelPK.cmccode = :cmccode"),
     @NamedQuery(name = "Cdrdmmodel.findByCmcmodel", query = "SELECT c FROM Cdrdmmodel c WHERE c.cmcmodel = :cmcmodel"),
-    @NamedQuery(name = "Cdrdmmodel.findByCmcitdsc", query = "SELECT c FROM Cdrdmmodel c WHERE c.cmcitdsc = :cmcitdsc"),
-    @NamedQuery(name = "Cdrdmmodel.findByCmcspdsc", query = "SELECT c FROM Cdrdmmodel c WHERE c.cmcspdsc = :cmcspdsc"),
-    @NamedQuery(name = "Cdrdmmodel.findByKind", query = "SELECT c FROM Cdrdmmodel c WHERE c.kind = :kind")})
+    @NamedQuery(name = "Cdrdmmodel.findByKind", query = "SELECT c FROM Cdrdmmodel c WHERE c.kind = :kind ORDER BY c.cmcmodel")})
 public class Cdrdmmodel implements Serializable {
 
     private static final long serialVersionUID = 1L;

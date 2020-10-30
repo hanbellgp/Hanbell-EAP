@@ -10,26 +10,34 @@ import cn.hanbell.erp.entity.Invwhclk;
 import cn.hanbell.erp.entity.Misdept;
 import cn.hanbell.erp.entity.Secgprg;
 import cn.hanbell.erp.entity.SecgprgPK;
+import cn.hanbell.erp.entity.Secgroup;
 import cn.hanbell.erp.entity.Secgsys;
+import cn.hanbell.erp.entity.Secguser;
 import cn.hanbell.erp.entity.Secmemb;
+import cn.hanbell.erp.entity.Secuprg;
 import cn.hanbell.erp.entity.Secuser;
 import cn.hanbell.erp.entity.Secusys;
+import cn.hanbell.oa.ejb.HKGL066Bean;
 import cn.hanbell.oa.ejb.OrganizationUnitBean;
 import cn.hanbell.oa.ejb.SHBERPMIS226DetailBean;
 import cn.hanbell.oa.ejb.SHBERPMIS226Bean;
 import cn.hanbell.oa.ejb.SHBERPMIS226InvwhclkDetailBean;
 import cn.hanbell.oa.ejb.UsersBean;
+import cn.hanbell.oa.entity.HKGL066;
 import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.oa.entity.SHBERPMIS226Detail;
 import cn.hanbell.oa.entity.SHBERPMIS226;
 import cn.hanbell.oa.entity.SHBERPMIS226InvwhclkDetail;
 import cn.hanbell.oa.entity.Users;
 import com.lightshell.comm.BaseLib;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
+import org.apache.commons.beanutils.BeanUtils;
 
 /**
  *
@@ -44,6 +52,8 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
     @EJB
     private OrganizationUnitBean organizationUnitBean;
     @EJB
+    private HKGL066Bean hkgl066Bean;
+    @EJB
     private SHBERPMIS226Bean shberpmis226Bean;
     @EJB
     private SHBERPMIS226DetailBean shberpmis226detailBean;
@@ -51,11 +61,15 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
     private SHBERPMIS226InvwhclkDetailBean shberpmis226invwhclkdetailBean;
 
     @EJB
-    private SecuprgBean secuprgBean;
+    private SecgroupBean secgroupBean;
+    @EJB
+    private SecguserBean secguserBean;
     @EJB
     private SecgsysBean secgsysBean;
     @EJB
     private SecusysBean secusysBean;
+    @EJB
+    private SecuprgBean secuprgBean;
     @EJB
     private SecuserBean secuserBean;
     @EJB
@@ -69,7 +83,7 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
         super(Secgprg.class);
     }
 
-    public Boolean initSECGPRG(String psn) {
+    public Boolean initBySHBERPMIS226(String psn) {
 
         SHBERPMIS226 h = shberpmis226Bean.findByPSN(psn);
         if (h == null) {
@@ -568,6 +582,144 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "SecgprgBean.initSECGPRG", psn), ex);
             return false;
+        }
+
+    }
+
+    public Boolean initByOAHKGL066(String psn) {
+
+        HKGL066 h = hkgl066Bean.findByPSN(psn);
+        if (h == null) {
+            throw new NullPointerException("找不到流程序号" + psn);
+        }
+        if (h.getPost() == null && "".equals(h.getPost())) {
+            throw new NullPointerException("流程序号" + psn + "没有维护岗位");
+        }
+        String facno = h.getFacno();
+        String userno = h.getApplyUser();
+        secgroupBean.setCompany(facno);
+        Secgroup group = secgroupBean.findByGroupno(h.getPost());
+        if (group == null) {
+            log4j.error("流程序号" + psn + "ERP中找不到对应岗位群组" + h.getPost());
+            return false;
+        }
+        secgsysBean.setCompany(facno);
+        List<Secgsys> secgsysList = secgsysBean.findByGroupnoAndGtype(group.getSecgroupPK().getGroupno(), "G");
+        this.setCompany(facno);
+        List<Secgprg> secgprgList = this.findByGroupnoAndGtype(group.getSecgroupPK().getGroupno(), "G");
+
+        HashMap<SuperEJBForERP, List<?>> detailAdded = new HashMap<>();
+        List<Secgprg> secgprgAdded = new ArrayList<>();
+        List<Secusys> secusysAdded = new ArrayList<>();
+        List<Secuprg> secuprgAdded = new ArrayList<>();
+        try {
+            miscodeBean.setCompany(h.getFacno());
+            secuserBean.setCompany(h.getFacno());
+            Secuser erpuser = secuserBean.findByUserno(userno);
+            if (erpuser == null) {
+                Users oauser = usersBean.findById(userno);
+                if (oauser != null) {
+                    erpuser = new Secuser();
+                    erpuser.setUserno(oauser.getId());
+                    erpuser.setUsername(oauser.getUserName());
+                    erpuser.setUtype('U');
+                    erpuser.setUclass((short) 99);
+                    erpuser.setEnabled('Y');
+                    erpuser.setPwd("");
+                    erpuser.setPfacno(h.getFacno());
+                    erpuser.setPdepno(h.getApplyDept());
+                    erpuser.setPprono("1");
+                    erpuser.setDuedate(BaseLib.getDate());
+                    erpuser.setGtype("U");
+                    erpuser.setStatuspass("0132");
+                    // 预设空密码登录时修改
+                    secuserBean.persist(erpuser);
+                    secuserBean.getEntityManager().flush();
+                    // 加入miscode类别9E中
+                    miscodeBean.persistIfNotExist("9E", erpuser.getUserno(), erpuser.getUsername(), 'N');
+                    // 增加部门
+                    misdeptBean.setCompany(h.getFacno());
+                    Misdept dept = misdeptBean.findByDepno(h.getApplyDept());
+                    if (dept == null) {
+                        OrganizationUnit ou = organizationUnitBean.findById(h.getApplyDept());
+                        dept = new Misdept(h.getFacno(), h.getApplyDept());
+                        dept.setDepname(ou.getOrganizationUnitName());
+                        dept.setUplevel("/");
+                        dept.setChildren(0);
+                        misdeptBean.persist(dept);
+                        // 加入miscode类别GE中
+                        miscodeBean.persistIfNotExist("GE", dept.getMisdeptPK().getDepno(), dept.getDepname(), 'N');
+                    }
+                    // 人员加入部门
+                    Secmemb m = new Secmemb(h.getFacno(), h.getApplyDept(), h.getApplyUser());
+                    m.setSupvisor('N');
+                    m.setAuth('N');
+                    secmembBean.setCompany(h.getFacno());
+                    secmembBean.persist(m);
+                }
+            }
+            Secguser secguser;
+            secguserBean.setCompany(facno);
+            secguser = secguserBean.findByPK(group.getSecgroupPK().getGroupno(), "G", userno);
+            if (secguser != null) {
+                return true;
+            }
+            // 加入岗位群组
+            secguser = new Secguser(group.getSecgroupPK().getGroupno(), "G", h.getApplyUser());
+            // 产生群组权限
+            detailAdded.put(this, secgprgAdded);
+            detailAdded.put(secusysBean, secusysAdded);
+            detailAdded.put(secuprgBean, secuprgAdded);
+            for (Secgprg g : secgprgList) {
+                Secgprg secgprg = (Secgprg) BeanUtils.cloneBean(g);
+                secgprg.setSecgprgPK(new SecgprgPK(g.getSecgprgPK().getPrgno(), g.getSecgprgPK().getSysno(), userno, "Z"));
+                secgprgAdded.add(secgprg);
+            }
+            for (Secgsys g : secgsysList) {
+                Secusys secusys = new Secusys(g.getSecgsysPK().getSysno(), userno);
+                secusysAdded.add(secusys);
+            }
+            for (Secgprg g : secgprgList) {
+                Secuprg secuprg = new Secuprg(g.getSecgprgPK().getPrgno(), userno);
+                secuprg.setPadd(g.getPadd());
+                secuprg.setPdelete(g.getPdelete());
+                secuprg.setPmodify(g.getPmodify());
+                secuprg.setPquery(g.getPquery());
+                secuprg.setPprint(g.getPprint());
+                secuprg.setPcommit(g.getPcommit());
+                secuprg.setPcancel(g.getPcancel());
+                secuprg.setPother1(g.getPother1());
+                secuprg.setPother2(g.getPother2());
+                secuprg.setPother3(g.getPother3());
+                secuprg.setPother4(g.getPother4());
+                secuprg.setPother5(g.getPother5());
+                secuprg.setPother6(g.getPother6());
+                secuprg.setPother7(g.getPother7());
+                secuprg.setPother8(g.getPother8());
+                secuprg.setPother9(g.getPother9());
+                secuprg.setPrelation1(g.getPrelation1());
+                secuprg.setPrelation2(g.getPrelation2());
+                secuprg.setPrelation3(g.getPrelation3());
+                secuprg.setPrelation4(g.getPrelation4());
+                secuprg.setStepbystep(g.getStepbystep());
+                secuprg.setRunsig(g.getRunsig());
+                secuprg.setPuserno("mis");
+                secuprgAdded.add(secuprg);
+            }
+            secguserBean.persist(secguser, detailAdded);
+            return true;
+        } catch (Exception ex) {
+            log4j.error(ex);
+            throw new RuntimeException(ex);
+        } finally {
+            secgprgAdded.clear();
+            secusysAdded.clear();
+            secuprgAdded.clear();
+            detailAdded.clear();
+            secgprgAdded = null;
+            secusysAdded = null;
+            secuprgAdded = null;
+            detailAdded = null;
         }
 
     }

@@ -7,6 +7,7 @@ package cn.hanbell.erp.ejb;
 
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Secgsys;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -31,6 +32,17 @@ public class SecgsysBean extends SuperEJBForERP<Secgsys> {
         try {
             Object o = query.getSingleResult();
             return (Secgsys) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Secgsys> findByGroupnoAndGtype(String groupno, String gtype) {
+        Query query = getEntityManager().createNamedQuery("Secgsys.findByGroupnoAndGtype");
+        query.setParameter("groupno", groupno);
+        query.setParameter("gtype", gtype);
+        try {
+            return query.getResultList();
         } catch (Exception ex) {
             return null;
         }

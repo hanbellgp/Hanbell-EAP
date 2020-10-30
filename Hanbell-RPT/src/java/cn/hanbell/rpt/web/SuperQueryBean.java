@@ -53,7 +53,7 @@ public abstract class SuperQueryBean<T> {
     protected String reportViewContext;
     protected String reportViewPath;
 
-    protected Map<String, String[]> params;//页面传参
+    protected Map<String, String[]> params; // 页面传参
 
     protected Date queryDateBegin;
     protected Date queryDateEnd;
@@ -70,7 +70,7 @@ public abstract class SuperQueryBean<T> {
 
     @PostConstruct
     public void construct() {
-        //不需要进行操作权限设置
+        // 不需要进行操作权限设置
         fc = FacesContext.getCurrentInstance();
         ec = fc.getExternalContext();
         appDataPath = ec.getRealPath("/") + ec.getInitParameter("cn.hanbell.web.appdatapath");
@@ -137,12 +137,12 @@ public abstract class SuperQueryBean<T> {
         }
     }
 
-    //关窗
-      public void closeDialog() {
+    // 关窗
+    public void closeDialog() {
         if (this.currentEntity != null) {
             this.closeDialog(this.currentEntity);
         } else {
-             this.showWarnMsg("Warn", "没有选择数据!");
+            this.showWarnMsg("Warn", "没有选择数据!");
         }
 
     }
@@ -154,9 +154,9 @@ public abstract class SuperQueryBean<T> {
             this.showWarnMsg("Warn", "没有选择数据!");
         }
     }
-    
-    //开窗
-public void openDialog(String view) {
+
+    // 开窗
+    public void openDialog(String view) {
         this.openDialog(view, (Map) null);
     }
 
@@ -169,17 +169,20 @@ public void openDialog(String view) {
     protected void openDialog(String view, Map<String, Object> options, Map<String, List<String>> params) {
         try {
             PrimeFaces.current().dialog().openDynamic(view, options, params);
-        } catch (Exception var5) {
-           var5.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
-    //JSF警告
-     protected void showWarnMsg(String summary, String detail) {
+
+    // JSF警告
+    protected void showWarnMsg(String summary, String detail) {
         this.showMsg(FacesMessage.SEVERITY_WARN, summary, detail);
     }
-       protected void showMsg(Severity severity, String summary, String detail) {
-        FacesContext.getCurrentInstance().addMessage((String)null, new FacesMessage(severity, summary, detail));
+
+    protected void showMsg(Severity severity, String summary, String detail) {
+        FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(severity, summary, detail));
     }
+
     /**
      * @return the superEJB
      */

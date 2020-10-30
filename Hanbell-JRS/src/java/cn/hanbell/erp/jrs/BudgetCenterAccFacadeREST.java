@@ -44,14 +44,9 @@ public class BudgetCenterAccFacadeREST extends SuperRESTForERP<BudgetCenterAccDe
         return budgetCenterAccDetailBean;
     }
 
-//    @GET
-//    @Path("{filters}/{sorts}/{offset}/{pageSize}/size")
-//    @Produces({MediaType.APPLICATION_JSON})
-//   public BudgetAccnoResponseResult findByOrganizationUnitId(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
     @GET
     @Path("{filters}/{sorts}/{offset}/{pageSize}")
     @Produces({MediaType.APPLICATION_JSON})
-    @Override
     public List<BudgetCenterAccDetail> findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {

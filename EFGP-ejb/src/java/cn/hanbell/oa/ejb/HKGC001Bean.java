@@ -17,7 +17,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
-import javax.xml.soap.Detail;
 import org.apache.commons.beanutils.BeanUtils;
 
 /**

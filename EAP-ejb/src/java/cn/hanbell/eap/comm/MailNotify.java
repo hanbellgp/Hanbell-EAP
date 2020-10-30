@@ -6,10 +6,10 @@
 package cn.hanbell.eap.comm;
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -22,6 +22,8 @@ public class MailNotify {
     protected HtmlEmail email;
 
     protected MailNotification notification;
+
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.eap");
 
     public MailNotify() {
 
@@ -36,7 +38,7 @@ public class MailNotify {
         }
     }
 
-    public void send() {
+    protected void send() {
         try {
             init();
             email.setFrom(notification.mailFrom, "sys", "utf8");
@@ -65,7 +67,7 @@ public class MailNotify {
             }
             email.send();
         } catch (EmailException ex) {
-            Logger.getLogger(MailNotify.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
     }
 
