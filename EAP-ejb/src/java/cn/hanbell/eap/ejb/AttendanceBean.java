@@ -23,7 +23,6 @@ public class AttendanceBean extends SuperEJBForEAP<Attendance> {
     public AttendanceBean() {
         super(Attendance.class);
     }
-    
 
     public List<Attendance> findByAttendanceDate(String date) {
         Query query = getEntityManager().createNamedQuery("Attendance.findByAttendanceDate");
@@ -35,15 +34,18 @@ public class AttendanceBean extends SuperEJBForEAP<Attendance> {
         }
     }
 
-    public List<Attendance> findByAttendanceAndEmployeeId(String employeeid, String date) {
-        StringBuffer sql=new StringBuffer("SELECT * FROM attendance where 1=1 ");
-        if(employeeid!=null&&!"".equals(employeeid)){
+    public List<Attendance> findByAttendanceAndEmployeeIdAndStatus(String employeeid, String date, String status) {
+        StringBuffer sql = new StringBuffer("SELECT * FROM attendance where 1=1 ");
+        if (employeeid != null && !"".equals(employeeid)) {
             sql.append("and  employeeName like '%").append(employeeid).append("%'");
         }
-          if(date!=null&&!"".equals(date)){
-            sql.append("and  date like '%").append(date).append("%'");
+        if (date != null && !"".equals(date)) {
+            sql.append("and  attendanceDate like '%").append(date).append("%'");
         }
-        Query query = getEntityManager().createNativeQuery(sql.toString(),Attendance.class);
+        if (status != null && !"All".equals(status)) {
+            sql.append("and  status like '%").append(status).append("%'");
+        }
+        Query query = getEntityManager().createNativeQuery(sql.toString(), Attendance.class);
         try {
             return query.getResultList();
         } catch (Exception ex) {
