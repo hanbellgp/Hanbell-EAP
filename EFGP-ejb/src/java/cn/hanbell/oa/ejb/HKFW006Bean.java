@@ -516,6 +516,26 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
         }
     }
 
+    /**
+     *
+     * @param fwno
+     * @return 退货通知单吊装费和运费
+     */
+    public BigDecimal getOAHKFW006TrafficAmt(String fwno) {
+        StringBuilder sb = new StringBuilder();
+        BigDecimal amt;
+        sb.append("select isnull(sum(yf+dzf),0) as amt  from HK_FW006 where fwno = '${fwno}' ");
+        try {
+            String sql = sb.toString().replace("${fwno}", fwno);
+            Query query = getEntityManager().createNativeQuery(sql);
+            Object o = query.getSingleResult();
+            amt = BigDecimal.valueOf(Double.valueOf(o.toString()));
+            return amt;
+        } catch (NumberFormatException e) {
+            return BigDecimal.ZERO;
+        }
+    }
+
     @Override
     public void setDetail(Object value) {
         this.detailList = hkfw006DetailBean.findByFSN(value); //To change body of generated methods, choose Tools | Templates.

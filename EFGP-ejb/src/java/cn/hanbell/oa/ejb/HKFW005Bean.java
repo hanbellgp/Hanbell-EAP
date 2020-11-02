@@ -10,6 +10,7 @@ import cn.hanbell.crm.entity.REPTC;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.HKFW005;
 import cn.hanbell.oa.entity.HKFW005Detail;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,6 +119,26 @@ public class HKFW005Bean extends SuperEJBForEFGP<HKFW005> {
             return list;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    /**
+     *
+     * @param fwno
+     * @return 工作支援单运费和快递费
+     */
+    public BigDecimal getOAHKFW005TrafficAmt(String fwno) {
+        StringBuilder sb = new StringBuilder();
+        BigDecimal amt;
+        sb.append(" select isnull(sum(total),0) as total from HK_FW005 WHERE fwno = '${fwno}' ");
+        try {
+            String sql = sb.toString().replace("${fwno}", fwno);
+            Query query = getEntityManager().createNativeQuery(sql);
+            Object o = query.getSingleResult();
+            amt = BigDecimal.valueOf(Double.valueOf(o.toString()));
+            return amt;
+        } catch (NumberFormatException e) {
+            return BigDecimal.ZERO;
         }
     }
 

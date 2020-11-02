@@ -379,4 +379,26 @@ public class CdrlnhadBean extends SuperEJBForERP<Cdrlnhad> {
         }
     }
 
+    /**
+     *
+     * @param fwno
+     * @return CDRN20借出归还单运费
+     */
+    public BigDecimal getERPTrafficamtAmt(String fwno) {
+        StringBuilder sb = new StringBuilder();
+        BigDecimal amt;
+        sb.append(" select isnull(sum(c.freight),0) as amt from cdrlnhad h LEFT JOIN cdrfre c on c.shpno = h.trno and c.facno = h.facno ");
+        sb.append(" where  h.status ='Y' AND h.fwno='${fwno}' ");
+        try {
+            String sql = sb.toString().replace("${fwno}", fwno);
+            setCompany("C");
+            Query query = getEntityManager().createNativeQuery(sql);
+            Object o = query.getSingleResult();
+            amt = BigDecimal.valueOf(Double.valueOf(o.toString()));
+            return amt;
+        } catch (NumberFormatException e) {
+            return BigDecimal.ZERO;
+        }
+    }
+
 }

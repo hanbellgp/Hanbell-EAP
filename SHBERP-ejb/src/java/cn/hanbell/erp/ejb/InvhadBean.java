@@ -1145,4 +1145,55 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         }
     }
 
+    /**
+     *
+     * @param fwno
+     * @param resno
+     * @return 得出历史档材料明细
+     */
+    public BigDecimal getInvtrnhTramt(String fwno, String resno) {
+        StringBuilder sb = new StringBuilder();
+        String facno;
+        BigDecimal amt = BigDecimal.ZERO;
+        sb.append(" select isnull(sum(t.tramt),0) as tramt FROM (SELECT * FROM invhadh h ");
+        sb.append(" LEFT JOIN invdtah d on h.trno=d.trno AND  h.facno=d.facno ");
+        sb.append(" AND h.prono=d.prono  LEFT JOIN invmas v on d.itnbr = v.itnbr ");
+        sb.append(" LEFT JOIN invdou e on e.trtype=d.trtype where  h.facno='${facno}' ");
+        sb.append(" and h.prono='1' and (h.trtype in ('IAF' ,'IAG')) AND h.fwno='${fwno}' ");
+        if(!"".equals(resno)){//('1001','1013')
+            sb.append(" and h.resno in ").append(resno);
+        }
+        sb.append(" ) a ");
+        sb.append(" LEFT JOIN  invtrnh t on a.facno=t.facno and a.prono=t.prono and a.itnbr = t.itnbr  and  a.trno= t.trno ");
+        sb.append(" and t.trseq=a.trseq and t.trno= a.trno and t.trtype = a.trtype where t.facno='${facno}' ");
+        sb.append(" and (t.trtype ='IAF' or t.trtype= 'IAG') and t.prono= '1' ");
+        switch (fwno.substring(0, 2)) {
+            case "KM":
+                facno = "K";
+                break;
+            case "ZS":
+                facno = "E";
+                break;
+            default:
+                facno = "C,C4,N,G,J";
+                break;
+        }
+        try {
+            String[] arr = facno.split(",");
+            String sql;
+            Query query;
+            for (String fn : arr) {
+                sql = sb.toString().replace("${facno}", fn).replace("${fwno}", fwno);
+                setCompany(fn);
+                query = getEntityManager().createNativeQuery(sql);
+                Object o = query.getSingleResult();
+                BigDecimal result = BigDecimal.valueOf(Double.valueOf(o.toString()));
+                amt.add(result);
+            }
+            return amt;
+        } catch (NumberFormatException ex) {
+            return BigDecimal.ZERO;
+        }
+    }
+
 }

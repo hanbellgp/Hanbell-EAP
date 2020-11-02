@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">查询条件</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputLabel value="客诉单号" for="casenumber" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="casenumber" value="#{freeServiceAmtManagedBean.casenumber}" placeholder="可模糊查询" title="客诉单号" />
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputLabel value="服务单号" for="repairnumber" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="repairnumber" value="#{freeServiceAmtManagedBean.repairnumber}" placeholder="可模糊查询" title="服务单号" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputLabel value="责任人员" for="userna" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="userna" value="#{freeServiceAmtManagedBean.userna}" placeholder="可模糊查询" title="客诉单号" />
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputLabel value="责任部门" for="deptna" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="deptna" value="#{freeServiceAmtManagedBean.deptna}" placeholder="可模糊查询" title="服务单号" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputLabel value="品号类别" for="itntype" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:selectOneMenu id="itntype" value="#{freeServiceAmtManagedBean.itntype}" effect="fold" editable="true">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{freeServiceAmtManagedBean.itntypes}" />
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputLabel value="责任判定" for="judge" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:selectOneMenu id="judge" value="#{freeServiceAmtManagedBean.judge}" effect="fold" editable="true">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{freeServiceAmtManagedBean.judges}" />
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputLabel value="是否收费" for="charge" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:selectOneRadio id="charge" value="#{freeServiceAmtManagedBean.charge}" unselectable="true">
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="收费" itemValue="收费" />
+                            <f:selectItem itemLabel="免费" itemValue="免费" />
+                        </p:selectOneRadio>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputLabel value="是否在保固期" for="iswarranty" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:selectOneRadio id="iswarranty" value="#{freeServiceAmtManagedBean.iswarranty}" unselectable="true">
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="是" itemValue="是" />
+                            <f:selectItem itemLabel="否" itemValue="否" />
+                        </p:selectOneRadio>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="客诉日期起*(更新日期)" for="queryDateBegin" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateBegin" value="#{freeServiceAmtManagedBean.queryDateBegin}" title="客诉日期" pattern="yyyy-MM-dd"
+                                    required="true" requiredMessage="请输入客诉日期"/>
+                    </p:column>
+                    <p:column><h:outputLabel value="客诉日期止" for="queryDateEnd" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateEnd" value="#{freeServiceAmtManagedBean.queryDateEnd}" title="客诉日期" pattern="yyyy-MM-dd"
+                                    required="true" requiredMessage="请输入客诉日期"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{freeServiceAmtManagedBean.init()}"  icon="ui-icon-search"  update=":formList"/>
+                    <p:commandButton value="更新数据" action="#{freeServiceAmtManagedBean.update()}" update=":formList">
+                        <p:confirm header="更新" message="确认更新#{freeServiceAmtManagedBean.y}年#{freeServiceAmtManagedBean.m}的数据？" icon="pi pi-exclamation-triangle" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                    </p:confirmDialog>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnPrint" value="导出" actionListener="#{freeServiceAmtManagedBean.print()}" icon="ui-icon-print" update=":formList"/>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{freeServiceAmtManagedBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{freeServiceAmtManagedBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable value="#{freeServiceAmtManagedBean.freeServiceAmtList}"  var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="15,30,45" lazy="true" selectionMode="single" rowKey="#{item.id}"  >
+                <f:facet name="header">
+                    免费服务金额明细表
+                </f:facet>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="案件日期"/>
+                    </f:facet>
+                    <h:outputText value="#{item.crdate}">
+                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="客诉单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.casenumber}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="服务单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.repairnumber}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="责任人员"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cusna}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="责任部门"/>
+                    </f:facet>
+                    <h:outputText value="#{item.deptna}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="品号类别"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itntypeno}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="制造号码"/>
+                    </f:facet>
+                    <h:outputText value="#{item.varnr}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="客户名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cusna}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="责任判定"/>
+                    </f:facet>
+                    <h:outputText value="#{item.judge}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="问题分类"/>
+                    </f:facet>
+                    <h:outputText value="#{item.reason}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="是否收费"/>
+                    </f:facet>
+                    <h:outputText value="#{item.charge}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="保固期"/>
+                    </f:facet>
+                    <h:outputText value="#{item.iswarranty}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="合计金额"/>
+                    </f:facet>
+                    <h:outputText value="#{item.totalamt}"/>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnLoad,btnPrint,btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
