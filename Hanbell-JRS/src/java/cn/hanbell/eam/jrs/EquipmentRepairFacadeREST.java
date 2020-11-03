@@ -149,6 +149,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipInvenTemp.setItemno(entity.getItemno());
                 equipInvenTemp.setFormid(formid);
                 equipInvenTemp.setTroublefrom(entity.getTroublefrom());
+                equipInvenTemp.setRepairarea(entity.getRepairarea());
                 equipInvenTemp.setRepairmethodtype(entity.getRepairmethodtype());
                 equipInvenTemp.setHitchdesc(entity.getHitchdesc());
                 equipInvenTemp.setHitchurgency(entity.getHitchurgency());
@@ -215,7 +216,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 
                 equipmentrepairBean.persist(equipInvenTemp);
                 
-                if(!"2".equals(entity.getRepairmethodtype()))
+                if((!"2".equals(entity.getRepairmethodtype())) && assetCardTemp != null)
                 {
                     StringBuffer msg = new StringBuffer("收到新的报修单:");
                     StringBuffer userStrTemp = new StringBuffer(entity.getServiceuser().toUpperCase());
@@ -246,6 +247,41 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         userStrTemp.append("|").append("C0299");
                     }
                     else if("C0-2".equalsIgnoreCase(assetCardTemp.getPosition2().getPosition()))
+                    {
+                        userStrTemp.append("|").append("C0141");
+                    }
+
+                    String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
+
+                    // 发送失败，抛异常，使事务回滚
+                    if (!"200".equals(errmsg)) {
+                        //throw new RuntimeException("发送失败,请联系管理员");
+                        return new ResponseMessage("203", formid);
+                    }
+                }
+                else if(assetCardTemp == null)
+                {
+                    StringBuffer msg = new StringBuffer("收到新的报修单:");
+                    StringBuffer userStrTemp = new StringBuffer(entity.getServiceuser().toUpperCase());
+                    msg.append(formid).append("<br/>");
+                    msg.append("资产编号:").append("无<br/>");
+                    msg.append("设备名称:").append("其他设备<br/>");
+                    msg.append("设备位置:").append(entity.getRepairarea()).append("<br/>");
+                    msg.append("报修人:").append(entity.getRepairuser()).append("-").append(entity.getRepairusername()).append("<br/>");
+                    msg.append("维修人:").append(entity.getServiceuser()).append("-").append(entity.getServiceusername()).append("<br/>");
+                    msg.append("详情请至微信小程序查看!");
+
+                    sysUserList = systemUserBean.findByDeptno("1W300");
+                    if(sysUserList.size() > 0)
+                    {
+                        userStrTemp.append("|").append(sysUserList.get(0).getUserid().toUpperCase());
+                    }
+
+                    if("枫泾总部".equalsIgnoreCase(entity.getRepairarea()))
+                    {
+                        userStrTemp.append("|").append("C0299");
+                    }
+                    else if("枫泾一厂".equalsIgnoreCase(entity.getRepairarea()))
                     {
                         userStrTemp.append("|").append("C0141");
                     }
@@ -1725,6 +1761,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<SystemUser> repairUserListRes = new ArrayList<SystemUser>();
             List<SysCode> repairReasonListRes = new ArrayList<SysCode>();
             List<SysCode> hitchUrgencyListRes = new ArrayList<SysCode>();
+            List<SysCode> repairAreaListRes = new ArrayList<SysCode>();
             this.superEJB = systemUserBean;
             try {
                 Map<String, Object> filterFields = new HashMap<>();
@@ -1732,6 +1769,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 String deptno =sysCodeBean.findBySyskindAndCode("RD", "repairDeptno").getCvalue();
                 repairReasonListRes = sysCodeBean.getTroubleNameList("RD", "faultType");
                 hitchUrgencyListRes = sysCodeBean.getTroubleNameList("RD","hitchurgency");
+                repairAreaListRes = sysCodeBean.getTroubleNameList("RD","repairarea");
                 String key, value="";
                 filterFields.put("deptno", deptno);
                 
@@ -1746,6 +1784,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             initDtaRes.add(repairUserListRes);
             initDtaRes.add(repairReasonListRes);
             initDtaRes.add(hitchUrgencyListRes);
+            initDtaRes.add(repairAreaListRes);
             
            return initDtaRes;
         } else {
