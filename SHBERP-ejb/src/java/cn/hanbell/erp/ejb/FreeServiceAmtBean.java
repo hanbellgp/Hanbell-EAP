@@ -5,27 +5,20 @@
  */
 package cn.hanbell.erp.ejb;
 
-import cn.hanbell.crm.comm.SuperEJBForCRM;
 import cn.hanbell.crm.ejb.REPTCBean;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.FreeServiceAmt;
-import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HKFW005Bean;
 import cn.hanbell.oa.ejb.HKFW006Bean;
-import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.Query;
 
 /**
@@ -100,7 +93,7 @@ public class FreeServiceAmtBean extends SuperEJBForERP<FreeServiceAmt> {
                         //OA的HKFW005的运费
                         BigDecimal trafficamt1 = hKFW005Bean.getOAHKFW005TrafficAmt(row[17].toString());
                         BigDecimal trafficamt2 = hKFW006Bean.getOAHKFW006TrafficAmt(row[17].toString());
-                        BigDecimal trafficamt3 = cdrlnhadBean.getERPTrafficamtAmt(row[17].toString());
+                        BigDecimal trafficamt3 = cdrlnhadBean.getERPTrafficAmt(row[17].toString());
                         trafficamt = trafficamt1.add(trafficamt2).add(trafficamt3);
                         fa.setGcpamt(gcpamt);
                         fa.setGcramt(gcpamt);
