@@ -384,7 +384,7 @@ public class CdrlnhadBean extends SuperEJBForERP<Cdrlnhad> {
      * @param fwno
      * @return CDRN20借出归还单运费
      */
-    public BigDecimal getERPTrafficamtAmt(String fwno) {
+    public BigDecimal getERPTrafficAmt(String fwno) {
         StringBuilder sb = new StringBuilder();
         BigDecimal amt;
         sb.append(" select isnull(sum(c.freight),0) as amt from cdrlnhad h LEFT JOIN cdrfre c on c.shpno = h.trno and c.facno = h.facno ");
