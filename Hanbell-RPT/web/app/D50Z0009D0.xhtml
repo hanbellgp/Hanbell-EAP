@@ -29,6 +29,58 @@
                         <p:calendar id="queryDateEnd" value="#{d50Z0009D0ManagedBean.queryDateEnd}" title="结束日期" pattern="yyyy/MM/dd"/>
                     </p:column>
                 </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="申请公司别" for="queryDateBegin" /></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="applyfacnoSelect" value="#{d50Z0009D0ManagedBean.applyfacno}" title="关卡名称" >
+                            <f:selectItem itemLabel="全部" itemValue="ALL"/>
+                            <f:selectItem itemLabel="上海汉钟" itemValue="C"/>
+                            <f:selectItem itemLabel="广州分公司" itemValue="G"/>
+                            <f:selectItem itemLabel="济南分公司" itemValue="J"/>
+                            <f:selectItem itemLabel="南京分公司" itemValue="N"/>
+                            <f:selectItem itemLabel="重庆分公司" itemValue="C4"/>
+                            <f:selectItem itemLabel="浙江汉声" itemValue="H"/>
+                            <f:selectItem itemLabel="安徽汉扬" itemValue="Y"/>
+                            <f:selectItem itemLabel="上海柯茂" itemValue="K"/>
+                            <f:selectItem itemLabel="浙江柯茂" itemValue="E"/>
+                            <f:selectItem itemLabel="世纪东元" itemValue="Q"/>
+                            <f:selectItem itemLabel="真空技术" itemValue="L"/>
+                            <f:selectItem itemLabel="香港汉钟" itemValue="X"/>
+                            <f:selectItem itemLabel="越南汉钟" itemValue="V"/>
+                            <f:selectItem itemLabel="韩国汉钟" itemValue="R"/>
+                            <f:selectItem itemLabel="顺德涡旋" itemValue="W"/>
+                            <f:selectItem itemLabel="台湾汉钟（观音厂）" itemValue="A"/>
+                            <f:selectItem itemLabel="台湾汉钟（台中厂）" itemValue="B"/>
+                            <f:selectItem itemLabel="台湾真空" itemValue="P"/>
+                            <f:selectItem itemLabel="台湾汉力" itemValue="HP"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column><h:outputLabel value="支援公司别" for="queryDateBegin" /></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="supportfacnoSelect" value="#{d50Z0009D0ManagedBean.supportfacno}" title="关卡名称" >
+                            <f:selectItem itemLabel="全部" itemValue="ALL"/>
+                            <f:selectItem itemLabel="上海汉钟" itemValue="C"/>
+                            <f:selectItem itemLabel="广州分公司" itemValue="G"/>
+                            <f:selectItem itemLabel="济南分公司" itemValue="J"/>
+                            <f:selectItem itemLabel="南京分公司" itemValue="N"/>
+                            <f:selectItem itemLabel="重庆分公司" itemValue="C4"/>
+                            <f:selectItem itemLabel="浙江汉声" itemValue="H"/>
+                            <f:selectItem itemLabel="安徽汉扬   " itemValue="Y"/>
+                            <f:selectItem itemLabel="上海柯茂   " itemValue="K"/>
+                            <f:selectItem itemLabel="浙江柯茂   " itemValue="E"/>
+                            <f:selectItem itemLabel="世纪东元   " itemValue="Q"/>
+                            <f:selectItem itemLabel="真空技术   " itemValue="L"/>
+                            <f:selectItem itemLabel="香港汉钟   " itemValue="X"/>
+                            <f:selectItem itemLabel="越南汉钟   " itemValue="V"/>
+                            <f:selectItem itemLabel="韩国汉钟   " itemValue="R"/>
+                            <f:selectItem itemLabel="顺德涡旋   " itemValue="W"/>
+                            <f:selectItem itemLabel="台湾汉钟（观音厂）   " itemValue="A"/>
+                            <f:selectItem itemLabel="台湾汉钟（台中厂）   " itemValue="B"/>
+                            <f:selectItem itemLabel="台湾真空" itemValue="P"/>
+                            <f:selectItem itemLabel="台湾汉力" itemValue="HP"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
             </p:panelGrid>
             <p:toolbar id="toolbar" styleClass="topToolbar">
                 <f:facet name="left">
@@ -48,8 +100,8 @@
                 <f:facet name="header">
                     集团工作支援单
                 </f:facet>
-                <p:ajax event="rowSelect"  update=":formList:toolbar" />
-                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:ajax event="rowSelect"  update="formList:dlgDetail"  oncomplete="PF('dlgDetail').show();" />
+                <p:ajax event="rowUnselect"  update="formList:dlgDetail" oncomplete="" />
                 <p:column styleClass="Wid15">
                     <f:facet name="header">
                         <h:outputText value="表单号"/>
@@ -60,7 +112,7 @@
                     <f:facet name="header">
                         <h:outputText value="申请公司"/>
                     </f:facet>
-                    <h:outputText value="#{item.applyfacno}"/>
+                    <h:outputText value="#{item.getComapntName(item.applyfacno)}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
@@ -72,7 +124,7 @@
                     <f:facet name="header">
                         <h:outputText value="支援公司"/>
                     </f:facet>
-                    <h:outputText value="#{item.supportfacno}"/>
+                    <h:outputText value="#{item.getComapntName(item.supportfacno)}"/>
                 </p:column>
                 <p:column styleClass="Wid5" >
                     <f:facet name="header">
@@ -102,13 +154,110 @@
                     </f:facet>
                     <h:outputText value="#{item.totaldays}"/>
                 </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="申请原因"/>
-                    </f:facet>
-                    <h:outputText value="#{item.applyreason}"/>
-                </p:column>
             </p:dataTable>
+            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="90%">
+                <p:panelGrid id="plgDetail"  styleClass="plgDetail Wid100">
+                    <f:facet name="header" >
+                        <p:column colspan="6">集团工作支援单详情</p:column>
+                    </f:facet>
+                    <p:row>
+                        <p:column styleClass="Wid10"><h:outputText value="申请公司别"/></p:column>
+                        <p:column styleClass="Wid10">
+                            <p:inputText readonly="true" id="applyCompany" value="#{d50Z0009D0ManagedBean.currentEntity.getComapntName(d50Z0009D0ManagedBean.currentEntity.applyfacno)}" title="applyCompany"/>
+                        </p:column>
+                        <p:column styleClass="Wid10"><h:outputText value="申请人员"/></p:column>
+                        <p:column styleClass="Wid10">
+                            <p:inputText readonly="true" id="applyUser" value="#{d50Z0009D0ManagedBean.currentEntity.applyUser.userName}" title="applyUser" />  
+                        </p:column>
+                        <p:column styleClass="Wid10"><h:outputText value="申请部门"/></p:column>
+                        <p:column styleClass="Wid10">
+                            <p:inputText readonly="true" id="applyDept" value="#{d50Z0009D0ManagedBean.currentEntity.applyDept.organizationUnitName}" title="applyDept" />  
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="支援公司别"/></p:column>
+                        <p:column>
+                            <p:inputText readonly="true" id="supportfacno" value="#{d50Z0009D0ManagedBean.currentEntity.getComapntName(d50Z0009D0ManagedBean.currentEntity.supportfacno)}" title="supportfacno"/>
+                        </p:column>
+                        <p:column><h:outputText value="支援人员" /></p:column>
+                        <p:column>
+                            <p:inputText readonly="true" id="supportUser" value="#{d50Z0009D0ManagedBean.currentEntity.supportUser.userName}" title="supportUser" />
+                        </p:column>
+                        <p:column><h:outputText value="支援部门" /></p:column>
+                        <p:column>
+                            <p:inputText readonly="true" id="supportDept" value="#{d50Z0009D0ManagedBean.currentEntity.supportDept.organizationUnitName}" title="supportDept" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="支援类别"/></p:column>
+                        <p:column>
+                            <p:inputText  readonly="true" id="supporttype" value="#{d50Z0009D0ManagedBean.getSupportTypeValue(d50Z0009D0ManagedBean.currentEntity.supporttype)}" title="supporttype"/>
+                        </p:column>
+                        <p:column><h:outputText value="其他说明"/></p:column>
+                        <p:column>
+                            <p:inputText  readonly="true" id="othertype" value="#{d50Z0009D0ManagedBean.currentEntity.othertype}" title="othertype"/>
+                        </p:column>
+                        <p:column><h:outputText value="客诉单号"/></p:column>
+                        <p:column>
+                            <p:inputText  readonly="true" id="ksno" value="#{d50Z0009D0ManagedBean.currentEntity.ksno}" title="ksno"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="出差期间开始日期"/></p:column>
+                        <p:column>
+                            <p:inputText readonly="true" id="startout" value="#{d50Z0009D0ManagedBean.currentEntity.startout}" title="startout"> <f:convertDateTime pattern="yyyy/MM/dd"/></p:inputText>
+                        </p:column>
+                        <p:column><h:outputText value="出差期间结束日期"/></p:column>
+                        <p:column>
+                            <p:inputText readonly="true" id="endout" value="#{d50Z0009D0ManagedBean.currentEntity.endout}" title="endout" > <f:convertDateTime pattern="yyyy/MM/dd"/></p:inputText>
+                        </p:column>
+                        <p:column><h:outputText value="共计天数"/></p:column>
+                        <p:column>
+                            <p:inputText readonly="true" id="totaldays" value="#{d50Z0009D0ManagedBean.currentEntity.totaldays}" title="totaldays" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="申请工作支援原因说明"/></p:column>
+                        <p:column colspan="5">
+                            <p:inputTextarea rows="2" style="width: 100%"  readonly="true"  value="#{d50Z0009D0ManagedBean.currentEntity.applyreason}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="住宿开始日期"/></p:column>
+                        <p:column>
+                            <p:inputText readonly="true" id="staydate1" value="#{d50Z0009D0ManagedBean.currentEntity.staydate1}" title="staydate1"> <f:convertDateTime pattern="yyyy/MM/dd"/></p:inputText>
+                        </p:column>
+                        <p:column><h:outputText value="住宿结束日期"/></p:column>
+                        <p:column>
+                            <p:inputText readonly="true" id="staydate2" value="#{d50Z0009D0ManagedBean.currentEntity.staydate2}" title="staydate2" > <f:convertDateTime pattern="yyyy/MM/dd"/></p:inputText>
+                        </p:column>
+                        <p:column><h:outputText value="共计天数"/></p:column>
+                        <p:column>
+                            <p:inputText readonly="true" id="days" value="#{d50Z0009D0ManagedBean.currentEntity.days}" title="days" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="申请单位负责经营项"/></p:column>
+                        <p:column colspan="2">
+                            <p:inputText readonly="true" id="applypay" value="#{d50Z0009D0ManagedBean.getPayValue(d50Z0009D0ManagedBean.currentEntity.applypay)}" title="applypay"></p:inputText>
+                        </p:column>
+                        <p:column><h:outputText value="其他说明"/></p:column>
+                        <p:column colspan="2">
+                            <p:inputText readonly="true" id="otherpay1" value="#{d50Z0009D0ManagedBean.currentEntity.otherpay1}" title="otherpay1" ></p:inputText>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="支援单位负责经营项"/></p:column>
+                        <p:column colspan="2">
+                            <p:inputText readonly="true" id="supportpay" value="#{d50Z0009D0ManagedBean.getPayValue(d50Z0009D0ManagedBean.currentEntity.supportpay)}" title="supportpay" ></p:inputText>
+                        </p:column>
+                        <p:column><h:outputText value="其他说明"/></p:column>
+                        <p:column colspan="2">
+                            <p:inputText readonly="true" id="otherpay2" value="#{d50Z0009D0ManagedBean.currentEntity.otherpay2}" title="otherpay2" ></p:inputText>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
