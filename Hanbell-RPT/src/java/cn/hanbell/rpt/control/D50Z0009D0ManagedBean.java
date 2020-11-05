@@ -5,7 +5,6 @@
  */
 package cn.hanbell.rpt.control;
 
-import cn.hanbell.eap.ejb.MailNotificationBean;
 import cn.hanbell.oa.ejb.D50Z0009D0Bean;
 import cn.hanbell.oa.entity.D50Z0009D0;
 import cn.hanbell.rpt.lazy.D50Z0009D0Model;
@@ -47,10 +46,7 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
 
     @EJB
     private D50Z0009D0Bean d50Z0009D0Bean;
-    @EJB
-    private MailNotificationBean mailBean;
-    private String supportfacno;
-    private String applyfacno;
+
     public D50Z0009D0ManagedBean() {
         super(D50Z0009D0.class);
     }
@@ -59,8 +55,6 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
     public void init() {
         this.setSuperEJB(this.d50Z0009D0Bean);
         this.model = new D50Z0009D0Model(this.d50Z0009D0Bean);
-         this.model.getFilterFields().clear();
-            model.getFilterFields().put("processSerialNumber.currentState", 3);
         super.init();
     }
 
@@ -68,16 +62,9 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
     public void query() {
         if (this.model != null && this.model.getFilterFields() != null) {
             this.model.getFilterFields().clear();
-            model.getFilterFields().put("processSerialNumber.currentState", 3);
             if (this.queryDateBegin != null && this.queryDateEnd != null) {
                 model.getFilterFields().put("processSerialNumber.createdTimeBegin", this.queryDateBegin);
                 model.getFilterFields().put("processSerialNumber.createdTimeEnd", this.queryDateEnd);
-            }
-            if (supportfacno != null && !"ALL".equals(supportfacno)) {
-                model.getFilterFields().put("supportfacno", this.supportfacno);
-            }
-            if (applyfacno != null && !"ALL".equals(applyfacno)) {
-                model.getFilterFields().put("applyfacno", this.applyfacno);
             }
         }
     }
@@ -88,9 +75,7 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
         this.model = new D50Z0009D0Model(this.d50Z0009D0Bean);
         this.queryDateBegin = null;
         this.queryDateEnd = null;
-        this.supportfacno = "ALL";
-        this.applyfacno = "ALL";
-        query();
+        super.reset();
     }
 
     @Override
@@ -124,9 +109,9 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
                     Cell cell = row.createCell(0);
                     cell.setCellValue((double) (i - 2));
                     row.createCell(1).setCellValue(e.getFormSerialNumber() != null ? e.getFormSerialNumber() : "");
-                    row.createCell(2).setCellValue(e.getStartout() != null ? BaseLib.formatDate("MM", e.getEndout()) : "");
-                    row.createCell(3).setCellValue(e.getApplyfacno() != null ? e.getComapntName(e.getApplyfacno()) : "");
-                    row.createCell(4).setCellValue(e.getSupportfacno() != null ? e.getComapntName(e.getSupportfacno()) : "");
+                    row.createCell(2).setCellValue(e.getStartout() != null ? BaseLib.formatDate("MM", e.getEndout()) : "");                   
+                    row.createCell(3).setCellValue(e.getApplyfacno() != null ? e.getApplyfacno() : "");                 
+                    row.createCell(4).setCellValue(e.getSupportfacno() != null ? e.getSupportfacno() : "");                
                     row.createCell(5).setCellValue(e.getSupportDept().getOrganizationUnitName() != null ? e.getSupportDept().getOrganizationUnitName() : "");
                     row.createCell(6).setCellValue(e.getSupportUser().getUserName() != null ? e.getSupportUser().getUserName() : "");
                     row.createCell(8).setCellValue(e.getApplyDept().getOrganizationUnitName() != null ? e.getApplyDept().getOrganizationUnitName() : "");
@@ -147,15 +132,19 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
                     row.createCell(17).setCellValue(e.getApplypay() != null && e.getApplypay().contains("4") ? "√" : "");
                     row.createCell(18).setCellValue(e.getApplypay() != null && e.getApplypay().contains("6") ? "√" : "");
                     row.createCell(19).setCellValue(e.getApplypay() != null && e.getApplypay().contains("9") ? "√" : "");
-                    row.createCell(20).setCellValue(e.getOtherpay1() != null ? e.getOtherpay1() : "");
+                    row.createCell(20).setCellValue(e.getOtherpay1()!= null ? e.getOtherpay1() : "");
                     if (e.getApplyfactory() != null && !"".equals(e.getApplyfactory())) {
                         row.createCell(21).setCellValue(e.getApplyfactory() != null ? e.getApplyfactory().concat("%") : "");
                     }
+
                 }
+
                 FileOutputStream os = null;
+
                 try {
                     os = new FileOutputStream(this.fileFullName);
                     wb.write(os);
+
                     this.reportViewPath = this.reportViewContext + this.fileName;
                     this.preview();
                 } catch (Exception var38) {
@@ -169,6 +158,7 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
                     } catch (IOException var37) {
                         this.log4j.error(var37.getMessage());
                     }
+
                 }
             } catch (FileNotFoundException var40) {
                 this.log4j.error(var40.getMessage());
@@ -177,10 +167,12 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
             } catch (Exception var42) {
                 this.log4j.error(var42.getMessage());
             }
+
         } finally {
 
         }
     }
+
     public HSSFCellStyle getColumnTopStyle(HSSFWorkbook workbook) {
         HSSFFont font = workbook.createFont();
         font.setFontHeightInPoints((short) 11);
@@ -201,86 +193,4 @@ public class D50Z0009D0ManagedBean extends SuperQueryBean<D50Z0009D0> {
         style.setVerticalAlignment((short) 1);
         return style;
     }
-
-    public String getSupportTypeValue(String supporttype) {
-         if(supporttype==null||"".equals(supporttype)){
-            return "";
-        }
-        String[] type = supporttype.split(",");
-        StringBuffer value = new StringBuffer();
-        for (int i = 0; i < type.length; i++) {
-            switch (type[i]) {
-                case "1":
-                    value.append("客诉服务").append(",");
-                    break;
-                case "2":
-                    value.append("收费服务").append(",");
-                    break;
-                case "3":
-                    value.append("营业").append(",");
-                    break;
-                case "4":
-                    value.append("其他").append(",");
-                    break;
-            }
-        }
-        return value.substring(0, value.length() - 1);
-    }
-
-    public String getPayValue(String pay) {
-        if(pay==null||"".equals(pay)){
-            return "";
-        }
-        String[] payList = pay.split(",");
-        StringBuffer value = new StringBuffer();
-        for (int i = 0; i < payList.length; i++) {
-            switch (payList[i]) {
-                case "1":
-                    value.append("交通费(含机票)").append(",");
-                    break;
-                case "2":
-                    value.append("出差津贴").append(",");
-                    break;
-                case "3":
-                    value.append("薪资成本").append(",");
-                    break;
-                case "4":
-                    value.append("膳食费").append(",");
-                    break;
-                case "5":
-                    value.append("材料费").append(",");
-                    break;
-                case "6":
-                    value.append("住宿费").append(",");
-                    break;
-                case "7":
-                    value.append("邮电费").append(",");
-                    break;
-                case "8":
-                    value.append("交际费").append(",");
-                    break;
-                case "9":
-                    value.append("其他").append(",");
-                    break;
-            }
-        }
-        return value.substring(0, value.length() - 1);
-    }
-
-    public String getSupportfacno() {
-        return supportfacno;
-    }
-
-    public void setSupportfacno(String supportfacno) {
-        this.supportfacno = supportfacno;
-    }
-
-    public String getApplyfacno() {
-        return applyfacno;
-    }
-
-    public void setApplyfacno(String applyfacno) {
-        this.applyfacno = applyfacno;
-    }
-
 }

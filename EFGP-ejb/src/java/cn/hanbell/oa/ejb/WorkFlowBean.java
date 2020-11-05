@@ -232,13 +232,9 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             case "W":
                 return "顺德涡旋";
             case "A":
-                return "台湾汉钟（观音厂）";
+                return "台湾观音厂";
             case "B":
-                return "台湾汉钟（台中厂）";
-            case "P":
-                return "台湾真空";
-            case "HP":
-                return "台湾汉力";
+                return "台湾台中厂";
         }
         return "上海汉钟";
     }

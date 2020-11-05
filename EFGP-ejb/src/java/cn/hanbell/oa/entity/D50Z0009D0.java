@@ -669,7 +669,7 @@ public class D50Z0009D0 implements Serializable {
     }
 
     public String getSupportfacno() {
-        return this.supportfacno;
+        return getComapntName(this.supportfacno);
     }
 
     public void setSupportfacno(String supportfacno) {
@@ -757,7 +757,7 @@ public class D50Z0009D0 implements Serializable {
     }
 
     public String getApplyfacno() {
-        return this.applyfacno;
+        return getComapntName(this.applyfacno);
     }
 
     public void setApplyfacno(String applyfacno) {
