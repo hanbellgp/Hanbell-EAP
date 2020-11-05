@@ -9,6 +9,7 @@ import cn.hanbell.crm.comm.SuperEJBForCRM;
 import cn.hanbell.crm.entity.CMSMV;
 import cn.hanbell.crm.entity.REPTC;
 import cn.hanbell.util.BaseLib;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -61,6 +62,70 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
             return null;
         }
     }
+    
+    /**
+     * @param y
+     * @param m
+     * @return
+     * @description 获取CRM的数据
+     */
+    public List getCRMList(int y, int m) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" select a.CREATE_DATE,a.BQ001,BQ016,b.MV002,a.BQ017,c.ME002,BQ003, d.MA003,e.CA009,e.CA500, ");
+        sb.append(" a.BQ002 as '客户代号',f.GG003,a.BQ502,(case a.BQ501 when 'N' then '免费' else '收费' end) as BQ501, ");
+        sb.append(" CASE WHEN datediff(DAY,g.MI009,CONVERT(VARCHAR(8),GETDATE(),112))>0 THEN '否' ELSE '是' END AS MI017, ");
+        sb.append(" (select ME002 from CMSME where ME001 = a.BQ504) as '责任归属部门',h.AK003,(j.TC001+j.TC002) as '维修单号', ");
+        sb.append(" TC016,(select MV002 from CMSMV where CMSMV.MV001 = j.TC016) as '维修人员名称', ");
+        sb.append(" TC017,(select ME002 from CMSME where CMSME.ME001 = j.TC017) as '维修部门' ");
+        sb.append(" from SERBQ a ,CMSMV b,CMSME c,SERCA e,CRMGG f,REPMI g,REPTC j, ");
+        sb.append(" (SELECT AA002 AS MA002,AA003 AS MA003 ");
+        sb.append(" FROM SERAA ");
+        sb.append(" UNION ");
+        sb.append(" Select MA002,MA003 ");
+        sb.append(" from WARMA ");
+        sb.append(" Where ((MA001 in (SELECT AA001 FROM SERAA)) ");
+        sb.append(" or ((SELECT AA001 FROM SERAA) ='')) and MA002 <> '') as d, ");
+        sb.append(" ( Select AK002,AK003,AK006,AK012,AK014 ");
+        sb.append(" FROM  SERAK AS SERAK ");
+        sb.append(" WHERE AK013 <> 'Y'  AND AK001=N'RLM' ");
+        sb.append(" UNION ");
+        sb.append(" SELECT AK002,AK003,AK006,AK012,AK014 ");
+        sb.append(" FROM SERAB ");
+        sb.append(" LEFT JOIN SERAK ON AK002 = AB002 AND AK001 = AB001  WHERE AK013 = 'Y' AND AK001=N'RLM' ) h ");
+        sb.append(" where a.BQ016 = b.MV001 and a.BQ017 = c.ME001 and a.BQ003 = d.MA002 and a.BQ001= e.CA001 ");
+        sb.append(" and a.BQ002 = f.GG001 and g.MI002=e.CA009 and a.BQ023 = h.AK002 and e.CA010= j.TC005 and e.CA011 = j.TC006 ");
+        sb.append(" and year(a.CREATE_DATE) = ").append(y).append(" and month(a.CREATE_DATE)= ").append(m);
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        try {
+            List CRMList = query.getResultList();
+            return CRMList;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param fwno
+     * @return CRM 差旅费
+     */
+    public BigDecimal getCRMTravelamt(String fwno) {
+        StringBuilder sb = new StringBuilder();
+        BigDecimal amt = BigDecimal.ZERO;
+        sb.append(" SELECT isnull(sum(MZ017),0) as MZ017 FROM PORMZ z LEFT OUTER JOIN PORMY y ON z.MZ001=y.MY001 ");
+        sb.append(" AND  z.MZ002=y.MY002 LEFT OUTER JOIN CMSME e on e.ME001=y.MY004 LEFT OUTER JOIN CMSMV v on v.MV001=y.MY005 ");
+        sb.append(" LEFT OUTER JOIN  CRMGA a ON a.GA002=z.MZ009 LEFT OUTER JOIN  REPTC t ON t.TC001= z.MZ005 AND t.TC002=z.MZ006 ");
+        sb.append(" WHERE (GA001='3C')  and (MZ005+MZ006) = '${fwno}' ");
+        try {
+            String sql = sb.toString().replace("${fwno}", fwno);
+            Query query = getEntityManager().createNativeQuery(sql);
+            Object o = query.getSingleResult();
+            amt = BigDecimal.valueOf(Double.valueOf(o.toString()));
+            return amt;
+        } catch (NumberFormatException ex) {
+            return amt;
+        }
+    }
 
     public String getTC002ByTC001AndDate(String tc001, Date date) {
         String ls_no = "";
@@ -95,10 +160,28 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
             query.setParameter("tc001", maintainformtype);
         }
         try {
-             List<REPTC> list = query.getResultList();
+            List<REPTC> list = query.getResultList();
             return list;
         } catch (Exception ex) {
-             ex.printStackTrace();
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
+     * @return 
+     * @dscription获取CRM的品号类别编号
+     */
+    public List<Object> getItntypeList(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT AA002 AS MA002 FROM SERAA ");
+        sb.append(" UNION ");
+        sb.append(" SELECT MA002 FROM WARMA ");
+        sb.append(" WHERE ((MA001 in (SELECT AA001 FROM SERAA)) or ((SELECT AA001 FROM SERAA) ='')) and MA002 <> '' ");
+        try {
+            Query query = getEntityManager().createNativeQuery(sb.toString());
+            return query.getResultList();
+        } catch (NumberFormatException ex) {
             return null;
         }
     }
