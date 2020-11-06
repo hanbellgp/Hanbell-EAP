@@ -7,6 +7,10 @@ package cn.hanbell.rpt.control;
 
 import cn.hanbell.eap.comm.MailNotify;
 import cn.hanbell.eap.ejb.MailNotificationBean;
+import cn.hanbell.eap.ejb.SystemRoleBean;
+import cn.hanbell.eap.ejb.SystemRoleDetailBean;
+import cn.hanbell.eap.entity.SystemRole;
+import cn.hanbell.eap.entity.SystemRoleDetail;
 import cn.hanbell.oa.ejb.D50Z0009D0Bean;
 import cn.hanbell.oa.entity.D50Z0009D0;
 import cn.hanbell.rpt.lazy.D50Z0009D0Model;
@@ -18,23 +22,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
-import javax.annotation.Resource;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.ejb.TimerService;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -56,7 +55,12 @@ public class TimerBean {
     private MailNotificationBean mailBean;
     @EJB
     private D50Z0009D0Bean d50Z0009D0Bean;
-
+    
+    @EJB
+    private SystemRoleBean systemroleBean;
+    
+    @EJB
+    private SystemRoleDetailBean systemroledetailBean;
     /**
      * 集团工作支援单发送邮件到各个主管
      */
@@ -66,6 +70,18 @@ public class TimerBean {
         if (fileFullName == null || "".equals(fileFullName)) {
             return;
         }
+        Map<String ,Object> filters=new HashMap<String, Object>();
+        filters.put("roleno", "D50Z0009D0Mail");
+       List<SystemRole> roles=systemroleBean.findByFilters(filters);
+       if(roles==null||roles.isEmpty()||roles.size()!=1){
+           this.log4j.error("获取角色时失败");
+           return;
+       }
+      List<SystemRoleDetail> list= systemroledetailBean.findByPId(roles.get(0).getId());
+        if(list.isEmpty()||list==null){
+            this.log4j.error("该角色下没有人员");
+            return;
+        }
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.MONTH, -1);
@@ -73,24 +89,14 @@ public class TimerBean {
         String dateString = sdf.format(cal.getTime());
         try {
             mailBean.getTo().clear();
-            mailBean.getTo().add("kimsu@hanbell.com");
+            mailBean.getTo().add(list.get(0).getSystemUser().getUserid()+"@hanbell.com.cn");
             mailBean.getCc().clear();
-            mailBean.getCc().add("rainingsss@hanbell.cn");//庄玉梅
-            mailBean.getCc().add("shenxian@hanbell.cn");//沈贤
-            mailBean.getCc().add("zhujuhong@hanbell.cn");//朱菊红
-            mailBean.getCc().add("vivianlee@hanbell.cn");//李娜
-            mailBean.getCc().add("wangyunfei@hanbell.cn");//汪云绯
-            mailBean.getCc().add("guliping@hanbell.cn");//顾经理
-            mailBean.getCc().add("yuanfang@hanbell.cn");//袁课
-            mailBean.getCc().add("menglun@hanbell.com");//温孟伦
-            mailBean.getCc().add("jackruan@hanbell.cn");//阮仁杰
-            mailBean.getCc().add("pingkuang.tsai@hanbell.com");//蔡秉光
-            mailBean.getCc().add("zhoujianfang@hanbell.cn");//周建芳
-            mailBean.getCc().add("zhangxiaohong@hanbell.cn");//张小红
-            mailBean.getCc().add("liyongjuan@hanbell.cn");//李课
-            mailBean.getCc().add("alex@zj-hanson.com");//胡轶峰
-            mailBean.getCc().add("H0968@zj-hanson.com ");//吴美霞
-            mailBean.getCc().add("gexia@zj-hanson.com");//戈课
+            if(list.size()>=2){
+              for(int i=1;i<list.size();i++){
+                  mailBean.getCc().add(list.get(i).getSystemUser().getUserid()+"@hanbell.com.cn");
+              }
+            }
+             mailBean.getCc();
             mailBean.setMailSubject(dateString + "集团工作支援单报表");
             mailBean.setMailContent("附件为" + dateString + "集团工作支援单报表，请查收！");
             File file = new File(fileFullName);
