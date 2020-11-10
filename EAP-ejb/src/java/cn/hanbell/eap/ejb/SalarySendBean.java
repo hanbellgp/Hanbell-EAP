@@ -59,6 +59,7 @@ public class SalarySendBean extends SuperEJBForEAP<SalarySend> {
             return null;
         }
     }
+    
     public String getTaskId(String taskid) {
         String ls_no = "";
         String ls_ta002 = "";

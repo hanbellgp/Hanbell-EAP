@@ -669,7 +669,7 @@ public class D50Z0009D0 implements Serializable {
     }
 
     public String getSupportfacno() {
-        return getComapntName(this.supportfacno);
+        return this.supportfacno;
     }
 
     public void setSupportfacno(String supportfacno) {
@@ -757,7 +757,7 @@ public class D50Z0009D0 implements Serializable {
     }
 
     public String getApplyfacno() {
-        return getComapntName(this.applyfacno);
+        return this.applyfacno;
     }
 
     public void setApplyfacno(String applyfacno) {
@@ -1193,7 +1193,7 @@ public class D50Z0009D0 implements Serializable {
         return "cn.hanbell.oa.entity.D50Z0009D0[ oid=" + this.oid + " ]";
     }
 
-    public String getComapntName(String name) {
+    public String getCompanyName(String name) {
         WorkFlowBean WorkFlowBean = new WorkFlowBean();
         return WorkFlowBean.getCompanyName(name);
     }

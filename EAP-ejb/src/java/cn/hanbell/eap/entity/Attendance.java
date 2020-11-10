@@ -61,6 +61,9 @@ public class Attendance extends SuperEntity {
     @Size(max = 10)
     @Column(name = "attendanceDate")
     private String attendanceDate;
+     @Size(max = 6)
+    @Column(name = "checkcode")
+    private String checkcode;
     @Size(max = 10)
     @Column(name = "employeeName")
     private String employeeName;
@@ -174,6 +177,15 @@ public class Attendance extends SuperEntity {
         this.attendanceDate = attendanceDate;
     }
 
+    public String getCheckcode() {
+        return checkcode;
+    }
+
+    public void setCheckcode(String checkcode) {
+        this.checkcode = checkcode;
+    }
+
+    
     public String getEmployeeName() {
         return employeeName;
     }
