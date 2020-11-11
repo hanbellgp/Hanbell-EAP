@@ -18,8 +18,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -30,8 +28,6 @@ public class WeChatClockFacadesREST extends SuperRESTForEAP<WeChatClock> {
 
     @EJB
     private WeChatClockBean weChatClockBean;
-
-    protected final Logger log4j = LogManager.getLogger("cn.hanbell.wco");
     
     public WeChatClockFacadesREST() {
         super(WeChatClock.class);
