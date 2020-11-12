@@ -57,7 +57,7 @@ public class SalesOrder extends SuperEntity {
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "salesOrder")
     @JoinTable(name = "salesorderproduce")
-    private List<SalesOrderProduce> producePlanList = new ArrayList<SalesOrderProduce>();
+    private List<SalesOrderSchedule> scheduleList = new ArrayList<SalesOrderSchedule>();
 
     @Basic(optional = false)
     @NotNull
@@ -193,10 +193,10 @@ public class SalesOrder extends SuperEntity {
     }
 
     /**
-     * @return the producePlanList
+     * @return the scheduleList
      */
-    public List<SalesOrderProduce> getProducePlanList() {
-        return producePlanList;
+    public List<SalesOrderSchedule> getScheduleList() {
+        return scheduleList;
     }
 
     public String getCompany() {
@@ -540,8 +540,8 @@ public class SalesOrder extends SuperEntity {
 
     public void sumManufactureQuantity() {
         BigDecimal manqty = BigDecimal.ZERO;
-        this.getProducePlanList();
-        for (SalesOrderProduce p : this.producePlanList) {
+        this.getScheduleList();
+        for (SalesOrderSchedule p : this.scheduleList) {
             manqty = manqty.add(p.getManqty());
         }
         this.setManqty(manqty);

@@ -6,7 +6,7 @@
 package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
-import cn.hanbell.eap.entity.SalesOrderProduce;
+import cn.hanbell.eap.entity.SalesOrderSchedule;
 import cn.hanbell.util.BaseLib;
 import java.util.Date;
 import javax.ejb.Stateless;
@@ -18,10 +18,10 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class SalesOrderProduceBean extends SuperEJBForEAP<SalesOrderProduce> {
+public class SalesOrderScheduleBean extends SuperEJBForEAP<SalesOrderSchedule> {
 
-    public SalesOrderProduceBean() {
-        super(SalesOrderProduce.class);
+    public SalesOrderScheduleBean() {
+        super(SalesOrderSchedule.class);
     }
 
     public String getFormId() {

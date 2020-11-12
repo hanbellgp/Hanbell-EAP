@@ -6,9 +6,9 @@
 package cn.hanbell.eap.jrs;
 
 import cn.hanbell.eap.ejb.SalesOrderBean;
-import cn.hanbell.eap.ejb.SalesOrderProduceBean;
+import cn.hanbell.eap.ejb.SalesOrderScheduleBean;
 import cn.hanbell.eap.entity.SalesOrder;
-import cn.hanbell.eap.entity.SalesOrderProduce;
+import cn.hanbell.eap.entity.SalesOrderSchedule;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEAP;
 import com.lightshell.comm.SuperEJB;
@@ -22,33 +22,33 @@ import javax.ws.rs.core.Response;
  *
  * @author C0160
  */
-@Path("eap/salesorderproduce")
+@Path("eap/salesorderschedule")
 @javax.enterprise.context.RequestScoped
-public class SalesOrderProduceFacadeREST extends SuperRESTForEAP<SalesOrderProduce> {
+public class SalesOrderScheduleFacadeREST extends SuperRESTForEAP<SalesOrderSchedule> {
 
     @EJB
     private SalesOrderBean salesOrderBean;
     @EJB
-    private SalesOrderProduceBean salesOrderProduceBean;
+    private SalesOrderScheduleBean salesOrderScheduleBean;
 
-    public SalesOrderProduceFacadeREST() {
-        super(SalesOrderProduce.class);
+    public SalesOrderScheduleFacadeREST() {
+        super(SalesOrderSchedule.class);
     }
 
     @Override
     protected SuperEJB getSuperEJB() {
-        return salesOrderProduceBean;
+        return salesOrderScheduleBean;
     }
 
     @Override
-    public ResponseMessage create(SalesOrderProduce entity, String appid, String token) {
+    public ResponseMessage create(SalesOrderSchedule entity, String appid, String token) {
         if (isAuthorized(appid, token)) {
             try {
                 if (entity.getManufactureId() == null || "".equals(entity.getManufactureId())) {
                     if (entity.getManufactureDate() != null) {
-                        entity.setManufactureId(salesOrderProduceBean.getFormId(entity.getManufactureDate()));
+                        entity.setManufactureId(salesOrderScheduleBean.getFormId(entity.getManufactureDate()));
                     } else {
-                        entity.setManufactureId(salesOrderProduceBean.getFormId());
+                        entity.setManufactureId(salesOrderScheduleBean.getFormId());
                     }
                 }
                 getSuperEJB().persist(entity);
@@ -68,10 +68,10 @@ public class SalesOrderProduceFacadeREST extends SuperRESTForEAP<SalesOrderProdu
     }
 
     @Override
-    public ResponseMessage edit(PathSegment id, SalesOrderProduce entity, String appid, String token) {
+    public ResponseMessage edit(PathSegment id, SalesOrderSchedule entity, String appid, String token) {
         if (isAuthorized(appid, token)) {
             try {
-                SalesOrderProduce t = salesOrderProduceBean.findById(Integer.parseInt(id.getPath()));
+                SalesOrderSchedule t = salesOrderScheduleBean.findById(Integer.parseInt(id.getPath()));
                 if (t == null) {
                     return new ResponseMessage("404", "找不到对象");
                 }
@@ -95,7 +95,7 @@ public class SalesOrderProduceFacadeREST extends SuperRESTForEAP<SalesOrderProdu
         if (isAuthorized(appid, token)) {
             int pid;
             try {
-                SalesOrderProduce t = salesOrderProduceBean.findById(Integer.parseInt(id.getPath()));
+                SalesOrderSchedule t = salesOrderScheduleBean.findById(Integer.parseInt(id.getPath()));
                 if (t == null) {
                     return new ResponseMessage("404", "找不到对象");
                 }

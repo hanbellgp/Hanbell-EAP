@@ -107,35 +107,35 @@ public class ProductionPlanFacadeREST extends SuperRESTForEAP<ProductionPlan> {
                         sortFields.put(key, value);
                     }
                 }
-                List<Object[]> list = productionPlanBean.getSummary(filterFields, sortFields);
+                List<Object[]> planSummary = productionPlanBean.getSummary(filterFields, sortFields);
                 String mon = "", type = "", itemno = "", itemModel = "";
                 BigDecimal total = BigDecimal.ZERO;
                 List<Map<String, Object>> data = new ArrayList<>();
                 Map<String, Object> obj = null;
-                for (int i = 0; i < list.size(); i++) {
-                    if (mon.equals(list.get(i)[0].toString()) && type.equals(list.get(i)[1].toString())
-                            && itemno.equals(list.get(i)[2].toString())
-                            && itemModel.equals(list.get(i)[3].toString())) {
+                for (int i = 0; i < planSummary.size(); i++) {
+                    if (mon.equals(planSummary.get(i)[0].toString()) && type.equals(planSummary.get(i)[1].toString())
+                            && itemno.equals(planSummary.get(i)[2].toString())
+                            && itemModel.equals(planSummary.get(i)[3].toString())) {
                         if (obj != null) {
-                            obj.put(BaseLib.formatDate("yyyyMMdd", (Date) list.get(i)[4]), list.get(i)[5]);
-                            total = total.add((BigDecimal) list.get(i)[5]);
+                            obj.put(BaseLib.formatDate("yyyyMMdd", (Date) planSummary.get(i)[4]), planSummary.get(i)[5]);
+                            total = total.add((BigDecimal) planSummary.get(i)[5]);
                             obj.put("total", total);
                         }
                     } else {
                         obj = new HashMap<>();
-                        obj.put("mon", list.get(i)[0]);
-                        obj.put("formType", list.get(i)[1]);
-                        obj.put("itemno", list.get(i)[2]);
-                        obj.put("itemModel", list.get(i)[3]);
-                        obj.put(BaseLib.formatDate("yyyyMMdd", (Date) list.get(i)[4]), list.get(i)[5]);
-                        total = (BigDecimal) list.get(i)[5];
+                        obj.put("mon", planSummary.get(i)[0]);
+                        obj.put("formType", planSummary.get(i)[1]);
+                        obj.put("itemno", planSummary.get(i)[2]);
+                        obj.put("itemModel", planSummary.get(i)[3]);
+                        obj.put(BaseLib.formatDate("yyyyMMdd", (Date) planSummary.get(i)[4]), planSummary.get(i)[5]);
+                        total = (BigDecimal) planSummary.get(i)[5];
                         obj.put("total", total);
                         data.add(obj);
                     }
-                    mon = list.get(i)[0].toString();
-                    type = list.get(i)[1].toString();
-                    itemno = list.get(i)[2].toString();
-                    itemModel = list.get(i)[3].toString();
+                    mon = planSummary.get(i)[0].toString();
+                    type = planSummary.get(i)[1].toString();
+                    itemno = planSummary.get(i)[2].toString();
+                    itemModel = planSummary.get(i)[3].toString();
                 }
                 ResponseData res = new ResponseData<ProductionPlan>("200", "success");
                 if (data.size() > (offset + pageSize)) {

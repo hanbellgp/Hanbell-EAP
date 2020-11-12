@@ -28,16 +28,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author C0160
  */
 @Entity
-@Table(name = "salesorderproduce")
+@Table(name = "salesorderschedule")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SalesOrderProduce.findAll", query = "SELECT s FROM SalesOrderProduce s"),
-    @NamedQuery(name = "SalesOrderProduce.findById", query = "SELECT s FROM SalesOrderProduce s WHERE s.id = :id"),
-    @NamedQuery(name = "SalesOrderProduce.findByPId", query = "SELECT s FROM SalesOrderProduce s WHERE s.pid = :pid"),
-    @NamedQuery(name = "SalesOrderProduce.findByManufactureDate", query = "SELECT s FROM SalesOrderProduce s WHERE s.manufactureDate = :manufactureDate"),
-    @NamedQuery(name = "SalesOrderProduce.findByManqty", query = "SELECT s FROM SalesOrderProduce s WHERE s.manqty = :manqty"),
-    @NamedQuery(name = "SalesOrderProduce.findByRemark", query = "SELECT s FROM SalesOrderProduce s WHERE s.remark = :remark")})
-public class SalesOrderProduce extends SuperDetailEntity {
+    @NamedQuery(name = "SalesOrderSchedule.findAll", query = "SELECT s FROM SalesOrderSchedule s"),
+    @NamedQuery(name = "SalesOrderSchedule.findById", query = "SELECT s FROM SalesOrderSchedule s WHERE s.id = :id"),
+    @NamedQuery(name = "SalesOrderSchedule.findByPId", query = "SELECT s FROM SalesOrderSchedule s WHERE s.pid = :pid"),
+    @NamedQuery(name = "SalesOrderSchedule.findByManufactureDate", query = "SELECT s FROM SalesOrderSchedule s WHERE s.manufactureDate = :manufactureDate"),
+    @NamedQuery(name = "SalesOrderSchedule.findByManqty", query = "SELECT s FROM SalesOrderSchedule s WHERE s.manqty = :manqty"),
+    @NamedQuery(name = "SalesOrderSchedule.findByRemark", query = "SELECT s FROM SalesOrderSchedule s WHERE s.remark = :remark")})
+public class SalesOrderSchedule extends SuperDetailEntity {
 
     @JsonbTransient
     @ManyToOne(optional = false)
@@ -61,7 +61,7 @@ public class SalesOrderProduce extends SuperDetailEntity {
     @Column(name = "remark")
     private String remark;
 
-    public SalesOrderProduce() {
+    public SalesOrderSchedule() {
 
     }
 
@@ -127,10 +127,10 @@ public class SalesOrderProduce extends SuperDetailEntity {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SalesOrderProduce)) {
+        if (!(object instanceof SalesOrderSchedule)) {
             return false;
         }
-        SalesOrderProduce other = (SalesOrderProduce) object;
+        SalesOrderSchedule other = (SalesOrderSchedule) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
