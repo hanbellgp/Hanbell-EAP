@@ -11,18 +11,30 @@ import cn.hanbell.oa.entity.HKFW005;
 import cn.hanbell.rpt.lazy.HKFW005Model;
 import cn.hanbell.rpt.web.SuperQueryBean;
 import com.lightshell.comm.BaseLib;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -158,6 +170,64 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
     public void reset() {
         super.reset();
         this.model.getFilterFields().put("type <>", "4");
+    }
+
+    public void handleFileUploadWhenNew(FileUploadEvent event) {
+        UploadedFile file1 = event.getFile();
+        Integer a = 0;
+        InputStream inputStream =null;
+        if (file1 != null) {
+            try {
+               inputStream=  file1.getInputstream();
+                upload(event);
+                Workbook excel = WorkbookFactory.create(inputStream);
+                Sheet sheet = excel.getSheetAt(0);
+                for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                    Row row = sheet.getRow(i);
+                    String processsNumber = row.getCell(0).getStringCellValue();
+                    double total = row.getCell(12).getNumericCellValue();
+                    HKFW005 hkfw005 = hkfw005Bean.findByPSN(processsNumber);
+                    hkfw005.setTotal(total);
+                    hkfw005Bean.update(hkfw005);
+                }
+            } catch (Exception ex) {
+                FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传失败"));
+                ex.printStackTrace();
+            }finally{
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(HKFW005ManagedQueryBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            int cha = a - 1;
+            FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "修改成功"));
+        }
+    }
+
+    public boolean upload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        OutputStream output = null;
+         InputStream input =null;
+         UploadedFile file1 = event.getFile();
+        try {
+             input=  file1.getInputstream();
+            StringBuffer fileName = new StringBuffer("D:\\C2082\\FileUploadServer\\resources\\");
+            fileName.append(String.valueOf(new Date().getTime()));
+            fileName.append(".xls");
+            File dest = new File(fileName.toString());
+            byte[] buf = new byte[1024];
+            int bytesRead;
+            output = new FileOutputStream(dest);
+            while ((bytesRead = input.read(buf)) > 0) {
+                output.write(buf, 0, bytesRead);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            input.close();
+            output.close();         
+        }
+        return true;
     }
 
     /**
