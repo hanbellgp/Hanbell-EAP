@@ -188,8 +188,9 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
                     double total = row.getCell(12).getNumericCellValue();
                     HKFW005 hkfw005 = hkfw005Bean.findByPSN(processsNumber);
                     hkfw005.setTotal(total);
-                    hkfw005Bean.update(hkfw005);
+                    hkfw005Bean.update(hkfw005);   
                 }
+                 FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "修改成功"));
             } catch (Exception ex) {
                 FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传失败"));
                 ex.printStackTrace();
@@ -197,11 +198,9 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
                 try {
                     inputStream.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(HKFW005ManagedQueryBean.class.getName()).log(Level.SEVERE, null, ex);
+//                    Logger.getLogger(HKFW005ManagedQueryBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            int cha = a - 1;
-            FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "修改成功"));
         }
     }
 
@@ -211,10 +210,13 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
          UploadedFile file1 = event.getFile();
         try {
              input=  file1.getInputstream();
-            StringBuffer fileName = new StringBuffer("D:\\C2082\\FileUploadServer\\resources\\");
-            fileName.append(String.valueOf(new Date().getTime()));
-            fileName.append(".xls");
-            File dest = new File(fileName.toString());
+           String finalFilePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+                int index = finalFilePath.indexOf("WEB-INF");
+                String filePath = new String(finalFilePath.substring(1, index));
+                StringBuffer pathString = new StringBuffer(filePath.concat("rpt/"));
+            pathString.append(String.valueOf(new Date().getTime()));
+            pathString.append(".xls");
+            File dest = new File(pathString.toString());
             byte[] buf = new byte[1024];
             int bytesRead;
             output = new FileOutputStream(dest);
