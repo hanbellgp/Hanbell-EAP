@@ -5,8 +5,8 @@
  */
 package cn.hanbell.eap.jrs;
 
-import cn.hanbell.eap.ejb.SalesOrderBean;
-import cn.hanbell.eap.entity.SalesOrder;
+import cn.hanbell.eap.ejb.ProductBean;
+import cn.hanbell.eap.entity.Product;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.ResponseObject;
 import cn.hanbell.jrs.SuperRESTForEAP;
@@ -22,36 +22,29 @@ import javax.ws.rs.core.Response;
  *
  * @author C0160
  */
-@Path("eap/salesorder")
+@Path("eap/product")
 @javax.enterprise.context.RequestScoped
-public class SalesOrderFacadeREST extends SuperRESTForEAP<SalesOrder> {
+public class ProductFacadeREST extends SuperRESTForEAP<Product> {
 
     @EJB
-    private SalesOrderBean salesOrderBean;
+    private ProductBean productBean;
 
-    public SalesOrderFacadeREST() {
-        super(SalesOrder.class);
+    public ProductFacadeREST() {
+        super(Product.class);
     }
 
     @Override
     protected SuperEJB getSuperEJB() {
-        return salesOrderBean;
+        return productBean;
     }
 
     @Override
-    public ResponseMessage create(SalesOrder entity, String appid, String token) {
+    public ResponseMessage create(Product entity, String appid, String token) {
         if (isAuthorized(appid, token)) {
             try {
-                if (entity.getFormid() == null || "".equals(entity.getFormid())) {
-                    if (entity.getFormdate() != null) {
-                        entity.setFormid(salesOrderBean.getFormId(entity.getFormdate()));
-                    } else {
-                        entity.setFormid(salesOrderBean.getFormId());
-                    }
-                }
                 entity.setCredateToNow();
-                entity.setUID(salesOrderBean.getUUID());
-                salesOrderBean.persist(entity);
+                entity.setUID(productBean.getUUID());
+                productBean.persist(entity);
                 return new ResponseMessage("200", "更新成功");
             } catch (Exception ex) {
                 log4j.error(ex);
@@ -63,10 +56,10 @@ public class SalesOrderFacadeREST extends SuperRESTForEAP<SalesOrder> {
     }
 
     @Override
-    public ResponseMessage edit(PathSegment id, SalesOrder entity, String appid, String token) {
+    public ResponseMessage edit(PathSegment id, Product entity, String appid, String token) {
         if (isAuthorized(appid, token)) {
             try {
-                SalesOrder t = salesOrderBean.findById(Integer.parseInt(id.getPath()));
+                Product t = productBean.findById(Integer.parseInt(id.getPath()));
                 if (t == null) {
                     return new ResponseMessage("404", "找不到对象");
                 }
@@ -74,7 +67,7 @@ public class SalesOrderFacadeREST extends SuperRESTForEAP<SalesOrder> {
                     return new ResponseMessage("409", "修改冲突");
                 }
                 entity.setOptdateToNow();
-                salesOrderBean.update(entity);
+                productBean.update(entity);
                 return new ResponseMessage("200", "更新成功");
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误更新失败");
@@ -88,7 +81,7 @@ public class SalesOrderFacadeREST extends SuperRESTForEAP<SalesOrder> {
     public ResponseObject findById(PathSegment id, String appid, String token) {
         if (isAuthorized(appid, token)) {
             try {
-                SalesOrder t = salesOrderBean.findByUID(id.getPath());
+                Product t = productBean.findByUID(id.getPath());
                 ResponseObject res = new ResponseObject<>("200", "success", t);
                 return res;
             } catch (Exception ex) {

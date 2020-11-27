@@ -66,6 +66,11 @@ public class SalesOrder extends SuperEntity {
     private String company;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 6, max = 6)
+    @Column(name = "mon")
+    private String mon;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "formid")
     private String formid;
@@ -106,6 +111,9 @@ public class SalesOrder extends SuperEntity {
     @Size(max = 45)
     @Column(name = "customerAlias")
     private String customerAlias;
+    @Size(max = 45)
+    @Column(name = "productSeries")
+    private String productSeries;
     @Size(max = 60)
     @Column(name = "itemno")
     private String itemno;
@@ -205,6 +213,20 @@ public class SalesOrder extends SuperEntity {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    /**
+     * @return the mon
+     */
+    public String getMon() {
+        return mon;
+    }
+
+    /**
+     * @param mon the mon to set
+     */
+    public void setMon(String mon) {
+        this.mon = mon;
     }
 
     public String getFormid() {
@@ -307,6 +329,20 @@ public class SalesOrder extends SuperEntity {
 
     public void setCustomerAlias(String customerAlias) {
         this.customerAlias = customerAlias;
+    }
+
+    /**
+     * @return the productSeries
+     */
+    public String getProductSeries() {
+        return productSeries;
+    }
+
+    /**
+     * @param productSeries the productSeries to set
+     */
+    public void setProductSeries(String productSeries) {
+        this.productSeries = productSeries;
     }
 
     public String getItemno() {

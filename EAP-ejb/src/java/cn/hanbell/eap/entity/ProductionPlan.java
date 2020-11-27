@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ProductionPlan.findByContent", query = "SELECT p FROM ProductionPlan p WHERE p.content = :content"),
     @NamedQuery(name = "ProductionPlan.findByItemno", query = "SELECT p FROM ProductionPlan p WHERE p.itemno = :itemno"),
     @NamedQuery(name = "ProductionPlan.findByItemModel", query = "SELECT p FROM ProductionPlan p WHERE p.itemModel = :itemModel"),
-    @NamedQuery(name = "ProductionPlan.findByUid", query = "SELECT p FROM ProductionPlan p WHERE p.uid = :uid"),
+    @NamedQuery(name = "ProductionPlan.findByUID", query = "SELECT p FROM ProductionPlan p WHERE p.uid = :uid"),
     @NamedQuery(name = "ProductionPlan.findByStatus", query = "SELECT p FROM ProductionPlan p WHERE p.status = :status"),})
 public class ProductionPlan extends SuperEntity {
 
@@ -78,6 +78,9 @@ public class ProductionPlan extends SuperEntity {
     @Size(max = 45)
     @Column(name = "dept")
     private String dept;
+    @Size(max = 45)
+    @Column(name = "productSeries")
+    private String productSeries;
     @Size(max = 60)
     @Column(name = "itemno")
     private String itemno;
@@ -181,6 +184,20 @@ public class ProductionPlan extends SuperEntity {
 
     public void setDept(String dept) {
         this.dept = dept;
+    }
+
+    /**
+     * @return the productSeries
+     */
+    public String getProductSeries() {
+        return productSeries;
+    }
+
+    /**
+     * @param productSeries the productSeries to set
+     */
+    public void setProductSeries(String productSeries) {
+        this.productSeries = productSeries;
     }
 
     public String getItemno() {

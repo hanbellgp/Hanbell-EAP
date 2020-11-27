@@ -32,18 +32,18 @@ public class ProductionPlanBean extends SuperEJBForEAP<ProductionPlan> {
     }
 
     public String getFormId(Date day) {
-        return super.getFormId(day, "VP", "yyMM", 4);
+        return super.getFormId(day, "VM", "yyMM", 4);
     }
 
     public List<Object[]> getSummary(Map<String, Object> filters,
             Map<String, String> orderBy) {
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT e.mon,e.formType,e.itemno,e.itemModel,e.formdate,SUM(e.qty) FROM ProductionPlan e WHERE 1=1 ");
+        sb.append("SELECT e.mon,e.productSeries,e.itemno,e.itemModel,e.formdate,SUM(e.qty) FROM ProductionPlan e WHERE 1=1 ");
         if (filters != null) {
             this.setQueryFilter(sb, filters);
         }
-        sb.append(" GROUP BY e.mon,e.formType,e.itemno,e.itemModel,e.formdate ");
-        sb.append(" ORDER BY e.mon,e.formType,e.itemno,e.itemModel,e.formdate ");
+        sb.append(" GROUP BY e.mon,e.productSeries,e.itemno,e.itemModel,e.formdate ");
+        sb.append(" ORDER BY e.mon,e.productSeries,e.itemno,e.itemModel,e.formdate ");
         // if ((orderBy != null) && (orderBy.size() > 0)) {
         // sb.append(" ORDER BY ");
         // for (Map.Entry<String, String> o : orderBy.entrySet()) {
@@ -56,6 +56,20 @@ public class ProductionPlanBean extends SuperEJBForEAP<ProductionPlan> {
         if (filters != null) {
             this.setQueryParam(query, filters);
         }
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Object[]> getSummary(String model, String mon) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT e.mon,e.productSeries,e.itemno,e.itemModel,e.formdate,SUM(e.qty) FROM ProductionPlan e WHERE 1=1 ");
+        sb.append(" AND e.itemModel = '").append(model).append("' AND e.mon = '").append(mon).append("' ");
+        sb.append(" GROUP BY e.mon,e.productSeries,e.itemno,e.itemModel,e.formdate ");
+        sb.append(" ORDER BY e.mon,e.productSeries,e.itemno,e.itemModel,e.formdate ");
+        Query query = getEntityManager().createQuery(sb.toString());
         try {
             return query.getResultList();
         } catch (Exception ex) {
