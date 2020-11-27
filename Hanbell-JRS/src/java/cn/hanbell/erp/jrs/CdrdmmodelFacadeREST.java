@@ -17,7 +17,6 @@ import javax.ws.rs.Path;
  * @author C0160
  */
 @Path("shberp/cdrdmmodel")
-@javax.enterprise.context.RequestScoped
 public class CdrdmmodelFacadeREST extends SuperRESTForERP<Cdrdmmodel> {
 
     @EJB

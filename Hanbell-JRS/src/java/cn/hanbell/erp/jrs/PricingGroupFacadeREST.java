@@ -9,7 +9,6 @@ import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.PricingGroupBean;
 import cn.hanbell.erp.entity.PricingGroup;
 import cn.hanbell.jrs.SuperRESTForERP;
-import cn.hanbell.util.SuperEJB;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -22,7 +21,6 @@ import javax.ws.rs.Produces;
  * @author C0160
  */
 @Path("shberp/pricinggroup")
-@javax.enterprise.context.RequestScoped
 public class PricingGroupFacadeREST extends SuperRESTForERP<PricingGroup> {
 
     @Inject

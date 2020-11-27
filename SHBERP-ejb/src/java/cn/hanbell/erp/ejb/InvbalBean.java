@@ -14,7 +14,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.inject.Named;
 
 import javax.persistence.Query;
 
@@ -24,7 +23,6 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-@Named
 public class InvbalBean extends SuperEJBForERP<Invbal> {
 
     public InvbalBean() {
@@ -35,9 +33,9 @@ public class InvbalBean extends SuperEJBForERP<Invbal> {
 
         StringBuilder sb = new StringBuilder();
         if (fuzzy) {
-            sb.append("SELECT i FROM Invbal i WHERE i.invbalPK.itnbr like :itnbr  AND SUBSTRING(i.invbalPK.wareh,1,1)<>'J' AND ((i.onhand1 - i.preqy1) > 0) ");
+            sb.append("SELECT i FROM Invbal i WHERE i.invbalPK.itnbr like :itnbr AND SUBSTRING(i.invbalPK.wareh,1,1)<>'J' AND ((i.onhand1 - i.preqy1) > 0) ");
         } else {
-            sb.append("SELECT i FROM Invbal i WHERE i.invbalPK.itnbr = :itnbr  AND SUBSTRING(i.invbalPK.wareh,1,1)<>'J' AND ((i.onhand1 - i.preqy1) > 0) ");
+            sb.append("SELECT i FROM Invbal i WHERE i.invbalPK.itnbr = :itnbr AND SUBSTRING(i.invbalPK.wareh,1,1)<>'J' AND ((i.onhand1 - i.preqy1) > 0) ");
         }
         boolean flag;
         if (filters != null) {
@@ -80,6 +78,52 @@ public class InvbalBean extends SuperEJBForERP<Invbal> {
         }
     }
 
+    public List<Invbal> findByItnbr(String facno, String itnbr) {
+        String jpql = "SELECT i FROM Invbal i WHERE i.invbalPK.itnbr = :itnbr AND SUBSTRING(i.invbalPK.wareh,1,1)<>'J' AND ((i.onhand1 - i.preqy1) > 0) ";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("itnbr", itnbr);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Invbal> findByItnbr(String facno, List<String> itnbr) {
+        String jpql = "SELECT i FROM Invbal i WHERE i.invbalPK.itnbr IN :itnbr AND SUBSTRING(i.invbalPK.wareh,1,1)<>'J' AND ((i.onhand1 - i.preqy1) > 0) ";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("itnbr", itnbr);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Invbal> findByItnbrAndWareh(String facno, String itnbr, List<String> wareh) {
+        String jpql = "SELECT i FROM Invbal i WHERE i.invbalPK.itnbr = :itnbr  AND i.invbalPK.wareh IN :wareh AND ((i.onhand1 - i.preqy1) > 0) ";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("itnbr", itnbr);
+        query.setParameter("wareh", wareh);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Invbal> findByItnbrAndWareh(String facno, List<String> itnbr, List<String> wareh) {
+        String jpql = "SELECT i FROM Invbal i WHERE i.invbalPK.itnbr IN :itnbr  AND i.invbalPK.wareh IN :wareh AND ((i.onhand1 - i.preqy1) > 0) ";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("itnbr", itnbr);
+        query.setParameter("wareh", wareh);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public Invbal findByPK(String facno, String prono, String itnbr, String wareh) {
         Query query = getEntityManager().createNamedQuery("Invbal.findByPK");
         query.setParameter("facno", facno);
@@ -96,6 +140,50 @@ public class InvbalBean extends SuperEJBForERP<Invbal> {
 
     public Invbal findInvbal(Invbal entity) {
         return findByPK(entity.getInvbalPK().getFacno(), entity.getInvbalPK().getProno(), entity.getInvbalPK().getItnbr(), entity.getInvbalPK().getWareh());
+    }
+
+    public BigDecimal getInvbalQuantity(String facno, String itnbr) {
+        BigDecimal qty = BigDecimal.ZERO;
+        List<Invbal> invbalList = findByItnbr(facno, itnbr);
+        if (invbalList != null && !invbalList.isEmpty()) {
+            for (Invbal e : invbalList) {
+                qty = qty.add(e.getOnhand1().subtract(e.getPreqy1()));
+            }
+        }
+        return qty;
+    }
+
+    public BigDecimal getInvbalQuantity(String facno, List<String> itnbr) {
+        BigDecimal qty = BigDecimal.ZERO;
+        List<Invbal> invbalList = findByItnbr(facno, itnbr);
+        if (invbalList != null && !invbalList.isEmpty()) {
+            for (Invbal e : invbalList) {
+                qty = qty.add(e.getOnhand1().subtract(e.getPreqy1()));
+            }
+        }
+        return qty;
+    }
+
+    public BigDecimal getInvbalQuantity(String facno, String itnbr, List<String> wareh) {
+        BigDecimal qty = BigDecimal.ZERO;
+        List<Invbal> invbalList = findByItnbrAndWareh(facno, itnbr, wareh);
+        if (invbalList != null && !invbalList.isEmpty()) {
+            for (Invbal e : invbalList) {
+                qty = qty.add(e.getOnhand1().subtract(e.getPreqy1()));
+            }
+        }
+        return qty;
+    }
+
+    public BigDecimal getInvbalQuantity(String facno, List<String> itnbr, List<String> wareh) {
+        BigDecimal qty = BigDecimal.ZERO;
+        List<Invbal> invbalList = findByItnbrAndWareh(facno, itnbr, wareh);
+        if (invbalList != null && !invbalList.isEmpty()) {
+            for (Invbal e : invbalList) {
+                qty = qty.add(e.getOnhand1().subtract(e.getPreqy1()));
+            }
+        }
+        return qty;
     }
 
     public Boolean isGreatThenInvbal(String facno, String prono, String itnbr, String wareh, BigDecimal qty) {
@@ -149,6 +237,7 @@ public class InvbalBean extends SuperEJBForERP<Invbal> {
                 e.setOnhand1(e.getOnhand1().subtract(entity.getOnhand1()));
                 e.setOnhand2(e.getOnhand2().subtract(entity.getOnhand2()));
                 e.setOnhand3(e.getOnhand3().subtract(entity.getOnhand3()));
+                update(e);
             }
         } catch (RuntimeException ex) {
             throw new RuntimeException(ex);

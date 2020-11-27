@@ -104,6 +104,7 @@ public class InvbatBean extends SuperEJBForERP<Invbat> {
                 e.setOnhand1(e.getOnhand1().subtract(entity.getOnhand1()));
                 e.setOnhand2(e.getOnhand2().subtract(entity.getOnhand2()));
                 e.setOnhand3(e.getOnhand3().subtract(entity.getOnhand3()));
+                update(e);
             }
         } catch (RuntimeException ex) {
             throw new RuntimeException(ex);

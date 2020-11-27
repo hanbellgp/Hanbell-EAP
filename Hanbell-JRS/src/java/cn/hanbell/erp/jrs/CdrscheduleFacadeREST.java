@@ -13,7 +13,6 @@ import cn.hanbell.jrs.SuperRESTForERP;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -28,7 +27,6 @@ import javax.ws.rs.core.Response;
  *
  * @author C0160
  */
-@Stateless
 @Path("shberp/cdrschedule")
 public class CdrscheduleFacadeREST extends SuperRESTForERP<Cdrschedule> {
 
@@ -37,7 +35,6 @@ public class CdrscheduleFacadeREST extends SuperRESTForERP<Cdrschedule> {
 
     @Override
     protected SuperEJBForERP getSuperEJBForERP() {
-        company = "C";
         return cdrscheduleBean;
     }
 

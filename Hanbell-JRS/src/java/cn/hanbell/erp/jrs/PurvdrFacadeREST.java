@@ -17,7 +17,6 @@ import javax.ws.rs.Path;
  * @author C0160
  */
 @Path("shberp/purvdr")
-@javax.enterprise.context.RequestScoped
 public class PurvdrFacadeREST extends SuperRESTForERP<Purvdr> {
 
     @EJB
