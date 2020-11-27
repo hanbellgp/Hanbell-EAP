@@ -8,8 +8,8 @@ package cn.hanbell.eap.entity;
 import com.lightshell.comm.BaseLib;
 import com.lightshell.comm.FormDetailEntity;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -292,7 +292,7 @@ public class ShipmentDetail extends FormDetailEntity {
         }
         ShipmentDetail other = (ShipmentDetail) object;
         if (this.id != null && other.id != null) {
-            return this.id == other.id;
+            return Objects.equals(this.id, other.id);
         }
         return this.shpno == other.shpno && this.seq == other.seq;
     }

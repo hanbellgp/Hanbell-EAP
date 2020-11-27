@@ -21,7 +21,6 @@ import javax.ws.rs.Produces;
  * @author C0160
  */
 @Path("shberp/cdrcus")
-@javax.enterprise.context.RequestScoped
 public class CdrcusFacadeREST extends SuperRESTForERP<Cdrcus> {
 
     @EJB
@@ -34,13 +33,6 @@ public class CdrcusFacadeREST extends SuperRESTForERP<Cdrcus> {
 
     public CdrcusFacadeREST() {
         super(Cdrcus.class);
-    }
-
-    @GET
-    @Path("list/{man}")
-    @Produces({"application/json"})
-    public List<Cdrcus> findByMan(@PathParam("man") String man) {
-        return cdrcusBean.findByMan(man);
     }
 
 }

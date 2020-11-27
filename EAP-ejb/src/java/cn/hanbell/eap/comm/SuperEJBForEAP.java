@@ -6,6 +6,7 @@
 package cn.hanbell.eap.comm;
 
 import com.lightshell.comm.SuperEJB;
+import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +31,10 @@ public abstract class SuperEJBForEAP<T> extends SuperEJB<T> {
     @Override
     public EntityManager getEntityManager() {
         return em;
+    }
+
+    public String getUUID() {
+        return UUID.randomUUID().toString().replaceAll("-", "").toLowerCase();
     }
 
 }

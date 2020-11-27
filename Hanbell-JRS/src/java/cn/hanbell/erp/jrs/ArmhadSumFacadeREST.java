@@ -12,7 +12,6 @@ import cn.hanbell.jrs.SuperRESTForERP;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,7 +23,6 @@ import javax.ws.rs.core.PathSegment;
  *
  * @author C0160
  */
-@Stateless
 @Path("shberp/armhadsum")
 public class ArmhadSumFacadeREST extends SuperRESTForERP<ArmhadSum> {
 

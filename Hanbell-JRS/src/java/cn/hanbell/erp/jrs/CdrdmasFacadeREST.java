@@ -10,10 +10,7 @@ import cn.hanbell.erp.ejb.CdrdmasBean;
 import cn.hanbell.erp.entity.Cdrdmas;
 import cn.hanbell.erp.entity.CdrdmasPK;
 import cn.hanbell.jrs.SuperRESTForERP;
-import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -25,12 +22,16 @@ import javax.ws.rs.core.PathSegment;
  *
  * @author C0160
  */
-@Stateless
 @Path("shberp/cdrdmas")
 public class CdrdmasFacadeREST extends SuperRESTForERP<Cdrdmas> {
 
     @EJB
     private CdrdmasBean cdrdmasBean;
+
+    @Override
+    protected SuperEJBForERP getSuperEJBForERP() {
+        return cdrdmasBean;
+    }
 
     private CdrdmasPK getPrimaryKey(PathSegment pathSegment) {
         /*
@@ -67,22 +68,6 @@ public class CdrdmasFacadeREST extends SuperRESTForERP<Cdrdmas> {
     public Cdrdmas findById(@PathParam("id") PathSegment id) {
         CdrdmasPK key = getPrimaryKey(id);
         return null;
-    }
-
-    @GET
-    @Path("{cusno}/{itnbrcus}/{count}")
-    @Produces({"application/xml", "application/json"})
-    public List<Cdrdmas> findByCustomerAndItnbrcus(@PathParam("cusno") String cusno, @PathParam("itnbrcus") String itnbrcus, @PathParam("count") int count) {
-        Query query = cdrdmasBean.getEntityManager().createNamedQuery("Cdrdmas.findByCusnoAndItnbrcus").setFirstResult(0).setMaxResults(count);
-        query.setParameter("cusno", cusno);
-        query.setParameter("itnbrcus", "%" + itnbrcus + "%");
-        return query.getResultList();
-    }
-
-    @Override
-    protected SuperEJBForERP getSuperEJBForERP() {
-        company = "C";
-        return cdrdmasBean;
     }
 
 }

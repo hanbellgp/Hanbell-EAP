@@ -349,8 +349,6 @@ public class Invmas implements Serializable {
     @Column(name = "moddate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date moddate;
-//    @JoinColumn(name = "itcls", referencedColumnName = "itcls")
-//    @ManyToOne
     @Size(min = 1, max = 4)
     @Column(name = "itcls")
     private String itcls;

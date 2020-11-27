@@ -11,7 +11,6 @@ import cn.hanbell.erp.entity.Secuser;
 import cn.hanbell.jrs.SuperRESTForERP;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.util.BaseLib;
-import cn.hanbell.util.SuperEJB;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -27,7 +26,6 @@ import javax.ws.rs.core.Response;
  * @author C0160
  */
 @Path("shberp/secuser")
-@javax.enterprise.context.RequestScoped
 public class SecuserFacadeREST extends SuperRESTForERP<Secuser> {
 
     @Inject
@@ -35,7 +33,6 @@ public class SecuserFacadeREST extends SuperRESTForERP<Secuser> {
 
     @Override
     protected SuperEJBForERP getSuperEJBForERP() {
-        company = "C";
         return secuserBean;
     }
 

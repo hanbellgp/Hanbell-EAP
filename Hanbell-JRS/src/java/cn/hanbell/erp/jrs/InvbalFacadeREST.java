@@ -26,7 +26,6 @@ import javax.ws.rs.core.PathSegment;
  * @author C0160
  */
 @Path("shberp/invbal")
-@javax.enterprise.context.RequestScoped
 public class InvbalFacadeREST extends SuperRESTForERP<Invbal> {
 
     @Inject
@@ -34,7 +33,6 @@ public class InvbalFacadeREST extends SuperRESTForERP<Invbal> {
 
     @Override
     protected SuperEJBForERP getSuperEJBForERP() {
-        company = "C";
         return invbalBean;
     }
 

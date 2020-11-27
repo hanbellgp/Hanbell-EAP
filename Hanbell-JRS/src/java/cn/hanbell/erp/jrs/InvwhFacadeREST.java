@@ -6,26 +6,29 @@
 package cn.hanbell.erp.jrs;
 
 import cn.hanbell.erp.comm.SuperEJBForERP;
+import cn.hanbell.erp.ejb.InvwhBean;
 import cn.hanbell.erp.entity.Invwh;
 import cn.hanbell.jrs.SuperRESTForERP;
-import javax.ejb.Stateless;
+import javax.ejb.EJB;
 import javax.ws.rs.Path;
 
 /**
  *
  * @author C0160
  */
-@Stateless
 @Path("shberp/invwh")
 public class InvwhFacadeREST extends SuperRESTForERP<Invwh> {
 
-    public InvwhFacadeREST() {
-        super(Invwh.class);
-    }
+    @EJB
+    private InvwhBean invwhBean;
 
     @Override
     protected SuperEJBForERP getSuperEJBForERP() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return invwhBean;
+    }
+
+    public InvwhFacadeREST() {
+        super(Invwh.class);
     }
 
 }

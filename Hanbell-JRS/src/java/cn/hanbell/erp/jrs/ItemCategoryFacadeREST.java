@@ -9,9 +9,7 @@ import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.ItemCategoryBean;
 import cn.hanbell.erp.entity.ItemCategory;
 import cn.hanbell.jrs.SuperRESTForERP;
-import cn.hanbell.util.SuperEJB;
 import javax.ejb.EJB;
-import javax.inject.Inject;
 import javax.ws.rs.Path;
 
 /**
@@ -19,7 +17,6 @@ import javax.ws.rs.Path;
  * @author C0160
  */
 @Path("shberp/itemcategory")
-@javax.enterprise.context.RequestScoped
 public class ItemCategoryFacadeREST extends SuperRESTForERP<ItemCategory> {
 
     @EJB

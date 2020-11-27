@@ -25,6 +25,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -34,6 +36,7 @@ import javax.ws.rs.core.Response;
 public abstract class SuperRESTForEAP<T> {
 
     protected Class<T> entityClass;
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.wco");
 
     protected abstract SuperEJB getSuperEJB();
 
@@ -50,6 +53,8 @@ public abstract class SuperRESTForEAP<T> {
     public ResponseMessage create(T entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
+                //entity.setCredateToNow();
+                //entity.setOptdate(entity.getCredate());
                 getSuperEJB().persist(entity);
                 return new ResponseMessage("200", "更新成功");
             } catch (Exception ex) {
@@ -72,6 +77,10 @@ public abstract class SuperRESTForEAP<T> {
                 if (t == null) {
                     return new ResponseMessage("404", "找不到对象");
                 }
+                //if (!Objects.equals(t.getOptdate(), entity.getOptdate())) {
+                //    return new ResponseMessage("409", "修改冲突");
+                //}
+                //entity.setOptdateToNow();
                 getSuperEJB().update(entity);
                 return new ResponseMessage("200", "更新成功");
             } catch (Exception ex) {
