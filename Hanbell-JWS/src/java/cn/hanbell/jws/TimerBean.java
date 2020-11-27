@@ -438,7 +438,7 @@ public class TimerBean {
                     cn.hanbell.hrm.entity.Employee manager = hrmEmployeeBean.findByEmployeeId(e.getDirectorId());
                     String company = e.getCode().substring(0, 1);
                     if ("C".equals(company) || "K".equals(company) || "E".equals(company) || "H".equals(company)
-                            || "Y".equals(company) || "Q".equals(company)) {
+                            || "Y".equals(company) || "Q".equals(company) || isTWEmployee(company)) {
                         // EAP
                         cn.hanbell.eap.entity.SystemUser eu = eapSystemUserBean.findByUserId(e.getCode());
                         if (eu == null) {
@@ -503,35 +503,38 @@ public class TimerBean {
                                 eapSystemUserBean.update(eu);
                             }
                         }
-                        // ERP
-                        miscodeBean.setCompany(company);
-                        misdeptBean.setCompany(company);
-                        secmembBean.setCompany(company);
-                        secuserBean.setCompany(company);
-                        Secuser erpuser = secuserBean.findByUserno(e.getCode());
-                        Misdept erpdept = misdeptBean.findByDepno(e.getDepartment().getCode());
-                        if (erpdept == null) {
-                            // 增加部门
-                            erpdept = new Misdept(company, e.getDepartment().getCode());
-                            erpdept.setDepname(e.getDepartment().getName());
-                            erpdept.setUplevel("/");
-                            erpdept.setChildren(0);
-                            misdeptBean.persist(erpdept);
-                            // 加入miscode类别GE中
-                            miscodeBean.persistIfNotExist("GE", erpdept.getMisdeptPK().getDepno(), erpdept.getDepname(),
-                                    'N');
-                        }
-                        if (erpuser != null) {
-                            Secmemb secmemb = secmembBean.findByPK(company, e.getDepartment().getCode(), e.getCode());
-                            if (secmemb == null) {
-                                // 人员加入部门
-                                secmemb = new Secmemb(company, e.getDepartment().getCode(), e.getCode());
-                                secmemb.setSupvisor('N');
-                                secmemb.setAuth('N');
-                                secmembBean.persist(secmemb);
+                        //台湾人员不更新ERP
+                        if (isTWEmployee(company) == false) {
+                            // ERP
+                            miscodeBean.setCompany(company);
+                            misdeptBean.setCompany(company);
+                            secmembBean.setCompany(company);
+                            secuserBean.setCompany(company);
+                            Secuser erpuser = secuserBean.findByUserno(e.getCode());
+                            Misdept erpdept = misdeptBean.findByDepno(e.getDepartment().getCode());
+                            if (erpdept == null) {
+                                // 增加部门
+                                erpdept = new Misdept(company, e.getDepartment().getCode());
+                                erpdept.setDepname(e.getDepartment().getName());
+                                erpdept.setUplevel("/");
+                                erpdept.setChildren(0);
+                                misdeptBean.persist(erpdept);
+                                // 加入miscode类别GE中
+                                miscodeBean.persistIfNotExist("GE", erpdept.getMisdeptPK().getDepno(), erpdept.getDepname(),
+                                        'N');
                             }
-                            erpuser.setPdepno(e.getDepartment().getCode());
-                            secuserBean.update(erpuser);
+                            if (erpuser != null) {
+                                Secmemb secmemb = secmembBean.findByPK(company, e.getDepartment().getCode(), e.getCode());
+                                if (secmemb == null) {
+                                    // 人员加入部门
+                                    secmemb = new Secmemb(company, e.getDepartment().getCode(), e.getCode());
+                                    secmemb.setSupvisor('N');
+                                    secmemb.setAuth('N');
+                                    secmembBean.persist(secmemb);
+                                }
+                                erpuser.setPdepno(e.getDepartment().getCode());
+                                secuserBean.update(erpuser);
+                            }
                         }
                     }
                     if ("C".equals(company) || "K".equals(company)) {
@@ -3137,4 +3140,8 @@ public class TimerBean {
         return s;
     }
 
+    public boolean isTWEmployee(String employeeid) {
+        Pattern pattern = Pattern.compile("^[0-9]$");
+        return pattern.matcher(employeeid).matches();
+    }
 }

@@ -112,6 +112,11 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     
     protected SuperEJB superEJB;
     
+    //生产环境
+    private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
+    //测试环境
+    //private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
+    
     @Override
     protected SuperEJB getSuperEJB() {
         return equipmentrepairBean;
@@ -1340,9 +1345,6 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
         List<EquipmentRepairFile> eqpRepairImageListRes = new ArrayList<>();
         try { 
             JSONObject requestedJSON = new JSONObject(jsonRequest);
-
-            //String filePathTemp = "E:\\20200615\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
-            String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
             String companyTemp = requestedJSON.getString("company");
             String pidTemp = requestedJSON.getString("pid");
             int fileIndexTemp = requestedJSON.getInt("fileIndex");
