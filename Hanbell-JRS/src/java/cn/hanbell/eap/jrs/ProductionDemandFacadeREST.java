@@ -9,10 +9,13 @@ import cn.hanbell.eap.ejb.ProductBean;
 import cn.hanbell.eap.ejb.ProductionPlanBean;
 import cn.hanbell.eap.ejb.SalesOrderBean;
 import cn.hanbell.eap.entity.Product;
+import cn.hanbell.eap.entity.ProductBom;
 import cn.hanbell.eap.entity.ProductionPlan;
 import cn.hanbell.erp.ejb.InvbalBean;
+import cn.hanbell.erp.ejb.InvmasBean;
 import cn.hanbell.erp.ejb.ManwipbalBean;
 import cn.hanbell.erp.ejb.PurdtaBean;
+import cn.hanbell.erp.entity.Invmas;
 import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEAP;
@@ -51,6 +54,8 @@ public class ProductionDemandFacadeREST extends SuperRESTForEAP<ProductionPlan> 
 
     @EJB
     private InvbalBean invbalBean;
+    @EJB
+    private InvmasBean invmasBean;
     @EJB
     private ManwipbalBean manwipbalBean;
     @EJB
@@ -211,9 +216,87 @@ public class ProductionDemandFacadeREST extends SuperRESTForEAP<ProductionPlan> 
                         return 1;
                     }
                 });
+                String itnbr;
+                Invmas invmas;
+                List<Map<String, Object>> extData = new ArrayList<>();
+                itemList.clear();
+                for (Product p : productList) {
+                    // 获取子阶可用数量
+                    if (p.getBOM() != null) {
+                        for (ProductBom pb : p.getBOM()) {
+                            itnbr = pb.getItemno();
+                            if (itemList.contains(itnbr)) {
+                                continue;
+                            }
+                            invmasBean.setCompany(facno);
+                            invmas = invmasBean.findByItnbr(itnbr);
+                            if (invmas == null) {
+                                continue;
+                            }
+                            inv = BigDecimal.ZERO;
+                            wip = BigDecimal.ZERO;
+                            po = BigDecimal.ZERO;
+                            // 查询ERP库存
+                            invbalBean.setCompany(facno);
+                            inv = invbalBean.getInvbalQuantity(facno, itnbr);
+                            if ("P".equals(invmas.getMorpcode())) {
+                                // 查询ERP未进
+                                purdtaBean.setCompany(facno);
+                                po = purdtaBean.getAvailableQuantity(facno, itnbr, date);
+                            } else {
+                                // 查询ERP在制
+                                manwipbalBean.setCompany(facno);
+                                wip = manwipbalBean.getWIPQuantity(facno, itnbr);
+                                // 查询ERP未进
+                                purdtaBean.setCompany(facno);
+                                po = purdtaBean.getAvailableQuantity(facno, itnbr, date);
+                            }
+
+                            obj = new HashMap<>();
+                            obj.put("kind", "20");
+                            obj.put("mon", month);
+                            obj.put("productSeries", series);
+                            obj.put("itemno", itnbr);
+                            obj.put("itemModel", String.valueOf(pb.getSeq()) + "-" + pb.getItemModel());
+                            obj.put("d" + baseday.getPath(), inv);
+                            obj.put("total", inv);
+                            extData.add(obj);
+
+                            obj = new HashMap<>();
+                            obj.put("kind", "30");
+                            obj.put("mon", month);
+                            obj.put("productSeries", series);
+                            obj.put("itemno", itnbr);
+                            obj.put("itemModel", String.valueOf(pb.getSeq()) + "-" + pb.getItemModel());
+                            obj.put("d" + baseday.getPath(), wip);
+                            obj.put("total", wip);
+                            extData.add(obj);
+
+                            obj = new HashMap<>();
+                            obj.put("kind", "40");
+                            obj.put("mon", month);
+                            obj.put("productSeries", series);
+                            obj.put("itemno", itnbr);
+                            obj.put("itemModel", String.valueOf(pb.getSeq()) + "-" + pb.getItemModel());
+                            obj.put("d" + baseday.getPath(), po);
+                            obj.put("total", po);
+                            extData.add(obj);
+                        }
+                        // 排序
+                        extData.sort((Map<String, Object> o1, Map<String, Object> o2) -> {
+                            if (o1.get("itemModel").toString().compareTo(o2.get("itemModel").toString()) < 1 && o1.get("kind").toString().compareTo(o2.get("kind").toString()) < 1) {
+                                return -1;
+                            } else {
+                                return 1;
+                            }
+                        });
+                    }
+                }
+                // 响应消息
                 ResponseData res = new ResponseData<ProductionPlan>("200", "success");
                 res.setData(data);
                 res.setCount(data.size());
+                res.getExtData().put("children", extData);
                 return res;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
