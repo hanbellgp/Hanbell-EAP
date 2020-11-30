@@ -52,6 +52,7 @@ import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.ejb.TransactionRolledbackLocalException;
 import javax.persistence.Query;
 
 /**
@@ -1151,7 +1152,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
      * @param resno
      * @return 得出历史档材料明细
      */
-    public BigDecimal getInvtrnhTramt(String fwno, String resno) {
+    public synchronized BigDecimal getInvtrnhTramt(String fwno, String resno) {
         StringBuilder sb = new StringBuilder();
         String facno;
         BigDecimal amt = BigDecimal.ZERO;
@@ -1160,7 +1161,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         sb.append(" AND h.prono=d.prono  LEFT JOIN invmas v on d.itnbr = v.itnbr ");
         sb.append(" LEFT JOIN invdou e on e.trtype=d.trtype where  h.facno='${facno}' ");
         sb.append(" and h.prono='1' and (h.trtype in ('IAF' ,'IAG')) AND h.fwno='${fwno}' ");
-        if(!"".equals(resno)){//('1001','1013')
+        if (!"".equals(resno)) {//('1001','1013')
             sb.append(" and h.resno in ").append(resno);
         }
         sb.append(" ) a ");
@@ -1191,7 +1192,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 amt.add(result);
             }
             return amt;
-        } catch (NumberFormatException ex) {
+        } catch (NumberFormatException | TransactionRolledbackLocalException ex) {
             return BigDecimal.ZERO;
         }
     }
