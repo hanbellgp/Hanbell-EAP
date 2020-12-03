@@ -7,9 +7,11 @@ package cn.hanbell.oa.ejb;
 
 import cn.hanbell.crm.ejb.REPMIBean;
 import cn.hanbell.crm.ejb.REPTDBean;
+import cn.hanbell.crm.ejb.REPTMBean;
 import cn.hanbell.crm.entity.REPMI;
 import cn.hanbell.crm.entity.REPMIPK;
 import cn.hanbell.crm.entity.REPTD;
+import cn.hanbell.crm.entity.REPTM;
 import cn.hanbell.mes.ejb.CRMHKFW006Bean;
 import cn.hanbell.mes.entity.CRMHKFW006;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
@@ -51,6 +53,8 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
     private HKFW006Inv310Bean hKFW006Inv310Bean;
     @EJB
     private CRMHKFW006Bean crmhkfw006Bean;
+    @EJB
+    private REPTMBean reptmBean;
 
     private List<HKFW006Detail> detailList;
 
@@ -482,7 +486,13 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
             CRMHKFW006 mf = crmhkfw006Bean.findByPSN(psn);
             if (null != mf) {
                 mf.setIsdelete("Y");
+                String reptmno = mf.getReptmno();
                 crmhkfw006Bean.update(mf);
+                REPTM rm = reptmBean.findByTM002(reptmno);
+                if (null != rm) {
+                    rm.setTm504("N");
+                    reptmBean.update(rm);
+                }
             } else {
                 throw new NullPointerException();
             }
