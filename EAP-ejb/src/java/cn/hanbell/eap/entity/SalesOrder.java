@@ -195,9 +195,15 @@ public class SalesOrder extends SuperEntity {
     private String uid;
     @Column(name = "autoUpdate")
     private Boolean autoUpdate;
+    @Column(name = "currentStep")
+    private Integer currentStep;
+    @Column(name = "progress")
+    private Integer progress;
 
     public SalesOrder() {
         this.autoUpdate = false;
+        this.currentStep = 0;
+        this.progress = 0;
     }
 
     /**
@@ -547,6 +553,34 @@ public class SalesOrder extends SuperEntity {
      */
     public void setAutoUpdate(Boolean autoUpdate) {
         this.autoUpdate = autoUpdate;
+    }
+
+    /**
+     * @return the currentStep
+     */
+    public Integer getCurrentStep() {
+        return currentStep;
+    }
+
+    /**
+     * @param currentStep the currentStep to set
+     */
+    public void setCurrentStep(Integer currentStep) {
+        this.currentStep = currentStep;
+    }
+
+    /**
+     * @return the progress
+     */
+    public Integer getProgress() {
+        return progress;
+    }
+
+    /**
+     * @param progress the progress to set
+     */
+    public void setProgress(Integer progress) {
+        this.progress = progress;
     }
 
     @Override

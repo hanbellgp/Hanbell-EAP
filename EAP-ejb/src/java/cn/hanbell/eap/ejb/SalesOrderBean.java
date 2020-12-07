@@ -7,10 +7,12 @@ package cn.hanbell.eap.ejb;
 
 import cn.hanbell.eap.comm.SuperEJBForEAP;
 import cn.hanbell.eap.entity.SalesOrder;
+import cn.hanbell.eap.entity.WorkStep;
 import cn.hanbell.util.BaseLib;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -22,6 +24,9 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class SalesOrderBean extends SuperEJBForEAP<SalesOrder> {
+
+    @EJB
+    private WorkStepBean workStepBean;
 
     public SalesOrderBean() {
         super(SalesOrder.class);
@@ -85,6 +90,49 @@ public class SalesOrderBean extends SuperEJBForEAP<SalesOrder> {
             return query.getResultList();
         } catch (Exception ex) {
             return null;
+        }
+    }
+
+    @Override
+    public void persist(SalesOrder entity) {
+        try {
+            super.persist(entity);
+            // 后续使用Definition代替
+            WorkStep step;
+            step = new WorkStep();
+            step.setSeq(1);
+            step.setName("营业");
+            step.setContextObject(SalesOrder.class.getName());
+            step.setContextUID(entity.getUID());
+            step.setUID(this.getUUID());
+            step.setStatusToNew();
+            workStepBean.persist(step);
+            step = new WorkStep();
+            step.setSeq(2);
+            step.setName("技术");
+            step.setContextObject(SalesOrder.class.getName());
+            step.setContextUID(entity.getUID());
+            step.setUID(this.getUUID());
+            step.setStatusToNew();
+            workStepBean.persist(step);
+            step = new WorkStep();
+            step.setSeq(3);
+            step.setName("生管");
+            step.setContextObject(SalesOrder.class.getName());
+            step.setContextUID(entity.getUID());
+            step.setUID(this.getUUID());
+            step.setStatusToNew();
+            workStepBean.persist(step);
+            step = new WorkStep();
+            step.setSeq(4);
+            step.setName("结案");
+            step.setContextObject(SalesOrder.class.getName());
+            step.setContextUID(entity.getUID());
+            step.setUID(this.getUUID());
+            step.setStatusToNew();
+            workStepBean.persist(step);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 

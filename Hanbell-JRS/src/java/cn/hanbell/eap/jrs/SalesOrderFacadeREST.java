@@ -6,11 +6,14 @@
 package cn.hanbell.eap.jrs;
 
 import cn.hanbell.eap.ejb.SalesOrderBean;
+import cn.hanbell.eap.ejb.WorkStepBean;
 import cn.hanbell.eap.entity.SalesOrder;
+import cn.hanbell.eap.entity.WorkStep;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.ResponseObject;
 import cn.hanbell.jrs.SuperRESTForEAP;
 import com.lightshell.comm.SuperEJB;
+import java.util.List;
 import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
@@ -23,11 +26,12 @@ import javax.ws.rs.core.Response;
  * @author C0160
  */
 @Path("eap/salesorder")
-@javax.enterprise.context.RequestScoped
 public class SalesOrderFacadeREST extends SuperRESTForEAP<SalesOrder> {
 
     @EJB
     private SalesOrderBean salesOrderBean;
+    @EJB
+    private WorkStepBean workStepBean;
 
     public SalesOrderFacadeREST() {
         super(SalesOrder.class);
@@ -75,6 +79,15 @@ public class SalesOrderFacadeREST extends SuperRESTForEAP<SalesOrder> {
                 }
                 entity.setOptdateToNow();
                 salesOrderBean.update(entity);
+                // 更新WorkStep
+                if (!Objects.equals(t.getCurrentStep(), entity.getCurrentStep())) {
+                    WorkStep step = workStepBean.findByContextUIDAndSeq(entity.getUID(), entity.getCurrentStep());
+                    if (step != null) {
+                        step.setCfmuser(entity.getOptuser());
+                        step.setCfmdate(entity.getOptdate());
+                        workStepBean.update(step);
+                    }
+                }
                 return new ResponseMessage("200", "更新成功");
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误更新失败");
@@ -89,7 +102,11 @@ public class SalesOrderFacadeREST extends SuperRESTForEAP<SalesOrder> {
         if (isAuthorized(appid, token)) {
             try {
                 SalesOrder t = salesOrderBean.findByUID(id.getPath());
+                List<WorkStep> steps = workStepBean.findByContextUID(t.getUID());
                 ResponseObject res = new ResponseObject<>("200", "success", t);
+                if (steps != null) {
+                    res.getExtData().put("steps", steps);
+                }
                 return res;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
