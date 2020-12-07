@@ -93,7 +93,7 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
     @Path("getAssetCardList/{filters}/{sorts}/{offset}/{pageSize}")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public List<AssetCard> findByNewFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token, @QueryParam("searchInfo") String searchInfo) {
+    public List<AssetCard> findByNewFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token, @QueryParam("searchInfo") String searchInfo, @QueryParam("deptCheckCode") String deptCheckCode) {
         if (isAuthorized(appid, token)) {
             this.superEJB = assetCardBean;
             List<AssetCard> assetCardListRes = new ArrayList<>();
@@ -103,7 +103,17 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
                 MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
                 Map<String, Object> filterFields = new HashMap<>();
                 Map<String, String> sortFields = new LinkedHashMap<>();
-                String key, value="";
+                String key = "", value = "";
+                String companyCode = "C",deptNo = "";
+                if(deptCheckCode != null){
+                    if(deptCheckCode.split("_").length >= 2){
+                        companyCode = deptCheckCode.split("_")[0];
+                        deptNo = deptCheckCode.split("_")[1];
+                    }
+                    else{
+                        throw new Exception("Invalid DeptCheckCode");
+                    }
+                }
                 if (filtersMM != null) {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
@@ -118,7 +128,7 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
                         sortFields.put(key, value);
                     }
                 }
-                assetCardListRes = assetCardBean.getAssetCardList("C", searchInfo,filterFields);
+                assetCardListRes = assetCardBean.getAssetCardList(companyCode, searchInfo, deptNo, filterFields);
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

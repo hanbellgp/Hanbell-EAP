@@ -152,4 +152,14 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             return null;
         }
     }
+    
+     public List<SystemUser> findByLikeDeptno(String deptno) {
+        Query query = getEntityManager().createNamedQuery("SystemUser.findByLikeDeptno");
+        query.setParameter("deptno", deptno);
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
