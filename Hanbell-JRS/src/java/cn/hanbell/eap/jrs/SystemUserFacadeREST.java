@@ -80,53 +80,6 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
     }
 
     @GET
-    @Path("grant/yun")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Map<String, Object>> grantYun(@QueryParam("userid") String userid, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-        if (isAuthorized(appid, token)) {
-            List<Map<String, Object>> data = new ArrayList<>();
-            ArrayList routes;
-            Map<String, Object> route;
-
-            routes = new ArrayList<>();
-            route = new HashMap<>();
-            route.put("path", "/dashboard/analysis");
-            route.put("name", "analysis");
-            route.put("icon", "folder");
-            routes.add(route);
-            route = new HashMap<>();
-            route.put("path", "/dashboard/workplace");
-            route.put("name", "workplace");
-            route.put("icon", "folder");
-            routes.add(route);
-            route = new HashMap<>();
-            route.put("path", "/dashboard");
-            route.put("name", "dashboard");
-            route.put("icon", "dashboard");
-            route.put("routes", routes);
-            data.add(route);
-
-            routes = new ArrayList<>();
-            route = new HashMap<>();
-            route.put("path", "/custom/company");
-            route.put("name", "公司列表");
-            route.put("icon", "folder");
-            routes.add(route);
-            route = new HashMap<>();
-            route.put("path", "/custom");
-            route.put("name", "学习进度");
-            route.put("icon", "folder");
-            route.put("routes", routes);
-            data.add(route);
-
-            return data;
-        } else {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        }
-    }
-
-    @GET
     @Path("yun")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
@@ -140,7 +93,7 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
                 yu.setName(su.getUsername());
                 yu.setEmail(su.getEmail());
                 yu.setGroup(su.getDept().getDept());
-                yu.setTitle("Some Title");
+                yu.setTitle(su.getJob());
                 yu.setPhone(su.getPhone());
                 yu.setAddress("湖滨大道");
                 List<Map<String, String>> tags = new ArrayList<>();
@@ -160,92 +113,142 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
 
                 yu.setTags(tags);
 
-                res = new ResponseObject<>("200", "success", yu);
-            } else {
-                res = new ResponseObject<>("404", "此用戶不存在", null);
-            }
-            return res;
-        } else {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        }
-    }
+                // 菜单
+                List<Map<String, Object>> menu = new ArrayList<>();
+                ArrayList routes;
+                Map<String, Object> route;
 
-    @GET
-    @Path("chart")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public ResponseObject fetchChart(@QueryParam("userid") String userid, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-        if (isAuthorized(appid, token)) {
-            ResponseObject res = null;
-            SystemUser su = systemUserBean.findByUserId(userid);
-            if (su != null) {
+                route = new HashMap<>();
+                route.put("path", "/workplace");
+                route.put("name", "workplace");
+                menu.add(route);
+
+                routes = new ArrayList<>();
+
+                route = new HashMap<>();
+                route.put("path", "/custom/demands");
+                route.put("name", "demands");
+                routes.add(route);
+
+                route = new HashMap<>();
+                route.put("path", "/custom/tasks");
+                route.put("name", "tasks");
+                routes.add(route);
+
+                route = new HashMap<>();
+                route.put("path", "/custom/conference");
+                route.put("name", "conference");
+                routes.add(route);
+
+                route = new HashMap<>();
+                route.put("path", "/custom");
+                route.put("name", "custom");
+                route.put("routes", routes);
+
+                menu.add(route);
+
+                routes = new ArrayList<>();
+
+                route = new HashMap<>();
+                route.put("path", "/production-marketing/product-series");
+                route.put("name", "product-series");
+                routes.add(route);
+
+                route = new HashMap<>();
+                route.put("path", "/production-marketing/product");
+                route.put("name", "product");
+                routes.add(route);
+
+                route = new HashMap<>();
+                route.put("path", "/production-marketing/sales-order");
+                route.put("name", "sales-order");
+                routes.add(route);
+
+                route = new HashMap<>();
+                route.put("path", "/production-marketing/production-plan");
+                route.put("name", "production-plan");
+                routes.add(route);
+
+                route = new HashMap<>();
+                route.put("path", "/production-marketing/production-demand");
+                route.put("name", "production-demand");
+                routes.add(route);
+
+                route = new HashMap<>();
+                route.put("path", "/production-marketing");
+                route.put("name", "production-marketing");
+                route.put("routes", routes);
+
+                menu.add(route);
+
+                // 首页雷达图数据
                 List<Map<String, Object>> radarData = new ArrayList<>();
-                Map<String, Object> data;
+                Map<String, Object> chart;
 
-                data = new HashMap<>();
-                data.put("name", "个人");
-                data.put("label", "技术");
-                data.put("value", 10);
-                radarData.add(data);
+                chart = new HashMap<>();
+                chart.put("name", "个人");
+                chart.put("label", "技术");
+                chart.put("value", 10);
+                radarData.add(chart);
 
-                data = new HashMap<>();
-                data.put("name", "个人");
-                data.put("label", "口碑");
-                data.put("value", 8);
-                radarData.add(data);
+                chart = new HashMap<>();
+                chart.put("name", "个人");
+                chart.put("label", "口碑");
+                chart.put("value", 8);
+                radarData.add(chart);
 
-                data = new HashMap<>();
-                data.put("name", "个人");
-                data.put("label", "产量");
-                data.put("value", 4);
-                radarData.add(data);
+                chart = new HashMap<>();
+                chart.put("name", "个人");
+                chart.put("label", "产量");
+                chart.put("value", 4);
+                radarData.add(chart);
 
-                data = new HashMap<>();
-                data.put("name", "个人");
-                data.put("label", "贡献");
-                data.put("value", 5);
-                radarData.add(data);
+                chart = new HashMap<>();
+                chart.put("name", "个人");
+                chart.put("label", "贡献");
+                chart.put("value", 5);
+                radarData.add(chart);
 
-                data = new HashMap<>();
-                data.put("name", "个人");
-                data.put("label", "热度");
-                data.put("value", 7);
-                radarData.add(data);
+                chart = new HashMap<>();
+                chart.put("name", "个人");
+                chart.put("label", "热度");
+                chart.put("value", 7);
+                radarData.add(chart);
 
-                data = new HashMap<>();
-                data.put("name", "部门");
-                data.put("label", "技术");
-                data.put("value", 5);
-                radarData.add(data);
+                chart = new HashMap<>();
+                chart.put("name", "部门");
+                chart.put("label", "技术");
+                chart.put("value", 5);
+                radarData.add(chart);
 
-                data = new HashMap<>();
-                data.put("name", "部门");
-                data.put("label", "口碑");
-                data.put("value", 7);
-                radarData.add(data);
+                chart = new HashMap<>();
+                chart.put("name", "部门");
+                chart.put("label", "口碑");
+                chart.put("value", 7);
+                radarData.add(chart);
 
-                data = new HashMap<>();
-                data.put("name", "部门");
-                data.put("label", "产量");
-                data.put("value", 10);
-                radarData.add(data);
+                chart = new HashMap<>();
+                chart.put("name", "部门");
+                chart.put("label", "产量");
+                chart.put("value", 10);
+                radarData.add(chart);
 
-                data = new HashMap<>();
-                data.put("name", "部门");
-                data.put("label", "贡献");
-                data.put("value", 5);
-                radarData.add(data);
+                chart = new HashMap<>();
+                chart.put("name", "部门");
+                chart.put("label", "贡献");
+                chart.put("value", 5);
+                radarData.add(chart);
 
-                data = new HashMap<>();
-                data.put("name", "部门");
-                data.put("label", "热度");
-                data.put("value", 2);
-                radarData.add(data);
+                chart = new HashMap<>();
+                chart.put("name", "部门");
+                chart.put("label", "热度");
+                chart.put("value", 2);
+                radarData.add(chart);
 
-                Map<String, Object> object = new HashMap<>();
-                object.put("radarData", radarData);
-                // 返回
-                res = new ResponseObject<>("200", "success", object);
+                res = new ResponseObject<>("200", "success", yu);
+                res.getExtData().put("menu", menu);
+                res.getExtData().put("radarData", radarData);
+
             } else {
                 res = new ResponseObject<>("404", "此用戶不存在", null);
             }

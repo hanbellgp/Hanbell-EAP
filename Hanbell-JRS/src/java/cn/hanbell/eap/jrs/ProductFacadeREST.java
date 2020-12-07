@@ -23,7 +23,6 @@ import javax.ws.rs.core.Response;
  * @author C0160
  */
 @Path("eap/product")
-@javax.enterprise.context.RequestScoped
 public class ProductFacadeREST extends SuperRESTForEAP<Product> {
 
     @EJB
