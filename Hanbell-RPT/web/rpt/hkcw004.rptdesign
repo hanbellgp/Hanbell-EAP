@@ -339,7 +339,7 @@ if (currentRow<6){
 	}
 }else if(detail.size() >6){
    if(currentRow < detail.size()){
-   dataSetRow["company"] = master.getCompanyName(master.getFacno());
+   dataSetRow["company"] = master.getCompanyName();
 		dataSetRow["formid"] = master.getFormSerialNumber();
 		dataSetRow["formdate"] = master.getCreatedate();	
 		dataSetRow["cusno"] = master.getCusno();	
@@ -1345,7 +1345,6 @@ return false;]]></method>
             <row id="918">
                 <property name="borderTopStyle">solid</property>
                 <property name="borderTopWidth">thin</property>
-                <property name="height">0.3645833333333333in</property>
                 <cell id="921">
                     <property name="borderLeftStyle">solid</property>
                     <property name="borderLeftWidth">thin</property>

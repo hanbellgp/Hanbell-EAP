@@ -287,8 +287,9 @@ currentRow = 0;]]></method>
             <method name="fetch"><![CDATA[if(detail==0 || detail==null || detail == undefined){
 	return false;
 }
+if(detail.size() <=5){
 if (currentRow<5){
-    if(currentRow < detail.size()){
+ if(currentRow < detail.size()){
         dataSetRow["formdate"] = master.getCreatedate();
         dataSetRow["contractno"] = master.getVdrno();
         dataSetRow["predate"] = master.getCreatetime();
@@ -309,15 +310,34 @@ if (currentRow<5){
         dataSetRow["facno"] = master.getCompanyName();
         currentRow++;
         return true;
+    } 
+        dataSetRow["formdate"] = master.getCreatedate();
+        dataSetRow["contractno"] = master.getVdrno();
+        dataSetRow["predate"] = master.getCreatetime();
+        dataSetRow["vdrd"] = master.getVdrd();
+        dataSetRow["certificateno"] = master.getPzzh();
+        dataSetRow["paytype"] = master.getFkfs();
+        dataSetRow["billno"] = master.getBibName();
+        dataSetRow["currency"] = master.getJine();
+        dataSetRow["amount"] = master.getDx();
+        dataSetRow["bankname"] = master.getBttbankno();
+        if(master.getUser()!=null){
+         dataSetRow["payee"] = master.getUser().getUserName();
+        }
+        dataSetRow["facno"] = master.getCompanyName();
+        currentRow++;
+        return true;
+    
     }
-    dataSetRow["formdate"] = master.getCreatedate();
+    }else if(detail.size() >5){
+    if (currentRow < detail.size()) {
+     dataSetRow["formdate"] = master.getCreatedate();
      dataSetRow["contractno"] = master.getVdrno();
      dataSetRow["predate"] = master.getCreatetime();
      dataSetRow["vdrd"] = master.getVdrd();
      dataSetRow["certificateno"] = master.getPzzh();
      dataSetRow["paytype"] = master.getFkfs();
-     dataSetRow["remark"] = detail.get(0).getBeizhu();
-     //dataSetRow["remark"] = master.getBeizhu();
+    
      dataSetRow["billno"] = master.getBibName();
      dataSetRow["currency"] = master.getJine();
      dataSetRow["amount"] = master.getDx();
@@ -326,10 +346,14 @@ if (currentRow<5){
          dataSetRow["payee"] = master.getUser().getUserName();
         }
 	 dataSetRow["facno"] = master.getCompanyName();
+	 dataSetRow["summary"] = detail.get(currentRow).getZy();
+	 dataSetRow["dept"] = detail.get(currentRow).getDept().getOrganizationUnitName();
+	 dataSetRow["payment"] = detail.get(currentRow).getFkje();
+	 dataSetRow["remark"] = detail.get(0).getBeizhu();
     currentRow++;
     return true;
+	}
 }
-
 return false;
 ]]></method>
             <method name="close"><![CDATA[ejbClient = null;]]></method>
