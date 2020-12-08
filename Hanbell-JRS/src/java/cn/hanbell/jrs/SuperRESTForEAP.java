@@ -7,6 +7,7 @@ package cn.hanbell.jrs;
 
 import cn.hanbell.util.BaseLib;
 import com.lightshell.comm.SuperEJB;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -239,7 +240,13 @@ public abstract class SuperRESTForEAP<T> {
                             obj = BaseLib.getDate("yyyy-MM-dd", value);
                             filterFields.put(key, obj);
                         } else {
-                            filterFields.put(key, value);
+                            if (!key.contains(".")) {
+                                Field field = entityClass.getDeclaredField(key);
+                                obj = com.lightshell.comm.BaseLib.convertObject(field.getType(), value);
+                                filterFields.put(key, obj);
+                            } else {
+                                filterFields.put(key, value);
+                            }
                         }
                     }
                 }
@@ -288,7 +295,13 @@ public abstract class SuperRESTForEAP<T> {
                             obj = BaseLib.getDate("yyyy-MM-dd", value);
                             filterFields.put(key, obj);
                         } else {
-                            filterFields.put(key, value);
+                            if (!key.contains(".")) {
+                                Field field = entityClass.getDeclaredField(key);
+                                obj = com.lightshell.comm.BaseLib.convertObject(field.getType(), value);
+                                filterFields.put(key, obj);
+                            } else {
+                                filterFields.put(key, value);
+                            }
                         }
                     }
                 }

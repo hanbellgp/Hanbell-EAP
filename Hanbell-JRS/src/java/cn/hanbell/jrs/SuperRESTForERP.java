@@ -8,6 +8,7 @@ package cn.hanbell.jrs;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.util.BaseLib;
 import cn.hanbell.util.SuperEJB;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +122,13 @@ public abstract class SuperRESTForERP<T> {
                             obj = BaseLib.getDate("yyyy-MM-dd", value);
                             filterFields.put(key, obj);
                         } else {
-                            filterFields.put(key, value);
+                            if (!key.contains(".")) {
+                                Field field = entityClass.getDeclaredField(key);
+                                obj = com.lightshell.comm.BaseLib.convertObject(field.getType(), value);
+                                filterFields.put(key, obj);
+                            } else {
+                                filterFields.put(key, value);
+                            }
                         }
                     }
                 }
