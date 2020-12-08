@@ -395,6 +395,9 @@ public class CRMHKFW006 implements Serializable {
     @Size(max = 20)
     @Column(name = "FW_INSIDE")
     private String fwInside;
+    @Size(max = 50)
+    @Column(name = "REPTMNO")
+    private String reptmno;
 
     public CRMHKFW006() {
     }
@@ -1214,6 +1217,14 @@ public class CRMHKFW006 implements Serializable {
 
     public void setDzf(Double dzf) {
         this.dzf = dzf;
+    }
+
+    public String getReptmno() {
+        return reptmno;
+    }
+
+    public void setReptmno(String reptmno) {
+        this.reptmno = reptmno;
     }
 
 }
