@@ -1793,7 +1793,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 repairAreaListRes = sysCodeBean.getTroubleNameList("RD","repairarea");
                 String key, value="";
                 filterFields.put("deptno", deptno);
-                
+                filterFields.put("status", "N");
                 //assetCardListRes = superEJB.findByFilters(filterFields, offset, pageSize, sortFields);
                 repairUserListRes = systemUserBean.findByFilters(filterFields);
                 
