@@ -123,9 +123,13 @@ public abstract class SuperRESTForERP<T> {
                             filterFields.put(key, obj);
                         } else {
                             if (!key.contains(".")) {
-                                Field field = entityClass.getDeclaredField(key);
-                                obj = com.lightshell.comm.BaseLib.convertObject(field.getType(), value);
-                                filterFields.put(key, obj);
+                                try {
+                                    Field field = entityClass.getDeclaredField(key);
+                                    obj = com.lightshell.comm.BaseLib.convertObject(field.getType(), value);
+                                    filterFields.put(key, obj);
+                                } catch (Exception ex) {
+                                    filterFields.put(key, value);
+                                }
                             } else {
                                 filterFields.put(key, value);
                             }
