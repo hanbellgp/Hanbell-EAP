@@ -161,6 +161,8 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipInvenTemp.setStatus("N");
                 equipInvenTemp.setRepairdeptno(entity.getRepairdeptno());
                 equipInvenTemp.setRepairdeptname(entity.getRepairdeptname());
+                equipInvenTemp.setExcepttime(0);
+                equipInvenTemp.setStopworktime(0);
                 equipInvenTemp.setRemark(entity.getRemark());
                 equipInvenTemp.setCreator(entity.getCreator());
                 equipInvenTemp.setCredate(new Date());
@@ -958,12 +960,16 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     }
                     else
                     {
+                        String needArchiveFlag = entity.getStatus();
                         BigDecimal totalCost = BigDecimal.ZERO;
                         BigDecimal laborCosts = equipInvenList.get(0).getLaborcosts() == null ? BigDecimal.ZERO:equipInvenList.get(0).getLaborcosts();
-                        BigDecimal repairCost = equipInvenList.get(0).getRepaircost() == null ? BigDecimal.ZERO:equipInvenList.get(0).getRepaircost();
+                        //BigDecimal repairCost = equipInvenList.get(0).getRepaircost() == null ? BigDecimal.ZERO:equipInvenList.get(0).getRepaircost();
+                        BigDecimal repairCost = new BigDecimal(entity.getCreator());
                         BigDecimal spareCost = equipInvenList.get(0).getSparecost() == null ? BigDecimal.ZERO:equipInvenList.get(0).getSparecost();
                         totalCost = totalCost.add(laborCosts).add(repairCost).add(spareCost);
-                        if(totalCost.compareTo(new BigDecimal("5000")) >= 0)
+                        equipInvenList.get(0).setRepaircost(repairCost);
+                        equipInvenList.get(0).setRepairarchive(needArchiveFlag);
+                        if(totalCost.compareTo(new BigDecimal("5000")) >= 0 || needArchiveFlag.equals("Y"))
                         {
                             equipInvenList.get(0).setRstatus("70");
                         }
@@ -1537,6 +1543,8 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<SystemUser> sysUserListRes = new ArrayList<SystemUser>();
             List<SysCode> sysCodeList = new ArrayList<SysCode>();
             List<SysCode> repairManagerList = new ArrayList<SysCode>();
+            SystemUser repairUserObj = new SystemUser();
+            SystemUser serviceUserObj = new SystemUser();
             AssetCard assetCardRes = new AssetCard();
             try {
                 MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
@@ -1682,13 +1690,24 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         equipmentrepairBean.getEntityManager().clear();
                     }
                     
+                    if(eqpRepairListRes.get(0).getRepairuser() != null)
+                    {
+                        repairUserObj = systemUserBean.findByUserId(eqpRepairListRes.get(0).getRepairuser());
+                    }
+                    
+                    if(eqpRepairListRes.get(0).getServiceuser()!= null)
+                    {
+                        serviceUserObj = systemUserBean.findByUserId(eqpRepairListRes.get(0).getServiceuser());
+                    }
+                    
                     
                     //eqpRepairListResTemp.add(repairResTemp);
                 }
                 
                 infoListRes.add(eqpRepairListRes.get(0));
                 infoListRes.add(repairManagerList.get(0));
-                
+                infoListRes.add(repairUserObj);
+                infoListRes.add(serviceUserObj);
                 
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -1774,7 +1793,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 repairAreaListRes = sysCodeBean.getTroubleNameList("RD","repairarea");
                 String key, value="";
                 filterFields.put("deptno", deptno);
-                
+                filterFields.put("status", "N");
                 //assetCardListRes = superEJB.findByFilters(filterFields, offset, pageSize, sortFields);
                 repairUserListRes = systemUserBean.findByFilters(filterFields);
                 
