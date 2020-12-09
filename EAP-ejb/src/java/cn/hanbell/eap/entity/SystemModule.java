@@ -34,9 +34,12 @@ public class SystemModule extends SuperEntity {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 40)
     @Column(name = "name")
     private String name;
+    @Size(max = 400)
+    @Column(name = "api")
+    private String api;
     @Basic(optional = false)
     @NotNull
     @Column(name = "sortid")
@@ -59,6 +62,20 @@ public class SystemModule extends SuperEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the api
+     */
+    public String getApi() {
+        return api;
+    }
+
+    /**
+     * @param api the api to set
+     */
+    public void setApi(String api) {
+        this.api = api;
     }
 
     public int getSortid() {

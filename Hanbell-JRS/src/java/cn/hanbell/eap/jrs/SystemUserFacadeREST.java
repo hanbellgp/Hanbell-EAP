@@ -5,7 +5,13 @@
  */
 package cn.hanbell.eap.jrs;
 
+import cn.hanbell.eap.ejb.SystemGrantModuleBean;
+import cn.hanbell.eap.ejb.SystemGrantPrgBean;
+import cn.hanbell.eap.ejb.SystemRoleDetailBean;
 import cn.hanbell.eap.ejb.SystemUserBean;
+import cn.hanbell.eap.entity.SystemGrantModule;
+import cn.hanbell.eap.entity.SystemGrantPrg;
+import cn.hanbell.eap.entity.SystemRoleDetail;
 import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.eap.jrs.model.YunUser;
 import cn.hanbell.eap.jrs.model.YunLogin;
@@ -37,6 +43,20 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
 
     @EJB
     private SystemUserBean systemUserBean;
+    @EJB
+    private SystemRoleDetailBean systemRoleDetailBean;
+    @EJB
+    private SystemGrantModuleBean systemGrantModuleBean;
+    @EJB
+    private SystemGrantPrgBean systemGrantPrgBean;
+
+    private List<SystemGrantModule> userModuleGrantList;
+    private List<SystemGrantModule> roleModuleGrantList;
+    private List<SystemGrantModule> moduleGrantList;
+    private List<SystemGrantPrg> userPrgGrantList;
+    private List<SystemGrantPrg> rolePrgGrantList;
+    private List<SystemGrantPrg> prgGrantList;
+    private List<SystemRoleDetail> roleList;
 
     public SystemUserFacadeREST() {
         super(SystemUser.class);
@@ -51,7 +71,8 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
     @Path("login/yun")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseObject loginYun(YunLogin entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseObject loginYun(YunLogin entity, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             ResponseObject res = null;
             String userid, pwd, type;
@@ -83,7 +104,8 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
     @Path("yun")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseObject fetchYun(@QueryParam("userid") String userid, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseObject fetchYun(@QueryParam("userid") String userid, @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             ResponseObject res;
             SystemUser su = systemUserBean.findByUserId(userid);
@@ -113,146 +135,121 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
 
                 yu.setTags(tags);
 
-                // 菜单
-                List<Map<String, Object>> menu = new ArrayList<>();
-                ArrayList routes;
-                Map<String, Object> route;
+                try {
+                    // 获取权限
+                    setAuthorization("YUN", su.getId());
+                    // 菜单
+                    List<Map<String, Object>> menu = new ArrayList<>();
+                    ArrayList routes;
+                    Map<String, Object> route;
+                    // 通用菜单
+                    route = new HashMap<>();
+                    route.put("path", "/workplace");
+                    route.put("name", "workplace");
+                    menu.add(route);
+                    // 授权菜单
+                    if (moduleGrantList != null && prgGrantList != null) {
+                        for (SystemGrantModule m : moduleGrantList) {
+                            routes = new ArrayList<>();
+                            // 功能菜单
+                            for (SystemGrantPrg p : prgGrantList) {
+                                if (p.getPid() == m.getSystemModule().getId()) {
+                                    route = new HashMap<>();
+                                    route.put("path", p.getSysprg().getApi());
+                                    route.put("name", p.getSysprg().getName());
+                                    routes.add(route);
+                                }
+                            }
+                            // 模块菜单
+                            route = new HashMap<>();
+                            route.put("path", m.getSystemModule().getApi());
+                            route.put("name", m.getSystemModule().getName());
+                            route.put("routes", routes);
+                            // 加入菜单
+                            menu.add(route);
+                        }
+                    }
+                    // 首页雷达图数据
+                    List<Map<String, Object>> radarData = new ArrayList<>();
+                    Map<String, Object> chart;
 
-                route = new HashMap<>();
-                route.put("path", "/workplace");
-                route.put("name", "workplace");
-                menu.add(route);
+                    chart = new HashMap<>();
+                    chart.put("name", "个人");
+                    chart.put("label", "技术");
+                    chart.put("value", 10);
+                    radarData.add(chart);
 
-                routes = new ArrayList<>();
+                    chart = new HashMap<>();
+                    chart.put("name", "个人");
+                    chart.put("label", "口碑");
+                    chart.put("value", 8);
+                    radarData.add(chart);
 
-                route = new HashMap<>();
-                route.put("path", "/custom/demands");
-                route.put("name", "demands");
-                routes.add(route);
+                    chart = new HashMap<>();
+                    chart.put("name", "个人");
+                    chart.put("label", "产量");
+                    chart.put("value", 4);
+                    radarData.add(chart);
 
-                route = new HashMap<>();
-                route.put("path", "/custom/tasks");
-                route.put("name", "tasks");
-                routes.add(route);
+                    chart = new HashMap<>();
+                    chart.put("name", "个人");
+                    chart.put("label", "贡献");
+                    chart.put("value", 5);
+                    radarData.add(chart);
 
-                route = new HashMap<>();
-                route.put("path", "/custom/conference");
-                route.put("name", "conference");
-                routes.add(route);
+                    chart = new HashMap<>();
+                    chart.put("name", "个人");
+                    chart.put("label", "热度");
+                    chart.put("value", 7);
+                    radarData.add(chart);
 
-                route = new HashMap<>();
-                route.put("path", "/custom");
-                route.put("name", "custom");
-                route.put("routes", routes);
+                    chart = new HashMap<>();
+                    chart.put("name", "部门");
+                    chart.put("label", "技术");
+                    chart.put("value", 5);
+                    radarData.add(chart);
 
-                menu.add(route);
+                    chart = new HashMap<>();
+                    chart.put("name", "部门");
+                    chart.put("label", "口碑");
+                    chart.put("value", 7);
+                    radarData.add(chart);
 
-                routes = new ArrayList<>();
+                    chart = new HashMap<>();
+                    chart.put("name", "部门");
+                    chart.put("label", "产量");
+                    chart.put("value", 10);
+                    radarData.add(chart);
 
-                route = new HashMap<>();
-                route.put("path", "/production-marketing/product-series");
-                route.put("name", "product-series");
-                routes.add(route);
+                    chart = new HashMap<>();
+                    chart.put("name", "部门");
+                    chart.put("label", "贡献");
+                    chart.put("value", 5);
+                    radarData.add(chart);
 
-                route = new HashMap<>();
-                route.put("path", "/production-marketing/product");
-                route.put("name", "product");
-                routes.add(route);
+                    chart = new HashMap<>();
+                    chart.put("name", "部门");
+                    chart.put("label", "热度");
+                    chart.put("value", 2);
+                    radarData.add(chart);
 
-                route = new HashMap<>();
-                route.put("path", "/production-marketing/sales-order");
-                route.put("name", "sales-order");
-                routes.add(route);
+                    res = new ResponseObject<>("200", "success", yu);
+                    res.getExtData().put("menu", menu);
+                    res.getExtData().put("radarData", radarData);
+                    res.getExtData().put("authorization", prgGrantList);
 
-                route = new HashMap<>();
-                route.put("path", "/production-marketing/production-plan");
-                route.put("name", "production-plan");
-                routes.add(route);
-
-                route = new HashMap<>();
-                route.put("path", "/production-marketing/production-demand");
-                route.put("name", "production-demand");
-                routes.add(route);
-
-                route = new HashMap<>();
-                route.put("path", "/production-marketing");
-                route.put("name", "production-marketing");
-                route.put("routes", routes);
-
-                menu.add(route);
-
-                // 首页雷达图数据
-                List<Map<String, Object>> radarData = new ArrayList<>();
-                Map<String, Object> chart;
-
-                chart = new HashMap<>();
-                chart.put("name", "个人");
-                chart.put("label", "技术");
-                chart.put("value", 10);
-                radarData.add(chart);
-
-                chart = new HashMap<>();
-                chart.put("name", "个人");
-                chart.put("label", "口碑");
-                chart.put("value", 8);
-                radarData.add(chart);
-
-                chart = new HashMap<>();
-                chart.put("name", "个人");
-                chart.put("label", "产量");
-                chart.put("value", 4);
-                radarData.add(chart);
-
-                chart = new HashMap<>();
-                chart.put("name", "个人");
-                chart.put("label", "贡献");
-                chart.put("value", 5);
-                radarData.add(chart);
-
-                chart = new HashMap<>();
-                chart.put("name", "个人");
-                chart.put("label", "热度");
-                chart.put("value", 7);
-                radarData.add(chart);
-
-                chart = new HashMap<>();
-                chart.put("name", "部门");
-                chart.put("label", "技术");
-                chart.put("value", 5);
-                radarData.add(chart);
-
-                chart = new HashMap<>();
-                chart.put("name", "部门");
-                chart.put("label", "口碑");
-                chart.put("value", 7);
-                radarData.add(chart);
-
-                chart = new HashMap<>();
-                chart.put("name", "部门");
-                chart.put("label", "产量");
-                chart.put("value", 10);
-                radarData.add(chart);
-
-                chart = new HashMap<>();
-                chart.put("name", "部门");
-                chart.put("label", "贡献");
-                chart.put("value", 5);
-                radarData.add(chart);
-
-                chart = new HashMap<>();
-                chart.put("name", "部门");
-                chart.put("label", "热度");
-                chart.put("value", 2);
-                radarData.add(chart);
-
-                res = new ResponseObject<>("200", "success", yu);
-                res.getExtData().put("menu", menu);
-                res.getExtData().put("radarData", radarData);
-
+                    return res;
+                } catch (Exception ex) {
+                    return new ResponseObject<>("500", "系统错误", ex.getMessage());
+                } finally {
+                    if (moduleGrantList != null) {
+                        moduleGrantList.clear();
+                        moduleGrantList = null;
+                    }
+                }
             } else {
-                res = new ResponseObject<>("404", "此用戶不存在", null);
+                return new ResponseObject<>("404", "此用戶不存在", null);
             }
-            return res;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
@@ -273,6 +270,73 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
+    }
+
+    private void setAuthorization(String systemName, Integer userId) {
+        boolean flag;
+        moduleGrantList = new ArrayList<>();
+        prgGrantList = new ArrayList<>();
+
+        // 将用户权限和角色权限合并后产生菜单,用户权限优先角色权限
+        userModuleGrantList = systemGrantModuleBean.findBySystemNameAndUserId(systemName, userId);
+        userModuleGrantList.forEach((m) -> {
+            moduleGrantList.add(m);
+        });
+        userPrgGrantList = systemGrantPrgBean.findBySystemNameAndUserId(systemName, userId);
+        userPrgGrantList.forEach((p) -> {
+            prgGrantList.add(p);
+        });
+        roleList = systemRoleDetailBean.findByUserId(userId);
+        for (SystemRoleDetail r : roleList) {
+            roleModuleGrantList = systemGrantModuleBean.findBySystemNameAndRoleId(systemName, r.getPid());
+            if (moduleGrantList.isEmpty()) {
+                moduleGrantList.addAll(roleModuleGrantList);
+            } else {
+                for (SystemGrantModule m : roleModuleGrantList) {
+                    flag = true;
+                    for (SystemGrantModule e : moduleGrantList) {
+                        if (e.getSystemModule().getId().compareTo(m.getSystemModule().getId()) == 0) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        moduleGrantList.add(m);
+                    }
+                }
+            }
+            rolePrgGrantList = systemGrantPrgBean.findBySystemNameAndRoleId(systemName, r.getPid());
+            if (prgGrantList.isEmpty()) {
+                prgGrantList.addAll(rolePrgGrantList);
+            } else {
+                for (SystemGrantPrg p : rolePrgGrantList) {
+                    flag = true;
+                    for (SystemGrantPrg e : prgGrantList) {
+                        if (e.getSysprg().getId().compareTo(p.getSysprg().getId()) == 0) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        prgGrantList.add(p);
+                    }
+                }
+            }
+        }
+        moduleGrantList.sort((SystemGrantModule o1, SystemGrantModule o2) -> {
+            if (o1.getSystemModule().getSortid() < o2.getSystemModule().getSortid()) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+        prgGrantList.sort((SystemGrantPrg o1, SystemGrantPrg o2) -> {
+            if (o1.getSysprg().getSortid() < o2.getSysprg().getSortid()) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
     }
 
 }
