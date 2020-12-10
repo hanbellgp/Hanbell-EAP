@@ -41,7 +41,7 @@ public class SystemProgram extends SuperEntity {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 40)
     @Column(name = "name")
     private String name;
     @Basic(optional = false)
