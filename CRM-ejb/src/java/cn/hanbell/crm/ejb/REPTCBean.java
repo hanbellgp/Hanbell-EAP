@@ -154,10 +154,13 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
         if (maintainform != null & !"".equals(maintainform)) {
             StringBuffer sql=new StringBuffer("SELECT * FROM REPTC r WHERE r.TC001 = '");
             sql.append(maintainformtype).append("' AND r.TC002 like '%").append(maintainform).append("%'");
+            sql.append(" order by CREATE_DATE desc");
             query = getEntityManager().createNativeQuery(sql.toString(),REPTC.class);
         } else {
-            query = getEntityManager().createNamedQuery("REPTC.findByTc001");
-            query.setParameter("tc001", maintainformtype);
+            StringBuffer sql=new StringBuffer("SELECT * FROM REPTC  WHERE TC001 = '");
+            sql.append(maintainformtype).append("'");
+            sql.append(" order by CREATE_DATE desc");
+            query = getEntityManager().createNativeQuery(sql.toString(),REPTC.class);
         }
         try {
             List<REPTC> list = query.getResultList();

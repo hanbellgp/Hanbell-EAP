@@ -12,7 +12,6 @@ import cn.hanbell.crm.ejb.SERBQBean;
 import cn.hanbell.crm.ejb.SERCABean;
 import cn.hanbell.crm.ejb.SYSNNBean;
 import cn.hanbell.crm.entity.CMSMG;
-import cn.hanbell.crm.entity.CRMGD;
 import cn.hanbell.crm.entity.CRMGG;
 import cn.hanbell.crm.entity.REPTA;
 import cn.hanbell.crm.entity.REPTAPK;
@@ -21,6 +20,8 @@ import cn.hanbell.crm.entity.SERBQ;
 import cn.hanbell.crm.entity.SERCA;
 import cn.hanbell.crm.entity.SERCAPK;
 import cn.hanbell.crm.entity.SYSNN;
+import cn.hanbell.eap.ejb.SystemUserBean;
+import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForCRM;
 import cn.hanbell.util.BaseLib;
@@ -66,7 +67,8 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
     private CRMGDBean crmgdBean;
     @EJB
     private SERCABean sercaBean;
-
+     @EJB
+    private SystemUserBean systemuserBean;
     @EJB
     private SYSNNBean sysnnBean;
 
@@ -86,7 +88,7 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
     }
 
     /**
-     * 创建客诉单和派工单
+     * 创建客诉单和叫修单
      *
      * @param entity
      * @param appid
@@ -102,6 +104,9 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
         if (isAuthorized(appid, token)) {
             Date date;
             StringBuffer msg = new StringBuffer("【汉钟精机】 客诉单:");
+             StringBuffer leaderMsg = new StringBuffer("【汉钟精机】"); 
+             SystemUser user=systemuserBean.findByUserId(entity.getEmployeeId());
+             leaderMsg.append(user.getUsername()).append("创建的");
             try {
                 date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
                 CRMGG gg = crmggBean.findByGG001(entity.getCustomerCodeId());
@@ -225,7 +230,7 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                     ca.setCa015(entity.getProblemTypeName());
                     ca.setCa019(entity.getEmergencyDrgreeId());
                     ca.setCa021(entity.getProblemTypeId());
-                    ca.setCa500(entity.getProductTypeId());
+                    ca.setCa500(detail.getMachineTypeId());
                     ca.setFlag((short) 0);
                     // 产生叫修单单头
                     REPTA ta = new REPTA();
@@ -298,16 +303,22 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                         ta.setTa044(gg.getGg098());
                         ta.setTa045(sysnn.getNn003());
                     }
-                    ta.setTa500(entity.getMachineTypeId());
+                    ta.setTa500(detail.getMachineTypeId());
                     sercaBean.persist(ca);
                     reptaBean.persist(ta);
                     msg.append(" 叫修单").append(m - 1).append(":").append(ta.getREPTAPK().getTa001());
                     msg.append("-").append(serl).append("。");
+                    
+                    leaderMsg.append(" 叫修单").append(m - 1).append(":").append(ta.getREPTAPK().getTa001());
+                    leaderMsg.append("-").append(serl).append("。");
                 }
                 ResponseMessage responseMessage = new ResponseMessage("200", msg.toString());
                 String errmsg = serbqBean.sendMsgString(entity.getEmployeeId(), msg.toString(), entity.getSessionkey(),
                         entity.getOpenId());
-                if (!"200".equals(errmsg)) {
+                leaderMsg.append(" 请尽快派工。");
+                String leadererrmsg = serbqBean.sendMsgString(user.getManagerId(), leaderMsg.toString(), entity.getSessionkey(),
+                        entity.getOpenId());
+                if (!"200".equals(errmsg)||!"200".equals(leadererrmsg)) {
                     throw new RuntimeException("发送失败,请联系管理员");
                 }
                 return responseMessage;
