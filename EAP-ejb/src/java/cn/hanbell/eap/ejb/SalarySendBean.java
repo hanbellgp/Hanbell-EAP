@@ -65,12 +65,14 @@ public class SalarySendBean extends SuperEJBForEAP<SalarySend> {
         String ls_ta002 = "";
         String serial = "00";
         ls_ta002 = BaseLib.formatDate("yyyyMMdd", new Date());
-        String sql = "SELECT * FROM salarysend WHERE taskid like '" + taskid + "%' GROUP BY taskid";
-        Query query = getEntityManager().createNativeQuery(sql);
-        List result = query.getResultList();
+        String sql = "SELECT * FROM salarysend WHERE taskid like '" + taskid + "%' GROUP BY taskid order by taskid DESC";
+        Query query = getEntityManager().createNativeQuery(sql,SalarySend.class);
+        List<SalarySend> result = query.getResultList();
         int m = 0;
         if (null != result && !result.isEmpty()) {
-            m = result.size();
+            SalarySend s=result.get(0);
+            String sub=s.getTaskid().substring(s.getTaskid().length()-2);
+            m = Integer.valueOf(sub);
             m = m + 1;
         } else {
             m = 1;
