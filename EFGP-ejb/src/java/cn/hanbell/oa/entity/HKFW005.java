@@ -785,4 +785,39 @@ public class HKFW005 implements Serializable {
         this.supportDept = supportDept;
     }
 
+    public String getWlcompanyValue() {
+        switch (this.wlcompany) {
+            case "1":
+                return "久祥物流";
+            case "2":
+                return "欢快物流";
+            case "3":
+                return "荣登物流";
+            case "4":
+                return "北弘物流";
+            case "5":
+                return "顺风快递";
+            case "6":
+                return "百世汇通";
+            case "7":
+                return "专车";
+            case "8":
+                return "自提";
+            case "9":
+                return "其他";
+            case "10":
+                return "闵柏物流";
+            case "11":
+                return "天天快递";
+            case "12":
+                return "上海雷速";
+            case "13":
+                return "上海广度";
+            case "14":
+                return "京东快递";
+            case "15":
+                return "合捷物流";
+        }
+        return "";
+    }
 }

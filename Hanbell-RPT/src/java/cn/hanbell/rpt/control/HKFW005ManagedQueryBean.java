@@ -11,20 +11,26 @@ import cn.hanbell.oa.entity.HKFW005;
 import cn.hanbell.rpt.lazy.HKFW005Model;
 import cn.hanbell.rpt.web.SuperQueryBean;
 import com.lightshell.comm.BaseLib;
+import com.oracle.jrockit.jfr.ContentType;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import static javax.swing.text.DefaultStyledDocument.ElementSpec.ContentType;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -94,8 +100,16 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
         row.createCell(8).setCellValue("申请部门");
         row.createCell(9).setCellValue("配合人");
         row.createCell(10).setCellValue("配合部门");
-        row.createCell(11).setCellValue("物流公司");
-        row.createCell(12).setCellValue("运费");
+        row.createCell(11).setCellValue("备注");
+        row.createCell(12).setCellValue("运费结算");
+        row.createCell(13).setCellValue("送货地址");
+        row.createCell(14).setCellValue("出货单号");
+        row.createCell(15).setCellValue("借出单号");
+        row.createCell(16).setCellValue("归还单号");
+        row.createCell(17).setCellValue("发货日期");
+        row.createCell(18).setCellValue("物流公司");
+        row.createCell(19).setCellValue("货运单号");
+        row.createCell(20).setCellValue("运费");
         int i = 1;
         for (HKFW005 e : entityList) {
             row = sheet.createRow(i);
@@ -113,7 +127,16 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
             row.createCell(8).setCellValue(e.getApplyDept() != null ? e.getApplyDept().getOrganizationUnitName() : "");
             row.createCell(9).setCellValue(e.getSupportUser() != null ? e.getSupportUser().getUserName() : "");
             row.createCell(10).setCellValue(e.getSupportDept() != null ? e.getSupportDept().getOrganizationUnitName() : "");
-            row.createCell(11).setCellValue(e.getWlcompany() != null ? e.getWlcompany() : "");
+            row.createCell(11).setCellValue(e.getMark()!= null ? e.getMark() : "");
+            row.createCell(12).setCellValue(e.getYfjs()!= null ? e.getYfjs() : "");
+            row.createCell(13).setCellValue(e.getShaddress()!= null ? e.getShaddress() : "");
+            row.createCell(14).setCellValue(e.getShpno()!= null ? e.getShpno() : "");
+            row.createCell(15).setCellValue(e.getLendno()!= null ? e.getLendno() : "");
+            row.createCell(16).setCellValue(e.getReturnno()!= null ? e.getReturnno() : "");
+            row.createCell(17).setCellValue(e.getShpdate()!= null ? BaseLib.formatDate("yyyy/MM/dd", e.getShpdate()) : "");          
+            row.createCell(18).setCellValue(e.getWlcompanyValue()!= null ? e.getWlcompanyValue() : "");
+             row.createCell(19).setCellValue(e.getHyno()!= null ? e.getHyno() : "");
+             row.createCell(20).setCellValue(e.getTotal()!= null ? String.valueOf(e.getTotal()) : "");
             if (e.getTotal() != null) {
                 row.createCell(12).setCellValue(e.getTotal());
             } else {
@@ -185,7 +208,7 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
                 for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                     Row row = sheet.getRow(i);
                     String processsNumber = row.getCell(0).getStringCellValue();
-                    double total = row.getCell(12).getNumericCellValue();
+                    double total =Double.valueOf(cellToVlaue(row.getCell(20)));
                     HKFW005 hkfw005 = hkfw005Bean.findByPSN(processsNumber);
                     hkfw005.setTotal(total);
                     hkfw005Bean.update(hkfw005);   
@@ -203,6 +226,32 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
             }
         }
     }
+     public String cellToVlaue(Cell cell) {
+        if (cell == null) {     
+            return "";
+        }
+        int type = cell.getCellType();
+        switch (type) {
+            case 0:
+                double d = cell.getNumericCellValue();
+                //整数去掉小数点
+                if (d == (int) d) {
+                    return String.valueOf((int) d);
+                }
+                return String.valueOf(cell.getNumericCellValue());
+            case 1:
+                return cell.getStringCellValue();
+            case 2:
+                return cell.getCellFormula();
+            case 3:
+                return "0";
+            case 4:
+                return String.valueOf(cell.getBooleanCellValue());
+            case 5:
+                return String.valueOf(cell.getErrorCellValue());
+        }
+        return "";
+    }
 
     public boolean upload(FileUploadEvent event) throws FileNotFoundException, IOException {
         OutputStream output = null;
@@ -216,7 +265,10 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
                 StringBuffer pathString = new StringBuffer(filePath.concat("rpt/"));
             pathString.append(String.valueOf(new Date().getTime()));
             pathString.append(".xls");
-            File dest = new File(pathString.toString());
+            String path=pathString.substring(0,pathString.indexOf("Hanbell-EAP")).concat("FileUploadServer/resources").concat(String.valueOf(new Date().getTime()));
+            StringBuffer url=new StringBuffer(pathString.substring(0,pathString.indexOf("Hanbell-EAP"))); 
+            url.append("FileUploadServer/resources/").append(String.valueOf(new Date().getTime())).append(".xls");
+            File dest = new File(url.toString());
             byte[] buf = new byte[1024];
             int bytesRead;
             output = new FileOutputStream(dest);
