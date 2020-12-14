@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrcus.findByCuskind", query = "SELECT c FROM Cdrcus c WHERE c.cuskind = :cuskind")})
 public class Cdrcus implements Serializable {
 
-    @OneToOne(cascade = CascadeType.REFRESH, mappedBy = "cdrcus")
+    @OneToOne(optional = true, cascade = CascadeType.REFRESH, mappedBy = "cdrcus")
     @JoinTable(name = "cdrcusman")
     private Cdrcusman cdrcusman;
 
@@ -931,6 +931,13 @@ public class Cdrcus implements Serializable {
      */
     public Cdrcusman getCdrcusman() {
         return cdrcusman;
+    }
+
+    /**
+     * @param cdrcusman the cdrcusman to set
+     */
+    public void setCdrcusman(Cdrcusman cdrcusman) {
+        this.cdrcusman = cdrcusman;
     }
 
     @Override

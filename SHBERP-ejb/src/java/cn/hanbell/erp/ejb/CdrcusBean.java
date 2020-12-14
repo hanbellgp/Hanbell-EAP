@@ -215,6 +215,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                 invwhclkBean.setCompany(facno2);
                 transwahBean.setCompany(facno2);
                 if (cdrcus != null) {
+                    cdrcus.setCdrcusman(null);
                     persist(cdrcus, detailAdded);
                     getEntityManager().flush();
                     resetObjects();
