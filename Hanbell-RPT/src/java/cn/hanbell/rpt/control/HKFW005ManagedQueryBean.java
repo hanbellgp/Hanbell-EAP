@@ -11,26 +11,18 @@ import cn.hanbell.oa.entity.HKFW005;
 import cn.hanbell.rpt.lazy.HKFW005Model;
 import cn.hanbell.rpt.web.SuperQueryBean;
 import com.lightshell.comm.BaseLib;
-import com.oracle.jrockit.jfr.ContentType;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import static javax.swing.text.DefaultStyledDocument.ElementSpec.ContentType;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -128,20 +120,15 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
             row.createCell(9).setCellValue(e.getSupportUser() != null ? e.getSupportUser().getUserName() : "");
             row.createCell(10).setCellValue(e.getSupportDept() != null ? e.getSupportDept().getOrganizationUnitName() : "");
             row.createCell(11).setCellValue(e.getMark()!= null ? e.getMark() : "");
-            row.createCell(12).setCellValue(e.getYfjs()!= null ? e.getYfjs() : "");
+            row.createCell(12).setCellValue(e.getYfjs()!= null ? e.getYfjsValue() : "");
             row.createCell(13).setCellValue(e.getShaddress()!= null ? e.getShaddress() : "");
             row.createCell(14).setCellValue(e.getShpno()!= null ? e.getShpno() : "");
             row.createCell(15).setCellValue(e.getLendno()!= null ? e.getLendno() : "");
             row.createCell(16).setCellValue(e.getReturnno()!= null ? e.getReturnno() : "");
             row.createCell(17).setCellValue(e.getShpdate()!= null ? BaseLib.formatDate("yyyy/MM/dd", e.getShpdate()) : "");          
             row.createCell(18).setCellValue(e.getWlcompanyValue()!= null ? e.getWlcompanyValue() : "");
-             row.createCell(19).setCellValue(e.getHyno()!= null ? e.getHyno() : "");
-             row.createCell(20).setCellValue(e.getTotal()!= null ? String.valueOf(e.getTotal()) : "");
-            if (e.getTotal() != null) {
-                row.createCell(12).setCellValue(e.getTotal());
-            } else {
-                row.createCell(12).setCellValue(0d);
-            }
+            row.createCell(19).setCellValue(e.getHyno()!= null ? e.getHyno() : "");
+            row.createCell(20).setCellValue(e.getTotal()!= null ? String.valueOf(e.getTotal()) : "");
             i++;
         }
         for (int c = 0; c < 13; c++) {
