@@ -76,6 +76,27 @@ public abstract class SuperRESTForERP<T> {
     }
 
     @GET
+    @Path("all/{company}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseData findAll(@PathParam("company") PathSegment company, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            try {
+                this.company = company.getPath();
+                List<T> list = getSuperEJB().findAll();
+                int count = list.size();
+                ResponseData res = new ResponseData<T>("200", "success");
+                res.setData(list);
+                res.setCount(count);
+                return res;
+            } catch (Exception ex) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @GET
     @Path("pagination/{company}")
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData findByPagination(@PathParam("company") PathSegment company, @QueryParam("offset") Integer offset, @QueryParam("pageSize") Integer pageSize,
@@ -172,8 +193,7 @@ public abstract class SuperRESTForERP<T> {
     }
 
     protected boolean isAuthorized(String appid, String token) {
-        return true;
-        //return systemNameBean.isAuthorized(appid, token);
+        return systemNameBean.isAuthorized(appid, token);
     }
 
 }

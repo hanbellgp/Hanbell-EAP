@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "secprg")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Secprg.getRowCount", query = "SELECT COUNT(s) FROM Secprg s"),
     @NamedQuery(name = "Secprg.findAll", query = "SELECT s FROM Secprg s"),
     @NamedQuery(name = "Secprg.findByPrgno", query = "SELECT s FROM Secprg s WHERE s.prgno = :prgno"),
     @NamedQuery(name = "Secprg.findByPrgname", query = "SELECT s FROM Secprg s WHERE s.prgname = :prgname"),
@@ -39,6 +40,11 @@ public class Secprg implements Serializable {
     @Size(min = 1, max = 8)
     @Column(name = "prgno")
     private String prgno;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 4)
+    @Column(name = "sysno")
+    private String sysno;
     @Size(max = 48)
     @Column(name = "prgname")
     private String prgname;
@@ -282,6 +288,20 @@ public class Secprg implements Serializable {
 
     public void setPrgno(String prgno) {
         this.prgno = prgno;
+    }
+
+    /**
+     * @return the sysno
+     */
+    public String getSysno() {
+        return sysno;
+    }
+
+    /**
+     * @param sysno the sysno to set
+     */
+    public void setSysno(String sysno) {
+        this.sysno = sysno;
     }
 
     public String getPrgname() {

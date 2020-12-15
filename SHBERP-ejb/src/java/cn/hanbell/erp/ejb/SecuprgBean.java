@@ -316,6 +316,12 @@ public class SecuprgBean extends SuperEJBForERP<Secuprg> {
         }
     }
 
+    public List<Secuprg> findByPrgno(String value) {
+        Query query = getEntityManager().createNamedQuery("Secuprg.findByPrgno");
+        query.setParameter("prgno", value);
+        return query.getResultList();
+    }
+
     public List<Secuprg> findByUserno(String value) {
         Query query = getEntityManager().createNamedQuery("Secuprg.findByUserno");
         query.setParameter("userno", value);
