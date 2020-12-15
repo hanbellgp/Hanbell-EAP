@@ -613,8 +613,8 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
         List<Secusys> secusysAdded = new ArrayList<>();
         List<Secuprg> secuprgAdded = new ArrayList<>();
         try {
-            miscodeBean.setCompany(h.getFacno());
-            secuserBean.setCompany(h.getFacno());
+            miscodeBean.setCompany(facno);
+            secuserBean.setCompany(facno);
             Secuser erpuser = secuserBean.findByUserno(userno);
             if (erpuser == null) {
                 Users oauser = usersBean.findById(userno);
@@ -654,7 +654,7 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
                     Secmemb m = new Secmemb(h.getFacno(), h.getApplyDept(), h.getApplyUser());
                     m.setSupvisor('N');
                     m.setAuth('N');
-                    secmembBean.setCompany(h.getFacno());
+                    secmembBean.setCompany(facno);
                     secmembBean.persist(m);
                 }
             }

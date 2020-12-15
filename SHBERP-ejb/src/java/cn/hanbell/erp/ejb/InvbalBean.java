@@ -203,8 +203,8 @@ public class InvbalBean extends SuperEJBForERP<Invbal> {
                 persist(entity);
             } else {
                 e.setPreqy1(e.getPreqy1().add(entity.getPreqy1()));
-                e.setPreqy2(e.getPreqy1().add(entity.getPreqy2()));
-                e.setPreqy3(e.getPreqy1().add(entity.getPreqy3()));
+                e.setPreqy2(e.getPreqy2().add(entity.getPreqy2()));
+                e.setPreqy3(e.getPreqy3().add(entity.getPreqy3()));
                 e.setOnhand1(e.getOnhand1().add(entity.getOnhand1()));
                 e.setOnhand2(e.getOnhand2().add(entity.getOnhand2()));
                 e.setOnhand3(e.getOnhand3().add(entity.getOnhand3()));
@@ -232,8 +232,8 @@ public class InvbalBean extends SuperEJBForERP<Invbal> {
                 throw new RuntimeException(entity.getInvbalPK().getItnbr() + entity.getInvbalPK().getWareh() + "没有库存(invbal)");
             } else {
                 e.setPreqy1(e.getPreqy1().subtract(entity.getPreqy1()));
-                e.setPreqy2(e.getPreqy1().subtract(entity.getPreqy2()));
-                e.setPreqy3(e.getPreqy1().subtract(entity.getPreqy3()));
+                e.setPreqy2(e.getPreqy2().subtract(entity.getPreqy2()));
+                e.setPreqy3(e.getPreqy3().subtract(entity.getPreqy3()));
                 e.setOnhand1(e.getOnhand1().subtract(entity.getOnhand1()));
                 e.setOnhand2(e.getOnhand2().subtract(entity.getOnhand2()));
                 e.setOnhand3(e.getOnhand3().subtract(entity.getOnhand3()));

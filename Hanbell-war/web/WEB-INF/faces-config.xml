@@ -103,6 +103,12 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <description>ERP权限查询-程序</description>
+            <from-outcome>secprggrant</from-outcome>
+            <to-view-id>/app/erp/secprggrant.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <description>销货资料导入</description>
             <from-outcome>shipmentimport</from-outcome>
             <to-view-id>/app/erp/shipmentimport.xhtml</to-view-id>
@@ -151,6 +157,15 @@
         <navigation-case>
             <from-outcome>secusergrantView</from-outcome>
             <to-view-id>/app/erp/secusergrantView.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <description>ERP权限查询</description>
+        <from-view-id>/app/erp/secprggrant.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>secprggrantView</from-outcome>
+            <to-view-id>/app/erp/secprggrantView.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

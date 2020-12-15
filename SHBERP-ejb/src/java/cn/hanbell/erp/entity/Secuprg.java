@@ -63,6 +63,11 @@ public class Secuprg implements Serializable {
     })
     @ManyToOne()
     private Secprg secprg;
+    @JoinColumns({
+        @JoinColumn(name = "userno", referencedColumnName = "userno", insertable = false, updatable = false)
+    })
+    @ManyToOne(optional = true)
+    private Secuser secuser;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -435,10 +440,10 @@ public class Secuprg implements Serializable {
     }
 
     /**
-     * @param secprg the secprg to set
+     * @return the secuser
      */
-    public void setSecprg(Secprg secprg) {
-        this.secprg = secprg;
+    public Secuser getSecuser() {
+        return secuser;
     }
 
 }
