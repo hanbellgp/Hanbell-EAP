@@ -5,52 +5,49 @@
  */
 package cn.hanbell.erp.jrs;
 
+import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.MiscodeBean;
 import cn.hanbell.erp.entity.Miscode;
-import cn.hanbell.jrs.SuperRESTForEFGP;
-import cn.hanbell.oa.app.KV;
-import cn.hanbell.oa.comm.SuperEJBForEFGP;
-import java.util.ArrayList;
+import cn.hanbell.jrs.ResponseData;
+import cn.hanbell.jrs.SuperRESTForERP;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 
 /**
  *
  * @author C1491
  */
-@Path("erp/coin")
-@javax.enterprise.context.RequestScoped
-public class CoinFacadeREST extends SuperRESTForEFGP<KV> {
+@Path("shberp/coin")
+public class CoinFacadeREST extends SuperRESTForERP<Miscode> {
 
     @EJB
     private MiscodeBean miscodeBean;
 
     public CoinFacadeREST() {
-        super(KV.class);
+        super(Miscode.class);
     }
 
     @Override
-    protected SuperEJBForEFGP getSuperEJB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected SuperEJBForERP getSuperEJBForERP() {
+        return miscodeBean;
     }
 
     @Override
-    public List<KV> findAll(String appid, String token) {
+    public ResponseData findAll(PathSegment company, String appid, String token) {
         if (isAuthorized(appid, token)) {
             List<Miscode> miscodeList;
             try {
-                List<KV> dataList = new ArrayList<>();
-                miscodeBean.setCompany("C");
+                this.company = company.getPath();
+                miscodeBean.setCompany(this.company);
                 miscodeList = miscodeBean.findByCkind("GA", 'Y');
-                if (!miscodeList.isEmpty()) {
-                    for (Miscode miscode : miscodeList) {
-                        dataList.add(new KV(miscode.getMiscodePK().getCode(), miscode.getCdesc()));
-                    }
-                }
-                return dataList;
+                ResponseData res = new ResponseData<Miscode>("200", "success");
+                res.setData(miscodeList);
+                res.setCount(miscodeList.size());
+                return res;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
