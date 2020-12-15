@@ -8,6 +8,7 @@ package cn.hanbell.erp.jrs;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.BudgetCenterBean;
 import cn.hanbell.erp.entity.BudgetCenter;
+import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForERP;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,7 @@ import javax.ws.rs.core.Response;
  *
  * @author C1491
  */
-@Path("erp/budgetcenter")
+@Path("shberp/budgetcenter")
 @javax.enterprise.context.RequestScoped
 public class BudgetCenterFacadeREST extends SuperRESTForERP<BudgetCenter> {
 
@@ -47,7 +48,7 @@ public class BudgetCenterFacadeREST extends SuperRESTForERP<BudgetCenter> {
     @GET
     @Path("{filters}/{sorts}/{offset}/{pageSize}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<BudgetCenter> findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
@@ -70,7 +71,11 @@ public class BudgetCenterFacadeREST extends SuperRESTForERP<BudgetCenter> {
                     }
                 }
                 budgetCenterBean.setCompany(filterFields.get("budgetCenterPK.facno").toString());
-                return budgetCenterBean.findByFilters(filterFields, offset, pageSize, sortFields);
+                List<BudgetCenter> bcList = budgetCenterBean.findByFilters(filterFields, offset, pageSize, sortFields);
+                ResponseData responseData = new ResponseData("200", "seccess");
+                responseData.setData(bcList);
+                responseData.setCount(bcList.size());
+                return  responseData;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }

@@ -8,6 +8,7 @@ package cn.hanbell.erp.jrs;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.BudgetCenterAccDetailBean;
 import cn.hanbell.erp.entity.BudgetCenterAccDetail;
+import cn.hanbell.jrs.ResponseData;
 import cn.hanbell.jrs.SuperRESTForERP;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,7 @@ import javax.ws.rs.core.Response;
  *
  * @author C1491
  */
-@Path("erp/budgetcenteracc")
+@Path("shberp/budgetcenteracc")
 @javax.enterprise.context.RequestScoped
 public class BudgetCenterAccFacadeREST extends SuperRESTForERP<BudgetCenterAccDetail> {
 
@@ -47,7 +48,7 @@ public class BudgetCenterAccFacadeREST extends SuperRESTForERP<BudgetCenterAccDe
     @GET
     @Path("{filters}/{sorts}/{offset}/{pageSize}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<BudgetCenterAccDetail> findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseData findByFilters(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
@@ -70,7 +71,11 @@ public class BudgetCenterAccFacadeREST extends SuperRESTForERP<BudgetCenterAccDe
                     }
                 }
                 budgetCenterAccDetailBean.setCompany(filterFields.get("budgetcenteraccdetailPK.facno").toString());
-                return budgetCenterAccDetailBean.findByFilters(filterFields, offset, pageSize, sortFields);
+                List<BudgetCenterAccDetail> bcAccList = budgetCenterAccDetailBean.findByFilters(filterFields, offset, pageSize, sortFields);
+                ResponseData responseData = new ResponseData("200", "seccess");
+                responseData.setData(bcAccList);
+                responseData.setCount(bcAccList.size());
+                return responseData;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
