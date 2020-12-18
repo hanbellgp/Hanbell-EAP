@@ -114,6 +114,7 @@ public class SystemUserFacadeREST extends SuperRESTForEAP<SystemUser> {
                 yu.setUserid(su.getUserid());
                 yu.setName(su.getUsername());
                 yu.setEmail(su.getEmail());
+                yu.setDeptno(su.getDeptno());
                 yu.setGroup(su.getDept().getDept());
                 yu.setTitle(su.getJob());
                 yu.setPhone(su.getPhone());
