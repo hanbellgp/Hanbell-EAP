@@ -785,6 +785,10 @@ public class HKFW005 implements Serializable {
         this.supportDept = supportDept;
     }
 
+    /**
+     * 获取物流公司
+     * @return 
+     */
     public String getWlcompanyValue() {
         switch (this.wlcompany) {
             case "1":
@@ -817,6 +821,23 @@ public class HKFW005 implements Serializable {
                 return "京东快递";
             case "15":
                 return "合捷物流";
+        }
+        return "";
+    }
+
+    /**
+     * 获取运费结算的方式
+     *
+     * @return
+     */
+    public String getYfjsValue() {
+        switch (this.yfjs) {
+            case "1":
+                return "汉钟付款";
+            case "2":
+                return "到付";
+            case "3":
+                return "自提";
         }
         return "";
     }
