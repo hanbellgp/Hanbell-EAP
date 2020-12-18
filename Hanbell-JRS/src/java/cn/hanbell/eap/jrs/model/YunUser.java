@@ -18,6 +18,7 @@ public class YunUser {
     private String userid;
     private String name;
     private String email;
+    private String deptno;
     private String group;
     private String title;
 
@@ -80,6 +81,20 @@ public class YunUser {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return the deptno
+     */
+    public String getDeptno() {
+        return deptno;
+    }
+
+    /**
+     * @param deptno the deptno to set
+     */
+    public void setDeptno(String deptno) {
+        this.deptno = deptno;
     }
 
     /**
