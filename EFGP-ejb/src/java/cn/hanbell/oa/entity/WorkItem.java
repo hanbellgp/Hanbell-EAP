@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "WorkItem.findByWorkItemName", query = "SELECT w FROM WorkItem w WHERE w.workItemName = :workItemName"),
     @NamedQuery(name = "WorkItem.findByCurrentState", query = "SELECT w FROM WorkItem w WHERE w.currentState = :currentState"),
     @NamedQuery(name = "WorkItem.findByContextOID", query = "SELECT w FROM WorkItem w WHERE w.contextOID = :contextOID"),
-    @NamedQuery(name = "WorkItem.findByProcessIdWorkItemNameAndTime", query = "SELECT w FROM WorkItem w WHERE w.processInstance.processDefinitionId = :processId AND w.workItemName = :workItemName AND w.completedTime >= :startTime AND w.completedTime <= :endTime")})
+    @NamedQuery(name = "WorkItem.findByProcessIdWorkItemNameAndTime", query = "SELECT w FROM WorkItem w WHERE w.processInstance.processDefinitionId = :processId AND w.workItemName = :workItemName AND w.completedTime >= :startTime AND w.completedTime <= :endTime"),
+    @NamedQuery(name = "WorkItem.findByProcessIdAndCompletedTime", query = "SELECT w FROM WorkItem w WHERE w.processInstance.processDefinitionId = :processId AND w.completedTime >= :startTime AND w.completedTime <= :endTime")})
 public class WorkItem implements Serializable {
 
     @JoinColumn(name = "contextOID", referencedColumnName = "contextOID", insertable = false, updatable = false)

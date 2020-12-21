@@ -156,11 +156,15 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
 
     @Override
     public void query() {
-        List<String> psnList;
+        List<String> psnList = null;
         if (this.model != null && this.model.getFilterFields() != null) {
             this.model.getFilterFields().clear();
             if (queryDateBegin != null && queryDateEnd != null) {
-                psnList = workItemBean.findProcessSerialNumbersByWorkItem("PKG_HK_FW005", queryWorkItemName, queryDateBegin, queryDateEnd);
+                if(!"ALL".equals(queryWorkItemName)){
+                    psnList = workItemBean.findProcessSerialNumbersByWorkItem("PKG_HK_FW005", queryWorkItemName, queryDateBegin, queryDateEnd);
+                }else{
+                    psnList = workItemBean.findProcessSerialNumbersByProcessIdAndCompletedTime("PKG_HK_FW005", queryDateBegin, queryDateEnd);
+                }
                 if (psnList != null) {
                     this.model.getFilterFields().put("processInstance.serialNumber IN ", psnList);
                 } else {
@@ -170,7 +174,7 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
             if (queryState != null && "Y".equals(queryState)) {
                 this.model.getFilterFields().put("processInstance.currentState", 3);
             } else if (queryState != null && "N".equals(queryState)) {
-                this.model.getFilterFields().put("processInstance.currentState <", 3);
+                this.model.getFilterFields().put("processInstance.currentState <=", 2);
             }
         }
         this.model.getFilterFields().put("type <>", "4");

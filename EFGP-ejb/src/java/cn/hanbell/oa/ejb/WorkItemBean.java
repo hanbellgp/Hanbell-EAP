@@ -49,6 +49,30 @@ public class WorkItemBean extends SuperEJBForEFGP<WorkItem> {
             return null;
         }
     }
+    
+       public List<WorkItem> findByProcessIdAndCompletedTime(String processId, Date startTime, Date endTime) {
+        Query query = getEntityManager().createNamedQuery("WorkItem.findByProcessIdAndCompletedTime");
+        query.setParameter("processId", processId);
+        query.setParameter("startTime", startTime);
+        query.setParameter("endTime", endTime);
+        return query.getResultList();
+    }
+       
+       public List<String> findProcessSerialNumbersByProcessIdAndCompletedTime(String processId, Date startTime, Date endTime) {
+        List<WorkItem> workItems = findByProcessIdAndCompletedTime(processId, startTime, endTime);
+        if (workItems != null && !workItems.isEmpty()) {
+            List<String> results = new ArrayList<>();
+            for (WorkItem e : workItems) {
+                if (!results.contains(e.getProcessInstance().getSerialNumber())) {
+                    results.add(e.getProcessInstance().getSerialNumber());
+                }
+            }
+            return results;
+        } else {
+            return null;
+        }
+    }
+
 
     public List<WorkItem> findByContextOID(String contextOID) {
         Query query = getEntityManager().createNamedQuery("WorkItem.findByContextOID");
