@@ -119,16 +119,16 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
             row.createCell(8).setCellValue(e.getApplyDept() != null ? e.getApplyDept().getOrganizationUnitName() : "");
             row.createCell(9).setCellValue(e.getSupportUser() != null ? e.getSupportUser().getUserName() : "");
             row.createCell(10).setCellValue(e.getSupportDept() != null ? e.getSupportDept().getOrganizationUnitName() : "");
-            row.createCell(11).setCellValue(e.getMark()!= null ? e.getMark() : "");
-            row.createCell(12).setCellValue(e.getYfjs()!= null ? e.getYfjsValue() : "");
-            row.createCell(13).setCellValue(e.getShaddress()!= null ? e.getShaddress() : "");
-            row.createCell(14).setCellValue(e.getShpno()!= null ? e.getShpno() : "");
-            row.createCell(15).setCellValue(e.getLendno()!= null ? e.getLendno() : "");
-            row.createCell(16).setCellValue(e.getReturnno()!= null ? e.getReturnno() : "");
-            row.createCell(17).setCellValue(e.getShpdate()!= null ? BaseLib.formatDate("yyyy/MM/dd", e.getShpdate()) : "");          
-            row.createCell(18).setCellValue(e.getWlcompanyValue()!= null ? e.getWlcompanyValue() : "");
-            row.createCell(19).setCellValue(e.getHyno()!= null ? e.getHyno() : "");
-            row.createCell(20).setCellValue(e.getTotal()!= null ? String.valueOf(e.getTotal()) : "");
+            row.createCell(11).setCellValue(e.getMark() != null ? e.getMark() : "");
+            row.createCell(12).setCellValue(e.getYfjs() != null ? e.getYfjsValue() : "");
+            row.createCell(13).setCellValue(e.getShaddress() != null ? e.getShaddress() : "");
+            row.createCell(14).setCellValue(e.getShpno() != null ? e.getShpno() : "");
+            row.createCell(15).setCellValue(e.getLendno() != null ? e.getLendno() : "");
+            row.createCell(16).setCellValue(e.getReturnno() != null ? e.getReturnno() : "");
+            row.createCell(17).setCellValue(e.getShpdate() != null ? BaseLib.formatDate("yyyy/MM/dd", e.getShpdate()) : "");
+            row.createCell(18).setCellValue(e.getWlcompanyValue() != null ? e.getWlcompanyValue() : "");
+            row.createCell(19).setCellValue(e.getHyno() != null ? e.getHyno() : "");
+            row.createCell(20).setCellValue(e.getTotal() != null ? String.valueOf(e.getTotal()) : "");
             i++;
         }
         for (int c = 0; c < 13; c++) {
@@ -160,12 +160,17 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
         if (this.model != null && this.model.getFilterFields() != null) {
             this.model.getFilterFields().clear();
             if (queryDateBegin != null && queryDateEnd != null) {
-                if(!"ALL".equals(queryWorkItemName)){
-                    psnList = workItemBean.findProcessSerialNumbersByWorkItem("PKG_HK_FW005", queryWorkItemName, queryDateBegin, queryDateEnd);
-                }else{
+                if ("ALL".equals(queryWorkItemName)) {
                     psnList = workItemBean.findProcessSerialNumbersByProcessIdAndCompletedTime("PKG_HK_FW005", queryDateBegin, queryDateEnd);
+                } else if ("帐管".equals(queryWorkItemName)) {
+                    psnList = workItemBean.findProcessNumbersByBetweenWorkItem1AndWorkItem2("帐管", "仓储主管");
+                } else if ("仓管".equals(queryWorkItemName)) {
+                    psnList = workItemBean.findProcessNumbersByBetweenWorkItem1AndWorkItem2("仓管", "仓储课长");
+                } else {
+                    psnList = workItemBean.findProcessSerialNumbersByWorkItem("PKG_HK_FW005", queryWorkItemName, queryDateBegin, queryDateEnd);
                 }
-                if (psnList != null) {
+
+                if (psnList != null && !psnList.isEmpty()) {
                     this.model.getFilterFields().put("processInstance.serialNumber IN ", psnList);
                 } else {
                     this.model.getFilterFields().put("processInstance.serialNumber = ", "");
@@ -189,26 +194,26 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
     public void handleFileUploadWhenNew(FileUploadEvent event) {
         UploadedFile file1 = event.getFile();
         Integer a = 0;
-        InputStream inputStream =null;
+        InputStream inputStream = null;
         if (file1 != null) {
             try {
-               inputStream=  file1.getInputstream();
+                inputStream = file1.getInputstream();
                 upload(event);
                 Workbook excel = WorkbookFactory.create(inputStream);
                 Sheet sheet = excel.getSheetAt(0);
                 for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                     Row row = sheet.getRow(i);
                     String processsNumber = row.getCell(0).getStringCellValue();
-                    double total =Double.valueOf(cellToVlaue(row.getCell(20)));
+                    double total = Double.valueOf(cellToVlaue(row.getCell(20)));
                     HKFW005 hkfw005 = hkfw005Bean.findByPSN(processsNumber);
                     hkfw005.setTotal(total);
-                    hkfw005Bean.update(hkfw005);   
+                    hkfw005Bean.update(hkfw005);
                 }
-                 FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "修改成功"));
+                FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "修改成功"));
             } catch (Exception ex) {
                 FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传失败"));
                 ex.printStackTrace();
-            }finally{
+            } finally {
                 try {
                     inputStream.close();
                 } catch (IOException ex) {
@@ -217,8 +222,9 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
             }
         }
     }
-     public String cellToVlaue(Cell cell) {
-        if (cell == null) {     
+
+    public String cellToVlaue(Cell cell) {
+        if (cell == null) {
             return "";
         }
         int type = cell.getCellType();
@@ -246,18 +252,18 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
 
     public boolean upload(FileUploadEvent event) throws FileNotFoundException, IOException {
         OutputStream output = null;
-         InputStream input =null;
-         UploadedFile file1 = event.getFile();
+        InputStream input = null;
+        UploadedFile file1 = event.getFile();
         try {
-             input=  file1.getInputstream();
-           String finalFilePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-                int index = finalFilePath.indexOf("WEB-INF");
-                String filePath = new String(finalFilePath.substring(1, index));
-                StringBuffer pathString = new StringBuffer(filePath.concat("rpt/"));
+            input = file1.getInputstream();
+            String finalFilePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+            int index = finalFilePath.indexOf("WEB-INF");
+            String filePath = new String(finalFilePath.substring(1, index));
+            StringBuffer pathString = new StringBuffer(filePath.concat("rpt/"));
             pathString.append(String.valueOf(new Date().getTime()));
             pathString.append(".xls");
-            String path=pathString.substring(0,pathString.indexOf("Hanbell-EAP")).concat("FileUploadServer/resources").concat(String.valueOf(new Date().getTime()));
-            StringBuffer url=new StringBuffer(pathString.substring(0,pathString.indexOf("Hanbell-EAP"))); 
+            String path = pathString.substring(0, pathString.indexOf("Hanbell-EAP")).concat("FileUploadServer/resources").concat(String.valueOf(new Date().getTime()));
+            StringBuffer url = new StringBuffer(pathString.substring(0, pathString.indexOf("Hanbell-EAP")));
             url.append("FileUploadServer/resources/").append(String.valueOf(new Date().getTime())).append(".xls");
             File dest = new File(url.toString());
             byte[] buf = new byte[1024];
@@ -268,13 +274,13 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             input.close();
-            output.close();         
+            output.close();
         }
         return true;
     }
-
+    
     /**
      * @return the workItemName
      */
@@ -282,7 +288,7 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
         return queryWorkItemName;
     }
 
-    /**
+     /**
      * @param queryWorkItemName the workItemName to set
      */
     public void setQueryWorkItemName(String queryWorkItemName) {

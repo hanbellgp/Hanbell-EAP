@@ -49,16 +49,16 @@ public class WorkItemBean extends SuperEJBForEFGP<WorkItem> {
             return null;
         }
     }
-    
-       public List<WorkItem> findByProcessIdAndCompletedTime(String processId, Date startTime, Date endTime) {
+
+    public List<WorkItem> findByProcessIdAndCompletedTime(String processId, Date startTime, Date endTime) {
         Query query = getEntityManager().createNamedQuery("WorkItem.findByProcessIdAndCompletedTime");
         query.setParameter("processId", processId);
         query.setParameter("startTime", startTime);
         query.setParameter("endTime", endTime);
         return query.getResultList();
     }
-       
-       public List<String> findProcessSerialNumbersByProcessIdAndCompletedTime(String processId, Date startTime, Date endTime) {
+
+    public List<String> findProcessSerialNumbersByProcessIdAndCompletedTime(String processId, Date startTime, Date endTime) {
         List<WorkItem> workItems = findByProcessIdAndCompletedTime(processId, startTime, endTime);
         if (workItems != null && !workItems.isEmpty()) {
             List<String> results = new ArrayList<>();
@@ -73,6 +73,23 @@ public class WorkItemBean extends SuperEJBForEFGP<WorkItem> {
         }
     }
 
+    public  List<String> findProcessNumbersByBetweenWorkItem1AndWorkItem2(String workItem1, String workItem2) {
+        StringBuffer sql = new StringBuffer("SELECT w.contextOID,p.serialNumber FROM WorkItem w  left join ProcessInstance p  on w.contextOID=p.contextOID where p.processDefinitionId='PKG_HK_FW005' and w.workItemName=N'");
+        sql.append(workItem1).append("' and completedTime  is not null intersect (SELECT w.contextOID,p.serialNumber FROM WorkItem w  left join ProcessInstance p  on w.contextOID=p.contextOID where p.processDefinitionId='PKG_HK_FW005' and w.workItemName=N'");
+        sql.append(workItem2).append("' and completedTime is NULL)");
+        Query query = getEntityManager().createNativeQuery(sql.toString());
+        try {
+            List<Object[]> result = query.getResultList();
+            List<String> numbers = new ArrayList<>();
+            for (Object[] o : result) {
+                numbers.add((String) o[1]);
+            }
+            return numbers;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public List<WorkItem> findByContextOID(String contextOID) {
         Query query = getEntityManager().createNamedQuery("WorkItem.findByContextOID");
