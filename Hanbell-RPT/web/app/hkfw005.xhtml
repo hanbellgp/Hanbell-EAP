@@ -19,12 +19,12 @@
                     <p:column><h:outputLabel value="签核日期" for="queryDateBegin" /></p:column>
                     <p:column>
                         <p:calendar id="queryDateBegin" value="#{hkfw005ManagedQueryBean.queryDateBegin}" title="开始日期" pattern="yyyy/MM/dd"
-                                    required="true" requiredMessage="请输入签核日期"/>
+                                    requiredMessage="请输入签核日期"/>
                     </p:column>
                     <p:column><h:outputLabel value="截止日期" for="queryDateEnd" /></p:column>
                     <p:column>
                         <p:calendar id="queryDateEnd" value="#{hkfw005ManagedQueryBean.queryDateEnd}" title="结束日期" pattern="yyyy/MM/dd"
-                                    required="true" requiredMessage="请输入截止日期"/>
+                                     requiredMessage="请输入截止日期"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -39,7 +39,9 @@
                     <p:column><h:outputLabel value="关卡名称" for="queryWorkItemName" /></p:column>
                     <p:column>
                         <p:selectOneMenu id="queryWorkItemName" value="#{hkfw005ManagedQueryBean.queryWorkItemName}" title="关卡名称" >
-                            <f:selectItem itemLabel="仓库课课长" itemValue="仓库课课长"/>
+                            <f:selectItem itemLabel="全部" itemValue="ALL"/>
+                            <f:selectItem itemLabel="帐管" itemValue="帐管"/>
+                            <f:selectItem itemLabel="仓管" itemValue="仓管"/>
                             <f:selectItem itemLabel="仓储主管" itemValue="仓储主管"/>
                             <f:selectItem itemLabel="仓储课长" itemValue="仓储课长"/>
                         </p:selectOneMenu>
@@ -111,6 +113,12 @@
                         <h:outputText value="金额"/>
                     </f:facet>
                     <h:outputText value="#{item.total}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="状态"/>
+                    </f:facet>
+                    <h:outputText value="#{item.processInstance.currentState}"/>
                 </p:column>
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
