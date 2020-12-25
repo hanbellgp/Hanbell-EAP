@@ -21,8 +21,12 @@ import cn.hanbell.oa.entity.HKFW006Cdrn30Detail;
 import cn.hanbell.oa.entity.HKFW006Detail;
 import cn.hanbell.oa.entity.HKFW006Inv310;
 import cn.hanbell.oa.entity.HKFW006Inv310Detail;
+import cn.hanbell.oa.model.HKFW006StatisticModel;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -563,5 +567,48 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
      */
     public void setDetailList(List<HKFW006Detail> detailList) {
         this.detailList = detailList;
+    }
+
+    public HKFW006StatisticModel BPMStatisticReport(String deptno, String dept, String propertyno, String property, int year) {
+        StringBuilder sql = new StringBuilder("SELECT N'");
+        sql.append(dept).append("' as dept,N'").append(property).append("' as 'statistic'");
+        for (int i = 1; i <= 12; i++) {
+            sql.append(",");
+            sql.append(" (select count(*) from HK_FW006 where supportdept LIKE '").append(deptno).append("' AND rettype=2 and cctype=").append(propertyno);
+            sql.append(" and createdate>='").append(getFirstDayOfMonth(year,i)).append("' AND createdate<='").append(getLastDayOfMonth(year,i)).append("' ) as  '");
+            sql.append("month").append(i).append("'");
+        }
+         sql.append(",");
+            sql.append(" (select count(*) from HK_FW006 where supportdept LIKE '").append(deptno).append("' AND rettype=2 and cctype=").append(propertyno);
+            sql.append(" and createdate>='").append(getFirstDayOfMonth(year,1)).append("' AND createdate<='").append(getLastDayOfMonth(year,12)).append("' ) as  '");
+            sql.append("sum").append("'");
+        Query query = getEntityManager().createNativeQuery(sql.toString());
+        List<Object[]> result = query.getResultList();
+        HKFW006StatisticModel m=new HKFW006StatisticModel((String)result.get(0)[0],(String)result.get(0)[1]
+                                                         ,(int)result.get(0)[2],(int)result.get(0)[3],(int)result.get(0)[4],(int)result.get(0)[5]
+                                                         ,(int)result.get(0)[6],(int)result.get(0)[7],(int)result.get(0)[8],(int)result.get(0)[9]
+                                                        ,(int)result.get(0)[10],(int)result.get(0)[11],(int)result.get(0)[12],(int)result.get(0)[13]
+                                                        ,(int)result.get(0)[14]);
+        return  m;
+    }
+
+    public static String getFirstDayOfMonth(int year, int month) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month - 1);
+        int firstDay = cal.getMinimum(Calendar.DATE);
+        cal.set(Calendar.DAY_OF_MONTH, firstDay);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(cal.getTime());
+    }
+
+    public static String getLastDayOfMonth(int year, int month) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month - 1);
+        int lastDay = cal.getActualMaximum(Calendar.DATE);
+        cal.set(Calendar.DAY_OF_MONTH, lastDay);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(cal.getTime());
     }
 }

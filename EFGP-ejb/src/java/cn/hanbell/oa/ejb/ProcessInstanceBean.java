@@ -64,4 +64,24 @@ public class ProcessInstanceBean extends SuperEJBForEFGP<ProcessInstance> {
         }
     }
 
+    public String getCurrentStateValue(int currentstate) {
+        switch (currentstate) {
+            case 0:
+                return "未开始";
+            case 1:
+                return "进行中";
+            case 2:
+                return "已暂停";
+            case 3:
+                return "已完成";
+            case 4:
+                return "已撤销";
+            case 5:
+                return "已终止";
+            case 6:
+                return "进行中，但已开始执行";
+        }
+        return "";
+    }
+
 }
