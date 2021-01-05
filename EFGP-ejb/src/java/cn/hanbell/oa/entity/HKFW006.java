@@ -5,6 +5,8 @@
  */
 package cn.hanbell.oa.entity;
 
+import cn.hanbell.oa.ejb.ProcessInstanceBean;
+import cn.hanbell.oa.ejb.WorkFlowBean;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -100,6 +102,9 @@ public class HKFW006 implements Serializable {
     @JoinColumn(name = "supportdept", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = true)
     private OrganizationUnit supportDept;
+    @JoinColumn(name = "processSerialNumber", referencedColumnName = "serialNumber", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private ProcessInstance processInstance;
     @Size(max = 255)
     @Column(name = "hdreturntype")
     private String hdreturntype;
@@ -872,4 +877,123 @@ public class HKFW006 implements Serializable {
         this.hdTD003A = hdTD003A;
     }
 
+    public String getCompanyValue(String company) {
+        WorkFlowBean WorkFlowBean = new WorkFlowBean();
+        return WorkFlowBean.getCompanyName(this.facno);
+    }
+
+    /**
+     * 产品别
+     *
+     * @param cptype
+     * @return
+     */
+    public String getCpTypeValue(String cptype) {
+        switch (cptype) {
+            case "R":
+                return "R冷媒";
+            case "AA":
+                return "AA机组";
+            case "AH":
+                return "AH机体";
+            case "P":
+                return "P真空";
+            case "RT":
+                return "RT离心机";
+            case "CM":
+                return "CM柯茂";
+            case "S":
+                return "S涡旋";
+            case "SDS":
+                return "SDS无油机组";
+        }
+        return "";
+    }
+
+    public String getGzreasonValue(String gzreason) {
+        switch (gzreason) {
+            case "1":
+                return "烧卡";
+            case "2":
+                return "烧毁";
+            case "3":
+                return "卡死";
+            case "4":
+                return "噪音";
+            case "5":
+                return "加载不良";
+            case "6":
+                return "进水";
+            case "7":
+                return "其他";
+            case "8":
+                return "漏油";
+        }
+        return "";
+    }
+
+    /**
+     * 获取入库单号，总公司或者分公司
+     *
+     * @param zbpzno 总公司
+     * @param fgspzno 分公司
+     * @return
+     */
+    public String inWrehValue(String zbpzno, String fgspzno) {
+        if (zbpzno != null && !"".equals(zbpzno)) {
+            return zbpzno;
+        }
+        if (fgspzno != null && !"".equals(fgspzno)) {
+            return fgspzno;
+        }
+        return "";
+    }
+
+    public ProcessInstance getProcessInstance() {
+        return processInstance;
+    }
+
+    public void setProcessInstance(ProcessInstance processInstance) {
+        this.processInstance = processInstance;
+    }
+
+    
+    public String getOAStatus(int status) {
+        ProcessInstanceBean pib = new ProcessInstanceBean();
+        return pib.getCurrentStateValue(status);
+    }
+
+    public String getReturnTypeVlaue(String returntype) {
+        switch (returntype) {
+            case "1":
+                return "客户财产收费";
+            case "2":
+                return "客户财产免费";
+            case "3":
+                return "汉钟财产收费";
+            case "4":
+                return "汉钟财产免费";
+            case "5":
+                return "研发测试归还";
+            case "6":
+                return "销退";
+            case "7":
+                return "柯茂财产收费";
+            case "8":
+                return "柯茂财产免费";
+            case "9":
+                return "研发测试归还";
+            case "10":
+                return "销退";
+            case "11":
+                return "展览借出归还";
+            case "12":
+                return "展览借出归还";
+            case "13":
+                return "营业借出归还";
+            case "14":
+                return "营业借出归还";
+        }
+        return "";
+    }
 }

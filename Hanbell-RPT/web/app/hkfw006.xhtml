@@ -1,0 +1,349 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <ui:define name="content">
+        <!--        <style>
+                    body .ui-datatable tbody tr.ui-widget-content {
+                        height:100px !important;
+                    }
+                </style>-->
+
+
+
+        <h:form id="formList">
+            <style type="text/css">
+                .old {
+                    background-color: #fca752 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+            </style>
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">查询条件</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column><h:outputLabel value="公司别" for="queryCompany" /></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="queryCompany" value="#{hkfw006ManagedQueryBean.queryCompany}" title="公司别" >
+                            <f:selectItem itemLabel="全部" itemValue=""/>
+                            <f:selectItem itemLabel="上海汉钟" itemValue="C"/>
+                            <f:selectItem itemLabel="广州分公司" itemValue="G"/>
+                            <f:selectItem itemLabel="济南分公司" itemValue="J"/>
+                            <f:selectItem itemLabel="南京分公司" itemValue="N"/>
+                            <f:selectItem itemLabel="重庆分公司" itemValue="C4"/>
+                            <f:selectItem itemLabel="上海柯茂" itemValue="K"/>
+                            <f:selectItem itemLabel="浙江柯茂" itemValue="E"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column><h:outputLabel value="显示要求" for="selectView" /></p:column>
+                    <p:column>
+                        <p:selectOneRadio id="selectView"  value="#{hkfw006ManagedQueryBean.selectView}">
+                            <f:selectItem itemLabel="明细表" itemValue="明细表" />
+                            <f:selectItem itemLabel="统计表" itemValue="统计表" />
+                            <p:ajax process="@this" update="formList"/>
+                        </p:selectOneRadio>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column><h:outputLabel value="客诉单号" for="queryCustomer" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryCustomer"  value="#{hkfw006ManagedQueryBean.queryCustomer}" title="客诉单号" />
+                    </p:column>
+                    <p:column><h:outputLabel value="服务单号" for="queryService" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryService"  value="#{hkfw006ManagedQueryBean.queryService}" title="服务单号" />
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column><h:outputLabel value="配合人" for="queryUser" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryUser"  value="#{hkfw006ManagedQueryBean.queryUser}" title="配合人" />
+                    </p:column>
+                    <p:column><h:outputLabel value="配合部门" for="queryDept" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryDept"  value="#{hkfw006ManagedQueryBean.queryDept}" title="配合部门" />
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column><h:outputLabel value="产品别" for="queryProduct" /></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="queryProduct" value="#{hkfw006ManagedQueryBean.queryProduct}" title="产品别" >
+                            <f:selectItem itemLabel="全部" itemValue=""/>
+                            <f:selectItem itemLabel="R冷媒" itemValue="R"/>
+                            <f:selectItem itemLabel="AA机组" itemValue="AA"/>
+                            <f:selectItem itemLabel="AH机体" itemValue="AH"/>
+                            <f:selectItem itemLabel="P真空" itemValue="P"/>
+                            <f:selectItem itemLabel="RT离心机" itemValue="RT"/>
+                            <f:selectItem itemLabel="CM柯茂" itemValue="CM"/>
+                            <f:selectItem itemLabel="S涡旋" itemValue="S"/>
+                            <f:selectItem itemLabel="SDS无油机组" itemValue="SDS"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column><h:outputLabel value="退货性质" for="quertType" /></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="quertType" value="#{hkfw006ManagedQueryBean.quertType}" title="退货性质" >
+                            <f:selectItem itemLabel="全部" itemValue=""/>
+                            <f:selectItem itemLabel="客户财产收费" itemValue="1"/>
+                            <f:selectItem itemLabel="客户财产免费" itemValue="2"/>
+                            <f:selectItem itemLabel="汉钟财产收费" itemValue="3"/>
+                            <f:selectItem itemLabel="汉钟财产免费" itemValue="4"/>
+                            <f:selectItem itemLabel="研发测试归还" itemValue="5"/>
+                            <f:selectItem itemLabel="销退" itemValue="6"/>
+                            <f:selectItem itemLabel="柯茂财产收费" itemValue="7"/>
+                            <f:selectItem itemLabel="柯茂财产免费" itemValue="8"/>
+                            <f:selectItem itemLabel="研发测试归还" itemValue="9"/>
+                            <f:selectItem itemLabel="销退" itemValue="10"/>
+                            <f:selectItem itemLabel="展览借出归还" itemValue="11"/>
+                            <f:selectItem itemLabel="展览借出归还" itemValue="12"/>
+                            <f:selectItem itemLabel="营业借出归还" itemValue="13"/>
+                            <f:selectItem itemLabel="营业借出归还" itemValue="14"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column><h:outputLabel value="OA状态" for="queryStatus" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:selectOneRadio id="charge" value="#{hkfw006ManagedQueryBean.queryStatus}" unselectable="true">
+                            <f:selectItem itemLabel="All" itemValue="All" />
+                            <f:selectItem itemLabel="结案" itemValue="Y" />
+                            <f:selectItem itemLabel="未结案" itemValue="X" />
+                        </p:selectOneRadio>
+                    </p:column>
+                    <p:column><h:outputLabel value="退料制造号码" for="queryNumber" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryNumber"  value="#{hkfw006ManagedQueryBean.queryNumber}" title="配合部门" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="退货日期起" for="queryDateBegin" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateBegin" value="#{hkfw006ManagedQueryBean.queryDateBegin}" title="退货日期起" pattern="yyyy/MM/dd"
+                                    requiredMessage="请输入退货日期起" required="true"/>
+                    </p:column>
+                    <p:column><h:outputLabel value="退货日期止" for="queryDateEnd" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateEnd" value="#{hkfw006ManagedQueryBean.queryDateEnd}" title="退货日期止" pattern="yyyy/MM/dd"
+                                    requiredMessage="请输入退货日期止" required="true"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column><h:outputLabel value="统计年份" for="queryDateBegin" /></p:column>
+                    <p:column>
+                         <p:inputText id="queryYear"  value="#{hkfw006ManagedQueryBean.queryYear}" title="" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="right">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{hkfw006ManagedQueryBean.init()}"  icon="ui-icon-search"  update=":formList"/>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{hkfw006ManagedQueryBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnPrint" value="导出" actionListener="#{hkfw006ManagedQueryBean.print()}" icon="ui-icon-print"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{hkfw006ManagedQueryBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable value="#{hkfw006ManagedQueryBean.model}"  var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="15,30,45" lazy="true"  rendered="#{hkfw006ManagedQueryBean.detailView}" >
+                <f:facet name="header" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    OA整机退货明细表
+                </f:facet>
+                <p:ajax event="rowSelect"  update=":formList:toolbar" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="公司别"/>
+                    </f:facet>
+                    <h:outputText value="#{item.getCompanyValue(item.facno)}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="产品别"/>
+                    </f:facet>
+                    <h:outputText value="#{item.getCpTypeValue(item.cptype)}"/>
+                </p:column>
+
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="配合人工号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.supportUser.id}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="配合人姓名"/>
+                    </f:facet>
+                    <h:outputText value="#{item.supportUser.userName}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="配合人部门"/>
+                    </f:facet>
+                    <h:outputText value="#{item.supportDept.id}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="配合人部门名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.supportDept.organizationUnitName}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="客户编号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cusno}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="客户名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.cusna}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="退货日期"/>
+                    </f:facet>
+                    <h:outputText value="#{item.returndate}">
+                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="退货性质"/>
+                    </f:facet>
+                    <h:outputText value="#{item.getReturnTypeVlaue(item.returntype)}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="客服单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.kfno}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="服务单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fwno}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="退料品号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.titnbr}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="退料品名"/>
+                    </f:facet>
+                    <h:outputText value="#{item.titdsc}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="退料知道号码"/>
+                    </f:facet>
+                    <h:outputText value="#{item.tcreateno}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="故障原因"/>
+                    </f:facet>
+                    <h:outputText value="#{item.getGzreasonValue(item.gzreason)}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="入库单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.inWrehValue(item.zbpzno,item.fgspzno)}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="运费"/>
+                    </f:facet>
+                    <h:outputText value="#{item.yf}"/>
+                </p:column>
+                <p:column styleClass="Wid20" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    <f:facet name="header">
+                        <h:outputText value="状态"/>
+                    </f:facet>
+                    <h:outputText value="#{item.getOAStatus(item.processInstance.currentState)}"/>
+                </p:column>
+            </p:dataTable>
+            <p:dataTable var="model" value="#{hkfw006ManagedQueryBean.hkfw006Model}"  rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                <f:facet name="header" rendered="#{hkfw006ManagedQueryBean.detailView}">
+                    OA整机退货统计表
+                </f:facet>
+                <p:column headerText="部门" groupRow="true" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.dept}" />
+                </p:column>
+                <p:column headerText="项目统计" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.statistic}" />
+                </p:column>
+                <p:column headerText="01月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month1}" />
+                </p:column>
+                <p:column headerText="02月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month2}" />
+                </p:column>
+                <p:column headerText="03月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month3}" />
+                </p:column>
+                <p:column headerText="04月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month4}" />
+                </p:column>
+                <p:column headerText="05月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month5}" />
+                </p:column>
+                <p:column headerText="06月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month6}" />
+                </p:column>
+                <p:column headerText="07月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month7}" />
+                </p:column>
+                <p:column headerText="08月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month8}" />
+                </p:column>
+                <p:column headerText="09月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month9}" />
+                </p:column>
+                <p:column headerText="10月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month10}" />
+                </p:column>
+                <p:column headerText="11月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month11}" />
+                </p:column>
+                <p:column headerText="12月" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.month12}" />
+                </p:column>
+                <p:column headerText="合计" rendered="#{hkfw006ManagedQueryBean.statisticView}">
+                    <h:outputText value="#{model.sum}" />
+                </p:column>
+            </p:dataTable>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnLoad,btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
