@@ -123,6 +123,12 @@ public class SystemUser extends SuperEntity {
     @Column(name = "syncWeChatDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date syncWeChatDate;
+    @Column(name = "workingAgeBeginDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date workingAgeBeginDate;
+    @Column(name = "birthdayDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date birthdayDate;
 
     public SystemUser() {
         this.password = "e10adc3949ba59abbe56e057f20f883e";//123456
@@ -364,6 +370,22 @@ public class SystemUser extends SuperEntity {
      */
     public void setSyncWeChatDate(Date syncWeChatDate) {
         this.syncWeChatDate = syncWeChatDate;
+    }
+
+    public Date getWorkingAgeBeginDate() {
+        return workingAgeBeginDate;
+    }
+
+    public void setWorkingAgeBeginDate(Date workingAgeBeginDate) {
+        this.workingAgeBeginDate = workingAgeBeginDate;
+    }
+
+    public Date getBirthdayDate() {
+        return birthdayDate;
+    }
+
+    public void setBirthdayDate(Date birthdayDate) {
+        this.birthdayDate = birthdayDate;
     }
 
     @Override
