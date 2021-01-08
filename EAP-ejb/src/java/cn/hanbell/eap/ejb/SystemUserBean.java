@@ -139,23 +139,47 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             return null;
         }
     }
-    
+
     public List<SystemUser> findBySyncWeChatStatusAndDeptno(String deptno) {
         //此方法与findByDeptnoAndSyncWeChatStatus判断的状态不同。获取SyncWeChatStatus为V的数据
-        StringBuffer sql=new StringBuffer("SELECT * FROM SystemUser s WHERE s.syncWeChatStatus='V' AND s.deptno ='");
+        StringBuffer sql = new StringBuffer("SELECT * FROM SystemUser s WHERE s.syncWeChatStatus='V' AND s.deptno ='");
         sql.append(deptno).append("' ORDER BY s.userid");
         try {
-            Query query = getEntityManager().createNativeQuery(sql.toString(),SystemUser.class);
+            Query query = getEntityManager().createNativeQuery(sql.toString(), SystemUser.class);
             return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-    
-     public List<SystemUser> findByLikeDeptno(String deptno) {
+
+    public List<SystemUser> findByLikeDeptno(String deptno) {
         Query query = getEntityManager().createNamedQuery("SystemUser.findByLikeDeptno");
         query.setParameter("deptno", deptno);
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List<SystemUser> findByLikeWorkingAgeBeginDateAndDeptno(String workingAgeBeginDate) {
+        //排除了台湾人员
+        StringBuffer sql = new StringBuffer("SELECT * FROM SystemUser s WHERE  s.workingAgeBeginDate like '");
+        sql.append(workingAgeBeginDate).append("' and deptno NOT LIKE 'A%' AND deptno NOT LIKE 'B%' AND  deptno NOT LIKE 'OU' ");
+        Query query = getEntityManager().createNativeQuery(sql.toString(), SystemUser.class);
+        try {
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List<SystemUser> findByLikeBirthdayDateAndDeptno(String birthdayDate) {
+        //排除了台湾人员
+        StringBuffer sql = new StringBuffer("SELECT * FROM SystemUser s WHERE  s.birthdayDate like '");
+        sql.append(birthdayDate).append("' and deptno NOT LIKE 'A%' AND deptno NOT LIKE 'B%' AND  deptno NOT LIKE 'OU'");
+        Query query = getEntityManager().createNativeQuery(sql.toString(), SystemUser.class);
         try {
             return query.getResultList();
         } catch (Exception e) {
