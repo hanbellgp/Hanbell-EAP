@@ -72,6 +72,9 @@ public class HKFW006Inv310Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "trseq")
     private String trseq;
+    @Size(max = 255)
+    @Column(name = "fixnr")
+    private String fixnr;
 
     public HKFW006Inv310Detail() {
     }
@@ -183,6 +186,14 @@ public class HKFW006Inv310Detail implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.HKFW006Inv310Detail[ oid=" + oid + " ]";
+    }
+
+    public String getFixnr() {
+        return fixnr;
+    }
+
+    public void setFixnr(String fixnr) {
+        this.fixnr = fixnr;
     }
 
 }

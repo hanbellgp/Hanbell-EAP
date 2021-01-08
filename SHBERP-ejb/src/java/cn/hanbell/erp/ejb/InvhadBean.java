@@ -195,6 +195,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 invdta.setWareh(detail.getWareh());
                 invdta.setIocode('1');
                 invdta.setVarnr(detail.getVarnr());
+                invdta.setFixnr(detail.getFixnr());
                 //按ERP逻辑重新设置批号
                 switch (m.getInvcls().getNrcode()) {
                     case '0':
