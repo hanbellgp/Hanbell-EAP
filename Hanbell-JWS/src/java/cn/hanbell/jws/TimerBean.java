@@ -466,6 +466,8 @@ public class TimerBean {
                             eu.setCreatorToSystem();
                             eu.setCredateToNow();
                             eu.setOptdate(eu.getCredate());
+                            eu.setBirthdayDate(e.getBirthDate());
+                            eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
                             //HR中已离职
                             if( e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1){
                             eu.setSyncWeChatStatus("X");
@@ -473,6 +475,8 @@ public class TimerBean {
                             eu.setStatus("X");
                             eu.setOptuserToSystem();
                             eu.setOptdate(e.getLastModifiedDate());
+                                eu.setBirthdayDate(null);
+                                eu.setWorkingAgeBeginDate(null);
                             }
                             eapSystemUserBean.persist(eu);
                         } else {

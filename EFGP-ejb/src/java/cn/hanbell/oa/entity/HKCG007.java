@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -346,6 +348,22 @@ public class HKCG007 implements Serializable {
     @Size(max = 255)
     @Column(name = "dmark2")
     private String dmark2;
+    //申请人
+    @JoinColumn(name = "creator", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private Users applyUser;
+    //申请部门
+    @JoinColumn(name = "applyDept", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private OrganizationUnit applyOrganizationUnit;
+    //使用人
+    @JoinColumn(name = "appuser", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private Users user;
+    //使用部门
+    @JoinColumn(name = "depno", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private OrganizationUnit useDeptno;
 
     public HKCG007() {
     }
@@ -1243,4 +1261,81 @@ public class HKCG007 implements Serializable {
         this.dmark2 = dmark2;
     }
 
+    public Users getApplyUser() {
+        return applyUser;
+    }
+
+    public void setApplyUser(Users applyUser) {
+        this.applyUser = applyUser;
+    }
+
+    public OrganizationUnit getApplyOrganizationUnit() {
+        return applyOrganizationUnit;
+    }
+
+    public void setApplyOrganizationUnit(OrganizationUnit applyOrganizationUnit) {
+        this.applyOrganizationUnit = applyOrganizationUnit;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    public OrganizationUnit getUseDeptno() {
+        return useDeptno;
+    }
+
+    public void setUseDeptno(OrganizationUnit useDeptno) {
+        this.useDeptno = useDeptno;
+    }
+
+    /**
+     * 获取请购类别Value
+     *
+     * @return
+     */
+    public String getPRKindValue() {
+        if (this.prkind == null) {
+            return "";
+        }
+        switch (this.prkind) {
+            case "0":
+                return "";
+            case "3NA":
+                return "原料请购别";
+            case "4NA":
+                return "物料请购别";
+            case "5NA":
+                return "固定资产请购别";
+            case "6NA":
+                return "商品请购别";
+            case "7NA":
+                return "费用请购别";
+            case "7NG":
+                return "工程请购别";
+            case "7NX":
+                return "研发请购别";
+        }
+        return "";
+    }
+
+    /**
+     * 获取材料区分Value
+     *
+     * @return
+     */
+    public String getHmark1Value() {
+        if (this.hmark1 == null) {
+            return "";
+        }
+        switch (this.hmark1) {
+            case "":
+                return "";
+        }
+        return "";
+    }
 }
