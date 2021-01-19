@@ -147,6 +147,7 @@ import cn.hanbell.oa.ejb.HKGC002Bean;
 import cn.hanbell.oa.ejb.HKGC003Bean;
 import cn.hanbell.oa.ejb.HKGL060Bean;
 import cn.hanbell.oa.ejb.HKCG019Bean;
+import cn.hanbell.oa.ejb.HKCG020Bean;
 import cn.hanbell.oa.ejb.HKXQB001Bean;
 import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.ejb.SHBCRMREPI13Bean;
@@ -158,6 +159,7 @@ import cn.hanbell.oa.ejb.WARMI05Bean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.oa.entity.HKCG016;
 import cn.hanbell.oa.entity.HKCG019;
+import cn.hanbell.oa.entity.HKCG020;
 import cn.hanbell.oa.entity.HKCW002;
 import cn.hanbell.oa.entity.HKCW002Detail;
 import cn.hanbell.oa.entity.HKGL060;
@@ -279,6 +281,8 @@ public class EAPWebService {
     private HKCG007Bean hkcg007Bean;
     @EJB
     private HKCG016Bean hkcg016Bean;
+    @EJB
+    private HKCG020Bean hkcg020Bean;
     @EJB
     private HKCW002Bean hkcw002Bean;
     @EJB
@@ -3129,6 +3133,53 @@ public class EAPWebService {
             ret = !(response == null || "".equals(response));
         } catch (NullPointerException | JSONException ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "updateEProcurementByOAHKCG016", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateEProcurementByOAHKCG020")
+    public String updateEProcurementByOAHKCG020(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+        Boolean ret = false;
+        try {
+            HKCG020 p = hkcg020Bean.findByPSN(psn);
+            if (p == null) {
+                throw new NullPointerException("updateEProcurementByOAHKCG020找不到流程序号:" + psn);
+            }
+            // status: 1代表撤销/终止 ，3代表完成
+            String url = p.getExt01();
+            String tag = p.getExt02();
+            JSONObject jsonObject = new JSONObject();
+            if ("1".equals(status)) {
+                jsonObject.put("Code", "101");
+                jsonObject.put("Message", "OA审核不通过");
+                jsonObject.put("Tag", tag);
+                jsonObject.put("Data", "NULL");
+            } else if ("3".equals(status)) {
+                jsonObject.put("Code", "200");
+                jsonObject.put("Message", "OA审核完成");
+                jsonObject.put("Tag", tag);
+                JSONArray jsonarr = new JSONArray();
+                JSONObject data1 = new JSONObject();
+                data1.put("Facno", p.getFacno());
+                data1.put("Vdrno", p.getVdrno());
+                jsonarr.put(0, data1);
+                if ("G".equals(p.getFacno()) || "N".equals(p.getFacno()) || "J".equals(p.getFacno())
+                        || "C4".equals(p.getFacno())) {
+                    JSONObject data2 = new JSONObject();
+                    data2.put("Facno", "C");
+                    data2.put("Vdrno", p.getVdrno());
+                    jsonarr.put(1, data2);
+                }
+                jsonObject.put("Data", jsonarr);
+            }
+            String response = ecpurvdrBean.ECPostBack(url, jsonObject);
+            ret = !(response == null || "".equals(response));
+        } catch (NullPointerException | JSONException ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateEProcurementByOAHKCG020", psn), ex);
         }
         if (ret) {
             return "200";
