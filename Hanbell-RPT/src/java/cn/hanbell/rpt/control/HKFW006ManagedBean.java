@@ -75,6 +75,7 @@ public class HKFW006ManagedBean extends SuperQueryBean<HKFW006> {
         this.hkfw006Model=new ArrayList();
          Calendar cal = Calendar.getInstance();
          queryYear=String.valueOf(cal.get(Calendar.YEAR));
+         this.model.getFilterFields().put("rettype", "2");
         initHkfw006Model();
     }
 
@@ -181,6 +182,7 @@ public class HKFW006ManagedBean extends SuperQueryBean<HKFW006> {
         initHkfw006Model();
         if (this.model != null && this.model.getFilterFields() != null) {
             this.model.getFilterFields().clear();
+            this.model.getFilterFields().put("rettype", "2");
             if (queryCompany != null && !"".equals(queryCompany)) {
                 this.model.getFilterFields().put("facno", queryCompany);
             }
