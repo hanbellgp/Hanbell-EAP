@@ -45,6 +45,9 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             if (entity.getTel() != null && !"".equals(entity.getTel())) {
                 job.add("telephone", entity.getTel());
             }
+            if(isUpdateAlias(entity.getJob())&&entity.getJob()!=null &&!"".equals(entity.getJob())){
+                job.add("alias",entity.getJob());
+            }
             // 职位暂时不更新sda
             // if (entity.getPosition() != null & !"".equals(entity.getPosition())) {
             // job.add("position", entity.getPosition());
@@ -185,5 +188,77 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * 查看是否更新别名
+     *
+     * @param job
+     * @return
+     */
+    public Boolean isUpdateAlias(String job) {
+        switch (job) {
+            case "執行董事":
+                return true;
+            case "组长":
+                return true;
+            case "副總經理":
+                return true;
+            case "協理":
+                return true;
+            case "廠長":
+                return true;
+            case "處長":
+                return true;
+            case "經理":
+                return true;
+            case "副理":
+                return true;
+            case "課長":
+                return true;
+            case "組長":
+                return true;
+            case "班長":
+                return true;
+            case "代組長":
+                return true;
+            case "代課長":
+                return true;
+            case "代副理":
+                return true;
+            case "課長代理":
+                return true;
+            case "副组长":
+                return true;
+            case "课长":
+                return true;
+            case "副课长":
+                return true;
+            case "代课长":
+                return true;
+            case "代副课长":
+                return true;
+            case "专案经理":
+                return true;
+            case "副经理":
+                return true;
+            case "经理":
+                return true;
+            case "副总经理":
+                return true;
+            case "执行副总经理":
+                return true;
+            case "总经理":
+                return true;
+            case "副董事长":
+                return true;
+            case "董事长":
+                return true;
+            case "董事長":
+                return true;
+            case "總經理":
+                return true;
+        }
+        return false;
     }
 }
