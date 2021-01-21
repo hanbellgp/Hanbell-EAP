@@ -27,6 +27,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ValueChangeEvent;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -65,18 +66,19 @@ public class HKFW006ManagedBean extends SuperQueryBean<HKFW006> {
 
     @Override
     public void init() {
-        detailView=true;
-        statisticView=false;
+        detailView = true;
+        statisticView = false;
         setSuperEJB(hkfw006Bean);
         this.model = new HKFW006Model(hkfw006Bean);
         this.selectView = "明细表";
-        this.queryStatus="All";
+        this.queryStatus = "All";
         super.init();
-        this.hkfw006Model=new ArrayList();
-         Calendar cal = Calendar.getInstance();
-         queryYear=String.valueOf(cal.get(Calendar.YEAR));
-         this.model.getFilterFields().put("rettype", "2");
+        this.hkfw006Model = new ArrayList();
+        Calendar cal = Calendar.getInstance();
+        queryYear = String.valueOf(cal.get(Calendar.YEAR));
         initHkfw006Model();
+        this.model.getFilterFields().put("rettype", "2");
+         this.model.getSortFields().put("createdate", "ASC");
     }
 
     @Override
@@ -94,42 +96,89 @@ public class HKFW006ManagedBean extends SuperQueryBean<HKFW006> {
                 this.fileName = "HKFW006" + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + ".xlsx";
                 this.fileFullName = this.reportOutputPath + this.fileName;
                 Workbook wb = WorkbookFactory.create(is);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+                CellStyle cellStyle = wb.createCellStyle();
                 Sheet sheet = wb.getSheetAt(0);
-                wb.setSheetName(0, sdf.format(new Date()) + "退货通知单明细表");
+                wb.setSheetName(0,"退货通知单明细表");
                 Row row = null;
                 int i = 1;
                 for (Iterator var12 = this.entityList.iterator(); var12.hasNext(); ++i) {
                     HKFW006 e = (HKFW006) var12.next();
                     row = sheet.createRow(i);
-                    Cell cell = row.createCell(0);
-                    cell.setCellValue(i);
-                    row.createCell(1).setCellValue(e.getFacno() != null ? e.getCompanyValue(e.getFacno()) : "");
-                    row.createCell(2).setCellValue(e.getCptype() != null ? e.getCpTypeValue(e.getCptype()) : "");
-                    row.createCell(3).setCellValue(e.getSupportUser() != null ? e.getSupportUser().getId() : "");
-                    row.createCell(4).setCellValue(e.getSupportUser() != null ? e.getSupportUser().getUserName() : "");
-                    row.createCell(5).setCellValue(e.getSupportDept() != null ? e.getSupportDept().getId() : "");
-                    row.createCell(6).setCellValue(e.getSupportDept() != null ? e.getSupportDept().getOrganizationUnitName() : "");
-                    row.createCell(7).setCellValue(e.getCusno() != null ? e.getCusno() : "");
-                    row.createCell(8).setCellValue(e.getCusna() != null ? e.getCusna() : "");
-                    row.createCell(9).setCellValue(e.getReturndate() != null ? BaseLib.formatDate("yyyy/MM/dd", e.getReturndate()) : "");
-                     row.createCell(10).setCellValue(e.getCreatedate()!= null ? BaseLib.formatDate("yyyy/MM/dd", e.getCreatedate()) : "");
-                    row.createCell(11).setCellValue(e.getReturntype() != null ? e.getReturnTypeVlaue(e.getReturntype()) : "");
-                    row.createCell(12).setCellValue(e.getKfno() != null ? e.getKfno() : "");
-                    row.createCell(13).setCellValue(e.getFwno() != null ? e.getFwno() : "");
-                    row.createCell(14).setCellValue(e.getTitnbr() != null ? e.getTitnbr() : "");
-                    row.createCell(15).setCellValue(e.getTitdsc() != null ? e.getTitdsc() : "");
-                    row.createCell(16).setCellValue(e.getTcreateno() != null ? e.getTcreateno() : "");
-                    row.createCell(17).setCellValue(e.getGzreason() != null ? e.getGzreasonValue(e.getGzreason()) : "");
-                    row.createCell(18).setCellValue(e.getZbpzno() != null && e.getFgspzno() != null ? e.inWrehValue(e.getZbpzno(), e.getFgspzno()) : "");
-                    row.createCell(19).setCellValue(e.getYf() != null ? String.valueOf(e.getYf()) : "");
-                    row.createCell(20).setCellValue(e.getProcessInstance() != null ? e.getOAStatus(e.getProcessInstance().getCurrentState()) : "");
+                    short border=1;
+                    cellStyle.setBorderBottom(border);
+                    cellStyle.setBorderLeft(border);
+                    cellStyle.setBorderRight(border);
+                    cellStyle.setBorderTop(border);
+                    Cell cell0 = row.createCell(0);
+                    cell0.setCellStyle(cellStyle);
+                    cell0.setCellValue(i);
+                    Cell cell1= row.createCell(1);
+                    Cell cell2= row.createCell(2);
+                    Cell cell3= row.createCell(3);
+                    Cell cell4= row.createCell(4);
+                    Cell cell5= row.createCell(5);
+                    Cell cell6= row.createCell(6);
+                    Cell cell7= row.createCell(7);
+                    Cell cell8= row.createCell(8);
+                    Cell cell9= row.createCell(9);
+                    Cell cell10= row.createCell(10);
+                    Cell cell11= row.createCell(11);
+                    Cell cell12= row.createCell(12);
+                    Cell cell13= row.createCell(13);
+                    Cell cell14= row.createCell(14);
+                    Cell cell15= row.createCell(15);
+                    Cell cell16= row.createCell(16);
+                    Cell cell17= row.createCell(17);
+                    Cell cell18= row.createCell(18);
+                    Cell cell19= row.createCell(19);
+                    Cell cell20= row.createCell(20);
+                    cell1.setCellStyle(cellStyle);
+                    cell2.setCellStyle(cellStyle);
+                    cell3.setCellStyle(cellStyle);
+                    cell4.setCellStyle(cellStyle);
+                    cell5.setCellStyle(cellStyle);
+                    cell6.setCellStyle(cellStyle);
+                    cell7.setCellStyle(cellStyle);
+                    cell8.setCellStyle(cellStyle);
+                    cell9.setCellStyle(cellStyle);
+                    cell10.setCellStyle(cellStyle);
+                    cell11.setCellStyle(cellStyle);
+                    cell12.setCellStyle(cellStyle);
+                    cell13.setCellStyle(cellStyle);
+                    cell14.setCellStyle(cellStyle);
+                    cell15.setCellStyle(cellStyle);
+                    cell16.setCellStyle(cellStyle);
+                    cell17.setCellStyle(cellStyle);
+                    cell18.setCellStyle(cellStyle);
+                    cell19.setCellStyle(cellStyle);
+                    cell20.setCellStyle(cellStyle);
+                    cell1.setCellValue(e.getFacno() != null ? e.getCompanyValue(e.getFacno()) : "");
+                    cell2.setCellValue(e.getCptype() != null ? e.getCpTypeValue(e.getCptype()) : "");
+                    cell3.setCellValue(e.getSupportUser() != null ? e.getSupportUser().getId() : "");
+                    cell4.setCellValue(e.getSupportUser() != null ? e.getSupportUser().getUserName() : "");
+                    cell5.setCellValue(e.getSupportDept() != null ? e.getSupportDept().getId() : "");
+                    cell6.setCellValue(e.getSupportDept() != null ? e.getSupportDept().getOrganizationUnitName() : "");
+                    cell7.setCellValue(e.getCusno() != null ? e.getCusno() : "");
+                    cell8.setCellValue(e.getCusna() != null ? e.getCusna() : "");
+                    cell9.setCellValue(e.getReturndate() != null ? BaseLib.formatDate("yyyy/MM/dd", e.getReturndate()) : "");
+                    cell10.setCellValue(e.getCreatedate() != null ? BaseLib.formatDate("yyyy/MM/dd", e.getCreatedate()) : "");
+                    cell11.setCellValue(e.getReturntype() != null ? e.getReturnTypeVlaue(e.getReturntype()) : "");
+                    cell12.setCellValue(e.getKfno() != null ? e.getKfno() : "");
+                    cell13.setCellValue(e.getFwno() != null ? e.getFwno() : "");
+                    cell14.setCellValue(e.getTitnbr() != null ? e.getTitnbr() : "");
+                    cell15.setCellValue(e.getTitdsc() != null ? e.getTitdsc() : "");
+                    cell16.setCellValue(e.getTcreateno() != null ? e.getTcreateno() : "");
+                    cell17.setCellValue(e.getGzreason() != null ? e.getGzreasonValue(e.getGzreason()) : "");
+                    cell18.setCellValue(e.getZbpzno() != null && e.getFgspzno() != null ? e.inWrehValue(e.getZbpzno(), e.getFgspzno()) : "");
+                    cell19.setCellValue(e.getYf() != null ? String.valueOf(e.getYf()) : "");
+                    cell20.setCellValue(e.getProcessInstance() != null ? e.getOAStatus(e.getProcessInstance().getCurrentState()) : "");
+                    
                 }
-                 Sheet sheet1 = wb.getSheetAt(1);
-                   wb.setSheetName(1, sdf.format(new Date()) + "退货通知单统计表");
+                Sheet sheet1 = wb.getSheetAt(1);
+                wb.setSheetName(1, this.queryYear + "退货通知单统计表");
 //                 List<HKFW006StatisticModel> hkfw006Model;
-                    i=1;
-                for(HKFW006StatisticModel m:hkfw006Model){
+                i = 1;
+                for (HKFW006StatisticModel m : hkfw006Model) {
                     row = sheet1.getRow(i);
                     row.getCell(2).setCellValue(m.getMonth1());
                     row.getCell(3).setCellValue(m.getMonth2());
@@ -143,7 +192,7 @@ public class HKFW006ManagedBean extends SuperQueryBean<HKFW006> {
                     row.getCell(11).setCellValue(m.getMonth10());
                     row.getCell(12).setCellValue(m.getMonth11());
                     row.getCell(13).setCellValue(m.getMonth12());
-                    row.getCell(14).setCellValue(m.getSum()); 
+                    row.getCell(14).setCellValue(m.getSum());
                     i++;
                 }
                 FileOutputStream os = null;
@@ -179,7 +228,6 @@ public class HKFW006ManagedBean extends SuperQueryBean<HKFW006> {
 
     @Override
     public void query() {
-        initHkfw006Model();
         if (this.model != null && this.model.getFilterFields() != null) {
             this.model.getFilterFields().clear();
             this.model.getFilterFields().put("rettype", "2");
@@ -217,22 +265,24 @@ public class HKFW006ManagedBean extends SuperQueryBean<HKFW006> {
             if (queryDateEnd != null && !"".equals(queryDateEnd)) {
                 this.model.getFilterFields().put("returndateEnd", queryDateEnd);
             }
+            this.model.getSortFields().put("createdate", "ASC");
+            initHkfw006Model();
         }
     }
 
     public void reset() {
-         this.queryCompany="";
-         this.queryCustomer="";
-         this.queryService="";
-         this.queryUser="";
-         this.queryDept="";
-         this.queryProduct="";
-         this.quertType="";
-         this.queryStatus="All";
-         queryDateBegin=null;
-          Calendar cal = Calendar.getInstance();
-         queryYear=String.valueOf(cal.get(Calendar.YEAR));
-         queryDateEnd=null;
+        this.queryCompany = "";
+        this.queryCustomer = "";
+        this.queryService = "";
+        this.queryUser = "";
+        this.queryDept = "";
+        this.queryProduct = "";
+        this.quertType = "";
+        this.queryStatus = "All";
+        queryDateBegin = null;
+        Calendar cal = Calendar.getInstance();
+        queryYear = String.valueOf(cal.get(Calendar.YEAR));
+        queryDateEnd = null;
     }
 
     public String getQueryCompany() {
@@ -249,12 +299,12 @@ public class HKFW006ManagedBean extends SuperQueryBean<HKFW006> {
 
     public void setSelectView(String selectView) {
         this.selectView = selectView;
-        if("统计表".equals(this.selectView)){
-            this.detailView=false;
-            this.statisticView=true;
-        }else if("明细表".equals(this.selectView)){
-            this.detailView=true;
-            this.statisticView=false;
+        if ("统计表".equals(this.selectView)) {
+            this.detailView = false;
+            this.statisticView = true;
+        } else if ("明细表".equals(this.selectView)) {
+            this.detailView = true;
+            this.statisticView = false;
         }
     }
 
@@ -346,7 +396,7 @@ public class HKFW006ManagedBean extends SuperQueryBean<HKFW006> {
         this.hkfw006Model = hkfw006Model;
     }
 
-    public void updateSelectView(ValueChangeEvent evt){
+    public void updateSelectView(ValueChangeEvent evt) {
     }
 
     public boolean isStatisticView() {
@@ -372,125 +422,119 @@ public class HKFW006ManagedBean extends SuperQueryBean<HKFW006> {
     public void setQueryYear(String queryYear) {
         this.queryYear = queryYear;
     }
-    
-    
-   
-    public void initHkfw006Model() { 
-         hkfw006Model.clear();
-        HKFW006StatisticModel h1=hkfw006Bean.BPMStatisticReport("%1B%", "华东本部", "1", "客户财产", Integer.valueOf(queryYear));
-        HKFW006StatisticModel h2=hkfw006Bean.BPMStatisticReport("%1B%", "华东本部", "2", "汉钟财产", Integer.valueOf(queryYear));
+
+    public void initHkfw006Model() {
+        hkfw006Model.clear();
+        HKFW006StatisticModel h1 = hkfw006Bean.BPMStatisticReport("%1B%", "华东本部", "1", "客户财产", Integer.valueOf(queryYear));
+        HKFW006StatisticModel h2 = hkfw006Bean.BPMStatisticReport("%1B%", "华东本部", "2", "汉钟财产", Integer.valueOf(queryYear));
         hkfw006Model.add(h1);
         hkfw006Model.add(h2);
-        hkfw006Model.add(new HKFW006StatisticModel("华东本部","合计",h1.getMonth1()+h2.getMonth1(),h1.getMonth2()+h2.getMonth2(),h1.getMonth3()+h2.getMonth3(),h1.getMonth4()+h2.getMonth4(),
-        h1.getMonth5()+h2.getMonth5(),h1.getMonth6()+h2.getMonth6(),h1.getMonth7()+h2.getMonth7(),h1.getMonth8()+h2.getMonth8(),h1.getMonth9()+h2.getMonth9(),h1.getMonth10()+h2.getMonth10(),
-        h1.getMonth11()+h2.getMonth11(),h1.getMonth12()+h2.getMonth12(),h1.getSum()+h2.getSum()));
-        
-        HKFW006StatisticModel h3=hkfw006Bean.BPMStatisticReport("%1C%", "济南分公司", "1", "客户财产", Integer.valueOf(queryYear));
-        HKFW006StatisticModel h4=hkfw006Bean.BPMStatisticReport("%1C%", "济南分公司", "2", "汉钟财产", Integer.valueOf(queryYear));
+        hkfw006Model.add(new HKFW006StatisticModel("华东本部", "合计", h1.getMonth1() + h2.getMonth1(), h1.getMonth2() + h2.getMonth2(), h1.getMonth3() + h2.getMonth3(), h1.getMonth4() + h2.getMonth4(),
+                h1.getMonth5() + h2.getMonth5(), h1.getMonth6() + h2.getMonth6(), h1.getMonth7() + h2.getMonth7(), h1.getMonth8() + h2.getMonth8(), h1.getMonth9() + h2.getMonth9(), h1.getMonth10() + h2.getMonth10(),
+                h1.getMonth11() + h2.getMonth11(), h1.getMonth12() + h2.getMonth12(), h1.getSum() + h2.getSum()));
+
+        HKFW006StatisticModel h3 = hkfw006Bean.BPMStatisticReport("%1C%", "济南分公司", "1", "客户财产", Integer.valueOf(queryYear));
+        HKFW006StatisticModel h4 = hkfw006Bean.BPMStatisticReport("%1C%", "济南分公司", "2", "汉钟财产", Integer.valueOf(queryYear));
         hkfw006Model.add(h3);
         hkfw006Model.add(h4);
-        hkfw006Model.add(new HKFW006StatisticModel("济南分公司","合计",h3.getMonth1()+h4.getMonth1(),h3.getMonth2()+h4.getMonth2(),h3.getMonth3()+h4.getMonth3(),h3.getMonth4()+h4.getMonth4(),
-        h3.getMonth5()+h4.getMonth5(),h3.getMonth6()+h4.getMonth6(),h3.getMonth7()+h4.getMonth7(),h3.getMonth8()+h4.getMonth8(),h3.getMonth9()+h4.getMonth9(),h3.getMonth10()+h4.getMonth10(),
-        h3.getMonth11()+h3.getMonth11(),h3.getMonth12()+h3.getMonth12(),h3.getSum()+h4.getSum()));
-        
-        
-        HKFW006StatisticModel h5=hkfw006Bean.BPMStatisticReport("%1D%", "广州分公司", "1", "客户财产", Integer.valueOf(queryYear));
-        HKFW006StatisticModel h6=hkfw006Bean.BPMStatisticReport("%1D%", "广州分公司", "2", "汉钟财产", Integer.valueOf(queryYear));
+        hkfw006Model.add(new HKFW006StatisticModel("济南分公司", "合计", h3.getMonth1() + h4.getMonth1(), h3.getMonth2() + h4.getMonth2(), h3.getMonth3() + h4.getMonth3(), h3.getMonth4() + h4.getMonth4(),
+                h3.getMonth5() + h4.getMonth5(), h3.getMonth6() + h4.getMonth6(), h3.getMonth7() + h4.getMonth7(), h3.getMonth8() + h4.getMonth8(), h3.getMonth9() + h4.getMonth9(), h3.getMonth10() + h4.getMonth10(),
+                h3.getMonth11() + h3.getMonth11(), h3.getMonth12() + h3.getMonth12(), h3.getSum() + h4.getSum()));
+
+        HKFW006StatisticModel h5 = hkfw006Bean.BPMStatisticReport("%1D%", "广州分公司", "1", "客户财产", Integer.valueOf(queryYear));
+        HKFW006StatisticModel h6 = hkfw006Bean.BPMStatisticReport("%1D%", "广州分公司", "2", "汉钟财产", Integer.valueOf(queryYear));
         hkfw006Model.add(h5);
         hkfw006Model.add(h6);
-        hkfw006Model.add(new HKFW006StatisticModel("广州分公司","合计",h5.getMonth1()+h6.getMonth1(),h5.getMonth2()+h6.getMonth2(),h5.getMonth3()+h6.getMonth3(),h5.getMonth4()+h6.getMonth4(),
-        h5.getMonth5()+h6.getMonth5(),h5.getMonth6()+h6.getMonth6(),h5.getMonth7()+h6.getMonth7(),h5.getMonth8()+h6.getMonth8(),h5.getMonth9()+h6.getMonth9(),h5.getMonth10()+h6.getMonth10(),
-        h5.getMonth11()+h6.getMonth11(),h5.getMonth12()+h6.getMonth12(),h5.getSum()+h6.getSum()));
-       
-        HKFW006StatisticModel h7=hkfw006Bean.BPMStatisticReport("%1E%", "南京分公司", "1", "客户财产", Integer.valueOf(queryYear));
-        HKFW006StatisticModel h8=hkfw006Bean.BPMStatisticReport("%1E%", "南京分公司", "2", "汉钟财产", Integer.valueOf(queryYear));
+        hkfw006Model.add(new HKFW006StatisticModel("广州分公司", "合计", h5.getMonth1() + h6.getMonth1(), h5.getMonth2() + h6.getMonth2(), h5.getMonth3() + h6.getMonth3(), h5.getMonth4() + h6.getMonth4(),
+                h5.getMonth5() + h6.getMonth5(), h5.getMonth6() + h6.getMonth6(), h5.getMonth7() + h6.getMonth7(), h5.getMonth8() + h6.getMonth8(), h5.getMonth9() + h6.getMonth9(), h5.getMonth10() + h6.getMonth10(),
+                h5.getMonth11() + h6.getMonth11(), h5.getMonth12() + h6.getMonth12(), h5.getSum() + h6.getSum()));
+
+        HKFW006StatisticModel h7 = hkfw006Bean.BPMStatisticReport("%1E%", "南京分公司", "1", "客户财产", Integer.valueOf(queryYear));
+        HKFW006StatisticModel h8 = hkfw006Bean.BPMStatisticReport("%1E%", "南京分公司", "2", "汉钟财产", Integer.valueOf(queryYear));
         hkfw006Model.add(h7);
         hkfw006Model.add(h8);
-        hkfw006Model.add(new HKFW006StatisticModel("南京分公司","合计",h7.getMonth1()+h8.getMonth1(),h7.getMonth2()+h8.getMonth2(),h7.getMonth3()+h8.getMonth3(),h7.getMonth4()+h8.getMonth4(),
-        h7.getMonth5()+h8.getMonth5(),h7.getMonth6()+h8.getMonth6(),h7.getMonth7()+h8.getMonth7(),h7.getMonth8()+h8.getMonth8(),h7.getMonth9()+h8.getMonth9(),h7.getMonth10()+h8.getMonth10(),
-        h7.getMonth11()+h8.getMonth11(),h7.getMonth12()+h8.getMonth12(),h7.getSum()+h8.getSum()));
-        
-        HKFW006StatisticModel h9=hkfw006Bean.BPMStatisticReport("%1V%", "重庆分公司", "1", "客户财产", Integer.valueOf(queryYear));
-        HKFW006StatisticModel h10=hkfw006Bean.BPMStatisticReport("%1V%", "重庆分公司", "2", "汉钟财产", Integer.valueOf(queryYear));
+        hkfw006Model.add(new HKFW006StatisticModel("南京分公司", "合计", h7.getMonth1() + h8.getMonth1(), h7.getMonth2() + h8.getMonth2(), h7.getMonth3() + h8.getMonth3(), h7.getMonth4() + h8.getMonth4(),
+                h7.getMonth5() + h8.getMonth5(), h7.getMonth6() + h8.getMonth6(), h7.getMonth7() + h8.getMonth7(), h7.getMonth8() + h8.getMonth8(), h7.getMonth9() + h8.getMonth9(), h7.getMonth10() + h8.getMonth10(),
+                h7.getMonth11() + h8.getMonth11(), h7.getMonth12() + h8.getMonth12(), h7.getSum() + h8.getSum()));
+
+        HKFW006StatisticModel h9 = hkfw006Bean.BPMStatisticReport("%1V%", "重庆分公司", "1", "客户财产", Integer.valueOf(queryYear));
+        HKFW006StatisticModel h10 = hkfw006Bean.BPMStatisticReport("%1V%", "重庆分公司", "2", "汉钟财产", Integer.valueOf(queryYear));
         hkfw006Model.add(h9);
         hkfw006Model.add(h10);
-        hkfw006Model.add(new HKFW006StatisticModel("重庆分公司","合计",h9.getMonth1()+h10.getMonth1(),h9.getMonth2()+h10.getMonth2(),h9.getMonth3()+h10.getMonth3(),h9.getMonth4()+h10.getMonth4(),
-        h9.getMonth5()+h10.getMonth5(),h9.getMonth6()+h10.getMonth6(),h9.getMonth7()+h10.getMonth7(),h9.getMonth8()+h10.getMonth8(),h9.getMonth9()+h10.getMonth9(),h9.getMonth10()+h10.getMonth10(),
-        h9.getMonth11()+h10.getMonth11(),h9.getMonth12()+h10.getMonth12(),h9.getSum()+h10.getSum()));
-        
-        
-        int hkh1=h1.getMonth1()+h3.getMonth1()+h5.getMonth1()+h7.getMonth1()+h9.getMonth1();
-        int hkh2=h1.getMonth2()+h3.getMonth2()+h5.getMonth2()+h7.getMonth2()+h9.getMonth2();
-        int hkh3=h1.getMonth3()+h3.getMonth3()+h5.getMonth3()+h7.getMonth3()+h9.getMonth3();
-        int hkh4=h1.getMonth4()+h3.getMonth4()+h5.getMonth4()+h7.getMonth4()+h9.getMonth4();;
-        int hkh5=h1.getMonth5()+h3.getMonth5()+h5.getMonth5()+h7.getMonth5()+h9.getMonth5();
-        int hkh6=h1.getMonth6()+h3.getMonth6()+h5.getMonth6()+h7.getMonth6()+h9.getMonth6();
-        int hkh7=h1.getMonth7()+h3.getMonth7()+h5.getMonth7()+h7.getMonth7()+h9.getMonth7();
-        int hkh8=h1.getMonth8()+h3.getMonth8()+h5.getMonth8()+h7.getMonth8()+h9.getMonth8();
-        int hkh9=h1.getMonth9()+h3.getMonth9()+h5.getMonth9()+h7.getMonth9()+h9.getMonth9();
-        int hkh10=h1.getMonth10()+h3.getMonth10()+h5.getMonth10()+h7.getMonth10()+h9.getMonth10();
-        int hkh11=h1.getMonth11()+h3.getMonth11()+h5.getMonth11()+h7.getMonth11()+h9.getMonth11();
-        int hkh12=h1.getMonth12()+h3.getMonth12()+h5.getMonth12()+h7.getMonth12()+h9.getMonth12();
-        int hkhsum=h1.getSum()+h3.getSum()+h5.getSum()+h7.getSum()+h9.getSum();
-        hkfw006Model.add(new HKFW006StatisticModel("R冷媒退机合计","客户财产",hkh1,hkh2,hkh3,hkh4,hkh5,hkh6,hkh7,hkh8,hkh9,hkh10,hkh11,hkh12,hkhsum));
-        int hhz1=h2.getMonth1()+h4.getMonth1()+h6.getMonth1()+h8.getMonth1()+h10.getMonth1();
-        int hhz2=h2.getMonth2()+h4.getMonth2()+h6.getMonth2()+h8.getMonth2()+h10.getMonth2();
-        int hhz3=h2.getMonth3()+h4.getMonth3()+h6.getMonth3()+h8.getMonth3()+h10.getMonth3();
-        int hhz4=h2.getMonth4()+h4.getMonth4()+h6.getMonth4()+h8.getMonth4()+h10.getMonth4();;
-        int hhz5=h2.getMonth5()+h4.getMonth5()+h6.getMonth5()+h8.getMonth5()+h10.getMonth5();
-        int hhz6=h2.getMonth6()+h4.getMonth6()+h6.getMonth6()+h8.getMonth6()+h10.getMonth6();
-        int hhz7=h2.getMonth7()+h4.getMonth7()+h6.getMonth7()+h8.getMonth7()+h10.getMonth7();
-        int hhz8=h2.getMonth8()+h4.getMonth8()+h6.getMonth8()+h8.getMonth8()+h10.getMonth8();
-        int hhz9=h2.getMonth9()+h4.getMonth9()+h6.getMonth9()+h8.getMonth9()+h10.getMonth9();
-        int hhz10=h2.getMonth10()+h4.getMonth10()+h6.getMonth10()+h8.getMonth10()+h10.getMonth10();
-        int hhz11=h2.getMonth11()+h4.getMonth11()+h6.getMonth11()+h8.getMonth11()+h10.getMonth11();
-        int hhz12=h2.getMonth12()+h4.getMonth12()+h6.getMonth12()+h8.getMonth12()+h10.getMonth12();
-        int hhzsum=h2.getSum()+h4.getSum()+h6.getSum()+h8.getSum()+h10.getSum();
-        hkfw006Model.add(new HKFW006StatisticModel("R冷媒退机合计","汉钟财产",hhz1,hhz2,hhz3,hhz4,hhz5,hhz6,hhz7,hhz8,hhz9,hhz10,hhz11,hhz12,hhzsum));
-        hkfw006Model.add(new HKFW006StatisticModel("R冷媒退机合计","合计",hhz1+hkh1,hhz2+hkh2,hhz3+hkh3,hhz4+hkh4,hhz5+hkh5,hhz6+hkh6,hhz7+hkh7,hhz8+hkh8,hhz9+hkh9,hhz10+hkh10,hhz11+hkh11,hhz12+hkh12,hhzsum+hkhsum));
-        
-        HKFW006StatisticModel h11=hkfw006Bean.BPMStatisticReport("%1G%", "空压机体产品部", "1", "客户财产", Integer.valueOf(queryYear));
-        HKFW006StatisticModel h12=hkfw006Bean.BPMStatisticReport("%1G%", "空压机体产品部", "2", "汉钟财产", Integer.valueOf(queryYear));
+        hkfw006Model.add(new HKFW006StatisticModel("重庆分公司", "合计", h9.getMonth1() + h10.getMonth1(), h9.getMonth2() + h10.getMonth2(), h9.getMonth3() + h10.getMonth3(), h9.getMonth4() + h10.getMonth4(),
+                h9.getMonth5() + h10.getMonth5(), h9.getMonth6() + h10.getMonth6(), h9.getMonth7() + h10.getMonth7(), h9.getMonth8() + h10.getMonth8(), h9.getMonth9() + h10.getMonth9(), h9.getMonth10() + h10.getMonth10(),
+                h9.getMonth11() + h10.getMonth11(), h9.getMonth12() + h10.getMonth12(), h9.getSum() + h10.getSum()));
+
+        int hkh1 = h1.getMonth1() + h3.getMonth1() + h5.getMonth1() + h7.getMonth1() + h9.getMonth1();
+        int hkh2 = h1.getMonth2() + h3.getMonth2() + h5.getMonth2() + h7.getMonth2() + h9.getMonth2();
+        int hkh3 = h1.getMonth3() + h3.getMonth3() + h5.getMonth3() + h7.getMonth3() + h9.getMonth3();
+        int hkh4 = h1.getMonth4() + h3.getMonth4() + h5.getMonth4() + h7.getMonth4() + h9.getMonth4();;
+        int hkh5 = h1.getMonth5() + h3.getMonth5() + h5.getMonth5() + h7.getMonth5() + h9.getMonth5();
+        int hkh6 = h1.getMonth6() + h3.getMonth6() + h5.getMonth6() + h7.getMonth6() + h9.getMonth6();
+        int hkh7 = h1.getMonth7() + h3.getMonth7() + h5.getMonth7() + h7.getMonth7() + h9.getMonth7();
+        int hkh8 = h1.getMonth8() + h3.getMonth8() + h5.getMonth8() + h7.getMonth8() + h9.getMonth8();
+        int hkh9 = h1.getMonth9() + h3.getMonth9() + h5.getMonth9() + h7.getMonth9() + h9.getMonth9();
+        int hkh10 = h1.getMonth10() + h3.getMonth10() + h5.getMonth10() + h7.getMonth10() + h9.getMonth10();
+        int hkh11 = h1.getMonth11() + h3.getMonth11() + h5.getMonth11() + h7.getMonth11() + h9.getMonth11();
+        int hkh12 = h1.getMonth12() + h3.getMonth12() + h5.getMonth12() + h7.getMonth12() + h9.getMonth12();
+        int hkhsum = h1.getSum() + h3.getSum() + h5.getSum() + h7.getSum() + h9.getSum();
+        hkfw006Model.add(new HKFW006StatisticModel("R冷媒退机合计", "客户财产", hkh1, hkh2, hkh3, hkh4, hkh5, hkh6, hkh7, hkh8, hkh9, hkh10, hkh11, hkh12, hkhsum));
+        int hhz1 = h2.getMonth1() + h4.getMonth1() + h6.getMonth1() + h8.getMonth1() + h10.getMonth1();
+        int hhz2 = h2.getMonth2() + h4.getMonth2() + h6.getMonth2() + h8.getMonth2() + h10.getMonth2();
+        int hhz3 = h2.getMonth3() + h4.getMonth3() + h6.getMonth3() + h8.getMonth3() + h10.getMonth3();
+        int hhz4 = h2.getMonth4() + h4.getMonth4() + h6.getMonth4() + h8.getMonth4() + h10.getMonth4();;
+        int hhz5 = h2.getMonth5() + h4.getMonth5() + h6.getMonth5() + h8.getMonth5() + h10.getMonth5();
+        int hhz6 = h2.getMonth6() + h4.getMonth6() + h6.getMonth6() + h8.getMonth6() + h10.getMonth6();
+        int hhz7 = h2.getMonth7() + h4.getMonth7() + h6.getMonth7() + h8.getMonth7() + h10.getMonth7();
+        int hhz8 = h2.getMonth8() + h4.getMonth8() + h6.getMonth8() + h8.getMonth8() + h10.getMonth8();
+        int hhz9 = h2.getMonth9() + h4.getMonth9() + h6.getMonth9() + h8.getMonth9() + h10.getMonth9();
+        int hhz10 = h2.getMonth10() + h4.getMonth10() + h6.getMonth10() + h8.getMonth10() + h10.getMonth10();
+        int hhz11 = h2.getMonth11() + h4.getMonth11() + h6.getMonth11() + h8.getMonth11() + h10.getMonth11();
+        int hhz12 = h2.getMonth12() + h4.getMonth12() + h6.getMonth12() + h8.getMonth12() + h10.getMonth12();
+        int hhzsum = h2.getSum() + h4.getSum() + h6.getSum() + h8.getSum() + h10.getSum();
+        hkfw006Model.add(new HKFW006StatisticModel("R冷媒退机合计", "汉钟财产", hhz1, hhz2, hhz3, hhz4, hhz5, hhz6, hhz7, hhz8, hhz9, hhz10, hhz11, hhz12, hhzsum));
+        hkfw006Model.add(new HKFW006StatisticModel("R冷媒退机合计", "合计", hhz1 + hkh1, hhz2 + hkh2, hhz3 + hkh3, hhz4 + hkh4, hhz5 + hkh5, hhz6 + hkh6, hhz7 + hkh7, hhz8 + hkh8, hhz9 + hkh9, hhz10 + hkh10, hhz11 + hkh11, hhz12 + hkh12, hhzsum + hkhsum));
+
+        HKFW006StatisticModel h11 = hkfw006Bean.BPMStatisticReport("%1G%", "空压机体产品部", "1", "客户财产", Integer.valueOf(queryYear));
+        HKFW006StatisticModel h12 = hkfw006Bean.BPMStatisticReport("%1G%", "空压机体产品部", "2", "汉钟财产", Integer.valueOf(queryYear));
         hkfw006Model.add(h11);
         hkfw006Model.add(h12);
-        hkfw006Model.add(new HKFW006StatisticModel("空压机体产品部","合计",h11.getMonth1()+h12.getMonth1(),h11.getMonth2()+h12.getMonth2(),h11.getMonth3()+h12.getMonth3(),h11.getMonth4()+h12.getMonth4(),
-        h11.getMonth5()+h12.getMonth5(),h11.getMonth6()+h12.getMonth6(),h11.getMonth7()+h12.getMonth7(),h11.getMonth8()+h12.getMonth8(),h11.getMonth9()+h12.getMonth9(),h11.getMonth10()+h12.getMonth10(),
-        h11.getMonth11()+h12.getMonth11(),h11.getMonth12()+h12.getMonth12(),h11.getSum()+h12.getSum()));
-        
-         HKFW006StatisticModel h13=hkfw006Bean.BPMStatisticReport("%1Q%", "空压机组产品部", "1", "客户财产", Integer.valueOf(queryYear));
-        HKFW006StatisticModel h14=hkfw006Bean.BPMStatisticReport("%1Q%", "空压机组产品部", "2", "汉钟财产", Integer.valueOf(queryYear));
+        hkfw006Model.add(new HKFW006StatisticModel("空压机体产品部", "合计", h11.getMonth1() + h12.getMonth1(), h11.getMonth2() + h12.getMonth2(), h11.getMonth3() + h12.getMonth3(), h11.getMonth4() + h12.getMonth4(),
+                h11.getMonth5() + h12.getMonth5(), h11.getMonth6() + h12.getMonth6(), h11.getMonth7() + h12.getMonth7(), h11.getMonth8() + h12.getMonth8(), h11.getMonth9() + h12.getMonth9(), h11.getMonth10() + h12.getMonth10(),
+                h11.getMonth11() + h12.getMonth11(), h11.getMonth12() + h12.getMonth12(), h11.getSum() + h12.getSum()));
+
+        HKFW006StatisticModel h13 = hkfw006Bean.BPMStatisticReport("%1Q%", "空压机组产品部", "1", "客户财产", Integer.valueOf(queryYear));
+        HKFW006StatisticModel h14 = hkfw006Bean.BPMStatisticReport("%1Q%", "空压机组产品部", "2", "汉钟财产", Integer.valueOf(queryYear));
         hkfw006Model.add(h13);
         hkfw006Model.add(h14);
-        hkfw006Model.add(new HKFW006StatisticModel("空压机组产品部","合计",h13.getMonth1()+h14.getMonth1(),h13.getMonth2()+h14.getMonth2(),h13.getMonth3()+h14.getMonth3(),h13.getMonth4()+h14.getMonth4(),
-        h13.getMonth5()+h14.getMonth5(),h13.getMonth6()+h14.getMonth6(),h13.getMonth7()+h14.getMonth7(),h13.getMonth8()+h14.getMonth8(),h13.getMonth9()+h14.getMonth9(),h13.getMonth10()+h14.getMonth10(),
-        h13.getMonth11()+h14.getMonth11(),h13.getMonth12()+h14.getMonth12(),h13.getSum()+h14.getSum()));
-        
-        
-        HKFW006StatisticModel h15=hkfw006Bean.BPMStatisticReport("%1H%", "真空产品部", "1", "客户财产", Integer.valueOf(queryYear));
-        HKFW006StatisticModel h16=hkfw006Bean.BPMStatisticReport("%1H%", "真空产品部", "2", "汉钟财产", Integer.valueOf(queryYear));
+        hkfw006Model.add(new HKFW006StatisticModel("空压机组产品部", "合计", h13.getMonth1() + h14.getMonth1(), h13.getMonth2() + h14.getMonth2(), h13.getMonth3() + h14.getMonth3(), h13.getMonth4() + h14.getMonth4(),
+                h13.getMonth5() + h14.getMonth5(), h13.getMonth6() + h14.getMonth6(), h13.getMonth7() + h14.getMonth7(), h13.getMonth8() + h14.getMonth8(), h13.getMonth9() + h14.getMonth9(), h13.getMonth10() + h14.getMonth10(),
+                h13.getMonth11() + h14.getMonth11(), h13.getMonth12() + h14.getMonth12(), h13.getSum() + h14.getSum()));
+
+        HKFW006StatisticModel h15 = hkfw006Bean.BPMStatisticReport("%1H%", "真空产品部", "1", "客户财产", Integer.valueOf(queryYear));
+        HKFW006StatisticModel h16 = hkfw006Bean.BPMStatisticReport("%1H%", "真空产品部", "2", "汉钟财产", Integer.valueOf(queryYear));
         hkfw006Model.add(h15);
         hkfw006Model.add(h16);
-        hkfw006Model.add(new HKFW006StatisticModel("真空产品部","合计",h15.getMonth1()+h16.getMonth1(),h15.getMonth2()+h16.getMonth2(),h15.getMonth3()+h16.getMonth3(),h15.getMonth4()+h16.getMonth4(),
-        h15.getMonth5()+h16.getMonth5(),h15.getMonth6()+h16.getMonth6(),h15.getMonth7()+h16.getMonth7(),h15.getMonth8()+h16.getMonth8(),h15.getMonth9()+h16.getMonth9(),h15.getMonth10()+h16.getMonth10(),
-        h15.getMonth11()+h16.getMonth11(),h15.getMonth12()+h16.getMonth12(),h15.getSum()+h16.getSum()));
-               
-        HKFW006StatisticModel h17=hkfw006Bean.BPMStatisticReport("%8A%", "再生能源产品部", "1", "客户财产", Integer.valueOf(queryYear));
-        HKFW006StatisticModel h18=hkfw006Bean.BPMStatisticReport("%8A%", "再生能源产品部", "3", "柯茂财产", Integer.valueOf(queryYear));
+        hkfw006Model.add(new HKFW006StatisticModel("真空产品部", "合计", h15.getMonth1() + h16.getMonth1(), h15.getMonth2() + h16.getMonth2(), h15.getMonth3() + h16.getMonth3(), h15.getMonth4() + h16.getMonth4(),
+                h15.getMonth5() + h16.getMonth5(), h15.getMonth6() + h16.getMonth6(), h15.getMonth7() + h16.getMonth7(), h15.getMonth8() + h16.getMonth8(), h15.getMonth9() + h16.getMonth9(), h15.getMonth10() + h16.getMonth10(),
+                h15.getMonth11() + h16.getMonth11(), h15.getMonth12() + h16.getMonth12(), h15.getSum() + h16.getSum()));
+
+        HKFW006StatisticModel h17 = hkfw006Bean.BPMStatisticReport("%8A%", "再生能源产品部", "1", "客户财产", Integer.valueOf(queryYear));
+        HKFW006StatisticModel h18 = hkfw006Bean.BPMStatisticReport("%8A%", "再生能源产品部", "3", "柯茂财产", Integer.valueOf(queryYear));
         hkfw006Model.add(h17);
         hkfw006Model.add(h18);
-        hkfw006Model.add(new HKFW006StatisticModel("再生能源产品部","合计",h17.getMonth1()+h18.getMonth1(),h17.getMonth2()+h18.getMonth2(),h17.getMonth3()+h18.getMonth3(),h17.getMonth4()+h18.getMonth4(),
-        h17.getMonth5()+h18.getMonth5(),h17.getMonth6()+h18.getMonth6(),h17.getMonth7()+h18.getMonth7(),h17.getMonth8()+h18.getMonth8(),h17.getMonth9()+h18.getMonth9(),h17.getMonth10()+h18.getMonth10(),
-        h17.getMonth11()+h18.getMonth11(),h17.getMonth12()+h18.getMonth12(),h17.getSum()+h18.getSum()));
-        
-        
-         HKFW006StatisticModel h19=hkfw006Bean.BPMStatisticReport("%5C%", "涡轮产品部", "1", "客户财产", Integer.valueOf(queryYear));
-        HKFW006StatisticModel h20=hkfw006Bean.BPMStatisticReport("%5C%", "涡轮产品部", "3", "柯茂财产", Integer.valueOf(queryYear));
+        hkfw006Model.add(new HKFW006StatisticModel("再生能源产品部", "合计", h17.getMonth1() + h18.getMonth1(), h17.getMonth2() + h18.getMonth2(), h17.getMonth3() + h18.getMonth3(), h17.getMonth4() + h18.getMonth4(),
+                h17.getMonth5() + h18.getMonth5(), h17.getMonth6() + h18.getMonth6(), h17.getMonth7() + h18.getMonth7(), h17.getMonth8() + h18.getMonth8(), h17.getMonth9() + h18.getMonth9(), h17.getMonth10() + h18.getMonth10(),
+                h17.getMonth11() + h18.getMonth11(), h17.getMonth12() + h18.getMonth12(), h17.getSum() + h18.getSum()));
+
+        HKFW006StatisticModel h19 = hkfw006Bean.BPMStatisticReport("%5C%", "涡轮产品部", "1", "客户财产", Integer.valueOf(queryYear));
+        HKFW006StatisticModel h20 = hkfw006Bean.BPMStatisticReport("%5C%", "涡轮产品部", "3", "柯茂财产", Integer.valueOf(queryYear));
         hkfw006Model.add(h19);
         hkfw006Model.add(h20);
-        hkfw006Model.add(new HKFW006StatisticModel("涡轮产品部","合计",h19.getMonth1()+h20.getMonth1(),h19.getMonth2()+h20.getMonth2(),h19.getMonth3()+h20.getMonth3(),h19.getMonth4()+h20.getMonth4(),
-        h19.getMonth5()+h20.getMonth5(),h19.getMonth6()+h20.getMonth6(),h19.getMonth7()+h20.getMonth7(),h19.getMonth8()+h20.getMonth8(),h19.getMonth9()+h20.getMonth9(),h19.getMonth10()+h20.getMonth10(),
-        h19.getMonth11()+h20.getMonth11(),h19.getMonth12()+h20.getMonth12(),h19.getSum()+h20.getSum()));
-        
+        hkfw006Model.add(new HKFW006StatisticModel("涡轮产品部", "合计", h19.getMonth1() + h20.getMonth1(), h19.getMonth2() + h20.getMonth2(), h19.getMonth3() + h20.getMonth3(), h19.getMonth4() + h20.getMonth4(),
+                h19.getMonth5() + h20.getMonth5(), h19.getMonth6() + h20.getMonth6(), h19.getMonth7() + h20.getMonth7(), h19.getMonth8() + h20.getMonth8(), h19.getMonth9() + h20.getMonth9(), h19.getMonth10() + h20.getMonth10(),
+                h19.getMonth11() + h20.getMonth11(), h19.getMonth12() + h20.getMonth12(), h19.getSum() + h20.getSum()));
+
     }
 
 }
