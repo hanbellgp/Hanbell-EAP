@@ -174,6 +174,10 @@ public class SHBERPAPM811 implements Serializable {
     @Size(max = 255)
     @Column(name = "formSerialNumber")
     private String formSerialNumber;
+    @Column(name = "sumivopsfs")
+    private Double sumIvopsfs;
+    @Column(name = "sumivomsfs")
+    private Double sumIvomsfs;
 
     public SHBERPAPM811() {
     }
@@ -605,6 +609,22 @@ public class SHBERPAPM811 implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.app.SHBERPAPM811[ oid=" + oid + " ]";
+    }
+
+    public Double getSumIvopsfs() {
+        return sumIvopsfs;
+    }
+
+    public void setSumIvopsfs(Double sumIvopsfs) {
+        this.sumIvopsfs = sumIvopsfs;
+    }
+
+    public Double getSumIvomsfs() {
+        return sumIvomsfs;
+    }
+
+    public void setSumIvomsfs(Double sumIvomsfs) {
+        this.sumIvomsfs = sumIvomsfs;
     }
 
 }

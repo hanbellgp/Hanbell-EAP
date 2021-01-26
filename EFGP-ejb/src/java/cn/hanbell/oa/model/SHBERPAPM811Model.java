@@ -64,6 +64,8 @@ public class SHBERPAPM811Model implements Serializable {
     private Double sum_bilnum8;
     private String bilno;
     private String vdrno;
+    private Double sumivopsfs;
+    private Double sumivomsfs;
 
     public SHBERPAPM811Model() {
         this.trapyh = "";
@@ -480,6 +482,22 @@ public class SHBERPAPM811Model implements Serializable {
 
     public void setSum_bilnum8(Double sum_bilnum8) {
         this.sum_bilnum8 = sum_bilnum8;
+    }
+
+    public Double getSumivopsfs() {
+        return sumivopsfs;
+    }
+
+    public void setSumivopsfs(Double sumivopsfs) {
+        this.sumivopsfs = sumivopsfs;
+    }
+
+    public Double getSumivomsfs() {
+        return sumivomsfs;
+    }
+
+    public void setSumivomsfs(Double sumivomsfs) {
+        this.sumivomsfs = sumivomsfs;
     }
 
 }

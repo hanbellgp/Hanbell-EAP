@@ -469,12 +469,12 @@ public class TimerBean {
                             eu.setBirthdayDate(e.getBirthDate());
                             eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
                             //HR中已离职
-                            if( e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1){
-                            eu.setSyncWeChatStatus("X");
-                            eu.setSyncWeChatDate(e.getLastModifiedDate());
-                            eu.setStatus("X");
-                            eu.setOptuserToSystem();
-                            eu.setOptdate(e.getLastModifiedDate());
+                            if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
+                                eu.setSyncWeChatStatus("X");
+                                eu.setSyncWeChatDate(e.getLastModifiedDate());
+                                eu.setStatus("X");
+                                eu.setOptuserToSystem();
+                                eu.setOptdate(e.getLastModifiedDate());
                                 eu.setBirthdayDate(null);
                                 eu.setWorkingAgeBeginDate(null);
                             }
@@ -1162,6 +1162,8 @@ public class TimerBean {
             BigDecimal sumtax;
             double sumbilnum8fs;
             double sumbilnum8;
+            double sumivopsfs;
+            double sumivomsfs;
             if (apmaphList != null && !apmaphList.isEmpty()) {
                 for (Apmaph h : apmaphList) {
                     apmapdList = apmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),
@@ -1177,6 +1179,8 @@ public class TimerBean {
                         sumtax = BigDecimal.ZERO;
                         sumbilnum8fs = 0.00;
                         sumbilnum8 = 0.00;
+                        sumivopsfs = 0.00;
+                        sumivomsfs = 0.00;
                         bilnoList = new ArrayList<>();
                         for (Apmapd d : apmapdList) {
                             i++;
@@ -1190,6 +1194,8 @@ public class TimerBean {
                             dm.setPric(d.getPric().toString());
                             dm.setPayqty(d.getPayqty().toString());
                             sumqty += d.getPayqty().doubleValue();
+                            sumivopsfs += d.getIvopsfs().doubleValue();
+                            sumivomsfs += d.getIvomsfs().doubleValue();
                             dm.setCoin(d.getCoin());
                             dm.setRatio(d.getRatio().toString());
                             ratio = d.getRatio().doubleValue();
@@ -1282,6 +1288,8 @@ public class TimerBean {
                         hm.setExpamtfs((double) Math.round(expamtfs * 100) / 100);
                         hm.setExpamt((double) Math.round(expamtfs * ratio * 100) / 100);
                         hm.setCompute_1(sumqty);
+                        hm.setSumivomsfs((double) Math.round(sumivomsfs * 100) / 100);
+                        hm.setSumivopsfs((double) Math.round(sumivopsfs * 100) / 100);
 
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("SHB_ERP_APM811", hm, details);
