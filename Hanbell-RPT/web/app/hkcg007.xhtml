@@ -130,12 +130,6 @@
                     </f:facet>
                     <h:outputText value="#{item.getPRKindValue()}"/>
                 </p:column>
-                <p:column styleClass="Wid5">
-                    <f:facet name="header">
-                        <h:outputText value="材料区分"/>
-                    </f:facet>
-                    <h:outputText value="#{item.getHmark1Value()}"/>
-                </p:column>
             </p:dataTable>
             <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="90%">
                 <p:dataTable  value="#{hkcg007ManagedBean.hkcg007DetailList}" var="entity" styleClass="tableList Mtop10" scrollable="true" scrollHeight="255">
@@ -185,6 +179,12 @@
                             <h:outputText value="采购员名称"/>
                         </f:facet>
                         <h:outputText value="#{entity.buyername}"/>
+                    </p:column>
+                    <p:column styleClass="Wid10">
+                        <f:facet name="header">
+                            <h:outputText value="采购总金额"/>
+                        </f:facet>
+                        <h:outputText value="#{entity.ctotamts}"/>
                     </p:column>
                 </p:dataTable>
             </p:dialog>

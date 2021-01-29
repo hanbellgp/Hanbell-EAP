@@ -5,6 +5,7 @@
  */
 package cn.hanbell.erp.entity;
 
+import cn.hanbell.oa.ejb.WorkFlowBean;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,6 +13,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -182,6 +186,29 @@ public class Invtrnh implements Serializable {
     private String sourceno1;
     @Column(name = "morpcode")
     private Character morpcode;
+
+    @ManyToOne(optional = true)
+    @JoinColumns({
+        @JoinColumn(name = "itnbr", referencedColumnName = "itnbr", insertable = false, updatable = false)
+    })
+    private Invmas invmas;
+
+    @ManyToOne(optional = true)
+    @JoinColumns({
+        @JoinColumn(name = "wareh", referencedColumnName = "wareh", insertable = false, updatable = false)
+    })
+    private Invwh invwh;
+
+    @ManyToOne(optional = true)
+    @JoinColumns({
+        @JoinColumn(name = "trtype", referencedColumnName = "trtype", insertable = false, updatable = false)
+    })
+    private Invdou invdou;
+//    @ManyToOne(optional = true)
+//    @JoinColumns({
+//        @JoinColumn(name = "depno", referencedColumnName = "depno", insertable = false, updatable = false)
+//    })
+//    private Misdept misdept;
 
     public Invtrnh() {
     }
@@ -518,5 +545,30 @@ public class Invtrnh implements Serializable {
     public void setWareh(String wareh) {
         this.wareh = wareh;
     }
+
+    public Invmas getInvmas() {
+        return invmas;
+    }
+
+    public void setInvmas(Invmas invmas) {
+        this.invmas = invmas;
+    }
+
+    public Invwh getInvwh() {
+        return invwh;
+    }
+
+    public void setInvwh(Invwh invwh) {
+        this.invwh = invwh;
+    }
+
+    public Invdou getInvdou() {
+        return invdou;
+    }
+
+    public void setInvdou(Invdou invdou) {
+        this.invdou = invdou;
+    }
+
 
 }

@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -137,6 +139,10 @@ public class HKCG007purDetail implements Serializable {
     @Column(name = "buyername")
     private String buyername;
 
+    //表头
+    @JoinColumn(name = "formSerialNumber", referencedColumnName = "formSerialNumber", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private HKCG007 hkcg007;
     public HKCG007purDetail() {
     }
 
@@ -439,6 +445,14 @@ public class HKCG007purDetail implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.HKCG007purDetail[ oid=" + oid + " ]";
+    }
+
+    public HKCG007 getHkcg007() {
+        return hkcg007;
+    }
+
+    public void setHkcg007(HKCG007 hkcg007) {
+        this.hkcg007 = hkcg007;
     }
 
 }
