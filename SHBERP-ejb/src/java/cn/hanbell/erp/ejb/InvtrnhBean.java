@@ -5,6 +5,7 @@
  */
 package cn.hanbell.erp.ejb;
 
+import cn.hanbell.erp.app.InvtrnhApplication;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Apmpyh;
 import cn.hanbell.erp.entity.Invclswah;
@@ -14,10 +15,12 @@ import cn.hanbell.erp.entity.Invtrnh;
 import cn.hanbell.erp.entity.InvtrnhPK;
 import cn.hanbell.erp.entity.Puracd;
 import cn.hanbell.erp.entity.Pursys;
+import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -250,6 +253,46 @@ public class InvtrnhBean extends SuperEJBForERP<Invtrnh> {
         } catch (Exception ex) {
             throw new RuntimeException("资料库查询最大数发生错误！");
         }
+    }
+
+    public List<Invtrnh> getInvtrnhByINV555(String facno, Date queryDateBegin, Date queryDateEnd, String queryno, String querytype, String querywareh, String querydept, String queryuser) {
+        setCompany(facno);
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT  invtrnh.*");
+        sql.append(" FROM invtrnh,invmas,invwh,invdou,invcls WHERE ( invmas.itnbr = invtrnh.itnbr ) and( invtrnh.facno = invwh.facno ) and ( invtrnh.prono = invwh.prono ) and ( invtrnh.wareh = invwh.wareh ) and ( invdou.trtype = invtrnh.trtype ) and ( invcls.itcls = invmas.itcls ) and  ( ( invdou.syscode = '10'  ) AND (invdou.reskind is not null AND");
+        sql.append(" ltrim(invdou.reskind) <> '') AND (invdou.iocode in ('1','2') OR invdou.iocode = '3'  and invdou.trtype in (select trntp from cstrul where facno = invtrnh.facno and avgco = 'Y')) AND invwh.costyn = 'Y' ) ");
+        sql.append(" and invtrnh.trdate>='").append(BaseLib.formatDate("yyyy-MM-dd HH:mm:ss", queryDateBegin)).append("'");
+        sql.append(" and invtrnh.trdate<='").append(BaseLib.formatDate("yyyy-MM-dd HH:mm:ss", queryDateEnd)).append("'");
+        sql.append(" and invtrnh.facno ='").append(facno).append("' and invtrnh.prono='1'");
+        if (!"".equals(queryno) && queryno != null) {
+            sql.append(" and invtrnh.trno in (").append(queryno).append(")");
+        }
+        if (!"".equals(querytype) && querytype != null) {
+            sql.append(" and invtrnh.trtype in (").append(querytype).append(")");
+        }
+        if (!"".equals(querywareh) && querywareh != null) {
+            sql.append(" and invtrnh.wareh in (").append(querywareh).append(")");
+        }
+        if (!"".equals(querydept) && querydept != null) {
+            sql.append(" and invtrnh.depno in (").append(querydept).append(")");
+        }
+        if (!"".equals(queryuser) && queryuser != null) {
+            sql.append(" and invtrnh.userno in (").append(queryuser).append(")");
+        }
+        try {
+
+            Query query = getEntityManager().createNativeQuery(sql.toString(), Invtrnh.class);
+            List<Invtrnh> list = query.getResultList();
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getCompanyName(String name) {
+        WorkFlowBean WorkFlowBean = new WorkFlowBean();
+        return WorkFlowBean.getCompanyName(name);
     }
 
 }

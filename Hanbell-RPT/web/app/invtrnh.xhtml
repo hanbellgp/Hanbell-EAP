@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="content">
+
+        <style>
+            body .ui-datatable tbody tr.ui-widget-content {
+                height: 62px;
+            }
+        </style>
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">查询条件</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column><h:outputLabel value="公司别" for="queryfacno" /></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="queryBuyType" value="#{invtrnhManagedBean.queryfacno}" title="公司别" >
+                            <f:selectItem itemLabel="上海汉钟" itemValue="C"/>
+                            <f:selectItem itemLabel="广州" itemValue="G"/>
+                            <f:selectItem itemLabel="台湾" itemValue="A"/>
+                            <f:selectItem itemLabel="济南" itemValue="J"/>
+                            <f:selectItem itemLabel="南京" itemValue="N"/>
+                            <f:selectItem itemLabel="重庆" itemValue="C4"/>
+                            <f:selectItem itemLabel="上海柯茂" itemValue="K"/>
+                            <f:selectItem itemLabel="浙江柯茂" itemValue="E"/>
+                            <f:selectItem itemLabel="浙江汉声" itemValue="H"/>
+                            <f:selectItem itemLabel="安徽汉扬" itemValue="Y"/>
+                            <f:selectItem itemLabel="真空技术" itemValue="L"/>
+                            <f:selectItem itemLabel="世纪东元" itemValue="Q"/>
+                            <f:selectItem itemLabel="顺德" itemValue="W"/>
+                            <f:selectItem itemLabel="香港" itemValue="X"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column><h:outputLabel value="库存异动单号" for="queryno" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryno"  value="#{invtrnhManagedBean.queryno}"  placeholder="可多个数据查询。使用,隔开" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="单据类别" for="querytype" /></p:column>
+                    <p:column>
+                        <p:inputText id="querytype"  value="#{invtrnhManagedBean.querytype}"  placeholder="可多个数据查询。使用,隔开" />
+                    </p:column>
+                    <p:column><h:outputLabel value="仓库代号" for="querywareh" /></p:column>
+                    <p:column>
+                        <p:inputText id="querywareh"  value="#{invtrnhManagedBean.querywareh}"  placeholder="可多个数据查询。使用,隔开"  />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="对象编号" for="querydept" /></p:column>
+                    <p:column>
+                        <p:inputText id="querydept"  value="#{invtrnhManagedBean.querydept}"  placeholder="可多个数据查询。使用,隔开"  />
+                    </p:column>
+                    <p:column><h:outputLabel value="录入人员" for="queryuser" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryuser"  value="#{invtrnhManagedBean.queryuser}"  placeholder="可多个数据查询。使用,隔开"  />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="交易条件始" for="queryDateBegin" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateBegin" value="#{invtrnhManagedBean.queryDateBegin}" title="交易条件始" pattern="yyyy/MM/dd"/>
+                    </p:column>
+                    <p:column><h:outputLabel value="交易条件止" for="queryDateEnd" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryDateEnd" value="#{invtrnhManagedBean.queryDateEnd}" title="交易条件止" pattern="yyyy/MM/dd"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{invtrnhManagedBean.init()}"  icon="ui-icon-search"  update=":formList"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnPrint" value="导出" actionListener="#{invtrnhManagedBean.print()}" icon="ui-icon-print"  update=":formList"/>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{invtrnhManagedBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{invtrnhManagedBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable value="#{invtrnhManagedBean.list}"  var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="15,30,45" lazy="true">
+                <f:facet name="header">
+                    #{invtrnhManagedBean.facnoView}INV555库存交易明细表
+                </f:facet>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="交易日期"/>
+                    </f:facet>
+                    <h:outputText value="#{item.trdate}">
+                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="单据别"/>
+                    </f:facet>
+                    <h:outputText value="#{item.invtrnhPK.trtype}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="单据别名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.invdou.typedsc}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="公司别"/>
+                    </f:facet>
+                    <h:outputText value="#{item.invtrnhPK.facno}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="生产地"/>
+                    </f:facet>
+                    <h:outputText value="#{item.invtrnhPK.prono}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="对象别"/>
+                    </f:facet>
+                    <h:outputText value="#{item.depno}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="交易单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.invtrnhPK.trno}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="序号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.invtrnhPK.trseq}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="件号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itnbr}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="件号名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.invmas.itdsc}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="品号大类"/>
+                    </f:facet>
+                    <h:outputText value="#{item.invmas.invcls.itcls}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="品号大类名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.invmas.invcls.clsdsc}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="库号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.wareh}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="库号名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.invwh.whdsc}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="数量"/>
+                    </f:facet>
+                    <h:outputText value="#{item.trnqy1}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="单位"/>
+                    </f:facet>
+                    <h:outputText value="#{item.unmsr1}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="金额"/>
+                    </f:facet>
+                    <h:outputText value="#{item.tramt}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="录入人员"/>
+                    </f:facet>
+                    <h:outputText value="#{item.userno}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="出入库"/>
+                    </f:facet>
+                    <h:outputText value="#{item.iocode}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="备注"/>
+                    </f:facet>
+                    <h:outputText value="#{item.dmark1}"/>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnLoad,btnPrint,btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+</ui:composition>
