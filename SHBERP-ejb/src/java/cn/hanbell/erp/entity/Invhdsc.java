@@ -30,7 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Invhdsc.findByMark1", query = "SELECT i FROM Invhdsc i WHERE i.mark1 = :mark1"),
     @NamedQuery(name = "Invhdsc.findByMark2", query = "SELECT i FROM Invhdsc i WHERE i.mark2 = :mark2"),
     @NamedQuery(name = "Invhdsc.findByMark3", query = "SELECT i FROM Invhdsc i WHERE i.mark3 = :mark3"),
-    @NamedQuery(name = "Invhdsc.findByMark4", query = "SELECT i FROM Invhdsc i WHERE i.mark4 = :mark4")})
+    @NamedQuery(name = "Invhdsc.findByMark4", query = "SELECT i FROM Invhdsc i WHERE i.mark4 = :mark4"),
+    @NamedQuery(name = "Invhdsc.findByFacnoAndPronoAndTrno", query = "SELECT i FROM Invhdsc i WHERE i.invhdscPK.facno = :facno AND i.invhdscPK.prono = :prono AND i.invhdscPK.trno = :trno")
+})
 public class Invhdsc implements Serializable {
 
     private static final long serialVersionUID = 1L;

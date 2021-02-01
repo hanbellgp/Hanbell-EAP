@@ -256,7 +256,6 @@ public class InvtrnhBean extends SuperEJBForERP<Invtrnh> {
     }
 
     public List<Invtrnh> getInvtrnhByINV555(String facno, Date queryDateBegin, Date queryDateEnd, String queryno, String querytype, String querywareh, String querydept, String queryuser) {
-        setCompany(facno);
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT  invtrnh.*");
         sql.append(" FROM invtrnh,invmas,invwh,invdou,invcls WHERE ( invmas.itnbr = invtrnh.itnbr ) and( invtrnh.facno = invwh.facno ) and ( invtrnh.prono = invwh.prono ) and ( invtrnh.wareh = invwh.wareh ) and ( invdou.trtype = invtrnh.trtype ) and ( invcls.itcls = invmas.itcls ) and  ( ( invdou.syscode = '10'  ) AND (invdou.reskind is not null AND");
