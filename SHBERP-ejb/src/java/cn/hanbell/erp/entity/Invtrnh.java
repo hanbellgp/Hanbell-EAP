@@ -570,5 +570,20 @@ public class Invtrnh implements Serializable {
         this.invdou = invdou;
     }
 
+    public String getIocodeValue(Character ioccode) {
+        switch (ioccode) {
+            case '0':
+                return "期初";
+            case '1':
+                return "入库";
+            case '2':
+                return "出库";
+            case '3':
+                return "调拨";
+            case 'Z':
+                return "期末";
+        }
+        return "";
+    }
 
 }

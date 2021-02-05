@@ -5,14 +5,14 @@
  */
 package cn.hanbell.rpt.control;
 
+import cn.hanbell.erp.ejb.InvhdscBean;
 import cn.hanbell.erp.ejb.InvtrnhBean;
 import cn.hanbell.erp.ejb.MiscodeBean;
 import cn.hanbell.erp.ejb.MisdeptBean;
+import cn.hanbell.erp.entity.Invhdsc;
 import cn.hanbell.erp.entity.Invtrnh;
 import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.erp.entity.Misdept;
-import cn.hanbell.oa.entity.HKCG007;
-import cn.hanbell.oa.entity.HKCG007purDetail;
 import cn.hanbell.rpt.lazy.InvtrnhModel;
 import cn.hanbell.rpt.web.SuperQueryBean;
 import com.lightshell.comm.BaseLib;
@@ -25,7 +25,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -50,6 +49,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
     private MisdeptBean misdeptBean;
     @EJB
     private MiscodeBean miscodeBean;
+    @EJB
+    private InvhdscBean invhdscBean;
     private String queryfacno;
     private String queryno;
     private String querytype;
@@ -91,11 +92,19 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         this.querydept = "";
         this.queryuser = "";
         this.facnoView = invtrnhBean.getCompanyName(this.queryfacno);
+        invtrnhBean.setCompany("C");
+        misdeptBean.setCompany("C");
+        miscodeBean.setCompany("C");
+        invhdscBean.setCompany("C");
     }
 
     @Override
     public void query() {
         this.facnoView = invtrnhBean.getCompanyName(this.queryfacno);
+        invtrnhBean.setCompany(queryfacno);
+        misdeptBean.setCompany(queryfacno);
+        miscodeBean.setCompany(queryfacno);
+        invhdscBean.setCompany(queryfacno);
         list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
     }
 
@@ -110,7 +119,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                 String pathString = new String(filePath.concat("rpt/"));
                 File file = new File(pathString, "库存异动单模板.xlsx");
                 is = new FileInputStream(file);
-                this.fileName =  this.facnoView+"INVTRNH" + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + ".xlsx";
+                this.fileName = this.facnoView + "INVTRNH" + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + ".xlsx";
                 this.fileFullName = this.reportOutputPath + this.fileName;
                 Workbook wb = WorkbookFactory.create(is);
                 CellStyle cellStyle = wb.createCellStyle();
@@ -121,7 +130,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                 cellStyle.setBorderTop(border);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
                 Sheet sheet = wb.getSheetAt(0);
-                wb.setSheetName(0, this.facnoView+sdf.format(new Date()) + "库存异动单");
+                wb.setSheetName(0, this.facnoView + sdf.format(new Date()) + "库存异动单");
                 Row row = null;
                 int i = 1;
                 //打印单头档
@@ -152,6 +161,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     Cell cell21 = row.createCell(21);
                     Cell cell22 = row.createCell(22);
                     Cell cell23 = row.createCell(23);
+                    cell.setCellStyle(cellStyle);
                     cell1.setCellStyle(cellStyle);
                     cell2.setCellStyle(cellStyle);
                     cell3.setCellStyle(cellStyle);
@@ -195,10 +205,27 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     cell17.setCellValue(h.getUnmsr1() != null ? String.valueOf(h.getUnmsr1()) : "");
                     cell18.setCellValue(h.getTramt() != null ? String.valueOf(h.getTramt()) : "");
                     cell19.setCellValue(h.getUserno() != null ? h.getUserno() : "");
-                    cell20.setCellValue(h.getIocode() != null ? String.valueOf(h.getIocode()) : "");
-                    cell21.setCellValue(h.getDmark1() != null ? h.getDmark1() : "");
-                    cell22.setCellValue(h.getRescode() != null ? String.valueOf(h.getRescode()) : "");
+                    cell20.setCellValue(h.getIocode() != null ? h.getIocodeValue(h.getIocode()) : "");
+                    Invhdsc invdsc = invhdscBean.findByFacnoAndPronoAndTrno(h.getInvtrnhPK().getFacno(), h.getInvtrnhPK().getProno(), h.getInvtrnhPK().getTrno());
+                    StringBuffer invdscBuffer = new StringBuffer(";;");
+                    if (invdsc != null) {
+                        if (invdsc.getMark1() != null && !"".equals(invdsc.getMark1())) {
+                            invdscBuffer.append(invdsc.getMark1()).append(";");
+                        }
+                        if (invdsc.getMark2() != null && !"".equals(invdsc.getMark2())) {
+                            invdscBuffer.append(invdsc.getMark2()).append(";");
+                        }
+                        if (invdsc.getMark3() != null && !"".equals(invdsc.getMark3())) {
+                            invdscBuffer.append(invdsc.getMark3()).append(";");
+                        }
+                        if (invdsc.getMark4() != null && !"".equals(invdsc.getMark4())) {
+                            invdscBuffer.append(invdsc.getMark4()).append(";");
+                        }
+                        invdscBuffer.append(";;");
+                        cell21.setCellValue(invdscBuffer.toString());
+                    }
                     Miscode miscode = miscodeBean.findByPK("IK", h.getRescode());
+                    cell22.setCellValue(h.getRescode() != null ? "IK" : "");
                     cell23.setCellValue(miscode != null ? miscode.getCusds() : "");
                     i++;
                 }

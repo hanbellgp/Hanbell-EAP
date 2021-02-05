@@ -208,13 +208,7 @@
                     <f:facet name="header">
                         <h:outputText value="出入库"/>
                     </f:facet>
-                    <h:outputText value="#{item.iocode}"/>
-                </p:column>
-                <p:column styleClass="Wid5">
-                    <f:facet name="header">
-                        <h:outputText value="备注"/>
-                    </f:facet>
-                    <h:outputText value="#{item.dmark1}"/>
+                    <h:outputText value="#{item.getIocodeValue(item.getIocode())}"/>
                 </p:column>
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
