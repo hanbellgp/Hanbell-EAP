@@ -49,6 +49,18 @@ public class ManwipbalBean extends SuperEJBForERP<Manwipbal> {
         }
     }
 
+    public List<Manwipbal> findByManno(String facno, String manno) {
+        String jpql = "SELECT m FROM Manwipbal m WHERE m.manwipbalPK.facno = :facno AND m.manwipbalPK.manno = :manno ORDER BY m.manwipbalPK.facno,m.manwipbalPK.prono,m.manwipbalPK.manno,m.seqnr ";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("facno", facno);
+        query.setParameter("manno", manno);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public BigDecimal getWIPQuantity(String facno, String itnbr) {
         BigDecimal qty = BigDecimal.ZERO;
         List<Manwipbal> manwipbalList = findByItnbr(facno, itnbr);
