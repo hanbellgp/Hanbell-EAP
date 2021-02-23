@@ -1155,9 +1155,9 @@ public class TimerBean {
             List<String> bilnoList;
             int i;
             double sumqty;
-            double expamtfs;
-            double ratio;
-            double sumapamtfs;
+            BigDecimal expamtfs;
+            BigDecimal ratio;
+            BigDecimal sumapamtfs;
             BigDecimal sumtaxfs;
             BigDecimal sumtax;
             double sumbilnum8fs;
@@ -1172,9 +1172,9 @@ public class TimerBean {
                         detailList.clear();// 清除前面的资料
                         i = 0;
                         sumqty = 0.00;
-                        expamtfs = 0.00;
-                        ratio = 1;
-                        sumapamtfs = 0.00;
+                        expamtfs = BigDecimal.ZERO;
+                        ratio = BigDecimal.ONE;
+                        sumapamtfs = BigDecimal.ZERO;
                         sumtaxfs = BigDecimal.ZERO;
                         sumtax = BigDecimal.ZERO;
                         sumbilnum8fs = 0.00;
@@ -1198,12 +1198,12 @@ public class TimerBean {
                             sumivomsfs += d.getIvomsfs().doubleValue();
                             dm.setCoin(d.getCoin());
                             dm.setRatio(d.getRatio().toString());
-                            ratio = d.getRatio().doubleValue();
+                            ratio = d.getRatio();
                             dm.setOgdkid(d.getOgdkid());
                             dm.setBilno(d.getBilno());
                             dm.setAcpamtfs(d.getAcpamtfs().toString());
                             if (dm.getTrapyh().equals("2")) {
-                                expamtfs += d.getAcpamtfs().doubleValue();
+                                expamtfs = expamtfs.add(d.getAcpamtfs());
                             }
                             dm.setIvopsfs(d.getIvopsfs().toString());
                             dm.setIvomsfs(d.getIvoms().toString());
@@ -1213,9 +1213,8 @@ public class TimerBean {
                             dm.setComApamtfs((d.getAcpamtfs().subtract(d.getPreamtfs()).subtract(d.getTemamtfs())
                                     .add(d.getIvopsfs()).subtract(d.getIvomsfs()).subtract(d.getLosamtfs()))
                                     .toString());
-                            sumapamtfs += (d.getAcpamtfs().subtract(d.getPreamtfs()).subtract(d.getTemamtfs())
-                                    .add(d.getIvopsfs()).subtract(d.getIvomsfs()).subtract(d.getLosamtfs()))
-                                    .doubleValue();
+                            sumapamtfs = sumapamtfs.add(d.getAcpamtfs().subtract(d.getPreamtfs()).subtract(d.getTemamtfs())
+                                    .add(d.getIvopsfs()).subtract(d.getIvomsfs()).subtract(d.getLosamtfs()));
                             if (d.getDmark() == null || d.getDmark().isEmpty() || d.getDmark().length() == 0
                                     || d.getDmark().equals("null")) {
                                 dm.setDmark("");
@@ -1275,18 +1274,18 @@ public class TimerBean {
                             hm.setHmark(h.getHmark());
                         }
                         // 表单下方合计栏位(取2位小数)
-                        hm.setSum_apamtfs((double) Math.round(sumapamtfs * 100) / 100);
-                        hm.setSum_apamt((double) Math.round(ratio * sumapamtfs * 100) / 100);
+                        hm.setSum_apamtfs(sumapamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setSum_apamt(sumapamtfs.multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP));
                         hm.setSum_bilnum8fs((double) Math.round(sumbilnum8fs * 100) / 100);
                         hm.setSum_bilnum8((double) Math.round(sumbilnum8 * 100) / 100);
                         hm.setSum_taxfs(sumtaxfs.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
                         hm.setSum_tax(sumtax.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 
-                        hm.setTotalfs(hm.getSum_apamtfs() + hm.getSum_taxfs() - hm.getSum_bilnum8fs());
-                        hm.setTotalfs((double) Math.round(hm.getTotalfs() * 100) / 100);
-                        hm.setTotal((double) Math.round(ratio * hm.getTotalfs() * 100) / 100);
-                        hm.setExpamtfs((double) Math.round(expamtfs * 100) / 100);
-                        hm.setExpamt((double) Math.round(expamtfs * ratio * 100) / 100);
+                        hm.setTotalfs(hm.getSum_apamtfs().add(BigDecimal.valueOf(hm.getSum_taxfs())).subtract(BigDecimal.valueOf(hm.getSum_bilnum8fs())));
+                        hm.setTotalfs(hm.getTotalfs().setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setTotal(hm.getTotalfs().multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setExpamtfs(expamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setExpamt(expamtfs.multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP));
                         hm.setCompute_1(sumqty);
                         hm.setSumivomsfs((double) Math.round(sumivomsfs * 100) / 100);
                         hm.setSumivopsfs((double) Math.round(sumivopsfs * 100) / 100);

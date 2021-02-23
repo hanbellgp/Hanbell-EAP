@@ -5,7 +5,6 @@
  */
 package cn.hanbell.erp.ejb;
 
-import cn.hanbell.erp.app.InvtrnhApplication;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Apmpyh;
 import cn.hanbell.erp.entity.Invclswah;
