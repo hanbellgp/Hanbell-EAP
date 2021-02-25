@@ -999,6 +999,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 eqpRepairTemp.setPid(entity.getPid());
                 eqpRepairTemp.setCompany(entity.getCompany());
                 eqpRepairTemp.setSeq(maxIndex);
+                eqpRepairTemp.setCurnode("课长审核");
                 eqpRepairTemp.setUserno(entity.getUserno());
                 eqpRepairTemp.setContenct(entity.getContenct());
                 eqpRepairTemp.setNote(entity.getNote());
@@ -1061,6 +1062,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 eqpRepairTemp.setCompany(entity.getCompany());
                 eqpRepairTemp.setPid(entity.getPid());
                 eqpRepairTemp.setSeq(maxIndex);
+                eqpRepairTemp.setCurnode("经理审核");
                 eqpRepairTemp.setUserno(entity.getUserno());
                 eqpRepairTemp.setContenct(entity.getContenct());
                 eqpRepairTemp.setNote(entity.getNote());
@@ -1806,6 +1808,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             initDtaRes.add(repairReasonListRes);
             initDtaRes.add(hitchUrgencyListRes);
             initDtaRes.add(repairAreaListRes);
+            initDtaRes.add(new Date());
             
            return initDtaRes;
         } else {
