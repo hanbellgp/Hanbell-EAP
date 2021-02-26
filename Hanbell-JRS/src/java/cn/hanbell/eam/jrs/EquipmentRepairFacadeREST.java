@@ -579,8 +579,17 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 {
                     equipInvenTemp = equipmentrepairBean.findById(entity.getId());
                     List<SysCode> sysLaborCostList = new ArrayList<SysCode>();
+                    String currentStatus = "";
                     if(equipInvenTemp != null)
                     {
+                        currentStatus = equipInvenTemp.getRstatus();
+                        if(currentStatus != null && currentStatus.equals("30"))
+                        {
+                            currentStatus = "维修完成";
+                        }
+                        else
+                            currentStatus = "维修验收";
+                        
                         if(entity.getHitchdutyuser() != null)
                         {
                             equipInvenTemp.setRstatus("50");
@@ -719,7 +728,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         eqpRepairTemp.setPid(entity.getFormid());
                         eqpRepairTemp.setSeq(maxIndex);
                         eqpRepairTemp.setUserno(equipInvenTemp.getServiceuser());
+                        eqpRepairTemp.setCurnode(currentStatus);
                         eqpRepairTemp.setContenct("发起验收");
+                        eqpRepairTemp.setNote(entity.getCfmuser());
                         eqpRepairTemp.setStatus("N");
                         eqpRepairTemp.setCredate(new Date());
 
@@ -1125,6 +1136,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 eqpRepairTemp.setPid(entity.getPid());
                 eqpRepairTemp.setSeq(maxIndex);
                 eqpRepairTemp.setUserno(entity.getUserno());
+                eqpRepairTemp.setCurnode("责任回复");
                 eqpRepairTemp.setContenct(entity.getContenct());
                 eqpRepairTemp.setNote(entity.getNote());
                 eqpRepairTemp.setStatus("N");
@@ -1156,8 +1168,13 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 List<EquipmentRepair> equipInvenList = new ArrayList<EquipmentRepair>();
                 equipInvenList = equipmentrepairBean.findByFormid(entity.getPid());
                 String rStatus = equipInvenList.get(0).getRstatus();
+                String currentStatus = "";
                 if(rStatus.compareTo("20") >= 0 && rStatus.compareTo("30") < 0 && (!rStatus.equals("28")))
                 {
+                    if(rStatus.equals("20"))
+                        currentStatus = "维修到达";
+                    else
+                        currentStatus = "维修中";
                     equipInvenList.get(0).setRstatus("28");
                     equipInvenList.get(0).setStatus("N");
                     equipmentrepairBean.persist(equipInvenList.get(0));
@@ -1180,6 +1197,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 eqpRepairTemp.setPid(entity.getPid());
                 eqpRepairTemp.setSeq(maxIndex);
                 eqpRepairTemp.setUserno(entity.getUserno());
+                eqpRepairTemp.setCurnode(currentStatus);
                 eqpRepairTemp.setContenct(entity.getContenct());
                 eqpRepairTemp.setNote(entity.getNote());
                 eqpRepairTemp.setStatus("N");
@@ -1261,6 +1279,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 eqpRepairTemp.setPid(entity.getPid());
                 eqpRepairTemp.setSeq(maxIndex);
                 eqpRepairTemp.setUserno(entity.getUserno());
+                eqpRepairTemp.setCurnode("维修暂停");
                 eqpRepairTemp.setContenct(entity.getContenct());
                 eqpRepairTemp.setNote(entity.getNote());
                 eqpRepairTemp.setStatus("N");
@@ -1319,6 +1338,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 eqpRepairHisTemp.setPid(eqpRepairTemp.getFormid());
                 eqpRepairHisTemp.setSeq(maxIndex);
                 eqpRepairHisTemp.setUserno(entity.getRepairuser());
+                eqpRepairHisTemp.setCurnode("已报修");
                 eqpRepairHisTemp.setContenct("转派维修人");
                 eqpRepairHisTemp.setNote(entity.getRemark());
                 eqpRepairHisTemp.setStatus("N");
