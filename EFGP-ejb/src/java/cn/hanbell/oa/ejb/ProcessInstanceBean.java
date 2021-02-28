@@ -84,4 +84,50 @@ public class ProcessInstanceBean extends SuperEJBForEFGP<ProcessInstance> {
         return "";
     }
 
+    /**
+     * 根据工号分类获取当前工号下有多少流程未处理。
+     *
+     * @param dateBegin
+     * @param dateEnd
+     * @return
+     */
+    public List<Object[]> getWorkAssignmentGroupByUserid(String dateBegin, String dateEnd) {
+        StringBuffer sql = new StringBuffer("SELECT fei.id,fei.username,count(*) as '数量'");
+        sql.append(" FROM (");
+        sql.append("SELECT DISTINCT ");
+        sql.append(" ProcessInstance.serialNumber,");
+        sql.append(" ProcessInstance.currentState AS processState,");
+        sql.append(" ProcessInstance.OID AS processOID,");
+        sql.append(" ParticipantActivityInstance.definitionId, Users.id,");
+        sql.append(" Users.userName As username");
+        sql.append(" FROM ProcessInstance, ParticipantActivityInstance, WorkItem,");
+        sql.append(" WorkAssignment, Users");
+        sql.append(" WHERE");
+        sql.append(" ParticipantActivityInstance.contextOID = ProcessInstance.contextOID");
+        sql.append(" AND (ParticipantActivityInstance.currentState = 0 OR");
+        sql.append(" ParticipantActivityInstance.currentState = 1 OR");
+        sql.append(" ParticipantActivityInstance.currentState = 6) AND");
+        sql.append(" WorkItem.containerOID = ParticipantActivityInstance.OID AND");
+        sql.append(" (WorkItem.currentState = 0 OR");
+        sql.append(" WorkItem.currentState = 1) AND");
+        sql.append(" WorkAssignment.workItemOID = WorkItem.OID AND");
+        sql.append(" WorkAssignment.isNotice = 0 AND");
+        sql.append(" WorkAssignment.assigneeOID = Users.OID AND");
+        sql.append(" WorkItem.createdTime>='").append(dateBegin).append("' AND");
+        //获取最后一个时间点的时候在那个时间过的关卡也要被记录下来
+        if("18:00:00.000".equals(dateEnd.split(" ")[1])||"22:00:00.000".equals(dateEnd.split(" ")[1])){
+            sql.append(" WorkItem.createdTime<='").append(dateEnd).append("' AND");
+        }else{
+            sql.append(" WorkItem.createdTime<'").append(dateEnd).append("'");
+        }
+        sql.append(") as fei group by fei.id,fei.username");
+        try {
+            Query query=getEntityManager().createNativeQuery(sql.toString());
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
