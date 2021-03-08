@@ -7,6 +7,8 @@ package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.Functions;
+import java.util.List;
+import java.util.function.Function;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -38,4 +40,15 @@ public class FunctionsBean extends SuperEJBForEFGP<Functions> {
         }
     }
 
+    public Functions findByOccupantOIDAndisMain(String occupantOID, boolean isMain) {
+        try {
+            Query q=getEntityManager().createNamedQuery("Functions.findByUserOID");
+            q.setParameter("userOID", occupantOID);
+            return (Functions)q.getSingleResult();
+            
+        } catch (Exception e) {
+         
+            return null;
+        }
+    }
 }
