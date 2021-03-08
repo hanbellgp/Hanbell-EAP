@@ -16,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,12 +34,12 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  */
 @ManagedBean(name = "hkjh006ManagedBean")
 @javax.faces.bean.ViewScoped
-public class HKJH006ManagedBean1 extends SuperQueryBean<HKJH006> {
+public class HKJH006ManagedBean extends SuperQueryBean<HKJH006> {
 
     @EJB
     private HKJH006Bean hkjh006Bean;
 
-    public HKJH006ManagedBean1() {
+    public HKJH006ManagedBean() {
         super(HKJH006.class);
     }
 
@@ -219,9 +218,5 @@ public class HKJH006ManagedBean1 extends SuperQueryBean<HKJH006> {
 
     public void setList(List<Object[]> list) {
         this.list = list;
-    }
-
-    public void maginDeptName() {
-
     }
 }
