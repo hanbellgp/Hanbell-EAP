@@ -92,7 +92,7 @@ public class ProcessInstanceBean extends SuperEJBForEFGP<ProcessInstance> {
      * @return
      */
     public List<Object[]> getWorkAssignmentGroupByUserid(String dateBegin, String dateEnd) {
-        StringBuffer sql = new StringBuffer("SELECT fei.id,fei.username,count(*) as '数量'");
+        StringBuffer sql = new StringBuffer("SELECT fei.id,fei.username,count(*) as 'count'");
         sql.append(" FROM (");
         sql.append("SELECT DISTINCT ");
         sql.append(" ProcessInstance.serialNumber,");
@@ -115,19 +115,19 @@ public class ProcessInstanceBean extends SuperEJBForEFGP<ProcessInstance> {
         sql.append(" WorkAssignment.assigneeOID = Users.OID AND");
         sql.append(" WorkItem.createdTime>='").append(dateBegin).append("' AND");
         //获取最后一个时间点的时候在那个时间过的关卡也要被记录下来
-        if("18:00:00.000".equals(dateEnd.split(" ")[1])||"22:00:00.000".equals(dateEnd.split(" ")[1])){
-            sql.append(" WorkItem.createdTime<='").append(dateEnd).append("' AND");
-        }else{
+        if ("18:00:00.000".equals(dateEnd.split(" ")[1]) || "22:00:00.000".equals(dateEnd.split(" ")[1])) {
+            sql.append(" WorkItem.createdTime<='").append(dateEnd).append("'");
+        } else {
             sql.append(" WorkItem.createdTime<'").append(dateEnd).append("'");
         }
         sql.append(") as fei group by fei.id,fei.username");
         try {
-            Query query=getEntityManager().createNativeQuery(sql.toString());
-            return query.getResultList();
+            Query query = getEntityManager().createNativeQuery(sql.toString());
+            List<Object[]> res = query.getResultList();
+            return res;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-
 }
