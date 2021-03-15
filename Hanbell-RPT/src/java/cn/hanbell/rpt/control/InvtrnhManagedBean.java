@@ -100,6 +100,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         misdeptBean.setCompany("C");
         miscodeBean.setCompany("C");
         invhdscBean.setCompany("C");
+        cdrcusBean.setCompany("C");
     }
 
     @Override
@@ -109,6 +110,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         misdeptBean.setCompany(queryfacno);
         miscodeBean.setCompany(queryfacno);
         invhdscBean.setCompany(queryfacno);
+        cdrcusBean.setCompany(queryfacno);
         list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
     }
 
