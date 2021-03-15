@@ -5,10 +5,12 @@
  */
 package cn.hanbell.rpt.control;
 
+import cn.hanbell.erp.ejb.CdrcusBean;
 import cn.hanbell.erp.ejb.InvhdscBean;
 import cn.hanbell.erp.ejb.InvtrnhBean;
 import cn.hanbell.erp.ejb.MiscodeBean;
 import cn.hanbell.erp.ejb.MisdeptBean;
+import cn.hanbell.erp.entity.Cdrcus;
 import cn.hanbell.erp.entity.Invhdsc;
 import cn.hanbell.erp.entity.Invtrnh;
 import cn.hanbell.erp.entity.Miscode;
@@ -51,6 +53,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
     private MiscodeBean miscodeBean;
     @EJB
     private InvhdscBean invhdscBean;
+    @EJB
+    private CdrcusBean cdrcusBean;
     private String queryfacno;
     private String queryno;
     private String querytype;
@@ -96,6 +100,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         misdeptBean.setCompany("C");
         miscodeBean.setCompany("C");
         invhdscBean.setCompany("C");
+        cdrcusBean.setCompany("C");
     }
 
     @Override
@@ -105,6 +110,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         misdeptBean.setCompany(queryfacno);
         miscodeBean.setCompany(queryfacno);
         invhdscBean.setCompany(queryfacno);
+        cdrcusBean.setCompany(queryfacno);
         list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
     }
 
@@ -192,7 +198,12 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     cell5.setCellValue(h.getInvtrnhPK().getProno() != null ? h.getInvtrnhPK().getProno() : "");
                     cell6.setCellValue(h.getDepno() != null ? h.getDepno() : "");
                     Misdept m = misdeptBean.findByDepno(h.getDepno());
-                    cell7.setCellValue(m != null ? m.getDepname() : "");
+                    if (m == null) {
+                        Cdrcus cdrcus = cdrcusBean.findByCusno(h.getDepno());
+                        cell7.setCellValue(cdrcus != null ? cdrcus.getCusna() : "");
+                    } else {
+                        cell7.setCellValue(m != null ? m.getDepname() : "");
+                    }
                     cell8.setCellValue(h.getInvtrnhPK().getTrno() != null ? h.getInvtrnhPK().getTrno() : "");
                     cell9.setCellValue(String.valueOf(h.getInvtrnhPK().getTrseq()));
                     cell10.setCellValue(h.getItnbr() != null ? h.getItnbr() : "");
