@@ -130,6 +130,7 @@ import cn.hanbell.erp.entity.Puracd;
 import cn.hanbell.erp.entity.Purach;
 import cn.hanbell.erp.entity.Purhask;
 import cn.hanbell.oa.ejb.HKCG007Bean;
+import cn.hanbell.oa.ejb.HKCG011Bean;
 import cn.hanbell.oa.ejb.HKCG016Bean;
 import cn.hanbell.oa.ejb.HKCW002Bean;
 import cn.hanbell.oa.ejb.HKFW006Bean;
@@ -157,6 +158,7 @@ import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.ejb.VHTV002Bean;
 import cn.hanbell.oa.ejb.WARMI05Bean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
+import cn.hanbell.oa.entity.HKCG011;
 import cn.hanbell.oa.entity.HKCG016;
 import cn.hanbell.oa.entity.HKCG019;
 import cn.hanbell.oa.entity.HKCG020;
@@ -279,6 +281,8 @@ public class EAPWebService {
     private WorkFlowBean workFlowBean;
     @EJB
     private HKCG007Bean hkcg007Bean;
+    @EJB
+    private HKCG011Bean hkcg011Bean;
     @EJB
     private HKCG016Bean hkcg016Bean;
     @EJB
@@ -3030,6 +3034,31 @@ public class EAPWebService {
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "verifyEAMStationeryDistributeByOAHKGL060", psn), ex);
             throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateEVendorEvaluateByOAHKCG011")
+    public String updateEVendorEvaluateByOAHKCG011(@WebParam(name = "psn") String psn, @WebParam(name = "URL") String url) {
+        Boolean ret = false;
+        try {
+            HKCG011 p = hkcg011Bean.findByPSN(psn);
+            if (p == null) {
+                throw new NullPointerException("updateEVendorEvaluateByOAHKCG011找不到流程序号:" + psn);
+            }
+            // status: 1代表撤销/终止 ，3代表完成
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("Code", "200");
+            jsonObject.put("Message", "OA审核完成");
+            jsonObject.put("Data", psn);
+            String response = ecpurvdrBean.ECPostBack(url, jsonObject);
+            ret = !(response == null || "".equals(response));
+        } catch (NullPointerException | JSONException ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateEVendorEvaluateByOAHKCG011", psn), ex);
         }
         if (ret) {
             return "200";
