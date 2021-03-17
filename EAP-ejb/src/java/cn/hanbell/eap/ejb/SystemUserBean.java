@@ -45,7 +45,7 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             if (entity.getTel() != null && !"".equals(entity.getTel())) {
                 job.add("telephone", entity.getTel());
             }
-            if(isUpdateAlias(entity.getJob())&&entity.getJob()!=null &&!"".equals(entity.getJob())){
+            if(entity.getJob()!=null &&!"".equals(entity.getJob())&&isUpdateAlias(entity.getJob())){
                 job.add("alias",entity.getJob());
             }
             // 职位暂时不更新sda
