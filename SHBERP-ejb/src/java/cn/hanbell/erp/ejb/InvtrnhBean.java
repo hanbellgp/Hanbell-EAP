@@ -17,7 +17,6 @@ import cn.hanbell.erp.entity.Pursys;
 import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -254,14 +253,18 @@ public class InvtrnhBean extends SuperEJBForERP<Invtrnh> {
         }
     }
 
-    public List<Invtrnh> getInvtrnhByINV555(String facno, Date queryDateBegin, Date queryDateEnd, String queryno, String querytype, String querywareh, String querydept, String queryuser) {
+    public List<Object[]> getInvtrnhByINV555(String facno, Date queryDateBegin, Date queryDateEnd, String queryno, String querytype, String querywareh, String querydept, String queryuser) {
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT  invtrnh.*");
-        sql.append(" FROM invtrnh,invmas,invwh,invdou,invcls WHERE ( invmas.itnbr = invtrnh.itnbr ) and( invtrnh.facno = invwh.facno ) and ( invtrnh.prono = invwh.prono ) and ( invtrnh.wareh = invwh.wareh ) and ( invdou.trtype = invtrnh.trtype ) and ( invcls.itcls = invmas.itcls ) and  ( ( invdou.syscode = '10'  ) AND (invdou.reskind is not null AND");
-        sql.append(" ltrim(invdou.reskind) <> '') AND (invdou.iocode in ('1','2') OR invdou.iocode = '3'  and invdou.trtype in (select trntp from cstrul where facno = invtrnh.facno and avgco = 'Y')) AND invwh.costyn = 'Y' ) ");
-        sql.append(" and invtrnh.trdate>='").append(BaseLib.formatDate("yyyy-MM-dd HH:mm:ss", queryDateBegin)).append("'");
-        sql.append(" and invtrnh.trdate<='").append(BaseLib.formatDate("yyyy-MM-dd HH:mm:ss", queryDateEnd)).append("'");
-        sql.append(" and invtrnh.facno ='").append(facno).append("' and invtrnh.prono='1'");
+        sql.append("SELECT invtrnh.trtype,invdou.typedsc,invtrnh.facno,invtrnh.prono,invtrnh.depno, invtrnh.trno,invtrnh.trdate,invtrnh.trseq, invtrnh.itnbr,");
+        sql.append(" invmas.itdsc,invcls.itcls,invcls.clsdsc, invtrnh.wareh,invwh.whdsc, invtrnh.trnqy1,invtrnh.unmsr1,invtrnh.tramt,invtrnh.userno, invtrnh.iocode,invdou.reskind,invtrnh.rescode");
+        sql.append(" FROM invtrnh, invmas, invwh, invdou, invcls");
+        sql.append(" WHERE (invmas.itnbr = invtrnh.itnbr) AND(invtrnh.facno = invwh.facno) AND (invtrnh.prono = invwh.prono) AND (invtrnh.wareh = invwh.wareh) AND");
+        sql.append(" (invdou.trtype = invtrnh.trtype) AND (invcls.itcls = invmas.itcls) AND ((invdou.syscode = '10') AND (invdou.reskind IS NOT NULL AND");
+        sql.append(" ltrim(invdou.reskind) <> '') AND (invdou.iocode IN ('1', '2') OR invdou.iocode = '3' AND invdou.trtype IN (SELECT trntp FROM cstrul WHERE facno = invtrnh.facno AND avgco = 'Y')))");
+        sql.append(" AND (invtrnh.facno = '").append(facno).append("'").append(" AND invtrnh.prono = '1' AND (invdou.depdsckind IN (SELECT ckind  FROM misckind)) AND");
+        sql.append(" (invtrnh.trdate >= '").append(BaseLib.formatDate("yyyy/MM/dd", queryDateBegin)).append("' and");
+        sql.append(" invtrnh.trdate <='").append(BaseLib.formatDate("yyyy/MM/dd", queryDateEnd)).append("')");
+        
         if (!"".equals(queryno) && queryno != null) {
             sql.append(" and invtrnh.trno in (").append(queryno).append(")");
         }
@@ -277,11 +280,10 @@ public class InvtrnhBean extends SuperEJBForERP<Invtrnh> {
         if (!"".equals(queryuser) && queryuser != null) {
             sql.append(" and invtrnh.userno in (").append(queryuser).append(")");
         }
+        sql.append(")");
         try {
-
-            Query query = getEntityManager().createNativeQuery(sql.toString(), Invtrnh.class);
-            List<Invtrnh> list = query.getResultList();
-            return list;
+            Query query = getEntityManager().createNativeQuery(sql.toString());
+            return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }
