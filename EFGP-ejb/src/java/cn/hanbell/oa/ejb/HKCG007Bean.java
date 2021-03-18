@@ -258,6 +258,8 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                         d.setDmark2(aad.getDmark2());
                         d.setDmark2name(aad.getDmark2desc());
                         d.setQtotamts(aad.getAmts());
+                        d.setMonavg("");
+                        d.setPrqyYear("");
 
                         d.setPurdaskdescs("");
                         d.setVdrno("");
