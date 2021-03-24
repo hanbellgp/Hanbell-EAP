@@ -112,7 +112,7 @@ public class ProductionDemandFacadeREST extends SuperRESTForEAP<ProductionPlan> 
                 BigDecimal inv = invbalBean.getInvbalQuantity(facno, itemList);
                 // 查询ERP在制
                 manwipbalBean.setCompany(facno);
-                BigDecimal wip = manwipbalBean.getWIPQuantity(facno, itemList);
+                BigDecimal wip = manwipbalBean.getTotalWIPQuantity(facno, itemList);
                 // 查询ERP未进
                 purdtaBean.setCompany(facno);
                 BigDecimal po = purdtaBean.getAvailableQuantity(facno, itemList, date);
@@ -246,7 +246,7 @@ public class ProductionDemandFacadeREST extends SuperRESTForEAP<ProductionPlan> 
                             } else {
                                 // 查询ERP在制
                                 manwipbalBean.setCompany(facno);
-                                wip = manwipbalBean.getWIPQuantity(facno, itnbr);
+                                wip = manwipbalBean.getTotalWIPQuantity(facno, itnbr);
                                 // 查询ERP未进
                                 purdtaBean.setCompany(facno);
                                 po = purdtaBean.getAvailableQuantity(facno, itnbr, date);

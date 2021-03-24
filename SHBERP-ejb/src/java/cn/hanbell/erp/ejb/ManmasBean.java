@@ -25,7 +25,8 @@ public class ManmasBean extends SuperEJBForERP<Manmas> {
         super(Manmas.class);
     }
 
-    public List<Manmas> findByLinecodeAndMandate(String facno, String linecode, Date mandateBegin, Date mandateEnd, int first, int pageSize) {
+    public List<Manmas> findByLinecodeAndMandate(String facno, String linecode, Date mandateBegin, Date mandateEnd,
+            int first, int pageSize) {
         String jpql = "SELECT m FROM Manmas m WHERE m.manmasPK.facno = :facno AND m.linecode = :linecode AND m.mandate >= :mandateBegin AND m.mandate <= :mandateEnd AND m.manstatus >='E' AND m.manstatus <'I' ORDER BY m.mandate,m.manmasPK.manno";
         Query query = getEntityManager().createQuery(jpql).setFirstResult(first).setMaxResults(pageSize);
         query.setParameter("facno", facno);

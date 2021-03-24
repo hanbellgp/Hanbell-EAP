@@ -26,7 +26,6 @@ public class PricingPolicyFacadeREST extends SuperRESTForERP<PricingPolicy> {
 
     @Override
     protected SuperEJBForERP getSuperEJBForERP() {
-        company = "C";
         return pricingPolicyBean;
     }
 
