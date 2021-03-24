@@ -37,7 +37,7 @@ import org.apache.logging.log4j.Logger;
 public abstract class SuperRESTForEAP<T> {
 
     protected Class<T> entityClass;
-    protected final Logger log4j = LogManager.getLogger("cn.hanbell.wco");
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.jrs");
 
     protected abstract SuperEJB getSuperEJB();
 

@@ -9,12 +9,8 @@ import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.CdrcusBean;
 import cn.hanbell.erp.entity.Cdrcus;
 import cn.hanbell.jrs.SuperRESTForERP;
-import java.util.List;
 import javax.ejb.EJB;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 
 /**
  *

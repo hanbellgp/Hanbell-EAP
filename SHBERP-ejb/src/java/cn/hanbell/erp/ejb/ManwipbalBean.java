@@ -61,7 +61,7 @@ public class ManwipbalBean extends SuperEJBForERP<Manwipbal> {
         }
     }
 
-    public BigDecimal getWIPQuantity(String facno, String itnbr) {
+    public BigDecimal getTotalWIPQuantity(String facno, String itnbr) {
         BigDecimal qty = BigDecimal.ZERO;
         List<Manwipbal> manwipbalList = findByItnbr(facno, itnbr);
         if (manwipbalList != null && !manwipbalList.isEmpty()) {
@@ -72,7 +72,7 @@ public class ManwipbalBean extends SuperEJBForERP<Manwipbal> {
         return qty;
     }
 
-    public BigDecimal getWIPQuantity(String facno, List<String> itnbr) {
+    public BigDecimal getTotalWIPQuantity(String facno, List<String> itnbr) {
         BigDecimal qty = BigDecimal.ZERO;
         List<Manwipbal> manwipbalList = findByItnbr(facno, itnbr);
         if (manwipbalList != null && !manwipbalList.isEmpty()) {
@@ -81,6 +81,23 @@ public class ManwipbalBean extends SuperEJBForERP<Manwipbal> {
             }
         }
         return qty;
+    }
+
+    public List getWIPQuantity(String facno, String itnbr) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT facno,itnbr,seqnr,sum(onhand1) as wipqty,sum(finqy1) as finqty from manwipbal WHERE onhand1 > 0 ");
+        sb.append(" and facno = ?1 AND itnbr = ?2 group by facno,itnbr,seqnr ORDER BY facno,itnbr,seqnr ");
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter(1, facno);
+        query.setParameter(2, itnbr);
+
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
+        return null;
     }
 
 }
