@@ -139,7 +139,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                 list.addAll(o);
             }else if(c.getTime().getTime()<=queryDateBegin.getTime() &&c.getTime().getTime()<=queryDateEnd.getTime()){
                 c.add(Calendar.DAY_OF_MONTH,-1);
-                list=invtrnBean.getInvtrnhByINV555(facnoView, c.getTime(), queryDateEnd,  changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
+                list=invtrnBean.getInvtrnhByINV555(queryfacno, c.getTime(), queryDateEnd,  changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
             }else{
                 list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
             }
