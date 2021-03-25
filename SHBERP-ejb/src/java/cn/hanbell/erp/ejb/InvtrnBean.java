@@ -35,7 +35,7 @@ public class InvtrnBean extends SuperEJBForERP<Invtrn> {
         sql.append(" (invdou.trtype = invtrn.trtype) AND (invcls.itcls = invmas.itcls) AND ((invdou.syscode = '10') AND (invdou.reskind IS NOT NULL AND");
         sql.append(" ltrim(invdou.reskind) <> '') AND (invdou.iocode IN ('1', '2') OR invdou.iocode = '3' AND invdou.trtype IN (SELECT trntp FROM cstrul WHERE facno = invtrn.facno AND avgco = 'Y')))");
         sql.append(" AND (invtrn.facno = '").append(facno).append("'").append(" AND invtrn.prono = '1' AND (invdou.depdsckind IN (SELECT ckind  FROM misckind)) AND");
-        sql.append(" (invtrn.trdate > '").append(BaseLib.formatDate("yyyy/MM/dd", queryDateBegin)).append("' and");
+        sql.append(" (invtrn.trdate >= '").append(BaseLib.formatDate("yyyy/MM/dd", queryDateBegin)).append("' and");
         sql.append(" invtrn.trdate <='").append(BaseLib.formatDate("yyyy/MM/dd", queryDateEnd)).append("')");
 
         if (!"".equals(queryno) && queryno != null) {

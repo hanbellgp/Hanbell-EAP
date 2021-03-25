@@ -125,7 +125,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
             invhdscBean.setCompany(queryfacno);
             cdrcusBean.setCompany(queryfacno);
             invsysBean.setCompany(queryfacno);
-            invtrnBean.setCompany("C");
+            invtrnBean.setCompany(queryfacno);
             Invsys invsys = invsysBean.findByFacno(queryfacno);
             Date monDate = BaseLib.getDate("yyyyMM", invsys.getLmonth());
             Calendar c = Calendar.getInstance();
@@ -135,11 +135,11 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
             if(c.getTime().getTime()<=queryDateEnd.getTime()&&queryDateBegin.getTime()<c.getTime().getTime()){
                 c.add(Calendar.DAY_OF_MONTH,-1);
                 list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, c.getTime(), changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
-                List<Object[]> o=invtrnBean.getInvtrnhByINV555(facnoView, c.getTime(), queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
+                c.add(Calendar.DAY_OF_MONTH,1);
+                List<Object[]> o=invtrnBean.getInvtrnhByINV555(queryfacno, c.getTime(), queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
                 list.addAll(o);
             }else if(c.getTime().getTime()<=queryDateBegin.getTime() &&c.getTime().getTime()<=queryDateEnd.getTime()){
-                c.add(Calendar.DAY_OF_MONTH,-1);
-                list=invtrnBean.getInvtrnhByINV555(queryfacno, c.getTime(), queryDateEnd,  changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
+                list=invtrnBean.getInvtrnhByINV555(queryfacno, queryDateBegin, queryDateEnd,  changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
             }else{
                 list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
             }
