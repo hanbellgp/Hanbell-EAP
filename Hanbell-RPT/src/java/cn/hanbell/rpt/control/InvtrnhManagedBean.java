@@ -6,6 +6,8 @@
 package cn.hanbell.rpt.control;
 
 import cn.hanbell.erp.ejb.CdrcusBean;
+import cn.hanbell.erp.ejb.InvclsBean;
+import cn.hanbell.erp.ejb.InvhadBean;
 import cn.hanbell.erp.ejb.InvhdscBean;
 import cn.hanbell.erp.ejb.InvsysBean;
 import cn.hanbell.erp.ejb.InvtrnBean;
@@ -13,6 +15,7 @@ import cn.hanbell.erp.ejb.InvtrnhBean;
 import cn.hanbell.erp.ejb.MiscodeBean;
 import cn.hanbell.erp.ejb.MisdeptBean;
 import cn.hanbell.erp.entity.Cdrcus;
+import cn.hanbell.erp.entity.Invhad;
 import cn.hanbell.erp.entity.Invhdsc;
 import cn.hanbell.erp.entity.Invsys;
 import cn.hanbell.erp.entity.Invtrnh;
@@ -65,6 +68,10 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
     private InvsysBean invsysBean;
     @EJB
     private InvtrnBean invtrnBean;
+    @EJB
+    private InvclsBean invclsBean;
+    @EJB
+    private InvhadBean invhadBean;
     private String queryfacno;
     private String queryno;
     private String querytype;
@@ -113,6 +120,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         cdrcusBean.setCompany("C");
         invsysBean.setCompany("C");
         invtrnBean.setCompany("C");
+        invclsBean.setCompany("C");
+        invhadBean.setCompany("C");
     }
 
     @Override
@@ -126,29 +135,28 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
             cdrcusBean.setCompany(queryfacno);
             invsysBean.setCompany(queryfacno);
             invtrnBean.setCompany(queryfacno);
+            invclsBean.setCompany(queryfacno);
+            invhadBean.setCompany(queryfacno);
             Invsys invsys = invsysBean.findByFacno(queryfacno);
             Date monDate = BaseLib.getDate("yyyyMM", invsys.getLmonth());
             Calendar c = Calendar.getInstance();
             c.setTime(monDate);
             c.add(Calendar.MONTH, 1);
             //查询结束的时间大于月结的一个月时间并且数据两个开始年月和结束年月不同。则分开查询合并。
-            if(c.getTime().getTime()<=queryDateEnd.getTime()&&queryDateBegin.getTime()<c.getTime().getTime()){
-                c.add(Calendar.DAY_OF_MONTH,-1);
+            if (c.getTime().getTime() <= queryDateEnd.getTime() && queryDateBegin.getTime() < c.getTime().getTime()) {
+                c.add(Calendar.DAY_OF_MONTH, -1);
                 list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, c.getTime(), changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
-                c.add(Calendar.DAY_OF_MONTH,1);
-                List<Object[]> o=invtrnBean.getInvtrnhByINV555(queryfacno, c.getTime(), queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
+                c.add(Calendar.DAY_OF_MONTH, 1);
+                List<Object[]> o = invtrnBean.getInvtrnhByINV555(queryfacno, c.getTime(), queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
                 list.addAll(o);
-            }else if(c.getTime().getTime()<=queryDateBegin.getTime() &&c.getTime().getTime()<=queryDateEnd.getTime()){
-                list=invtrnBean.getInvtrnhByINV555(queryfacno, queryDateBegin, queryDateEnd,  changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
-            }else{
+            } else if (c.getTime().getTime() <= queryDateBegin.getTime() && c.getTime().getTime() <= queryDateEnd.getTime()) {
+                list = invtrnBean.getInvtrnhByINV555(queryfacno, queryDateBegin, queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
+            } else {
                 list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
             }
         } catch (ParseException ex) {
             Logger.getLogger(InvtrnhManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        
-        System.out.println("");
     }
 
     @Override
@@ -204,6 +212,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     Cell cell21 = row.createCell(21);
                     Cell cell22 = row.createCell(22);
                     Cell cell23 = row.createCell(23);
+                    Cell cell24 = row.createCell(24);
                     cell.setCellStyle(cellStyle);
                     cell1.setCellStyle(cellStyle);
                     cell2.setCellStyle(cellStyle);
@@ -228,6 +237,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     cell21.setCellStyle(cellStyle);
                     cell22.setCellStyle(cellStyle);
                     cell23.setCellStyle(cellStyle);
+                    cell24.setCellStyle(cellStyle);
                     cell1.setCellValue(h[6] != null ? BaseLib.formatDate("yyyy/MM/dd", (Date) h[6]) : "");
                     cell2.setCellValue(h[0] != null ? (String) h[0] : "");
                     cell3.setCellValue(h[1] != null ? (String) h[1] : "");
@@ -241,21 +251,28 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     } else {
                         cell7.setCellValue(m != null ? m.getDepname() : "");
                     }
-                    cell8.setCellValue(h[6] != null ? BaseLib.formatDate("yyyy/MM/dd", (Date) h[6]) : "");
+                    cell8.setCellValue(h[5] != null ? (String) h[5] : "");
                     cell9.setCellValue(String.valueOf((int) h[7]));
                     cell10.setCellValue(h[8] != null ? (String) h[8] : "");
                     cell11.setCellValue(h[9] != null ? (String) h[9] : "");
                     cell12.setCellValue(h[10] != null ? (String) h[10] : "");
                     cell13.setCellValue(h[11] != null ? (String) h[11] : "");
-                    cell14.setCellValue(h[12] != null ? (String) h[12] : "");
+                    cell14.setCellValue(h[12] != null ? invclsBean.getItclscode((String) h[12]) : "");
                     cell15.setCellValue(h[13] != null ? (String) h[13] : "");
-                    cell16.setCellValue(h[14] != null ? String.valueOf((java.math.BigDecimal) h[14]) : "");
-                    cell17.setCellValue(h[15] != null ? (String) h[15] : "");
-                    cell18.setCellValue(h[16] != null ? String.valueOf((java.math.BigDecimal) h[16]) : "");
-                    cell19.setCellValue(h[17] != null ? (String) h[17] : "");
+                    cell16.setCellValue(h[14] != null ? (String) h[14] : "");
+                    cell17.setCellValue(h[15] != null ? String.valueOf((java.math.BigDecimal) h[15]) : "");
+                    cell18.setCellValue(h[16] != null ? (String) h[16] : "");
+                    cell19.setCellValue(h[17] != null ? String.valueOf((java.math.BigDecimal) h[17]) : "");
                     cell20.setCellValue(h[18] != null ? (String) h[18] : "");
+                    cell21.setCellValue(h[19] != null ? getIocodeValue((String) h[19]) : "");
                     Invhdsc invdsc = invhdscBean.findByFacnoAndPronoAndTrno((String) h[2], (String) h[3], (String) h[5]);
                     StringBuffer invdscBuffer = new StringBuffer(";;");
+                    if (h[22] != null && "研发专案".equals((String) (h[22]))) {
+                        List<Invhad> entity = invhadBean.getInvtrnhByFacnoAndPronoAndTrnoAndTrtype((String) h[2], (String) h[3], (String) h[5], (String) h[0]);
+                        if (entity != null && !entity.isEmpty()) {
+                            invdscBuffer.append(entity.get(0).getHmark1()).append(";;");
+                        }
+                    }
                     if (invdsc != null) {
                         if (invdsc.getMark1() != null && !"".equals(invdsc.getMark1())) {
                             invdscBuffer.append(invdsc.getMark1()).append(";");
@@ -270,11 +287,11 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                             invdscBuffer.append(invdsc.getMark4()).append(";");
                         }
                         invdscBuffer.append(";;");
-                        cell21.setCellValue(invdscBuffer.toString());
+                        cell22.setCellValue(invdscBuffer.toString());
                     }
-                    Miscode miscode = miscodeBean.findByPK((String) h[19], (String) h[20]);
-                    cell22.setCellValue(h[19] != null ? getIocodeValue((String) (h[19])) : "");
-                    cell23.setCellValue(miscode != null ? miscode.getCusds() : "");
+                    Miscode miscode = miscodeBean.findByPK((String) h[20], (String) h[21]);
+                    cell23.setCellValue(h[20] != null ? (String) (h[20]) : "");
+                    cell24.setCellValue(miscode != null ? miscode.getCusds() : "");
                     i++;
                 }
                 FileOutputStream os = null;

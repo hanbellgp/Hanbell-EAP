@@ -198,4 +198,29 @@ public class InvclsBean extends SuperEJBForERP<Invcls> {
         }
     }
 
+    public String getItclscode(String itclscode) {
+        switch (itclscode) {
+            case "1":
+                return "成品类";
+            case "2":
+                return "半成品类";
+            case "3":
+                return "原料类";
+            case "4":
+                return "物料类";
+            case "5":
+                return "在制品类";
+            case "6":
+                return "商品";
+            case "7":
+                return "费用";
+            case "8":
+                return "列管资产";
+            case "A":
+                return "包装物";
+            case "B":
+                return "低质易耗品";
+        }
+        return "";
+    }
 }
