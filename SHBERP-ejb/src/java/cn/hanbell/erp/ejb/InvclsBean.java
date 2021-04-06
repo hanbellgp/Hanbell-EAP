@@ -9,8 +9,6 @@ import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Invcls;
 import cn.hanbell.oa.ejb.HKJS007Bean;
 import cn.hanbell.oa.entity.HKJS007;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -34,6 +32,9 @@ public class InvclsBean extends SuperEJBForERP<Invcls> {
     private SyncComerBean syncComerBean;
     @EJB
     private SyncHKBean syncHKBean;
+
+    @EJB
+    private SyncHYBean syncHYBean;
 
     public InvclsBean() {
         super(Invcls.class);
@@ -153,11 +154,14 @@ public class InvclsBean extends SuperEJBForERP<Invcls> {
                 // 香港
                 syncHKBean.persist(invcls, null);
                 syncHKBean.getEntityManager().flush();
-
+            } else if (h.getFacno().equals("H")) {
+                // 汉扬
+                syncHYBean.persist(invcls, null);
+                syncHYBean.getEntityManager().flush();
             }
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(InvmasBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
             throw new RuntimeException("程序发生异常!错误指示：" + ex);
         }
     }

@@ -62,8 +62,11 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
     private SHBINV146Bean shbinv146Bean;
     @EJB
     private SHBINV146DetailBean shbinv146DetailBean;
+
     @EJB
     private InvclsBean invclsBean;
+    @EJB
+    private InvunitBean invunitBean;
     @EJB
     private ScminvmasBean scminvmasBean;
     @EJB
@@ -75,9 +78,10 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
     @EJB
     private SyncCQBean syncCQBean;
     @EJB
-    private WARMBBean warmbBean;
+    private SyncHYBean syncHYBean;
+
     @EJB
-    private InvunitBean invunitBean;
+    private WARMBBean warmbBean;
 
     public InvmasBean() {
         super(Invmas.class);
@@ -100,9 +104,9 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
             throw new NullPointerException();
         }
         List<HZJS034Detail> details = hzjs034DetailBean.findByFSN(h.getFormSerialNumber());
-        this.setCompany(h.getFacno());
+        String facno = h.getFacno();
+        this.setCompany(facno);
         try {
-
             // 表身循环
             for (int i = 0; i < details.size(); i++) {
                 HZJS034Detail detail = details.get(i);
@@ -120,18 +124,18 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setUnmsr1e(detail.getUnmsr1e()); // 设置数量单位一（英文）
                     m.setFvco('F'); // 设置固定变动区分码
                     if ("".equals(detail.getUnmsr2()) || "N".equals(detail.getIsDUnit())) {
-                        if (h.getFacno().equals("H") || h.getFacno().equals("Y")) {
+                        if (facno.equals("H") || facno.equals("Y")) {
                             m.setJudco("111111");
                         } else {
                             m.setJudco("11111"); // 设置数量单位控制码
                         }
                     } else {
-                        invunitBean.setCompany(h.getFacno());
+                        invunitBean.setCompany(facno);
                         Invunit iu = invunitBean.findByUnitcodsc(detail.getUnmsr2());
                         if (iu != null) {
                             m.setUnmsr2e(iu.getUnitcodsce());
                         }
-                        if (h.getFacno().equals("H") || h.getFacno().equals("Y")) {
+                        if (facno.equals("H") || facno.equals("Y")) {
                             m.setJudco("433333");
                         } else {
                             m.setJudco("41111");
@@ -170,7 +174,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     this.getEntityManager().flush();
 
                     // 同步MES资料
-                    if (h.getFacno().equals("C") || h.getFacno().equals("K")) {
+                    if (facno.equals("C") || facno.equals("K")) {
                         Scminvmas scm = new Scminvmas();
                         scm.setItnbr(detail.getItnbr());
                         scm.setItdsc(detail.getItdsc());
@@ -191,11 +195,11 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         scm.setTransflag("N");
                         scm.setTranstime(BaseLib.getDate().toString());
                         scm.setDeydetyn("N");
-                        scminvmasBean.setCompany(h.getFacno());
+                        scminvmasBean.setCompany(facno);
                         scminvmasBean.persist(scm);
                     }
-                    if (h.getFacno().equals("C")) {
-                        invclsBean.setCompany(h.getFacno());
+                    if (facno.equals("C")) {
+                        invclsBean.setCompany(facno);
                         Invcls c = invclsBean.findByItcls(detail.getItcls());
                         if (c.getNrcode().equals('0')) {
                             m.setDirrvyn('Y');
@@ -211,9 +215,12 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
 
                         syncCQBean.persist(m, null);
                         syncCQBean.getEntityManager().flush();
+                    } else if (facno.equals("H")) {
+                        // 汉扬
+                        syncHYBean.persist(m, null);
+                        syncHYBean.getEntityManager().flush();
                     }
                 }
-
             }
             return true;
         } catch (Exception ex) {
@@ -250,7 +257,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 if (m == null) {
                     throw new RuntimeException("ERP中找不到" + detail.getBitnbr());
                 }
-                if(!m.getDirrvyn().equals('N') ){
+                if (!m.getDirrvyn().equals('N')) {
                     m.setDirrvyn('Y');
                 }
                 m.setPocode(' ');
