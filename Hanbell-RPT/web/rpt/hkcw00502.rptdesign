@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.6.0.v201606072122</property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <data-sources>
+        <script-data-source name="scriptDS" id="225"/>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="dataDetail" id="226">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">applyType</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">longterm</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">other1</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">option</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">other2</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">other3</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">interestrate</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">deliveryDate</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">analysis</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">applyType</property>
+                </structure>
+                <structure>
+                    <property name="columnName">longterm</property>
+                </structure>
+                <structure>
+                    <property name="columnName">other1</property>
+                </structure>
+                <structure>
+                    <property name="columnName">option</property>
+                </structure>
+                <structure>
+                    <property name="columnName">other2</property>
+                </structure>
+                <structure>
+                    <property name="columnName">other3</property>
+                </structure>
+                <structure>
+                    <property name="columnName">interestrate</property>
+                </structure>
+                <structure>
+                    <property name="columnName">deliveryDate</property>
+                </structure>
+                <structure>
+                    <property name="columnName">analysis</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">applyType</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">longterm</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">other1</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">option</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">other2</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">other3</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">interestrate</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">deliveryDate</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">analysis</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">scriptDS</property>
+            <method name="open"><![CDATA[
+importPackage(Packages.cn.hanbell.efgp.rpt);
+ejbClient = new HKCW005Report();
+ejbClient.setEJB(params["JNDIName"]);
+
+master = ejbClient.getEntity(params["formid"]);
+if(master!=null){
+	detail = ejbClient.getDetail(master.getFormSerialNumber());
+}
+
+
+rowCount = 0;]]></method>
+            <method name="fetch"><![CDATA[importPackage(Packages.java.lang);
+if(detail==undefined || detail==null){
+	return false;
+}
+while (rowCount < 5) {
+rowCount ++;
+dataSetRow["analysis"] = master.getAnalysis();
+dataSetRow["applyType"] = master.getApplyType();
+dataSetRow["longterm"] = master.getLongterm();
+dataSetRow["other1"] = master.getOther1();
+dataSetRow["option"] = master.getOptiontype();
+dataSetRow["other2"] = master.getOther2();
+dataSetRow["other3"] = master.getOther3();
+dataSetRow["interestrate"] = master.getInterestrate();
+dataSetRow["deliveryDate"] = master.getDeliveryDate();
+return true;
+
+}
+return false;]]></method>
+            <method name="close"><![CDATA[ejbClient = null;]]></method>
+        </script-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="leftMargin">0.396in</property>
+            <property name="rightMargin">0.302in</property>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="4">
+            <column id="5">
+                <property name="width">1.3cm</property>
+            </column>
+            <column id="6">
+                <property name="width">1.4cm</property>
+            </column>
+            <column id="7">
+                <property name="width">10.3cm</property>
+            </column>
+            <column id="8">
+                <property name="width">3cm</property>
+            </column>
+            <column id="9"/>
+            <row id="10">
+                <cell id="11">
+                    <property name="colSpan">5</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <text id="28">
+                        <property name="backgroundColor">silver</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[金融衍生性产品补充表]]></text-property>
+                    </text>
+                </cell>
+            </row>
+        </grid>
+        <grid id="246">
+            <property name="dataSet">dataDetail</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">color1</property>
+                    <expression name="expression" type="javascript">dataSetRow["applyType"]=="1" ? "black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color2</property>
+                    <expression name="expression" type="javascript">dataSetRow["applyType"]=="2" ? "black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color3</property>
+                    <expression name="expression" type="javascript">dataSetRow["applyType"]=="3" ?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color4</property>
+                    <expression name="expression" type="javascript">dataSetRow["applyType"]=="4" ?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color5</property>
+                    <expression name="expression" type="javascript">dataSetRow["longterm"]=="1" ? "black" : ""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color6</property>
+                    <expression name="expression" type="javascript">dataSetRow["longterm"]=="2"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color7</property>
+                    <expression name="expression" type="javascript">dataSetRow["longterm"]=="3"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color8</property>
+                    <expression name="expression" type="javascript">dataSetRow["longterm"]=="4"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color9</property>
+                    <expression name="expression" type="javascript">dataSetRow["longterm"]=="5"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color10</property>
+                    <expression name="expression" type="javascript">dataSetRow["option"]=="1"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color11</property>
+                    <expression name="expression" type="javascript">dataSetRow["option"]=="2"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color12</property>
+                    <expression name="expression" type="javascript">dataSetRow["option"]=="3"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+            </list-property>
+            <column id="247">
+                <property name="width">1.3cm</property>
+            </column>
+            <column id="248">
+                <property name="width">1.4cm</property>
+            </column>
+            <column id="249">
+                <property name="width">7.7cm</property>
+            </column>
+            <column id="250">
+                <property name="width">2.6cm</property>
+            </column>
+            <column id="251">
+                <property name="width">3cm</property>
+            </column>
+            <column id="252"/>
+            <row id="253">
+                <property name="height">0.6cm</property>
+                <cell id="254">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">4</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="textAlign">center</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="29">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[申请
+类型]]></text-property>
+                    </text>
+                </cell>
+                <cell id="255">
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="282">
+                        <property name="textAlign">left</property>
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color1"]</VALUE-OF>'> □</span> 远期 ]]></text-property>
+                    </text>
+                </cell>
+                <cell id="256">
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="287">
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color5"]</VALUE-OF>'> □</span> 购汇 
+<span style='background-color:<VALUE-OF>row["color6"]</VALUE-OF>'> □</span> 结汇 
+<span style='background-color:<VALUE-OF>row["color7"]</VALUE-OF>'> □</span> 加盖远期 
+<span style='background-color:<VALUE-OF>row["color8"]</VALUE-OF>'> □</span> 保底远期 
+<span style='background-color:<VALUE-OF>row["color9"]</VALUE-OF>'> □</span> 其他]]></text-property>
+                    </text>
+                </cell>
+                <cell id="257">
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="306">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">other1</property>
+                                <text-property name="displayName">other1</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["other1"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">other1</property>
+                    </data>
+                </cell>
+                <cell id="258">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">4</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="291">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[利率/利率区间]]></text-property>
+                    </text>
+                </cell>
+                <cell id="259">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">4</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="310">
+                        <property name="textAlign">center</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">interestrate</property>
+                                <text-property name="displayName">interestrate</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["interestrate"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">interestrate</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="260">
+                <property name="height">0.6cm</property>
+                <cell id="262">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="283">
+                        <property name="textAlign">left</property>
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color2"]</VALUE-OF>'> □</span> 掉期 ]]></text-property>
+                    </text>
+                </cell>
+                <cell id="263">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+            </row>
+            <row id="267">
+                <property name="height">0.6cm</property>
+                <cell id="269">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="284">
+                        <property name="textAlign">left</property>
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color3"]</VALUE-OF>'> □</span> 期权 ]]></text-property>
+                    </text>
+                </cell>
+                <cell id="270">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="289">
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color10"]</VALUE-OF>'> □</span> 美金看涨期权 
+<span style='background-color:<VALUE-OF>row["color11"]</VALUE-OF>'> □</span> 美金看跌期权
+<span style='background-color:<VALUE-OF>row["color12"]</VALUE-OF>'> □</span> 其他
+
+]]></text-property>
+                    </text>
+                </cell>
+                <cell id="271">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="308">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">other2</property>
+                                <text-property name="displayName">other2</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["other2"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">other2</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="274">
+                <property name="height">0.6cm</property>
+                <cell id="276">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="286">
+                        <property name="textAlign">left</property>
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color4"]</VALUE-OF>'> □</span> 其他]]></text-property>
+                    </text>
+                </cell>
+                <cell id="277">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="309">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">other3</property>
+                                <text-property name="displayName">other3</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["other3"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">other3</property>
+                    </data>
+                </cell>
+            </row>
+        </grid>
+        <grid id="292">
+            <column id="293">
+                <property name="width">1.3cm</property>
+            </column>
+            <column id="303">
+                <property name="width">1.4cm</property>
+            </column>
+            <column id="294">
+                <property name="width">10.3cm</property>
+            </column>
+            <column id="295">
+                <property name="width">3cm</property>
+            </column>
+            <column id="296"/>
+            <row id="297">
+                <property name="height">1.2cm</property>
+                <cell id="298">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="305">
+                        <property name="fontSize">80%</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[损益预估分析]]></text-property>
+                    </text>
+                </cell>
+                <cell id="302">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="312">
+                        <property name="textAlign">center</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">analysis</property>
+                                <text-property name="displayName">analysis</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["analysis"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">analysis</property>
+                    </data>
+                </cell>
+                <cell id="300">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="304">
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[交割日期]]></text-property>
+                    </text>
+                </cell>
+                <cell id="301">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="311">
+                        <property name="textAlign">center</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">deliveryDate</property>
+                                <text-property name="displayName">deliveryDate</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["deliveryDate"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">deliveryDate</property>
+                    </data>
+                </cell>
+            </row>
+        </grid>
+    </body>
+</report>
