@@ -284,11 +284,11 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         userStrTemp.append("|").append(sysUserList.get(0).getUserid().toUpperCase());
                     }
 
-                    if("枫泾总部".equalsIgnoreCase(entity.getRepairarea()))
+                    if("枫泾厂".equalsIgnoreCase(entity.getRepairarea()) || "枫泾总部".equalsIgnoreCase(entity.getRepairarea()))
                     {
                         userStrTemp.append("|").append("C0299");
                     }
-                    else if("枫泾一厂".equalsIgnoreCase(entity.getRepairarea()))
+                    else if("兴塔厂".equalsIgnoreCase(entity.getRepairarea()) || "枫泾一厂".equalsIgnoreCase(entity.getRepairarea()))
                     {
                         userStrTemp.append("|").append("C0141");
                     }
