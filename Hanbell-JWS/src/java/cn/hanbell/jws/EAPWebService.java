@@ -286,6 +286,8 @@ public class EAPWebService {
     @EJB
     private HKCG016Bean hkcg016Bean;
     @EJB
+    private HKCG019Bean hkcg019Bean;
+    @EJB
     private HKCG020Bean hkcg020Bean;
     @EJB
     private HKCW002Bean hkcw002Bean;
@@ -307,6 +309,8 @@ public class EAPWebService {
     private HKGL060Bean hkgl060Bean;
     @EJB
     private HKJH001Bean hkjh001Bean;
+    @EJB
+    private HKXQB001Bean hkxqb001Bean;
     @EJB
     private HZCW028Bean hzcw028Bean;
     @EJB
@@ -333,8 +337,6 @@ public class EAPWebService {
     private SHBCRMREPI13Bean shbcrmrepi13Bean;
     @EJB
     private cn.hanbell.oa.ejb.PLMProjectBean efgpPLMProjectBean;
-    @EJB
-    private HKXQB001Bean hkxqB001Bean;
 
     // EJBForERP
     @EJB
@@ -405,11 +407,9 @@ public class EAPWebService {
     private CrmreppalogBean crmreppalogBean;
     @EJB
     private ECPurvdrBean ecpurvdrBean;
-    @EJB
-    private HKCG019Bean hkcg019Bean;
+
     // @EJB
     // private RootCloudBean rootCloudBean;
-
     // EJBForPLM
     @EJB
     private cn.hanbell.plm.ejb.PLMProjectBean plmPLMProjectBean;
@@ -2202,8 +2202,8 @@ public class EAPWebService {
                         mailBean.getTo().add("C1491@hanbell.com.cn");
                         mailBean.getTo().add("C1497@hanbell.com.cn");
                         mailBean.setMailSubject("CRM估价单抛转成功");
-                        mailBean
-                                .setMailContent("报价单号：" + logreppa.getPa001() + logreppa.getPa002() + "抛转成功，生成ERP单号：" + quono);
+                        mailBean.setMailContent(
+                                "报价单号：" + logreppa.getPa001() + logreppa.getPa002() + "抛转成功，生成ERP单号：" + quono);
                         mailBean.notify(new MailNotify());
                         log4j.info("Info", "报表邮件发送成功");
                     } catch (Exception ex) {
@@ -2434,13 +2434,13 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "rollbackCRMWARTAByOAWARMI05")
-    public String rollbackCRMWARTAByOAWARMI05(@WebParam(name = "psn") String psn) {
+    @WebMethod(operationName = "rollbackCRMPORMYByOAJZGHD")
+    public String rollbackCRMPORMYByOAJZGHD(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
         try {
-            ret = warmi05Bean.rollbackWARTA(psn);
+            ret = hzcw033Bean.rollbackCRMPORMY(psn);
         } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMWARTBByOAWARMI05", psn), ex);
+            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMPORMYByOAJZGHD", psn), ex);
         }
         if (ret) {
             return "200";
@@ -2449,13 +2449,28 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "rollbackCRMPORMYByOAJZGHD")
-    public String rollbackCRMPORMYByOAJZGHD(@WebParam(name = "psn") String psn) {
+    @WebMethod(operationName = "rollbackCRMREPTDByOAHKFW004")
+    public String rollbackCRMREPTDByOAHKFW004(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
         try {
-            ret = hzcw033Bean.rollbackCRMPORMY(psn);
+            ret = hzfw004DetailBean.rollbackReptdByOAHKFW004(psn);
         } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMPORMYByOAJZGHD", psn), ex);
+            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMREPTDByOAHKFW004", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "rollbackCRMWARTAByOAWARMI05")
+    public String rollbackCRMWARTAByOAWARMI05(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = warmi05Bean.rollbackWARTA(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMWARTBByOAWARMI05", psn), ex);
         }
         if (ret) {
             return "200";
@@ -2570,6 +2585,18 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "rollbackERPCdrqhadByCRMREPPA")
+    public String rollbackERPCdrqhadByCRMREPPA(@WebParam(name = "facno") String facno, @WebParam(name = "pa001") String pa001, @WebParam(name = "pa002") String pa002) {
+        String ret = "404";
+        try {
+            ret = cdrqhadBean.rollbackFromCRMREPPA(facno, pa001, pa002);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "rollbackERPCdrqhadByCRMREPPA", pa001 + pa002), ex);
+            return String.format("执行%s:参数%s时异常%s:", "rollbackERPCdrqhadByCRMREPPA", pa001 + pa002, "******" + ex);
+        }
+        return ret;
+    }
+
     @WebMethod(operationName = "rollbackMESHKFW006ByOAHKFW006")
     public String rollbackMESHKFW006ByOAHKFW006(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -2666,6 +2693,95 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "updateCRMREPTCByOASHBCRMREPI13")
+    public String updateCRMREPTCByOASHBCRMREPI13(@WebParam(name = "psn") String psn) {
+        String ret = "200";
+        try {
+            SHBCRMREPI13 h = shbcrmrepi13Bean.findByPSN(psn);
+            if (h == null) {
+                throw new NullPointerException("未找到对应的OA实体");
+            }
+            String tc001 = h.getTc001();
+            String tc002 = h.getTc002();
+            REPTC tc = reptcBean.findByPK(tc001, tc002);
+            if (tc != null) {
+                tc.setTc082("".equals(h.getTc082()) ? "0" : h.getTc082());
+                tc.setTc086("".equals(h.getTc086()) ? "0" : h.getTc086());
+                int s = Integer.parseInt(h.getTc082()) + Integer.parseInt(h.getTc086());
+                tc.setTc087(BigDecimal.valueOf(s));
+                tc.setTc088(h.getTc088());
+                reptcBean.update(tc);
+            } else {
+                throw new NullPointerException("未找到对应的CRM维修单");
+            }
+
+        } catch (Exception e) {
+            return String.format("执行%s:参数%s时异常%s:", "updateCRMREPTCByOASHBCRMREPI13", psn, "******" + e.toString());
+        }
+        return ret;
+    }
+
+    @WebMethod(operationName = "updateCRMREPTCByOAHKFW005")
+    public String updateCRMREPTCByOAHKFW005(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkfw005Bean.updateReptdByOAHKFW005(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTCByOAHKFW005", psn), ex);
+            return String.format("执行%s:参数%s时异常%s:", "updateCRMREPTCByOAHKFW005", psn, "******" + ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateCRMREPTDByOAHKFW004Detail")
+    public String updateCRMREPTDByOAHKFW004Detail(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hzfw004DetailBean.updateReptdByOAHKFW004(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW004Detail", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateCRMREPTDByOAHKFW006")
+    public String updateCRMREPTDByOAHKFW006(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkfw006Bean.updateReptdByOAHKFW006(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW006", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateCRMREPTDFromOAHKFW006")
+    public String updateCRMREPTDFromOAHKFW006(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+        Boolean ret = false;
+        try {
+            ret = hkfw006Bean.updateReptdByOAHKFW006(psn, status);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW006", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "updateCRMSERBQByOASERI12")
     public String updateCRMSERBQByOASERI12(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -2694,34 +2810,6 @@ public class EAPWebService {
         } else {
             return "404";
         }
-    }
-
-    @WebMethod(operationName = "updateCRMREPTCByOASHBCRMREPI13")
-    public String updateCRMREPTCByOASHBCRMREPI13(@WebParam(name = "psn") String psn) {
-        String ret = "200";
-        try {
-            SHBCRMREPI13 h = shbcrmrepi13Bean.findByPSN(psn);
-            if (h == null) {
-                throw new NullPointerException("未找到对应的OA实体");
-            }
-            String tc001 = h.getTc001();
-            String tc002 = h.getTc002();
-            REPTC tc = reptcBean.findByPK(tc001, tc002);
-            if (tc != null) {
-                tc.setTc082("".equals(h.getTc082()) ? "0" : h.getTc082());
-                tc.setTc086("".equals(h.getTc086()) ? "0" : h.getTc086());
-                int s = Integer.parseInt(h.getTc082()) + Integer.parseInt(h.getTc086());
-                tc.setTc087(BigDecimal.valueOf(s));
-                tc.setTc088(h.getTc088());
-                reptcBean.update(tc);
-            } else {
-                throw new NullPointerException("未找到对应的CRM维修单");
-            }
-
-        } catch (Exception e) {
-            return String.format("执行%s:参数%s时异常%s:", "updateCRMREPTCByOASHBCRMREPI13", psn, "******" + e.toString());
-        }
-        return ret;
     }
 
     @WebMethod(operationName = "updateCRMWARTBByOAWARMI05")
@@ -3217,94 +3305,6 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "rollbackERPCdrqhadByCRMREPPA")
-    public String rollbackERPCdrqhadByCRMREPPA(@WebParam(name = "facno") String facno, @WebParam(name = "pa001") String pa001, @WebParam(name = "pa002") String pa002) {
-        String ret = "404";
-        try {
-            ret = cdrqhadBean.rollbackFromCRMREPPA(facno, pa001, pa002);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "rollbackERPCdrqhadByCRMREPPA", pa001 + pa002), ex);
-            return String.format("执行%s:参数%s时异常%s:", "rollbackERPCdrqhadByCRMREPPA", pa001 + pa002, "******" + ex);
-        }
-        return ret;
-    }
-
-    @WebMethod(operationName = "updateCRMREPTCByOAHKFW005")
-    public String updateCRMREPTCByOAHKFW005(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hkfw005Bean.updateReptdByOAHKFW005(psn);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTCByOAHKFW005", psn), ex);
-            return String.format("执行%s:参数%s时异常%s:", "updateCRMREPTCByOAHKFW005", psn, "******" + ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "updateCRMREPTDByOAHKFW004Detail")
-    public String updateCRMREPTDByOAHKFW004Detail(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hzfw004DetailBean.updateReptdByOAHKFW004(psn);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW004Detail", psn), ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "rollbackCRMREPTDByOAHKFW004")
-    public String rollbackCRMREPTDByOAHKFW004(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hzfw004DetailBean.rollbackReptdByOAHKFW004(psn);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMREPTDByOAHKFW004", psn), ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "updateCRMREPTDByOAHKFW006")
-    public String updateCRMREPTDByOAHKFW006(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hkfw006Bean.updateReptdByOAHKFW006(psn);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW006", psn), ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "updateCRMREPTDFromOAHKFW006")
-    public String updateCRMREPTDFromOAHKFW006(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
-        Boolean ret = false;
-        try {
-            ret = hkfw006Bean.updateReptdByOAHKFW006(psn, status);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW006", psn), ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
     @WebMethod(operationName = "createCustomerComplaintByEAP")
     public String createCustomerComplaintByEAP(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -3565,7 +3565,7 @@ public class EAPWebService {
     @WebMethod(operationName = "createEAPDemandsByOAHKXQB001")
     public String createEAPDemandsByOAHKXQB001(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
-        HKXQB001 b = hkxqB001Bean.findByPSN(psn);
+        HKXQB001 b = hkxqb001Bean.findByPSN(psn);
         if (b == null) {
             throw new NullPointerException();
         }
@@ -3663,7 +3663,7 @@ public class EAPWebService {
     @WebMethod(operationName = "updateEAPDemandsByOAHKXQB001")
     public String updateEAPDemandsByOAHKXQB001(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
         Boolean ret = false;
-        HKXQB001 b = hkxqB001Bean.findByPSN(psn);
+        HKXQB001 b = hkxqb001Bean.findByPSN(psn);
         if (b == null) {
             throw new NullPointerException();
         }
