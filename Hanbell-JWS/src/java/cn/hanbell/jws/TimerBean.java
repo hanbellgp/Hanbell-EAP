@@ -13,7 +13,6 @@ import cn.hanbell.crm.ejb.DDGABean;
 import cn.hanbell.crm.ejb.DDGCBean;
 import cn.hanbell.crm.ejb.REPPABean;
 import cn.hanbell.crm.ejb.SyncCRMBean;
-import cn.hanbell.crm.ejb.WARTABean;
 import cn.hanbell.crm.entity.CMSME;
 import cn.hanbell.crm.entity.CMSMV;
 import cn.hanbell.crm.entity.DDGA;
@@ -28,13 +27,11 @@ import cn.hanbell.eam.ejb.AssetAcceptanceBean;
 import cn.hanbell.eam.ejb.AssetDistributeBean;
 import cn.hanbell.eam.ejb.AssetItemBean;
 import cn.hanbell.eam.ejb.WarehouseBean;
-import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.entity.AssetAcceptance;
 import cn.hanbell.eam.entity.AssetAcceptanceDetail;
 import cn.hanbell.eam.entity.AssetDistribute;
 import cn.hanbell.eam.entity.AssetDistributeDetail;
 import cn.hanbell.eam.entity.AssetItem;
-import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eap.entity.IntercompanyTransactions;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.ApmaphBean;
@@ -150,9 +147,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -191,8 +186,6 @@ public class TimerBean {
     private DDGCBean ddgcBean;
     @EJB
     private SyncCRMBean syncCRMBean;
-    @EJB
-    private WARTABean wartaBean;
 
     // EJBForEAM
     @EJB
@@ -203,8 +196,6 @@ public class TimerBean {
     private AssetDistributeBean assetDistributeBean;
     @EJB
     private WarehouseBean warehouseBean;
-    @EJB
-    private EquipmentRepairBean equipmentRepairBean;
 
     // EJBForEAP
     @EJB
