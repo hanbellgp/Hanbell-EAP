@@ -7,6 +7,7 @@ package cn.hanbell.oa.comm;
 
 import cn.hanbell.oa.ejb.FunctionsBean;
 import cn.hanbell.oa.ejb.OrganizationUnitBean;
+import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.ejb.TitleBean;
 import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.entity.Functions;
@@ -32,6 +33,9 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
 
     @PersistenceContext(unitName = "EFGP-ejbPU")
     private EntityManager em;
+
+    @EJB
+    protected ProcessInstanceBean processInstanceBean;
 
     @EJB
     protected UsersBean usersBean;
