@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -195,6 +196,11 @@ public class HKYX011 implements Serializable {
     @JoinColumn(name = "principal", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = true)
     private Users user;
+    
+    //流程号
+    @JoinColumn(name = "processSerialNumber", referencedColumnName = "serialNumber", insertable = false, updatable = false)
+    @OneToOne(optional = true)
+    private ProcessInstance processInstance;
     
      @Transient
      private String deptno;
@@ -584,6 +590,15 @@ public class HKYX011 implements Serializable {
     public void setDeptname(String deptname) {
         this.deptname = deptname;
     }
+
+    public ProcessInstance getProcessInstance() {
+        return processInstance;
+    }
+
+    public void setProcessInstance(ProcessInstance processInstance) {
+        this.processInstance = processInstance;
+    }
+    
 
     @Override
     public int hashCode() {

@@ -213,6 +213,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     Cell cell22 = row.createCell(22);
                     Cell cell23 = row.createCell(23);
                     Cell cell24 = row.createCell(24);
+                    Cell cell25 = row.createCell(25);
+                    Cell cell26 = row.createCell(26);
                     cell.setCellStyle(cellStyle);
                     cell1.setCellStyle(cellStyle);
                     cell2.setCellStyle(cellStyle);
@@ -238,6 +240,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     cell22.setCellStyle(cellStyle);
                     cell23.setCellStyle(cellStyle);
                     cell24.setCellStyle(cellStyle);
+                    cell25.setCellStyle(cellStyle);
+                    cell26.setCellStyle(cellStyle);
                     cell1.setCellValue(h[6] != null ? BaseLib.formatDate("yyyy/MM/dd", (Date) h[6]) : "");
                     cell2.setCellValue(h[0] != null ? (String) h[0] : "");
                     cell3.setCellValue(h[1] != null ? (String) h[1] : "");
@@ -273,6 +277,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                             invdscBuffer.append(entity.get(0).getHmark1()).append(";;");
                         }
                     }
+
                     if (invdsc != null) {
                         if (invdsc.getMark1() != null && !"".equals(invdsc.getMark1())) {
                             invdscBuffer.append(invdsc.getMark1()).append(";");
@@ -292,6 +297,14 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     Miscode miscode = miscodeBean.findByPK((String) h[20], (String) h[21]);
                     cell23.setCellValue(h[20] != null ? (String) (h[20]) : "");
                     cell24.setCellValue(miscode != null ? miscode.getCusds() : "");
+                    //项目
+                    if ("IAA".equals(String.valueOf(h[0])) || "IAB".equals(String.valueOf(h[0]))) {
+                        Miscode project = miscodeBean.findByPK("91", h[23] != null ? String.valueOf(h[23]) : "");
+                        if (project != null) {
+                            cell25.setCellValue(h[23] != null ? String.valueOf(h[23]) : "");
+                            cell26.setCellValue(project != null&&h[23] != null ? project.getCdesc() : "");
+                        }
+                    }
                     i++;
                 }
                 FileOutputStream os = null;
