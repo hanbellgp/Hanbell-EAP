@@ -130,7 +130,7 @@ public class HKJH006ManagedBean extends SuperQueryBean<HKJH006> {
                     cell6.setCellValue("开具红字发票，冲销货款");
                     cell7.setCellValue(o[6] != null ? (String) o[6] : "");
                     cell8.setCellValue(o[7] != null ? (String) o[7] : "");
-                    cell9.setCellValue(o[8] != null ? (String) o[8] : "");
+                    cell9.setCellValue(o[8] != null ? String.valueOf(o[8]) : "");
                     cell11.setCellValue(o[9] != null ? (String) o[9] : "");
                     i++;
                 }
