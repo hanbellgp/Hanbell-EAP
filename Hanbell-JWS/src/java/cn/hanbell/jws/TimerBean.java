@@ -32,6 +32,7 @@ import cn.hanbell.eam.entity.AssetAcceptanceDetail;
 import cn.hanbell.eam.entity.AssetDistribute;
 import cn.hanbell.eam.entity.AssetDistributeDetail;
 import cn.hanbell.eam.entity.AssetItem;
+import cn.hanbell.eap.entity.Company;
 import cn.hanbell.eap.entity.IntercompanyTransactions;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.ApmaphBean;
@@ -198,6 +199,8 @@ public class TimerBean {
     private WarehouseBean warehouseBean;
 
     // EJBForEAP
+    @EJB
+    private cn.hanbell.eap.ejb.CompanyBean eapCompanyBean;
     @EJB
     private cn.hanbell.eap.ejb.DepartmentBean eapDepartmentBean;
     @EJB
@@ -1001,25 +1004,38 @@ public class TimerBean {
     @Schedule(minute = "*/7", hour = "7-23", persistent = false)
     public void createBPMProcessByERPCDR220() {
         log4j.info("ERP-CDR220报价审批抛转EFGP签核轮询开始");
-        createOAHKYX009ByERPCDR220("C");
-        createOAHKYX009ByERPCDR220("G");
-        createOAHKYX009ByERPCDR220("J");
-        createOAHKYX009ByERPCDR220("N");
-        createOAHKYX009ByERPCDR220("C4");
-        createOAHKYX009ByERPCDR220("K");
-        createOAHKYX009ByERPCDR220("E");
-        createOAHKYX009ByERPCDR220("L");
+        List<Company> companyList;
+        try {
+            companyList = eapCompanyBean.findByInitCDR220Process();
+            if (companyList != null && !companyList.isEmpty()) {
+                for (Company c : companyList) {
+                    createOAHKYX009ByERPCDR220(c.getCompany());
+                }
+            }
+        } catch (Exception ex) {
+            log4j.error(ex);
+        } finally {
+            companyList = null;
+        }
         log4j.info("ERP-CDR220报价审批抛转EFGP签核轮询结束");
     }
 
     @Schedule(minute = "*/9", hour = "7-23", persistent = false)
     public void createBPMProcessByERPAPM811() {
         log4j.info("ERP-APM811进货请款抛转EFGP签核轮询开始");
-        createOASHBERPAPM811ByERPAPM811("C");
-        createOASHBERPAPM811ByERPAPM811("K");
-        createOASHBERPAPM811ByERPAPM811("E");
-        createOASHBERPAPM811ByERPAPM811("H");
-        // createOASHBERPAPM811ByERPAPM811("Y");
+        List<Company> companyList;
+        try {
+            companyList = eapCompanyBean.findByInitAPM811Process();
+            if (companyList != null && !companyList.isEmpty()) {
+                for (Company c : companyList) {
+                    createOASHBERPAPM811ByERPAPM811(c.getCompany());
+                }
+            }
+        } catch (Exception ex) {
+            log4j.error(ex);
+        } finally {
+            companyList = null;
+        }
         log4j.info("ERP-APM811进货请款抛转EFGP签核轮询结束");
     }
 
@@ -1909,21 +1925,12 @@ public class TimerBean {
                 }
             }
         }
+        // 台湾转入
         this.createERPCDR310ByExchPUR415("C", "STW00003", "00", "A", "86005", "20200408");// THB->SHB
         this.createERPCDR310ByExchPUR415("C", "STW00003", "00", "A", "86005-1", "20200430");// THB->SHB Service
         this.createERPCDR310ByExchPUR415("K", "KTW00004", "00", "A", "86010 ", "20200408");// THB->Comer
         this.createERPCDR310ByExchPUR415("H", "HTW00001", "00", "A", "1139 ", "20200408");// THB->Hanson
-        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HZJ00030", "C", "SZJ00065", "SZJ00101", "20190901",
-                false);// 科恩特
-        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00247", "C", "SZJ00065", "SSH01164", "20190901",
-                false);// 卓准
-        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HHB00007", "C", "SZJ00065", "SHB00016", "20190901",
-                false);// 恒工
-        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HJS00129", "C", "SZJ00065", "SJS00291", "20200101",
-                false);// 腾达
-        // this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00087", "C",
-        // "SZJ00065", "SSH00229", "20190801", true);// 海光
-        this.syncThirdPartyTradingByERPMAN275("H", "C", "20190901");// 催料
+        // 转给台湾
         this.syncERPPUR410ToExchange("C", "STW00007", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("C", "STW00035", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("C", "SXG00007", "20200408");// SHB->Exch
