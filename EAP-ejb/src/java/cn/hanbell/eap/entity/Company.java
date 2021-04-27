@@ -32,6 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Company.findByFullname", query = "SELECT c FROM Company c WHERE c.fullname = :fullname"),
     @NamedQuery(name = "Company.findByHasEAM", query = "SELECT c FROM Company c WHERE c.hasEAM = 1"),
     @NamedQuery(name = "Company.findByHasKPI", query = "SELECT c FROM Company c WHERE c.hasKPI = 1"),
+    @NamedQuery(name = "Company.findByInitAPM811Process", query = "SELECT c FROM Company c WHERE c.initAPM811Process = true"),
+    @NamedQuery(name = "Company.findByInitCDR220Process", query = "SELECT c FROM Company c WHERE c.initCDR220Process = true"),
     @NamedQuery(name = "Company.findByStatus", query = "SELECT c FROM Company c WHERE c.status = :status")})
 public class Company extends SuperEntity {
 
@@ -76,6 +78,10 @@ public class Company extends SuperEntity {
     private Boolean hasKPI;
     @Column(name = "hasBSC")
     private Boolean hasBSC;
+    @Column(name = "initAPM811Process")
+    private Boolean initAPM811Process;
+    @Column(name = "initCDR220Process")
+    private Boolean initCDR220Process;
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
@@ -185,6 +191,34 @@ public class Company extends SuperEntity {
 
     public void setHasBSC(Boolean hasBSC) {
         this.hasBSC = hasBSC;
+    }
+
+    /**
+     * @return the initAPM811Process
+     */
+    public Boolean getInitAPM811Process() {
+        return initAPM811Process;
+    }
+
+    /**
+     * @param initAPM811Process the initAPM811Process to set
+     */
+    public void setInitAPM811Process(Boolean initAPM811Process) {
+        this.initAPM811Process = initAPM811Process;
+    }
+
+    /**
+     * @return the initCDR220Process
+     */
+    public Boolean getInitCDR220Process() {
+        return initCDR220Process;
+    }
+
+    /**
+     * @param initCDR220Process the initCDR220Process to set
+     */
+    public void setInitCDR220Process(Boolean initCDR220Process) {
+        this.initCDR220Process = initCDR220Process;
     }
 
     public String getRemark() {

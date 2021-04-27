@@ -16,6 +16,7 @@ import cn.hanbell.jrs.SuperRESTForERP;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -68,12 +69,16 @@ public class ShipmentShortageFacadeREST extends SuperRESTForERP<Manmas> {
                 List<Map<String, Object>> data = new ArrayList<>();
                 Map<String, Object> obj;
                 this.company = company.getPath();
-                Date queryDate = BaseLib.getDate("yyyy-MM-dd", shipdate.getPath());
+                Date dateBegin = BaseLib.getDate("yyyy-MM-dd", shipdate.getPath());
+                Calendar c = Calendar.getInstance();
+                c.setTime(dateBegin);
+                c.add(Calendar.DATE, 1);
+                Date dateEnd = c.getTime();
                 manmasBean.setCompany(this.company);
                 manwipbalBean.setCompany(this.company);
 
-                List<ShipmentSchedule> scheduleList = shipmentScheduleBean.findByCompanyAndFormdate(this.company, queryDate, true, offset, pageSize);
-                int count = shipmentScheduleBean.getRowCountByCompanyAndFormdate(this.company, queryDate, true);
+                List<ShipmentSchedule> scheduleList = shipmentScheduleBean.findByCompanyAndFormdate(this.company, dateBegin, dateEnd, true, offset, pageSize);
+                int count = shipmentScheduleBean.getRowCountByCompanyAndFormdate(this.company, dateBegin, dateEnd, true);
 
                 if (scheduleList != null && !scheduleList.isEmpty()) {
                     for (ShipmentSchedule ss : scheduleList) {

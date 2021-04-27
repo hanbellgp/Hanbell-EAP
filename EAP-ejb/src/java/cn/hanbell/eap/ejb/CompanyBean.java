@@ -66,4 +66,22 @@ public class CompanyBean extends SuperEJBForEAP<Company> {
         }
     }
 
+    public List<Company> findByInitAPM811Process() {
+        Query query = getEntityManager().createNamedQuery("Company.findByInitAPM811Process");
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Company> findByInitCDR220Process() {
+        Query query = getEntityManager().createNamedQuery("Company.findByInitCDR220Process");
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
 }
