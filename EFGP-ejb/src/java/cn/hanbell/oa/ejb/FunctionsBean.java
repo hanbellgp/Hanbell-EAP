@@ -25,30 +25,35 @@ public class FunctionsBean extends SuperEJBForEFGP<Functions> {
         super(Functions.class);
     }
 
-    public Functions findByUserOID(String value) {
+    public List<Functions> findByUserOID(String value) {
         Query query = getEntityManager().createNamedQuery("Functions.findByUserOID");
         query.setParameter("userOID", value);
         try {
-            Object entity = query.getSingleResult();
-            if (entity != null) {
-                return (Functions) entity;
-            } else {
-                return null;
-            }
+            return query.getResultList();
         } catch (Exception e) {
             return null;
         }
     }
 
-    public Functions findByOccupantOIDAndisMain(String occupantOID, boolean isMain) {
+    public Functions findByUserOIDAndIsMain(String value) {
         try {
-            Query q=getEntityManager().createNamedQuery("Functions.findByUserOID");
-            q.setParameter("userOID", occupantOID);
-            return (Functions)q.getSingleResult();
-            
+            Query query = getEntityManager().createNamedQuery("Functions.findByUserOIDAndIsMain");
+            query.setParameter("userOID", value);
+            return (Functions) query.getSingleResult();
         } catch (Exception e) {
-         
             return null;
         }
     }
+
+    public Functions findByUserOIDAndOrgUnitOID(String userOID, String orgUnitOID) {
+        try {
+            Query query = getEntityManager().createNamedQuery("Functions.findByUserOIDAndOrgUnitOID");
+            query.setParameter("userOID", userOID);
+            query.setParameter("orgUnitOID", orgUnitOID);
+            return (Functions) query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
 }
