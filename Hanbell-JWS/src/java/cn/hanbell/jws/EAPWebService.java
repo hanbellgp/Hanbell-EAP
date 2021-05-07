@@ -2758,7 +2758,7 @@ public class EAPWebService {
             }
             agent1000002Bean.initConfiguration();
             switch (step) {
-                case "01":
+                case "ACT10":
                     Functions function = processInstanceBean.findFunctionsByUserOIDAndOrgUnitOID(pi.getRequesterOID(), pi.getInvokeOrganizationUnitOID());
                     Users manager = usersBean.findByOID(function.getSpecifiedManagerOID());
                     agent1000002Bean.sendMsgToUser(manager.getId(), "text", String.format("【%s】<br/>%s设备,发生(%s)故障,需要报修处理", hspb015Bean.getCompanyName(entity.getFacno()), entity.getMachineCode(), entity.getFaultContent()));
@@ -3196,12 +3196,6 @@ public class EAPWebService {
         }
     }
 
-    /**
-     * Web service operation
-     *
-     * @param psn
-     * @return
-     */
     @WebMethod(operationName = "updateOAHKGC001ByOAHKGC003")
     public String updateOAHKGC001ByOAHKGC003(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -3307,7 +3301,7 @@ public class EAPWebService {
     }
 
     /**
-     * Web 服务操作
+     * 根据OA办公用品申请表审核EAM对应领用单
      *
      * @param psn
      * @return

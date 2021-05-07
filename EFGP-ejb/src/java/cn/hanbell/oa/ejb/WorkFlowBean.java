@@ -24,7 +24,6 @@ import javax.ejb.DependsOn;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import javax.inject.Named;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ServiceException;
 import org.apache.axis.client.Call;
@@ -35,7 +34,6 @@ import org.apache.axis.client.Call;
  */
 @Stateless
 @LocalBean
-@Named
 @DependsOn({"UsersBean", "FunctionsBean", "TitleBean"})
 public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Serializable {
 
@@ -159,15 +157,15 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
 
         ProcessInstance pi = processInstanceBean.findBySerialNumber(psn);
         if (pi == null) {
-            return "401$ProcessInstance不存在";
+            return "404$ProcessInstance不存在";
         }
         ParticipantActivityInstance pai = participantActivityInstanceBean.findByContextOIDAndDefinitionId(pi.getContextOID(), definitionId);
         if (pai == null) {
-            return "401$ParticipantActivityInstance不存在";
+            return "404$ParticipantActivityInstance不存在";
         }
         WorkItem workItem = workItemBean.findByContainerOIDAndContextOID(pai.getOID(), pi.getContextOID());
         if (workItem == null) {
-            return "401$WorkItem不存在";
+            return "404$WorkItem不存在";
         }
         if (workItem.getCurrentState() != 1) {
             return "200$WorkItem已处理";
@@ -180,10 +178,16 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
         currentUser = usersBean.findById(userId);
         if (currentUser == null) {
             log4j.error("用户" + userId + "不存在");
-            return "401$用户不存在";
+            return "404$用户不存在";
+        }
+        WorkItem workItem = workItemBean.findByOID(workItemOID);
+        if (workItem == null) {
+            return "404$WorkItem不存在";
+        }
+        if (workItem.getCurrentState() != 1) {
+            return "200$WorkItem已处理";
         }
         Object[] params = null;
-        Object object = null;
         try {
             // 建立一个WebServices调用连接
             Call call = BaseLib.getAXISCall(host, port, "/NaNaWeb/services/WorkflowService?wsdl");
