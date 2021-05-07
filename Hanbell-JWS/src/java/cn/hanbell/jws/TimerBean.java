@@ -33,6 +33,7 @@ import cn.hanbell.eam.entity.AssetAcceptanceDetail;
 import cn.hanbell.eam.entity.AssetDistribute;
 import cn.hanbell.eam.entity.AssetDistributeDetail;
 import cn.hanbell.eam.entity.AssetItem;
+import cn.hanbell.eap.entity.Company;
 import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eap.entity.IntercompanyTransactions;
 import cn.hanbell.erp.comm.SuperEJBForERP;
@@ -207,6 +208,8 @@ public class TimerBean {
     private EquipmentRepairBean equipmentRepairBean;
 
     // EJBForEAP
+    @EJB
+    private cn.hanbell.eap.ejb.CompanyBean eapCompanyBean;
     @EJB
     private cn.hanbell.eap.ejb.DepartmentBean eapDepartmentBean;
     @EJB
@@ -1010,25 +1013,38 @@ public class TimerBean {
     @Schedule(minute = "*/7", hour = "7-23", persistent = false)
     public void createBPMProcessByERPCDR220() {
         log4j.info("ERP-CDR220报价审批抛转EFGP签核轮询开始");
-        createOAHKYX009ByERPCDR220("C");
-        createOAHKYX009ByERPCDR220("G");
-        createOAHKYX009ByERPCDR220("J");
-        createOAHKYX009ByERPCDR220("N");
-        createOAHKYX009ByERPCDR220("C4");
-        createOAHKYX009ByERPCDR220("K");
-        createOAHKYX009ByERPCDR220("E");
-        createOAHKYX009ByERPCDR220("L");
+        List<Company> companyList;
+        try {
+            companyList = eapCompanyBean.findByInitCDR220Process();
+            if (companyList != null && !companyList.isEmpty()) {
+                for (Company c : companyList) {
+                    createOAHKYX009ByERPCDR220(c.getCompany());
+                }
+            }
+        } catch (Exception ex) {
+            log4j.error(ex);
+        } finally {
+            companyList = null;
+        }
         log4j.info("ERP-CDR220报价审批抛转EFGP签核轮询结束");
     }
 
     @Schedule(minute = "*/9", hour = "7-23", persistent = false)
     public void createBPMProcessByERPAPM811() {
         log4j.info("ERP-APM811进货请款抛转EFGP签核轮询开始");
-        createOASHBERPAPM811ByERPAPM811("C");
-        createOASHBERPAPM811ByERPAPM811("K");
-        createOASHBERPAPM811ByERPAPM811("E");
-        createOASHBERPAPM811ByERPAPM811("H");
-        // createOASHBERPAPM811ByERPAPM811("Y");
+        List<Company> companyList;
+        try {
+            companyList = eapCompanyBean.findByInitAPM811Process();
+            if (companyList != null && !companyList.isEmpty()) {
+                for (Company c : companyList) {
+                    createOASHBERPAPM811ByERPAPM811(c.getCompany());
+                }
+            }
+        } catch (Exception ex) {
+            log4j.error(ex);
+        } finally {
+            companyList = null;
+        }
         log4j.info("ERP-APM811进货请款抛转EFGP签核轮询结束");
     }
 
@@ -1164,9 +1180,9 @@ public class TimerBean {
             List<String> bilnoList;
             int i;
             double sumqty;
-            double expamtfs;
-            double ratio;
-            double sumapamtfs;
+            BigDecimal expamtfs;
+            BigDecimal ratio;
+            BigDecimal sumapamtfs;
             BigDecimal sumtaxfs;
             BigDecimal sumtax;
             double sumbilnum8fs;
@@ -1181,9 +1197,9 @@ public class TimerBean {
                         detailList.clear();// 清除前面的资料
                         i = 0;
                         sumqty = 0.00;
-                        expamtfs = 0.00;
-                        ratio = 1;
-                        sumapamtfs = 0.00;
+                        expamtfs = BigDecimal.ZERO;
+                        ratio = BigDecimal.ONE;
+                        sumapamtfs = BigDecimal.ZERO;
                         sumtaxfs = BigDecimal.ZERO;
                         sumtax = BigDecimal.ZERO;
                         sumbilnum8fs = 0.00;
@@ -1207,12 +1223,12 @@ public class TimerBean {
                             sumivomsfs += d.getIvomsfs().doubleValue();
                             dm.setCoin(d.getCoin());
                             dm.setRatio(d.getRatio().toString());
-                            ratio = d.getRatio().doubleValue();
+                            ratio = d.getRatio();
                             dm.setOgdkid(d.getOgdkid());
                             dm.setBilno(d.getBilno());
                             dm.setAcpamtfs(d.getAcpamtfs().toString());
                             if (dm.getTrapyh().equals("2")) {
-                                expamtfs += d.getAcpamtfs().doubleValue();
+                                expamtfs = expamtfs.add(d.getAcpamtfs());
                             }
                             dm.setIvopsfs(d.getIvopsfs().toString());
                             dm.setIvomsfs(d.getIvoms().toString());
@@ -1222,9 +1238,8 @@ public class TimerBean {
                             dm.setComApamtfs((d.getAcpamtfs().subtract(d.getPreamtfs()).subtract(d.getTemamtfs())
                                     .add(d.getIvopsfs()).subtract(d.getIvomsfs()).subtract(d.getLosamtfs()))
                                     .toString());
-                            sumapamtfs += (d.getAcpamtfs().subtract(d.getPreamtfs()).subtract(d.getTemamtfs())
-                                    .add(d.getIvopsfs()).subtract(d.getIvomsfs()).subtract(d.getLosamtfs()))
-                                    .doubleValue();
+                            sumapamtfs = sumapamtfs.add(d.getAcpamtfs().subtract(d.getPreamtfs()).subtract(d.getTemamtfs())
+                                    .add(d.getIvopsfs()).subtract(d.getIvomsfs()).subtract(d.getLosamtfs()));
                             if (d.getDmark() == null || d.getDmark().isEmpty() || d.getDmark().length() == 0
                                     || d.getDmark().equals("null")) {
                                 dm.setDmark("");
@@ -1284,18 +1299,18 @@ public class TimerBean {
                             hm.setHmark(h.getHmark());
                         }
                         // 表单下方合计栏位(取2位小数)
-                        hm.setSum_apamtfs((double) Math.round(sumapamtfs * 100) / 100);
-                        hm.setSum_apamt((double) Math.round(ratio * sumapamtfs * 100) / 100);
+                        hm.setSum_apamtfs(sumapamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setSum_apamt(sumapamtfs.multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP));
                         hm.setSum_bilnum8fs((double) Math.round(sumbilnum8fs * 100) / 100);
                         hm.setSum_bilnum8((double) Math.round(sumbilnum8 * 100) / 100);
                         hm.setSum_taxfs(sumtaxfs.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
                         hm.setSum_tax(sumtax.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 
-                        hm.setTotalfs(hm.getSum_apamtfs() + hm.getSum_taxfs() - hm.getSum_bilnum8fs());
-                        hm.setTotalfs((double) Math.round(hm.getTotalfs() * 100) / 100);
-                        hm.setTotal((double) Math.round(ratio * hm.getTotalfs() * 100) / 100);
-                        hm.setExpamtfs((double) Math.round(expamtfs * 100) / 100);
-                        hm.setExpamt((double) Math.round(expamtfs * ratio * 100) / 100);
+                        hm.setTotalfs(hm.getSum_apamtfs().add(BigDecimal.valueOf(hm.getSum_taxfs())).subtract(BigDecimal.valueOf(hm.getSum_bilnum8fs())));
+                        hm.setTotalfs(hm.getTotalfs().setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setTotal(hm.getTotalfs().multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setExpamtfs(expamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setExpamt(expamtfs.multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP));
                         hm.setCompute_1(sumqty);
                         hm.setSumivomsfs((double) Math.round(sumivomsfs * 100) / 100);
                         hm.setSumivopsfs((double) Math.round(sumivopsfs * 100) / 100);
@@ -1919,21 +1934,12 @@ public class TimerBean {
                 }
             }
         }
+        // 台湾转入
         this.createERPCDR310ByExchPUR415("C", "STW00003", "00", "A", "86005", "20200408");// THB->SHB
         this.createERPCDR310ByExchPUR415("C", "STW00003", "00", "A", "86005-1", "20200430");// THB->SHB Service
         this.createERPCDR310ByExchPUR415("K", "KTW00004", "00", "A", "86010 ", "20200408");// THB->Comer
         this.createERPCDR310ByExchPUR415("H", "HTW00001", "00", "A", "1139 ", "20200408");// THB->Hanson
-        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HZJ00030", "C", "SZJ00065", "SZJ00101", "20190901",
-                false);// 科恩特
-        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00247", "C", "SZJ00065", "SSH01164", "20190901",
-                false);// 卓准
-        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HHB00007", "C", "SZJ00065", "SHB00016", "20190901",
-                false);// 恒工
-        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HJS00129", "C", "SZJ00065", "SJS00291", "20200101",
-                false);// 腾达
-        // this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00087", "C",
-        // "SZJ00065", "SSH00229", "20190801", true);// 海光
-        this.syncThirdPartyTradingByERPMAN275("H", "C", "20190901");// 催料
+        // 转给台湾
         this.syncERPPUR410ToExchange("C", "STW00007", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("C", "STW00035", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("C", "SXG00007", "20200408");// SHB->Exch
