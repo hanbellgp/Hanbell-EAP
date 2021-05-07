@@ -125,7 +125,6 @@ import cn.hanbell.erp.entity.PurvdrBuyer;
 import cn.hanbell.erp.entity.Purvdrrel;
 import cn.hanbell.erp.entity.Secmemb;
 import cn.hanbell.erp.entity.Secuser;
-import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.exch.ejb.ExchangeSHBBean;
 import cn.hanbell.oa.ejb.HKCW002Bean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
