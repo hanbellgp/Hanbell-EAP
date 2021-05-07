@@ -32,7 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Functions.findByObjectVersion", query = "SELECT f FROM Functions f WHERE f.objectVersion = :objectVersion"),
     @NamedQuery(name = "Functions.findByApprovalLevelOID", query = "SELECT f FROM Functions f WHERE f.approvalLevelOID = :approvalLevelOID"),
     @NamedQuery(name = "Functions.findByDefinitionOID", query = "SELECT f FROM Functions f WHERE f.definitionOID = :definitionOID"),
-    @NamedQuery(name = "Functions.findByUserOID", query = "SELECT f FROM Functions f WHERE f.occupantOID = :userOID AND f.isMain = true"),
+    @NamedQuery(name = "Functions.findByUserOID", query = "SELECT f FROM Functions f WHERE f.occupantOID = :userOID"),
+    @NamedQuery(name = "Functions.findByUserOIDAndIsMain", query = "SELECT f FROM Functions f WHERE f.occupantOID = :userOID AND f.isMain = true"),
+    @NamedQuery(name = "Functions.findByUserOIDAndOrgUnitOID", query = "SELECT f FROM Functions f WHERE f.occupantOID = :userOID AND f.organizationUnit.oid = :orgUnitOID"),
     @NamedQuery(name = "Functions.findByOrganizationUnitOID", query = "SELECT f FROM Functions f WHERE f.organizationUnit.oid = :organizationUnitOID"),
     @NamedQuery(name = "Functions.findBySpecifiedManagerOID", query = "SELECT f FROM Functions f WHERE f.specifiedManagerOID = :specifiedManagerOID"),
     @NamedQuery(name = "Functions.findByIsMain", query = "SELECT f FROM Functions f WHERE f.isMain = :isMain")})

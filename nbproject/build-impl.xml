@@ -24,8 +24,8 @@ is divided into following sections:
         </condition>
     </fail>
     <target depends="dist" description="Build whole project." name="default"/>
-    <!-- 
-    INITIALIZATION SECTION 
+    <!--
+    INITIALIZATION SECTION
     -->
     <target name="pre-init">
         <!-- Empty placeholder for easier customization. -->
@@ -155,9 +155,9 @@ is divided into following sections:
     <target name="-init-taskdefs">
         <fail unless="libs.CopyLibs.classpath">
             The libs.CopyLibs.classpath property is not set up.
-            This property must point to 
+            This property must point to
             org-netbeans-modules-java-j2seproject-copylibstask.jar file which is part
-            of NetBeans IDE installation and is usually located at 
+            of NetBeans IDE installation and is usually located at
 &lt;netbeans_installation&gt;/java&lt;version&gt;/ant/extra folder.
             Either open the project in the IDE and make sure CopyLibs library
             exists or setup the property manually. For example like this:
@@ -261,6 +261,10 @@ is divided into following sections:
             <property location="${build.dir}" name="dist.ear.dir"/>
             <property name="deploy.on.save" value="${build.deploy.on.save}"/>
         </ant>
+        <ant antfile="${project.WCO-ejb}/build.xml" inheritall="false" target="dist-ear">
+            <property location="${build.dir}" name="dist.ear.dir"/>
+            <property name="deploy.on.save" value="${build.deploy.on.save}"/>
+        </ant>
     </target>
     <target depends="init,deps-jar,deps-j2ee-archive" name="pre-pre-compile"/>
     <target name="pre-compile">
@@ -288,6 +292,7 @@ is divided into following sections:
         <copyfiles files="${reference.HRM-ejb.dist-ear}" todir="${build.dir}//"/>
         <copyfiles files="${reference.CRMSYS-ejb.dist-ear}" todir="${build.dir}//"/>
         <copyfiles files="${reference.EXCH-ejb.dist-ear}" todir="${build.dir}//"/>
+        <copyfiles files="${reference.WCO-ejb.dist-ear}" todir="${build.dir}//"/>
     </target>
     <target name="post-compile">
         <!-- Empty placeholder for easier customization. -->
@@ -379,6 +384,7 @@ is divided into following sections:
         <ant antfile="${project.SHBERP-ejb}/build.xml" inheritall="false" target="-run-deploy-am"/>
         <ant antfile="${project.SHBMES-ejb}/build.xml" inheritall="false" target="-run-deploy-am"/>
         <ant antfile="${project.VHBERP-ejb}/build.xml" inheritall="false" target="-run-deploy-am"/>
+        <ant antfile="${project.WCO-ejb}/build.xml" inheritall="false" target="-run-deploy-am"/>
     </target>
     <target depends="-init-cos,dist-directory-deploy,pre-run-deploy,-pre-nbmodule-run-deploy,-run-deploy-nb,-init-deploy-ant,-deploy-ant,-run-deploy-am,-post-nbmodule-run-deploy,post-run-deploy" name="run-deploy"/>
     <target if="netbeans.home" name="-run-deploy-nb">
@@ -745,6 +751,10 @@ is divided into following sections:
             <property name="deploy.on.save" value="${build.deploy.on.save}"/>
         </ant>
         <ant antfile="${project.VHBERP-ejb}/build.xml" inheritall="false" target="clean-ear">
+            <property location="${build.dir}" name="dist.ear.dir"/>
+            <property name="deploy.on.save" value="${build.deploy.on.save}"/>
+        </ant>
+        <ant antfile="${project.WCO-ejb}/build.xml" inheritall="false" target="clean-ear">
             <property location="${build.dir}" name="dist.ear.dir"/>
             <property name="deploy.on.save" value="${build.deploy.on.save}"/>
         </ant>

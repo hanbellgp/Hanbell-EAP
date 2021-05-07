@@ -6,7 +6,7 @@
 package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
-import cn.hanbell.oa.entity.OrganizationUnit;
+import cn.hanbell.oa.entity.HSPB015;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 
@@ -16,10 +16,10 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class OrganizationUnitBean extends SuperEJBForEFGP<OrganizationUnit> {
+public class HSPB015Bean extends SuperEJBForEFGP<HSPB015> {
 
-    public OrganizationUnitBean() {
-        super(OrganizationUnit.class);
+    public HSPB015Bean() {
+        super(HSPB015.class);
     }
 
 }
