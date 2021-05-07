@@ -8,7 +8,10 @@ package cn.hanbell.oa.ejb;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.FormInstance;
 import cn.hanbell.oa.entity.OrganizationUnit;
+import cn.hanbell.oa.entity.ParticipantActivityInstance;
+import cn.hanbell.oa.entity.ProcessInstance;
 import cn.hanbell.oa.entity.Users;
+import cn.hanbell.oa.entity.WorkItem;
 import cn.hanbell.util.BaseLib;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -18,9 +21,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.DependsOn;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import javax.inject.Named;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ServiceException;
 import org.apache.axis.client.Call;
@@ -31,13 +34,19 @@ import org.apache.axis.client.Call;
  */
 @Stateless
 @LocalBean
-@Named
 @DependsOn({"UsersBean", "FunctionsBean", "TitleBean"})
 public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Serializable {
 
     //public final String HOST_ADD = "http://oa.hanbell.com.cn";
     public final String HOST_ADD = "http://172.16.10.157";
     public final String HOST_PORT = "8086";
+
+    @EJB
+    private ParticipantActivityInstanceBean participantActivityInstanceBean;
+    @EJB
+    private WorkAssignmentBean workAssignmentBean;
+    @EJB
+    private WorkItemBean workItemBean;
 
     public WorkFlowBean() {
         super(FormInstance.class);
@@ -144,6 +153,54 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
 
     }
 
+    public String completeWorkItem(String host, String port, String psn, String definitionId, String userId, String comment) throws Exception {
+
+        ProcessInstance pi = processInstanceBean.findBySerialNumber(psn);
+        if (pi == null) {
+            return "404$ProcessInstance不存在";
+        }
+        ParticipantActivityInstance pai = participantActivityInstanceBean.findByContextOIDAndDefinitionId(pi.getContextOID(), definitionId);
+        if (pai == null) {
+            return "404$ParticipantActivityInstance不存在";
+        }
+        WorkItem workItem = workItemBean.findByContainerOIDAndContextOID(pai.getOID(), pi.getContextOID());
+        if (workItem == null) {
+            return "404$WorkItem不存在";
+        }
+        if (workItem.getCurrentState() != 1) {
+            return "200$WorkItem已处理";
+        }
+        return this.completeWorkItem(host, port, workItem.getOID(), userId, comment);
+
+    }
+
+    public String completeWorkItem(String host, String port, String workItemOID, String userId, String comment) throws Exception {
+        currentUser = usersBean.findById(userId);
+        if (currentUser == null) {
+            log4j.error("用户" + userId + "不存在");
+            return "404$用户不存在";
+        }
+        WorkItem workItem = workItemBean.findByOID(workItemOID);
+        if (workItem == null) {
+            return "404$WorkItem不存在";
+        }
+        if (workItem.getCurrentState() != 1) {
+            return "200$WorkItem已处理";
+        }
+        Object[] params = null;
+        try {
+            // 建立一个WebServices调用连接
+            Call call = BaseLib.getAXISCall(host, port, "/NaNaWeb/services/WorkflowService?wsdl");
+            // 审批一个流程
+            call.setOperationName(new QName("WorkflowService", "completeWorkItem"));
+            params = new Object[]{workItemOID, userId, comment};
+            call.invoke(params);
+            return "200$success";
+        } catch (ServiceException | RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public String findFormOIDsOfProcess(String processId) throws Exception {
         Object[] params = null;
         Object object = null;
@@ -161,86 +218,6 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
         } catch (ServiceException | RemoteException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public String getCompanyByDeptId(String deptId) {
-        switch (deptId.substring(0, 2)) {
-            case "1C":
-                return "J";
-            case "1D":
-                return "G";
-            case "1E":
-                return "N";
-            case "1V":
-                return "C4";
-            case "1R":
-                return "W";
-        }
-        switch (deptId.substring(0, 1)) {
-            case "1":
-                return "C";
-            case "2":
-                return "H";
-            case "3":
-                return "V";
-            case "4":
-                return "Q";
-            case "5":
-                return "K";
-            case "6":
-                return "R";
-            case "7":
-                return "Y";
-            case "8":
-                return "E";
-            case "9":
-                return "L";
-        }
-        return "";
-    }
-
-    public String getCompanyName(String facno) {
-        switch (facno) {
-            case "C":
-                return "上海汉钟";
-            case "G":
-                return "广州分公司";
-            case "J":
-                return "济南分公司";
-            case "N":
-                return "南京分公司";
-            case "C4":
-                return "重庆分公司";
-            case "H":
-                return "浙江汉声";
-            case "Y":
-                return "安徽汉扬";
-            case "K":
-                return "上海柯茂";
-            case "E":
-                return "浙江柯茂";
-            case "Q":
-                return "世纪东元";
-            case "L":
-                return "真空技术";
-            case "X":
-                return "香港汉钟";
-            case "V":
-                return "越南汉钟";
-            case "R":
-                return "韩国汉钟";
-            case "W":
-                return "顺德涡旋";
-            case "A":
-                 return "台湾汉钟（观音厂）";
-            case "B":
-                 return "台湾汉钟（台中厂）";
-            case "P":
-                return "台湾真空";
-            case "HP":
-                return "台湾汉力";
-        }
-        return "上海汉钟";
     }
 
     public String getFormFieldTemplate(String formOID) throws Exception {

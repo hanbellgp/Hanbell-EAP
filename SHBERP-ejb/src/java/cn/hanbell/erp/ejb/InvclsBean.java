@@ -9,8 +9,6 @@ import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Invcls;
 import cn.hanbell.oa.ejb.HKJS007Bean;
 import cn.hanbell.oa.entity.HKJS007;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -34,6 +32,9 @@ public class InvclsBean extends SuperEJBForERP<Invcls> {
     private SyncComerBean syncComerBean;
     @EJB
     private SyncHKBean syncHKBean;
+
+    @EJB
+    private SyncHYBean syncHYBean;
 
     public InvclsBean() {
         super(Invcls.class);
@@ -153,11 +154,14 @@ public class InvclsBean extends SuperEJBForERP<Invcls> {
                 // 香港
                 syncHKBean.persist(invcls, null);
                 syncHKBean.getEntityManager().flush();
-
+            } else if (h.getFacno().equals("H")) {
+                // 汉扬
+                syncHYBean.persist(invcls, null);
+                syncHYBean.getEntityManager().flush();
             }
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(InvmasBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
             throw new RuntimeException("程序发生异常!错误指示：" + ex);
         }
     }
@@ -198,4 +202,29 @@ public class InvclsBean extends SuperEJBForERP<Invcls> {
         }
     }
 
+    public String getItclscode(String itclscode) {
+        switch (itclscode) {
+            case "1":
+                return "成品类";
+            case "2":
+                return "半成品类";
+            case "3":
+                return "原料类";
+            case "4":
+                return "物料类";
+            case "5":
+                return "在制品类";
+            case "6":
+                return "商品";
+            case "7":
+                return "费用";
+            case "8":
+                return "列管资产";
+            case "A":
+                return "包装物";
+            case "B":
+                return "低质易耗品";
+        }
+        return "";
+    }
 }

@@ -6,6 +6,7 @@
 package cn.hanbell.oa.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -16,10 +17,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class SHBERPAPM811Model implements Serializable {
 
-    private Double total;
+    private BigDecimal total;
     private String apsta;
     private String terdate;
-    private Double expamt;
+    private BigDecimal expamt;
     private String vdrna;
     private Double sum_taxfs;
     private Double pric;
@@ -33,19 +34,19 @@ public class SHBERPAPM811Model implements Serializable {
     private Double sum_bilnum8fs;
     private Double temamtfs;
     private Double com_apamtfs;
-    private Double expamtfs;
+    private BigDecimal expamtfs;
     private String ratio;
     private String aptyp;
     private String appdept;
     private Double compute_1;
-    private Double sum_apamt;
+    private BigDecimal sum_apamt;
     private Double losamtfs;
     private String appuser;
     private String facno;
     private String inuser;
     private Date indate;
-    private Double totalfs;
-    private Double sum_apamtfs;
+    private BigDecimal totalfs;
+    private BigDecimal sum_apamtfs;
     private String tickdays;
     private String itnbr;
     private Double acpamtfs;
@@ -89,14 +90,6 @@ public class SHBERPAPM811Model implements Serializable {
         this.dmark = "";
     }
 
-    public Double getTotal() {
-        return total;
-    }
-
-    public void setTotal(Double total) {
-        this.total = total;
-    }
-
     public String getApsta() {
         return apsta;
     }
@@ -111,14 +104,6 @@ public class SHBERPAPM811Model implements Serializable {
 
     public void setTerdate(String terdate) {
         this.terdate = terdate;
-    }
-
-    public Double getExpamt() {
-        return expamt;
-    }
-
-    public void setExpamt(Double expamt) {
-        this.expamt = expamt;
     }
 
     public String getVdrna() {
@@ -217,14 +202,6 @@ public class SHBERPAPM811Model implements Serializable {
         this.com_apamtfs = com_apamtfs;
     }
 
-    public Double getExpamtfs() {
-        return expamtfs;
-    }
-
-    public void setExpamtfs(Double expamtfs) {
-        this.expamtfs = expamtfs;
-    }
-
     public String getRatio() {
         return ratio;
     }
@@ -255,14 +232,6 @@ public class SHBERPAPM811Model implements Serializable {
 
     public void setCompute_1(Double compute_1) {
         this.compute_1 = compute_1;
-    }
-
-    public Double getSum_apamt() {
-        return sum_apamt;
-    }
-
-    public void setSum_apamt(Double sum_apamt) {
-        this.sum_apamt = sum_apamt;
     }
 
     public Double getLosamtfs() {
@@ -303,22 +272,6 @@ public class SHBERPAPM811Model implements Serializable {
 
     public void setIndate(Date indate) {
         this.indate = indate;
-    }
-
-    public Double getTotalfs() {
-        return totalfs;
-    }
-
-    public void setTotalfs(Double totalfs) {
-        this.totalfs = totalfs;
-    }
-
-    public Double getSum_apamtfs() {
-        return sum_apamtfs;
-    }
-
-    public void setSum_apamtfs(Double sum_apamtfs) {
-        this.sum_apamtfs = sum_apamtfs;
     }
 
     public String getTickdays() {
@@ -498,6 +451,54 @@ public class SHBERPAPM811Model implements Serializable {
 
     public void setSumivomsfs(Double sumivomsfs) {
         this.sumivomsfs = sumivomsfs;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public BigDecimal getExpamt() {
+        return expamt;
+    }
+
+    public void setExpamt(BigDecimal expamt) {
+        this.expamt = expamt;
+    }
+
+    public BigDecimal getExpamtfs() {
+        return expamtfs;
+    }
+
+    public void setExpamtfs(BigDecimal expamtfs) {
+        this.expamtfs = expamtfs;
+    }
+
+    public BigDecimal getSum_apamt() {
+        return sum_apamt;
+    }
+
+    public void setSum_apamt(BigDecimal sum_apamt) {
+        this.sum_apamt = sum_apamt;
+    }
+
+    public BigDecimal getTotalfs() {
+        return totalfs;
+    }
+
+    public void setTotalfs(BigDecimal totalfs) {
+        this.totalfs = totalfs;
+    }
+
+    public BigDecimal getSum_apamtfs() {
+        return sum_apamtfs;
+    }
+
+    public void setSum_apamtfs(BigDecimal sum_apamtfs) {
+        this.sum_apamtfs = sum_apamtfs;
     }
 
 }

@@ -433,10 +433,7 @@ public class REPTCFacadeREST extends SuperRESTForCRM<REPTC> {
             reptc.setTc086(satisfaction.getProduct());
             int sum = Integer.parseInt(satisfaction.getService()) + Integer.parseInt(satisfaction.getProduct());
             reptc.setTc087(new BigDecimal(String.valueOf(sum / 2)));
-            StringBuffer remark = new StringBuffer("【");
-            remark.append(satisfaction.getOpenID());
-            remark.append("--").append(satisfaction.getNickname()).append("】\t").append(satisfaction.getRemark());
-            reptc.setTc088(remark.toString());
+            reptc.setTc088(satisfaction.getRemark());
             reptcBean.update(reptc);
             //如果服务及产品满意度都小于4，则企业微信通知其上级
             if (Integer.valueOf(satisfaction.getProduct()) + Integer.valueOf(satisfaction.getService()) < 8) {

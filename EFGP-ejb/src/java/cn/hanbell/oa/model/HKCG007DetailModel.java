@@ -113,6 +113,8 @@ public class HKCG007DetailModel implements Serializable {
     @Size(max = 255)
     @Column(name = "buyername")
     private String buyername;
+    private String monavg;
+    private String prqyYear;
 
     public HKCG007DetailModel() {
     }
@@ -392,5 +394,21 @@ public class HKCG007DetailModel implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.HKCG007purDetail";
+    }
+
+    public String getMonavg() {
+        return monavg;
+    }
+
+    public void setMonavg(String monavg) {
+        this.monavg = monavg;
+    }
+
+    public String getPrqyYear() {
+        return prqyYear;
+    }
+
+    public void setPrqyYear(String prqyYear) {
+        this.prqyYear = prqyYear;
     }
 }

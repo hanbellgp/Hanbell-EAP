@@ -130,6 +130,7 @@ import cn.hanbell.erp.entity.Puracd;
 import cn.hanbell.erp.entity.Purach;
 import cn.hanbell.erp.entity.Purhask;
 import cn.hanbell.oa.ejb.HKCG007Bean;
+import cn.hanbell.oa.ejb.HKCG011Bean;
 import cn.hanbell.oa.ejb.HKCG016Bean;
 import cn.hanbell.oa.ejb.HKCW002Bean;
 import cn.hanbell.oa.ejb.HKFW006Bean;
@@ -149,6 +150,7 @@ import cn.hanbell.oa.ejb.HKGL060Bean;
 import cn.hanbell.oa.ejb.HKCG019Bean;
 import cn.hanbell.oa.ejb.HKCG020Bean;
 import cn.hanbell.oa.ejb.HKXQB001Bean;
+import cn.hanbell.oa.ejb.HSPB015Bean;
 import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.ejb.SHBCRMREPI13Bean;
 import cn.hanbell.oa.ejb.SHBCRMSERI12Bean;
@@ -157,6 +159,8 @@ import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.ejb.VHTV002Bean;
 import cn.hanbell.oa.ejb.WARMI05Bean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
+import cn.hanbell.oa.entity.Functions;
+import cn.hanbell.oa.entity.HKCG011;
 import cn.hanbell.oa.entity.HKCG016;
 import cn.hanbell.oa.entity.HKCG019;
 import cn.hanbell.oa.entity.HKCG020;
@@ -165,11 +169,13 @@ import cn.hanbell.oa.entity.HKCW002Detail;
 import cn.hanbell.oa.entity.HKGL060;
 import cn.hanbell.oa.entity.HKGL060Detail;
 import cn.hanbell.oa.entity.HKXQB001;
+import cn.hanbell.oa.entity.HSPB015;
 import cn.hanbell.oa.entity.HZCW034;
 import cn.hanbell.oa.entity.HZCW034Detail;
 import cn.hanbell.oa.entity.HZJS034;
 import cn.hanbell.oa.entity.HZJS034Detail;
 import cn.hanbell.oa.entity.OrganizationUnit;
+import cn.hanbell.oa.entity.ProcessInstance;
 import cn.hanbell.oa.entity.SERI12;
 import cn.hanbell.oa.entity.SERI12grid2SERI12;
 import cn.hanbell.oa.entity.SHBCRMREPI13;
@@ -179,6 +185,7 @@ import cn.hanbell.oa.entity.SHBERPINV140Detail;
 import cn.hanbell.oa.entity.Users;
 import cn.hanbell.oa.entity.WorkItem;
 import cn.hanbell.util.BaseLib;
+import cn.hanbell.wco.ejb.Agent1000002Bean;
 import com.lightshell.comm.SuperEJB;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -276,11 +283,13 @@ public class EAPWebService {
 
     // EJBForEFGP
     @EJB
-    private WorkFlowBean workFlowBean;
-    @EJB
     private HKCG007Bean hkcg007Bean;
     @EJB
+    private HKCG011Bean hkcg011Bean;
+    @EJB
     private HKCG016Bean hkcg016Bean;
+    @EJB
+    private HKCG019Bean hkcg019Bean;
     @EJB
     private HKCG020Bean hkcg020Bean;
     @EJB
@@ -288,7 +297,7 @@ public class EAPWebService {
     @EJB
     private HKCW003Bean hkcw003Bean;
     @EJB
-    private HKFW004DetailBean hzfw004DetailBean;
+    private HKFW004DetailBean hkfw004DetailBean;
     @EJB
     private HKFW005Bean hkfw005Bean;
     @EJB
@@ -304,6 +313,10 @@ public class EAPWebService {
     @EJB
     private HKJH001Bean hkjh001Bean;
     @EJB
+    private HKXQB001Bean hkxqb001Bean;
+    @EJB
+    private HSPB015Bean hspb015Bean;
+    @EJB
     private HZCW028Bean hzcw028Bean;
     @EJB
     private HZCW033Bean hzcw033Bean;
@@ -312,25 +325,25 @@ public class EAPWebService {
     @EJB
     private HZJS034Bean hzjs034Bean;
     @EJB
-    private ProcessInstanceBean processInstanceBean;
-    @EJB
     private SERI12Bean seri12Bean;
-    @EJB
-    private SHBINV140Bean shbinv140Bean;
-    @EJB
-    private UsersBean usersBean;
-    @EJB
-    private VHTV002Bean vhtv002Bean;
-    @EJB
-    private WARMI05Bean warmi05Bean;
     @EJB
     private SHBCRMSERI12Bean shbcrmseri12Bean;
     @EJB
     private SHBCRMREPI13Bean shbcrmrepi13Bean;
     @EJB
-    private cn.hanbell.oa.ejb.PLMProjectBean efgpPLMProjectBean;
+    private SHBINV140Bean shbinv140Bean;
     @EJB
-    private HKXQB001Bean hkxqB001Bean;
+    private VHTV002Bean vhtv002Bean;
+    @EJB
+    private WARMI05Bean warmi05Bean;
+    @EJB
+    private ProcessInstanceBean processInstanceBean;
+    @EJB
+    private UsersBean usersBean;
+    @EJB
+    private WorkFlowBean workFlowBean;
+    @EJB
+    private cn.hanbell.oa.ejb.PLMProjectBean efgpPLMProjectBean;
 
     // EJBForERP
     @EJB
@@ -401,16 +414,16 @@ public class EAPWebService {
     private CrmreppalogBean crmreppalogBean;
     @EJB
     private ECPurvdrBean ecpurvdrBean;
-    @EJB
-    private HKCG019Bean hkcg019Bean;
-    // @EJB
-    // private RootCloudBean rootCloudBean;
 
     // EJBForPLM
     @EJB
     private cn.hanbell.plm.ejb.PLMProjectBean plmPLMProjectBean;
     @EJB
     private cn.hanbell.plm.ejb.PLMTeamBean plmPLMTeamBean;
+
+    // EJBForWCO
+    @EJB
+    private Agent1000002Bean agent1000002Bean;
 
     /**
      * This is a sample web service operation
@@ -1467,6 +1480,104 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "createEAPDemandsByOAHKXQB001")
+    public String createEAPDemandsByOAHKXQB001(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        HKXQB001 b = hkxqb001Bean.findByPSN(psn);
+        if (b == null) {
+            throw new NullPointerException();
+        }
+        try {
+            String SerialNumber = b.getSerialNumber();//表单单号
+            String xqjs = b.getXqjs();//需求简称
+            Date date1 = b.getCreatedate();//创建日期
+            String ssxt = b.getSsxt();//所属系统
+            String ssmk = b.getSsmk();//所属模块
+            String cxmc = b.getCxmc();//程序名称
+            String appuser = b.getApplyuser();
+            String user1 = b.getUser1().trim();//需求人
+            String user2 = b.getUser2().trim();//负责人
+            String dept1 = b.getDept1().trim();//需求部门
+            Date date2 = b.getTime1();//需求日期
+            String xqnr = b.getXqnr();//需求内容
+            String zsd = b.getZsd();//重视度
+            String jjd = b.getJjd();//紧急度
+            String sypl = b.getSypl();//使用频率
+            String xxpg = b.getXypg();//效益评估
+            //抛转EAP的Demands
+            Demands d = new Demands();
+            SystemUser s;
+            Department t;
+            Date formDate;
+            formDate = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
+            //单号
+            String formid;
+            formid = demandsBean.setFormIdNumber();
+            d.setFormid(formid);
+            d.setOid(SerialNumber);//OA表单单号
+            d.setDemandResume(xqjs);
+            d.setDemandContent(xqnr);
+            d.setSystemName(ssxt);
+            d.setModuleName(ssmk);
+            d.setProcedureName(cxmc);
+            d.setDemandDate(date2);
+            d.setStatus("N");
+            d.setEmergencyDegree(jjd == null ? "" : jjd);
+            if (user1 != null && !"".equals(user1)) {
+                s = systemUserBean.findByUserId(user1);
+                if (s != null) {
+                    d.setDemanderID(user1);//需求人
+                    d.setDemanderName(s.getUsername());
+                }
+            }
+            if (appuser != null && !"".equals(appuser)) {
+                s = systemUserBean.findByUserId(appuser);
+                if (s != null) {
+                    d.setWriterID(appuser);//创建需求人
+                    d.setWriterName(s.getUsername());
+                }
+            }
+            d.setFormdate(formDate);//表单日期为SQL的日期
+            d.setWriteDate(date1);//创建时间
+            if (dept1 != null && !"".equals(dept1)) {
+                t = departmentBean.findByDeptno(dept1);
+                if (t != null) {
+                    d.setDemanderDeptID(dept1);//需求部门
+                    d.setDemanderDeptName(t.getDept());
+                }
+            }
+            if (user2 != null && !"".equals(user2)) {
+                /*负责人*/
+                s = systemUserBean.findByUserId(user2);
+                if (s != null) {
+                    d.setDirectorID(user2);
+                    d.setDirectorName(s.getUsername());
+                    String directorDeptId = s.getDeptno();
+                    t = departmentBean.findByDeptno(directorDeptId);
+                    /*责任部门*/
+                    if (t != null) {
+                        d.setDirectorDeptID(directorDeptId);
+                        d.setDirectorDeptName(t.getDept());
+                    }
+                }
+            } else {
+                d.setDirectorID("");
+                d.setDirectorName("");
+                d.setDirectorDeptID("");
+                d.setDirectorDeptName("");
+            }
+            demandsBean.persist(d);
+            ret = true;
+        } catch (ParseException ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKXQB001", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "createERPAPM330ByOAAPM811")
     public String createERPAPM330ByOAAPM811(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -2198,8 +2309,8 @@ public class EAPWebService {
                         mailBean.getTo().add("C1491@hanbell.com.cn");
                         mailBean.getTo().add("C1497@hanbell.com.cn");
                         mailBean.setMailSubject("CRM估价单抛转成功");
-                        mailBean
-                                .setMailContent("报价单号：" + logreppa.getPa001() + logreppa.getPa002() + "抛转成功，生成ERP单号：" + quono);
+                        mailBean.setMailContent(
+                                "报价单号：" + logreppa.getPa001() + logreppa.getPa002() + "抛转成功，生成ERP单号：" + quono);
                         mailBean.notify(new MailNotify());
                         log4j.info("Info", "报表邮件发送成功");
                     } catch (Exception ex) {
@@ -2430,13 +2541,13 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "rollbackCRMWARTAByOAWARMI05")
-    public String rollbackCRMWARTAByOAWARMI05(@WebParam(name = "psn") String psn) {
+    @WebMethod(operationName = "rollbackCRMPORMYByOAJZGHD")
+    public String rollbackCRMPORMYByOAJZGHD(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
         try {
-            ret = warmi05Bean.rollbackWARTA(psn);
+            ret = hzcw033Bean.rollbackCRMPORMY(psn);
         } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMWARTBByOAWARMI05", psn), ex);
+            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMPORMYByOAJZGHD", psn), ex);
         }
         if (ret) {
             return "200";
@@ -2445,13 +2556,28 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "rollbackCRMPORMYByOAJZGHD")
-    public String rollbackCRMPORMYByOAJZGHD(@WebParam(name = "psn") String psn) {
+    @WebMethod(operationName = "rollbackCRMREPTDByOAHKFW004")
+    public String rollbackCRMREPTDByOAHKFW004(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
         try {
-            ret = hzcw033Bean.rollbackCRMPORMY(psn);
+            ret = hkfw004DetailBean.rollbackReptdByOAHKFW004(psn);
         } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMPORMYByOAJZGHD", psn), ex);
+            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMREPTDByOAHKFW004", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "rollbackCRMWARTAByOAWARMI05")
+    public String rollbackCRMWARTAByOAWARMI05(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = warmi05Bean.rollbackWARTA(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMWARTBByOAWARMI05", psn), ex);
         }
         if (ret) {
             return "200";
@@ -2566,6 +2692,18 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "rollbackERPCdrqhadByCRMREPPA")
+    public String rollbackERPCdrqhadByCRMREPPA(@WebParam(name = "facno") String facno, @WebParam(name = "pa001") String pa001, @WebParam(name = "pa002") String pa002) {
+        String ret = "404";
+        try {
+            ret = cdrqhadBean.rollbackFromCRMREPPA(facno, pa001, pa002);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "rollbackERPCdrqhadByCRMREPPA", pa001 + pa002), ex);
+            return String.format("执行%s:参数%s时异常%s:", "rollbackERPCdrqhadByCRMREPPA", pa001 + pa002, "******" + ex);
+        }
+        return ret;
+    }
+
     @WebMethod(operationName = "rollbackMESHKFW006ByOAHKFW006")
     public String rollbackMESHKFW006ByOAHKFW006(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -2594,6 +2732,47 @@ public class EAPWebService {
             ret = hkgc003Bean.rollbackHKGC001(psn);
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "rollbackOAHKGC001ByOAHKGC003", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    /**
+     * 发送企业微信消息
+     *
+     * @param psn 流程序号
+     * @param step 流程步骤
+     * @return
+     */
+    @WebMethod(operationName = "sendWeComMessageByOAHSPB015")
+    public String sendWeComMessageByOAHSPB015(@WebParam(name = "psn") String psn, @WebParam(name = "step") String step) {
+        Boolean ret;
+        try {
+            ProcessInstance pi = processInstanceBean.findBySerialNumber(psn);
+            HSPB015 entity = hspb015Bean.findByPSN(psn);
+            if (pi == null || entity == null) {
+                return "404";
+            }
+            agent1000002Bean.initConfiguration();
+            switch (step) {
+                case "ACT10":
+                    Functions function = processInstanceBean.findFunctionsByUserOIDAndOrgUnitOID(pi.getRequesterOID(), pi.getInvokeOrganizationUnitOID());
+                    Users manager = usersBean.findByOID(function.getSpecifiedManagerOID());
+                    agent1000002Bean.sendMsgToUser(manager.getId(), "text", String.format("【%s】<br/>%s设备,发生(%s)故障,需要报修处理", hspb015Bean.getCompanyName(entity.getFacno()), entity.getMachineCode(), entity.getFaultContent()));
+                    break;
+                case "02":
+
+                    break;
+                default:
+
+            }
+            ret = true;
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "sendWeComMessageByOAHSPB015", psn), ex);
+            ret = false;
         }
         if (ret) {
             return "200";
@@ -2662,6 +2841,95 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "updateCRMREPTCByOASHBCRMREPI13")
+    public String updateCRMREPTCByOASHBCRMREPI13(@WebParam(name = "psn") String psn) {
+        String ret = "200";
+        try {
+            SHBCRMREPI13 h = shbcrmrepi13Bean.findByPSN(psn);
+            if (h == null) {
+                throw new NullPointerException("未找到对应的OA实体");
+            }
+            String tc001 = h.getTc001();
+            String tc002 = h.getTc002();
+            REPTC tc = reptcBean.findByPK(tc001, tc002);
+            if (tc != null) {
+                tc.setTc082("".equals(h.getTc082()) ? "0" : h.getTc082());
+                tc.setTc086("".equals(h.getTc086()) ? "0" : h.getTc086());
+                int s = Integer.parseInt(h.getTc082()) + Integer.parseInt(h.getTc086());
+                tc.setTc087(BigDecimal.valueOf(s));
+                tc.setTc088(h.getTc088());
+                reptcBean.update(tc);
+            } else {
+                throw new NullPointerException("未找到对应的CRM维修单");
+            }
+
+        } catch (Exception e) {
+            return String.format("执行%s:参数%s时异常%s:", "updateCRMREPTCByOASHBCRMREPI13", psn, "******" + e.toString());
+        }
+        return ret;
+    }
+
+    @WebMethod(operationName = "updateCRMREPTCByOAHKFW005")
+    public String updateCRMREPTCByOAHKFW005(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkfw005Bean.updateReptdByOAHKFW005(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTCByOAHKFW005", psn), ex);
+            return String.format("执行%s:参数%s时异常%s:", "updateCRMREPTCByOAHKFW005", psn, "******" + ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateCRMREPTDByOAHKFW004Detail")
+    public String updateCRMREPTDByOAHKFW004Detail(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkfw004DetailBean.updateReptdByOAHKFW004(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW004Detail", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateCRMREPTDByOAHKFW006")
+    public String updateCRMREPTDByOAHKFW006(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkfw006Bean.updateReptdByOAHKFW006(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW006", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateCRMREPTDFromOAHKFW006")
+    public String updateCRMREPTDFromOAHKFW006(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+        Boolean ret = false;
+        try {
+            ret = hkfw006Bean.updateReptdByOAHKFW006(psn, status);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW006", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "updateCRMSERBQByOASERI12")
     public String updateCRMSERBQByOASERI12(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -2690,34 +2958,6 @@ public class EAPWebService {
         } else {
             return "404";
         }
-    }
-
-    @WebMethod(operationName = "updateCRMREPTCByOASHBCRMREPI13")
-    public String updateCRMREPTCByOASHBCRMREPI13(@WebParam(name = "psn") String psn) {
-        String ret = "200";
-        try {
-            SHBCRMREPI13 h = shbcrmrepi13Bean.findByPSN(psn);
-            if (h == null) {
-                throw new NullPointerException("未找到对应的OA实体");
-            }
-            String tc001 = h.getTc001();
-            String tc002 = h.getTc002();
-            REPTC tc = reptcBean.findByPK(tc001, tc002);
-            if (tc != null) {
-                tc.setTc082("".equals(h.getTc082()) ? "0" : h.getTc082());
-                tc.setTc086("".equals(h.getTc086()) ? "0" : h.getTc086());
-                int s = Integer.parseInt(h.getTc082()) + Integer.parseInt(h.getTc086());
-                tc.setTc087(BigDecimal.valueOf(s));
-                tc.setTc088(h.getTc088());
-                reptcBean.update(tc);
-            } else {
-                throw new NullPointerException("未找到对应的CRM维修单");
-            }
-
-        } catch (Exception e) {
-            return String.format("执行%s:参数%s时异常%s:", "updateCRMREPTCByOASHBCRMREPI13", psn, "******" + e.toString());
-        }
-        return ret;
     }
 
     @WebMethod(operationName = "updateCRMWARTBByOAWARMI05")
@@ -2775,6 +3015,70 @@ public class EAPWebService {
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "updateEAMAssetCardByOAHZCW034", psn), ex);
             throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateEAPDemandsByOAHKXQB001")
+    public String updateEAPDemandsByOAHKXQB001(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+        Boolean ret = false;
+        HKXQB001 b = hkxqb001Bean.findByPSN(psn);
+        if (b == null) {
+            throw new NullPointerException();
+        }
+        try {
+            String SerialNumber = b.getSerialNumber();//OA表单单号
+            /*找到Demands中的这条数据*/
+            Demands d = demandsBean.findByOID(SerialNumber);
+            if (d == null) {
+                throw new NullPointerException();
+            }
+            if ("Y".equals(status)) {
+                /*如果是已完成状态 就不需要再更新数据*/
+                if (!"Y".equals(d.getStatus())) {
+                    String user2 = b.getUser2().trim();//负责人
+                    Date time2 = b.getTime2();//计划开始
+                    Date time3 = b.getTime3();//计划完成
+                    Date time4 = b.getTime4();//实际开始
+                    Date time5 = b.getTime5();//实际完成
+                    SystemUser s;
+                    if (user2 != null && !"".equals(user2)) {
+                        /*负责人*/
+                        s = systemUserBean.findByUserId(user2);
+                        if (s != null) {
+                            d.setDirectorID(user2);
+                            d.setDirectorName(s.getUsername());
+                        }
+                    }
+                    if (time2 != null) {
+                        d.setPlanStartDate(time2);
+                    }
+                    if (time2 != null) {
+                        d.setPlanOverDate(time3);
+                    }
+                    if (time2 != null) {
+                        d.setRealStartDate(time4);
+                    }
+                    if (time2 != null) {
+                        d.setRealOverDate(time5);
+                    }
+                    d.setStatus("Y");
+                    demandsBean.update(d);
+                } else {
+                    d.setStatus(status);
+                    demandsBean.update(d);
+                }
+            } else {
+                d.setStatus(status);
+                demandsBean.update(d);
+            }
+            ret = true;
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateEAPDemandsByOAHKXQB001", psn), ex);
         }
         if (ret) {
             return "200";
@@ -2892,12 +3196,6 @@ public class EAPWebService {
         }
     }
 
-    /**
-     * Web service operation
-     *
-     * @param psn
-     * @return
-     */
     @WebMethod(operationName = "updateOAHKGC001ByOAHKGC003")
     public String updateOAHKGC001ByOAHKGC003(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -3003,7 +3301,7 @@ public class EAPWebService {
     }
 
     /**
-     * Web 服务操作
+     * 根据OA办公用品申请表审核EAM对应领用单
      *
      * @param psn
      * @return
@@ -3030,6 +3328,31 @@ public class EAPWebService {
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "verifyEAMStationeryDistributeByOAHKGL060", psn), ex);
             throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateEVendorEvaluateByOAHKCG011")
+    public String updateEVendorEvaluateByOAHKCG011(@WebParam(name = "psn") String psn, @WebParam(name = "URL") String url) {
+        Boolean ret = false;
+        try {
+            HKCG011 p = hkcg011Bean.findByPSN(psn);
+            if (p == null) {
+                throw new NullPointerException("updateEVendorEvaluateByOAHKCG011找不到流程序号:" + psn);
+            }
+            // status: 1代表撤销/终止 ，3代表完成
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("Code", "200");
+            jsonObject.put("Message", "OA审核完成");
+            jsonObject.put("Data", psn);
+            String response = ecpurvdrBean.ECPostBack(url, jsonObject);
+            ret = !(response == null || "".equals(response));
+        } catch (NullPointerException | JSONException ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateEVendorEvaluateByOAHKCG011", psn), ex);
         }
         if (ret) {
             return "200";
@@ -3180,94 +3503,6 @@ public class EAPWebService {
             ret = !(response == null || "".equals(response));
         } catch (NullPointerException | JSONException ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "updateEProcurementByOAHKCG020", psn), ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "rollbackERPCdrqhadByCRMREPPA")
-    public String rollbackERPCdrqhadByCRMREPPA(@WebParam(name = "facno") String facno, @WebParam(name = "pa001") String pa001, @WebParam(name = "pa002") String pa002) {
-        String ret = "404";
-        try {
-            ret = cdrqhadBean.rollbackFromCRMREPPA(facno, pa001, pa002);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "rollbackERPCdrqhadByCRMREPPA", pa001 + pa002), ex);
-            return String.format("执行%s:参数%s时异常%s:", "rollbackERPCdrqhadByCRMREPPA", pa001 + pa002, "******" + ex);
-        }
-        return ret;
-    }
-
-    @WebMethod(operationName = "updateCRMREPTCByOAHKFW005")
-    public String updateCRMREPTCByOAHKFW005(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hkfw005Bean.updateReptdByOAHKFW005(psn);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTCByOAHKFW005", psn), ex);
-            return String.format("执行%s:参数%s时异常%s:", "updateCRMREPTCByOAHKFW005", psn, "******" + ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "updateCRMREPTDByOAHKFW004Detail")
-    public String updateCRMREPTDByOAHKFW004Detail(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hzfw004DetailBean.updateReptdByOAHKFW004(psn);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW004Detail", psn), ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "rollbackCRMREPTDByOAHKFW004")
-    public String rollbackCRMREPTDByOAHKFW004(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hzfw004DetailBean.rollbackReptdByOAHKFW004(psn);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "rollbackCRMREPTDByOAHKFW004", psn), ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "updateCRMREPTDByOAHKFW006")
-    public String updateCRMREPTDByOAHKFW006(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = hkfw006Bean.updateReptdByOAHKFW006(psn);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW006", psn), ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "updateCRMREPTDFromOAHKFW006")
-    public String updateCRMREPTDFromOAHKFW006(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
-        Boolean ret = false;
-        try {
-            ret = hkfw006Bean.updateReptdByOAHKFW006(psn, status);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateCRMREPTDByOAHKFW006", psn), ex);
         }
         if (ret) {
             return "200";
@@ -3525,168 +3760,6 @@ public class EAPWebService {
             mailBean.setMailSubject("客诉结案抛转详细失败");
             mailBean.setMailContent("流程号：" + psn + "————————异常" + ex.toString());
             mailBean.notify(new MailNotify());
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "createEAPDemandsByOAHKXQB001")
-    public String createEAPDemandsByOAHKXQB001(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        HKXQB001 b = hkxqB001Bean.findByPSN(psn);
-        if (b == null) {
-            throw new NullPointerException();
-        }
-        try {
-            String SerialNumber = b.getSerialNumber();//表单单号
-            String xqjs = b.getXqjs();//需求简称
-            Date date1 = b.getCreatedate();//创建日期
-            String ssxt = b.getSsxt();//所属系统
-            String ssmk = b.getSsmk();//所属模块
-            String cxmc = b.getCxmc();//程序名称
-            String appuser = b.getApplyuser();
-            String user1 = b.getUser1().trim();//需求人
-            String user2 = b.getUser2().trim();//负责人
-            String dept1 = b.getDept1().trim();//需求部门
-            Date date2 = b.getTime1();//需求日期
-            String xqnr = b.getXqnr();//需求内容
-            String zsd = b.getZsd();//重视度
-            String jjd = b.getJjd();//紧急度
-            String sypl = b.getSypl();//使用频率
-            String xxpg = b.getXypg();//效益评估
-            //抛转EAP的Demands
-            Demands d = new Demands();
-            SystemUser s;
-            Department t;
-            Date formDate;
-            formDate = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
-            //单号
-            String formid;
-            formid = demandsBean.setFormIdNumber();
-            d.setFormid(formid);
-            d.setOid(SerialNumber);//OA表单单号
-            d.setDemandResume(xqjs);
-            d.setDemandContent(xqnr);
-            d.setSystemName(ssxt);
-            d.setModuleName(ssmk);
-            d.setProcedureName(cxmc);
-            d.setDemandDate(date2);
-            d.setStatus("N");
-            d.setEmergencyDegree(jjd == null ? "" : jjd);
-            if (user1 != null && !"".equals(user1)) {
-                s = systemUserBean.findByUserId(user1);
-                if (s != null) {
-                    d.setDemanderID(user1);//需求人
-                    d.setDemanderName(s.getUsername());
-                }
-            }
-            if (appuser != null && !"".equals(appuser)) {
-                s = systemUserBean.findByUserId(appuser);
-                if (s != null) {
-                    d.setWriterID(appuser);//创建需求人
-                    d.setWriterName(s.getUsername());
-                }
-            }
-            d.setFormdate(formDate);//表单日期为SQL的日期
-            d.setWriteDate(date1);//创建时间
-            if (dept1 != null && !"".equals(dept1)) {
-                t = departmentBean.findByDeptno(dept1);
-                if (t != null) {
-                    d.setDemanderDeptID(dept1);//需求部门
-                    d.setDemanderDeptName(t.getDept());
-                }
-            }
-            if (user2 != null && !"".equals(user2)) {
-                /*负责人*/
-                s = systemUserBean.findByUserId(user2);
-                if (s != null) {
-                    d.setDirectorID(user2);
-                    d.setDirectorName(s.getUsername());
-                    String directorDeptId = s.getDeptno();
-                    t = departmentBean.findByDeptno(directorDeptId);
-                    /*责任部门*/
-                    if (t != null) {
-                        d.setDirectorDeptID(directorDeptId);
-                        d.setDirectorDeptName(t.getDept());
-                    }
-                }
-            } else {
-                d.setDirectorID("");
-                d.setDirectorName("");
-                d.setDirectorDeptID("");
-                d.setDirectorDeptName("");
-            }
-            demandsBean.persist(d);
-            ret = true;
-        } catch (ParseException ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKXQB001", psn), ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
-    @WebMethod(operationName = "updateEAPDemandsByOAHKXQB001")
-    public String updateEAPDemandsByOAHKXQB001(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
-        Boolean ret = false;
-        HKXQB001 b = hkxqB001Bean.findByPSN(psn);
-        if (b == null) {
-            throw new NullPointerException();
-        }
-        try {
-            String SerialNumber = b.getSerialNumber();//OA表单单号
-            /*找到Demands中的这条数据*/
-            Demands d = demandsBean.findByOID(SerialNumber);
-            if (d == null) {
-                throw new NullPointerException();
-            }
-            if ("Y".equals(status)) {
-                /*如果是已完成状态 就不需要再更新数据*/
-                if (!"Y".equals(d.getStatus())) {
-                    String user2 = b.getUser2().trim();//负责人
-                    Date time2 = b.getTime2();//计划开始
-                    Date time3 = b.getTime3();//计划完成
-                    Date time4 = b.getTime4();//实际开始
-                    Date time5 = b.getTime5();//实际完成
-                    SystemUser s;
-                    if (user2 != null && !"".equals(user2)) {
-                        /*负责人*/
-                        s = systemUserBean.findByUserId(user2);
-                        if (s != null) {
-                            d.setDirectorID(user2);
-                            d.setDirectorName(s.getUsername());
-                        }
-                    }
-                    if (time2 != null) {
-                        d.setPlanStartDate(time2);
-                    }
-                    if (time2 != null) {
-                        d.setPlanOverDate(time3);
-                    }
-                    if (time2 != null) {
-                        d.setRealStartDate(time4);
-                    }
-                    if (time2 != null) {
-                        d.setRealOverDate(time5);
-                    }
-                    d.setStatus("Y");
-                    demandsBean.update(d);
-                } else {
-                    d.setStatus(status);
-                    demandsBean.update(d);
-                }
-            } else {
-                d.setStatus(status);
-                demandsBean.update(d);
-            }
-            ret = true;
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateEAPDemandsByOAHKXQB001", psn), ex);
         }
         if (ret) {
             return "200";

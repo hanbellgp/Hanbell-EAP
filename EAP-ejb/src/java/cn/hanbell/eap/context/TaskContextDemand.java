@@ -77,6 +77,9 @@ public class TaskContextDemand implements TaskContext<Demands> {
                 demand.setPlanOverDate(task.getPlannedFinishDate());
                 demand.setRealStartDate(task.getActualStartDate());
                 demand.setRealOverDate(task.getActualFinishDate());
+                if (task.getProgress() == 100) {
+                    demand.setStatus("Y");
+                }
                 try {
                     demandsBean.update(demand);
                 } catch (Exception ex) {

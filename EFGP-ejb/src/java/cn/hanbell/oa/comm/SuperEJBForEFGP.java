@@ -7,6 +7,7 @@ package cn.hanbell.oa.comm;
 
 import cn.hanbell.oa.ejb.FunctionsBean;
 import cn.hanbell.oa.ejb.OrganizationUnitBean;
+import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.ejb.TitleBean;
 import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.entity.Functions;
@@ -32,6 +33,9 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
 
     @PersistenceContext(unitName = "EFGP-ejbPU")
     private EntityManager em;
+
+    @EJB
+    protected ProcessInstanceBean processInstanceBean;
 
     @EJB
     protected UsersBean usersBean;
@@ -98,9 +102,17 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
         }
     }
 
-    public Users findUserByUserno(String userno) {
+    public Functions findFunctionsByUserOIDAndOrgUnitOID(String userOID, String orgUnitOID) {
         try {
-            return usersBean.findById(userno);
+            return functionsBean.findByUserOIDAndOrgUnitOID(userOID, orgUnitOID);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public OrganizationUnit findOrgUnitByOID(String oid) {
+        try {
+            return organizationUnitBean.findByOID(oid);
         } catch (Exception ex) {
             return null;
         }
@@ -114,9 +126,105 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
         }
     }
 
+    public Users findUserByOID(String oid) {
+        try {
+            return usersBean.findByOID(oid);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Users findUserByUserno(String userno) {
+        try {
+            return usersBean.findById(userno);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public String getCompanyByDeptId(String deptId) {
+        switch (deptId.substring(0, 2)) {
+            case "1C":
+                return "J";
+            case "1D":
+                return "G";
+            case "1E":
+                return "N";
+            case "1V":
+                return "C4";
+            case "1R":
+                return "W";
+        }
+        switch (deptId.substring(0, 1)) {
+            case "1":
+                return "C";
+            case "2":
+                return "H";
+            case "3":
+                return "V";
+            case "4":
+                return "Q";
+            case "5":
+                return "K";
+            case "6":
+                return "R";
+            case "7":
+                return "Y";
+            case "8":
+                return "E";
+            case "9":
+                return "L";
+        }
+        return "";
+    }
+
+    public String getCompanyName(String facno) {
+        switch (facno) {
+            case "C":
+                return "上海汉钟";
+            case "G":
+                return "广州分公司";
+            case "J":
+                return "济南分公司";
+            case "N":
+                return "南京分公司";
+            case "C4":
+                return "重庆分公司";
+            case "H":
+                return "浙江汉声";
+            case "Y":
+                return "安徽汉扬";
+            case "K":
+                return "上海柯茂";
+            case "E":
+                return "浙江柯茂";
+            case "Q":
+                return "世纪东元";
+            case "L":
+                return "真空技术";
+            case "X":
+                return "香港汉钟";
+            case "V":
+                return "越南汉钟";
+            case "R":
+                return "韩国汉钟";
+            case "W":
+                return "顺德涡旋";
+            case "A":
+                return "台湾汉钟（观音厂）";
+            case "B":
+                return "台湾汉钟（台中厂）";
+            case "P":
+                return "台湾真空";
+            case "HP":
+                return "台湾汉力";
+        }
+        return "上海汉钟";
+    }
+
     public void initUserInfo(String userid) {
         this.currentUser = usersBean.findById(userid);
-        this.userFunction = functionsBean.findByUserOID(currentUser.getOid());
+        this.userFunction = functionsBean.findByUserOIDAndIsMain(currentUser.getOid());
         this.organizationUnit = userFunction.getOrganizationUnit();
         this.userTitle = titleBean.findByOUOIDAndUserOID(organizationUnit.getOid(), getCurrentUser().getOid());
         if (organizationUnit != null) {
@@ -227,17 +335,17 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
     }
 
     /**
-     * @return the userFunction
-     */
-    public Functions getUserFunction() {
-        return userFunction;
-    }
-
-    /**
      * @return the organizationUnit
      */
     public OrganizationUnit getOrganizationUnit() {
         return organizationUnit;
+    }
+
+    /**
+     * @return the userFunction
+     */
+    public Functions getUserFunction() {
+        return userFunction;
     }
 
     /**

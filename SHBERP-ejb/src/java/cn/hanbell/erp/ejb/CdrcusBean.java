@@ -456,6 +456,26 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         u.setIndate(cdrcus.getIndate());
         u.setUserno("mis");
 
+        if (facno.equals("H") || facno.equals("Y")) {
+            // 生成客户资产仓
+            Invwh zc = new Invwh();
+            zc.setFacno(facno);
+            zc.setProno("1");
+            zc.setWareh("ZC" + newcusno);
+            if (cdrcus.getCusna().length() < 5) {
+                zc.setWhdsc(cdrcus.getCusna() + "资产");
+            } else {
+                zc.setWhdsc(cdrcus.getCusna().substring(0, 5));
+            }
+            zc.setMrpco('N');
+            zc.setCostyn('N');
+            zc.setWclerk(m.getMan());
+            zc.setIndate(cdrcus.getIndate());
+            zc.setUserno("mis");
+            // 加入新增列表
+            invwhAdded.add(zc);
+        }
+
         // 生成客户周转仓资料
         Transwah t = new Transwah(w.getFacno(), w.getProno(), '2', newcusno, (short) 1);
         t.setWareh(w.getWareh());

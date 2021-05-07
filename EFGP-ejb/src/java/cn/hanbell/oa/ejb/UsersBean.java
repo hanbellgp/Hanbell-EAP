@@ -9,7 +9,6 @@ import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.Users;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import javax.inject.Named;
 import javax.persistence.Query;
 
 /**
@@ -18,7 +17,6 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-@Named
 public class UsersBean extends SuperEJBForEFGP<Users> {
 
     public UsersBean() {

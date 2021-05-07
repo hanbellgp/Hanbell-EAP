@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import javax.persistence.Query;
 
 /**
  *

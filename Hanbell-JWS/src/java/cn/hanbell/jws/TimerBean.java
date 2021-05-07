@@ -34,7 +34,6 @@ import cn.hanbell.eam.entity.AssetDistribute;
 import cn.hanbell.eam.entity.AssetDistributeDetail;
 import cn.hanbell.eam.entity.AssetItem;
 import cn.hanbell.eap.entity.Company;
-import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eap.entity.IntercompanyTransactions;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.ApmaphBean;

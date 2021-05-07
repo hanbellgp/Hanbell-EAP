@@ -25,7 +25,23 @@ public class ManmasBean extends SuperEJBForERP<Manmas> {
         super(Manmas.class);
     }
 
-    public List<Manmas> findByLinecodeAndMandate(String facno, String linecode, Date mandateBegin, Date mandateEnd, int first, int pageSize) {
+    public List<Manmas> findByItnbrfAndMandate(String facno, String itnbrf, Date mandateBegin, Date mandateEnd,
+            int first, int pageSize) {
+        String jpql = "SELECT m FROM Manmas m WHERE m.manmasPK.facno = :facno AND m.itnbrf = :itnbrf AND m.mandate >= :mandateBegin AND m.mandate <= :mandateEnd AND m.manstatus >='E' AND m.manstatus <'I' ORDER BY m.mandate,m.manmasPK.manno";
+        Query query = getEntityManager().createQuery(jpql).setFirstResult(first).setMaxResults(pageSize);
+        query.setParameter("facno", facno);
+        query.setParameter("itnbrf", itnbrf);
+        query.setParameter("mandateBegin", mandateBegin);
+        query.setParameter("mandateEnd", mandateEnd);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Manmas> findByLinecodeAndMandate(String facno, String linecode, Date mandateBegin, Date mandateEnd,
+            int first, int pageSize) {
         String jpql = "SELECT m FROM Manmas m WHERE m.manmasPK.facno = :facno AND m.linecode = :linecode AND m.mandate >= :mandateBegin AND m.mandate <= :mandateEnd AND m.manstatus >='E' AND m.manstatus <'I' ORDER BY m.mandate,m.manmasPK.manno";
         Query query = getEntityManager().createQuery(jpql).setFirstResult(first).setMaxResults(pageSize);
         query.setParameter("facno", facno);
@@ -36,6 +52,20 @@ public class ManmasBean extends SuperEJBForERP<Manmas> {
             return query.getResultList();
         } catch (Exception ex) {
             return null;
+        }
+    }
+
+    public int getRowCountByItnbrfAndMandate(String facno, String itnbrf, Date mandateBegin, Date mandateEnd) {
+        String jpql = "SELECT COUNT(m) FROM Manmas m WHERE m.manmasPK.facno = :facno AND m.itnbrf = :itnbrf AND m.mandate >= :mandateBegin AND m.mandate <= :mandateEnd AND m.manstatus >='E' AND m.manstatus <'I' ";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("facno", facno);
+        query.setParameter("itnbrf", itnbrf);
+        query.setParameter("mandateBegin", mandateBegin);
+        query.setParameter("mandateEnd", mandateEnd);
+        try {
+            return Integer.parseInt(query.getSingleResult().toString());
+        } catch (Exception ex) {
+            return 0;
         }
     }
 

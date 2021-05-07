@@ -98,118 +98,113 @@
                     <f:facet name="header">
                         <h:outputText value="交易日期"/>
                     </f:facet>
-                    <h:outputText value="#{item.trdate}">
-                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                    <h:outputText value="#{item[6]}">
+                          <f:convertDateTime pattern="yyyy/MM/dd"/>
                     </h:outputText>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="单据别"/>
                     </f:facet>
-                    <h:outputText value="#{item.invtrnhPK.trtype}"/>
+                    <h:outputText value="#{item[0]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="单据别名称"/>
                     </f:facet>
-                    <h:outputText value="#{item.invdou.typedsc}"/>
+                    <h:outputText value="#{item[1]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="公司别"/>
                     </f:facet>
-                    <h:outputText value="#{item.invtrnhPK.facno}"/>
+                    <h:outputText value="#{item[2]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="生产地"/>
                     </f:facet>
-                    <h:outputText value="#{item.invtrnhPK.prono}"/>
+                    <h:outputText value="#{item[3]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="对象别"/>
                     </f:facet>
-                    <h:outputText value="#{item.depno}"/>
+                    <h:outputText value="#{item[4]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="交易单号"/>
                     </f:facet>
-                    <h:outputText value="#{item.invtrnhPK.trno}"/>
+                    <h:outputText value="#{item[5]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="序号"/>
                     </f:facet>
-                    <h:outputText value="#{item.invtrnhPK.trseq}"/>
+                    <h:outputText value="#{item[7]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="件号"/>
                     </f:facet>
-                    <h:outputText value="#{item.itnbr}"/>
+                    <h:outputText value="#{item[8]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="件号名称"/>
                     </f:facet>
-                    <h:outputText value="#{item.invmas.itdsc}"/>
+                    <h:outputText value="#{item[9]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="品号大类"/>
                     </f:facet>
-                    <h:outputText value="#{item.invmas.invcls.itcls}"/>
+                    <h:outputText value="#{item[10]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="品号大类名称"/>
                     </f:facet>
-                    <h:outputText value="#{item.invmas.invcls.clsdsc}"/>
+                    <h:outputText value="#{item[11]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="库号"/>
                     </f:facet>
-                    <h:outputText value="#{item.wareh}"/>
+                    <h:outputText value="#{item[13]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="库号名称"/>
                     </f:facet>
-                    <h:outputText value="#{item.invwh.whdsc}"/>
+                    <h:outputText value="#{item[14]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="数量"/>
                     </f:facet>
-                    <h:outputText value="#{item.trnqy1}"/>
+                    <h:outputText value="#{item[15]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="单位"/>
                     </f:facet>
-                    <h:outputText value="#{item.unmsr1}"/>
+                    <h:outputText value="#{item[16]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="金额"/>
                     </f:facet>
-                    <h:outputText value="#{item.tramt}"/>
+                    <h:outputText value="#{item[17]}"/>
                 </p:column>
                 <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="录入人员"/>
                     </f:facet>
-                    <h:outputText value="#{item.userno}"/>
+                    <h:outputText value="#{item[18]}"/>
                 </p:column>
-                <p:column styleClass="Wid5">
-                    <f:facet name="header">
-                        <h:outputText value="出入库"/>
-                    </f:facet>
-                    <h:outputText value="#{item.getIocodeValue(item.getIocode())}"/>
-                </p:column>
+               
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

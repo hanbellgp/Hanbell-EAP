@@ -1198,4 +1198,23 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         }
     }
 
+    public List<Invhad> getInvtrnhByFacnoAndPronoAndTrnoAndTrtype(String facno, String prono, String trno, String trtype) {
+        try {
+
+            StringBuffer sql = new StringBuffer();
+            sql.append("SELECT *");
+            sql.append(" FROM invhadh where trno='").append(trno).append("' and facno='").append(facno).append("' and prono='").append(prono).append("' and trtype='").append(trtype).append("'");
+            sql.append(" union");
+            sql.append("  SELECT *");
+            sql.append(" FROM invhad where trno='").append(trno).append("' and facno='").append(facno).append("' and prono='").append(prono).append("' and trtype='").append(trtype).append("'");
+
+            Query q = getEntityManager().createNativeQuery(sql.toString(),Invhad.class);
+
+            List<Invhad> s = q.getResultList();
+            return s ;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
