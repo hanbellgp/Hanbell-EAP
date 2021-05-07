@@ -77,6 +77,7 @@ import cn.hanbell.erp.ejb.PurdtaBean;
 import cn.hanbell.erp.ejb.PursysBean;
 import cn.hanbell.erp.ejb.PurvdrBuyerBean;
 import cn.hanbell.eam.ejb.EquipmentRepairBean;
+import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
 import cn.hanbell.erp.entity.Apmtbil;
