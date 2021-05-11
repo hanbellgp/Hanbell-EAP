@@ -54,11 +54,11 @@ public abstract class SuperRESTForEFGP<T> {
         throw new WebApplicationException(Response.Status.NOT_IMPLEMENTED);
     }
 
-    @PUT
-    @Path("approve/{id}/{userid}")
+    @POST
+    @Path("approve/{oid}/{userid}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseMessage completeWorkItem(T entity, @PathParam("id") PathSegment id, @PathParam("userid") PathSegment userid, @QueryParam("oid") String oid, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseMessage completeWorkItem(T entity, @PathParam("oid") PathSegment oid, @PathParam("userid") PathSegment userid, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         throw new WebApplicationException(Response.Status.NOT_IMPLEMENTED);
     }
 

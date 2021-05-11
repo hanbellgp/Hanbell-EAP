@@ -100,11 +100,11 @@ public class WorkStep implements Serializable {
         this.workStepIndex = workStepIndex;
     }
 
-    public String getOid() {
+    public String getOID() {
         return oid;
     }
 
-    public void setOid(String oid) {
+    public void setOID(String oid) {
         this.oid = oid;
     }
 

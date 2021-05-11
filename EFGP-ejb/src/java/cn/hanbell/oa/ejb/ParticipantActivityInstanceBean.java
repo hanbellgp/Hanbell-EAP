@@ -28,7 +28,7 @@ public class ParticipantActivityInstanceBean extends SuperEJBForEFGP<Participant
         query.setParameter("contextOID", contextOID);
         query.setParameter("definitionId", definitionId);
         try {
-            Object o = query.getResultList();
+            Object o = query.getSingleResult();
             return (ParticipantActivityInstance) o;
         } catch (Exception ex) {
             return null;
