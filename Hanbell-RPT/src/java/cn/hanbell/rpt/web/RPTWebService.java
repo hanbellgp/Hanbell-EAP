@@ -207,8 +207,11 @@ public class RPTWebService {
                 } catch (Exception ex) {
                     log4j.error(ex);
                     return "404";
+                } finally {
+                    eapMailBean.clearReceivers();
+                    eapMailBean.getAttachments().clear();
+                    eapMailBean.setMailSubject("");
                 }
-
                 break;
             default:
         }

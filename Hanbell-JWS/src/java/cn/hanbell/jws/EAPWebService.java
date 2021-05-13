@@ -151,6 +151,7 @@ import cn.hanbell.oa.ejb.HKCG019Bean;
 import cn.hanbell.oa.ejb.HKCG020Bean;
 import cn.hanbell.oa.ejb.HKXQB001Bean;
 import cn.hanbell.oa.ejb.HSPB015Bean;
+import cn.hanbell.oa.ejb.ParticipantActivityInstanceBean;
 import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.ejb.SHBCRMREPI13Bean;
 import cn.hanbell.oa.ejb.SHBCRMSERI12Bean;
@@ -159,6 +160,7 @@ import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.ejb.VHTV002Bean;
 import cn.hanbell.oa.ejb.WARMI05Bean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
+import cn.hanbell.oa.ejb.WorkItemBean;
 import cn.hanbell.oa.entity.Functions;
 import cn.hanbell.oa.entity.HKCG011;
 import cn.hanbell.oa.entity.HKCG016;
@@ -175,6 +177,7 @@ import cn.hanbell.oa.entity.HZCW034Detail;
 import cn.hanbell.oa.entity.HZJS034;
 import cn.hanbell.oa.entity.HZJS034Detail;
 import cn.hanbell.oa.entity.OrganizationUnit;
+import cn.hanbell.oa.entity.ParticipantActivityInstance;
 import cn.hanbell.oa.entity.ProcessInstance;
 import cn.hanbell.oa.entity.SERI12;
 import cn.hanbell.oa.entity.SERI12grid2SERI12;
@@ -337,11 +340,15 @@ public class EAPWebService {
     @EJB
     private WARMI05Bean warmi05Bean;
     @EJB
-    private ProcessInstanceBean processInstanceBean;
-    @EJB
     private UsersBean usersBean;
     @EJB
+    private ProcessInstanceBean processInstanceBean;
+    @EJB
+    private ParticipantActivityInstanceBean participantActivityInstanceBean;
+    @EJB
     private WorkFlowBean workFlowBean;
+    @EJB
+    private WorkItemBean workItemBean;
     @EJB
     private cn.hanbell.oa.ejb.PLMProjectBean efgpPLMProjectBean;
 
@@ -2749,27 +2756,62 @@ public class EAPWebService {
      */
     @WebMethod(operationName = "sendWeComMessageByOAHSPB015")
     public String sendWeComMessageByOAHSPB015(@WebParam(name = "psn") String psn, @WebParam(name = "step") String step) {
-        Boolean ret;
+        Boolean ret = false;
         try {
             ProcessInstance pi = processInstanceBean.findBySerialNumber(psn);
             HSPB015 entity = hspb015Bean.findByPSN(psn);
             if (pi == null || entity == null) {
                 return "404";
             }
+            ParticipantActivityInstance pai;
+            Users user;
             agent1000002Bean.initConfiguration();
             switch (step) {
                 case "ACT10":
                     Functions function = processInstanceBean.findFunctionsByUserOIDAndOrgUnitOID(pi.getRequesterOID(), pi.getInvokeOrganizationUnitOID());
-                    Users manager = usersBean.findByOID(function.getSpecifiedManagerOID());
-                    agent1000002Bean.sendMsgToUser(manager.getId(), "text", String.format("【%s】<br/>%s设备,发生(%s)故障,需要报修处理", hspb015Bean.getCompanyName(entity.getFacno()), entity.getMachineCode(), entity.getFaultContent()));
+                    user = usersBean.findByOID(function.getSpecifiedManagerOID());
+                    pai = participantActivityInstanceBean.findByContextOIDAndDefinitionId(pi.getContextOID(), step);
+                    if (pai != null) {
+                        String workItemOID = workItemBean.getWorkItemOID(pai.getOID(), pi.getContextOID());
+                        if (workItemOID != null && !workItemOID.isEmpty()) {
+                            StringBuilder taskcard = new StringBuilder();
+                            taskcard.append("{");
+                            taskcard.append("'title':'[").append(hspb015Bean.getCompanyName(entity.getFacno())).append("]设备报修',");
+                            taskcard.append("'description':'").append(entity.getMachineCode()).append("设备<br/>发生").append(entity.getFaultContent()).append("故障<br/>需要报修处理',");
+                            taskcard.append("'task_id':'").append(psn).append("@").append(workItemOID).append("',");
+                            taskcard.append("'btn':[");
+                            taskcard.append("{'key':'reject','name':'拒绝'},");
+                            taskcard.append("{'key':'approve','name':'批准','color':'red','is_bold':true}]");
+                            taskcard.append("}");
+                            agent1000002Bean.sendMsgToUser(user.getId(), null, null, "taskcard", taskcard.toString());
+                            ret = true;
+                        }
+                    }
                     break;
-                case "02":
-
+                case "ACT13":
+                case "ACT15":
+                    pai = participantActivityInstanceBean.findByContextOIDAndDefinitionId(pi.getContextOID(), step);
+                    if (pai != null) {
+                        String userOID = workItemBean.getAssigneeOID(pai.getOID(), pi.getContextOID());
+                        user = usersBean.findByOID(userOID);
+                        if (user != null) {
+                            StringBuilder content = new StringBuilder();
+                            content.append("{");
+                            content.append("'content':'").append(String.format("[%s]设备报修<br/>%s设备<br/>发生%s故障<br/>请速派员处理",
+                                    hspb015Bean.getCompanyName(entity.getFacno()), entity.getMachineCode(), entity.getFaultContent())).append("'");
+                            content.append("}");
+                            agent1000002Bean.sendMsgToUser(user.getId(), null, null, "text", content.toString());
+                            ret = true;
+                        }
+                    }
+                    break;
+                case "ACT11":
+                    agent1000002Bean.sendMsgToUser(entity.getMaintenanceUser(), "text", String.format("[%s]设备报修<br/>%s设备<br/>发生%s故障<br/>请速前往处理",
+                            hspb015Bean.getCompanyName(entity.getFacno()), entity.getMachineCode(), entity.getFaultContent()));
+                    ret = true;
                     break;
                 default:
-
             }
-            ret = true;
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "sendWeComMessageByOAHSPB015", psn), ex);
             ret = false;

@@ -9,6 +9,7 @@ import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.WorkAssignment;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.persistence.Query;
 
 /**
  *
@@ -20,6 +21,26 @@ public class WorkAssignmentBean extends SuperEJBForEFGP<WorkAssignment> {
 
     public WorkAssignmentBean() {
         super(WorkAssignment.class);
+    }
+
+    public WorkAssignment findByWorkItemOID(String workItemOID) {
+        Query query = getEntityManager().createNamedQuery("WorkAssignment.findByWorkItemOID");
+        query.setParameter("workItemOID", workItemOID);
+        try {
+            Object o = query.getSingleResult();
+            return (WorkAssignment) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public String getAssigneeOID(String workItemOID) {
+        WorkAssignment assignment = findByWorkItemOID(workItemOID);
+        if (assignment != null) {
+            return assignment.getAssigneeOID();
+        } else {
+            return "";
+        }
     }
 
 }

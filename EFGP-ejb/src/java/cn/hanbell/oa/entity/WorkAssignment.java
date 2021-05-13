@@ -27,7 +27,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "WorkAssignment.findAll", query = "SELECT w FROM WorkAssignment w"),
     @NamedQuery(name = "WorkAssignment.findByOID", query = "SELECT w FROM WorkAssignment w WHERE w.oid = :oid"),
-    @NamedQuery(name = "WorkAssignment.findByObjectVersion", query = "SELECT w FROM WorkAssignment w WHERE w.objectVersion = :objectVersion"),
     @NamedQuery(name = "WorkAssignment.findByWorkItemOID", query = "SELECT w FROM WorkAssignment w WHERE w.workItemOID = :workItemOID"),
     @NamedQuery(name = "WorkAssignment.findByAssigneeOID", query = "SELECT w FROM WorkAssignment w WHERE w.assigneeOID = :assigneeOID"),
     @NamedQuery(name = "WorkAssignment.findByAssignmentType", query = "SELECT w FROM WorkAssignment w WHERE w.assignmentType = :assignmentType"),

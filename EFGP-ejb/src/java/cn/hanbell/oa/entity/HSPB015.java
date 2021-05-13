@@ -48,9 +48,6 @@ public class HSPB015 implements Serializable {
     @Column(name = "processSerialNumber")
     private String processSerialNumber;
     @Size(max = 255)
-    @Column(name = "TextArea38")
-    private String textArea38;
-    @Size(max = 255)
     @Column(name = "operatingUser")
     private String operatingUser;
     @Column(name = "materialCost")
@@ -180,14 +177,6 @@ public class HSPB015 implements Serializable {
 
     public void setProcessSerialNumber(String processSerialNumber) {
         this.processSerialNumber = processSerialNumber;
-    }
-
-    public String getTextArea38() {
-        return textArea38;
-    }
-
-    public void setTextArea38(String textArea38) {
-        this.textArea38 = textArea38;
     }
 
     public String getOperatingUser() {
