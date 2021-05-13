@@ -149,6 +149,7 @@ import cn.hanbell.oa.ejb.HKGC003Bean;
 import cn.hanbell.oa.ejb.HKGL060Bean;
 import cn.hanbell.oa.ejb.HKCG019Bean;
 import cn.hanbell.oa.ejb.HKCG020Bean;
+import cn.hanbell.oa.ejb.HKJH006Bean;
 import cn.hanbell.oa.ejb.HKXQB001Bean;
 import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.ejb.SHBCRMREPI13Bean;
@@ -307,6 +308,8 @@ public class EAPWebService {
     private HKGL060Bean hkgl060Bean;
     @EJB
     private HKJH001Bean hkjh001Bean;
+    @EJB
+    private HKJH006Bean hkjh006Bean;    
     @EJB
     private HZCW028Bean hzcw028Bean;
     @EJB
@@ -2946,7 +2949,21 @@ public class EAPWebService {
             return "404";
         }
     }
-
+    @WebMethod(operationName = "updateOAHKJH006ByOAHKJH006")
+    public String updateOAHKJH006ByOAHKJH006(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkjh006Bean.updateHKJH006(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKJH006ByOAHKJH006", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+    
     @WebMethod(operationName = "updateOAProcessInstanceByOAWARMI05")
     public String updateOAProcessInstanceByOAWARMI05(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
