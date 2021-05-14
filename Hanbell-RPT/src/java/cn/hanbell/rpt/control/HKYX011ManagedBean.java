@@ -274,7 +274,6 @@ public class HKYX011ManagedBean extends SuperQueryBean<HKYX011> {
         cal.add(Calendar.YEAR, -1);
         this.queryDateBegin = cal.getTime();
         query();
-        maginDeptName();
         super.init();
     }
 
@@ -324,8 +323,8 @@ public class HKYX011ManagedBean extends SuperQueryBean<HKYX011> {
         int i = 0;
         for (Iterator var12 = this.entityList.iterator(); var12.hasNext(); ++i) {
             HKYX011 entity = (HKYX011) var12.next();
-            Functions f = functionsBean.findByOccupantOIDAndisMain(entity.getUser().getOid(), true);
-            if (f != null) {
+            Functions f = functionsBean.findByUserOIDAndIsMain(entity.getUser().getOid());
+            if (f != null && entity.getProcessInstance().getCurrentState() == 3) {
                 OrganizationUnit org = f.getOrganizationUnit();
                 entity.setDeptno(org.getId());
                 entity.setDeptname(org.getOrganizationUnitName());
@@ -335,7 +334,7 @@ public class HKYX011ManagedBean extends SuperQueryBean<HKYX011> {
                     entity.getNumbertotal(), entity.getSaleamountTotal(), entity.getRatetotal(), entity.getRemark(), entity.getPeriod()};
                 list.add(o);
             }
-
         }
     }
+
 }

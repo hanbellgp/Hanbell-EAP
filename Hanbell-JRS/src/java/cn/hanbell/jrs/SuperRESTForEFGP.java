@@ -54,11 +54,11 @@ public abstract class SuperRESTForEFGP<T> {
         throw new WebApplicationException(Response.Status.NOT_IMPLEMENTED);
     }
 
-    @PUT
-    @Path("{id}")
+    @POST
+    @Path("approve/{oid}/{userid}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseMessage edit(@PathParam("id") PathSegment id, T entity) {
+    public ResponseMessage completeWorkItem(T entity, @PathParam("oid") PathSegment oid, @PathParam("userid") PathSegment userid, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         throw new WebApplicationException(Response.Status.NOT_IMPLEMENTED);
     }
 
@@ -162,6 +162,14 @@ public abstract class SuperRESTForEFGP<T> {
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
+    }
+
+    @GET
+    @Path("message/wecom")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ResponseMessage sendWeComMessage(@QueryParam("psn") String psn, @QueryParam("step") String step, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        throw new WebApplicationException(Response.Status.NOT_IMPLEMENTED);
     }
 
     protected boolean isAuthorized(String appid, String token) {

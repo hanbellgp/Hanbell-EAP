@@ -26,8 +26,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -144,7 +142,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                 cl.setTime(ld_start);
                 li_mth = cl.get(Calendar.MONTH) + 1;
                 do {
-                    cl.setTime(ld_start);;
+                    cl.setTime(ld_start);
                     cl.set(Calendar.DATE, cl.get(Calendar.DATE) - 1);
                     ld_start = cl.getTime();
                 } while (cl.get(Calendar.MONTH) + 1 == li_mth);
@@ -155,7 +153,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                 ld_end = cl.getTime();
                 li_mth = cl.get(Calendar.MONTH) + 1;
                 do {
-                    cl.setTime(ld_end);;
+                    cl.setTime(ld_end);
                     cl.set(Calendar.DATE, cl.get(Calendar.DATE) + 1);
                     ld_end = cl.getTime();
                 } while (cl.get(Calendar.MONTH) + 1 == li_mth);
@@ -419,7 +417,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
             }
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(ApmbilBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
             throw new RuntimeException(ex);
         }
     }
