@@ -127,6 +127,7 @@ import cn.hanbell.erp.entity.Purvdrrel;
 import cn.hanbell.erp.entity.Secmemb;
 import cn.hanbell.erp.entity.Secuser;
 import cn.hanbell.exch.ejb.ExchangeSHBBean;
+import cn.hanbell.mes.entity.MuserRole;
 import cn.hanbell.oa.ejb.HKCW002Bean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.oa.entity.HKCW002;
@@ -323,6 +324,7 @@ public class TimerBean {
     private cn.hanbell.mes.ejb.MDepartmentBean mesDepartmentBean;
     @EJB
     private cn.hanbell.mes.ejb.MUserBean mesUserBean;
+    private cn.hanbell.mes.ejb.MuserRoleBean mesUserRoleBean;
 
     // EJBForPLM
     @EJB
@@ -594,20 +596,30 @@ public class TimerBean {
                             }
                         }
                     }
-                    if ("C".equals(company)) {
+                    if ("C".equals(company) || "K".equals(company)) {
                         // MES
                         cn.hanbell.mes.entity.MUser mu = mesUserBean.findByUserid(e.getCode());
                         if (mu == null) {
                             mu = new cn.hanbell.mes.entity.MUser();
                             mu.setUserid(e.getCode());
                             mu.setUsername(e.getCnName());
-                            mu.setPassword("");
+                            //设置默认初始密码为123456
+                            mu.setPassword("B37EE351B8753658");
                             mu.setStatus("Y");
                             mu.setDepartmentid(e.getDepartment().getCode());
                             mu.setEmail(e.getEmail());
                             mu.setModifyuser("HRM");
                             mu.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", e.getLastModifiedDate()));
                             mesUserBean.persist(mu);
+                            //加入mes初始权限
+                            MuserRole mur1 = new MuserRole(mu.getUserid(), "CS", "QCUSER");
+                            MuserRole mur2 = new MuserRole(mu.getUserid(), "CS", "QZUSER");
+                            MuserRole mur3 = new MuserRole(mu.getUserid(), "BS", "WEBUSER");
+                            MuserRole mur4 = new MuserRole(mu.getUserid(), "BS", "UQFUSER");
+                            mesUserRoleBean.persist(mur1);
+                            mesUserRoleBean.persist(mur2);
+                            mesUserRoleBean.persist(mur3);
+                            mesUserRoleBean.persist(mur4);
                         } else {
                             flag = false;
                             if (!mu.getDepartmentid().equals(e.getDepartment().getCode())) {
@@ -3179,7 +3191,7 @@ public class TimerBean {
         Pattern pattern = Pattern.compile("^[0-9]$");
         return pattern.matcher(employeeid).matches();
     }
-    
+
     @Schedule(minute = "30", hour = "7-20", persistent = false)
     public void sendEqpRepairmentDelayNotice() {
         StringBuffer userIdStrTemp = new StringBuffer("");
@@ -3193,27 +3205,22 @@ public class TimerBean {
         try {
             eqpRepairListRes = equipmentRepairBean.getEquipmentRepairListByNativeQuery(filterFields, sortFields);
             eqpRepairListRes.forEach(item -> {
-                if(item.getRstatus().compareTo("20") < 0)
-                {
+                if (item.getRstatus().compareTo("20") < 0) {
                     userIdList.add(item.getServiceuser());
-                }
-                else
-                {
+                } else {
                     userIdList.add(item.getRepairuser());
                     userIdList.add(item.getServiceuser());
                 }
             });
-            LinkedHashSet<String> userIdHashSet = new LinkedHashSet<>(userIdList); 
+            LinkedHashSet<String> userIdHashSet = new LinkedHashSet<>(userIdList);
             userIdHashSet.forEach((item) -> {
                 userIdStrTemp.append(item).append("|");
             });
-            if(!userIdStrTemp.equals(""))
-            {
+            if (!userIdStrTemp.equals("")) {
                 userIdStrTemp.deleteCharAt(userIdStrTemp.length() - 1);
                 wartaBean.sendMsgString(userIdStrTemp.toString(), msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
             }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             log4j.error(ex);
         }
     }
