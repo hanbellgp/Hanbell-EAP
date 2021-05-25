@@ -62,6 +62,170 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKCW005.findByZy", query = "SELECT h FROM HKCW005 h WHERE h.zy = :zy")})
 public class HKCW005 implements Serializable {
 
+    @Column(name = "endDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endDate;
+    @Size(max = 255)
+    @Column(name = "cashBalance")
+    private String cashBalance;
+    @Size(max = 255)
+    @Column(name = "bankBalance")
+    private String bankBalance;
+    @Size(max = 255)
+    @Column(name = "contractno")
+    private String contractno;
+    @Size(max = 255)
+    @Column(name = "applyType")
+    private String applyType;
+    @Size(max = 255)
+    @Column(name = "longterm")
+    private String longterm;
+    @Size(max = 255)
+    @Column(name = "zjother")
+    private String zjother;
+    @Size(max = 255)
+    @Column(name = "bondtype")
+    private String bondtype;
+    @Size(max = 255)
+    @Column(name = "financialProduct")
+    private String financialProduct;
+    @Size(max = 255)
+    @Column(name = "paymentTerms4")
+    private String paymentTerms4;
+    @Size(max = 255)
+    @Column(name = "paymentTerms3")
+    private String paymentTerms3;
+    @Size(max = 255)
+    @Column(name = "paymentTerms2")
+    private String paymentTerms2;
+    @Size(max = 255)
+    @Column(name = "paymentTerms1")
+    private String paymentTerms1;
+    @Size(max = 255)
+    @Column(name = "fundtype")
+    private String fundtype;
+    @Size(max = 255)
+    @Column(name = "projectname")
+    private String projectname;
+    @Size(max = 255)
+    @Column(name = "subscribeAmount1")
+    private String subscribeAmount1;
+    @Size(max = 255)
+    @Column(name = "analysis")
+    private String analysis;
+    @Column(name = "totalinvestment")
+    private Double totalinvestment;
+    @Size(max = 255)
+    @Column(name = "otherstock")
+    private String otherstock;
+    @Size(max = 255)
+    @Column(name = "subscribeAmount2")
+    private String subscribeAmount2;
+    @Size(max = 255)
+    @Column(name = "subscribeAmount3")
+    private String subscribeAmount3;
+    @Size(max = 255)
+    @Column(name = "optiontype")
+    private String optiontype;
+    @Size(max = 255)
+    @Column(name = "zjapplytype")
+    private String zjapplytype;
+    @Size(max = 255)
+    @Column(name = "investmentObject")
+    private String investmentObject;
+    @Size(max = 255)
+    @Column(name = "bondrate")
+    private String bondrate;
+    @Column(name = "remainingAmount")
+    private Double remainingAmount;
+    @Size(max = 255)
+    @Column(name = "legalRepresentative")
+    private String legalRepresentative;
+    @Size(max = 255)
+    @Column(name = "stockprice")
+    private String stockprice;
+    @Column(name = "amount4")
+    private Double amount4;
+    @Size(max = 255)
+    @Column(name = "interestrate")
+    private String interestrate;
+    @Column(name = "amount3")
+    private Double amount3;
+    @Column(name = "amount2")
+    private Double amount2;
+    @Size(max = 255)
+    @Column(name = "rate")
+    private String rate;
+    @Column(name = "registeredCapital")
+    private Double registeredCapital;
+    @Column(name = "amount1")
+    private Double amount1;
+    @Size(max = 255)
+    @Column(name = "networth")
+    private String networth;
+    @Size(max = 255)
+    @Column(name = "otherbond")
+    private String otherbond;
+    @Size(max = 255)
+    @Column(name = "otherfund")
+    private String otherfund;
+    @Size(max = 255)
+    @Column(name = "deadline")
+    private String deadline;
+    @Size(max = 255)
+    @Column(name = "deliveryDate")
+    private String deliveryDate;
+    @Size(max = 255)
+    @Column(name = "other1")
+    private String other1;
+    @Size(max = 255)
+    @Column(name = "other3")
+    private String other3;
+    @Size(max = 255)
+    @Column(name = "other2")
+    private String other2;
+    @Size(max = 255)
+    @Column(name = "subscribeNumber3")
+    private String subscribeNumber3;
+    @Size(max = 255)
+    @Column(name = "subscribeNumber2")
+    private String subscribeNumber2;
+    @Size(max = 255)
+    @Column(name = "subscribeNumber1")
+    private String subscribeNumber1;
+    @Size(max = 255)
+    @Column(name = "shareholding")
+    private String shareholding;
+    @Size(max = 255)
+    @Column(name = "risklevel")
+    private String risklevel;
+    @Column(name = "allamount")
+    private Double allamount;
+    @Column(name = "paydate1")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date paydate1;
+    @Column(name = "paydate3")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date paydate3;
+    @Size(max = 255)
+    @Column(name = "stocktype")
+    private String stocktype;
+    @Column(name = "paydate2")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date paydate2;
+    @Column(name = "paydate4")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date paydate4;
+    @Size(max = 255)
+    @Column(name = "category")
+    private String category;
+    @Size(max = 255)
+    @Column(name = "stockInvestment")
+    private String stockInvestment;
+    @Size(max = 255)
+    @Column(name = "otherDescription")
+    private String otherDescription;
+
     private static final long serialVersionUID = 1L;
     @Size(max = 255)
     @Column(name = "facno")
@@ -147,6 +311,7 @@ public class HKCW005 implements Serializable {
     @JoinColumn(name = "lkr", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = true)
     private Users user;
+
     public HKCW005() {
     }
 
@@ -426,4 +591,473 @@ public class HKCW005 implements Serializable {
         return "cn.hanbell.oa.entity.HKCW005[ oid=" + oid + " ]";
     }
 
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getCashBalance() {
+        return cashBalance;
+    }
+
+    public void setCashBalance(String cashBalance) {
+        this.cashBalance = cashBalance;
+    }
+
+    public String getBankBalance() {
+        return bankBalance;
+    }
+
+    public void setBankBalance(String bankBalance) {
+        this.bankBalance = bankBalance;
+    }
+
+    public String getContractno() {
+        return contractno;
+    }
+
+    public void setContractno(String contractno) {
+        this.contractno = contractno;
+    }
+
+    public String getApplyType() {
+        return applyType;
+    }
+
+    public void setApplyType(String applyType) {
+        this.applyType = applyType;
+    }
+
+    public String getLongterm() {
+        return longterm;
+    }
+
+    public void setLongterm(String longterm) {
+        this.longterm = longterm;
+    }
+
+    public String getZjother() {
+        return zjother;
+    }
+
+    public void setZjother(String zjother) {
+        this.zjother = zjother;
+    }
+
+    public String getBondtype() {
+        return bondtype;
+    }
+
+    public void setBondtype(String bondtype) {
+        this.bondtype = bondtype;
+    }
+
+    public String getFinancialProduct() {
+        return financialProduct;
+    }
+
+    public void setFinancialProduct(String financialProduct) {
+        this.financialProduct = financialProduct;
+    }
+
+    public String getPaymentTerms4() {
+        return paymentTerms4;
+    }
+
+    public void setPaymentTerms4(String paymentTerms4) {
+        this.paymentTerms4 = paymentTerms4;
+    }
+
+    public String getPaymentTerms3() {
+        return paymentTerms3;
+    }
+
+    public void setPaymentTerms3(String paymentTerms3) {
+        this.paymentTerms3 = paymentTerms3;
+    }
+
+    public String getPaymentTerms2() {
+        return paymentTerms2;
+    }
+
+    public void setPaymentTerms2(String paymentTerms2) {
+        this.paymentTerms2 = paymentTerms2;
+    }
+
+    public String getPaymentTerms1() {
+        return paymentTerms1;
+    }
+
+    public void setPaymentTerms1(String paymentTerms1) {
+        this.paymentTerms1 = paymentTerms1;
+    }
+
+    public String getFundtype() {
+        return fundtype;
+    }
+
+    public void setFundtype(String fundtype) {
+        this.fundtype = fundtype;
+    }
+
+    public String getProjectname() {
+        return projectname;
+    }
+
+    public void setProjectname(String projectname) {
+        this.projectname = projectname;
+    }
+
+    public String getSubscribeAmount1() {
+        return subscribeAmount1;
+    }
+
+    public void setSubscribeAmount1(String subscribeAmount1) {
+        this.subscribeAmount1 = subscribeAmount1;
+    }
+
+    public String getAnalysis() {
+        return analysis;
+    }
+
+    public void setAnalysis(String analysis) {
+        this.analysis = analysis;
+    }
+
+    public Double getTotalinvestment() {
+        return totalinvestment;
+    }
+
+    public void setTotalinvestment(Double totalinvestment) {
+        this.totalinvestment = totalinvestment;
+    }
+
+    public String getOtherstock() {
+        return otherstock;
+    }
+
+    public void setOtherstock(String otherstock) {
+        this.otherstock = otherstock;
+    }
+
+    public String getSubscribeAmount2() {
+        return subscribeAmount2;
+    }
+
+    public void setSubscribeAmount2(String subscribeAmount2) {
+        this.subscribeAmount2 = subscribeAmount2;
+    }
+
+    public String getSubscribeAmount3() {
+        return subscribeAmount3;
+    }
+
+    public void setSubscribeAmount3(String subscribeAmount3) {
+        this.subscribeAmount3 = subscribeAmount3;
+    }
+
+    public String getOptiontype() {
+        return optiontype;
+    }
+
+    public void setOptiontype(String optiontype) {
+        this.optiontype = optiontype;
+    }
+
+    public String getZjapplytype() {
+        return zjapplytype;
+    }
+
+    public void setZjapplytype(String zjapplytype) {
+        this.zjapplytype = zjapplytype;
+    }
+
+    public String getInvestmentObject() {
+        return investmentObject;
+    }
+
+    public void setInvestmentObject(String investmentObject) {
+        this.investmentObject = investmentObject;
+    }
+
+    public String getBondrate() {
+        return bondrate;
+    }
+
+    public void setBondrate(String bondrate) {
+        this.bondrate = bondrate;
+    }
+
+    public Double getRemainingAmount() {
+        return remainingAmount;
+    }
+
+    public void setRemainingAmount(Double remainingAmount) {
+        this.remainingAmount = remainingAmount;
+    }
+
+    public String getLegalRepresentative() {
+        return legalRepresentative;
+    }
+
+    public void setLegalRepresentative(String legalRepresentative) {
+        this.legalRepresentative = legalRepresentative;
+    }
+
+    public String getStockprice() {
+        return stockprice;
+    }
+
+    public void setStockprice(String stockprice) {
+        this.stockprice = stockprice;
+    }
+
+    public Double getAmount4() {
+        return amount4;
+    }
+
+    public void setAmount4(Double amount4) {
+        this.amount4 = amount4;
+    }
+
+    public String getInterestrate() {
+        return interestrate;
+    }
+
+    public void setInterestrate(String interestrate) {
+        this.interestrate = interestrate;
+    }
+
+    public Double getAmount3() {
+        return amount3;
+    }
+
+    public void setAmount3(Double amount3) {
+        this.amount3 = amount3;
+    }
+
+    public Double getAmount2() {
+        return amount2;
+    }
+
+    public void setAmount2(Double amount2) {
+        this.amount2 = amount2;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    public Double getRegisteredCapital() {
+        return registeredCapital;
+    }
+
+    public void setRegisteredCapital(Double registeredCapital) {
+        this.registeredCapital = registeredCapital;
+    }
+
+    public Double getAmount1() {
+        return amount1;
+    }
+
+    public void setAmount1(Double amount1) {
+        this.amount1 = amount1;
+    }
+
+    public String getNetworth() {
+        return networth;
+    }
+
+    public void setNetworth(String networth) {
+        this.networth = networth;
+    }
+
+    public String getOtherbond() {
+        return otherbond;
+    }
+
+    public void setOtherbond(String otherbond) {
+        this.otherbond = otherbond;
+    }
+
+    public String getOtherfund() {
+        return otherfund;
+    }
+
+    public void setOtherfund(String otherfund) {
+        this.otherfund = otherfund;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(String deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public String getOther1() {
+        return other1;
+    }
+
+    public void setOther1(String other1) {
+        this.other1 = other1;
+    }
+
+    public String getOther3() {
+        return other3;
+    }
+
+    public void setOther3(String other3) {
+        this.other3 = other3;
+    }
+
+    public String getOther2() {
+        return other2;
+    }
+
+    public void setOther2(String other2) {
+        this.other2 = other2;
+    }
+
+    public String getSubscribeNumber3() {
+        return subscribeNumber3;
+    }
+
+    public void setSubscribeNumber3(String subscribeNumber3) {
+        this.subscribeNumber3 = subscribeNumber3;
+    }
+
+    public String getSubscribeNumber2() {
+        return subscribeNumber2;
+    }
+
+    public void setSubscribeNumber2(String subscribeNumber2) {
+        this.subscribeNumber2 = subscribeNumber2;
+    }
+
+    public String getSubscribeNumber1() {
+        return subscribeNumber1;
+    }
+
+    public void setSubscribeNumber1(String subscribeNumber1) {
+        this.subscribeNumber1 = subscribeNumber1;
+    }
+
+    public String getShareholding() {
+        return shareholding;
+    }
+
+    public void setShareholding(String shareholding) {
+        this.shareholding = shareholding;
+    }
+
+    public String getRisklevel() {
+        return risklevel;
+    }
+
+    public void setRisklevel(String risklevel) {
+        this.risklevel = risklevel;
+    }
+
+    public Double getAllamount() {
+        return allamount;
+    }
+
+    public void setAllamount(Double allamount) {
+        this.allamount = allamount;
+    }
+
+    public Date getPaydate1() {
+        return paydate1;
+    }
+
+    public void setPaydate1(Date paydate1) {
+        this.paydate1 = paydate1;
+    }
+
+    public Date getPaydate3() {
+        return paydate3;
+    }
+
+    public void setPaydate3(Date paydate3) {
+        this.paydate3 = paydate3;
+    }
+
+    public String getStocktype() {
+        return stocktype;
+    }
+
+    public void setStocktype(String stocktype) {
+        this.stocktype = stocktype;
+    }
+
+    public Date getPaydate2() {
+        return paydate2;
+    }
+
+    public void setPaydate2(Date paydate2) {
+        this.paydate2 = paydate2;
+    }
+
+    public Date getPaydate4() {
+        return paydate4;
+    }
+
+    public void setPaydate4(Date paydate4) {
+        this.paydate4 = paydate4;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getStockInvestment() {
+        return stockInvestment;
+    }
+
+    public void setStockInvestment(String stockInvestment) {
+        this.stockInvestment = stockInvestment;
+    }
+
+    public String getOtherDescription() {
+        return otherDescription;
+    }
+
+    public void setOtherDescription(String otherDescription) {
+        this.otherDescription = otherDescription;
+    }
+
+    public String getCategoryValue() {
+        switch (this.category) {
+            case "1":
+                return "全资";
+            case "2":
+                return "控股";
+            case "3":
+                return "参股";
+            case "4":
+                return "其他";
+        }
+        return "";
+    }
 }
