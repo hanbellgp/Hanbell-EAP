@@ -43,7 +43,7 @@ import org.eclipse.birt.report.engine.api.RenderOption;
  * @author C0160
  */
 @WebService(serviceName = "RPT")
-@Stateless()
+@Stateless
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class RPTWebService {
 
@@ -66,12 +66,14 @@ public class RPTWebService {
     private EngineConfig reportEngineConfig;
 
     @PostConstruct
-    public void construct() {
+    protected void construct() {
         FacesContext fc = FacesContext.getCurrentInstance();
-        reportPath = fc.getExternalContext().getRealPath("/")
-                + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportpath");
-        reportOutputPath = fc.getExternalContext().getRealPath("/")
-                + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportoutputpath");
+        if (fc != null) {
+            reportPath = fc.getExternalContext().getRealPath("/")
+                    + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportpath");
+            reportOutputPath = fc.getExternalContext().getRealPath("/")
+                    + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportoutputpath");
+        }
     }
 
     protected void reportInitAndConfig() {
