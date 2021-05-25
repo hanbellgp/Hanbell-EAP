@@ -32,14 +32,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKJH006.findByFirstdiscount", query = "SELECT h FROM HKJH006 h WHERE h.firstdiscount = :firstdiscount"),
     @NamedQuery(name = "HKJH006.findByNumberaddrate", query = "SELECT h FROM HKJH006 h WHERE h.numberaddrate = :numberaddrate"),
     @NamedQuery(name = "HKJH006.findByHdncustomertype", query = "SELECT h FROM HKJH006 h WHERE h.hdncustomertype = :hdncustomertype"),
-    @NamedQuery(name = "HKJH006.findByProcessSerialNumber", query = "SELECT h FROM HKJH006 h WHERE h.processSerialNumber = :processSerialNumber"),
+    @NamedQuery(name = "HKJH006.findByPSN", query = "SELECT h FROM HKJH006 h WHERE h.processSerialNumber = :psn"),
     @NamedQuery(name = "HKJH006.findByExplanation", query = "SELECT h FROM HKJH006 h WHERE h.explanation = :explanation"),
     @NamedQuery(name = "HKJH006.findByBnumber", query = "SELECT h FROM HKJH006 h WHERE h.bnumber = :bnumber"),
     @NamedQuery(name = "HKJH006.findByPrincipal", query = "SELECT h FROM HKJH006 h WHERE h.principal = :principal"),
     @NamedQuery(name = "HKJH006.findByApplyUser", query = "SELECT h FROM HKJH006 h WHERE h.applyUser = :applyUser"),
     @NamedQuery(name = "HKJH006.findByNumber", query = "SELECT h FROM HKJH006 h WHERE h.number = :number"),
     @NamedQuery(name = "HKJH006.findByApplyDept", query = "SELECT h FROM HKJH006 h WHERE h.applyDept = :applyDept"),
-    @NamedQuery(name = "HKJH006.findByFormSerialNumber", query = "SELECT h FROM HKJH006 h WHERE h.formSerialNumber = :formSerialNumber"),
+    @NamedQuery(name = "HKJH006.findByFSN", query = "SELECT h FROM HKJH006 h WHERE h.formSerialNumber = :fsn"),
     @NamedQuery(name = "HKJH006.findByCustomername", query = "SELECT h FROM HKJH006 h WHERE h.customername = :customername"),
     @NamedQuery(name = "HKJH006.findByCustomerno", query = "SELECT h FROM HKJH006 h WHERE h.customerno = :customerno"),
     @NamedQuery(name = "HKJH006.findByGetdiscount", query = "SELECT h FROM HKJH006 h WHERE h.getdiscount = :getdiscount"),
@@ -51,11 +51,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKJH006.findByBegdate", query = "SELECT h FROM HKJH006 h WHERE h.begdate = :begdate"),
     @NamedQuery(name = "HKJH006.findByBamount", query = "SELECT h FROM HKJH006 h WHERE h.bamount = :bamount"),
     @NamedQuery(name = "HKJH006.findByHdnapmanager", query = "SELECT h FROM HKJH006 h WHERE h.hdnapmanager = :hdnapmanager"),
-    @NamedQuery(name = "HKJH006.findByOid", query = "SELECT h FROM HKJH006 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKJH006.findByOID", query = "SELECT h FROM HKJH006 h WHERE h.oid = :oid"),
     @NamedQuery(name = "HKJH006.findByDiscountrate", query = "SELECT h FROM HKJH006 h WHERE h.discountrate = :discountrate"),
     @NamedQuery(name = "HKJH006.findByBdiscountamount", query = "SELECT h FROM HKJH006 h WHERE h.bdiscountamount = :bdiscountamount"),
     @NamedQuery(name = "HKJH006.findByBdiscountrate", query = "SELECT h FROM HKJH006 h WHERE h.bdiscountrate = :bdiscountrate"),
     @NamedQuery(name = "HKJH006.findByAdiscountrate", query = "SELECT h FROM HKJH006 h WHERE h.adiscountrate = :adiscountrate"),
+    @NamedQuery(name = "HKJH006.findByContractno", query = "SELECT h FROM HKJH006 h WHERE h.contractno = :contractno"),
+    @NamedQuery(name = "HKJH006.findByFacno", query = "SELECT h FROM HKJH006 h WHERE h.facno = :facno"),
     @NamedQuery(name = "HKJH006.findByApplyDate", query = "SELECT h FROM HKJH006 h WHERE h.applyDate = :applyDate")})
 public class HKJH006 implements Serializable {
 
@@ -135,12 +137,20 @@ public class HKJH006 implements Serializable {
     @Size(max = 255)
     @Column(name = "bdiscountamount")
     private String bdiscountamount;
+    
     @Size(max = 255)
     @Column(name = "bdiscountrate")
     private String bdiscountrate;
+    
     @Size(max = 255)
     @Column(name = "adiscountrate")
     private String adiscountrate;
+    @Size(max = 255)
+    @Column(name = "contractno")
+    private String contractno;
+    @Size(max = 255)
+    @Column(name = "facno")
+    private String facno;
     @Column(name = "applyDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date applyDate;
@@ -367,7 +377,23 @@ public class HKJH006 implements Serializable {
     public void setAdiscountrate(String adiscountrate) {
         this.adiscountrate = adiscountrate;
     }
+    
+    public String getContractno() {
+        return contractno;
+    }
 
+    public void setContractno(String contractno) {
+        this.contractno = contractno;
+    }
+
+    public String getFacno() {
+        return facno;
+    }
+
+    public void setFacno(String facno) {
+        this.facno = facno;
+    }
+    
     public Date getApplyDate() {
         return applyDate;
     }
