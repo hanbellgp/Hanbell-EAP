@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,16 +5,12 @@
  */
 package cn.hanbell.oa.entity;
 
-import cn.hanbell.crm.entity.CRMGG;
-import cn.hanbell.oa.ejb.WorkFlowBean;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -59,9 +54,147 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKCW005.findByBeizhu", query = "SELECT h FROM HKCW005 h WHERE h.beizhu = :beizhu"),
     @NamedQuery(name = "HKCW005.findByBib", query = "SELECT h FROM HKCW005 h WHERE h.bib = :bib"),
     @NamedQuery(name = "HKCW005.findByFkfs", query = "SELECT h FROM HKCW005 h WHERE h.fkfs = :fkfs"),
-    @NamedQuery(name = "HKCW005.findByZy", query = "SELECT h FROM HKCW005 h WHERE h.zy = :zy")})
+    @NamedQuery(name = "HKCW005.findByZy", query = "SELECT h FROM HKCW005 h WHERE h.zy = :zy"),
+    @NamedQuery(name = "HKCW005.findByEndDate", query = "SELECT h FROM HKCW005 h WHERE h.endDate = :endDate"),
+    @NamedQuery(name = "HKCW005.findByCashBalance", query = "SELECT h FROM HKCW005 h WHERE h.cashBalance = :cashBalance"),
+    @NamedQuery(name = "HKCW005.findByBankBalance", query = "SELECT h FROM HKCW005 h WHERE h.bankBalance = :bankBalance"),
+    @NamedQuery(name = "HKCW005.findByContractno", query = "SELECT h FROM HKCW005 h WHERE h.contractno = :contractno"),
+    @NamedQuery(name = "HKCW005.findByApplyType", query = "SELECT h FROM HKCW005 h WHERE h.applyType = :applyType"),
+    @NamedQuery(name = "HKCW005.findByLongterm", query = "SELECT h FROM HKCW005 h WHERE h.longterm = :longterm"),
+    @NamedQuery(name = "HKCW005.findByZjother", query = "SELECT h FROM HKCW005 h WHERE h.zjother = :zjother"),
+    @NamedQuery(name = "HKCW005.findByBondtype", query = "SELECT h FROM HKCW005 h WHERE h.bondtype = :bondtype"),
+    @NamedQuery(name = "HKCW005.findByFinancialProduct", query = "SELECT h FROM HKCW005 h WHERE h.financialProduct = :financialProduct"),
+    @NamedQuery(name = "HKCW005.findByPaymentTerms4", query = "SELECT h FROM HKCW005 h WHERE h.paymentTerms4 = :paymentTerms4"),
+    @NamedQuery(name = "HKCW005.findByPaymentTerms3", query = "SELECT h FROM HKCW005 h WHERE h.paymentTerms3 = :paymentTerms3"),
+    @NamedQuery(name = "HKCW005.findByPaymentTerms2", query = "SELECT h FROM HKCW005 h WHERE h.paymentTerms2 = :paymentTerms2"),
+    @NamedQuery(name = "HKCW005.findByPaymentTerms1", query = "SELECT h FROM HKCW005 h WHERE h.paymentTerms1 = :paymentTerms1"),
+    @NamedQuery(name = "HKCW005.findByFundtype", query = "SELECT h FROM HKCW005 h WHERE h.fundtype = :fundtype"),
+    @NamedQuery(name = "HKCW005.findByProjectname", query = "SELECT h FROM HKCW005 h WHERE h.projectname = :projectname"),
+    @NamedQuery(name = "HKCW005.findBySubscribeAmount1", query = "SELECT h FROM HKCW005 h WHERE h.subscribeAmount1 = :subscribeAmount1"),
+    @NamedQuery(name = "HKCW005.findByAnalysis", query = "SELECT h FROM HKCW005 h WHERE h.analysis = :analysis"),
+    @NamedQuery(name = "HKCW005.findByTotalinvestment", query = "SELECT h FROM HKCW005 h WHERE h.totalinvestment = :totalinvestment"),
+    @NamedQuery(name = "HKCW005.findByOtherstock", query = "SELECT h FROM HKCW005 h WHERE h.otherstock = :otherstock"),
+    @NamedQuery(name = "HKCW005.findBySubscribeAmount2", query = "SELECT h FROM HKCW005 h WHERE h.subscribeAmount2 = :subscribeAmount2"),
+    @NamedQuery(name = "HKCW005.findBySubscribeAmount3", query = "SELECT h FROM HKCW005 h WHERE h.subscribeAmount3 = :subscribeAmount3"),
+    @NamedQuery(name = "HKCW005.findByOptiontype", query = "SELECT h FROM HKCW005 h WHERE h.optiontype = :optiontype"),
+    @NamedQuery(name = "HKCW005.findByZjapplytype", query = "SELECT h FROM HKCW005 h WHERE h.zjapplytype = :zjapplytype"),
+    @NamedQuery(name = "HKCW005.findByInvestmentObject", query = "SELECT h FROM HKCW005 h WHERE h.investmentObject = :investmentObject"),
+    @NamedQuery(name = "HKCW005.findByBondrate", query = "SELECT h FROM HKCW005 h WHERE h.bondrate = :bondrate"),
+    @NamedQuery(name = "HKCW005.findByRemainingAmount", query = "SELECT h FROM HKCW005 h WHERE h.remainingAmount = :remainingAmount"),
+    @NamedQuery(name = "HKCW005.findByLegalRepresentative", query = "SELECT h FROM HKCW005 h WHERE h.legalRepresentative = :legalRepresentative"),
+    @NamedQuery(name = "HKCW005.findByStockprice", query = "SELECT h FROM HKCW005 h WHERE h.stockprice = :stockprice"),
+    @NamedQuery(name = "HKCW005.findByAmount4", query = "SELECT h FROM HKCW005 h WHERE h.amount4 = :amount4"),
+    @NamedQuery(name = "HKCW005.findByInterestrate", query = "SELECT h FROM HKCW005 h WHERE h.interestrate = :interestrate"),
+    @NamedQuery(name = "HKCW005.findByAmount3", query = "SELECT h FROM HKCW005 h WHERE h.amount3 = :amount3"),
+    @NamedQuery(name = "HKCW005.findByTerm2", query = "SELECT h FROM HKCW005 h WHERE h.term2 = :term2"),
+    @NamedQuery(name = "HKCW005.findByAmount2", query = "SELECT h FROM HKCW005 h WHERE h.amount2 = :amount2"),
+    @NamedQuery(name = "HKCW005.findByRate", query = "SELECT h FROM HKCW005 h WHERE h.rate = :rate"),
+    @NamedQuery(name = "HKCW005.findByRegisteredCapital", query = "SELECT h FROM HKCW005 h WHERE h.registeredCapital = :registeredCapital"),
+    @NamedQuery(name = "HKCW005.findByAmount1", query = "SELECT h FROM HKCW005 h WHERE h.amount1 = :amount1"),
+    @NamedQuery(name = "HKCW005.findByNetworth", query = "SELECT h FROM HKCW005 h WHERE h.networth = :networth"),
+    @NamedQuery(name = "HKCW005.findByOtherbond", query = "SELECT h FROM HKCW005 h WHERE h.otherbond = :otherbond"),
+    @NamedQuery(name = "HKCW005.findByOtherfund", query = "SELECT h FROM HKCW005 h WHERE h.otherfund = :otherfund"),
+    @NamedQuery(name = "HKCW005.findByDeadline", query = "SELECT h FROM HKCW005 h WHERE h.deadline = :deadline"),
+    @NamedQuery(name = "HKCW005.findByDeliveryDate", query = "SELECT h FROM HKCW005 h WHERE h.deliveryDate = :deliveryDate"),
+    @NamedQuery(name = "HKCW005.findByOther1", query = "SELECT h FROM HKCW005 h WHERE h.other1 = :other1"),
+    @NamedQuery(name = "HKCW005.findByOther3", query = "SELECT h FROM HKCW005 h WHERE h.other3 = :other3"),
+    @NamedQuery(name = "HKCW005.findByOther2", query = "SELECT h FROM HKCW005 h WHERE h.other2 = :other2"),
+    @NamedQuery(name = "HKCW005.findBySubscribeNumber3", query = "SELECT h FROM HKCW005 h WHERE h.subscribeNumber3 = :subscribeNumber3"),
+    @NamedQuery(name = "HKCW005.findBySubscribeNumber1", query = "SELECT h FROM HKCW005 h WHERE h.subscribeNumber1 = :subscribeNumber1"),
+    @NamedQuery(name = "HKCW005.findByShareholding", query = "SELECT h FROM HKCW005 h WHERE h.shareholding = :shareholding"),
+    @NamedQuery(name = "HKCW005.findByRisklevel", query = "SELECT h FROM HKCW005 h WHERE h.risklevel = :risklevel"),
+    @NamedQuery(name = "HKCW005.findByAllamount", query = "SELECT h FROM HKCW005 h WHERE h.allamount = :allamount"),
+    @NamedQuery(name = "HKCW005.findByPaydate1", query = "SELECT h FROM HKCW005 h WHERE h.paydate1 = :paydate1"),
+    @NamedQuery(name = "HKCW005.findByPaydate3", query = "SELECT h FROM HKCW005 h WHERE h.paydate3 = :paydate3"),
+    @NamedQuery(name = "HKCW005.findByStocktype", query = "SELECT h FROM HKCW005 h WHERE h.stocktype = :stocktype"),
+    @NamedQuery(name = "HKCW005.findByPaydate2", query = "SELECT h FROM HKCW005 h WHERE h.paydate2 = :paydate2"),
+    @NamedQuery(name = "HKCW005.findByPaydate4", query = "SELECT h FROM HKCW005 h WHERE h.paydate4 = :paydate4"),
+    @NamedQuery(name = "HKCW005.findByCategory", query = "SELECT h FROM HKCW005 h WHERE h.category = :category"),
+    @NamedQuery(name = "HKCW005.findByStockInvestment", query = "SELECT h FROM HKCW005 h WHERE h.stockInvestment = :stockInvestment"),
+    @NamedQuery(name = "HKCW005.findByOtherDescription", query = "SELECT h FROM HKCW005 h WHERE h.otherDescription = :otherDescription")})
 public class HKCW005 implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    @Size(max = 255)
+    @Column(name = "facno")
+    private String facno;
+    @Size(max = 255)
+    @Column(name = "processSerialNumber")
+    private String processSerialNumber;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "jine")
+    private Double jine;
+    @Column(name = "createdate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdate;
+    @Size(max = 255)
+    @Column(name = "bttbankno")
+    private String bttbankno;
+    @Size(max = 255)
+    @Column(name = "pzzh")
+    private String pzzh;
+    @Size(max = 255)
+    @Column(name = "lkr")
+    private String lkr;
+    @Size(max = 255)
+    @Column(name = "dx")
+    private String dx;
+    @Size(max = 255)
+    @Column(name = "vdrd")
+    private String vdrd;
+    @Size(max = 255)
+    @Column(name = "formSerialNumber")
+    private String formSerialNumber;
+    @Size(max = 255)
+    @Column(name = "hdnmanager")
+    private String hdnmanager;
+    @Column(name = "createtime")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createtime;
+    @Size(max = 255)
+    @Column(name = "fkxz")
+    private String fkxz;
+    @Size(max = 255)
+    @Column(name = "dept")
+    private String dept;
+    @Size(max = 255)
+    @Column(name = "vdrno")
+    private String vdrno;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "OID")
+    private String oid;
+    @Size(max = 255)
+    @Column(name = "els")
+    private String els;
+    @Size(max = 255)
+    @Column(name = "applyuser")
+    private String applyuser;
+    @Size(max = 255)
+    @Column(name = "deptno")
+    private String deptno;
+    @Column(name = "fkje")
+    private Double fkje;
+    @Size(max = 255)
+    @Column(name = "kemu")
+    private String kemu;
+    @Size(max = 255)
+    @Column(name = "SerialNumber")
+    private String serialNumber;
+    @Size(max = 255)
+    @Column(name = "beizhu")
+    private String beizhu;
+    @Size(max = 255)
+    @Column(name = "bib")
+    private String bib;
+    @Size(max = 255)
+    @Column(name = "fkfs")
+    private String fkfs;
+    @Size(max = 255)
+    @Column(name = "zy")
+    private String zy;
     @Column(name = "endDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
@@ -151,6 +284,9 @@ public class HKCW005 implements Serializable {
     private String interestrate;
     @Column(name = "amount3")
     private Double amount3;
+    @Size(max = 255)
+    @Column(name = "term2")
+    private String term2;
     @Column(name = "amount2")
     private Double amount2;
     @Size(max = 255)
@@ -188,9 +324,6 @@ public class HKCW005 implements Serializable {
     @Column(name = "subscribeNumber3")
     private String subscribeNumber3;
     @Size(max = 255)
-    @Column(name = "subscribeNumber2")
-    private String subscribeNumber2;
-    @Size(max = 255)
     @Column(name = "subscribeNumber1")
     private String subscribeNumber1;
     @Size(max = 255)
@@ -225,92 +358,6 @@ public class HKCW005 implements Serializable {
     @Size(max = 255)
     @Column(name = "otherDescription")
     private String otherDescription;
-
-    private static final long serialVersionUID = 1L;
-    @Size(max = 255)
-    @Column(name = "facno")
-    private String facno;
-    @Size(max = 255)
-    @Column(name = "processSerialNumber")
-    private String processSerialNumber;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "jine")
-    private Double jine;
-    @Column(name = "createdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdate;
-    @Size(max = 255)
-    @Column(name = "bttbankno")
-    private String bttbankno;
-    @Size(max = 255)
-    @Column(name = "pzzh")
-    private String pzzh;
-    @Size(max = 255)
-    @Column(name = "lkr")
-    private String lkr;
-    @Size(max = 255)
-    @Column(name = "dx")
-    private String dx;
-    @Size(max = 255)
-    @Column(name = "vdrd")
-    private String vdrd;
-    @Size(max = 255)
-    @Column(name = "formSerialNumber")
-    private String formSerialNumber;
-    @Size(max = 255)
-    @Column(name = "hdnmanager")
-    private String hdnmanager;
-    @Column(name = "createtime")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createtime;
-    @Size(max = 255)
-    @Column(name = "fkxz")
-    private String fkxz;
-    @Size(max = 255)
-    @Column(name = "dept")
-    private String dept;
-    @Size(max = 255)
-    @Column(name = "vdrno")
-    private String vdrno;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "OID")
-    private String oid;
-    @Size(max = 255)
-    @Column(name = "els")
-    private String els;
-    @Size(max = 255)
-    @Column(name = "applyuser")
-    private String applyuser;
-    @Size(max = 255)
-    @Column(name = "deptno")
-    private String deptno;
-    @Column(name = "fkje")
-    private Double fkje;
-    @Size(max = 255)
-    @Column(name = "kemu")
-    private String kemu;
-    @Size(max = 255)
-    @Column(name = "SerialNumber")
-    private String serialNumber;
-    @Size(max = 255)
-    @Column(name = "beizhu")
-    private String beizhu;
-    @Size(max = 255)
-    @Column(name = "bib")
-    private String bib;
-    @Size(max = 255)
-    @Column(name = "fkfs")
-    private String fkfs;
-    @Size(max = 255)
-    @Column(name = "zy")
-    private String zy;
-    //人名
-    @JoinColumn(name = "lkr", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = true)
-    private Users user;
 
     public HKCW005() {
     }
@@ -525,70 +572,6 @@ public class HKCW005 implements Serializable {
 
     public void setZy(String zy) {
         this.zy = zy;
-    }
-
-    public String getCompanyName() {
-        WorkFlowBean WorkFlowBean = new WorkFlowBean();
-        return WorkFlowBean.getCompanyName(this.facno);
-    }
-
-    public Users getUser() {
-        return user;
-    }
-
-    public void setUser(Users user) {
-        this.user = user;
-    }
-
-    public String getBibName() {
-        switch (this.bib) {
-            case "1":
-                return "人民币";
-            case "2":
-                return "美元";
-            case "3":
-                return "日元";
-            case "4":
-                return "欧元";
-            case "5":
-                return "英镑";
-            case "6":
-                return "卢币";
-            case "7":
-                return "越南盾";
-            case "8":
-                return "台币";
-            case "9":
-                return "港币";
-            case "10":
-                return this.els;
-        }
-        return "";
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (oid != null ? oid.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof HKCW005)) {
-            return false;
-        }
-        HKCW005 other = (HKCW005) object;
-        if ((this.oid == null && other.oid != null) || (this.oid != null && !this.oid.equals(other.oid))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "cn.hanbell.oa.entity.HKCW005[ oid=" + oid + " ]";
     }
 
     public Date getEndDate() {
@@ -839,6 +822,14 @@ public class HKCW005 implements Serializable {
         this.amount3 = amount3;
     }
 
+    public String getTerm2() {
+        return term2;
+    }
+
+    public void setTerm2(String term2) {
+        this.term2 = term2;
+    }
+
     public Double getAmount2() {
         return amount2;
     }
@@ -943,14 +934,6 @@ public class HKCW005 implements Serializable {
         this.subscribeNumber3 = subscribeNumber3;
     }
 
-    public String getSubscribeNumber2() {
-        return subscribeNumber2;
-    }
-
-    public void setSubscribeNumber2(String subscribeNumber2) {
-        this.subscribeNumber2 = subscribeNumber2;
-    }
-
     public String getSubscribeNumber1() {
         return subscribeNumber1;
     }
@@ -1047,7 +1030,32 @@ public class HKCW005 implements Serializable {
         this.otherDescription = otherDescription;
     }
 
-    public String getCategoryValue() {
+    public String getBibName() {
+        switch (this.bib) {
+            case "1":
+                return "人民币";
+            case "2":
+                return "美元";
+            case "3":
+                return "日元";
+            case "4":
+                return "欧元";
+            case "5":
+                return "英镑";
+            case "6":
+                return "卢币";
+            case "7":
+                return "越南盾";
+            case "8":
+                return "台币";
+            case "9":
+                return "港币";
+            case "10":
+                return this.els;
+        }
+        return "";
+    }
+     public String getCategoryValue() {
         switch (this.category) {
             case "1":
                 return "全资";
@@ -1060,4 +1068,30 @@ public class HKCW005 implements Serializable {
         }
         return "";
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (oid != null ? oid.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof HKCW005)) {
+            return false;
+        }
+        HKCW005 other = (HKCW005) object;
+        if ((this.oid == null && other.oid != null) || (this.oid != null && !this.oid.equals(other.oid))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "cn.hanbell.oa.entity.HKCW005[ oid=" + oid + " ]";
+    }
+
 }
