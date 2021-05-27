@@ -136,6 +136,11 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
                             case "SLN00028":
                                 content.append(sd.getCustomerItem()).append(" ").append(sd.getItemDesc()).append("|").append(sd.getItemModel());
                                 break;
+                                //南京天加
+                            case "SJS00309":
+                               content.append("A0007001").append("|").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append("-").append(sd.getLotseq()).append("|")
+                                        .append(sd.getVarnr()).append("|").append(sd.getCustomerItem()).append("|").append(sd.getItemModel());
+                                break;
                         }
                         if (content.length() > 0) {
                             this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + currentEntity.getCustomerno() + sd.getVarnr() + ".png");
