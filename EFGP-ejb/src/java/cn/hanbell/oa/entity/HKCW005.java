@@ -5,12 +5,15 @@
  */
 package cn.hanbell.oa.entity;
 
+import cn.hanbell.oa.ejb.WorkFlowBean;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -359,6 +362,9 @@ public class HKCW005 implements Serializable {
     @Column(name = "otherDescription")
     private String otherDescription;
 
+    @JoinColumn(name = "lkr", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private Users user;
     public HKCW005() {
     }
 
@@ -1030,6 +1036,18 @@ public class HKCW005 implements Serializable {
         this.otherDescription = otherDescription;
     }
 
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+    
+    public String getCompanyName() {
+        WorkFlowBean WorkFlowBean = new WorkFlowBean();
+        return WorkFlowBean.getCompanyName(this.facno);
+    }
     public String getBibName() {
         switch (this.bib) {
             case "1":

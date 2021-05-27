@@ -162,14 +162,11 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
             if (queryDateBegin != null && queryDateEnd != null) {
                 if ("ALL".equals(queryWorkItemName)) {
                     psnList = workItemBean.findProcessSerialNumbersByProcessIdAndCompletedTime("PKG_HK_FW005", queryDateBegin, queryDateEnd);
-                } else if ("帐管".equals(queryWorkItemName)) {
-                    psnList = workItemBean.findProcessNumbersByBetweenWorkItem1AndWorkItem2("帐管", "仓储主管");
-                } else if ("仓管".equals(queryWorkItemName)) {
-                    psnList = workItemBean.findProcessNumbersByBetweenWorkItem1AndWorkItem2("仓管", "仓储课长");
                 } else {
-                    psnList = workItemBean.findProcessSerialNumbersByWorkItem("PKG_HK_FW005", queryWorkItemName, queryDateBegin, queryDateEnd);
+//                    psnList = workItemBean.findProcessSerialNumbersByWorkItem("PKG_HK_FW005", queryWorkItemName, queryDateBegin, queryDateEnd);
+                    String[] item = queryWorkItemName.split(",");
+                    psnList = workItemBean.findProcessNumbersByBetweenWorkItem1AndWorkItem2(item[0], item[1]);
                 }
-
                 if (psnList != null && !psnList.isEmpty()) {
                     this.model.getFilterFields().put("processInstance.serialNumber IN ", psnList);
                 } else {
@@ -280,7 +277,7 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
         }
         return true;
     }
-    
+
     /**
      * @return the workItemName
      */
@@ -288,7 +285,7 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
         return queryWorkItemName;
     }
 
-     /**
+    /**
      * @param queryWorkItemName the workItemName to set
      */
     public void setQueryWorkItemName(String queryWorkItemName) {
