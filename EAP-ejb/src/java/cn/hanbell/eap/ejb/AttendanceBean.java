@@ -37,7 +37,7 @@ public class AttendanceBean extends SuperEJBForEAP<Attendance> {
     public List<Attendance> findByAttendanceAndEmployeeIdAndStatus(String employeeid, String date, String status) {
         StringBuffer sql = new StringBuffer("SELECT * FROM attendance where 1=1 ");
         if (employeeid != null && !"".equals(employeeid)) {
-            sql.append("and  employeeName like '%").append(employeeid).append("%'");
+            sql.append("and  employeeId like '%").append(employeeid).append("%'");
         }
         if (date != null && !"".equals(date)) {
             sql.append("and  attendanceDate like '%").append(date).append("%'");
