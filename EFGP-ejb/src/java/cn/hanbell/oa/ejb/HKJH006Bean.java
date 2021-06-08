@@ -6,8 +6,10 @@
 package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
+import cn.hanbell.oa.entity.HKJH001serial;
 import cn.hanbell.oa.entity.HKJH006;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -19,6 +21,9 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class HKJH006Bean extends SuperEJBForEFGP<HKJH006> {
+
+    @EJB
+    private HKJH001serialBean hkjh001serialBean;
 
     public HKJH006Bean() {
         super(HKJH006.class);
@@ -48,4 +53,32 @@ public class HKJH006Bean extends SuperEJBForEFGP<HKJH006> {
         }
 
     }
+
+    public synchronized boolean updateHKJH006(String psn) {
+        HKJH006 hkjh006psn = findByPSN(psn);
+        if (hkjh006psn == null) {
+            throw new NullPointerException();//抛异常，程式终止
+        }
+        HKJH001serial hs = hkjh001serialBean.findByKind("ZR");
+        String fanco = hkjh006psn.getFacno();
+        String no = "";
+        int serialno = hs.getSerialno();
+        if (serialno < 10) {
+            no = "000" + serialno;
+        } else if (serialno < 100) {
+            no = "00" + serialno;
+        } else if (serialno < 1000) {
+            no = "0" + serialno;
+        } else {
+            no = "" + serialno;
+        }
+        no = fanco + "ZR" + no;
+        hkjh006psn.setContractno(no);
+        this.update(hkjh006psn);
+        serialno = serialno + 1;
+        hs.setSerialno(serialno);
+        hkjh001serialBean.update(hs);
+        return true;
+    }
+
 }

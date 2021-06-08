@@ -324,6 +324,7 @@ public class TimerBean {
     private cn.hanbell.mes.ejb.MDepartmentBean mesDepartmentBean;
     @EJB
     private cn.hanbell.mes.ejb.MUserBean mesUserBean;
+    @EJB
     private cn.hanbell.mes.ejb.MuserRoleBean mesUserRoleBean;
 
     // EJBForPLM
