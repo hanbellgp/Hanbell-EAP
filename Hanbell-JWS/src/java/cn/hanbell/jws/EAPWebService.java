@@ -317,7 +317,7 @@ public class EAPWebService {
     @EJB
     private HKJH001Bean hkjh001Bean;
     @EJB
-    private HKJH006Bean hkjh006Bean; 
+    private HKJH006Bean hkjh006Bean;
     @EJB
     private HKXQB001Bean hkxqb001Bean;
     @EJB
@@ -2769,6 +2769,7 @@ public class EAPWebService {
             ParticipantActivityInstance pai;
             Users user;
             agent1000002Bean.initConfiguration();
+            String resmsg = "";
             switch (step) {
                 case "ACT10":
                     Functions function = processInstanceBean.findFunctionsByUserOIDAndOrgUnitOID(pi.getRequesterOID(), pi.getInvokeOrganizationUnitOID());
@@ -2786,7 +2787,7 @@ public class EAPWebService {
                             taskcard.append("{'key':'reject','name':'拒绝'},");
                             taskcard.append("{'key':'approve','name':'批准','color':'red','is_bold':true}]");
                             taskcard.append("}");
-                            agent1000002Bean.sendMsgToUser(user.getId(), null, null, "taskcard", taskcard.toString());
+                            resmsg = agent1000002Bean.sendMsgToUser(user.getId(), null, null, "taskcard", taskcard.toString());
                             ret = true;
                         }
                     }
@@ -2803,18 +2804,19 @@ public class EAPWebService {
                             content.append("'content':'").append(String.format("[%s]设备报修<br/>%s设备<br/>发生%s故障<br/>请速派员处理",
                                     hspb015Bean.getCompanyName(entity.getFacno()), entity.getMachineCode(), entity.getFaultContent())).append("'");
                             content.append("}");
-                            agent1000002Bean.sendMsgToUser(user.getId(), null, null, "text", content.toString());
+                            resmsg = agent1000002Bean.sendMsgToUser(user.getId(), null, null, "text", content.toString());
                             ret = true;
                         }
                     }
                     break;
                 case "ACT11":
-                    agent1000002Bean.sendMsgToUser(entity.getMaintenanceUser(), "text", String.format("[%s]设备报修<br/>%s设备<br/>发生%s故障<br/>请速前往处理",
+                    resmsg = agent1000002Bean.sendMsgToUser(entity.getMaintenanceUser(), "text", String.format("[%s]设备报修<br/>%s设备<br/>发生%s故障<br/>请速前往处理",
                             hspb015Bean.getCompanyName(entity.getFacno()), entity.getMachineCode(), entity.getFaultContent()));
                     ret = true;
                     break;
                 default:
             }
+            log4j.info(resmsg);
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "sendWeComMessageByOAHSPB015", psn), ex);
             ret = false;
@@ -3300,7 +3302,7 @@ public class EAPWebService {
             return "404";
         }
     }
-    
+
     @WebMethod(operationName = "updateOAProcessInstanceByOAWARMI05")
     public String updateOAProcessInstanceByOAWARMI05(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
