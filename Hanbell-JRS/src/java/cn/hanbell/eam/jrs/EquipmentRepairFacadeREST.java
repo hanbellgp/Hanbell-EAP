@@ -16,6 +16,7 @@ import cn.hanbell.eam.ejb.EquipmentRepairHelpersBean;
 import cn.hanbell.eam.ejb.EquipmentRepairHisBean;
 import cn.hanbell.eam.ejb.EquipmentRepairSpareBean;
 import cn.hanbell.eam.ejb.EquipmentSpareBean;
+import cn.hanbell.eam.ejb.EquipmentSpareRecodeDtaBean;
 import cn.hanbell.eam.ejb.EquipmentTroubleBean;
 import cn.hanbell.eam.ejb.SysCodeBean;
 import cn.hanbell.eam.ejb.UnitBean;
@@ -25,6 +26,8 @@ import cn.hanbell.eam.entity.EquipmentRepairHelpers;
 import cn.hanbell.eam.entity.EquipmentRepairHis;
 import cn.hanbell.eam.entity.EquipmentRepairSpare;
 import cn.hanbell.eam.entity.EquipmentSpare;
+import cn.hanbell.eam.entity.EquipmentSpareRecodeDta;
+import cn.hanbell.eam.entity.EquipmentSpareRecodeDtaResponse;
 import cn.hanbell.eam.entity.EquipmentTrouble;
 import cn.hanbell.eam.entity.SysCode;
 import cn.hanbell.eam.entity.Unit;
@@ -48,6 +51,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -104,6 +108,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     
     @EJB
     private EquipmentRepairHelpersBean equipmentRepairHelpersBean;
+    
+    @EJB
+    private EquipmentSpareRecodeDtaBean equipmentSpareRecodeDtaBean;
     
     @EJB
     private AssetCardBean assetCardBeam;
@@ -461,69 +468,69 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 
                 JSONArray jsonArray = new JSONArray(entity.getRemark());
                 
-                JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
-                JSONArray repairHelperList_jsonArray = jsonArray.getJSONArray(1);
+                //JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
+                JSONArray repairHelperList_jsonArray = jsonArray.getJSONArray(0);
                 
                 JSONObject jsonObj = new JSONObject();
-                for(Object jobj:spareUsedList_jsonArray)
-                {
-                    jsonObj = (JSONObject)jobj;
-                    eqpRepairSpareTemp = new EquipmentRepairSpare();
-                    
-                    if(jsonObj.has("docId"))
-                    {
-                        eqpRepairSpareTemp = equipmentRepairSpareBean.findById(jsonObj.getInt("docId"));
-                        if(eqpRepairSpareTemp != null)
-                        {
-                            eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
-                            equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
-                        }
-                    }
-                    else
-                    {
-                        List<EquipmentRepairSpare> eqpRepairSpareList = equipmentRepairSpareBean.findByPId(entity.getFormid());
-                    
-                        int spareIndexMaxTemp = 0;
-
-                        if(eqpRepairSpareList == null || eqpRepairSpareList.size() < 1)
-                        {
-                            spareIndexMaxTemp = 1;
-                        }
-                        else
-                        {
-                            for(int i = 0 ; i < eqpRepairSpareList.size() ; i++)
-                            {
-                                if(eqpRepairSpareList.get(i).getSeq() >= spareIndexMaxTemp)
-                                {
-                                    spareIndexMaxTemp = eqpRepairSpareList.get(i).getSeq();
-                                }
-                            }
-                            spareIndexMaxTemp = spareIndexMaxTemp + 1;
-                        }
-                        filterFields_spareUsed.put("sparenum", jsonObj.getString("spareNum"));
-                        eqpSpareListTemp = equipmentSpareBean.findByFilters(filterFields_spareUsed);
-                        if(eqpSpareListTemp.size() >= 0)
-                        {
-                            eqpSpareTemp = eqpSpareListTemp.get(0);
-                        }
-                        unitTemp = unitBean.findById(jsonObj.getInt("unit"));
-
-                        eqpRepairSpareTemp.setCompany(entity.getCompany());
-                        eqpRepairSpareTemp.setPid(entity.getFormid());
-                        eqpRepairSpareTemp.setSeq(spareIndexMaxTemp);
-                        eqpRepairSpareTemp.setSpareno(jsonObj.getString("spareNo"));
-                        eqpRepairSpareTemp.setSparenum(eqpSpareTemp);
-                        eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
-                        eqpRepairSpareTemp.setUprice(jsonObj.getBigDecimal("uPrice"));
-                        eqpRepairSpareTemp.setUnit(unitTemp);
-                        eqpRepairSpareTemp.setBrand(jsonObj.getString("brand"));
-                        eqpRepairSpareTemp.setUserno(jsonObj.getString("userNo"));
-                        eqpRepairSpareTemp.setUserdate(new Date());
-                        eqpRepairSpareTemp.setStatus("N");
-
-                        equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
-                    }
-                }
+//                for(Object jobj:spareUsedList_jsonArray)
+//                {
+//                    jsonObj = (JSONObject)jobj;
+//                    eqpRepairSpareTemp = new EquipmentRepairSpare();
+//                    
+//                    if(jsonObj.has("docId"))
+//                    {
+//                        eqpRepairSpareTemp = equipmentRepairSpareBean.findById(jsonObj.getInt("docId"));
+//                        if(eqpRepairSpareTemp != null)
+//                        {
+//                            eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
+//                            equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
+//                        }
+//                    }
+//                    else
+//                    {
+//                        List<EquipmentRepairSpare> eqpRepairSpareList = equipmentRepairSpareBean.findByPId(entity.getFormid());
+//                    
+//                        int spareIndexMaxTemp = 0;
+//
+//                        if(eqpRepairSpareList == null || eqpRepairSpareList.size() < 1)
+//                        {
+//                            spareIndexMaxTemp = 1;
+//                        }
+//                        else
+//                        {
+//                            for(int i = 0 ; i < eqpRepairSpareList.size() ; i++)
+//                            {
+//                                if(eqpRepairSpareList.get(i).getSeq() >= spareIndexMaxTemp)
+//                                {
+//                                    spareIndexMaxTemp = eqpRepairSpareList.get(i).getSeq();
+//                                }
+//                            }
+//                            spareIndexMaxTemp = spareIndexMaxTemp + 1;
+//                        }
+//                        filterFields_spareUsed.put("sparenum", jsonObj.getString("spareNum"));
+//                        eqpSpareListTemp = equipmentSpareBean.findByFilters(filterFields_spareUsed);
+//                        if(eqpSpareListTemp.size() >= 0)
+//                        {
+//                            eqpSpareTemp = eqpSpareListTemp.get(0);
+//                        }
+//                        unitTemp = unitBean.findById(jsonObj.getInt("unit"));
+//
+//                        eqpRepairSpareTemp.setCompany(entity.getCompany());
+//                        eqpRepairSpareTemp.setPid(entity.getFormid());
+//                        eqpRepairSpareTemp.setSeq(spareIndexMaxTemp);
+//                        eqpRepairSpareTemp.setSpareno(jsonObj.getString("spareNo"));
+//                        eqpRepairSpareTemp.setSparenum(eqpSpareTemp);
+//                        eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
+//                        eqpRepairSpareTemp.setUprice(jsonObj.getBigDecimal("uPrice"));
+//                        eqpRepairSpareTemp.setUnit(unitTemp);
+//                        eqpRepairSpareTemp.setBrand(jsonObj.getString("brand"));
+//                        eqpRepairSpareTemp.setUserno(jsonObj.getString("userNo"));
+//                        eqpRepairSpareTemp.setUserdate(new Date());
+//                        eqpRepairSpareTemp.setStatus("N");
+//
+//                        equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
+//                    }
+//                }
                 
                 for(Object jobj:repairHelperList_jsonArray)
                 {
@@ -769,69 +776,69 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 
                 JSONArray jsonArray = new JSONArray(entity.getRemark());
                 
-                JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
-                JSONArray repairHelperList_jsonArray = jsonArray.getJSONArray(1);
+                //JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
+                JSONArray repairHelperList_jsonArray = jsonArray.getJSONArray(0);
                 
                 JSONObject jsonObj = new JSONObject();
-                for(Object jobj:spareUsedList_jsonArray)
-                {
-                    jsonObj = (JSONObject)jobj;
-                    eqpRepairSpareTemp = new EquipmentRepairSpare();
-                    
-                    if(jsonObj.has("docId"))
-                    {
-                        eqpRepairSpareTemp = equipmentRepairSpareBean.findById(jsonObj.getInt("docId"));
-                        if(eqpRepairSpareTemp != null)
-                        {
-                            eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
-                            equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
-                        }
-                    }
-                    else
-                    {
-                        List<EquipmentRepairSpare> eqpRepairSpareList = equipmentRepairSpareBean.findByPId(entity.getFormid());
-                    
-                        int spareIndexMaxTemp = 0;
-
-                        if(eqpRepairSpareList == null || eqpRepairSpareList.size() < 1)
-                        {
-                            spareIndexMaxTemp = 1;
-                        }
-                        else
-                        {
-                            for(int i = 0 ; i < eqpRepairSpareList.size() ; i++)
-                            {
-                                if(eqpRepairSpareList.get(i).getSeq() >= spareIndexMaxTemp)
-                                {
-                                    spareIndexMaxTemp = eqpRepairSpareList.get(i).getSeq();
-                                }
-                            }
-                            spareIndexMaxTemp = spareIndexMaxTemp + 1;
-                        }
-                        filterFields_spareUsed.put("sparenum", jsonObj.getString("spareNum"));
-                        eqpSpareListTemp = equipmentSpareBean.findByFilters(filterFields_spareUsed);
-                        if(eqpSpareListTemp.size() >= 0)
-                        {
-                            eqpSpareTemp = eqpSpareListTemp.get(0);
-                        }
-                        unitTemp = unitBean.findById(jsonObj.getInt("unit"));
-
-                        eqpRepairSpareTemp.setCompany(entity.getCompany());
-                        eqpRepairSpareTemp.setPid(entity.getFormid());
-                        eqpRepairSpareTemp.setSeq(spareIndexMaxTemp);
-                        eqpRepairSpareTemp.setSpareno(jsonObj.getString("spareNo"));
-                        eqpRepairSpareTemp.setSparenum(eqpSpareTemp);
-                        eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
-                        eqpRepairSpareTemp.setUprice(jsonObj.getBigDecimal("uPrice"));
-                        eqpRepairSpareTemp.setUnit(unitTemp);
-                        eqpRepairSpareTemp.setBrand(jsonObj.getString("brand"));
-                        eqpRepairSpareTemp.setUserno(jsonObj.getString("userNo"));
-                        eqpRepairSpareTemp.setUserdate(new Date());
-                        eqpRepairSpareTemp.setStatus("N");
-
-                        equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
-                    }
-                }
+//                for(Object jobj:spareUsedList_jsonArray)
+//                {
+//                    jsonObj = (JSONObject)jobj;
+//                    eqpRepairSpareTemp = new EquipmentRepairSpare();
+//                    
+//                    if(jsonObj.has("docId"))
+//                    {
+//                        eqpRepairSpareTemp = equipmentRepairSpareBean.findById(jsonObj.getInt("docId"));
+//                        if(eqpRepairSpareTemp != null)
+//                        {
+//                            eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
+//                            equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
+//                        }
+//                    }
+//                    else
+//                    {
+//                        List<EquipmentRepairSpare> eqpRepairSpareList = equipmentRepairSpareBean.findByPId(entity.getFormid());
+//                    
+//                        int spareIndexMaxTemp = 0;
+//
+//                        if(eqpRepairSpareList == null || eqpRepairSpareList.size() < 1)
+//                        {
+//                            spareIndexMaxTemp = 1;
+//                        }
+//                        else
+//                        {
+//                            for(int i = 0 ; i < eqpRepairSpareList.size() ; i++)
+//                            {
+//                                if(eqpRepairSpareList.get(i).getSeq() >= spareIndexMaxTemp)
+//                                {
+//                                    spareIndexMaxTemp = eqpRepairSpareList.get(i).getSeq();
+//                                }
+//                            }
+//                            spareIndexMaxTemp = spareIndexMaxTemp + 1;
+//                        }
+//                        filterFields_spareUsed.put("sparenum", jsonObj.getString("spareNum"));
+//                        eqpSpareListTemp = equipmentSpareBean.findByFilters(filterFields_spareUsed);
+//                        if(eqpSpareListTemp.size() >= 0)
+//                        {
+//                            eqpSpareTemp = eqpSpareListTemp.get(0);
+//                        }
+//                        unitTemp = unitBean.findById(jsonObj.getInt("unit"));
+//
+//                        eqpRepairSpareTemp.setCompany(entity.getCompany());
+//                        eqpRepairSpareTemp.setPid(entity.getFormid());
+//                        eqpRepairSpareTemp.setSeq(spareIndexMaxTemp);
+//                        eqpRepairSpareTemp.setSpareno(jsonObj.getString("spareNo"));
+//                        eqpRepairSpareTemp.setSparenum(eqpSpareTemp);
+//                        eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
+//                        eqpRepairSpareTemp.setUprice(jsonObj.getBigDecimal("uPrice"));
+//                        eqpRepairSpareTemp.setUnit(unitTemp);
+//                        eqpRepairSpareTemp.setBrand(jsonObj.getString("brand"));
+//                        eqpRepairSpareTemp.setUserno(jsonObj.getString("userNo"));
+//                        eqpRepairSpareTemp.setUserdate(new Date());
+//                        eqpRepairSpareTemp.setStatus("N");
+//
+//                        equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
+//                    }
+//                }
                 
                 for(Object jobj:repairHelperList_jsonArray)
                 {
@@ -1845,7 +1852,8 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<Object> initDtaRes = new ArrayList<Object>();
             List<EquipmentTrouble> equipmentTroubleListRes = new ArrayList<EquipmentTrouble>();
             List<EquipmentRepairFile> eqpRepairFileListRes = new ArrayList<EquipmentRepairFile>();
-            List<EquipmentRepairSpare> eqpRepairSpareListRes = new ArrayList<EquipmentRepairSpare>();
+            //List<EquipmentRepairSpare> eqpRepairSpareListRes = new ArrayList<EquipmentRepairSpare>();
+            List<EquipmentSpareRecodeDtaResponse> eqpRepairSpareListRes = new ArrayList<EquipmentSpareRecodeDtaResponse>();
             List<EquipmentRepairHelpers> eqpRepairHelpersListRes = new ArrayList<EquipmentRepairHelpers>();
             List<SysCode> hitchUrgencyListRes = new ArrayList<SysCode>();
             EquipmentRepair equipmentRepairRes = new EquipmentRepair();
@@ -1875,7 +1883,8 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 filterFields_eqpFile.put("pid",equipmentRepairRes.getFormid());
                 filterFields_eqpFile.put("filefrom","维修图片");
                 eqpRepairFileListRes = equipmentrepairfileBean.findByFilters(filterFields_eqpFile);
-                eqpRepairSpareListRes = equipmentRepairSpareBean.findByPId(equipmentRepairRes.getFormid());
+                //eqpRepairSpareListRes = equipmentRepairSpareBean.findByPId(equipmentRepairRes.getFormid());
+                eqpRepairSpareListRes = getEqpRepairSpareList(equipmentRepairRes.getFormid());
                 eqpRepairHelpersListRes = equipmentRepairHelpersBean.findByPId(equipmentRepairRes.getFormid());
                 
                 System.out.print(equipmentTroubleListRes);
@@ -1906,7 +1915,8 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<EquipmentTrouble> equipmentTroubleListRes = new ArrayList<EquipmentTrouble>();
             List<SysCode> eqpSysCodeListRes = new ArrayList<SysCode>();
             List<EquipmentRepairFile> eqpRepairFileListRes = new ArrayList<EquipmentRepairFile>();
-            List<EquipmentRepairSpare> eqpRepairSpareListRes = new ArrayList<EquipmentRepairSpare>();
+            //List<EquipmentRepairSpare> eqpRepairSpareListRes = new ArrayList<EquipmentRepairSpare>();
+            List<EquipmentSpareRecodeDtaResponse> eqpRepairSpareListRes = new ArrayList<EquipmentSpareRecodeDtaResponse>();
             EquipmentRepair equipmentRepairRes = new EquipmentRepair();
             EquipmentRepair eqpRepairTemp = new EquipmentRepair();
             this.superEJB = equipmentTroubleBean;
@@ -1955,7 +1965,8 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 filterFields_eqpFile.put("filefrom","维修图片");
                 eqpRepairFileListRes = equipmentrepairfileBean.findByFilters(filterFields_eqpFile);
                 
-                eqpRepairSpareListRes = equipmentRepairSpareBean.findByPId(equipmentRepairRes.getFormid());
+                //eqpRepairSpareListRes = equipmentRepairSpareBean.findByPId(equipmentRepairRes.getFormid());
+                eqpRepairSpareListRes = getEqpRepairSpareList(equipmentRepairRes.getFormid());
                 
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -2178,6 +2189,28 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
+    
+    private List<EquipmentSpareRecodeDtaResponse> getEqpRepairSpareList(String formid) {
+        List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.getEquipmentSpareRecodeDtaListByRepairFormId(formid);
+        //List按照sparenum分组
+        Map<EquipmentSpare, List<EquipmentSpareRecodeDta>> groupBySparenumMap = eqpSpareRecodeDtas.stream().collect(Collectors.groupingBy(EquipmentSpareRecodeDta::getSparenum));
+
+        List<EquipmentSpareRecodeDtaResponse> resList = new ArrayList<>();
+        groupBySparenumMap.forEach((key, value) -> {
+            BigDecimal qtySum = BigDecimal.ZERO;
+            BigDecimal priceSum = BigDecimal.ZERO;
+            for (int i = 0; i < value.size(); i++) {
+                EquipmentSpareRecodeDta dtaTemp = value.get(i);
+                qtySum = qtySum.add(dtaTemp.getCqty());
+                priceSum = priceSum.add(value.get(i).getCqty().multiply(value.get(i).getUprice()));
+            }
+            EquipmentSpareRecodeDtaResponse resTemp = new EquipmentSpareRecodeDtaResponse(key, value, qtySum, priceSum);
+            resList.add(resTemp);
+        });
+
+        return resList;
+    }
+    
     
     public boolean GenerateImage(String imgData, String imgFilePath) throws IOException { // 对字节数组字符串进行Base64解码并生成图片
         if (imgData == null) // 图像数据为空

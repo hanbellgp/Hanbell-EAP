@@ -3182,6 +3182,7 @@ public class TimerBean {
     
     @Schedule(minute = "30", hour = "7-20", persistent = false)
     public void sendEqpRepairmentDelayNotice() {
+        log4j.info("EAM报修单待办企业微信推送轮询开始");
         StringBuffer userIdStrTemp = new StringBuffer("");
         StringBuffer msg = new StringBuffer("您有长时间未处理的报修单!<br/>详情请至微信小程序查看!");
         Map<String, Object> filterFields = new HashMap<>();
@@ -3211,10 +3212,12 @@ public class TimerBean {
             {
                 userIdStrTemp.deleteCharAt(userIdStrTemp.length() - 1);
                 wartaBean.sendMsgString(userIdStrTemp.toString(), msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
+                log4j.info("EAM报修单待办企业微信推送成功");
             }
         }
         catch(Exception ex){
             log4j.error(ex);
         }
+        log4j.info("EAM报修单待办企业微信推送轮询结束");
     }
 }
