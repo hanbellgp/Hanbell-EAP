@@ -28,7 +28,7 @@ public class ProcessCheckBean extends SuperEJBForEFGP<ProcessCheck> {
     public List<ProcessCheck> findByPSN(String serialNumber) {
         StringBuilder sb = new StringBuilder();
         sb.append("Select ProcessInstance.serialNumber, WorkItem.currentState, Users.id ,Users.userName,WorkItem.workItemName,");
-        sb.append("dbo.WorkItem.createdTime, WorkItem.completedTime from ProcessInstance ");
+        sb.append("dbo.WorkItem.createdTime, WorkItem.completedTime ,WorkItem.executiveComment from ProcessInstance ");
         sb.append("inner join WorkItem on WorkItem.contextOID=ProcessInstance.contextOID ");
         sb.append("inner join Users on Users.OID =  WorkItem.performerOID ");
         sb.append("inner join ProcessContext on ProcessContext.OID= ProcessInstance.contextOID ");
@@ -37,8 +37,8 @@ public class ProcessCheckBean extends SuperEJBForEFGP<ProcessCheck> {
         sb.append("inner join ParticipantActivityInstance on ParticipantActivityInstance.contextOID=ProcessInstance.contextOID and WorkItem.containerOID=ParticipantActivityInstance.OID and ParticipantActivityInstance.definitionId=ActivityDefinition.id ");
         sb.append("left join ReassignWorkItemAuditData on ReassignWorkItemAuditData.sourceOID = WorkItem.OID ");
         sb.append("Where ProcessInstance.serialNumber = '").append(serialNumber).append("'");
-        sb.append(" UNION Select ProcessInstance.serialNumber, WorkItem.currentState, Users.id , Users.userName,WorkItem.workItemName,");
-        sb.append("dbo.WorkItem.createdTime, WorkItem.completedTime from ProcessInstance ");
+        sb.append(" UNION ALL Select ProcessInstance.serialNumber, WorkItem.currentState, Users.id , Users.userName,WorkItem.workItemName,");
+        sb.append("dbo.WorkItem.createdTime, WorkItem.completedTime ,WorkItem.executiveComment from ProcessInstance ");
         sb.append("inner join WorkItem on WorkItem.contextOID=ProcessInstance.contextOID ");
         sb.append("inner join Users on Users.OID =  WorkItem.performerOID ");
         sb.append("inner join ProcessContext on ProcessContext.OID= ProcessInstance.contextOID ");
@@ -56,6 +56,7 @@ public class ProcessCheckBean extends SuperEJBForEFGP<ProcessCheck> {
             for (int i = 0; i < result.size(); i++) {
                 Object[] row = (Object[]) result.get(i);
                 newEntity = new ProcessCheck(row[0].toString(), row[2].toString(), row[3].toString(), row[4].toString(), row[5].toString(), row[6].toString(), Integer.parseInt(row[1].toString()));
+                newEntity.setExecutiveComment(row[7].toString());
                 dataList.add(newEntity);
             }
         }
