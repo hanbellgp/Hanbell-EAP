@@ -218,7 +218,12 @@ public class ReportManagedBean extends SuperReportManagedBean {
                 this.reportInitAndConfig();
                 // 生成报表
                 baos = new ByteArrayOutputStream();
-                this.reportRunAndOutput(reportPath + "processcheck.rptdesign", reportParams, null, "pdf", baos);
+                //服务工作支援单打印签核意见
+                if ("HK_FW005".equals(api)) {
+                    this.reportRunAndOutput(reportPath + "processcheck_fw.rptdesign", reportParams, null, "pdf", baos);
+                } else {
+                    this.reportRunAndOutput(reportPath + "processcheck.rptdesign", reportParams, null, "pdf", baos);
+                }
                 pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
                 // 生成合并文件
                 pdfCopy.close();
