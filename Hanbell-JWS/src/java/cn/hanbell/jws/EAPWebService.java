@@ -1461,7 +1461,8 @@ public class EAPWebService {
             }
             ad = new AssetDistribute();
             ad.setCompany(e.getFacno());
-            ad.setFormdate(e.getApplyDate());
+            // ad.setFormdate(e.getApplyDate()); 改为流程结束 C0160 2021/6/22
+            ad.setFormdate(BaseLib.getDate());
             ad.setDeptno(e.getApplyDept());
             dept = departmentBean.findByDeptno(e.getApplyDept());
             if (dept != null) {

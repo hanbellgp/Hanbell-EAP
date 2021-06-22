@@ -166,7 +166,12 @@ public class InvbalBean extends SuperEJBForERP<Invbal> {
 
     public BigDecimal getInvbalQuantity(String facno, String itnbr, List<String> wareh) {
         BigDecimal qty = BigDecimal.ZERO;
-        List<Invbal> invbalList = findByItnbrAndWareh(facno, itnbr, wareh);
+        List<Invbal> invbalList;
+        if (wareh == null || wareh.isEmpty()) {
+            invbalList = findByItnbr(facno, itnbr);
+        } else {
+            invbalList = findByItnbrAndWareh(facno, itnbr, wareh);
+        }
         if (invbalList != null && !invbalList.isEmpty()) {
             for (Invbal e : invbalList) {
                 qty = qty.add(e.getOnhand1().subtract(e.getPreqy1()));
