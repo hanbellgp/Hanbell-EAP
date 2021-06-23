@@ -48,6 +48,8 @@ public class HKJH006ManagedBean extends SuperQueryBean<HKJH006> {
     private String queryDeptno;
     private String queryDept;
     private List<Object[]> list;
+    private String queryCurrentState;
+    private String queryFacno;
 
     @Override
     public void reset() {
@@ -67,7 +69,7 @@ public class HKJH006ManagedBean extends SuperQueryBean<HKJH006> {
     public void query() {
         list = hkjh006Bean.findByCustomerAndApplyDate(BaseLib.formatDate("yyyy-MM-dd HH:mm:ss.000", queryDateBegin),
                 BaseLib.formatDate("yyyy-MM-dd HH:mm:ss.000", queryDateEnd),
-                this.queryCustomerNo, this.queryCustomerName);
+                this.queryCustomerNo, this.queryCustomerName, this.queryCurrentState, this.queryFacno);
     }
 
     @Override
@@ -109,6 +111,7 @@ public class HKJH006ManagedBean extends SuperQueryBean<HKJH006> {
                     Cell cell9 = row.createCell(9);
                     Cell cell10 = row.createCell(10);
                     Cell cell11 = row.createCell(11);
+                    Cell cell12 = row.createCell(12);
                     cell0.setCellStyle(cellStyle);
                     cell1.setCellStyle(cellStyle);
                     cell2.setCellStyle(cellStyle);
@@ -121,6 +124,7 @@ public class HKJH006ManagedBean extends SuperQueryBean<HKJH006> {
                     cell9.setCellStyle(cellStyle);
                     cell10.setCellStyle(cellStyle);
                     cell11.setCellStyle(cellStyle);
+                    cell12.setCellStyle(cellStyle);
                     cell0.setCellValue(o[0] != null ? BaseLib.formatDate("yyyy/MM/dd", (Date) o[0]) : "");
                     cell1.setCellValue(o[1] != null ? (String) o[1] : "");
                     cell2.setCellValue(o[2] != null ? (String) o[2] : "");
@@ -132,6 +136,8 @@ public class HKJH006ManagedBean extends SuperQueryBean<HKJH006> {
                     cell8.setCellValue(o[7] != null ? (String) o[7] : "");
                     cell9.setCellValue(o[8] != null ? String.valueOf(o[8]) : "");
                     cell11.setCellValue(o[9] != null ? (String) o[9] : "");
+                    Integer status = (Integer) o[10];
+                    cell12.setCellValue(getCurrentStateValue(String.valueOf(status)));
                     i++;
                 }
                 FileOutputStream os = null;
@@ -171,13 +177,32 @@ public class HKJH006ManagedBean extends SuperQueryBean<HKJH006> {
     public void init() {
         setSuperEJB(hkjh006Bean);
         this.queryDateEnd = new Date();
+        this.setQueryCurrentState("3");
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.queryDateEnd);
         cal.add(Calendar.YEAR, -1);
         this.queryDateBegin = cal.getTime();
         list = hkjh006Bean.findByCustomerAndApplyDate(BaseLib.formatDate("yyyy-MM-dd HH:mm:ss.000", queryDateBegin),
                 BaseLib.formatDate("yyyy-MM-dd HH:mm:ss.000", queryDateEnd),
-                this.queryCustomerNo, this.queryCustomerName);
+                this.queryCustomerNo, this.queryCustomerName, this.queryCurrentState, this.queryFacno);
+    }
+
+    public String getCurrentStateValue(String currentstate) {
+        switch (currentstate) {
+            case "0":
+                return "未开始";
+            case "1":
+                return "进行中";
+            case "2":
+                return "已暂停";
+            case "3":
+                return "已完成";
+            case "4":
+                return "已撤销";
+            case "5":
+                return "已中止";
+        }
+        return "";
     }
 
     public String getQueryCustomerNo() {
@@ -219,4 +244,21 @@ public class HKJH006ManagedBean extends SuperQueryBean<HKJH006> {
     public void setList(List<Object[]> list) {
         this.list = list;
     }
+
+    public String getQueryCurrentState() {
+        return queryCurrentState;
+    }
+
+    public void setQueryCurrentState(String queryCurrentState) {
+        this.queryCurrentState = queryCurrentState;
+    }
+
+    public String getQueryFacno() {
+        return queryFacno;
+    }
+
+    public void setQueryFacno(String queryFacno) {
+        this.queryFacno = queryFacno;
+    }
+
 }
