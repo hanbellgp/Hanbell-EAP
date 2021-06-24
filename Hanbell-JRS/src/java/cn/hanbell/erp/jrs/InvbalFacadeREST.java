@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.erp.jrs;
 
@@ -83,8 +82,9 @@ public class InvbalFacadeREST extends SuperRESTForERP<Invbal> {
     @POST
     @Path("shipmentschedule/{company}/{shipdate}")
     @Produces({"application/json"})
-    public ResponseMessage updateShipmentScheduleStock(@PathParam("company") PathSegment company, @PathParam("shipdate") PathSegment shipdate, @QueryParam("appid") String appid,
-            @QueryParam("token") String token) {
+    public ResponseMessage updateShipmentScheduleStock(@PathParam("company") PathSegment company,
+        @PathParam("shipdate") PathSegment shipdate, @QueryParam("appid") String appid,
+        @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
                 this.company = company.getPath();
@@ -95,7 +95,8 @@ public class InvbalFacadeREST extends SuperRESTForERP<Invbal> {
                 if (wareh != null && !"".equals(wareh)) {
                     warehList = Arrays.asList(wareh.split(","));
                 }
-                List<ShipmentSchedule> ssList = shipmentScheduleBean.findByCompanyAndFormdate(this.company, formdateBegin, formdateEnd, false);
+                List<ShipmentSchedule> ssList =
+                    shipmentScheduleBean.findByCompanyFormdateAndStatus(this.company, formdateBegin, formdateEnd, "N");
                 if (ssList != null && !ssList.isEmpty()) {
                     invbalBean.setCompany(this.company);
                     for (ShipmentSchedule ss : ssList) {
