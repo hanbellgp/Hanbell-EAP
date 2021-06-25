@@ -29,13 +29,14 @@ public class HKJH006Bean extends SuperEJBForEFGP<HKJH006> {
         super(HKJH006.class);
     }
 
-    public List<Object[]> findByCustomerAndApplyDate(String queryDateBegin, String queryDateEnd, String customerid, String customername) {
+    public List<Object[]> findByCustomerAndApplyDate(String queryDateBegin, String queryDateEnd, String customerid, String customername, String currentState, String facno) {
         try {
-            StringBuffer sql = new StringBuffer("SELECT a.applyDate,a.customerno,a.customername,d.id,d.organizationUnitName,a.discountrate,a.period,a.number,a.amount,explanation");
+            StringBuffer sql = new StringBuffer("SELECT a.applyDate,a.customerno,a.customername,d.id,d.organizationUnitName,a.discountrate,a.period,a.number,a.amount,explanation,e.currentState");
             sql.append(" FROM HK_JH006 a");
             sql.append(" left join Users b on a.principal = b.id");
             sql.append(" left join Functions c on b.OID=c.occupantOID");
             sql.append(" left join  OrganizationUnit d on d.OID=c.organizationUnitOID");
+            sql.append(" left join  ProcessInstance e on e.serialNumber=a.processSerialNumber");
             sql.append(" where c.isMain=1 ");
             sql.append(" and a.applyDate>='").append(queryDateBegin).append("'");
             sql.append(" and a.applyDate<='").append(queryDateEnd).append("'");
@@ -44,6 +45,12 @@ public class HKJH006Bean extends SuperEJBForEFGP<HKJH006> {
             }
             if (customername != null && !"".equals(customername)) {
                 sql.append(" and customername like N'%").append(customername).append("%'");
+            }
+            if (currentState != null && !"".equals(currentState)) {
+                sql.append(" and e.currentState = '").append(currentState).append("'");
+            }
+            if (facno != null && !"".equals(facno)) {
+                sql.append(" and a.facno = '").append(facno).append("'");
             }
             Query q = getEntityManager().createNativeQuery(sql.toString());
             List<Object[]> list = q.getResultList();

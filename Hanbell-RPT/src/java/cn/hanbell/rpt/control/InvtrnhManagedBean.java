@@ -14,6 +14,7 @@ import cn.hanbell.erp.ejb.InvtrnBean;
 import cn.hanbell.erp.ejb.InvtrnhBean;
 import cn.hanbell.erp.ejb.MiscodeBean;
 import cn.hanbell.erp.ejb.MisdeptBean;
+import cn.hanbell.erp.ejb.PurvdrBean;
 import cn.hanbell.erp.entity.Cdrcus;
 import cn.hanbell.erp.entity.Invhad;
 import cn.hanbell.erp.entity.Invhdsc;
@@ -21,6 +22,7 @@ import cn.hanbell.erp.entity.Invsys;
 import cn.hanbell.erp.entity.Invtrnh;
 import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.erp.entity.Misdept;
+import cn.hanbell.erp.entity.Purvdr;
 import cn.hanbell.rpt.lazy.InvtrnhModel;
 import cn.hanbell.rpt.web.SuperQueryBean;
 import com.lightshell.comm.BaseLib;
@@ -64,6 +66,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
     private InvhdscBean invhdscBean;
     @EJB
     private CdrcusBean cdrcusBean;
+    @EJB
+    private PurvdrBean purvdrBean;
     @EJB
     private InvsysBean invsysBean;
     @EJB
@@ -122,6 +126,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         invtrnBean.setCompany("C");
         invclsBean.setCompany("C");
         invhadBean.setCompany("C");
+        purvdrBean.setCompany("C");
     }
 
     @Override
@@ -137,6 +142,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
             invtrnBean.setCompany(queryfacno);
             invclsBean.setCompany(queryfacno);
             invhadBean.setCompany(queryfacno);
+            purvdrBean.setCompany(queryfacno);
             Invsys invsys = invsysBean.findByFacno(queryfacno);
             Date monDate = BaseLib.getDate("yyyyMM", invsys.getLmonth());
             Calendar c = Calendar.getInstance();
@@ -248,12 +254,23 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     cell4.setCellValue(h[2] != null ? (String) h[2] : "");
                     cell5.setCellValue(h[3] != null ? (String) h[3] : "");
                     cell6.setCellValue(h[4] != null ? (String) h[4] : "");
-                    Misdept m = misdeptBean.findByDepno((String) h[4]);
-                    if (m == null) {
+                    //部门代号
+                    if ("GE".equals((String) h[24])) {
+                        Misdept m = misdeptBean.findByDepno((String) h[4]);
+
+                        cell7.setCellValue(m != null ? m.getDepname() : "");
+
+                    } else if ("PJ".equals((String) h[24])) {
+                        //厂商代号
+                        Purvdr purvdr = purvdrBean.findByVdrno((String) h[4]);
+
+                        cell7.setCellValue(purvdr != null ? purvdr.getVdrna() : "");
+
+                    } else if ("CA".equals((String) h[24])) {
+                        //客户代号
                         Cdrcus cdrcus = cdrcusBean.findByCusno((String) h[4]);
                         cell7.setCellValue(cdrcus != null ? cdrcus.getCusna() : "");
-                    } else {
-                        cell7.setCellValue(m != null ? m.getDepname() : "");
+
                     }
                     cell8.setCellValue(h[5] != null ? (String) h[5] : "");
                     cell9.setCellValue(String.valueOf((int) h[7]));
@@ -302,7 +319,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                         Miscode project = miscodeBean.findByPK("91", h[23] != null ? String.valueOf(h[23]) : "");
                         if (project != null) {
                             cell25.setCellValue(h[23] != null ? String.valueOf(h[23]) : "");
-                            cell26.setCellValue(project != null&&h[23] != null ? project.getCdesc() : "");
+                            cell26.setCellValue(project != null && h[23] != null ? project.getCdesc() : "");
                         }
                     }
                     i++;
