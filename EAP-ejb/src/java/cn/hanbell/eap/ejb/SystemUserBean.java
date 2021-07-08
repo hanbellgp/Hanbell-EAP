@@ -47,6 +47,9 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             }
             if(entity.getJob()!=null &&!"".equals(entity.getJob())&&isUpdateAlias(entity.getJob())){
                 job.add("alias",entity.getJob());
+            }else{
+                //之前为行政级别，后期修改为专业级别。需把之前的行政级别修改掉
+                job.add("alias","");
             }
             // 职位暂时不更新sda
             // if (entity.getPosition() != null & !"".equals(entity.getPosition())) {
