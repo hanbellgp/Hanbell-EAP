@@ -8,6 +8,7 @@ package cn.hanbell.oa.ejb;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.WorkAssignment;
 import cn.hanbell.oa.entity.WorkItem;
+import cn.hanbell.util.BaseLib;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -87,22 +88,25 @@ public class WorkItemBean extends SuperEJBForEFGP<WorkItem> {
         }
     }
 
-    public List<String> findProcessNumbersByBetweenWorkItem1AndWorkItem2(String workItem1, String workItem2) {
-        StringBuffer sql = new StringBuffer("SELECT w.contextOID,p.serialNumber FROM WorkItem w  left join ProcessInstance p  on w.contextOID=p.contextOID where p.processDefinitionId='PKG_HK_FW005' and w.workItemName=N'");
-        sql.append(workItem1).append("' and completedTime is not null intersect (SELECT w.contextOID,p.serialNumber FROM WorkItem w  left join ProcessInstance p  on w.contextOID=p.contextOID where p.processDefinitionId='PKG_HK_FW005' and w.workItemName=N'");
-        sql.append(workItem2).append("' and completedTime is NULL)");
+    public List<String> findProcessNumbersByWorkItemName(String processDefinition,String workItemName, Date beginDate,Date endDate) {
+        StringBuffer sql = new StringBuffer("select p.serialNumber");
+        sql.append(" from (select contextOID from WorkItem where workItemName in (").append(workItemName).append(")");
+        if(beginDate!=null && !"".equals(beginDate)){
+            sql.append(" and createdTime>='").append(BaseLib.formatDate("yyyy-MM-dd 00:00:00", beginDate)).append("'");
+        }
+        if(endDate!=null && !"".equals(endDate)){
+             sql.append(" and createdTime<='").append(BaseLib.formatDate("yyyy-MM-dd 23:59:59", endDate)).append("'");
+        }
+        sql.append(" and completedTime is null) a");
+        sql.append(" left join ProcessInstance p on p.contextOID=a.contextOID");
+        sql.append("  where p.processDefinitionId='").append(processDefinition).append("'");
         Query query = getEntityManager().createNativeQuery(sql.toString());
         try {
-            List<Object[]> result = query.getResultList();
-            List<String> numbers = new ArrayList<>();
-            for (Object[] o : result) {
-                numbers.add((String) o[1]);
-            }
-            return numbers;
+            List<String> result = query.getResultList();
+            return result;
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public List<WorkItem> findWorkItem(String processId, String workItemName, Date startTime, Date endTime) {
@@ -113,6 +117,9 @@ public class WorkItemBean extends SuperEJBForEFGP<WorkItem> {
         query.setParameter("endTime", endTime);
         return query.getResultList();
     }
+    
+
+
 
     public String getAssigneeOID(String workItemOID) {
         return workAssignmentBean.getAssigneeOID(workItemOID);
