@@ -1941,7 +1941,7 @@ public class TimerBean {
         if (transactionList != null && !transactionList.isEmpty()) {
             for (IntercompanyTransactions interTrans : transactionList) {
                 if (interTrans.getContacter() != null && !"".equals(interTrans.getContacter()) && interTrans.getKind() != null && !"".equals(interTrans.getKind())) {
-                    this.createERPCDR310ByERPPUR410(interTrans.getCompany(), interTrans.getCustomerno(), interTrans.getPricingType(), interTrans.getSalesman(), interTrans.getContacter(), interTrans.getPurchasingCompany(), interTrans.getVendorno(), interTrans.getBeginDate(), interTrans.getKind());
+                    this.createERPCDR310ByERPPUR410(interTrans.getCompany(), interTrans.getCustomerno(), interTrans.getPricingType(), interTrans.getSalesman(), interTrans.getContacter(), interTrans.getPurchasingCompany(), interTrans.getVendorno(), interTrans.getBeginDate(), interTrans.getKind(), interTrans.getIsTaxChange());
                 } else {
                     this.createERPCDR310ByERPPUR410(interTrans.getCompany(), interTrans.getCustomerno(), interTrans.getPricingType(), interTrans.getPurchasingCompany(), interTrans.getVendorno(), interTrans.getBeginDate());
                 }
@@ -2183,7 +2183,7 @@ public class TimerBean {
     }
 
     private void createERPCDR310ByERPPUR410(String cc, String cusno, String pricingtype, String cusman, String userno, String pc, String vdrno,
-            String beginDate, String type) {
+            String beginDate, String type, String isTaxChange) {
         Date d;
         try {
             d = BaseLib.getDate("yyyyMMdd", beginDate);
@@ -2247,6 +2247,7 @@ public class TimerBean {
                     throw new RuntimeException(cc + "公司ERP中输入人员对应员工资料不存在或不完整");
                 }
                 String pono = "", judco;
+                Character lc_tax;
                 BigDecimal tramts = BigDecimal.ZERO;
                 BigDecimal taxamts = BigDecimal.ZERO;
                 BigDecimal totamts = BigDecimal.ZERO;
@@ -2260,6 +2261,7 @@ public class TimerBean {
                 for (Purhad ph : purhadList) {
                     pono = ph.getPurhadPK().getPono();
                     seq = 0;
+                    lc_tax = ph.getTax();
                     List<Purdta> purdtaList = purhadBean.getDetailList(ph.getPurhadPK().getPono());
                     if (purdtaList == null || purdtaList.isEmpty()) {
                         continue;
@@ -2289,10 +2291,18 @@ public class TimerBean {
                             cd.setCdrqy1(pd.getPoqy1());// 需要处理单位换算问题
                             cd.setCdrqy2(pd.getPoqy2());
                             cd.setArmqy(pd.getApmqy());
-                            cd.setUnpris(pd.getUnpris());
+                            //解决集团内部采购-订单税别问题
+                            if (lc_tax == '1' && isTaxChange != null && isTaxChange.equals("Y")) {
+                                cd.setUnpris(pd.getUnpris().multiply(BigDecimal.ONE.add(ph.getTaxrate())));
+                                cd.setUnpris(cd.getUnpris().setScale(2, BigDecimal.ROUND_HALF_UP));
+                                cd.setTramts(cd.getCdrqy1().multiply(cd.getUnpris()));
+                                cd.setTramts(cd.getTramts().setScale(2, BigDecimal.ROUND_HALF_UP));
+                            } else {
+                                cd.setUnpris(pd.getUnpris());
+                                cd.setTramts(pd.getTramts());
+                            }
                             cd.setOutdate(pd.getAskdate());
                             cd.setCdrdate(pd.getAskdate());
-                            cd.setTramts(pd.getTramts());
                             cd.setDrecsta("10");
                             cd.setUnprisrccode('1');
                             addedCdrdmas.add(cd);
@@ -2359,6 +2369,9 @@ public class TimerBean {
                         // 计算表头金额税额
                         switch (ph.getTax()) {
                             case '1':
+                                if (isTaxChange != null && isTaxChange.equals("Y")) {
+                                    ch.setTax('4');
+                                }
                                 ch.setTramts(tramts);
                                 ch.setTaxamts(tramts.multiply(ch.getTaxrate()));
                                 ch.setTotamts(ch.getTramts().add(ch.getTaxamts()));
