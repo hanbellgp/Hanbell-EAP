@@ -2275,11 +2275,12 @@ public class TimerBean {
                                         .append(pd.getItnbr()).append("品号不存在").append("</div>");
                                 // continue;
                                 // 没有品号还是抛转，避免自动产生出货信息序号对应错位 C0160 2021/6/17
-                            }
-                            judco = item.getJudco().substring(1, 2) + item.getJudco().substring(4);
-                            if (!judco.equals(pd.getJudco())) {
-                                errorBuilder.append("createERPCDR310ByERPPUR410遇到错误：").append(pd.getItnbr()).append("品号单位设置不一致").append("<br/>");
-                                continue;
+                            } else {
+                                judco = item.getJudco().substring(1, 2) + item.getJudco().substring(4);
+                                if (!judco.equals(pd.getJudco())) {
+                                    errorBuilder.append("createERPCDR310ByERPPUR410遇到错误：").append(pd.getItnbr()).append("品号单位设置不一致").append("<br/>");
+                                    continue;
+                                }
                             }
                             seq++;
                             cd = new Cdrdmas(cc, "", seq);
