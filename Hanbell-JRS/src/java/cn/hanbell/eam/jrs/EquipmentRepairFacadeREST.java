@@ -192,7 +192,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 //                equipInvenTemp.setFormdate(date);
 //                equipInvenTemp.setDmark(entity.getDmark());
 
-                if("2".equals(entity.getRepairmethodtype()))
+                if("2".equals(entity.getRepairmethodtype()) && (entity.getServiceuser() == null || entity.getServiceuser().equals("")))
                 {
                     equipInvenTemp.setServiceuser(entity.getRepairuser());
                     equipInvenTemp.setServiceusername(entity.getRepairusername());
@@ -1812,10 +1812,24 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<SysCode> repairReasonListRes = new ArrayList<SysCode>();
             List<SysCode> hitchUrgencyListRes = new ArrayList<SysCode>();
             List<SysCode> repairAreaListRes = new ArrayList<SysCode>();
+            List<SysCode> autonoRepairUserListRes = new ArrayList<>();
             this.superEJB = systemUserBean;
             try {
                 Map<String, Object> filterFields = new HashMap<>();
                 Map<String, String> sortFields = new LinkedHashMap<>();
+                //获取自主维修的班组长信息
+                MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
+                if (filtersMM != null) {
+                    String userDeptNo = filtersMM.getFirst("deptno");
+                    if(userDeptNo != null && userDeptNo != ""){
+                        if(userDeptNo.contains("1P1")){
+                            autonoRepairUserListRes = sysCodeBean.getTroubleNameList("RD", "FX_RepairUser");
+                        }
+                        else if(userDeptNo.contains("1P5")){
+                            autonoRepairUserListRes = sysCodeBean.getTroubleNameList("RD", "YX_RepairUser");
+                        }
+                    }
+                }
                 String deptno =sysCodeBean.findBySyskindAndCode("RD", "repairDeptno").getCvalue();
                 repairReasonListRes = sysCodeBean.getTroubleNameList("RD", "faultType");
                 hitchUrgencyListRes = sysCodeBean.getTroubleNameList("RD","hitchurgency");
@@ -1836,6 +1850,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             initDtaRes.add(hitchUrgencyListRes);
             initDtaRes.add(repairAreaListRes);
             initDtaRes.add(new Date());
+            initDtaRes.add(autonoRepairUserListRes);
             
            return initDtaRes;
         } else {
