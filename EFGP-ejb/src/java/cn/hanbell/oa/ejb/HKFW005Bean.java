@@ -39,7 +39,7 @@ public class HKFW005Bean extends SuperEJBForEFGP<HKFW005> {
     }
 
     //更新CRM-REPTC货运单号
-    public Boolean updateReptdByOAHKFW005(String psn) {
+    public Boolean dadas(String psn) {
         try {
             HKFW005 h = this.findByPSN(psn);
             if (h == null) {
