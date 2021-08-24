@@ -5,11 +5,13 @@
  */
 package cn.hanbell.eam.jrs;
 
+import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.ejb.EquipmentSpareBean;
 import cn.hanbell.eam.ejb.EquipmentSpareRecodeBean;
 import cn.hanbell.eam.ejb.EquipmentSpareRecodeDtaBean;
 import cn.hanbell.eam.ejb.EquipmentSpareStockBean;
 import cn.hanbell.eam.ejb.SysCodeBean;
+import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eam.entity.EquipmentSpare;
 import cn.hanbell.eam.entity.EquipmentSpareRecode;
 import cn.hanbell.eam.entity.EquipmentSpareRecodeDta;
@@ -60,6 +62,9 @@ import org.json.JSONObject;
 @Stateless
 @Path("shbeam/sparemanagement")
 public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
+    @EJB
+    private EquipmentRepairBean equipmentRepairBean;
+    
     @EJB
     private EquipmentSpareBean equipmentSpareBean;
     
@@ -215,7 +220,7 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
     }
     
     private List<EquipmentSpareRecodeDtaResponse> getEqpRepairRetreatSpareList(String formid, String spareInfo) {
-        List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.getRetreatSpareListByNativeQuery(formid,spareInfo);
+        List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.getRetreatSpareListByRepairFormId(formid,spareInfo);
         //List按照sparenum分组
         Map<EquipmentSpare, List<EquipmentSpareRecodeDta>> groupBySparenumMap = eqpSpareRecodeDtas.stream().collect(Collectors.groupingBy(EquipmentSpareRecodeDta::getSparenum));
 
@@ -308,11 +313,39 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                 EquipmentSpareRecode equipmentSpareRecodeTemp = new EquipmentSpareRecode();
                 equipmentSpareRecodeTemp.setFormid(formid);
                 equipmentSpareRecodeTemp.setCompany(entity.getCompany());
+                equipmentSpareRecodeTemp.setDeptno(entity.getDeptno());
+                equipmentSpareRecodeTemp.setDeptname(entity.getDeptname());
                 equipmentSpareRecodeTemp.setFormdate(currentDate);
                 equipmentSpareRecodeTemp.setWarehouseno(entity.getWarehouseno());
                 equipmentSpareRecodeTemp.setSarea(entity.getSarea());
                 equipmentSpareRecodeTemp.setSlocation(entity.getSlocation());
-                String acceptTypeTemp = entity.getRelano() == null ? "20" : "25";
+                String acceptTypeTemp = "";
+                //判断报修单是否已经存在出库单,每个报修单只能出库一次
+                if(entity.getRelano() == null || entity.getRelano().trim().equals("")){
+                    acceptTypeTemp = "20";
+                }
+                else{
+                    acceptTypeTemp = "25";
+                    List<EquipmentRepair> eqpRepairCheckList = new ArrayList<>();
+                    String repairFormIdTemp = entity.getRelano();
+                    //判断报修单是否存在
+                    eqpRepairCheckList = equipmentRepairBean.findByFormid(repairFormIdTemp);
+                    if (eqpRepairCheckList.size() > 0 && (!eqpRepairCheckList.get(0).getRstatus().equals("98"))) {
+                        List<EquipmentSpareRecode> spareRecodeCheckList = new ArrayList<>();
+                        Map<String, Object> filterFields = new HashMap<>();
+                        Map<String, String> sortFields = new LinkedHashMap<>();
+                        filterFields.put("relano", repairFormIdTemp);
+                        filterFields.put("ExistForm", "ExistForm");
+                        spareRecodeCheckList = equipmentSpareRecodeBean.getEquipmentRepairListByNativeQuery(filterFields, sortFields);
+                        if (spareRecodeCheckList.size() > 0) {
+                            String errorMsg = "已存在出库单:".concat(spareRecodeCheckList.get(0).getFormid()).concat(",请确认!");
+                            return new ResponseMessage("301", errorMsg);
+                        }
+                    } else {
+                        String errorMsg = "报修单:".concat(repairFormIdTemp).concat("不存在或已作废!");
+                        return new ResponseMessage("302", errorMsg);
+                    }
+                }
                 equipmentSpareRecodeTemp.setAccepttype(acceptTypeTemp);
                 equipmentSpareRecodeTemp.setRelano(entity.getRelano());
                 equipmentSpareRecodeTemp.setRemark(entity.getRemark());
@@ -413,7 +446,8 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                     equipmentSpareRecodeTemp.setWarehouseno(entity.getWarehouseno());
                     String acceptTypeTemp = entity.getRelano() == null ? "30" : "35";
                     equipmentSpareRecodeTemp.setAccepttype(acceptTypeTemp);
-                    equipmentSpareRecodeTemp.setRelano(entity.getRelano());
+                    //Mod By C2090:退库单关联单号改为出库单
+                    equipmentSpareRecodeTemp.setRelano(key);
                     equipmentSpareRecodeTemp.setDeptno(entity.getDeptno());
                     equipmentSpareRecodeTemp.setDeptname(entity.getDeptname());
                     equipmentSpareRecodeTemp.setRemark(entity.getRemark());
@@ -502,7 +536,16 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
         Date currentDate = new Date();
         List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = new ArrayList<>();
         List<EquipmentSpareStock> eqpSpareStocks = new ArrayList<>();
+        List<EquipmentRepair> eqpRepairs = new ArrayList<>();
+        BigDecimal priceSum = BigDecimal.ZERO; 
         EquipmentSpareRecode eqpEquipmentSpareRecode = equipmentSpareRecodeBean.findById(entity.getId());
+        if(eqpEquipmentSpareRecode == null){
+            return new ResponseMessage("303", "出库单资料异常,请联系管理员!");
+        }
+        String eqpRepairFormId = eqpEquipmentSpareRecode.getRelano();
+        if(eqpRepairFormId != null && eqpRepairFormId != ""){
+            eqpRepairs = equipmentRepairBean.findByFormid(eqpRepairFormId);
+        }
         eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.findByPId(eqpEquipmentSpareRecode.getFormid());
         for (EquipmentSpareRecodeDta eSpareRecodeDta : eqpSpareRecodeDtas) {
             EquipmentSpareStock eSpareStock = equipmentSpareStockBean.findBySparenumAndRemark(eSpareRecodeDta.getSparenum().getSparenum(), eSpareRecodeDta.getRemark());
@@ -518,6 +561,7 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
             eSpareRecodeDta.setOptdate(currentDate);
             eSpareRecodeDta.setOptuser(entity.getCfmuser());
             equipmentSpareRecodeDtaBean.getEntityManager().clear();
+            priceSum = priceSum.add(eSpareRecodeDta.getCqty().multiply(eSpareRecodeDta.getUprice()));
         }
         eqpEquipmentSpareRecode.setCfmuser(entity.getCfmuser());
         eqpEquipmentSpareRecode.setCfmdate(currentDate);
@@ -525,6 +569,11 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
         equipmentSpareStockBean.update(eqpSpareStocks);
         equipmentSpareRecodeDtaBean.update(eqpSpareRecodeDtas);//更新对应字表状态
         equipmentSpareRecodeBean.update(eqpEquipmentSpareRecode);
+        //若关联报修单,则更新报修单的备件费用
+        if(eqpRepairs.size() > 0){
+            eqpRepairs.get(0).setSparecost(priceSum);
+            equipmentRepairBean.update(eqpRepairs.get(0));
+        }
         return new ResponseMessage("200", "出库核准完成!");
     }
     
@@ -567,7 +616,25 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
         Date currentDate = new Date();
         List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = new ArrayList<>();
         List<EquipmentSpareStock> eqpSpareStocks = new ArrayList<>();
+        List<EquipmentSpareRecode> eqpSpareRelaList = new ArrayList<>();
+        List<EquipmentRepair> eqpRepairs = new ArrayList<>();
+        BigDecimal priceSum = BigDecimal.ZERO; 
         EquipmentSpareRecode eqpEquipmentSpareRecode = equipmentSpareRecodeBean.findById(entity.getId());
+        if(eqpEquipmentSpareRecode == null){
+            return new ResponseMessage("303", "退库单资料异常,请联系管理员!");
+        }
+        String spareRelaFormId = eqpEquipmentSpareRecode.getRelano();
+        eqpSpareRelaList = equipmentSpareRecodeBean.findByFormid(spareRelaFormId);
+        if (eqpSpareRelaList.size() > 0) {
+            String eqpRepairFormId = eqpSpareRelaList.get(0).getRelano();
+            if (eqpRepairFormId != null && eqpRepairFormId != "") {
+                eqpRepairs = equipmentRepairBean.findByFormid(eqpRepairFormId);
+            }
+        }
+        else{
+            return new ResponseMessage("304", "关联出库单资料异常,请联系管理员!");
+        }
+        
         eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.findByPId(eqpEquipmentSpareRecode.getFormid());
         for (EquipmentSpareRecodeDta eSpareRecodeDta : eqpSpareRecodeDtas) {
             EquipmentSpareStock eSpareStock = equipmentSpareStockBean.findBySparenumAndRemark(eSpareRecodeDta.getSparenum().getSparenum(), eSpareRecodeDta.getRemark());
@@ -590,6 +657,18 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
         equipmentSpareStockBean.update(eqpSpareStocks);
         equipmentSpareRecodeDtaBean.update(eqpSpareRecodeDtas);//更新对应字表状态
         equipmentSpareRecodeBean.update(eqpEquipmentSpareRecode);
+        //若关联报修单,则更新报修单的备件费用
+        if (eqpRepairs.size() > 0) {
+            equipmentSpareRecodeDtaBean.getEntityManager().flush();
+            equipmentSpareRecodeDtaBean.getEntityManager().clear ();
+            List<EquipmentSpareRecodeDta> eqpRepairSpareRecodeDtas = new ArrayList<>();
+            eqpRepairSpareRecodeDtas = equipmentSpareRecodeDtaBean.getEquipmentSpareRecodeDtaListByRepairFormId(eqpRepairs.get(0).getFormid());
+            for (EquipmentSpareRecodeDta rSpareRecodeDta : eqpRepairSpareRecodeDtas) {
+                priceSum = priceSum.add(rSpareRecodeDta.getCqty().multiply(rSpareRecodeDta.getUprice()));
+            }
+            eqpRepairs.get(0).setSparecost(priceSum);
+            equipmentRepairBean.update(eqpRepairs.get(0));
+        }
         return new ResponseMessage("200", "退库核准完成!");
     }
     
