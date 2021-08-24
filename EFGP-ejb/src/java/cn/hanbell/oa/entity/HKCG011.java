@@ -103,9 +103,6 @@ public class HKCG011 implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
     @Size(max = 255)
-    @Column(name = "product")
-    private String product;
-    @Size(max = 255)
     @Column(name = "suggestion")
     private String suggestion;
     @Size(max = 255)
@@ -317,14 +314,6 @@ public class HKCG011 implements Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
     }
 
     public String getSuggestion() {
