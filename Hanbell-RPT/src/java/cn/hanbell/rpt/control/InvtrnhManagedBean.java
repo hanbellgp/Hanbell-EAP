@@ -308,9 +308,10 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                         if (invdsc.getMark4() != null && !"".equals(invdsc.getMark4())) {
                             invdscBuffer.append(invdsc.getMark4()).append(";");
                         }
-                        invdscBuffer.append(";;");
-                        cell22.setCellValue(invdscBuffer.toString());
                     }
+
+                    invdscBuffer.append(";;");
+                    cell22.setCellValue(invdscBuffer.toString());
                     Miscode miscode = miscodeBean.findByPK((String) h[20], (String) h[21]);
                     cell23.setCellValue(h[20] != null ? (String) (h[20]) : "");
                     cell24.setCellValue(miscode != null ? miscode.getCusds() : "");

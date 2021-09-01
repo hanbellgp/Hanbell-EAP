@@ -90,10 +90,14 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                     }
                     d = new HKGL034DetailModel();
                     d.setSeq(oad.getSeq());
-                    d.setDept_txt(workFlowBean.getUserFunction().getOrganizationUnit().getId());
-                    d.setDept_lbl(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
-                    d.setEmployee(workFlowBean.getCurrentUser().getId());
-                    d.setEmployeeName(workFlowBean.getCurrentUser().getUserName());
+//                    d.setDept_txt(workFlowBean.getUserFunction().getOrganizationUnit().getId());
+//                    d.setDept_lbl(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
+//                    d.setEmployee(workFlowBean.getCurrentUser().getId());
+//                    d.setEmployeeName(workFlowBean.getCurrentUser().getUserName());
+                    d.setDept_txt(oad.getDeptName().split("-")[1]);
+                    d.setDept_lbl(oad.getDeptId());
+                    d.setEmployee(oad.getEmployeeId());
+                    d.setEmployeeName(oad.getEmployeeName().split("-")[1]);
                     Pattern p = Pattern.compile("\\s*|\t|\r|\n");
                     Matcher matcher = p.matcher(oad.getContent());
                     String finishedReplaceStr = matcher.replaceAll("");
@@ -125,13 +129,14 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                     return new ResponseMessage("200", "Code=200");
                 }
             } catch (Exception ex) {
-                return new ResponseMessage("500", "系统错误更新失败");
+              ex.printStackTrace();
+              
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
+    return null;
     }
-
     @POST
     @Path("create")
     @Consumes({"application/json"})
@@ -170,10 +175,10 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                     seq++;
                     d = new HKGL034DetailModel();
                     d.setSeq(String.valueOf(seq));
-                    d.setDept_txt(workFlowBean.getUserFunction().getOrganizationUnit().getId());
-                    d.setDept_lbl(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
-                    d.setEmployee(workFlowBean.getCurrentUser().getId());
-                    d.setEmployeeName(workFlowBean.getCurrentUser().getUserName());
+                    d.setDept_txt(oad.getDeptName().split("-")[1]);
+                    d.setDept_lbl(oad.getDeptId());
+                    d.setEmployee(oad.getEmployeeId());
+                    d.setEmployeeName(oad.getEmployeeName().split("-")[1]);
                     d.setContent(oad.getNote());
                     d.setDate1_txt(oad.getDate());
                     d.setTime1_txt(oad.getStarttime());
@@ -202,11 +207,12 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                     return new ResponseMessage("200", "Code=200");
                 }
             } catch (Exception ex) {
-                return new ResponseMessage("500", "系统错误更新失败");
+               ex.printStackTrace();
+               return null;
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-
+    
 }
