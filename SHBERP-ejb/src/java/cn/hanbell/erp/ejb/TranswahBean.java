@@ -34,4 +34,15 @@ public class TranswahBean extends SuperEJBForERP<Transwah> {
         }
     }
 
+    public Transwah findByCusnoAndTrseq(String cusno, short trseq) {
+        Query query = getEntityManager().createNamedQuery("Transwah.findByCusnoAndTrseq");
+        query.setParameter("cusno", cusno);
+        query.setParameter("trseq", trseq);
+        try {
+            return (Transwah) query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
 }
