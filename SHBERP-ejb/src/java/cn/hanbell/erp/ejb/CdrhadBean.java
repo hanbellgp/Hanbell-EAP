@@ -5,6 +5,9 @@
  */
 package cn.hanbell.erp.ejb;
 
+import cn.hanbell.eap.comm.MailNotify;
+import cn.hanbell.eap.ejb.MailNotificationBean;
+import cn.hanbell.eap.ejb.MailSettingBean;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Cdrdmas;
 import cn.hanbell.erp.entity.Cdrdta;
@@ -61,6 +64,10 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
     private HKYX013DetailBean hkyxDetail013Bean;
     @EJB
     private HKFW005Bean hkfw005Bean;
+    @EJB
+    private MailSettingBean mailSettingBean;
+    @EJB
+    private MailNotificationBean mailBean;
 
     private List<Cdrdta> detailList;
 
@@ -190,157 +197,222 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
         String cdrno, facno;
         String ls_shpno;
         String ls_moveno;
+        String retshpno = "";
         Date shpdate;
         BigDecimal ldc_shpamts = BigDecimal.ZERO;
         BigDecimal ldc_taxamts = BigDecimal.ZERO;
         BigDecimal ldc_totamts = BigDecimal.ZERO;
+        List<String> pzcdrnos;
         List<Cdrdta> cdtaList;
-        HKFW005 f = hkfw005Bean.findByPSN(psn);
-        if (null == f) {
-            throw new NullPointerException("找不到对应的OA服务工作支援单流程");
-        }
-        if (f.getType().equals("1")) {
-            cdrno = f.getOrderno();
-            facno = f.getFacno();
-            if (cdrno.isEmpty()) {
-                return true;
+        List<Cdrdmas> cdmasList;
+        try {
+            HKFW005 f = hkfw005Bean.findByPSN(psn);
+            if (null == f) {
+                throw new NullPointerException("找不到对应的OA服务工作支援单流程");
             }
-            cdrhmasBean.setCompany(facno);
-            Cdrhmas chmas = cdrhmasBean.findById(cdrno);
-            if (null == chmas) {
-                throw new NullPointerException("找不到对应的订单");
-            }
-            Cdrhad chad;
-            cdtaList = new ArrayList<>();
-            shpdate = BaseLib.getDate();
-            Character decode = chmas.getDecode();  //国内
-            ls_shpno = cdrsysBean.getSerialNumber(facno, "", "", shpdate, decode, Boolean.TRUE, "CDR645");
-
-            List<HKFW005Detail> fd = hkfw005Bean.getDetailList(f.getFormSerialNumber());
-            if (fd.size() > 0) {
-                short seq = 1;
-                for (HKFW005Detail d : fd) {
-                    if (cdrno.equals(d.getCdrno())) {
-                        Cdrdmas cdmas = cdrdmasBean.findByFacnoAndCdrnoAndItnbrAndTrseq(facno, cdrno, d.getItnbr(), Integer.parseInt(d.getTrseq()));
-                        Cdrdta cdta = new Cdrdta(facno, ls_shpno, seq);
-                        cdta.setCdrno(cdrno);
-                        cdta.setCtrseq(Short.valueOf(d.getTrseq()));
-                        cdta.setItnbr(d.getItnbr());
-                        Invmas m = invmasBean.findByItnbr(d.getItnbr());
-                        if (m == null) {
-                            throw new RuntimeException(d.getItnbr() + "件号未找到！");
+            if (f.getType().equals("1")) {
+                cdrno = f.getOrderno();
+                facno = f.getFacno();
+                if (cdrno.isEmpty()) {
+                    return true;
+                }
+                cdrhmasBean.setCompany(facno);
+                pzcdrnos = new ArrayList<String>();
+                List<HKFW005Detail> fd = hkfw005Bean.getDetailList(f.getFormSerialNumber());
+                if (fd.size() > 0) {
+                    for (HKFW005Detail d : fd) {
+                        cdrno = d.getCdrno();
+                        if (!pzcdrnos.contains(cdrno)) {
+                            if (null == cdrhmasBean.findById(cdrno)) {
+                                throw new NullPointerException("找不到对应的订单");
+                            }
+                            pzcdrnos.add(d.getCdrno());
                         }
-                        cdta.setItdsc(m.getItdsc());
-                        cdta.setSpdsc(m.getSpdsc());
-                        cdta.setItnbrcus(d.getModel());
-                        cdta.setProno("1");
-                        cdta.setShpqy1(BigDecimal.valueOf(Double.parseDouble(d.getQty())));
-                        cdta.setShpqy2(BigDecimal.ZERO);
-                        cdta.setArmqy(cdmas.getArmqy());
-                        cdta.setUnpris(cdmas.getUnpris());
-                        cdta.setUnprisrccode(cdmas.getUnprisrccode());
-                        cdta.setShpamts(cdta.getUnpris().multiply(cdta.getShpqy1()));
-                        cdta.setIvoamts(BigDecimal.ZERO);
-                        cdta.setDmark1(cdmas.getDmark1());
-                        cdta.setDmark2(cdmas.getDmark2());
-                        cdta.setDmark3(cdmas.getDmark3());
-                        cdta.setDmark4(cdmas.getDmark4());
-                        cdta.setTrtype("L1A");
-                        cdta.setCusmark(cdmas.getCusmark());
-                        //cdta.setIssevdta('Y');  //是否服务出货
-                        cdta.setNcodeDA(cdmas.getNcodeDA());
-                        cdta.setNcodeCD(cdmas.getNcodeCD());
-                        cdta.setNcodeDC(cdmas.getNcodeDC());
-                        cdta.setNcodeDD(cdmas.getNcodeDD());
-                        cdtaList.add(cdta);
-                        ldc_shpamts = ldc_shpamts.add(cdta.getShpamts());
-                        seq++;
                     }
                 }
-                //表头数据
-                chad = new Cdrhad(facno, ls_shpno);
-                chad.setSalecode('1');
-                chad.setDecode(decode);
-                try {
-                    chad.setShpdate(BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", shpdate)));
-                } catch (ParseException ex) {
-                    Logger.getLogger(CdrhadBean.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                chad.setTrtype("L1A");  //国内出货
-                chad.setDepno(chmas.getDepno());
-                chad.setCusno(chmas.getCusno());
-                chad.setShptrseq(chmas.getShptrseq());
-                chad.setIvotrseq(chmas.getIvotrseq());
-                chad.setHoutsta('N');
-                chad.setTax(chmas.getTax());
-                chad.setTaxrate(chmas.getTaxrate());
-                chad.setCoin(chmas.getCoin());
-                chad.setRatio(chmas.getRatio());
-                chad.setTotamts(ldc_totamts);
-                ldc_shpamts = ldc_totamts.divide(BigDecimal.ONE.add(chad.getTaxrate()));
-                chad.setShpamts(ldc_shpamts);
-                ldc_taxamts = ldc_shpamts.multiply(chad.getTaxrate());
-                chad.setTaxamts(ldc_taxamts);
-                chad.setSndcode(chmas.getSndcode());
-                chad.setPaycode(chmas.getPaycode());
-                chad.setTermcode(chmas.getTermcode());
-                chad.setSndcodedsc(chmas.getSndcodedsc());
-                chad.setPaycodedsc(chmas.getPaycodedsc());
-                chad.setTermcodedsc(chmas.getTermcodedsc());
-                chad.setPaysepcode(chmas.getPaysepcode());
-                chad.setSeldate1(chmas.getSeldate1());
-                chad.setSeldate2(chmas.getSeldate2());
-                chad.setSeldate3(chmas.getSeldate3());
-                chad.setSeldate4(chmas.getSeldate4());
-                chad.setHandays1(chmas.getHandays1());
-                chad.setHandays2(chmas.getHandays2());
-                chad.setHandays3(chmas.getHandays3());
-                //chad.setHandays4(chmas.getHandays4());
-                chad.setHandays4((short) 5);   //来源CDR645
-                chad.setTickdays(chmas.getTickdays());
-                chad.setSacode(chmas.getSacode());
-                chad.setAreacode(chmas.getAreacode());
-                chad.setCuycode(chmas.getCuycode());
-                chad.setMancode(chmas.getMancode());
-                chad.setInvoiceyn(chmas.getInvoiceyn());
-                chad.setHmark2(chmas.getHmark1());//订单产品别写入出货单
-                chad.setIndate(shpdate);
-                chad.setUserno(chmas.getUserno());
 
-                ls_moveno = cdrsysBean.getSerialNumber(facno, "", "", shpdate, decode, Boolean.TRUE, "O" + "CDR645");
-                chad.setMoveno(ls_moveno); //海关仓转移单号
-                transwahBean.setCompany(facno);
-                Transwah transwah = transwahBean.findByCusnoAndTrseq(chmas.getCusno(), chmas.getIvotrseq());
-                if (transwah == null) {
-                    throw new NullPointerException("系统设定发票立帐发票客户必须有对应的周转仓库, 请到ERP-CDR181设定!");
+                for (String pzcdrno : pzcdrnos) {
+                    Cdrhad chad;
+                    cdtaList = new ArrayList<>();
+                    cdmasList = new ArrayList<>();
+                    shpdate = BaseLib.getDate();
+                    Cdrhmas chmas = cdrhmasBean.findById(pzcdrno);
+                    Character decode = chmas.getDecode();  //国内
+                    ls_shpno = cdrsysBean.getSerialNumber(facno, "", "", shpdate, decode, Boolean.TRUE, "CDR645");
+                    short seq = 1;
+                    for (HKFW005Detail d : fd) {
+                        if (pzcdrno.equals(d.getCdrno())) {
+                            Cdrdmas cdmas = cdrdmasBean.findByFacnoAndCdrnoAndItnbrAndTrseq(facno, pzcdrno, d.getItnbr(), Integer.parseInt(d.getTrseq()));
+                            if (cdmas == null) {
+                                throw new RuntimeException("抛转订单单身资料异常！");
+                            }
+                            Cdrdta cdta = new Cdrdta(facno, ls_shpno, seq);
+                            cdta.setCdrno(pzcdrno);
+                            cdta.setCtrseq(Short.valueOf(d.getTrseq()));
+                            Invmas m = invmasBean.findByItnbr(d.getItnbr());
+                            if (m == null) {
+                                throw new RuntimeException(d.getItnbr() + "件号未找到！");
+                            }
+                            cdta.setItnbr(d.getItnbr());
+                            cdta.setItdsc(m.getItdsc());
+                            cdta.setSpdsc(m.getSpdsc());
+                            cdta.setItnbrcus(d.getModel());
+                            cdta.setProno("1");
+                            BigDecimal leftqy1 = cdmas.getCdrqy1().subtract(cdmas.getShpqy1()).subtract(cdmas.getPreqy1());
+                            if (BigDecimal.valueOf(Double.parseDouble(d.getQty())).compareTo(leftqy1) > 0) {
+                                throw new RuntimeException("订单" + pzcdrno + "库存" + d.getItnbr() + "可利用不足");
+                            }
+                            cdta.setShpqy1(BigDecimal.valueOf(Double.parseDouble(d.getQty())));
+                            cdta.setShpqy2(BigDecimal.ZERO);
+                            cdta.setArmqy(cdmas.getArmqy());
+                            cdta.setUnpris(cdmas.getUnpris());
+                            cdta.setUnprisrccode(cdmas.getUnprisrccode());
+                            cdta.setShpamts(cdta.getUnpris().multiply(cdta.getShpqy1()));
+                            cdta.setIvoamts(BigDecimal.ZERO);
+                            cdta.setDmark1(cdmas.getDmark1());
+                            cdta.setDmark2(cdmas.getDmark2());
+                            cdta.setDmark3(cdmas.getDmark3());
+                            cdta.setDmark4(cdmas.getDmark4());
+                            cdta.setTrtype("L1A");
+                            cdta.setCusmark(cdmas.getCusmark());
+                            //cdta.setIssevdta('Y');  //是否服务出货
+                            cdta.setNcodeDA(cdmas.getNcodeDA());
+                            cdta.setNcodeCD(cdmas.getNcodeCD());
+                            cdta.setNcodeDC(cdmas.getNcodeDC());
+                            cdta.setNcodeDD(cdmas.getNcodeDD());
+                            cdtaList.add(cdta);
+                            cdmas.setPreqy1(cdmas.getPreqy1().add(cdta.getShpqy1()));
+                            cdmas.setPreqy2(cdmas.getPreqy2().add(cdta.getShpqy2()));
+                            cdmas.setDrecsta("84");
+                            cdmasList.add(cdmas);
+                            ldc_shpamts = ldc_shpamts.add(cdta.getShpamts());
+                            seq++;
+                        }
+                    }
+                    //表头数据
+                    chad = new Cdrhad(facno, ls_shpno);
+                    chad.setSalecode('1');
+                    chad.setDecode(decode);
+                    try {
+                        chad.setShpdate(BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", shpdate)));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(CdrhadBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    chad.setTrtype("L1A");  //国内出货
+                    chad.setDepno(chmas.getDepno());
+                    chad.setCusno(chmas.getCusno());
+                    chad.setShptrseq(chmas.getShptrseq());
+                    chad.setIvotrseq(chmas.getIvotrseq());
+                    chad.setHoutsta('N');
+                    chad.setTax(chmas.getTax());
+                    chad.setTaxrate(chmas.getTaxrate());
+                    chad.setCoin(chmas.getCoin());
+                    chad.setRatio(chmas.getRatio());
+                    chad.setTotamts(ldc_totamts);
+                    ldc_shpamts = ldc_totamts.divide(BigDecimal.ONE.add(chad.getTaxrate()));
+                    chad.setShpamts(ldc_shpamts);
+                    ldc_taxamts = ldc_shpamts.multiply(chad.getTaxrate());
+                    chad.setTaxamts(ldc_taxamts);
+                    chad.setSndcode(chmas.getSndcode());
+                    chad.setPaycode(chmas.getPaycode());
+                    chad.setTermcode(chmas.getTermcode());
+                    chad.setSndcodedsc(chmas.getSndcodedsc());
+                    chad.setPaycodedsc(chmas.getPaycodedsc());
+                    chad.setTermcodedsc(chmas.getTermcodedsc());
+                    chad.setPaysepcode(chmas.getPaysepcode());
+                    chad.setSeldate1(chmas.getSeldate1());
+                    chad.setSeldate2(chmas.getSeldate2());
+                    chad.setSeldate3(chmas.getSeldate3());
+                    chad.setSeldate4(chmas.getSeldate4());
+                    chad.setHandays1(chmas.getHandays1());
+                    chad.setHandays2(chmas.getHandays2());
+                    chad.setHandays3(chmas.getHandays3());
+                    //chad.setHandays4(chmas.getHandays4());
+                    chad.setHandays4((short) 5);   //来源CDR645
+                    chad.setTickdays(chmas.getTickdays());
+                    chad.setSacode(chmas.getSacode());
+                    chad.setAreacode(chmas.getAreacode());
+                    chad.setCuycode(chmas.getCuycode());
+                    chad.setMancode(chmas.getMancode());
+                    chad.setInvoiceyn(chmas.getInvoiceyn());
+                    chad.setHmark2(chmas.getHmark1());//订单产品别写入出货单
+                    chad.setIndate(shpdate);
+                    chad.setUserno(chmas.getUserno());
+
+                    ls_moveno = cdrsysBean.getSerialNumber(facno, "", "", shpdate, decode, Boolean.TRUE, "O" + "CDR645");
+                    chad.setMoveno(ls_moveno); //海关仓转移单号
+                    transwahBean.setCompany(facno);
+                    Transwah transwah = transwahBean.findByCusnoAndTrseq(chmas.getCusno(), chmas.getIvotrseq());
+                    if (transwah == null) {
+                        throw new NullPointerException("系统设定发票立帐发票客户必须有对应的周转仓库, 请到ERP-CDR181设定!");
+                    }
+                    chad.setOwareh(transwah.getWareh()); //海关仓
+                    chad.setReplenish('N');
+                    //chad.setIssevhad('Y');
+                    if (chad.getCusno().equals("SCQ00146") || chad.getCusno().equals("SJS00254") || chad.getCusno().equals("SSD00107") || chad.getCusno().equals("SGD00088")) {
+                        chad.setIssevhad('N');
+                    } else {
+                        chad.setIssevhad('Y');
+                    }
+                    persist(chad);
+                    this.getEntityManager().flush();
+                    for (Cdrdta dta : cdtaList) {
+                        dta.setIssevdta(chad.getIssevhad());  //是否服务出货
+                        cdrdtaBean.persist(dta);
+                    }
+                    retshpno += ls_shpno + ";";
+                    //更新订单单身状态
+                    for (Cdrdmas dmas : cdmasList) {
+                        cdrdmasBean.update(dmas);
+                    }
                 }
-                chad.setOwareh(transwah.getWareh()); //海关仓
-                chad.setReplenish('N');
-                //chad.setIssevhad('Y');
-                if (chad.getCusno().equals("SCQ00146") || chad.getCusno().equals("SJS00254") || chad.getCusno().equals("SSD00107") || chad.getCusno().equals("SGD00088")) {
-                    chad.setIssevhad('N');
-                } else {
-                    chad.setIssevhad('Y');
-                }
-                persist(chad);
-                this.getEntityManager().flush();
-                for (Cdrdta dta : cdtaList) {
-                    dta.setIssevdta(chad.getIssevhad());  //是否服务出货
-                    cdrdtaBean.persist(dta);
-                }
+
                 //出货单号回写OA
-                f.setShpno(ls_shpno);
+                f.setShpno(retshpno);
                 hkfw005Bean.update(f);
 
+                List<String> emailTo
+                        = mailSettingBean.findRecipientTo("cn.hanbell.jws.EAPWebService.createERPCDR645ByOAHKFW005");
+                List<String> emailCc
+                        = mailSettingBean.findRecipientCc("cn.hanbell.jws.EAPWebService.createERPCDR645ByOAHKFW005");
+
+                mailBean.clearReceivers();
+                mailBean.getAttachments().clear();
+                if (emailTo != null && !emailTo.isEmpty()) {
+                    mailBean.getTo().addAll(emailTo);
+                }
+                if (emailCc != null && !emailCc.isEmpty()) {
+                    mailBean.getCc().addAll(emailCc);
+                }
+                mailBean.setMailSubject("服务工作支援单抛转CDR45出货成功");
+                mailBean.setMailContent(
+                        "OA服务工作支援单号：" + psn + "抛转成功，生成ERP单号：" + retshpno);
+                mailBean.notify(new MailNotify());
+                log4j.info("Info", "报表邮件发送成功");
+                return true;
+            } else {
+                //非零件支援返回true
                 return true;
             }
-
-            return false;
-        } else {
-            //非零件支援返回true
-            return true;
+        } catch (Exception ex) {
+                List<String> emailTo
+                        = mailSettingBean.findRecipientTo("cn.hanbell.jws.EAPWebService.createERPCDR645ByOAHKFW005");
+                List<String> emailCc
+                        = mailSettingBean.findRecipientCc("cn.hanbell.jws.EAPWebService.createERPCDR645ByOAHKFW005");
+                mailBean.clearReceivers();
+                if (emailTo != null && !emailTo.isEmpty()) {
+                    mailBean.getTo().addAll(emailTo);
+                }
+                if (emailCc != null && !emailCc.isEmpty()) {
+                    mailBean.getCc().addAll(emailCc);
+                }
+                mailBean.setMailSubject("服务工作支援单抛转CDR45出货失败");
+                mailBean.setMailContent(
+                        "OA服务工作支援单号：" + psn + "抛转失败，异常："+ex);
+                mailBean.notify(new MailNotify());            
+            log4j.error(ex);
+            throw new RuntimeException(ex);
         }
-
     }
 
     public List<Cdrlot> findCdrlotList(String facno, String shpno) {
