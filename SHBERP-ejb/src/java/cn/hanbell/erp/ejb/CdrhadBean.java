@@ -28,7 +28,9 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -202,7 +204,7 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
         BigDecimal ldc_shpamts = BigDecimal.ZERO;
         BigDecimal ldc_taxamts = BigDecimal.ZERO;
         BigDecimal ldc_totamts = BigDecimal.ZERO;
-        List<String> pzcdrnos;
+        Map<String, String> pzcdrnos;
         List<Cdrdta> cdtaList;
         List<Cdrdmas> cdmasList;
         try {
@@ -212,36 +214,42 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
             }
             if (f.getType().equals("1")) {
                 cdrno = f.getOrderno();
-                facno = f.getFacno();
+                //公司别取单身数据
+                //facno = f.getFacno();
                 if (cdrno.isEmpty()) {
                     return true;
                 }
-                cdrhmasBean.setCompany(facno);
-                pzcdrnos = new ArrayList<String>();
+                pzcdrnos = new HashMap<String, String>();
                 List<HKFW005Detail> fd = hkfw005Bean.getDetailList(f.getFormSerialNumber());
                 if (fd.size() > 0) {
                     for (HKFW005Detail d : fd) {
                         cdrno = d.getCdrno();
-                        if (!pzcdrnos.contains(cdrno)) {
+                        facno = d.getDfacno();
+                        if (!pzcdrnos.containsKey(cdrno)) {
+                            cdrhmasBean.setCompany(facno);
                             if (null == cdrhmasBean.findById(cdrno)) {
                                 throw new NullPointerException("找不到对应的订单");
                             }
-                            pzcdrnos.add(d.getCdrno());
+                            pzcdrnos.put(cdrno, facno);
                         }
                     }
                 }
-
-                for (String pzcdrno : pzcdrnos) {
+                for (Map.Entry<String, String> entry : pzcdrnos.entrySet()) {
                     Cdrhad chad;
+                    String pzcdrno;
                     cdtaList = new ArrayList<>();
                     cdmasList = new ArrayList<>();
+                    facno = entry.getValue();
+                    pzcdrno = entry.getKey();
                     shpdate = BaseLib.getDate();
                     Cdrhmas chmas = cdrhmasBean.findById(pzcdrno);
                     Character decode = chmas.getDecode();  //国内
+                    cdrsysBean.setCompany(facno);
                     ls_shpno = cdrsysBean.getSerialNumber(facno, "", "", shpdate, decode, Boolean.TRUE, "CDR645");
                     short seq = 1;
                     for (HKFW005Detail d : fd) {
                         if (pzcdrno.equals(d.getCdrno())) {
+                            cdrdmasBean.setCompany(facno);
                             Cdrdmas cdmas = cdrdmasBean.findByFacnoAndCdrnoAndItnbrAndTrseq(facno, pzcdrno, d.getItnbr(), Integer.parseInt(d.getTrseq()));
                             if (cdmas == null) {
                                 throw new RuntimeException("抛转订单单身资料异常！");
@@ -249,6 +257,7 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                             Cdrdta cdta = new Cdrdta(facno, ls_shpno, seq);
                             cdta.setCdrno(pzcdrno);
                             cdta.setCtrseq(Short.valueOf(d.getTrseq()));
+                            invmasBean.setCompany(facno);
                             Invmas m = invmasBean.findByItnbr(d.getItnbr());
                             if (m == null) {
                                 throw new RuntimeException(d.getItnbr() + "件号未找到！");
@@ -395,21 +404,21 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                 return true;
             }
         } catch (Exception ex) {
-                List<String> emailTo
-                        = mailSettingBean.findRecipientTo("cn.hanbell.jws.EAPWebService.createERPCDR645ByOAHKFW005");
-                List<String> emailCc
-                        = mailSettingBean.findRecipientCc("cn.hanbell.jws.EAPWebService.createERPCDR645ByOAHKFW005");
-                mailBean.clearReceivers();
-                if (emailTo != null && !emailTo.isEmpty()) {
-                    mailBean.getTo().addAll(emailTo);
-                }
-                if (emailCc != null && !emailCc.isEmpty()) {
-                    mailBean.getCc().addAll(emailCc);
-                }
-                mailBean.setMailSubject("服务工作支援单抛转CDR45出货失败");
-                mailBean.setMailContent(
-                        "OA服务工作支援单号：" + psn + "抛转失败，异常："+ex);
-                mailBean.notify(new MailNotify());            
+            List<String> emailTo
+                    = mailSettingBean.findRecipientTo("cn.hanbell.jws.EAPWebService.createERPCDR645ByOAHKFW005");
+            List<String> emailCc
+                    = mailSettingBean.findRecipientCc("cn.hanbell.jws.EAPWebService.createERPCDR645ByOAHKFW005");
+            mailBean.clearReceivers();
+            if (emailTo != null && !emailTo.isEmpty()) {
+                mailBean.getTo().addAll(emailTo);
+            }
+            if (emailCc != null && !emailCc.isEmpty()) {
+                mailBean.getCc().addAll(emailCc);
+            }
+            mailBean.setMailSubject("服务工作支援单抛转CDR45出货失败");
+            mailBean.setMailContent(
+                    "OA服务工作支援单号：" + psn + "抛转失败，异常：" + ex);
+            mailBean.notify(new MailNotify());
             log4j.error(ex);
             throw new RuntimeException(ex);
         }
