@@ -73,6 +73,9 @@ public class HKFW005Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "trseq")
     private String trseq;
+    @Size(max = 255)
+    @Column(name = "dfacno")
+    private String dfacno;
 
     @JoinColumn(name = "formSerialNumber", referencedColumnName = "formSerialNumber", insertable = false, updatable = false)
     @ManyToOne(optional = true)
@@ -196,6 +199,14 @@ public class HKFW005Detail implements Serializable {
 
     public void setHkfw005(HKFW005 hkfw005) {
         this.hkfw005 = hkfw005;
+    }
+
+    public String getDfacno() {
+        return dfacno;
+    }
+
+    public void setDfacno(String dfacno) {
+        this.dfacno = dfacno;
     }
 
 }
