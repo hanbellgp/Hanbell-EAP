@@ -13,20 +13,31 @@ import cn.hanbell.oa.entity.ProcessInstance;
 import cn.hanbell.oa.entity.Users;
 import cn.hanbell.oa.entity.WorkItem;
 import cn.hanbell.util.BaseLib;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.DependsOn;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ServiceException;
+import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbException;
+import jcifs.smb.SmbFile;
+import jcifs.smb.SmbFileOutputStream;
 import org.apache.axis.client.Call;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  *
@@ -39,7 +50,12 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
 
     //public final String HOST_ADD = "http://oa.hanbell.com.cn";
     public final String HOST_ADD = "http://172.16.10.157";
+
     public final String HOST_PORT = "8086";
+    //文件存储的位置，允许读写的用户名密码，账号
+    public final String FILE_URL = "smb://172.16.10.157/";
+    public final String OA_USERNO = "SHAHANBELL\\C2082";
+    public final String OA_PASSWORD = "123456";
 
     @EJB
     private ParticipantActivityInstanceBean participantActivityInstanceBean;
@@ -150,7 +166,6 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             }
         }
         builder.append("</record>");
-
     }
 
     public String completeWorkItem(String host, String port, String psn, String definitionId, String userId, String comment) throws Exception {
@@ -291,7 +306,78 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             currentUser = null;
             userFunction = null;
         }
-
     }
 
+    public String reserveNoCmDocument(String host, String port, String fileName) {
+        Object[] params = null;
+        Object object = null;
+        String xml = null;
+        try {
+            //建立一个WebServices调用连接
+            Call call = BaseLib.getAXISCall(host, port, "/NaNaWeb/services/WorkflowService?wsdl");
+            //获取一个空的文件模板
+            call.setOperationName(new QName("WorkflowService", "reserveNoCmDocument"));
+            params = new Object[]{fileName};
+            object = call.invoke(params);
+            xml = object.toString();
+            return xml;
+        } catch (ServiceException | RemoteException e) {
+            throw new RuntimeException(e);
+        } finally {
+            currentUser = null;
+            userFunction = null;
+        }
+    }
+
+    /**
+     * OA文件写入172.16.10.157中的OA服务器
+     *
+     * @param user 服务器用户
+     * @param passowrd 服务器密码
+     * @param fileUrl OA附件的文件地址
+     * @param imgData 文件BASE54位编号
+     */
+    public void getShareFileContent(String user, String passowrd, String fileUrl, String imgData) {
+        OutputStream outputStream = null;
+        try {
+            NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication("", user, passowrd);
+            SmbFile smbFile = new SmbFile(fileUrl, auth);
+            smbFile.connect();
+            outputStream = new SmbFileOutputStream(smbFile);
+            byte[] b = Base64.decodeBase64(imgData);
+            for (int i = 0; i < b.length; ++i) {
+                if (b[i] < 0) {// 调整异常数据
+                    b[i] += 256;
+                }
+            }
+            outputStream.write(b);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public long getFileSize(String user, String passowrd, String url) {
+        try {
+            NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication("", user, passowrd);
+            SmbFile smbFile = new SmbFile(url, auth);
+            if (smbFile.isFile()) {
+                return smbFile.length();
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(WorkFlowBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SmbException ex) {
+            Logger.getLogger(WorkFlowBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 }
