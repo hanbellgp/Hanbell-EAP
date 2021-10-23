@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Functions.findByUserOIDAndOrgUnitOID", query = "SELECT f FROM Functions f WHERE f.occupantOID = :userOID AND f.organizationUnit.oid = :orgUnitOID"),
     @NamedQuery(name = "Functions.findByOrganizationUnitOID", query = "SELECT f FROM Functions f WHERE f.organizationUnit.oid = :organizationUnitOID"),
     @NamedQuery(name = "Functions.findBySpecifiedManagerOID", query = "SELECT f FROM Functions f WHERE f.specifiedManagerOID = :specifiedManagerOID"),
-    @NamedQuery(name = "Functions.findByIsMain", query = "SELECT f FROM Functions f WHERE f.isMain = :isMain")})
+    @NamedQuery(name = "Functions.findByIsMain", query = "SELECT f FROM Functions f WHERE f.isMain = :isMain"),})
 public class Functions implements Serializable {
 
     @JoinColumn(name = "occupantOID", referencedColumnName = "OID", insertable = false, updatable = false)
@@ -72,6 +72,11 @@ public class Functions implements Serializable {
     @JoinColumn(name = "organizationUnitOID", referencedColumnName = "OID")
     @ManyToOne(optional = false)
     private OrganizationUnit organizationUnit;
+    
+    @JoinColumn(name = "approvalLevelOID", referencedColumnName = "OID", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private FunctionLevel functionLevel;
+    
     @Size(max = 32)
     @Column(name = "specifiedManagerOID")
     private String specifiedManagerOID;
@@ -123,6 +128,14 @@ public class Functions implements Serializable {
         this.occupantOID = occupantOID;
     }
 
+    public FunctionLevel getFunctionLevel() {
+        return functionLevel;
+    }
+
+    public void setFunctionLevel(FunctionLevel functionLevel) {
+        this.functionLevel = functionLevel;
+    }
+    
     public OrganizationUnit getOrganizationUnit() {
         return organizationUnit;
     }
