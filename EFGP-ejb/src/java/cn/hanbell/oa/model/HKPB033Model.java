@@ -34,7 +34,6 @@ public class HKPB033Model implements Serializable {
     private String shortterm;
     private String longterm;
     private String targetDate;
-    private String planDate;
     private String trackingDate;
     private String sschief_confirm;
     private String signatory;
@@ -200,14 +199,6 @@ public class HKPB033Model implements Serializable {
 
     public void setTargetDate(String targetDate) {
         this.targetDate = targetDate;
-    }
-
-    public String getPlanDate() {
-        return planDate;
-    }
-
-    public void setPlanDate(String planDate) {
-        this.planDate = planDate;
     }
 
     public String getTrackingDate() {

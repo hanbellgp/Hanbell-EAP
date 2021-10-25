@@ -74,12 +74,11 @@ public class HKPB033FacadeREST extends SuperRESTForEFGP<HKPB033> {
                     //路径
                     StringBuffer url = new StringBuffer("");
                     url.append(workFlowBean.FILE_URL);
-                    url.append(requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").getString("filePathToSave"));
+                    url.append(requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").getString("filePathToSave")).append("/");
                     StringBuffer fileName1 = new StringBuffer("");
                     fileName1.append(requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").getString("physicalName"));
                     fileName1.append(".").append(e.getImageType());
                     workFlowBean.getShareFileContent(workFlowBean.OA_USERNO, workFlowBean.OA_PASSWORD, url.toString().replace("\\", "/") + fileName1, e.getData());
-                    //复制一份到http的项目url下
                     JSONObject attachment = new JSONObject();
                     attachment.append("OID", requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").get("OID"));
                     attachment.append("id", fileName1.toString());
@@ -104,7 +103,6 @@ public class HKPB033FacadeREST extends SuperRESTForEFGP<HKPB033> {
                 hkpb033.setSignatory(entity.getSafetyOfficeId());
                 hkpb033.setRisksdesc(entity.getDescribe());
                 hkpb033.setTargetDate("");
-                hkpb033.setPlanDate("");
                 hkpb033.setTrackingDate("");
                 hkpb033.setReason("");
                 hkpb033.setShortterm("");
