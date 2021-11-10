@@ -123,10 +123,10 @@ public class HKPB033FacadeREST extends SuperRESTForEFGP<HKPB033> {
 
                 hkpb033.setConstruction(entity.getConstructionSide());
                 hkpb033.setProject(entity.getConstructionProject());
-                hkpb033.setAmount(entity.getDeduction());
+                hkpb033.setAmount(entity.getDeduction() != null && !"".equals(entity.getDeduction()) ? Double.valueOf(entity.getDeduction()) : 0.0);
                 Users user = userBean.findById(entity.getApplyUserId());
                 String formInstance = hkpb033WorkFlowBean.buildXmlForEFGP("HK_PB033", hkpb033, files, user.getOid());
-                String subject = entity.getApplyUserName()+"--安全隐患整改单";
+                String subject = entity.getApplyUserName() + "--安全隐患整改单";
                 String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_PB033", formInstance, subject);
                 String[] rm = msg.split("\\$");
                 if (rm.length == 2) {
