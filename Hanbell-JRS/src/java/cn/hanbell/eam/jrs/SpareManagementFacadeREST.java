@@ -331,6 +331,10 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                     //判断报修单是否存在
                     eqpRepairCheckList = equipmentRepairBean.findByFormid(repairFormIdTemp);
                     if (eqpRepairCheckList.size() > 0 && (!eqpRepairCheckList.get(0).getRstatus().equals("98"))) {
+                        if(!(eqpRepairCheckList.get(0).getIsneedspare() != null && eqpRepairCheckList.get(0).getIsneedspare().equals("Y"))){
+                            String errorMsg = "报修单:".concat(repairFormIdTemp).concat("无法领用备件!");
+                            return new ResponseMessage("303", errorMsg);
+                        }
                         List<EquipmentSpareRecode> spareRecodeCheckList = new ArrayList<>();
                         Map<String, Object> filterFields = new HashMap<>();
                         Map<String, String> sortFields = new LinkedHashMap<>();
