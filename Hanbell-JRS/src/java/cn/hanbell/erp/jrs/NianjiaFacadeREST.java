@@ -5,16 +5,11 @@
  */
 package cn.hanbell.erp.jrs;
 
-import cn.hanbell.crm.jrs.model.JSONObject;
 import cn.hanbell.erp.comm.SuperEJBForERP;
-import cn.hanbell.erp.ejb.NianjiaBean;
-import cn.hanbell.erp.entity.Miscode;
-import cn.hanbell.jrs.ResponseData;
+import cn.hanbell.erp.ejb.SecguserBean;
 import cn.hanbell.jrs.ResponseObject;
 import cn.hanbell.jrs.SuperRESTForERP;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -34,7 +29,7 @@ import javax.ws.rs.core.Response;
 public class NianjiaFacadeREST extends SuperRESTForERP<Object> {
 
     @EJB
-    private NianjiaBean nianjiaBean;
+    private SecguserBean secguserBean;
 
     public NianjiaFacadeREST() {
         super(Object.class);
@@ -42,7 +37,7 @@ public class NianjiaFacadeREST extends SuperRESTForERP<Object> {
 
     @Override
     protected SuperEJBForERP getSuperEJBForERP() {
-        return nianjiaBean;
+        return secguserBean;
     }
 
     @GET
@@ -51,7 +46,8 @@ public class NianjiaFacadeREST extends SuperRESTForERP<Object> {
     public ResponseObject findProductType(@PathParam("employeeid") String employeeid, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
-                BigDecimal count = nianjiaBean.getLeftYearDays(employeeid);
+                secguserBean.setCompany("C");
+                BigDecimal count = secguserBean.getLeftYearDays(employeeid);
                 ResponseObject responseObj = new ResponseObject("200", "seccess");
                 responseObj.setObject(count);
                 return responseObj;
