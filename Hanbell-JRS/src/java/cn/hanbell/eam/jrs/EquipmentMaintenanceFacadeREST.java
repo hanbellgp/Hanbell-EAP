@@ -142,10 +142,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                     JSONObject jsonObject = (JSONObject) obj;
                     autoMaintainDetail = equipmentAnalyResultDtaBean.findById(jsonObject.getInt("Id"));
                     resultStrTemp = jsonObject.getString("result");
-                    if(!(resultStrTemp.equals("正常") || resultStrTemp.equals("异常"))){
-                        completeFlag = false;
-                    }
-                    else{
+                    if(resultStrTemp.equals("正常") || resultStrTemp.equals("异常")){
                         startFlag = true;
                         if(!resultStrTemp.equals("正常")){
                             mainResultTemp = "异常";
@@ -170,6 +167,18 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                     }
                 }
                 
+                //先刷新容器更新数据库
+                equipmentAnalyResultDtaBean.getEntityManager().flush();
+                equipmentAnalyResultDtaBean.getEntityManager().clear ();
+                
+                //遍历表身判断单据是否已经完成
+                List<EquipmentAnalyResultDta> analyResultDtaList =  equipmentAnalyResultDtaBean.findByPId(autoMaintainInfo.getFormid());
+                for(EquipmentAnalyResultDta dtaObj : analyResultDtaList){
+                     if(!("正常".equals(dtaObj.getAnalysisresult()) || "异常".equals(dtaObj.getAnalysisresult()))){
+                        completeFlag = false;
+                    }
+                }
+                
                 if(completeFlag){
                     autoMaintainInfo.setAnalysisresult(mainResultTemp);
                     autoMaintainInfo.setEnddate(new Date());
@@ -179,6 +188,50 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                     autoMaintainInfo.setStatus("S");
                 }
                 autoMaintainInfo.setStartdate(minOptDate);
+                autoMaintainInfo.setOptdate(new Date());
+                autoMaintainInfo.setOptuser(entity.getOptuser());
+                equipmentAnalyResultBean.update(autoMaintainInfo);
+                
+                return new ResponseMessage("200", "状态更新成功");
+            } catch (Exception ex) {
+                return new ResponseMessage("500", "系统错误Update失败");
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+    
+    @POST
+    @Path("autonomous-maintain-dispatch")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ResponseMessage updateEqpMaintenance_userDispatch(EquipmentAnalyResult entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            if (entity == null) {
+                throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            }
+
+            try {
+                EquipmentAnalyResult autoMaintainInfo = equipmentAnalyResultBean.findById(entity.getId());
+                if (autoMaintainInfo == null) {
+                    throw new WebApplicationException(Response.Status.BAD_REQUEST);
+                }
+                EquipmentAnalyResultDta autoMaintainDetail;
+                JSONArray jsonArray = new JSONArray(entity.getStatus());
+                JSONArray eqpMaintainDetailList_jsonArray = jsonArray.getJSONArray(0);
+                String resultStrTemp = "";
+                for(Object obj : eqpMaintainDetailList_jsonArray){
+                    JSONObject jsonObject = (JSONObject) obj;
+                    autoMaintainDetail = equipmentAnalyResultDtaBean.findById(jsonObject.getInt("Id"));
+                    resultStrTemp = jsonObject.getString("result");
+                    //已经完成的不能派工
+                    if(resultStrTemp.equals("正常") || resultStrTemp.equals("异常")){
+                        continue;
+                    }
+                    autoMaintainDetail.setAnalysisuser(jsonObject.getString("analysisUser"));
+                    autoMaintainDetail.setLastanalysisuser(jsonObject.getString("analysisUserName"));
+                }
+                
                 autoMaintainInfo.setOptdate(new Date());
                 autoMaintainInfo.setOptuser(entity.getOptuser());
                 
