@@ -97,7 +97,7 @@ public class HKPB033WorkFlowBean extends SuperEJBForEFGP<FormInstance> implement
                         OrganizationUnit dept = this.findOrgUnitByDeptno(f.get(master).toString());
                         if (dept == null) {
                             log4j.error(f.get(master).toString() + "部门不存在");
-                            throw new RuntimeException();
+                            throw new RuntimeException(f.get(master).toString() + "部门不存在");
                         }
                         builder.append("<").append(f.getName()).append("  id=\"").append(f.getName()).append("\" label=\"").append(dept.getOrganizationUnitName()).append("\"");
                         builder.append("  hidden=\"").append(dept.getOid()).append("\" list_hidden=\"\"");

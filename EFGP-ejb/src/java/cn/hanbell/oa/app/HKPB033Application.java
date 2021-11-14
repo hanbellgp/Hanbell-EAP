@@ -48,7 +48,7 @@ public class HKPB033Application implements Serializable {
     private String constructionProject;
     private String constructionSide;
     private String address;
-    private double deduction;
+    private String deduction;
     private String endDate;
     private List<HKPB033FilesApplication> hkpb033Files;
     
@@ -247,11 +247,11 @@ public class HKPB033Application implements Serializable {
         this.constructionSide = constructionSide;
     }
 
-    public double getDeduction() {
+    public String getDeduction() {
         return deduction;
     }
 
-    public void setDeduction(double deduction) {
+    public void setDeduction(String deduction) {
         this.deduction = deduction;
     }
 
@@ -281,10 +281,6 @@ public class HKPB033Application implements Serializable {
         hash = 23 * hash + Objects.hashCode(this.deptManager2Name);
         hash = 23 * hash + Objects.hashCode(this.monthSafetyOfficeId);
         hash = 23 * hash + Objects.hashCode(this.monthSafetyOfficeName);
-        hash = 23 * hash + Objects.hashCode(this.chargeId);
-        hash = 23 * hash + Objects.hashCode(this.chargeName);
-        hash = 23 * hash + Objects.hashCode(this.constructionSide);
-        hash = 23 * hash + (int) (Double.doubleToLongBits(this.deduction) ^ (Double.doubleToLongBits(this.deduction) >>> 32));
         return hash;
     }
 
@@ -300,9 +296,6 @@ public class HKPB033Application implements Serializable {
             return false;
         }
         final HKPB033Application other = (HKPB033Application) obj;
-        if (Double.doubleToLongBits(this.deduction) != Double.doubleToLongBits(other.deduction)) {
-            return false;
-        }
         if (!Objects.equals(this.applyUserId, other.applyUserId)) {
             return false;
         }

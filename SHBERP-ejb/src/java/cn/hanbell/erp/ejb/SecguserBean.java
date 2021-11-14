@@ -7,6 +7,7 @@ package cn.hanbell.erp.ejb;
 
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Secguser;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -47,4 +48,17 @@ public class SecguserBean extends SuperEJBForERP<Secguser> {
         }
     }
 
+        /**
+     * 获取员工剩余年休假天数
+     *
+     * @param employeeid 工号
+     * @return
+     * @throws java.lang.Exception
+     */
+    public BigDecimal getLeftYearDays(String employeeid)throws Exception {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select leftyeardays from nianjia where employeeid='").append(employeeid).append("'");
+        Query query = getEntityManager().createNativeQuery(sql.toString());
+        return (BigDecimal) query.getSingleResult();
+    }
 }
