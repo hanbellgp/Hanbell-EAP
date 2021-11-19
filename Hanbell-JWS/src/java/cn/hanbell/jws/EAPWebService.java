@@ -147,9 +147,14 @@ import cn.hanbell.oa.ejb.HKGC003Bean;
 import cn.hanbell.oa.ejb.HKGL060Bean;
 import cn.hanbell.oa.ejb.HKCG019Bean;
 import cn.hanbell.oa.ejb.HKCG020Bean;
+import cn.hanbell.oa.ejb.HKGL004Bean;
+import cn.hanbell.oa.ejb.HKGL034Bean;
+import cn.hanbell.oa.ejb.HKGL034DetailBean;
 import cn.hanbell.oa.ejb.HKJH006Bean;
 import cn.hanbell.oa.ejb.HKXQB001Bean;
 import cn.hanbell.oa.ejb.HSPB015Bean;
+import cn.hanbell.oa.ejb.HZGL004Bean;
+import cn.hanbell.oa.ejb.HZGL004BizDetailBean;
 import cn.hanbell.oa.ejb.ParticipantActivityInstanceBean;
 import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.ejb.SHBCRMREPI13Bean;
@@ -167,12 +172,17 @@ import cn.hanbell.oa.entity.HKCG019;
 import cn.hanbell.oa.entity.HKCG020;
 import cn.hanbell.oa.entity.HKCW002;
 import cn.hanbell.oa.entity.HKCW002Detail;
+import cn.hanbell.oa.entity.HKGL004;
+import cn.hanbell.oa.entity.HKGL034;
+import cn.hanbell.oa.entity.HKGL034Detail;
 import cn.hanbell.oa.entity.HKGL060;
 import cn.hanbell.oa.entity.HKGL060Detail;
 import cn.hanbell.oa.entity.HKXQB001;
 import cn.hanbell.oa.entity.HSPB015;
 import cn.hanbell.oa.entity.HZCW034;
 import cn.hanbell.oa.entity.HZCW034Detail;
+import cn.hanbell.oa.entity.HZGL004;
+import cn.hanbell.oa.entity.HZGL004BizDetail;
 import cn.hanbell.oa.entity.HZJS034;
 import cn.hanbell.oa.entity.HZJS034Detail;
 import cn.hanbell.oa.entity.OrganizationUnit;
@@ -352,8 +362,18 @@ public class EAPWebService {
     private WorkItemBean workItemBean;
     @EJB
     private cn.hanbell.oa.ejb.PLMProjectBean efgpPLMProjectBean;
+    @EJB
+    private HKGL034Bean hkgl034Bean;
+    @EJB
+    private HKGL034DetailBean hkgl034DetailBean;
+    @EJB
+    private HKGL004Bean hkgl004Bean;
+    @EJB
+    private HZGL004Bean hzgl004Bean;
+    @EJB
+    private HZGL004BizDetailBean hzgl004BizBean;
 
-    // EJBForERP
+// EJBForERP
     @EJB
     private PricingGroupBean pricingGroupBean;
     @EJB
@@ -3896,4 +3916,55 @@ public class EAPWebService {
         }
     }
 
+
+
+    @WebMethod(operationName = "sendOAHKGL034CancelMsgByPSN")
+    public String sendOAHKGL034CancelMsgByPSN(@WebParam(name = "psn") String psn) {
+        HKGL034 hkgl034 = hkgl034Bean.findByPSN(psn);
+        List<HKGL034Detail> details = hkgl034DetailBean.findByFSN(hkgl034.getFormSerialNumber());
+        agent1000002Bean.initConfiguration();
+        boolean isSuccess = true;
+        for (HKGL034Detail detail : details) {
+            String errmsg = agent1000002Bean.sendMsgToUser(detail.getEmployee(), "text", "[汉钟精机] 您申请的" + detail.getDate1Txt() + "加班单已完成签核");
+            if (!"ok".equals(errmsg)) {
+                isSuccess = false;
+            }
+        }
+        if (isSuccess) {
+            return "200";
+        } else {
+            return "400";
+        }
+    }
+
+    @WebMethod(operationName = "sendOAHKGL004CancelMsgByPSN")
+    public String sendOAHKGL004CancelMsgByPSN(@WebParam(name = "psn") String psn) {
+        HKGL004 hkgl034 = hkgl004Bean.findByPSN(psn);
+        agent1000002Bean.initConfiguration();
+        String errmsg = agent1000002Bean.sendMsgToUser(hkgl034.getEmployee(), "text", "[汉钟精机] 您申请的" + BaseLib.formatDate("yyyy-MM-dd", hkgl034.getDate1()) + "请假单已完成签核");
+        if ("ok".equals(errmsg)) {
+            return "200";
+        } else {
+            return "400";
+        }
+    }
+
+    @WebMethod(operationName = "sendOAHZGL004CancelMsgByPSN")
+    public String sendOAHZGL004CancelMsgByPSN(@WebParam(name = "psn") String psn) {
+        HZGL004 hzgl004 = hzgl004Bean.findByPSN(psn);
+        List<HZGL004BizDetail> details = hzgl004BizBean.findByFSN(hzgl004.getFormSerialNumber());
+        agent1000002Bean.initConfiguration();
+        boolean isSuccess = true;
+        for (HZGL004BizDetail detail : details) {
+            String errmsg = agent1000002Bean.sendMsgToUser(detail.getBizEmployeetxt(), "text", "[汉钟精机] 您申请的" + detail.getBizDatetxt() + "出差单已完成签核");
+            if (!"ok".equals(errmsg)) {
+                isSuccess = false;
+            }
+        }
+        if (isSuccess) {
+            return "200";
+        } else {
+            return "400";
+        }
+    }
 }

@@ -36,6 +36,7 @@ public class HZGL004Model {
     private Double hdn_days;
     private String userTitle;
     private String hdn_employee;
+    private String isWechat;
 
     public HZGL004Model() {
 
@@ -333,6 +334,14 @@ public class HZGL004Model {
      */
     public void setHdn_employee(String hdn_employee) {
         this.hdn_employee = hdn_employee;
+    }
+
+    public String getIsWechat() {
+        return isWechat;
+    }
+
+    public void setIsWechat(String isWechat) {
+        this.isWechat = isWechat;
     }
 
 }

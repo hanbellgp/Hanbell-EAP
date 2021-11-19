@@ -15,6 +15,7 @@ import cn.hanbell.oa.entity.HKGL004;
 import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.oa.model.HKGL004Model;
 import cn.hanbell.util.BaseLib;
+import cn.hanbell.wco.ejb.Agent1000002Bean;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -39,6 +40,9 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
     @EJB
     private HKGL004Bean hkgl004Bean;
 
+    @EJB
+    private Agent1000002Bean agent1000002Bean;
+
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
         return hkgl004Bean;
@@ -58,12 +62,20 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
             try {
-                Calendar c = Calendar.getInstance();
-                c.add(Calendar.DATE, - 5);
-                Date time = c.getTime();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(new Date());
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 59);
+                calendar.add(calendar.MINUTE, -1);
+                Date zero = calendar.getTime();
                 Date date1 = BaseLib.getDate("yyyy-MM-dd", entity.getDate1());
-                if (time.getTime() > date1.getTime()) {
-                    return new ResponseMessage("500", "请假日期截止超过5天不可申请");
+                Date date2 = BaseLib.getDate("yyyy-MM-dd", entity.getDate2());
+                if (zero.getTime() >= date1.getTime()) {
+                    return new ResponseMessage("500", "填单日期晚于实际请假日期不可以申请！");
+                }
+                if (date1.getTime() > date2.getTime()) {
+                    return new ResponseMessage("500", "开始日期不能大于结束日期！");
                 }
                 workFlowBean.initUserInfo(entity.getEmployee());
                 HKGL004Model la = new HKGL004Model();
@@ -72,6 +84,7 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                 la.setHdn_applyUser(workFlowBean.getCurrentUser().getUserName());
                 la.setApplyDept(workFlowBean.getUserFunction().getOrganizationUnit().getId());
                 la.setHdn_applyDept(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
+                la.setIsWechat("Y");
                 //根据部门编号代出公司编号
                 la.setFacno(workFlowBean.getCompanyByDeptId(la.getApplyDept()));
                 la.setHdn_facno(la.getFacno());
@@ -101,6 +114,8 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                 String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL004", formInstance, subject);
                 String[] rm = msg.split("\\$");
                 if (rm.length == 2) {
+                    agent1000002Bean.initConfiguration();
+                    agent1000002Bean.sendMsgToUser(entity.getEmployee(), "text", "[汉钟精机] 您申请的" + entity.getDate1()+ "请假单已完成填单");
                     return new ResponseMessage(rm[0], rm[1]);
                 } else {
                     return new ResponseMessage("200", "Code=200");
