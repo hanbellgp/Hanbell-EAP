@@ -9,6 +9,7 @@ import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
 import cn.hanbell.oa.app.MCHZGL004;
 import cn.hanbell.oa.app.MCHZGL004BizDetail;
+import cn.hanbell.oa.app.OvertimeApplicationDetail;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HZGL004Bean;
 import cn.hanbell.oa.entity.HZGL004;
@@ -16,7 +17,10 @@ import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.oa.model.HZGL004BizDetailModel;
 import cn.hanbell.oa.model.HZGL004Model;
 import cn.hanbell.util.BaseLib;
+import cn.hanbell.wco.ejb.Agent1000002Bean;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -40,6 +44,9 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
 
     @EJB
     private HZGL004Bean hzgl004Bean;
+
+    @EJB
+    private Agent1000002Bean agent1000002Bean;
 
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
@@ -92,6 +99,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 m.setOtherVehicle("");
             }
             m.setHdn_vehicle(entity.getVehicleDesc());
+            m.setIsWechat("Y");
             m.setDestination(entity.getDestination());
             m.setHdn_destination(entity.getDestinationDesc());
             m.setDay1(BaseLib.getDate("yyyy-MM-dd", entity.getStartDate()));
@@ -102,6 +110,17 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             m.setHdn_days(m.getDays());
             int seq = 0;
             for (MCHZGL004BizDetail mcd : entity.getDetailList()) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(new Date());
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 59);
+                calendar.add(calendar.MINUTE, -1);
+                Date zero = calendar.getTime();
+                Date date1 = BaseLib.getDate("yyyy-MM-dd", mcd.getBizDate());
+                if (zero.getTime() >= date1.getTime()) {
+                    return new ResponseMessage("500", "填单日期晚于实际出差日期不可以申请！");
+                }
                 seq++;
                 d = new HZGL004BizDetailModel();
                 d.setSeq(String.valueOf(seq));
@@ -125,6 +144,19 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HZ_GL004", formInstance, subject);
             String[] rm = msg.split("\\$");
             if (rm.length == 2) {
+                boolean isSuccess = true;
+                StringBuffer users = new StringBuffer();
+                for (MCHZGL004BizDetail mcd : entity.getDetailList()) {
+                    agent1000002Bean.initConfiguration();
+                    String errmsg = agent1000002Bean.sendMsgToUser(mcd.getBizEmployee(), "text", "[汉钟精机] 您申请的" + mcd.getBizDate() + "出差单已完成填单");
+                    if ("ok".equals(errmsg)) {
+                        isSuccess = false;
+                        users.append(mcd.getBizEmployeeName()).append(",");
+                    }
+                }
+                if (isSuccess) {
+                    return new ResponseMessage("500", "表单发起成功，" + users + "消息发送失败");
+                }
                 return new ResponseMessage(rm[0], rm[1]);
             } else {
                 return new ResponseMessage("200", "Code=200");
@@ -186,6 +218,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             m.setHdn_days(m.getDays());
             int seq = 0;
             for (MCHZGL004BizDetail mcd : entity.getDetailList()) {
+
                 seq++;
                 d = new HZGL004BizDetailModel();
                 d.setSeq(String.valueOf(seq));
@@ -206,6 +239,20 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HZ_GL004", formInstance, subject);
             String[] rm = msg.split("\\$");
             if (rm.length == 2) {
+                boolean isSuccess = true;
+                StringBuffer users = new StringBuffer();
+                for (MCHZGL004BizDetail mcd : entity.getDetailList()) {
+                    agent1000002Bean.initConfiguration();
+                    String errmsg = agent1000002Bean.sendMsgToUser(mcd.getBizEmployee(), "text", "[汉钟精机] 您申请的" + mcd.getBizDate() + "出差单已完成填单");
+                    if ("ok".equals(errmsg)) {
+                        isSuccess = false;
+                        users.append(mcd.getBizEmployeeName()).append(",");
+                    }
+                }
+                if (isSuccess) {
+                    return new ResponseMessage("500", "表单发起成功，" + users + "消息发送失败");
+                }
+
                 return new ResponseMessage(rm[0], rm[1]);
             } else {
                 return new ResponseMessage("200", "Code=200");
