@@ -29,6 +29,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
+
 /**
  *
  * @author C0160
@@ -121,7 +122,8 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                     return new ResponseMessage("200", "Code=200");
                 }
             } catch (Exception ex) {
-                return new ResponseMessage("500", "系统错误更新失败");
+                ex.printStackTrace();
+                return new ResponseMessage("500", "资料填写有误，核对后请联系管理员");
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);

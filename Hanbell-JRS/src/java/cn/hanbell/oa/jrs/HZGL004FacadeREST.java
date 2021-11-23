@@ -162,7 +162,8 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 return new ResponseMessage("200", "Code=200");
             }
         } catch (Exception ex) {
-            return new ResponseMessage("500", "系统错误更新失败");
+            ex.printStackTrace();
+            return new ResponseMessage("500", "资料填写有误，核对后请联系管理员");
         }
     }
 
@@ -252,7 +253,6 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 if (isSuccess) {
                     return new ResponseMessage("500", "表单发起成功，" + users + "消息发送失败");
                 }
-
                 return new ResponseMessage(rm[0], rm[1]);
             } else {
                 return new ResponseMessage("200", "Code=200");

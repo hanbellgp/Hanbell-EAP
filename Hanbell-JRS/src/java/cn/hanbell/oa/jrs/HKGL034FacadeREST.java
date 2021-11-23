@@ -47,8 +47,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
     private HKGL034Bean hkgl034Bean;
 
     @EJB
-    private  Agent1000002Bean agent1000002Bean;
-
+    private Agent1000002Bean agent1000002Bean;
 
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
@@ -157,12 +156,11 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
-
+                return new ResponseMessage("500", "资料填写有误，核对后请联系管理员");
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
-        return null;
     }
 
     @POST
