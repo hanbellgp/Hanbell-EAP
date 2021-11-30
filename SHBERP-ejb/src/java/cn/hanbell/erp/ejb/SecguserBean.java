@@ -57,7 +57,7 @@ public class SecguserBean extends SuperEJBForERP<Secguser> {
      */
     public BigDecimal getLeftYearDays(String employeeid)throws Exception {
         StringBuffer sql = new StringBuffer();
-        sql.append("select leftyeardays from nianjia where employeeid='").append(employeeid).append("'");
+        sql.append("select leftyeardays from test.dbo.nianjia where employeeid='").append(employeeid).append("'");
         Query query = getEntityManager().createNativeQuery(sql.toString());
         return (BigDecimal) query.getSingleResult();
     }
