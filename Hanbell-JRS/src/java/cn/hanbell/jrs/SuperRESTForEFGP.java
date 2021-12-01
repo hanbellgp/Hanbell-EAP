@@ -24,6 +24,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -32,6 +34,7 @@ import javax.ws.rs.core.Response;
  */
 public abstract class SuperRESTForEFGP<T> {
 
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.eap");
     protected Class<T> entityClass;
     protected Map<Integer, List<T>> data;
 

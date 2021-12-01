@@ -1,7 +1,7 @@
 package cn.hanbell.oa.ejb;
 
-import cn.hanbell.crm.ejb.PormyBean;
-import cn.hanbell.crm.entity.Pormy;
+import cn.hanbell.crm.ejb.PORMYBean;
+import cn.hanbell.crm.entity.PORMY;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.HZCW028reDetail;
 import cn.hanbell.oa.entity.HZCW028tDetail;
@@ -23,7 +23,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
     @EJB
     private HZCW033reDetailBean hzcw033reDetailBean;
     @EJB
-    private PormyBean pormyBean;
+    private PORMYBean pormyBean;
     @EJB
     private HZCW033tDetailBean hzcw033tDetailBean;
 
@@ -42,7 +42,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
                 if ("6617".equals(detail.getBudgetAcc())) {
                     String[] split = detail.getRemark().split(",");
                     for (String s : split) {
-                        Pormy p = pormyBean.findByMY002(s);
+                        PORMY p = pormyBean.findByMY002(s);
                         if (p != null && "".equals(p.getMy024())) {
                             p.setMy026(psn);
                             p.setMy025(detail.getFormSerialNumber());
@@ -52,7 +52,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
                         }
                     }
                 } else {
-                    Pormy p = pormyBean.findByMY002(detail.getRemark());
+                    PORMY p = pormyBean.findByMY002(detail.getRemark());
                     if (p != null && "".equals(p.getMy024())) {
                         p.setMy026(psn);
                         p.setMy025(detail.getFormSerialNumber());
@@ -83,7 +83,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
                     if ("6617".equals(detail.getBudgetAcc())) {
                         String[] split = detail.getRemark().split(",");
                         for (String s : split) {
-                            Pormy p = pormyBean.findByMY002(s);
+                            PORMY p = pormyBean.findByMY002(s);
                             if (p != null && "".equals(p.getMy026())) {
                                 p.setMy026(psn);
                                 p.setMy025(detail.getFormSerialNumber());
@@ -91,7 +91,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
                             }
                         }
                     } else {
-                        Pormy p = pormyBean.findByMY002(detail.getRemark());
+                        PORMY p = pormyBean.findByMY002(detail.getRemark());
                         if (p != null && "".equals(p.getMy026())) {
                             p.setMy026(psn);
                             p.setMy025(detail.getFormSerialNumber());
@@ -111,7 +111,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
                     if ("6617".equals(detail.getBudgetAcc())) {
                         String[] split = detail.getRemark().split(",");
                         for (String s : split) {
-                            Pormy p = pormyBean.findByMY002(s);
+                            PORMY p = pormyBean.findByMY002(s);
                             if (p != null && "".equals(p.getMy024())) {
                                 p.setMy026(psn);
                                 p.setMy025(detail.getFormSerialNumber());
@@ -121,7 +121,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
                             }
                         }
                     } else {
-                        Pormy p = pormyBean.findByMY002(detail.getRemark());
+                        PORMY p = pormyBean.findByMY002(detail.getRemark());
                         if (p != null && "".equals(p.getMy024())) {
                             p.setMy026(psn);
                             p.setMy025(detail.getFormSerialNumber());
@@ -154,7 +154,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
                 if ("6617".equals(detail.getBudgetAcc())) {
                     String[] split = detail.getRemark().split(",");
                     for (String s : split) {
-                        Pormy p = pormyBean.findByMY002(s);
+                        PORMY p = pormyBean.findByMY002(s);
                         if (p != null && !p.getMy026().isEmpty()) {
                             p.setMy026("");
                             p.setMy025("");
@@ -162,7 +162,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
                         }
                     }
                 } else {
-                    Pormy p = pormyBean.findByMY002(detail.getRemark());
+                    PORMY p = pormyBean.findByMY002(detail.getRemark());
                     if (p != null && !p.getMy026().isEmpty()) {
                         p.setMy026("");
                         p.setMy025("");
