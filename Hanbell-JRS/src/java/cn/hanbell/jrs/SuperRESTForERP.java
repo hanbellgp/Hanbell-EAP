@@ -27,6 +27,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -34,6 +36,8 @@ import javax.ws.rs.core.Response;
  * @param <T>
  */
 public abstract class SuperRESTForERP<T> {
+
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.eap");
 
     @EJB
     protected cn.hanbell.eap.ejb.SystemNameBean systemNameBean;

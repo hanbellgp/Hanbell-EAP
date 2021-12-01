@@ -24,21 +24,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "PORMY")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Pormy.findAll", query = "SELECT p FROM Pormy p"),
-    @NamedQuery(name = "Pormy.findByCustomer", query = "SELECT p FROM Pormy p WHERE p.customer = :customer"),
-    @NamedQuery(name = "Pormy.findByProduct", query = "SELECT p FROM Pormy p WHERE p.product = :product"),
-    @NamedQuery(name = "Pormy.findByRegion", query = "SELECT p FROM Pormy p WHERE p.region = :region"),
-    @NamedQuery(name = "Pormy.findByDealer", query = "SELECT p FROM Pormy p WHERE p.dealer = :dealer"),
-    @NamedQuery(name = "Pormy.findByMy001", query = "SELECT p FROM Pormy p WHERE p.pormyPK.my001 = :my001"),
-    @NamedQuery(name = "Pormy.findByMy002", query = "SELECT p FROM Pormy p WHERE p.pormyPK.my002 = :my002"),
-    @NamedQuery(name = "Pormy.findByPK", query = "SELECT p FROM Pormy p WHERE p.pormyPK = :pormyPK"),
-    @NamedQuery(name = "Pormy.findByMy032", query = "SELECT p FROM Pormy p WHERE p.my032 = :my032"),
-    @NamedQuery(name = "Pormy.findByMy033", query = "SELECT p FROM Pormy p WHERE p.my033 = :my033")})
-public class Pormy implements Serializable {
+    @NamedQuery(name = "PORMY.findAll", query = "SELECT p FROM PORMY p"),
+    @NamedQuery(name = "PORMY.findByCustomer", query = "SELECT p FROM PORMY p WHERE p.customer = :customer"),
+    @NamedQuery(name = "PORMY.findByProduct", query = "SELECT p FROM PORMY p WHERE p.product = :product"),
+    @NamedQuery(name = "PORMY.findByRegion", query = "SELECT p FROM PORMY p WHERE p.region = :region"),
+    @NamedQuery(name = "PORMY.findByDealer", query = "SELECT p FROM PORMY p WHERE p.dealer = :dealer"),
+    @NamedQuery(name = "PORMY.findByMy001", query = "SELECT p FROM PORMY p WHERE p.pormyPK.my001 = :my001"),
+    @NamedQuery(name = "PORMY.findByMy002", query = "SELECT p FROM PORMY p WHERE p.pormyPK.my002 = :my002"),
+    @NamedQuery(name = "PORMY.findByPK", query = "SELECT p FROM PORMY p WHERE p.pormyPK = :pormyPK"),
+    @NamedQuery(name = "PORMY.findByMy032", query = "SELECT p FROM PORMY p WHERE p.my032 = :my032"),
+    @NamedQuery(name = "PORMY.findByMy033", query = "SELECT p FROM PORMY p WHERE p.my033 = :my033")})
+public class PORMY implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected PormyPK pormyPK;
+    protected PORMYPK pormyPK;
     @Size(max = 20)
     @Column(name = "COMPANY")
     private String company;
@@ -223,22 +223,22 @@ public class Pormy implements Serializable {
     @Column(name = "MY033")
     private BigDecimal my033;
 
-    public Pormy() {
+    public PORMY() {
     }
 
-    public Pormy(PormyPK pormyPK) {
+    public PORMY(PORMYPK pormyPK) {
         this.pormyPK = pormyPK;
     }
 
-    public Pormy(String my001, String my002) {
-        this.pormyPK = new PormyPK(my001, my002);
+    public PORMY(String my001, String my002) {
+        this.pormyPK = new PORMYPK(my001, my002);
     }
 
-    public PormyPK getPormyPK() {
+    public PORMYPK getPormyPK() {
         return pormyPK;
     }
 
-    public void setPormyPK(PormyPK pormyPK) {
+    public void setPormyPK(PORMYPK pormyPK) {
         this.pormyPK = pormyPK;
     }
 
@@ -748,10 +748,10 @@ public class Pormy implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Pormy)) {
+        if (!(object instanceof PORMY)) {
             return false;
         }
-        Pormy other = (Pormy) object;
+        PORMY other = (PORMY) object;
         if ((this.pormyPK == null && other.pormyPK != null) || (this.pormyPK != null && !this.pormyPK.equals(other.pormyPK))) {
             return false;
         }

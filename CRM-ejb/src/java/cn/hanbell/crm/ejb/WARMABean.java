@@ -6,7 +6,6 @@
 package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
-import cn.hanbell.crm.entity.Pormy;
 import cn.hanbell.crm.entity.WARMA;
 import java.util.List;
 import javax.ejb.LocalBean;

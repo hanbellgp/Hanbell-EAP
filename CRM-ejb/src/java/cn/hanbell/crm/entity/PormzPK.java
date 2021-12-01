@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
  * @author Administrator
  */
 @Embeddable
-public class PormzPK implements Serializable {
+public class PORMZPK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
@@ -35,10 +35,10 @@ public class PormzPK implements Serializable {
     @Column(name = "MZ003")
     private String mz003;
 
-    public PormzPK() {
+    public PORMZPK() {
     }
 
-    public PormzPK(String mz001, String mz002, String mz003) {
+    public PORMZPK(String mz001, String mz002, String mz003) {
         this.mz001 = mz001;
         this.mz002 = mz002;
         this.mz003 = mz003;
@@ -80,10 +80,10 @@ public class PormzPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PormzPK)) {
+        if (!(object instanceof PORMZPK)) {
             return false;
         }
-        PormzPK other = (PormzPK) object;
+        PORMZPK other = (PORMZPK) object;
         if ((this.mz001 == null && other.mz001 != null) || (this.mz001 != null && !this.mz001.equals(other.mz001))) {
             return false;
         }

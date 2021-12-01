@@ -10,6 +10,7 @@ import cn.hanbell.crm.entity.CMSMV;
 import cn.hanbell.crm.entity.REPTC;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -62,7 +63,7 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
             return null;
         }
     }
-    
+
     /**
      * @param y
      * @param m
@@ -152,15 +153,15 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
     public List<REPTC> getReptcByTC001OrTc002(String maintainformtype, String maintainform) {
         Query query = null;
         if (maintainform != null & !"".equals(maintainform)) {
-            StringBuffer sql=new StringBuffer("SELECT * FROM REPTC r WHERE r.TC001 = '");
+            StringBuffer sql = new StringBuffer("SELECT * FROM REPTC r WHERE r.TC001 = '");
             sql.append(maintainformtype).append("' AND r.TC002 like '%").append(maintainform).append("%'");
             sql.append(" order by CREATE_DATE desc");
-            query = getEntityManager().createNativeQuery(sql.toString(),REPTC.class);
+            query = getEntityManager().createNativeQuery(sql.toString(), REPTC.class);
         } else {
-            StringBuffer sql=new StringBuffer("SELECT * FROM REPTC  WHERE TC001 = '");
+            StringBuffer sql = new StringBuffer("SELECT * FROM REPTC  WHERE TC001 = '");
             sql.append(maintainformtype).append("'");
             sql.append(" order by CREATE_DATE desc");
-            query = getEntityManager().createNativeQuery(sql.toString(),REPTC.class);
+            query = getEntityManager().createNativeQuery(sql.toString(), REPTC.class);
         }
         try {
             List<REPTC> list = query.getResultList();
@@ -170,12 +171,11 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
             return null;
         }
     }
-    
+
     /**
-     * @return 
-     * @dscription获取CRM的品号类别编号
+     * @return @dscription获取CRM的品号类别编号
      */
-    public List<Object> getItntypeList(){
+    public List<Object> getItntypeList() {
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT AA002 AS MA002 FROM SERAA ");
         sb.append(" UNION ");
@@ -187,6 +187,30 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
         } catch (NumberFormatException ex) {
             return null;
         }
+    }
+
+    /**
+     * 获取可维护的工作记录，报销
+     *
+     * @param userId
+     * @return
+     * @throws ParseException
+     */
+    public List<Object> getCRMWorkRecordList(String userId) throws ParseException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT TC002,TC001,TC003,TC007,GG003 FROM REPTC ");
+        sb.append("LEFT JOIN CRMGG ON GG001 = TC007 ");
+        sb.append("LEFT JOIN SERBQ ON BQ001=TC054 AND BQ059<>3 ");
+        sb.append("WHERE TC091=0 AND TC034<>'V' ");
+        sb.append("AND REPTC.CREATE_DATE>'20210101' AND TC016 ='").append(userId).append("'");
+        sb.append(" UNION ALL SELECT FI001,'',FI005,FI024,GG003 FROM SALFI ");
+        sb.append("LEFT JOIN CRMGG ON CRMGG.GG001 =FI024 ");
+        sb.append("WHERE FI057=0 AND FI018='N' ");
+        sb.append("AND SALFI.CREATE_DATE>'20210101' ");
+        sb.append("AND SALFI.FI004 = '").append(userId).append("'");
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        List result = query.getResultList();
+        return result;
     }
 
 }

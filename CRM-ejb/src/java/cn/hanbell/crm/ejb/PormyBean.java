@@ -6,32 +6,58 @@
 package cn.hanbell.crm.ejb;
 
 import cn.hanbell.crm.comm.SuperEJBForCRM;
-import cn.hanbell.crm.entity.Pormy;
-import cn.hanbell.crm.entity.PormyPK;
+import cn.hanbell.crm.entity.PORMY;
+import cn.hanbell.crm.entity.PORMYPK;
+import cn.hanbell.util.BaseLib;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
 
 @Stateless
 @LocalBean
-public class PormyBean extends SuperEJBForCRM<Pormy> {
+public class PORMYBean extends SuperEJBForCRM<PORMY> {
 
-    public PormyBean() {
-        super(Pormy.class);
+    public PORMYBean() {
+        super(PORMY.class);
     }
 
-    public Pormy findByMY002(String crmno) {
-        PormyPK pk = new PormyPK();
+    public PORMY findByMY002(String crmno) {
+        PORMYPK pk = new PORMYPK();
         pk.setMy001("A1");
         pk.setMy002(crmno);
-        Query query = getEntityManager().createNamedQuery("Pormy.findByPK");
+        Query query = getEntityManager().createNamedQuery("PORMY.findByPK");
         query.setParameter("pormyPK", pk);
         try {
             Object o = query.getSingleResult();
-            return (Pormy) o;
+            return (PORMY) o;
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    public String getSerialNumber(String my003) {
+        String ls_no = "";
+        String serial = "000";
+        String sql = "SELECT * FROM PORMY WHERE MY002 LIKE '" + my003 + "%' ORDER BY MY002 DESC ";
+        Query query = getEntityManager().createNativeQuery(sql);
+        List result = query.getResultList();
+        int m = 0;
+        if (null != result && !result.isEmpty()) {
+            m = result.size();
+            m = m + 1;
+        } else {
+            m = 1;
+        }
+        serial = serial + m;
+        serial = serial.substring(String.valueOf(m).length());
+        ls_no = my003 + serial;
+        return ls_no;
+    }
+
+    //事务回滚
+    public void rollback() {
+        this.getEntityManager().getTransaction().rollback();
     }
 
 }

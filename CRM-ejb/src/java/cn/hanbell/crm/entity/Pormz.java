@@ -24,80 +24,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "PORMZ")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Pormz.findAll", query = "SELECT p FROM Pormz p"),
-    @NamedQuery(name = "Pormz.findByCompany", query = "SELECT p FROM Pormz p WHERE p.company = :company"),
-    @NamedQuery(name = "Pormz.findByCreator", query = "SELECT p FROM Pormz p WHERE p.creator = :creator"),
-    @NamedQuery(name = "Pormz.findByUsrGroup", query = "SELECT p FROM Pormz p WHERE p.usrGroup = :usrGroup"),
-    @NamedQuery(name = "Pormz.findByCreateDate", query = "SELECT p FROM Pormz p WHERE p.createDate = :createDate"),
-    @NamedQuery(name = "Pormz.findByModifier", query = "SELECT p FROM Pormz p WHERE p.modifier = :modifier"),
-    @NamedQuery(name = "Pormz.findByModiDate", query = "SELECT p FROM Pormz p WHERE p.modiDate = :modiDate"),
-    @NamedQuery(name = "Pormz.findByFlag", query = "SELECT p FROM Pormz p WHERE p.flag = :flag"),
-    @NamedQuery(name = "Pormz.findByPormz01", query = "SELECT p FROM Pormz p WHERE p.pormz01 = :pormz01"),
-    @NamedQuery(name = "Pormz.findByPormz02", query = "SELECT p FROM Pormz p WHERE p.pormz02 = :pormz02"),
-    @NamedQuery(name = "Pormz.findByPormz03", query = "SELECT p FROM Pormz p WHERE p.pormz03 = :pormz03"),
-    @NamedQuery(name = "Pormz.findByPormz04", query = "SELECT p FROM Pormz p WHERE p.pormz04 = :pormz04"),
-    @NamedQuery(name = "Pormz.findByPormz05", query = "SELECT p FROM Pormz p WHERE p.pormz05 = :pormz05"),
-    @NamedQuery(name = "Pormz.findByPormz06", query = "SELECT p FROM Pormz p WHERE p.pormz06 = :pormz06"),
-    @NamedQuery(name = "Pormz.findByPormz07", query = "SELECT p FROM Pormz p WHERE p.pormz07 = :pormz07"),
-    @NamedQuery(name = "Pormz.findByPormz08", query = "SELECT p FROM Pormz p WHERE p.pormz08 = :pormz08"),
-    @NamedQuery(name = "Pormz.findByPormz09", query = "SELECT p FROM Pormz p WHERE p.pormz09 = :pormz09"),
-    @NamedQuery(name = "Pormz.findByPormz10", query = "SELECT p FROM Pormz p WHERE p.pormz10 = :pormz10"),
-    @NamedQuery(name = "Pormz.findByPormz11", query = "SELECT p FROM Pormz p WHERE p.pormz11 = :pormz11"),
-    @NamedQuery(name = "Pormz.findByPormz12", query = "SELECT p FROM Pormz p WHERE p.pormz12 = :pormz12"),
-    @NamedQuery(name = "Pormz.findByPormz13", query = "SELECT p FROM Pormz p WHERE p.pormz13 = :pormz13"),
-    @NamedQuery(name = "Pormz.findByPormz14", query = "SELECT p FROM Pormz p WHERE p.pormz14 = :pormz14"),
-    @NamedQuery(name = "Pormz.findByPormz15", query = "SELECT p FROM Pormz p WHERE p.pormz15 = :pormz15"),
-    @NamedQuery(name = "Pormz.findByPormz16", query = "SELECT p FROM Pormz p WHERE p.pormz16 = :pormz16"),
-    @NamedQuery(name = "Pormz.findByPormz17", query = "SELECT p FROM Pormz p WHERE p.pormz17 = :pormz17"),
-    @NamedQuery(name = "Pormz.findByPormz18", query = "SELECT p FROM Pormz p WHERE p.pormz18 = :pormz18"),
-    @NamedQuery(name = "Pormz.findByPormz19", query = "SELECT p FROM Pormz p WHERE p.pormz19 = :pormz19"),
-    @NamedQuery(name = "Pormz.findByPormz20", query = "SELECT p FROM Pormz p WHERE p.pormz20 = :pormz20"),
-    @NamedQuery(name = "Pormz.findByCustomer", query = "SELECT p FROM Pormz p WHERE p.customer = :customer"),
-    @NamedQuery(name = "Pormz.findByProduct", query = "SELECT p FROM Pormz p WHERE p.product = :product"),
-    @NamedQuery(name = "Pormz.findByRegion", query = "SELECT p FROM Pormz p WHERE p.region = :region"),
-    @NamedQuery(name = "Pormz.findByDealer", query = "SELECT p FROM Pormz p WHERE p.dealer = :dealer"),
-    @NamedQuery(name = "Pormz.findByMz001", query = "SELECT p FROM Pormz p WHERE p.pormzPK.mz001 = :mz001"),
-    @NamedQuery(name = "Pormz.findByMz002", query = "SELECT p FROM Pormz p WHERE p.pormzPK.mz002 = :mz002"),
-    @NamedQuery(name = "Pormz.findByMz003", query = "SELECT p FROM Pormz p WHERE p.pormzPK.mz003 = :mz003"),
-    @NamedQuery(name = "Pormz.findByMz004", query = "SELECT p FROM Pormz p WHERE p.mz004 = :mz004"),
-    @NamedQuery(name = "Pormz.findByMz005", query = "SELECT p FROM Pormz p WHERE p.mz005 = :mz005"),
-    @NamedQuery(name = "Pormz.findByMz006", query = "SELECT p FROM Pormz p WHERE p.mz006 = :mz006"),
-    @NamedQuery(name = "Pormz.findByMz007", query = "SELECT p FROM Pormz p WHERE p.mz007 = :mz007"),
-    @NamedQuery(name = "Pormz.findByMz008", query = "SELECT p FROM Pormz p WHERE p.mz008 = :mz008"),
-    @NamedQuery(name = "Pormz.findByMz009", query = "SELECT p FROM Pormz p WHERE p.mz009 = :mz009"),
-    @NamedQuery(name = "Pormz.findByMz010", query = "SELECT p FROM Pormz p WHERE p.mz010 = :mz010"),
-    @NamedQuery(name = "Pormz.findByMz011", query = "SELECT p FROM Pormz p WHERE p.mz011 = :mz011"),
-    @NamedQuery(name = "Pormz.findByMz012", query = "SELECT p FROM Pormz p WHERE p.mz012 = :mz012"),
-    @NamedQuery(name = "Pormz.findByMz013", query = "SELECT p FROM Pormz p WHERE p.mz013 = :mz013"),
-    @NamedQuery(name = "Pormz.findByMz014", query = "SELECT p FROM Pormz p WHERE p.mz014 = :mz014"),
-    @NamedQuery(name = "Pormz.findByMz015", query = "SELECT p FROM Pormz p WHERE p.mz015 = :mz015"),
-    @NamedQuery(name = "Pormz.findByMz016", query = "SELECT p FROM Pormz p WHERE p.mz016 = :mz016"),
-    @NamedQuery(name = "Pormz.findByMz017", query = "SELECT p FROM Pormz p WHERE p.mz017 = :mz017"),
-    @NamedQuery(name = "Pormz.findByMz018", query = "SELECT p FROM Pormz p WHERE p.mz018 = :mz018"),
-    @NamedQuery(name = "Pormz.findByMz019", query = "SELECT p FROM Pormz p WHERE p.mz019 = :mz019"),
-    @NamedQuery(name = "Pormz.findByMz020", query = "SELECT p FROM Pormz p WHERE p.mz020 = :mz020"),
-    @NamedQuery(name = "Pormz.findByMz021", query = "SELECT p FROM Pormz p WHERE p.mz021 = :mz021"),
-    @NamedQuery(name = "Pormz.findByMz022", query = "SELECT p FROM Pormz p WHERE p.mz022 = :mz022"),
-    @NamedQuery(name = "Pormz.findByMz023", query = "SELECT p FROM Pormz p WHERE p.mz023 = :mz023"),
-    @NamedQuery(name = "Pormz.findByMz024", query = "SELECT p FROM Pormz p WHERE p.mz024 = :mz024"),
-    @NamedQuery(name = "Pormz.findByMz025", query = "SELECT p FROM Pormz p WHERE p.mz025 = :mz025"),
-    @NamedQuery(name = "Pormz.findByMz026", query = "SELECT p FROM Pormz p WHERE p.mz026 = :mz026"),
-    @NamedQuery(name = "Pormz.findByMz027", query = "SELECT p FROM Pormz p WHERE p.mz027 = :mz027"),
-    @NamedQuery(name = "Pormz.findByMz028", query = "SELECT p FROM Pormz p WHERE p.mz028 = :mz028"),
-    @NamedQuery(name = "Pormz.findByMz029", query = "SELECT p FROM Pormz p WHERE p.mz029 = :mz029"),
-    @NamedQuery(name = "Pormz.findByMz030", query = "SELECT p FROM Pormz p WHERE p.mz030 = :mz030"),
-    @NamedQuery(name = "Pormz.findByMz031", query = "SELECT p FROM Pormz p WHERE p.mz031 = :mz031"),
-    @NamedQuery(name = "Pormz.findByMz032", query = "SELECT p FROM Pormz p WHERE p.mz032 = :mz032"),
-    @NamedQuery(name = "Pormz.findByMz033", query = "SELECT p FROM Pormz p WHERE p.mz033 = :mz033"),
-    @NamedQuery(name = "Pormz.findByMz034", query = "SELECT p FROM Pormz p WHERE p.mz034 = :mz034"),
-    @NamedQuery(name = "Pormz.findByMz035", query = "SELECT p FROM Pormz p WHERE p.mz035 = :mz035"),
-    @NamedQuery(name = "Pormz.findByMz036", query = "SELECT p FROM Pormz p WHERE p.mz036 = :mz036"),
-    @NamedQuery(name = "Pormz.findByMz037", query = "SELECT p FROM Pormz p WHERE p.mz037 = :mz037")})
-public class Pormz implements Serializable {
+    @NamedQuery(name = "PORMZ.findAll", query = "SELECT p FROM PORMZ p"),
+    @NamedQuery(name = "PORMZ.findByCompany", query = "SELECT p FROM PORMZ p WHERE p.company = :company"),
+    @NamedQuery(name = "PORMZ.findByCreator", query = "SELECT p FROM PORMZ p WHERE p.creator = :creator"),
+    @NamedQuery(name = "PORMZ.findByUsrGroup", query = "SELECT p FROM PORMZ p WHERE p.usrGroup = :usrGroup"),
+    @NamedQuery(name = "PORMZ.findByCreateDate", query = "SELECT p FROM PORMZ p WHERE p.createDate = :createDate"),
+    @NamedQuery(name = "PORMZ.findByModifier", query = "SELECT p FROM PORMZ p WHERE p.modifier = :modifier"),
+    @NamedQuery(name = "PORMZ.findByModiDate", query = "SELECT p FROM PORMZ p WHERE p.modiDate = :modiDate"),
+    @NamedQuery(name = "PORMZ.findByFlag", query = "SELECT p FROM PORMZ p WHERE p.flag = :flag"),
+    @NamedQuery(name = "PORMZ.findByPORMZ01", query = "SELECT p FROM PORMZ p WHERE p.pormz01 = :pormz01"),
+    @NamedQuery(name = "PORMZ.findByPORMZ02", query = "SELECT p FROM PORMZ p WHERE p.pormz02 = :pormz02"),
+    @NamedQuery(name = "PORMZ.findByPORMZ03", query = "SELECT p FROM PORMZ p WHERE p.pormz03 = :pormz03"),
+    @NamedQuery(name = "PORMZ.findByCustomer", query = "SELECT p FROM PORMZ p WHERE p.customer = :customer"),
+    @NamedQuery(name = "PORMZ.findByProduct", query = "SELECT p FROM PORMZ p WHERE p.product = :product"),
+    @NamedQuery(name = "PORMZ.findByRegion", query = "SELECT p FROM PORMZ p WHERE p.region = :region"),
+    @NamedQuery(name = "PORMZ.findByDealer", query = "SELECT p FROM PORMZ p WHERE p.dealer = :dealer"),
+    @NamedQuery(name = "PORMZ.findByMz001", query = "SELECT p FROM PORMZ p WHERE p.pormzPK.mz001 = :mz001"),
+    @NamedQuery(name = "PORMZ.findByMz002", query = "SELECT p FROM PORMZ p WHERE p.pormzPK.mz002 = :mz002"),
+    @NamedQuery(name = "PORMZ.findByMz003", query = "SELECT p FROM PORMZ p WHERE p.pormzPK.mz003 = :mz003")})
+public class PORMZ implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected PormzPK pormzPK;
+    protected PORMZPK pormzPK;
     @Size(max = 20)
     @Column(name = "COMPANY")
     private String company;
@@ -286,22 +235,22 @@ public class Pormz implements Serializable {
     @Column(name = "MZ037")
     private String mz037;
 
-    public Pormz() {
+    public PORMZ() {
     }
 
-    public Pormz(PormzPK pormzPK) {
+    public PORMZ(PORMZPK pormzPK) {
         this.pormzPK = pormzPK;
     }
 
-    public Pormz(String mz001, String mz002, String mz003) {
-        this.pormzPK = new PormzPK(mz001, mz002, mz003);
+    public PORMZ(String mz001, String mz002, String mz003) {
+        this.pormzPK = new PORMZPK(mz001, mz002, mz003);
     }
 
-    public PormzPK getPormzPK() {
+    public PORMZPK getPormzPK() {
         return pormzPK;
     }
 
-    public void setPormzPK(PormzPK pormzPK) {
+    public void setPormzPK(PORMZPK pormzPK) {
         this.pormzPK = pormzPK;
     }
 
@@ -835,10 +784,10 @@ public class Pormz implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Pormz)) {
+        if (!(object instanceof PORMZ)) {
             return false;
         }
-        Pormz other = (Pormz) object;
+        PORMZ other = (PORMZ) object;
         if ((this.pormzPK == null && other.pormzPK != null) || (this.pormzPK != null && !this.pormzPK.equals(other.pormzPK))) {
             return false;
         }
