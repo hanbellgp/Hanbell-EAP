@@ -52,6 +52,7 @@ public class HZCW017Model implements Serializable {
     private String product;
     private Date prePayDate;
     private String userTitle;
+    private String srcno;
 
     public HZCW017Model() {
     }
@@ -358,6 +359,14 @@ public class HZCW017Model implements Serializable {
 
     public void setUserTitle(String userTitle) {
         this.userTitle = userTitle;
+    }
+
+    public String getSrcno() {
+        return srcno;
+    }
+
+    public void setSrcno(String srcno) {
+        this.srcno = srcno;
     }
 
 }

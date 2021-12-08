@@ -42,7 +42,7 @@ public class HZCW017Bean extends SuperEJBForEFGP<HZCW017> {
         List<HZCW017> hzcw017List;
         List<HZCW033reDetail> hzcw033reDetails;
         try {
-            Query q = this.getEntityManager().createQuery("SELECT a from HZCW017 a WHERE a.processInstance.currentState = 3 and a.arrears > 0 and a.loanUser = :loanUser ");
+            Query q = this.getEntityManager().createQuery("SELECT a from HZCW017 a WHERE a.processInstance.currentState <= 3 and a.arrears > 0 and a.loanUser = :loanUser ");
             q.setParameter("loanUser", userno);
             hzcw017List = q.getResultList();
             if (hzcw017List.size() > 0) {

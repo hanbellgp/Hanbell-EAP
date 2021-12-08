@@ -8,7 +8,6 @@ package cn.hanbell.crm.ejb;
 import cn.hanbell.crm.comm.SuperEJBForCRM;
 import cn.hanbell.crm.entity.PORMY;
 import cn.hanbell.crm.entity.PORMYPK;
-import cn.hanbell.util.BaseLib;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -53,11 +52,6 @@ public class PORMYBean extends SuperEJBForCRM<PORMY> {
         serial = serial.substring(String.valueOf(m).length());
         ls_no = my003 + serial;
         return ls_no;
-    }
-
-    //事务回滚
-    public void rollback() {
-        this.getEntityManager().getTransaction().rollback();
     }
 
 }

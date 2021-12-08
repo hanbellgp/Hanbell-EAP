@@ -54,7 +54,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -101,6 +106,8 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
     private PORMYBean pormyBean;
     @EJB
     private PORMZBean pormzBean;
+    @Resource
+    private UserTransaction tran;
 
     public HZCW028FacadeREST() {
         super(HZCW028.class);
@@ -117,7 +124,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CheckMCHZCW028(MCHZCW028 entity) {
         MCResponseData rs = new MCResponseData();
-        rs = checkBeforeSend(entity);
+        rs = checkBeforeSend(0, entity);
         return rs;
     }
 
@@ -128,7 +135,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
     public MCResponseData CreateOAHZCWO28(MCHZCW028 entity) {
         try {
             MCResponseData rs = new MCResponseData();
-            rs = checkBeforeSend(entity);
+            rs = checkBeforeSend(1, entity);
             if (rs.getCode() != 200) {
                 return rs;
             }
@@ -136,6 +143,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             if (!hzcw017Bean.checkArrears(entity.getAppUser())) {
                 return new MCResponseData(109, "您有借款未还不能再发起借支申请");
             }
+            tran.begin();
             //初始化CRM资料
             if (entity.getCrmno() != null && !entity.getCrmno().isEmpty()) {
                 boolean isIniCRM = initialCRMWorkDetail(entity);
@@ -188,7 +196,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             }
             List<MCHZCW028tDetail> tds = entity.getTravel_items();
             List<HZCW028tDetailModel> tms = new ArrayList<>();
-            if (!tds.isEmpty()) {
+            if (tds != null && !tds.isEmpty()) {
                 int tseq = 0;
                 for (MCHZCW028tDetail td : tds) {
                     tseq++;
@@ -263,6 +271,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             String subject = m.getAppUser() + "发起报销申请";
             String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HZ_CW028", formInstance, subject);
             String[] rm = msg.split("\\$");
+            tran.commit();
             if (rm.length == 2) {
                 return new MCResponseData(Integer.parseInt(rm[0]), rm[1]);
             } else {
@@ -270,16 +279,24 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             }
 
         } catch (Exception e) {
-            //pormyBean.getEntityManager().getTransaction().rollback();
-            //pormzBean.getEntityManager().getTransaction().rollback();
-            pormyBean.rollback();
-            salftBean.rollback();
-            log4j.error(e.toString());
-            return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
+            try {
+                e.printStackTrace();
+                tran.rollback();
+                return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
+            } catch (Exception ex) {
+                Logger.getLogger(HZCW028FacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+                return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
+            }
         }
     }
 
-    public MCResponseData checkBeforeSend(MCHZCW028 mc) {
+    /**
+     *
+     * @param status 0发起费控前检核，1发起OA前检核
+     * @param mc 检核报销单
+     * @return
+     */
+    public MCResponseData checkBeforeSend(int status, MCHZCW028 mc) {
         int code = 200;
         String msg = "抛转检核OK";
         try {
@@ -423,7 +440,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             }
             if (("0".equals(cost) || "1".equals(cost))) {
                 List<MCHZCW028tDetail> travels = mc.getTravel_items();
-                if (travels.isEmpty()) {
+                if (travels == null || travels.isEmpty()) {
                     code = 107;
                     msg = "差旅明细不能为空";
                     return new MCResponseData(code, msg);
@@ -470,16 +487,26 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 msg = "部门期间余额小于零不能申请";
                 return new MCResponseData(code, msg);
             }
-            //预算中间表检查是否发起过
+            /**
+             * 预算中间表检查是否发起过 status =0 预算新增前检查，status=1 预算新增后发起OA检查
+             */
             List<Mcbudget> mcbudgets = mcbudgetBean.findBySrcno(srcno);
-            if (null != mcbudgets && mcbudgets.size() > 0) {
-                code = 108;
-                msg = "此费控单号已发起过预算单据";
-                return new MCResponseData(code, msg);
+            if (status == 0) {
+                if (null != mcbudgets && mcbudgets.size() > 0) {
+                    code = 108;
+                    msg = "此费控单号已发起过预算单据";
+                    return new MCResponseData(code, msg);
+                }
+            } else if (status == 1) {
+                if (null != mcbudgets && mcbudgets.size() < 1) {
+                    code = 108;
+                    msg = "此费控单号未关连预算";
+                    return new MCResponseData(code, msg);
+                }
             }
-
             return new MCResponseData(code, msg);
         } catch (Exception e) {
+            e.printStackTrace();
             log4j.error(e.toString());
             return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
         }
@@ -941,6 +968,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             log4j.error(e.toString());
             throw new RuntimeException(e.toString());
         }
