@@ -54,7 +54,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.naming.InitialContext;
+import javax.transaction.UserTransaction;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -101,6 +104,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
     private PORMYBean pormyBean;
     @EJB
     private PORMZBean pormzBean;
+//    @Resource
+//    UserTransaction tran;
 
     public HZCW033FacadeREST() {
         super(HZCW033.class);
@@ -117,7 +122,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CheckMCHZCW033(MCHZCW033 entity) {
         MCResponseData rs = new MCResponseData();
-        rs = checkBeforeSend(entity);
+        rs = checkBeforeSend(0, entity);
         return rs;
     }
 
@@ -126,12 +131,16 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
     @Consumes({"application/json"})
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CreateOAHZCWO33(MCHZCW033 entity) {
+        UserTransaction tran = null;
         try {
+            InitialContext context = new InitialContext();
+            tran = (UserTransaction) context.lookup("UserTransaction");
             MCResponseData rs = new MCResponseData();
-            rs = checkBeforeSend(entity);
+            rs = checkBeforeSend(1, entity);
             if (rs.getCode() != 200) {
                 return rs;
             }
+            tran.begin();
             //初始化CRM资料
             if (entity.getCrmno() != null && !entity.getCrmno().isEmpty()) {
                 boolean isIniCRM = initialCRMWorkDetail(entity);
@@ -193,7 +202,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             }
             List<MCHZCW033tDetail> tds = entity.getTravel_items();
             List<HZCW033tDetailModel> tms = new ArrayList<>();
-            if (!tds.isEmpty()) {
+            if (tds != null && !tds.isEmpty()) {
                 int tseq = 0;
                 for (MCHZCW033tDetail td : tds) {
                     tseq++;
@@ -266,18 +275,36 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HZ_CW033", formInstance, subject);
             String[] rm = msg.split("\\$");
             if (rm.length == 2) {
+                tran.commit();
                 return new MCResponseData(Integer.parseInt(rm[0]), rm[1]);
             } else {
                 return new MCResponseData(200, "Code=200");
             }
 
         } catch (Exception e) {
+            try {
+                //pormyBean.getEntityManager().getTransaction().rollback();
+                //pormzBean.getEntityManager().getTransaction().rollback();
+                //salftBean.rollback();
+                //pormyBean.rollback();
+                tran.rollback();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
+            }
+            e.printStackTrace();
             log4j.error(e.toString());
             return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
         }
     }
 
-    public MCResponseData checkBeforeSend(MCHZCW033 mc) {
+    /**
+     *
+     * @param status 0发起费控前检核，1发起OA前检核
+     * @param mc 检核借支归还
+     * @return
+     */
+    public MCResponseData checkBeforeSend(int status, MCHZCW033 mc) {
         int code = 200;
         String msg = "抛转检核OK";
         try {
@@ -433,7 +460,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             }
             if (("0".equals(cost) || "1".equals(cost))) {
                 List<MCHZCW033tDetail> travels = mc.getTravel_items();
-                if (travels.isEmpty()) {
+                if (travels == null || travels.isEmpty()) {
                     code = 107;
                     msg = "差旅明细不能为空";
                     return new MCResponseData(code, msg);
@@ -480,15 +507,26 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 msg = "部门期间余额小于零不能申请";
                 return new MCResponseData(code, msg);
             }
-            //预算中间表检查是否发起过
+            /**
+             * 预算中间表检查是否发起过 status =0 预算新增前检查，status=1 预算新增后发起OA检查
+             */
             List<Mcbudget> mcbudgets = mcbudgetBean.findBySrcno(srcno);
-            if (null != mcbudgets && mcbudgets.size() > 0) {
-                code = 108;
-                msg = "此费控单号已发起过预算单据";
-                return new MCResponseData(code, msg);
+            if (status == 0) {
+                if (null != mcbudgets && mcbudgets.size() > 0) {
+                    code = 108;
+                    msg = "此费控单号已发起过预算单据";
+                    return new MCResponseData(code, msg);
+                }
+            } else if (status == 1) {
+                if (null != mcbudgets && mcbudgets.size() < 1) {
+                    code = 108;
+                    msg = "此费控单号未关连预算";
+                    return new MCResponseData(code, msg);
+                }
             }
             return new MCResponseData(code, msg);
         } catch (Exception e) {
+            e.printStackTrace();
             log4j.error(e.toString());
             return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
         }

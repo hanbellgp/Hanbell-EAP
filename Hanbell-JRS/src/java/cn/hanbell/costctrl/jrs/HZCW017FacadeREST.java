@@ -155,6 +155,7 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
             la.setProduct("R");
             la.setPrePayDate(BaseLib.getDate("yyyy/MM/dd", entity.getPrePayDate()));
             la.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
+            la.setSrcno(entity.getSrcno());
 
             //发起流程
             String formInstance = workFlowBean.buildXmlForEFGP("HZ_CW017", la, null);
@@ -185,7 +186,7 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
             Date date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())); //日期
             String period = BaseLib.formatDate("yyyyMM", date);
             String srcno = mc.getSrcno();
-            if (srcno.isEmpty()) {
+            if (srcno == null || srcno.isEmpty()) {
                 code = 107;
                 msg = "来源单号不能为空";
                 return new MCResponseData(code, msg);
@@ -242,7 +243,7 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
                 return new MCResponseData(code, msg);
             }
             String reason = mc.getReason();
-            if (reason.isEmpty()) {
+            if (reason == null || reason.isEmpty()) {
                 code = 107;
                 msg = "借支理由不能为空";
                 return new MCResponseData(code, msg);
@@ -258,6 +259,7 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
 
             return new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             log4j.error(e.toString());
             return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
         }

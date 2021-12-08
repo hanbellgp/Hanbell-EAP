@@ -346,8 +346,11 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                     chad.setInvoiceyn(chmas.getInvoiceyn());
                     chad.setHmark2(chmas.getHmark1());//订单产品别写入出货单
                     chad.setIndate(shpdate);
-                    chad.setUserno(chmas.getUserno());
-
+                    if (f.getCdruserno() == null || f.getCdruserno().isEmpty()) {
+                        chad.setUserno(chmas.getUserno());
+                    } else {
+                        chad.setUserno(f.getCdruserno());
+                    }
                     ls_moveno = cdrsysBean.getSerialNumber(facno, "", "", shpdate, decode, Boolean.TRUE, "O" + "CDR645");
                     chad.setMoveno(ls_moveno); //海关仓转移单号
                     transwahBean.setCompany(facno);
