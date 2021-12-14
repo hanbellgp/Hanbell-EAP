@@ -49,6 +49,7 @@ public class LeaveKindFacadeREST extends SuperRESTForEFGP<KV> {
                 dataList.add(new KV("11", "公假"));
                 dataList.add(new KV("12", "丧假"));
                 dataList.add(new KV("13", "补休假"));
+                dataList.add(new KV("18", "育儿假"));
                 return dataList;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
