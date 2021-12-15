@@ -9,7 +9,6 @@ import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
 import cn.hanbell.oa.app.MCHZGL004;
 import cn.hanbell.oa.app.MCHZGL004BizDetail;
-import cn.hanbell.oa.app.OvertimeApplicationDetail;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HZGL004Bean;
 import cn.hanbell.oa.entity.HZGL004;
@@ -120,6 +119,9 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 Date date1 = BaseLib.getDate("yyyy-MM-dd", mcd.getBizDate());
                 if (zero.getTime() >= date1.getTime()) {
                     return new ResponseMessage("500", "填单日期晚于实际出差日期不可以申请！");
+                }
+                if(date1.getTime()<m.getDay1().getTime()||date1.getTime()>m.getDay2().getTime()){
+                    return new ResponseMessage("500", "出差日期不在出差起止日期内！");
                 }
                 seq++;
                 d = new HZGL004BizDetailModel();
