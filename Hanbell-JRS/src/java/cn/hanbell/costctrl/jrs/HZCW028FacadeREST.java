@@ -275,7 +275,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             if (rm.length == 2) {
                 return new MCResponseData(Integer.parseInt(rm[0]), rm[1]);
             } else {
-                return new MCResponseData(200, "Code=200");
+                return new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
             }
 
         } catch (Exception e) {
