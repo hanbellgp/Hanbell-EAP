@@ -75,7 +75,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
     @Produces({"application/json"})
     public MCResponseData createOAHZGL004(MCHZGL004 entity) {
         if (entity == null) {
-            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            return new MCResponseData(MessageEnum.Failue_107.getCode(), MessageEnum.Failue_107.getMsg());
         }
         //先检核再新增
         MCResponseData rs = new MCResponseData();
@@ -141,10 +141,11 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             if (rm.length == 2) {
                 return new MCResponseData(Integer.valueOf(rm[0]), rm[1]);
             } else {
-                return new MCResponseData(200, "Code=200");
+                return new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
             }
         } catch (Exception ex) {
-            return new MCResponseData(500, "系统错误更新失败");
+            ex.printStackTrace();
+            return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
         }
     }
 
@@ -188,6 +189,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             }
             return new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             log4j.error(e.toString());
             return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
         }
