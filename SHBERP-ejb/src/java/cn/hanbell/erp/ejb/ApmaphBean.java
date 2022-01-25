@@ -126,6 +126,7 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
         BigDecimal ldc_unittotqy;
         int llcount;
         StringBuilder sb = new StringBuilder();
+        invpriBean.setCompany(facno);
         Invpri invpri = invpriBean.findByPK(facno, preyrmth, itnbr);
         if (null == invpri || null == invpri.getUnittotqy() || "".equals(invpri.getUnittotqy())) {
             ldc_unittotqy = BigDecimal.ZERO;
