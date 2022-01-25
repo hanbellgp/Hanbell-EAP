@@ -283,17 +283,13 @@ if(master!=null){
 	detail = ejbClient.getDetail(master.getFormSerialNumber());
 	var size=detail.size();
 	if(size==10 || size==9){
-		System.out.println("====currentRow1=====>" ); 
 		reportContext.setParameterValue("grid1",false);
 	}else{
-		System.out.println("====currentRow2=====>" ); 
 		reportContext.setParameterValue("grid1",true);
 	}
 	if(size==8){
-		System.out.println("====currentRow3=====>" ); 
 		reportContext.setParameterValue("grid2",false);
 	}else{
-		System.out.println("====currentRow4=====>" ); 
 		reportContext.setParameterValue("grid2",true);
 	}
 	   
@@ -912,6 +908,12 @@ return false;]]></method>
                     <property name="dataType">string</property>
                     <property name="allowExport">true</property>
                 </structure>
+                <structure>
+                    <property name="name">color16</property>
+                    <expression name="expression" type="javascript">dataSetRow["fkxz"]=="9"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
             <column id="1247">
                 <property name="width">2.8cm</property>
@@ -977,7 +979,8 @@ return false;]]></method>
                     <text id="1468">
                         <property name="textAlign">left</property>
                         <property name="contentType">html</property>
-                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color8"]</VALUE-OF>'> □</span> 转账类
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color16"]</VALUE-OF>'> □</span> 扣款类
+<span style='background-color:<VALUE-OF>row["color8"]</VALUE-OF>'> □</span> 转账类
 <span style='background-color:<VALUE-OF>row["color9"]</VALUE-OF>'> □</span> 理财
 <span style='background-color:<VALUE-OF>row["color10"]</VALUE-OF>'> □</span> 金融衍生性产品
 <span style='background-color:<VALUE-OF>row["color11"]</VALUE-OF>'> □</span> 证券投资
