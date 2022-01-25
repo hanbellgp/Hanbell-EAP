@@ -139,6 +139,7 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
             }
 
         } catch (RuntimeException ex) {
+            ex.printStackTrace();
             log4j.error(ex.toString());
             return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
         }
