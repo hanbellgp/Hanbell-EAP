@@ -94,6 +94,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                     calendar.set(Calendar.MINUTE, 0);
                     calendar.set(Calendar.SECOND, 59);
                     calendar.add(calendar.MINUTE, -1);
+                    calendar.add(Calendar.DATE, -1);
                     Date zero = calendar.getTime();
                     Date date1 = BaseLib.getDate("yyyy-MM-dd", oad.getDate1());
                     if (zero.getTime() >= date1.getTime()) {
