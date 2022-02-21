@@ -26,6 +26,7 @@ public class MCHZGL004 {
     private String vehicle;
     private String otherVehicle;
     private String vehicleDesc;
+    private String country;
     private String destination;
     private String destinationDesc;
     private String startDate;
@@ -155,6 +156,14 @@ public class MCHZGL004 {
      */
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     /**

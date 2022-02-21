@@ -28,6 +28,7 @@ public class HZGL004Model {
     private String vehicle;
     private String otherVehicle;
     private String hdn_vehicle;
+    private String country;
     private String destination;
     private String hdn_destination;
     private Date day1;
@@ -131,6 +132,14 @@ public class HZGL004Model {
      */
     public String getHdn_vehicle() {
         return hdn_vehicle;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     /**
