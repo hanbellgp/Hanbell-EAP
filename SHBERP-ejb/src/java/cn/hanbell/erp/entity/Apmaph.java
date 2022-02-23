@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.erp.entity;
 
@@ -27,8 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "apmaph")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Apmaph.findAll", query = "SELECT a FROM Apmaph a"),
+@NamedQueries({@NamedQuery(name = "Apmaph.findAll", query = "SELECT a FROM Apmaph a"),
     @NamedQuery(name = "Apmaph.findByFacno", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.facno = :facno"),
     @NamedQuery(name = "Apmaph.findByApno", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.apno = :apno"),
     @NamedQuery(name = "Apmaph.findByAptyp", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.aptyp = :aptyp"),
@@ -48,10 +46,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Apmaph.findByHmark", query = "SELECT a FROM Apmaph a WHERE a.hmark = :hmark"),
     @NamedQuery(name = "Apmaph.findByRefno", query = "SELECT a FROM Apmaph a WHERE a.refno = :refno"),
     @NamedQuery(name = "Apmaph.findByPyhyn", query = "SELECT a FROM Apmaph a WHERE a.pyhyn = :pyhyn"),
-    @NamedQuery(name = "Apmaph.findByPK", query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.facno = :facno AND a.apmaphPK.apno = :apno AND a.apmaphPK.aptyp = :aptyp"),
+    @NamedQuery(name = "Apmaph.findByPK",
+        query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.facno = :facno AND a.apmaphPK.apno = :apno AND a.apmaphPK.aptyp = :aptyp"),
     @NamedQuery(name = "Apmaph.findByOano", query = "SELECT a FROM Apmaph a WHERE a.oano = :oano"),
     @NamedQuery(name = "Apmaph.findByPzsta", query = "SELECT a FROM Apmaph a WHERE a.pzsta = :pzsta"),
-    @NamedQuery(name = "Apmaph.findNeedThrow", query = "SELECT a FROM Apmaph a WHERE a.apsta = '20' and a.pzsta = 'Y' and (a.oano is null or a.oano = '') ORDER BY a.apmaphPK.facno ,a.apmaphPK.apno,a.apmaphPK.aptyp")})
+    @NamedQuery(name = "Apmaph.findNeedThrow",
+        query = "SELECT a FROM Apmaph a WHERE a.apsta = '20' and a.pzsta = 'Y' and (a.oano is null or a.oano = '') and a.apmaphPK.aptyp = :aptyp ORDER BY a.apmaphPK.facno ,a.apmaphPK.apno,a.apmaphPK.aptyp")})
 public class Apmaph implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -139,7 +139,8 @@ public class Apmaph implements Serializable {
         this.apmaphPK = apmaphPK;
     }
 
-    public Apmaph(ApmaphPK apmaphPK, String apsta, String depno, String apusrno, Date apdate, String vdrno, String paytn, Date payda, Date indate, String userno) {
+    public Apmaph(ApmaphPK apmaphPK, String apsta, String depno, String apusrno, Date apdate, String vdrno,
+        String paytn, Date payda, Date indate, String userno) {
         this.apmaphPK = apmaphPK;
         this.apsta = apsta;
         this.depno = depno;
@@ -329,8 +330,9 @@ public class Apmaph implements Serializable {
         if (!(object instanceof Apmaph)) {
             return false;
         }
-        Apmaph other = (Apmaph) object;
-        if ((this.apmaphPK == null && other.apmaphPK != null) || (this.apmaphPK != null && !this.apmaphPK.equals(other.apmaphPK))) {
+        Apmaph other = (Apmaph)object;
+        if ((this.apmaphPK == null && other.apmaphPK != null)
+            || (this.apmaphPK != null && !this.apmaphPK.equals(other.apmaphPK))) {
             return false;
         }
         return true;

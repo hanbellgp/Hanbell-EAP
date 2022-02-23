@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.erp.ejb;
 
@@ -38,7 +37,18 @@ public class ApmapdBean extends SuperEJBForERP<Apmapd> {
         query.setParameter("apno", apno);
         query.setParameter("aptyp", aptyp);
         query.setParameter("trseq", trseq);
-        return (Apmapd) query.getSingleResult();
+        try {
+            return (Apmapd)query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Apmapd> findByFacnoAndApno(String facno, String apno) {
+        Query query = this.getEntityManager().createNamedQuery("Apmapd.findByFacnoAndApno");
+        query.setParameter("facno", facno);
+        query.setParameter("apno", apno);
+        return query.getResultList();
     }
 
 }
