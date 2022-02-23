@@ -265,7 +265,7 @@ public class SHBERPAPM828Model implements Serializable {
 
     @Override
     public String toString() {
-        return "cn.hanbell.oa.entity.SHBERPAPM811Model";
+        return "cn.hanbell.oa.entity.SHBERPAPM828Model";
     }
 
 }
