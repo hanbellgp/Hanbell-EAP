@@ -64,16 +64,17 @@ public class CRMWorkRecordFacadeREST extends SuperRESTForCRM<CRMWorkRecord> {
                     Date date;
                     if (null != row[2] && row[2].toString().length() >= 8) {
                         String date1 = row[2].toString();
-                         date = BaseLib.getDate("yyyyMMdd", date1);
+                        String date2 = date1.substring(0, 4) + "/" + date1.substring(4,6) + "/" + date1.substring(6, 8);
+                        date = BaseLib.getDate("yyyy/MM/dd", date2);
                     } else {
                         throw new ParseException("日期格式", i);
                     }
-                    newEntity = new CRMWorkRecord(row[0].toString(), row[1].toString(), BaseLib.formatDate("YYYY/MM/dd", date), row[3] == null ? "" : row[3].toString(), row[4] == null ? "" : row[4].toString());
+                    newEntity = new CRMWorkRecord(row[0].toString(), row[1].toString(), date, row[3] == null ? "" : row[3].toString(), row[4] == null ? "" : row[4].toString());
                     dataList.add(newEntity);
                 }
             }
             MCResponseData res = new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
-            res.setData(dataList);
+            res.setData(arr);
             return res;
         } catch (Exception ex) {
             ex.printStackTrace();

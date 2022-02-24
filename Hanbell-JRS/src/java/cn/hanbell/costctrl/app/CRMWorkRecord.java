@@ -17,11 +17,11 @@ public class CRMWorkRecord {
 
     private String crmno;
     private String trtype;
-    private String tradate;
+    private Date tradate;
     private String cusno;
     private String cusna;
 
-    public CRMWorkRecord(String crmno, String trtype, String tradate, String cusno, String cusna) {
+    public CRMWorkRecord(String crmno, String trtype, Date tradate, String cusno, String cusna) {
         this.crmno = crmno;
         this.trtype = trtype;
         this.tradate = tradate;
@@ -46,11 +46,11 @@ public class CRMWorkRecord {
         this.trtype = trtype;
     }
 
-    public String getTradate() {
+    public Date getTradate() {
         return tradate;
     }
 
-    public void setTradate(String tradate) {
+    public void setTradate(Date tradate) {
         this.tradate = tradate;
     }
 
