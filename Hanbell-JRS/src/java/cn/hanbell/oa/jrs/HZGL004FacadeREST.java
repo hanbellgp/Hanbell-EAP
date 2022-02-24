@@ -85,6 +85,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             m.setApplyDept(ou.getId());
             m.setHdn_applyDept(ou.getOrganizationUnitName());
             m.setFormType(entity.getFormType());
+            m.setCountry(entity.getCountry());
             if ("5".equals(entity.getFormType())) {
                 m.setOtherType(entity.getOtherType());
             } else {
