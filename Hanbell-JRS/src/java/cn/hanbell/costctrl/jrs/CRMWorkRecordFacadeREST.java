@@ -29,14 +29,14 @@ import javax.ws.rs.Produces;
  */
 @Path("costctrl/crm")
 public class CRMWorkRecordFacadeREST extends SuperRESTForCRM<CRMWorkRecord> {
-
+    
     @EJB
     private REPTCBean reptcBean;
-
+    
     public CRMWorkRecordFacadeREST() {
         super(CRMWorkRecord.class);
     }
-
+    
     @POST
     @Path("get")
     @Consumes({"application/json"})
@@ -50,7 +50,7 @@ public class CRMWorkRecordFacadeREST extends SuperRESTForCRM<CRMWorkRecord> {
             if (!entity.checkSign()) {
                 return new MCResponseData(MessageEnum.Failue_102.getCode(), MessageEnum.Failue_102.getMsg());
             }
-
+            
             String userId = entity.getUserId();
             if (null == userId || "".equals(userId)) {
                 return new MCResponseData(MessageEnum.Failue_105.getCode(), MessageEnum.Failue_105.getMsg());
@@ -64,29 +64,28 @@ public class CRMWorkRecordFacadeREST extends SuperRESTForCRM<CRMWorkRecord> {
                     Date date;
                     if (null != row[2] && row[2].toString().length() >= 8) {
                         String date1 = row[2].toString();
-                        String date2 = date1.substring(0, 4) + "/" + date1.substring(4,6) + "/" + date1.substring(6, 8);
-                        date = BaseLib.getDate("yyyy/MM/dd", date2);
+                        date = BaseLib.getDate("yyyyMMdd", date1);
                     } else {
                         throw new ParseException("日期格式", i);
                     }
-                    newEntity = new CRMWorkRecord(row[0].toString(), row[1].toString(), date, row[3] == null ? "" : row[3].toString(), row[4] == null ? "" : row[4].toString());
+                    newEntity = new CRMWorkRecord(row[0].toString(), row[1].toString(), BaseLib.formatDate("YYYY/MM/dd", date), row[3] == null ? "" : row[3].toString(), row[4] == null ? "" : row[4].toString());
                     dataList.add(newEntity);
                 }
             }
             MCResponseData res = new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
-            res.setData(arr);
+            res.setData(dataList);
             return res;
         } catch (Exception ex) {
             ex.printStackTrace();
             log4j.error(ex.toString());
             return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
         }
-
+        
     }
-
+    
     @Override
     protected SuperEJB getSuperEJB() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
 }

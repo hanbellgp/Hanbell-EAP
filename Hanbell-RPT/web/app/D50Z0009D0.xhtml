@@ -98,7 +98,7 @@
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="15,30,45" lazy="true" selectionMode="single"  selection="#{d50Z0009D0ManagedBean.currentEntity}" rowKey="#{item.oid}">
                 <f:facet name="header">
-                    集团工作支援单
+                    集团服务工作申请支援单
                 </f:facet>
                 <p:ajax event="rowSelect"  update="formList:dlgDetail"  oncomplete="PF('dlgDetail').show();" />
                 <p:ajax event="rowUnselect"  update="formList:dlgDetail" oncomplete="" />
