@@ -310,6 +310,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
 
             Date date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())); //日期
             String period = BaseLib.formatDate("yyyyMM", date);
+            String tdstatus = "N";
             String cost = mc.getCost();
             String reimbursement = mc.getReimbursement();
             if (cost.isEmpty() || reimbursement.isEmpty()) {
@@ -420,7 +421,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     default:
                 }
                 if (budgetAcc.substring(0, 2).equals("53")) {
-                    if (r.getResearch().isEmpty()) {
+                    if (r.getResearch() == null || r.getResearch().isEmpty()) {
                         code = 107;
                         msg = "科目为研发，研发专案号必填";
                         return new MCResponseData(code, msg);
@@ -436,7 +437,18 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         return new MCResponseData(code, msg);
                     }
                 }
-
+                //明细含差旅费科目
+                if (r.getBudgetAccname().contains("差旅费")) {
+                    tdstatus = "Y";
+                }
+            }
+            if ("Y".equals(tdstatus)) {
+                List<MCHZCW028tDetail> travels = mc.getTravel_items();
+                if (travels == null || travels.isEmpty()) {
+                    code = 107;
+                    msg = "差旅明细不能为空";
+                    return new MCResponseData(code, msg);
+                }
             }
             if (("0".equals(cost) || "1".equals(cost))) {
                 List<MCHZCW028tDetail> travels = mc.getTravel_items();
