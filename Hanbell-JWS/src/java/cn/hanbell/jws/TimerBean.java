@@ -1472,7 +1472,7 @@ public class TimerBean {
                             log4j.info(Arrays.toString(rm));
                         }
                         if (rm != null && rm.length == 2 && rm[0].equals("200")) {
-                            // 更新ERP APM811状态
+                            // 更新ERP APM828状态
                             h.setApsta("25");
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
