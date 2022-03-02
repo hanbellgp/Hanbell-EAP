@@ -274,7 +274,7 @@ dataSetRow["otherbond"] = master.getOtherbond();
 dataSetRow["otherstock"] = master.getOtherstock();
 dataSetRow["zjother"] = master.getZjother();
 dataSetRow["subscribeNumber1"] = master.getSubscribeNumber1();
-dataSetRow["subscribeNumber2"] = master.getSubscribeNumber2();
+dataSetRow["subscribeNumber2"] = master.getTerm2();
 dataSetRow["subscribeNumber3"] = master.getSubscribeNumber3();
 dataSetRow["networth"] = master.getNetworth();
 dataSetRow["bondrate"] = master.getBondrate();
@@ -742,7 +742,7 @@ return false;]]></method>
                     <text id="89">
                         <property name="textAlign">center</property>
                         <property name="contentType">auto</property>
-                        <text-property name="content"><![CDATA[申购份数]]></text-property>
+                        <text-property name="content"><![CDATA[期限]]></text-property>
                     </text>
                 </cell>
                 <cell id="62">

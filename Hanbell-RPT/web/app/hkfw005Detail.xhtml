@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">查询条件</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column><h:outputLabel value="创建开始日期" for="queryDateBegin" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryCreateDateBegin" value="#{hkfw005DetailManagedBean.queryCreateDateBegin}" title="开始日期" pattern="yyyy/MM/dd"
+                                    requiredMessage="请输入签核开始日期"/>
+                    </p:column>
+                    <p:column><h:outputLabel value="创建截止日期" for="queryDateEnd" /></p:column>
+                    <p:column>
+                        <p:calendar id="queryCreateDateEnd" value="#{hkfw005DetailManagedBean.queryCreateDateEnd}" title="结束日期" pattern="yyyy/MM/dd"
+                                    requiredMessage="请输入创建截止日期"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+               
+                        <p:column><h:outputLabel value="签核人" for="queryAssignee" /></p:column>
+                        <p:column>
+                            <p:inputText id="queryAssignee"  value="#{hkfw005DetailManagedBean.queryAssignee}"  placeholder="请输入工号" />
+                        </p:column>
+               
+                    <p:column><h:outputLabel value="单据类型" for="queryType" /></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="queryType" value="#{hkfw005DetailManagedBean.queryType}" title="单据类型" >
+                            <f:selectItem itemLabel="全部" itemValue="ALL"/>
+                            <f:selectItem itemLabel="零件支援" itemValue="1"/>
+                            <f:selectItem itemLabel="整机支援" itemValue="2"/>
+                            <f:selectItem itemLabel="维修支援" itemValue="3"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="right">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{hkfw005DetailManagedBean.init()}"  icon="ui-icon-search"  update=":formList"/>
+                    <p:commandButton id="btnPrint" value="导出" actionListener="#{hkfw005DetailManagedBean.print()}" icon="ui-icon-print"/>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{hkfw005DetailManagedBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{hkfw005DetailManagedBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable value="#{hkfw005DetailManagedBean.model}"  var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="15,30,45" lazy="true" selectionMode="single"  selection="#{hkfw005DetailManagedBean.currentEntity}" rowKey="#{item.oid}" >
+                <f:facet name="header">
+                    服务工作支援单
+                </f:facet>
+                <p:ajax event="rowSelect"  update=":formList:toolbar" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="表单单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.formSerialNumber}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="单据类型"/>
+                    </f:facet>
+                    <!--                                        <c:choose>
+                                                                <c:when test="${item.hkfw005.type=='1'}">
+                                                                    <h:outputText value="零件支援"/>
+                                                                </c:when>
+                                                                <c:when test="${item.hkfw005.type =='4'}">
+                                                                     <h:outputText value="整机支援"/>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <h:outputText value="#{item.hkfw005.type}"/>
+                                                                </c:otherwise>
+                                                             </c:choose>-->
+                    <h:outputText value="#{hkfw005DetailManagedBean.getCdesc('type',item.hkfw005.type)}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="申请人"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.applyUser.userName}">
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="申请部门"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.applyDept.organizationUnitName}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="配合人"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.supportUser.userName}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="配合部门"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.supportDept.organizationUnitName}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="订单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.cdrno}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="客服单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.kfno}"/>
+                </p:column>
+
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="服务单号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.fwno}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="填表时间"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.createdate}">
+                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="出货时间"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.shpdate}">
+                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="客户名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.cusna}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="客户代号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hkfw005.cusno}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="件号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itnbr}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="品名"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itdsc}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="数量"/>
+                    </f:facet>
+                    <h:outputText value="#{item.qty}"/>
+                </p:column>
+
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnLoad,btnPrint,btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

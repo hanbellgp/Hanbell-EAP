@@ -9,6 +9,7 @@ import cn.hanbell.eap.comm.SuperEJBForEAP;
 import cn.hanbell.eap.entity.SystemUser;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -45,8 +46,11 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             if (entity.getTel() != null && !"".equals(entity.getTel())) {
                 job.add("telephone", entity.getTel());
             }
-            if(entity.getJob()!=null &&!"".equals(entity.getJob())&&isUpdateAlias(entity.getJob())){
-                job.add("alias",entity.getJob());
+            if (entity.getJob() != null && !"".equals(entity.getJob()) && isUpdateAlias(entity.getJob())) {
+                job.add("alias", entity.getJob());
+            } else {
+                //之前为行政级别，后期修改为专业级别。需把之前的行政级别修改掉
+                job.add("alias", "");
             }
             // 职位暂时不更新sda
             // if (entity.getPosition() != null & !"".equals(entity.getPosition())) {
@@ -260,5 +264,28 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
                 return true;
         }
         return false;
+    }
+
+    /**
+     *
+     * @param 发送的部门
+     * @return 发生异常后需要通知的人员
+     */
+    public  List<String> tryFindExceptionInformUsers() {
+        List<String> userids = new ArrayList();
+        try {
+            List<SystemUser> list = findByDeptnoAndSyncWeChatStatus("13120");
+            SystemUser u = this.findByUserId("C2244");
+            if (!list.contains(u)) {
+                list.add(u);
+            }
+            userids = list.stream().map(SystemUser::getUserid).collect(Collectors.toList());
+        } catch (Exception e) {
+            userids.add("C2082");
+            userids.add("C1749");
+            userids.add("C1900");
+            userids.add("C2244");
+        }
+        return userids;
     }
 }

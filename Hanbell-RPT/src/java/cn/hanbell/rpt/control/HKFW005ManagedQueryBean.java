@@ -50,6 +50,10 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
 
     private String queryWorkItemName;
 
+    private Date queryCreateDateBegin;
+
+    private Date queryCreateDateEnd;
+
     /**
      * Creates a new instance of HKFW005QueryBean
      */
@@ -63,6 +67,7 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
         this.model = new HKFW005Model(hkfw005Bean);
         this.model.getFilterFields().put("type <>", "4");
         super.init();
+        this.queryState = "1";
     }
 
     @Override
@@ -157,17 +162,14 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
     @Override
     public void query() {
         List<String> psnList = null;
+        this.model.getFilterFields().clear();
         if (this.model != null && this.model.getFilterFields() != null) {
-            this.model.getFilterFields().clear();
-            if (queryDateBegin != null && queryDateEnd != null) {
+            //在流程关卡中的一定是未结案单据
+            if ("1".equals(this.queryState)) {
                 if ("ALL".equals(queryWorkItemName)) {
-                    psnList = workItemBean.findProcessSerialNumbersByProcessIdAndCompletedTime("PKG_HK_FW005", queryDateBegin, queryDateEnd);
-                } else if ("帐管".equals(queryWorkItemName)) {
-                    psnList = workItemBean.findProcessNumbersByBetweenWorkItem1AndWorkItem2("帐管", "仓储主管");
-                } else if ("仓管".equals(queryWorkItemName)) {
-                    psnList = workItemBean.findProcessNumbersByBetweenWorkItem1AndWorkItem2("仓管", "仓储课长");
+                    psnList = workItemBean.findProcessNumbersByWorkItemName("PKG_HK_FW005", "N'仓储课长',N'仓储主管',N'帐管（运费录入）'", queryDateBegin, queryDateEnd);
                 } else {
-                    psnList = workItemBean.findProcessSerialNumbersByWorkItem("PKG_HK_FW005", queryWorkItemName, queryDateBegin, queryDateEnd);
+                    psnList = workItemBean.findProcessNumbersByWorkItemName("PKG_HK_FW005", queryWorkItemName, queryDateBegin, queryDateEnd);
                 }
 
                 if (psnList != null && !psnList.isEmpty()) {
@@ -175,14 +177,18 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
                 } else {
                     this.model.getFilterFields().put("processInstance.serialNumber = ", "");
                 }
-            }
-            if (queryState != null && "Y".equals(queryState)) {
-                this.model.getFilterFields().put("processInstance.currentState", 3);
-            } else if (queryState != null && "N".equals(queryState)) {
-                this.model.getFilterFields().put("processInstance.currentState <=", 2);
+            } else {
+                if (this.queryCreateDateBegin != null && !"".equals(this.queryCreateDateBegin)) {
+                    this.model.getFilterFields().put("createdateBegin", queryCreateDateBegin);
+                }
+                if (this.queryCreateDateEnd != null && !"".equals(this.queryCreateDateEnd)) {
+                    this.model.getFilterFields().put("createdateEnd", queryCreateDateEnd);
+                }
+                if (!"ALL".equals(this.queryState)) {
+                    this.model.getFilterFields().put("processInstance.currentState = ", Integer.valueOf(this.queryState));
+                }
             }
         }
-        this.model.getFilterFields().put("type <>", "4");
     }
 
     @Override
@@ -280,7 +286,7 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
         }
         return true;
     }
-    
+
     /**
      * @return the workItemName
      */
@@ -288,11 +294,27 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
         return queryWorkItemName;
     }
 
-     /**
+    /**
      * @param queryWorkItemName the workItemName to set
      */
     public void setQueryWorkItemName(String queryWorkItemName) {
         this.queryWorkItemName = queryWorkItemName;
+    }
+
+    public Date getQueryCreateDateBegin() {
+        return queryCreateDateBegin;
+    }
+
+    public void setQueryCreateDateBegin(Date queryCreateDateBegin) {
+        this.queryCreateDateBegin = queryCreateDateBegin;
+    }
+
+    public Date getQueryCreateDateEnd() {
+        return queryCreateDateEnd;
+    }
+
+    public void setQueryCreateDateEnd(Date queryCreateDateEnd) {
+        this.queryCreateDateEnd = queryCreateDateEnd;
     }
 
 }

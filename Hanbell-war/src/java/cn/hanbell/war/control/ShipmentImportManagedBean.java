@@ -21,6 +21,7 @@ import com.lowagie.text.pdf.PdfReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -217,7 +218,7 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                 case "SCQ00011":
                                     // 美的专属二维码
                                     content.append("A0007001").append("|").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append("-").append(sd.getLotseq()).append("|")
-                                        .append(sd.getVarnr()).append("|").append(sd.getCustomerItem()).append("|").append(sd.getItemModel());
+                                            .append(sd.getVarnr()).append("|").append(sd.getCustomerItem()).append("|").append(sd.getItemModel());
                                     break;
                                 case "SSD00103":
                                     // 海达瑞专属二维码
@@ -228,11 +229,15 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                     // 海达诚专属二维码
                                     content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
                                             .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc());
-                                    break;    
-                                    
-                                    //冰山冷热专属二维码
+                                    break;
+
+                                //冰山冷热专属二维码
                                 case "SLN00028":
                                     content.append(sd.getCustomerItem()).append(" ").append(sd.getItemDesc()).append("|").append(sd.getItemModel());
+                                    break;
+                                //南京天加
+                                case "SJS00309":
+                                    content.append(sd.getCustomerItem()).append("| 1100000429| ").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(new DecimalFormat("00").format(sd.getLotseq()));
                                     break;
                             }
                             if (content.length() > 0) {

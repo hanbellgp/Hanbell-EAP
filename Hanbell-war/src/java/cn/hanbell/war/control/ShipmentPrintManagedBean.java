@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,9 +139,8 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
                                 break;
                                 //南京天加
                             case "SJS00309":
-                               content.append("A0007001").append("|").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append("-").append(sd.getLotseq()).append("|")
-                                        .append(sd.getVarnr()).append("|").append(sd.getCustomerItem()).append("|").append(sd.getItemModel());
-                                break;
+                                    content.append(sd.getCustomerItem()).append("| 1100000429| ").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(new DecimalFormat("00").format(sd.getLotseq()));
+                                    break;
                         }
                         if (content.length() > 0) {
                             this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + currentEntity.getCustomerno() + sd.getVarnr() + ".png");
