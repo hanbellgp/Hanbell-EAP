@@ -6,6 +6,7 @@
 package cn.hanbell.rpt.control;
 
 import cn.hanbell.erp.ejb.CdrcusBean;
+import cn.hanbell.erp.ejb.CdrhadasryBean;
 import cn.hanbell.erp.ejb.InvclsBean;
 import cn.hanbell.erp.ejb.InvhadBean;
 import cn.hanbell.erp.ejb.InvhdscBean;
@@ -14,13 +15,16 @@ import cn.hanbell.erp.ejb.InvtrnBean;
 import cn.hanbell.erp.ejb.InvtrnhBean;
 import cn.hanbell.erp.ejb.MiscodeBean;
 import cn.hanbell.erp.ejb.MisdeptBean;
+import cn.hanbell.erp.ejb.PurvdrBean;
 import cn.hanbell.erp.entity.Cdrcus;
+import cn.hanbell.erp.entity.Cdrhadasry;
 import cn.hanbell.erp.entity.Invhad;
 import cn.hanbell.erp.entity.Invhdsc;
 import cn.hanbell.erp.entity.Invsys;
 import cn.hanbell.erp.entity.Invtrnh;
 import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.erp.entity.Misdept;
+import cn.hanbell.erp.entity.Purvdr;
 import cn.hanbell.rpt.lazy.InvtrnhModel;
 import cn.hanbell.rpt.web.SuperQueryBean;
 import com.lightshell.comm.BaseLib;
@@ -53,7 +57,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 @ManagedBean(name = "invtrnhManagedBean")
 @javax.faces.bean.ViewScoped
 public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
-
+    
     @EJB
     private InvtrnhBean invtrnhBean;
     @EJB
@@ -65,6 +69,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
     @EJB
     private CdrcusBean cdrcusBean;
     @EJB
+    private PurvdrBean purvdrBean;
+    @EJB
     private InvsysBean invsysBean;
     @EJB
     private InvtrnBean invtrnBean;
@@ -72,6 +78,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
     private InvclsBean invclsBean;
     @EJB
     private InvhadBean invhadBean;
+    @EJB
+    private CdrhadasryBean cdrhadasryBean;
     private String queryfacno;
     private String queryno;
     private String querytype;
@@ -80,11 +88,11 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
     private String queryuser;
     private String facnoView;
     private List<Object[]> list;
-
+    
     public InvtrnhManagedBean() {
         super(Invtrnh.class);
     }
-
+    
     @Override
     public void init() {
         this.queryfacno = "C";
@@ -98,7 +106,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         this.facnoView = invtrnhBean.getCompanyName(this.queryfacno);
         super.init();
     }
-
+    
     @Override
     public void reset() {
         this.queryfacno = "C";
@@ -122,8 +130,10 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         invtrnBean.setCompany("C");
         invclsBean.setCompany("C");
         invhadBean.setCompany("C");
+        purvdrBean.setCompany("C");
+        cdrhadasryBean.setCompany("C");
     }
-
+    
     @Override
     public void query() {
         try {
@@ -137,6 +147,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
             invtrnBean.setCompany(queryfacno);
             invclsBean.setCompany(queryfacno);
             invhadBean.setCompany(queryfacno);
+            purvdrBean.setCompany(queryfacno);
+            cdrhadasryBean.setCompany(queryfacno);
             Invsys invsys = invsysBean.findByFacno(queryfacno);
             Date monDate = BaseLib.getDate("yyyyMM", invsys.getLmonth());
             Calendar c = Calendar.getInstance();
@@ -158,7 +170,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
             Logger.getLogger(InvtrnhManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     @Override
     public void print() {
         InputStream is = null;
@@ -215,6 +227,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     Cell cell24 = row.createCell(24);
                     Cell cell25 = row.createCell(25);
                     Cell cell26 = row.createCell(26);
+                    Cell cell27 = row.createCell(27);
                     cell.setCellStyle(cellStyle);
                     cell1.setCellStyle(cellStyle);
                     cell2.setCellStyle(cellStyle);
@@ -242,18 +255,30 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     cell24.setCellStyle(cellStyle);
                     cell25.setCellStyle(cellStyle);
                     cell26.setCellStyle(cellStyle);
+                    cell27.setCellStyle(cellStyle);
                     cell1.setCellValue(h[6] != null ? BaseLib.formatDate("yyyy/MM/dd", (Date) h[6]) : "");
                     cell2.setCellValue(h[0] != null ? (String) h[0] : "");
                     cell3.setCellValue(h[1] != null ? (String) h[1] : "");
                     cell4.setCellValue(h[2] != null ? (String) h[2] : "");
                     cell5.setCellValue(h[3] != null ? (String) h[3] : "");
                     cell6.setCellValue(h[4] != null ? (String) h[4] : "");
-                    Misdept m = misdeptBean.findByDepno((String) h[4]);
-                    if (m == null) {
+                    //部门代号
+                    if ("GE".equals((String) h[24])) {
+                        Misdept m = misdeptBean.findByDepno((String) h[4]);
+                        
+                        cell7.setCellValue(m != null ? m.getDepname() : "");
+                        
+                    } else if ("PJ".equals((String) h[24])) {
+                        //厂商代号
+                        Purvdr purvdr = purvdrBean.findByVdrno((String) h[4]);
+                        
+                        cell7.setCellValue(purvdr != null ? purvdr.getVdrna() : "");
+                        
+                    } else if ("CA".equals((String) h[24])) {
+                        //客户代号
                         Cdrcus cdrcus = cdrcusBean.findByCusno((String) h[4]);
                         cell7.setCellValue(cdrcus != null ? cdrcus.getCusna() : "");
-                    } else {
-                        cell7.setCellValue(m != null ? m.getDepname() : "");
+                        
                     }
                     cell8.setCellValue(h[5] != null ? (String) h[5] : "");
                     cell9.setCellValue(String.valueOf((int) h[7]));
@@ -277,7 +302,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                             invdscBuffer.append(entity.get(0).getHmark1()).append(";;");
                         }
                     }
-
+                    
                     if (invdsc != null) {
                         if (invdsc.getMark1() != null && !"".equals(invdsc.getMark1())) {
                             invdscBuffer.append(invdsc.getMark1()).append(";");
@@ -291,9 +316,10 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                         if (invdsc.getMark4() != null && !"".equals(invdsc.getMark4())) {
                             invdscBuffer.append(invdsc.getMark4()).append(";");
                         }
-                        invdscBuffer.append(";;");
-                        cell22.setCellValue(invdscBuffer.toString());
                     }
+                    
+                    invdscBuffer.append(";;");
+                    cell22.setCellValue(invdscBuffer.toString());
                     Miscode miscode = miscodeBean.findByPK((String) h[20], (String) h[21]);
                     cell23.setCellValue(h[20] != null ? (String) (h[20]) : "");
                     cell24.setCellValue(miscode != null ? miscode.getCusds() : "");
@@ -302,7 +328,16 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                         Miscode project = miscodeBean.findByPK("91", h[23] != null ? String.valueOf(h[23]) : "");
                         if (project != null) {
                             cell25.setCellValue(h[23] != null ? String.valueOf(h[23]) : "");
-                            cell26.setCellValue(project != null&&h[23] != null ? project.getCdesc() : "");
+                            cell26.setCellValue(project != null && h[23] != null ? project.getCdesc() : "");
+                        }
+                    } else if ("ARY".equals(String.valueOf(h[0]))) {
+                        //附属领料配件单独列一条打单部门
+                        Cdrhadasry cdrasary = cdrhadasryBean.findById((String) h[5]);
+                        if (cdrasary != null) {
+                            Miscode code = miscodeBean.findByPK("GE", cdrasary.getShpdepno());
+                            cell27.setCellValue(code != null ? code.getCdesc() : "");
+                        } else {
+                            log4j.info((String) h[5] + "为null");
                         }
                     }
                     i++;
@@ -336,74 +371,74 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                 this.log4j.error(var42.getMessage());
             }
         } finally {
-
+            
         }
     }
-
+    
     public List<Object[]> getList() {
         return list;
     }
-
+    
     public void setList(List<Object[]> list) {
         this.list = list;
     }
-
+    
     public String getQueryfacno() {
         return queryfacno;
     }
-
+    
     public void setQueryfacno(String queryfacno) {
         this.queryfacno = queryfacno;
     }
-
+    
     public String getQueryno() {
         return queryno;
     }
-
+    
     public void setQueryno(String queryno) {
         this.queryno = queryno;
     }
-
+    
     public String getQuerytype() {
         return querytype;
     }
-
+    
     public void setQuerytype(String querytype) {
         this.querytype = querytype;
     }
-
+    
     public String getQuerywareh() {
         return querywareh;
     }
-
+    
     public void setQuerywareh(String querywareh) {
         this.querywareh = querywareh;
     }
-
+    
     public String getQuerydept() {
         return querydept;
     }
-
+    
     public void setQuerydept(String querydept) {
         this.querydept = querydept;
     }
-
+    
     public String getQueryuser() {
         return queryuser;
     }
-
+    
     public void setQueryuser(String queryuser) {
         this.queryuser = queryuser;
     }
-
+    
     public String getFacnoView() {
         return facnoView;
     }
-
+    
     public void setFacnoView(String facnoView) {
         this.facnoView = facnoView;
     }
-
+    
     public String changeVlaue(String s) {
         if (s == null || "".equals(s)) {
             return "";
@@ -415,7 +450,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         }
         return sb.substring(0, sb.length() - 1);
     }
-
+    
     public String getIocodeValue(String ioccode) {
         switch (ioccode) {
             case "0":
@@ -431,5 +466,5 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         }
         return "";
     }
-
+    
 }

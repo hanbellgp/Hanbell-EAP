@@ -16,6 +16,8 @@ import cn.hanbell.eam.ejb.EquipmentRepairHelpersBean;
 import cn.hanbell.eam.ejb.EquipmentRepairHisBean;
 import cn.hanbell.eam.ejb.EquipmentRepairSpareBean;
 import cn.hanbell.eam.ejb.EquipmentSpareBean;
+import cn.hanbell.eam.ejb.EquipmentSpareRecodeBean;
+import cn.hanbell.eam.ejb.EquipmentSpareRecodeDtaBean;
 import cn.hanbell.eam.ejb.EquipmentTroubleBean;
 import cn.hanbell.eam.ejb.SysCodeBean;
 import cn.hanbell.eam.ejb.UnitBean;
@@ -25,6 +27,9 @@ import cn.hanbell.eam.entity.EquipmentRepairHelpers;
 import cn.hanbell.eam.entity.EquipmentRepairHis;
 import cn.hanbell.eam.entity.EquipmentRepairSpare;
 import cn.hanbell.eam.entity.EquipmentSpare;
+import cn.hanbell.eam.entity.EquipmentSpareRecode;
+import cn.hanbell.eam.entity.EquipmentSpareRecodeDta;
+import cn.hanbell.eam.entity.EquipmentSpareRecodeDtaResponse;
 import cn.hanbell.eam.entity.EquipmentTrouble;
 import cn.hanbell.eam.entity.SysCode;
 import cn.hanbell.eam.entity.Unit;
@@ -48,6 +53,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -106,6 +112,12 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     private EquipmentRepairHelpersBean equipmentRepairHelpersBean;
     
     @EJB
+    private EquipmentSpareRecodeBean equipmentSpareRecodeBean;
+    
+    @EJB
+    private EquipmentSpareRecodeDtaBean equipmentSpareRecodeDtaBean;
+    
+    @EJB
     private AssetCardBean assetCardBeam;
     
     
@@ -143,6 +155,11 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 assetCardTemp = assetCardBeam.findById(Integer.parseInt(assetCardId));
                 //String formid = equipmentrepairBean.getFormId(new Date(), "AP", "YYYYMMdd", 4);
                 String formid = equipmentrepairBean.getFormId(new Date(), "PR", "YYMM", 4);
+                String companyCodeStr = entity.getCompany();
+                if(companyCodeStr == null || companyCodeStr.equals(""))
+                {
+                    return new ResponseMessage("303", "公司代号信息异常,请重新登录");
+                }
                 
                 equipInvenTemp.setCompany(entity.getCompany());
                 equipInvenTemp.setAssetno(assetCardTemp);
@@ -163,6 +180,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipInvenTemp.setRepairdeptname(entity.getRepairdeptname());
                 equipInvenTemp.setExcepttime(0);
                 equipInvenTemp.setStopworktime(0);
+                equipInvenTemp.setIsneedspare(entity.getIsneedspare());
                 equipInvenTemp.setRemark(entity.getRemark());
                 equipInvenTemp.setCreator(entity.getCreator());
                 equipInvenTemp.setCredate(new Date());
@@ -185,7 +203,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 //                equipInvenTemp.setFormdate(date);
 //                equipInvenTemp.setDmark(entity.getDmark());
 
-                if("2".equals(entity.getRepairmethodtype()))
+                if("2".equals(entity.getRepairmethodtype()) && (entity.getServiceuser() == null || entity.getServiceuser().equals("")))
                 {
                     equipInvenTemp.setServiceuser(entity.getRepairuser());
                     equipInvenTemp.setServiceusername(entity.getRepairusername());
@@ -243,10 +261,12 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     msg.append("维修人:").append(entity.getServiceuser()).append("-").append(entity.getServiceusername()).append("<br/>");
                     msg.append("详情请至微信小程序查看!");
 
-                    sysUserList = systemUserBean.findByDeptno("1W300");
-                    if(sysUserList.size() > 0)
+                    //sysUserList = systemUserBean.findByDeptno("1W300");
+                    String repairDeptMangerId = sysCodeBean.findBySyskindAndCode(companyCodeStr,"RD", "repairleaders").getCvalue();
+                    
+                    if(repairDeptMangerId != null && !repairDeptMangerId.equals(""))
                     {
-                        userStrTemp.append("|").append(sysUserList.get(0).getUserid().toUpperCase());
+                        userStrTemp.append("|").append(repairDeptMangerId.toUpperCase());
                     }
 
                     if("C0-1".equalsIgnoreCase(assetCardTemp.getPosition2().getPosition()))
@@ -278,10 +298,17 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     msg.append("维修人:").append(entity.getServiceuser()).append("-").append(entity.getServiceusername()).append("<br/>");
                     msg.append("详情请至微信小程序查看!");
 
-                    sysUserList = systemUserBean.findByDeptno("1W300");
-                    if(sysUserList.size() > 0)
+//                    sysUserList = systemUserBean.findByDeptno("1W300");
+//                    if(sysUserList.size() > 0)
+//                    {
+//                        userStrTemp.append("|").append(sysUserList.get(0).getUserid().toUpperCase());
+//                    }
+                    
+                    String repairDeptMangerId = sysCodeBean.findBySyskindAndCode(companyCodeStr,"RD", "repairleaders").getCvalue();
+                    
+                    if(repairDeptMangerId != null && !repairDeptMangerId.equals(""))
                     {
-                        userStrTemp.append("|").append(sysUserList.get(0).getUserid().toUpperCase());
+                        userStrTemp.append("|").append(repairDeptMangerId.toUpperCase());
                     }
 
                     if("枫泾厂".equalsIgnoreCase(entity.getRepairarea()) || "枫泾总部".equalsIgnoreCase(entity.getRepairarea()))
@@ -414,8 +441,22 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 if(entity.getId() != null)
                 {
                     equipInvenTemp = equipmentrepairBean.findById(entity.getId());
+                    
                     if(equipInvenTemp != null)
                     {
+                        //检查是否需要领取备件
+                        if(equipInvenTemp.getIsneedspare() != null && equipInvenTemp.getIsneedspare().equals("Y")){
+                            List<EquipmentSpareRecode> spareRecodeCheckList = new ArrayList<>();
+                            Map<String, Object> filterFields = new HashMap<>();
+                            Map<String, String> sortFields = new LinkedHashMap<>();
+                            filterFields.put("relano", equipInvenTemp.getFormid());
+                            filterFields.put("ExistForm", "ExistForm");
+                            spareRecodeCheckList = equipmentSpareRecodeBean.getEquipmentRepairListByNativeQuery(filterFields, sortFields);
+                            if (spareRecodeCheckList.size() < 1) {
+                                return new ResponseMessage("503", "请先领取备件后再确认维修完成!");
+                            }
+                        }
+                        
                         if("2".equals(equipInvenTemp.getRepairmethodtype()))
                         {
                             equipInvenTemp.setRstatus("95");
@@ -450,6 +491,11 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             }
             
             try {
+                String companyCodeStr = entity.getCompany();
+                if(companyCodeStr == null || companyCodeStr.equals(""))
+                {
+                    return new ResponseMessage("303", "公司代号信息异常,请重新登录");
+                }
                 Map<String, Object> filterFields_spareUsed = new HashMap<>();
                 EquipmentRepair equipInvenTemp = new EquipmentRepair();
                 EquipmentRepairSpare eqpRepairSpareTemp = new EquipmentRepairSpare();
@@ -461,69 +507,10 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 
                 JSONArray jsonArray = new JSONArray(entity.getRemark());
                 
-                JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
-                JSONArray repairHelperList_jsonArray = jsonArray.getJSONArray(1);
+                //JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
+                JSONArray repairHelperList_jsonArray = jsonArray.getJSONArray(0);
                 
                 JSONObject jsonObj = new JSONObject();
-                for(Object jobj:spareUsedList_jsonArray)
-                {
-                    jsonObj = (JSONObject)jobj;
-                    eqpRepairSpareTemp = new EquipmentRepairSpare();
-                    
-                    if(jsonObj.has("docId"))
-                    {
-                        eqpRepairSpareTemp = equipmentRepairSpareBean.findById(jsonObj.getInt("docId"));
-                        if(eqpRepairSpareTemp != null)
-                        {
-                            eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
-                            equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
-                        }
-                    }
-                    else
-                    {
-                        List<EquipmentRepairSpare> eqpRepairSpareList = equipmentRepairSpareBean.findByPId(entity.getFormid());
-                    
-                        int spareIndexMaxTemp = 0;
-
-                        if(eqpRepairSpareList == null || eqpRepairSpareList.size() < 1)
-                        {
-                            spareIndexMaxTemp = 1;
-                        }
-                        else
-                        {
-                            for(int i = 0 ; i < eqpRepairSpareList.size() ; i++)
-                            {
-                                if(eqpRepairSpareList.get(i).getSeq() >= spareIndexMaxTemp)
-                                {
-                                    spareIndexMaxTemp = eqpRepairSpareList.get(i).getSeq();
-                                }
-                            }
-                            spareIndexMaxTemp = spareIndexMaxTemp + 1;
-                        }
-                        filterFields_spareUsed.put("sparenum", jsonObj.getString("spareNum"));
-                        eqpSpareListTemp = equipmentSpareBean.findByFilters(filterFields_spareUsed);
-                        if(eqpSpareListTemp.size() >= 0)
-                        {
-                            eqpSpareTemp = eqpSpareListTemp.get(0);
-                        }
-                        unitTemp = unitBean.findById(jsonObj.getInt("unit"));
-
-                        eqpRepairSpareTemp.setCompany(entity.getCompany());
-                        eqpRepairSpareTemp.setPid(entity.getFormid());
-                        eqpRepairSpareTemp.setSeq(spareIndexMaxTemp);
-                        eqpRepairSpareTemp.setSpareno(jsonObj.getString("spareNo"));
-                        eqpRepairSpareTemp.setSparenum(eqpSpareTemp);
-                        eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
-                        eqpRepairSpareTemp.setUprice(jsonObj.getBigDecimal("uPrice"));
-                        eqpRepairSpareTemp.setUnit(unitTemp);
-                        eqpRepairSpareTemp.setBrand(jsonObj.getString("brand"));
-                        eqpRepairSpareTemp.setUserno(jsonObj.getString("userNo"));
-                        eqpRepairSpareTemp.setUserdate(new Date());
-                        eqpRepairSpareTemp.setStatus("N");
-
-                        equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
-                    }
-                }
                 
                 for(Object jobj:repairHelperList_jsonArray)
                 {
@@ -627,7 +614,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         }
                         
                         String laborCost = "";
-                        sysLaborCostList = sysCodeBean.getTroubleNameList("RD", "laborcost");
+                        sysLaborCostList = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "laborcost");
                         if(sysLaborCostList.size() > 0)
                         {
                             laborCost = sysLaborCostList.get(0).getCvalue();
@@ -758,6 +745,11 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             }
             
             try {
+                String companyCodeStr = entity.getCompany();
+                if(companyCodeStr == null || companyCodeStr.equals(""))
+                {
+                    return new ResponseMessage("303", "公司代号信息异常,请重新登录");
+                }
                 Map<String, Object> filterFields_spareUsed = new HashMap<>();
                 EquipmentRepair equipInvenTemp = new EquipmentRepair();
                 EquipmentRepairSpare eqpRepairSpareTemp = new EquipmentRepairSpare();
@@ -769,69 +761,10 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 
                 JSONArray jsonArray = new JSONArray(entity.getRemark());
                 
-                JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
-                JSONArray repairHelperList_jsonArray = jsonArray.getJSONArray(1);
+                //JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
+                JSONArray repairHelperList_jsonArray = jsonArray.getJSONArray(0);
                 
                 JSONObject jsonObj = new JSONObject();
-                for(Object jobj:spareUsedList_jsonArray)
-                {
-                    jsonObj = (JSONObject)jobj;
-                    eqpRepairSpareTemp = new EquipmentRepairSpare();
-                    
-                    if(jsonObj.has("docId"))
-                    {
-                        eqpRepairSpareTemp = equipmentRepairSpareBean.findById(jsonObj.getInt("docId"));
-                        if(eqpRepairSpareTemp != null)
-                        {
-                            eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
-                            equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
-                        }
-                    }
-                    else
-                    {
-                        List<EquipmentRepairSpare> eqpRepairSpareList = equipmentRepairSpareBean.findByPId(entity.getFormid());
-                    
-                        int spareIndexMaxTemp = 0;
-
-                        if(eqpRepairSpareList == null || eqpRepairSpareList.size() < 1)
-                        {
-                            spareIndexMaxTemp = 1;
-                        }
-                        else
-                        {
-                            for(int i = 0 ; i < eqpRepairSpareList.size() ; i++)
-                            {
-                                if(eqpRepairSpareList.get(i).getSeq() >= spareIndexMaxTemp)
-                                {
-                                    spareIndexMaxTemp = eqpRepairSpareList.get(i).getSeq();
-                                }
-                            }
-                            spareIndexMaxTemp = spareIndexMaxTemp + 1;
-                        }
-                        filterFields_spareUsed.put("sparenum", jsonObj.getString("spareNum"));
-                        eqpSpareListTemp = equipmentSpareBean.findByFilters(filterFields_spareUsed);
-                        if(eqpSpareListTemp.size() >= 0)
-                        {
-                            eqpSpareTemp = eqpSpareListTemp.get(0);
-                        }
-                        unitTemp = unitBean.findById(jsonObj.getInt("unit"));
-
-                        eqpRepairSpareTemp.setCompany(entity.getCompany());
-                        eqpRepairSpareTemp.setPid(entity.getFormid());
-                        eqpRepairSpareTemp.setSeq(spareIndexMaxTemp);
-                        eqpRepairSpareTemp.setSpareno(jsonObj.getString("spareNo"));
-                        eqpRepairSpareTemp.setSparenum(eqpSpareTemp);
-                        eqpRepairSpareTemp.setQty(jsonObj.getBigDecimal("qty"));
-                        eqpRepairSpareTemp.setUprice(jsonObj.getBigDecimal("uPrice"));
-                        eqpRepairSpareTemp.setUnit(unitTemp);
-                        eqpRepairSpareTemp.setBrand(jsonObj.getString("brand"));
-                        eqpRepairSpareTemp.setUserno(jsonObj.getString("userNo"));
-                        eqpRepairSpareTemp.setUserdate(new Date());
-                        eqpRepairSpareTemp.setStatus("N");
-
-                        equipmentRepairSpareBean.persist(eqpRepairSpareTemp);
-                    }
-                }
                 
                 for(Object jobj:repairHelperList_jsonArray)
                 {
@@ -898,7 +831,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         }
                         
                         String laborCost = "";
-                        sysLaborCostList = sysCodeBean.getTroubleNameList("RD", "laborcost");
+                        sysLaborCostList = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "laborcost");
                         if(sysLaborCostList.size() > 0)
                         {
                             laborCost = sysLaborCostList.get(0).getCvalue();
@@ -1577,6 +1510,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 Map<String, String> sortFields = new LinkedHashMap<>();
                 String key, value="";
                 String userCheckTemp = "";
+                String companyCodeStr = "";
                 if (filtersMM != null) {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
@@ -1584,6 +1518,10 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         if(key.equals("userId"))
                         {
                             userCheckTemp = value;
+                        }
+                        else if(key.equals("company"))
+                        {
+                            companyCodeStr = value;
                         }
                         else
                         {
@@ -1596,6 +1534,12 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 //                        filterFields.put("formid LIKE", "%" + value + "%");
                     }
                 }
+                
+                if(companyCodeStr == null || companyCodeStr.equals(""))
+                {
+                    throw new WebApplicationException(Response.Status.NOT_FOUND);
+                }
+                
                 if (sortsMM != null) {
                     for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
                         key = entrySet.getKey();
@@ -1617,7 +1561,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 
                 if(eqpRepairListRes.size() > 0)
                 {
-                      repairManagerList = sysCodeBean.getTroubleNameList("RD", "repairmanager");
+                      repairManagerList = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairmanager");
 //                    repairResTemp.setId(eqpRepairListRes.get(0).getId());
 //                    repairResTemp.setFormid(eqpRepairListRes.get(0).getFormid());
 //                    repairResTemp.setFormdate(eqpRepairListRes.get(0).getFormdate());
@@ -1659,12 +1603,21 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         }
                         else if(eqpRepairListRes.get(0).getRstatus().equals("60"))
                         {
-                            sysUserListRes = systemUserBean.findByUserIdOrName(checkUser);
-                            if(sysUserListRes.size() > 0)
+//                            sysUserListRes = systemUserBean.findByUserIdOrName(checkUser);
+//                            if(sysUserListRes.size() > 0)
+//                            {
+//                                if(sysUserListRes.get(0).getDeptno().equalsIgnoreCase("1W300"))
+//                                {
+//                                    eqpRepairListRes.get(0).setStatus("Y");
+//                                }
+//                            }
+                            sysCodeList = sysCodeBean.getTroubleNameList(companyCodeStr,"RD","repairleaders");
+                            
+                            for(int i = 0; i<sysCodeList.size(); i++)
                             {
-                                if(sysUserListRes.get(0).getDeptno().equalsIgnoreCase("1W300"))
-                                {
+                                if(sysCodeList.get(i).getCvalue().equalsIgnoreCase(checkUser)){
                                     eqpRepairListRes.get(0).setStatus("Y");
+                                    break;
                                 }
                             }
                         }
@@ -1800,19 +1753,47 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     @Produces({"application/json"})
     public List<Object> getRepairUserList(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
+            String companyCodeStr = "";
             List<Object> initDtaRes = new ArrayList<Object>();
             List<SystemUser> repairUserListRes = new ArrayList<SystemUser>();
             List<SysCode> repairReasonListRes = new ArrayList<SysCode>();
             List<SysCode> hitchUrgencyListRes = new ArrayList<SysCode>();
             List<SysCode> repairAreaListRes = new ArrayList<SysCode>();
+            List<SysCode> autonoRepairUserListRes = new ArrayList<>();
             this.superEJB = systemUserBean;
             try {
                 Map<String, Object> filterFields = new HashMap<>();
                 Map<String, String> sortFields = new LinkedHashMap<>();
-                String deptno =sysCodeBean.findBySyskindAndCode("RD", "repairDeptno").getCvalue();
-                repairReasonListRes = sysCodeBean.getTroubleNameList("RD", "faultType");
-                hitchUrgencyListRes = sysCodeBean.getTroubleNameList("RD","hitchurgency");
-                repairAreaListRes = sysCodeBean.getTroubleNameList("RD","repairarea");
+                //获取自主维修的班组长信息
+                MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
+                if (filtersMM != null) {
+                    companyCodeStr = filtersMM.getFirst("company");
+                    String userDeptNo = filtersMM.getFirst("deptno");
+                    //2021-11-09 用公司别区分各个分公司的参数
+                    if(companyCodeStr == null || companyCodeStr.equals(""))
+                    {
+                        throw new WebApplicationException(Response.Status.NOT_FOUND);
+                    }
+                    if(userDeptNo != null && userDeptNo != ""){
+                        if(!companyCodeStr.contains("C")){
+                            autonoRepairUserListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "RepairUser");
+                        }
+                        else if(userDeptNo.contains("1P1")){
+                            autonoRepairUserListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "FX_RepairUser");
+                        }
+                        else if(userDeptNo.contains("1P5")){
+                            autonoRepairUserListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "YX_RepairUser");
+                        }
+                    }
+                }
+                else{
+                    throw new WebApplicationException(Response.Status.NOT_FOUND);
+                }
+                
+                String deptno =sysCodeBean.findBySyskindAndCode(companyCodeStr,"RD", "repairDeptno").getCvalue();
+                repairReasonListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "faultType");
+                hitchUrgencyListRes = sysCodeBean.getTroubleNameList(companyCodeStr ,"RD","hitchurgency");
+                repairAreaListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD","repairarea");
                 String key, value="";
                 filterFields.put("deptno", deptno);
                 filterFields.put("status", "N");
@@ -1829,6 +1810,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             initDtaRes.add(hitchUrgencyListRes);
             initDtaRes.add(repairAreaListRes);
             initDtaRes.add(new Date());
+            initDtaRes.add(autonoRepairUserListRes);
             
            return initDtaRes;
         } else {
@@ -1845,7 +1827,8 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<Object> initDtaRes = new ArrayList<Object>();
             List<EquipmentTrouble> equipmentTroubleListRes = new ArrayList<EquipmentTrouble>();
             List<EquipmentRepairFile> eqpRepairFileListRes = new ArrayList<EquipmentRepairFile>();
-            List<EquipmentRepairSpare> eqpRepairSpareListRes = new ArrayList<EquipmentRepairSpare>();
+            //List<EquipmentRepairSpare> eqpRepairSpareListRes = new ArrayList<EquipmentRepairSpare>();
+            List<EquipmentSpareRecodeDtaResponse> eqpRepairSpareListRes = new ArrayList<EquipmentSpareRecodeDtaResponse>();
             List<EquipmentRepairHelpers> eqpRepairHelpersListRes = new ArrayList<EquipmentRepairHelpers>();
             List<SysCode> hitchUrgencyListRes = new ArrayList<SysCode>();
             EquipmentRepair equipmentRepairRes = new EquipmentRepair();
@@ -1855,27 +1838,37 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 Map<String, Object> filterFields = new HashMap<>();
                 Map<String, Object> filterFields_eqpFile = new HashMap<>();
                 String key, value="";
+                String companyCodeStr = "";
                 if (filtersMM != null) {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
-                        filterFields.put(key, value);
-//                        filterFields.put("formid LIKE", "%" + value + "%");
-//                        filterFields.put("formid LIKE", "%" + value + "%");
-//                        filterFields.put("formid LIKE", "%" + value + "%");
-//                        filterFields.put("formid LIKE", "%" + value + "%");
-//                        filterFields.put("formid LIKE", "%" + value + "%");
+                        if(key.equals("company"))
+                        {
+                            companyCodeStr = value;
+                        }
+                        else
+                        {
+                            filterFields.put(key, value);
+                            //filterFields.put("formid LIKE", "%" + value + "%");
+                        }
                     }
+                }
+                
+                if(companyCodeStr == null || companyCodeStr.equals(""))
+                {
+                    throw new WebApplicationException(Response.Status.NOT_FOUND);
                 }
                 //assetCardListRes = superEJB.findByFilters(filterFields, offset, pageSize, sortFields);
                 equipmentRepairRes = equipmentrepairBean.findById(Integer.parseInt(filterFields.get("docId").toString()));
                 equipmentTroubleListRes = equipmentTroubleBean.findAll();
-                hitchUrgencyListRes = sysCodeBean.getTroubleNameList("RD","hitchurgency");
+                hitchUrgencyListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "hitchurgency");
                 
                 filterFields_eqpFile.put("pid",equipmentRepairRes.getFormid());
                 filterFields_eqpFile.put("filefrom","维修图片");
                 eqpRepairFileListRes = equipmentrepairfileBean.findByFilters(filterFields_eqpFile);
-                eqpRepairSpareListRes = equipmentRepairSpareBean.findByPId(equipmentRepairRes.getFormid());
+                //eqpRepairSpareListRes = equipmentRepairSpareBean.findByPId(equipmentRepairRes.getFormid());
+                eqpRepairSpareListRes = getEqpRepairSpareList(equipmentRepairRes.getFormid());
                 eqpRepairHelpersListRes = equipmentRepairHelpersBean.findByPId(equipmentRepairRes.getFormid());
                 
                 System.out.print(equipmentTroubleListRes);
@@ -1906,7 +1899,8 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<EquipmentTrouble> equipmentTroubleListRes = new ArrayList<EquipmentTrouble>();
             List<SysCode> eqpSysCodeListRes = new ArrayList<SysCode>();
             List<EquipmentRepairFile> eqpRepairFileListRes = new ArrayList<EquipmentRepairFile>();
-            List<EquipmentRepairSpare> eqpRepairSpareListRes = new ArrayList<EquipmentRepairSpare>();
+            //List<EquipmentRepairSpare> eqpRepairSpareListRes = new ArrayList<EquipmentRepairSpare>();
+            List<EquipmentSpareRecodeDtaResponse> eqpRepairSpareListRes = new ArrayList<EquipmentSpareRecodeDtaResponse>();
             EquipmentRepair equipmentRepairRes = new EquipmentRepair();
             EquipmentRepair eqpRepairTemp = new EquipmentRepair();
             this.superEJB = equipmentTroubleBean;
@@ -1955,7 +1949,8 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 filterFields_eqpFile.put("filefrom","维修图片");
                 eqpRepairFileListRes = equipmentrepairfileBean.findByFilters(filterFields_eqpFile);
                 
-                eqpRepairSpareListRes = equipmentRepairSpareBean.findByPId(equipmentRepairRes.getFormid());
+                //eqpRepairSpareListRes = equipmentRepairSpareBean.findByPId(equipmentRepairRes.getFormid());
+                eqpRepairSpareListRes = getEqpRepairSpareList(equipmentRepairRes.getFormid());
                 
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -2178,6 +2173,28 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
+    
+    private List<EquipmentSpareRecodeDtaResponse> getEqpRepairSpareList(String formid) {
+        List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.getEquipmentSpareRecodeDtaListByRepairFormId(formid);
+        //List按照sparenum分组
+        Map<EquipmentSpare, List<EquipmentSpareRecodeDta>> groupBySparenumMap = eqpSpareRecodeDtas.stream().collect(Collectors.groupingBy(EquipmentSpareRecodeDta::getSparenum));
+
+        List<EquipmentSpareRecodeDtaResponse> resList = new ArrayList<>();
+        groupBySparenumMap.forEach((key, value) -> {
+            BigDecimal qtySum = BigDecimal.ZERO;
+            BigDecimal priceSum = BigDecimal.ZERO;
+            for (int i = 0; i < value.size(); i++) {
+                EquipmentSpareRecodeDta dtaTemp = value.get(i);
+                qtySum = qtySum.add(dtaTemp.getCqty());
+                priceSum = priceSum.add(value.get(i).getCqty().multiply(value.get(i).getUprice()));
+            }
+            EquipmentSpareRecodeDtaResponse resTemp = new EquipmentSpareRecodeDtaResponse(key, value, qtySum, priceSum);
+            resList.add(resTemp);
+        });
+
+        return resList;
+    }
+    
     
     public boolean GenerateImage(String imgData, String imgFilePath) throws IOException { // 对字节数组字符串进行Base64解码并生成图片
         if (imgData == null) // 图像数据为空

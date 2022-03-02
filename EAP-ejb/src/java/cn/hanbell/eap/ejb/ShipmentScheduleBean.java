@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.eap.ejb;
 
@@ -25,8 +24,31 @@ public class ShipmentScheduleBean extends SuperEJBForEAP<ShipmentSchedule> {
         super(ShipmentSchedule.class);
     }
 
-    public List<ShipmentSchedule> findByCompanyAndFormdate(String company, Date formdateBegin, Date formdateEnd, boolean shortage, int first, int pageSize) {
-        String jpql = "SELECT e FROM ShipmentSchedule e WHERE e.company = :company AND e.formdate >= :formdateBegin AND e.formdate <= :formdateEnd ";
+    public List<ShipmentSchedule> findByCompanyAndFormdate(String company, Date formdateBegin, Date formdateEnd,
+        boolean shortage) {
+        String jpql =
+            "SELECT e FROM ShipmentSchedule e WHERE e.company = :company AND e.formdate >= :formdateBegin AND e.formdate <= :formdateEnd ";
+        if (shortage) {
+            jpql += " AND e.invqty - e.appqty < 0 ORDER BY e.formdate,e.priority,e.itemno";
+        } else {
+            jpql += " ORDER BY e.formdate,e.priority,e.itemno";
+        }
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("company", company);
+        query.setParameter("formdateBegin", formdateBegin);
+        query.setParameter("formdateEnd", formdateEnd);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
+        return null;
+    }
+
+    public List<ShipmentSchedule> findByCompanyAndFormdate(String company, Date formdateBegin, Date formdateEnd,
+        boolean shortage, int first, int pageSize) {
+        String jpql =
+            "SELECT e FROM ShipmentSchedule e WHERE e.company = :company AND e.formdate >= :formdateBegin AND e.formdate <= :formdateEnd ";
         if (shortage) {
             jpql += " AND e.invqty - e.appqty < 0 ORDER BY e.formdate,e.priority,e.itemno";
         } else {
@@ -44,19 +66,54 @@ public class ShipmentScheduleBean extends SuperEJBForEAP<ShipmentSchedule> {
         return null;
     }
 
+    public List<ShipmentSchedule> findByCompanyFormdateAndStatus(String company, Date formdateBegin, Date formdateEnd,
+        String status) {
+        String jpql =
+            "SELECT e FROM ShipmentSchedule e WHERE e.company = :company AND e.formdate >= :formdateBegin AND e.formdate <= :formdateEnd AND e.status = :status ORDER BY e.formdate,e.priority,e.itemno";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("company", company);
+        query.setParameter("formdateBegin", formdateBegin);
+        query.setParameter("formdateEnd", formdateEnd);
+        query.setParameter("status", status);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
+        return null;
+    }
+
+    public List<ShipmentSchedule> findByCompanyFormdateAndStatus(String company, Date formdateBegin, Date formdateEnd,
+        String status, int first, int pageSize) {
+        String jpql =
+            "SELECT e FROM ShipmentSchedule e WHERE e.company = :company AND e.formdate >= :formdateBegin AND e.formdate <= :formdateEnd AND e.status = :status ORDER BY e.formdate,e.priority,e.itemno";
+        Query query = getEntityManager().createQuery(jpql).setFirstResult(first).setMaxResults(pageSize);
+        query.setParameter("company", company);
+        query.setParameter("formdateBegin", formdateBegin);
+        query.setParameter("formdateEnd", formdateEnd);
+        query.setParameter("status", status);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
+        return null;
+    }
+
     public ShipmentSchedule findByUID(String uid) {
         Query query = getEntityManager().createNamedQuery("ShipmentSchedule.findByUID");
         query.setParameter("uid", uid);
         try {
             Object o = query.getSingleResult();
-            return (ShipmentSchedule) o;
+            return (ShipmentSchedule)o;
         } catch (Exception ex) {
             return null;
         }
     }
 
     public int getRowCountByCompanyAndFormdate(String company, Date formdateBegin, Date formdateEnd, boolean shortage) {
-        String jpql = "SELECT COUNT(e) FROM ShipmentSchedule e WHERE e.company = :company AND e.formdate >= :formdateBegin AND e.formdate <= :formdateEnd ";
+        String jpql =
+            "SELECT COUNT(e) FROM ShipmentSchedule e WHERE e.company = :company AND e.formdate >= :formdateBegin AND e.formdate <= :formdateEnd ";
         if (shortage) {
             jpql += " AND e.invqty - e.appqty < 0 ";
         }
@@ -64,6 +121,23 @@ public class ShipmentScheduleBean extends SuperEJBForEAP<ShipmentSchedule> {
         query.setParameter("company", company);
         query.setParameter("formdateBegin", formdateBegin);
         query.setParameter("formdateEnd", formdateEnd);
+        try {
+            return Integer.parseInt(query.getSingleResult().toString());
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
+        return 0;
+    }
+
+    public int getRowCountByCompanyFormdateAndStatus(String company, Date formdateBegin, Date formdateEnd,
+        String status) {
+        String jpql =
+            "SELECT COUNT(e) FROM ShipmentSchedule e WHERE e.company = :company AND e.formdate >= :formdateBegin AND e.formdate <= :formdateEnd AND e.status = :status";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("company", company);
+        query.setParameter("formdateBegin", formdateBegin);
+        query.setParameter("formdateEnd", formdateEnd);
+        query.setParameter("status", status);
         try {
             return Integer.parseInt(query.getSingleResult().toString());
         } catch (Exception ex) {

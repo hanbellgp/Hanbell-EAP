@@ -26,7 +26,10 @@ public class MCHKGL034Detail implements Serializable {
     private String deptno;
     private String id;
     private String date;
-
+    private String employeeId;
+    private String employeeName;
+    private String deptId;
+    private String deptName;
     private String starttime;
     private String endtime;
     private String worktime;
@@ -160,6 +163,38 @@ public class MCHKGL034Detail implements Serializable {
      */
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 
 }

@@ -43,7 +43,7 @@ import org.eclipse.birt.report.engine.api.RenderOption;
  * @author C0160
  */
 @WebService(serviceName = "RPT")
-@Stateless()
+@Stateless
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class RPTWebService {
 
@@ -66,12 +66,14 @@ public class RPTWebService {
     private EngineConfig reportEngineConfig;
 
     @PostConstruct
-    public void construct() {
+    protected void construct() {
         FacesContext fc = FacesContext.getCurrentInstance();
-        reportPath = fc.getExternalContext().getRealPath("/")
-                + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportpath");
-        reportOutputPath = fc.getExternalContext().getRealPath("/")
-                + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportoutputpath");
+        if (fc != null) {
+            reportPath = fc.getExternalContext().getRealPath("/")
+                    + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportpath");
+            reportOutputPath = fc.getExternalContext().getRealPath("/")
+                    + fc.getExternalContext().getInitParameter("cn.hanbell.web.reportoutputpath");
+        }
     }
 
     protected void reportInitAndConfig() {
@@ -168,20 +170,22 @@ public class RPTWebService {
                 if (entity == null) {
                     return "500";
                 }
-
                 HashMap<String, Object> reportParams = new HashMap<>();
                 reportParams.put("JNDIName", systemProgram.getRptjndi());
                 reportParams.put("formid", formid);
                 String outputFormat = systemProgram.getRptformat();
                 String fileName = formid + "." + outputFormat;
-                String reportName = reportPath + systemProgram.getRptdesign();
-                String outputName = reportOutputPath + fileName;
-
                 try {
                     this.setReportClass(Class.forName(systemProgram.getRptclazz()).getClassLoader());
                     // 初始配置
                     this.reportInitAndConfig();
                     // 生成报表
+                    if (reportPath == null || reportOutputPath == null) {
+                        reportPath = reportClassLoader.getResource("../../rpt").getPath();
+                        reportOutputPath = reportClassLoader.getResource("../../rpt/output").getPath();
+                    }
+                    String reportName = reportPath + systemProgram.getRptdesign();
+                    String outputName = reportOutputPath + fileName;
                     this.reportRunAndOutput(reportName, reportParams, outputName, outputFormat, null);
                     // 发送邮件
                     eapMailBean.clearReceivers();
