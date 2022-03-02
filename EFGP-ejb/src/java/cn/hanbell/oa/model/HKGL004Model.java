@@ -49,7 +49,7 @@ public class HKGL004Model implements Serializable {
     private String time1;
     private String time2;
     private String reason;
-
+    private String isWechat;
     public HKGL004Model() {
     }
 
@@ -427,4 +427,13 @@ public class HKGL004Model implements Serializable {
         this.hdn_employee = hdn_employee;
     }
 
+    public String getIsWechat() {
+        return isWechat;
+    }
+
+    public void setIsWechat(String isWechat) {
+        this.isWechat = isWechat;
+    }
+
+    
 }

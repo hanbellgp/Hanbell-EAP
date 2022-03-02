@@ -28,6 +28,7 @@ public class HKGL034Model implements Serializable {
     private String applyDept;
     private String hdn_applyDept;
 
+    private String isWechat;
     private String type;
     private String hdn_type;
 
@@ -111,6 +112,15 @@ public class HKGL034Model implements Serializable {
     public void setHdn_applyDept(String hdn_applyDept) {
         this.hdn_applyDept = hdn_applyDept;
     }
+
+    public String getIsWechat() {
+        return isWechat;
+    }
+
+    public void setIsWechat(String isWechat) {
+        this.isWechat = isWechat;
+    }
+    
 
     @Override
     public int hashCode() {

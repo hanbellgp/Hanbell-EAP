@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.erp.ejb;
 
@@ -33,13 +32,14 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
     @EJB
     private ApmapdBean apmapdBean;
     @EJB
-    private SHBERPAPM811Bean shberpapm811Bean;
-    @EJB
     private InvpriBean invpriBean;
     @EJB
     private AccacrBean accacrBean;
     @EJB
     private AccspedBean accspedBean;
+
+    @EJB
+    private SHBERPAPM811Bean shberpapm811Bean;
 
     private List<Apmapd> apmapdList;
 
@@ -52,11 +52,13 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
         query.setParameter("facno", facno);
         query.setParameter("apno", apno);
         query.setParameter("aptyp", aptyp);
-        return (Apmaph) query.getSingleResult();
+        return (Apmaph)query.getSingleResult();
     }
 
-    public List<Apmaph> findNeedThrow() {
-        Query query = this.getEntityManager().createNamedQuery("Apmaph.findNeedThrow").setFirstResult(0).setMaxResults(1);
+    public List<Apmaph> findNeedThrow(String aptyp) {
+        Query query =
+            this.getEntityManager().createNamedQuery("Apmaph.findNeedThrow").setFirstResult(0).setMaxResults(1);
+        query.setParameter("aptyp", aptyp);
         return query.getResultList();
     }
 
@@ -65,12 +67,9 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
         return apmapdBean.findNeedThrowDetail(facno, apno, aptyp);
     }
 
-    public List<Apmapd> getApmapdList() {
-        return apmapdList;
-    }
-
-    public void setApmapdList(List<Apmapd> apmapdList) {
-        this.apmapdList = apmapdList;
+    public List<Apmapd> findApmapd(String facno, String apno) {
+        apmapdBean.setCompany(facno);
+        return apmapdBean.findByFacnoAndApno(facno, apno);
     }
 
     public Boolean rollApmtbil(String psn) {
@@ -99,7 +98,7 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
         accspedBean.setCompany(facno);
         int l_row, l_acrcount;
         List<Accacr> accacrList = accacrBean.findBySysnoAndKindAndRkd("APM", "71", rkd);
-        List<Accsped> accspedList = accspedBean.findByConfig((short) 52);
+        List<Accsped> accspedList = accspedBean.findByConfig((short)52);
         l_row = 1;
         if (null == accacrList || accacrList.isEmpty()) {
             l_acrcount = 0;
@@ -126,6 +125,7 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
         BigDecimal ldc_unittotqy;
         int llcount;
         StringBuilder sb = new StringBuilder();
+        invpriBean.setCompany(facno);
         Invpri invpri = invpriBean.findByPK(facno, preyrmth, itnbr);
         if (null == invpri || null == invpri.getUnittotqy() || "".equals(invpri.getUnittotqy())) {
             ldc_unittotqy = BigDecimal.ZERO;
@@ -136,12 +136,15 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
             return true;
         }
 
-        sb.append(" select count(*)  from invtrn h,invwh w  where h.facno = w.facno and h.prono = w.prono and h.wareh = w.wareh and w.costyn = 'Y' and h.facno = '")
-                .append(facno).append("' and h.trdate >= '").append(BaseLib.formatDate("yyyyMMdd", startdate)).append("' and h.trdate < '").append(BaseLib.formatDate("yyyyMMdd", endDate)).append("' and h.itnbr = '").append(itnbr).append("' and h.trtype in (select trntp from cstrul where facno = '").append(facno)
-                .append("'  and kseq = 30 and iocode = '1' and avgco = 'Y')");
+        sb.append("select count(*)  from invtrn h,invwh w  where h.facno = w.facno and h.prono = w.prono ");
+        sb.append(" and h.wareh = w.wareh and w.costyn = 'Y' and h.facno = '").append(facno)
+            .append("' and h.trdate >= '").append(BaseLib.formatDate("yyyyMMdd", startdate))
+            .append("' and h.trdate < '").append(BaseLib.formatDate("yyyyMMdd", endDate)).append("' and h.itnbr = '")
+            .append(itnbr).append("' and h.trtype in (select trntp from cstrul where facno = '").append(facno)
+            .append("' and kseq = 30 and iocode = '1' and avgco = 'Y')");
         Query query = getEntityManager().createNativeQuery(sb.toString());
         try {
-            llcount = (int) query.getSingleResult();
+            llcount = (int)query.getSingleResult();
             if (llcount > 0) {
                 return true;
             }
@@ -149,6 +152,14 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
             return false;
         }
         return false;
+    }
+
+    public List<Apmapd> getApmapdList() {
+        return apmapdList;
+    }
+
+    public void setApmapdList(List<Apmapd> apmapdList) {
+        this.apmapdList = apmapdList;
     }
 
 }

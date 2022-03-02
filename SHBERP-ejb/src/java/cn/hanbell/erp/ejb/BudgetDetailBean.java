@@ -376,32 +376,64 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
         return deptBalance;
     }
 
+    public Double getBudgetBalanceForAccPeriod(String facno, String period1, String period2, String centerid, String budgetacc) {
+        BigDecimal accPeriod = BigDecimal.ZERO;
+        double accBalance;
+        List<BudgetDetail> budgetDetails;
+        Query q = this.getEntityManager().createQuery("SELECT b FROM BudgetDetail b WHERE b.budgetDetailPK.facno = :facno AND b.budgetDetailPK.period >= :period1  AND b.budgetDetailPK.period <= :period2 AND b.budgetDetailPK.centerid = :centerid AND b.budgetDetailPK.budgetacc = :budgetacc");
+        q.setParameter("facno", facno);
+        q.setParameter("period1", period1);
+        q.setParameter("period2", period2);
+        q.setParameter("centerid", centerid);
+        q.setParameter("budgetacc", budgetacc);
+        try {
+            budgetDetails = q.getResultList();
+            for (BudgetDetail b : budgetDetails) {
+                accPeriod = accPeriod.add(b.getAmts().add(b.getAddamts()).subtract(b.getDecramts()).subtract(b.getPreamts()));
+            }
+            accBalance = accPeriod.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        } catch (Exception ex) {
+            accBalance = 0.00;
+        }
+
+        return accBalance;
+    }
+
+    /*
+    *获得部门期间余额
+    *日期格式为yyyy/MM/dd
+     */
     public Double getBudgetBalanceForDeptPeriod(String facno, Date date, String centerid) {
         String period1 = "";
         String period2 = "";
         String datestring = BaseLib.formatDate("yyyy/MM/dd", date);
         String[] sp = datestring.split("/");
-        if (Integer.parseInt(sp[1], 10) < 4) {
-            period1 = sp[0] + "01";
-            period2 = sp[0] + sp[1];
-        }
-        if (3 < Integer.parseInt(sp[1], 10) && Integer.parseInt(sp[1], 10) < 7) {
-            period1 = sp[0] + "04";
-            period2 = sp[0] + sp[1];
-        }
-        if (6 < Integer.parseInt(sp[1], 10) && Integer.parseInt(sp[1], 10) < 10) {
-            period1 = sp[0] + "07";
-            period2 = sp[0] + sp[1];
-        }
-        if (9 < Integer.parseInt(sp[1], 10) && Integer.parseInt(sp[1], 10) < 13) {
-            period1 = sp[0] + "10";
-            period2 = sp[0] + sp[1];
-        }
-
+//        if (Integer.parseInt(sp[1], 10) < 4) {
+//            period1 = sp[0] + "01";
+//            period2 = sp[0] + sp[1];
+//        }
+//        if (3 < Integer.parseInt(sp[1], 10) && Integer.parseInt(sp[1], 10) < 7) {
+//            period1 = sp[0] + "04";
+//            period2 = sp[0] + sp[1];
+//        }
+//        if (6 < Integer.parseInt(sp[1], 10) && Integer.parseInt(sp[1], 10) < 10) {
+//            period1 = sp[0] + "07";
+//            period2 = sp[0] + sp[1];
+//        }
+//        if (9 < Integer.parseInt(sp[1], 10) && Integer.parseInt(sp[1], 10) < 13) {
+//            period1 = sp[0] + "10";
+//            period2 = sp[0] + sp[1];
+//        }
+        period1 = sp[0] + "01";
+        period2 = sp[0] + sp[1];
         return this.getBudgetBalanceForDeptPeriod(facno, period1, period2, centerid);
-
     }
 
+
+    /*
+    *获得部门本年余额
+    *日期格式为yyyy/MM/dd
+     */
     public Double getBudgetBalanceForDeptYear(String facno, Date date, String centerid) {
         String period1 = "";
         String period2 = "";
@@ -411,4 +443,33 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
         period2 = sp[0] + "12";
         return this.getBudgetBalanceForDeptPeriod(facno, period1, period2, centerid);
     }
+
+    /*
+    *获得科目期间余额
+    *日期格式为yyyy/MM/dd
+     */
+    public Double getBudgetBalanceForAccPeriod(String facno, Date date, String centerid, String accno) {
+        String period1 = "";
+        String period2 = "";
+        String datestring = BaseLib.formatDate("yyyy/MM/dd", date);
+        String[] sp = datestring.split("/");
+        period1 = sp[0] + "01";
+        period2 = sp[0] + sp[1];
+        return this.getBudgetBalanceForAccPeriod(facno, period1, period2, centerid, accno);
+    }
+
+    /*
+    *获得科目本年余额
+    *日期格式为yyyy/MM/dd
+     */
+    public Double getBudgetBalanceForAccYear(String facno, Date date, String centerid, String accno) {
+        String period1 = "";
+        String period2 = "";
+        String datestring = BaseLib.formatDate("yyyy/MM/dd", date);
+        String[] sp = datestring.split("/");
+        period1 = sp[0] + "01";
+        period2 = sp[0] + "12";
+        return this.getBudgetBalanceForAccPeriod(facno, period1, period2, centerid, accno);
+    }
+    
 }

@@ -235,6 +235,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             return true;
         } catch (ParseException | NullPointerException | NumberFormatException ex) {
             log4j.error("initByOAHKFW006", ex);
+            ex.printStackTrace();
             return false;
         }
     }

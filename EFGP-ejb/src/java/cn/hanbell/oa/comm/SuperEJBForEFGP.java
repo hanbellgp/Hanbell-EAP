@@ -182,6 +182,8 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
         switch (facno) {
             case "C":
                 return "上海汉钟";
+            case "F":
+                return "楚雄汉钟";
             case "G":
                 return "广州分公司";
             case "J":

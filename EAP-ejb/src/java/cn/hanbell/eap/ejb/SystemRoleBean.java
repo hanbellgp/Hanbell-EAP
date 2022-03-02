@@ -9,6 +9,7 @@ import cn.hanbell.eap.comm.SuperEJBForEAP;
 import cn.hanbell.eap.entity.SystemRole;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.persistence.Query;
 
 /**
  *
@@ -20,6 +21,12 @@ public class SystemRoleBean extends SuperEJBForEAP<SystemRole> {
 
     public SystemRoleBean() {
         super(SystemRole.class);
+    }
+
+    public SystemRole findById(int id) {
+        Query query = getEntityManager().createNamedQuery("SystemRole.findById");
+        query.setParameter("id", id);
+        return (SystemRole) query.getSingleResult();
     }
 
 }

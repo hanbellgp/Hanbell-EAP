@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.erp.entity;
 
@@ -27,8 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "apmpay")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Apmpay.findAll", query = "SELECT a FROM Apmpay a"),
+@NamedQueries({@NamedQuery(name = "Apmpay.findAll", query = "SELECT a FROM Apmpay a"),
     @NamedQuery(name = "Apmpay.findByFacno", query = "SELECT a FROM Apmpay a WHERE a.apmpayPK.facno = :facno"),
     @NamedQuery(name = "Apmpay.findByPaycode", query = "SELECT a FROM Apmpay a WHERE a.apmpayPK.paycode = :paycode"),
     @NamedQuery(name = "Apmpay.findByPayno", query = "SELECT a FROM Apmpay a WHERE a.apmpayPK.payno = :payno"),
@@ -112,14 +110,23 @@ public class Apmpay implements Serializable {
     private String srcno;
 
     public Apmpay() {
+        this.ritm1 = "";
+        this.ritm2 = "";
+        this.ritm3 = "";
+        this.ritm4 = "";
+        this.ritm5 = "";
+        this.ritm6 = "";
+        this.ritm7 = "";
+        this.ritm8 = "";
     }
 
     public Apmpay(ApmpayPK apmpayPK) {
+        this();
         this.apmpayPK = apmpayPK;
     }
 
     public Apmpay(ApmpayPK apmpayPK, String rkd, Date payda, String usrno, Character paystat) {
-        this.apmpayPK = apmpayPK;
+        this(apmpayPK);
         this.rkd = rkd;
         this.payda = payda;
         this.usrno = usrno;
@@ -299,8 +306,9 @@ public class Apmpay implements Serializable {
         if (!(object instanceof Apmpay)) {
             return false;
         }
-        Apmpay other = (Apmpay) object;
-        if ((this.apmpayPK == null && other.apmpayPK != null) || (this.apmpayPK != null && !this.apmpayPK.equals(other.apmpayPK))) {
+        Apmpay other = (Apmpay)object;
+        if ((this.apmpayPK == null && other.apmpayPK != null)
+            || (this.apmpayPK != null && !this.apmpayPK.equals(other.apmpayPK))) {
             return false;
         }
         return true;

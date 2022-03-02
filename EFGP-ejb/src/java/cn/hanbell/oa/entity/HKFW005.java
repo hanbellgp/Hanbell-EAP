@@ -230,6 +230,9 @@ public class HKFW005 implements Serializable {
     @Size(max = 255)
     @Column(name = "formSerialNumber")
     private String formSerialNumber;
+    @Size(max = 255)
+    @Column(name = "cdruserno")
+    private String cdruserno;
 
     public HKFW005() {
     }
@@ -840,5 +843,13 @@ public class HKFW005 implements Serializable {
                 return "自提";
         }
         return "";
+    }
+
+    public String getCdruserno() {
+        return cdruserno;
+    }
+
+    public void setCdruserno(String cdruserno) {
+        this.cdruserno = cdruserno;
     }
 }

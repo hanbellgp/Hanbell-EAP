@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
  * @author Administrator
  */
 @Embeddable
-public class PormyPK implements Serializable {
+public class PORMYPK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
@@ -30,10 +30,10 @@ public class PormyPK implements Serializable {
     @Column(name = "MY002")
     private String my002;
 
-    public PormyPK() {
+    public PORMYPK() {
     }
 
-    public PormyPK(String my001, String my002) {
+    public PORMYPK(String my001, String my002) {
         this.my001 = my001;
         this.my002 = my002;
     }
@@ -65,10 +65,10 @@ public class PormyPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PormyPK)) {
+        if (!(object instanceof PORMYPK)) {
             return false;
         }
-        PormyPK other = (PormyPK) object;
+        PORMYPK other = (PORMYPK) object;
         if ((this.my001 == null && other.my001 != null) || (this.my001 != null && !this.my001.equals(other.my001))) {
             return false;
         }
