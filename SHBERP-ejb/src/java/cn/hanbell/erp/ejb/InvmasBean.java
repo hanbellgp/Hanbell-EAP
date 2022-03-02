@@ -299,8 +299,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 Invcls c = invclsBean.findByItcls(detail.getItcls());
                 m.setInvcls(c);
                 m.setItclscode(c.getItclscode());
-                //重设purtrtype
-                m.setPurtrtype(getPurtrtype(h.getFacno2(), m.getItclscode()));
+
                 setCompany(h.getFacno2());
                 persist(m);
                 this.getEntityManager().flush();
@@ -583,21 +582,6 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
             log4j.error(ex);
             return false;
         }
-    }
-
-    public String getPurtrtype(String facno, Character itclscode) {
-        String purtrtype = "";
-        StringBuilder sb = new StringBuilder();
-        sb.append("select purtrtype from purdou p ,invdou v where p.trtype = v.trtype ");
-        sb.append(" and p.itclscode = '");
-        sb.append(itclscode);
-        sb.append("' and v.iocode='1' ");
-        Query query = getEntityManager(facno).createNativeQuery(sb.toString());
-        Object[] row = query.getResultList().toArray();
-        if (row != null) {
-            purtrtype = row[0].toString();
-        }
-        return purtrtype;
     }
 
 }

@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Transwah.findByProno", query = "SELECT t FROM Transwah t WHERE t.transwahPK.prono = :prono"),
     @NamedQuery(name = "Transwah.findByCustype", query = "SELECT t FROM Transwah t WHERE t.transwahPK.custype = :custype"),
     @NamedQuery(name = "Transwah.findByCusno", query = "SELECT t FROM Transwah t WHERE t.transwahPK.cusno = :cusno"),
-    @NamedQuery(name = "Transwah.findByCusnoAndTrseq", query = "SELECT t FROM Transwah t WHERE t.transwahPK.cusno = :cusno AND t.transwahPK.trseq = :trseq"),
+    @NamedQuery(name = "Transwah.findByTrseq", query = "SELECT t FROM Transwah t WHERE t.transwahPK.trseq = :trseq"),
     @NamedQuery(name = "Transwah.findByWareh", query = "SELECT t FROM Transwah t WHERE t.wareh = :wareh")})
 public class Transwah implements Serializable {
 

@@ -178,37 +178,37 @@ public class ReportManagedBean extends SuperReportManagedBean {
                         }
                     }
                 }
-                if ("HK_CW005".equals(api)) {
-                    ProcessInstance pi = processInstanceBean.findByOID(paramMap.get("formid")[0]);
-                    HKCW005 hkcw005 = hkcw005Bean.findByPSN(pi.getSerialNumber());
-                    switch (hkcw005.getFkxz()) {
-                        case "2"://理财
-                            baos = new ByteArrayOutputStream();
-                            this.reportRunAndOutput(reportPath + "hkcw00501.rptdesign", reportParams, null, "pdf", baos);
-                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
-                            break;
-                        case "3"://金融衍生性产品
-                            baos = new ByteArrayOutputStream();
-                            this.reportRunAndOutput(reportPath + "hkcw00502.rptdesign", reportParams, null, "pdf", baos);
-                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
-                            break;
-                        case "4"://证券投资补充表
-                            baos = new ByteArrayOutputStream();
-                            this.reportRunAndOutput(reportPath + "hkcw00503.rptdesign", reportParams, null, "pdf", baos);
-                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
-                            break;
-                        case "5"://对外投资款补充表
-                            baos = new ByteArrayOutputStream();
-                            this.reportRunAndOutput(reportPath + "hkcw00504.rptdesign", reportParams, null, "pdf", baos);
-                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
-                            break;
+//                if ("HK_CW005".equals(api)) {
+//                    ProcessInstance pi = processInstanceBean.findByOID(paramMap.get("formid")[0]);
+//                    HKCW005 hkcw005 = hkcw005Bean.findByPSN(pi.getSerialNumber());
+//                    switch (hkcw005.getFkxz()) {
+//                        case "2"://理财
+//                            baos = new ByteArrayOutputStream();
+//                            this.reportRunAndOutput(reportPath + "hkcw00501.rptdesign", reportParams, null, "pdf", baos);
+//                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+//                            break;
+//                        case "3"://金融衍生性产品
+//                            baos = new ByteArrayOutputStream();
+//                            this.reportRunAndOutput(reportPath + "hkcw00502.rptdesign", reportParams, null, "pdf", baos);
+//                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+//                            break;
+//                        case "4"://证券投资补充表
+//                            baos = new ByteArrayOutputStream();
+//                            this.reportRunAndOutput(reportPath + "hkcw00503.rptdesign", reportParams, null, "pdf", baos);
+//                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+//                            break;
+//                        case "5"://对外投资款补充表
+//                            baos = new ByteArrayOutputStream();
+//                            this.reportRunAndOutput(reportPath + "hkcw00504.rptdesign", reportParams, null, "pdf", baos);
+//                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+//                            break;
 //                        case "7"://分公司拨款补充表
 //                            baos = new ByteArrayOutputStream();
 //                            this.reportRunAndOutput(reportPath + "hkcw00505.rptdesign", reportParams, null, "pdf", baos);
 //                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
 //                            break;
-                    }
-                }
+//                    }
+//                }
                 // 生成签核流程
                 this.setReportClass(Class.forName("cn.hanbell.efgp.rpt.ProcessCheckReport").getClassLoader());// 设置成流程报表
                 reportParams.remove("JNDIName");
@@ -218,12 +218,7 @@ public class ReportManagedBean extends SuperReportManagedBean {
                 this.reportInitAndConfig();
                 // 生成报表
                 baos = new ByteArrayOutputStream();
-                //服务工作支援单打印签核意见
-                if ("HK_FW005".equals(api)) {
-                    this.reportRunAndOutput(reportPath + "processcheck_fw.rptdesign", reportParams, null, "pdf", baos);
-                } else {
-                    this.reportRunAndOutput(reportPath + "processcheck.rptdesign", reportParams, null, "pdf", baos);
-                }
+                this.reportRunAndOutput(reportPath + "processcheck.rptdesign", reportParams, null, "pdf", baos);
                 pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
                 // 生成合并文件
                 pdfCopy.close();

@@ -28,7 +28,6 @@ public class ProcessCheck implements Serializable {
     private String workItemName;
     private String createdTime;
     private String completedTime;
-    private String executiveComment;
     private int currentState;
 
     public ProcessCheck() {
@@ -131,14 +130,6 @@ public class ProcessCheck implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.ProcessCheck[ id=" + id + " ]";
-    }
-
-    public String getExecutiveComment() {
-        return executiveComment;
-    }
-
-    public void setExecutiveComment(String executiveComment) {
-        this.executiveComment = executiveComment;
     }
 
 }

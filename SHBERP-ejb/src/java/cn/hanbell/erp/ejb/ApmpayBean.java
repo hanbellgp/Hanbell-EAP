@@ -7,7 +7,6 @@ package cn.hanbell.erp.ejb;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
-
 import cn.hanbell.erp.entity.Apmpad;
 import cn.hanbell.erp.entity.ApmpadPK;
 import cn.hanbell.erp.entity.Apmpay;
@@ -27,7 +26,6 @@ import cn.hanbell.oa.entity.HZCW017;
 import cn.hanbell.oa.entity.HZCW033reDetail;
 import cn.hanbell.oa.entity.HZCW033;
 import cn.hanbell.oa.entity.SHBERPAPM828;
-import cn.hanbell.oa.entity.SHBERPAPM828Detail;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -143,7 +141,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 apmpad.setConfig(config);
                 apmpad.setDramt(apd.getApamt());
                 apmpad.setCramt(BigDecimal.ZERO);
-                apmpad.setDramtfs(apd.getAcpamtfs());
+                apmpad.setDramtfs(apd.getApamtfs());
                 apmpad.setCramtfs(BigDecimal.ZERO);
                 apmpad.setCoin(apd.getCoin());
                 apmpad.setRatio(apd.getRatio());

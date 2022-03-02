@@ -16,36 +16,6 @@
                     </p:row>
                 </f:facet>
                 <p:row>
-                    <p:column><h:outputLabel value="公司别" for="queryFacno" /></p:column>
-                    <p:column>
-                        <p:selectOneMenu id="queryFacno" value="#{hkjh006ManagedBean.queryFacno}" >
-                            <f:selectItem itemLabel="全部" itemValue=""/>
-                            <f:selectItem itemLabel="上海汉钟" itemValue="C"/>
-                            <f:selectItem itemLabel="广州分公司" itemValue="G"/>
-                            <f:selectItem itemLabel="济南分公司" itemValue="J"/>
-                            <f:selectItem itemLabel="南京分公司" itemValue="N"/>
-                            <f:selectItem itemLabel="重庆分公司" itemValue="C4"/>
-                            <f:selectItem itemLabel="浙江汉声" itemValue="H"/>
-                            <f:selectItem itemLabel="安徽汉扬" itemValue="Y"/>
-                            <f:selectItem itemLabel="上海柯茂" itemValue="K"/>
-                            <f:selectItem itemLabel="浙江柯茂" itemValue="E"/>
-                            <f:selectItem itemLabel="世纪东元" itemValue="Q"/>
-                        </p:selectOneMenu>
-                    </p:column>
-                    <p:column><h:outputLabel value="流程状态" for="queryCurrentState" /></p:column>
-                    <p:column>
-                        <p:selectOneMenu id="queryCurrentState" value="#{hkjh006ManagedBean.queryCurrentState}"  >
-                            <f:selectItem itemLabel="未开始" itemValue="0"/>
-                            <f:selectItem itemLabel="进行中" itemValue="1"/>
-                            <f:selectItem itemLabel="已暂停" itemValue="2"/>
-                            <f:selectItem itemLabel="已完成" itemValue="3"/>
-                            <f:selectItem itemLabel="已撤销" itemValue="4"/>
-                            <f:selectItem itemLabel="已中止" itemValue="5"/>
-                        </p:selectOneMenu>
-                    </p:column>
-                </p:row>
-
-                <p:row>
                     <p:column><h:outputLabel value="客户代号" for="queryCustomerNo" /></p:column>
                     <p:column>
                         <p:inputText id="queryCustomerNo"  value="#{hkjh006ManagedBean.queryCustomerNo}"  placeholder="可模糊查询" />
@@ -55,6 +25,7 @@
                         <p:inputText id="queryCustomerName"  value="#{hkjh006ManagedBean.queryCustomerName}"  placeholder="可模糊查询" />
                     </p:column>
                 </p:row>
+               
                 <p:row>
                     <p:column><h:outputLabel value="申请日期始" for="queryDateBegin" /></p:column>
                     <p:column>
@@ -112,7 +83,7 @@
                     <h:outputText value="#{item[2]}"/>
                 </p:column>
 
-                <p:column styleClass="Wid20">
+                  <p:column styleClass="Wid20">
                     <f:facet name="header">
                         <h:outputText value="申请负责人事业部代号"/>
                     </f:facet>
@@ -150,12 +121,6 @@
                         <h:outputText value="预估当年度销货总金额"/>
                     </f:facet>
                     <h:outputText value="#{item[8]}"/>
-                </p:column>
-                 <p:column styleClass="Wid20">
-                    <f:facet name="header">
-                        <h:outputText value="预估当年度销货总金额"/>
-                    </f:facet>
-                    <h:outputText value="#{hkjh006ManagedBean.getCurrentStateValue(item[10])}"/>
                 </p:column>
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

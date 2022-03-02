@@ -5,7 +5,6 @@
  */
 package cn.hanbell.oa.jrs;
 
-import cn.hanbell.crm.ejb.CMSMEBean;
 import cn.hanbell.oa.app.OvertimeApplication;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
@@ -18,7 +17,6 @@ import cn.hanbell.oa.model.HKGL034Model;
 import cn.hanbell.oa.app.OvertimeApplicationDetail;
 import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.util.BaseLib;
-import cn.hanbell.wco.ejb.Agent1000002Bean;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,9 +43,6 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
 
     @EJB
     private HKGL034Bean hkgl034Bean;
-
-    @EJB
-    private Agent1000002Bean agent1000002Bean;
 
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
@@ -82,35 +77,23 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                 m.setHdn_applyDept(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
                 m.setType(entity.getFormType());
                 m.setHdn_type(entity.getFormTypeDesc());
-                m.setIsWechat("Y");
                 //根据部门设置公司
                 m.setFacno(workFlowBean.getCompanyByDeptId(m.getApplyDept()));
                 m.setHdn_facno(m.getFacno());
                 for (OvertimeApplicationDetail oad : entity.getDetailList()) {
-                    //前一天凌晨
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(new Date());
-                    calendar.set(Calendar.HOUR_OF_DAY, 0);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.SECOND, 59);
-                    calendar.add(calendar.MINUTE, -1);
-                    calendar.add(Calendar.DATE, -1);
-                    Date zero = calendar.getTime();
+                    Calendar c = Calendar.getInstance();
+                    c.add(Calendar.DATE, - 5);
+                    Date time = c.getTime();
                     Date date1 = BaseLib.getDate("yyyy-MM-dd", oad.getDate1());
-                    if (zero.getTime() >= date1.getTime()) {
-                        return new ResponseMessage("500", "填单日期晚于实际加班日期不可以申请！");
+                    if (time.getTime() > date1.getTime()) {
+                        return new ResponseMessage("500", "请假日期截止超过5天不可申请");
                     }
-
                     d = new HKGL034DetailModel();
                     d.setSeq(oad.getSeq());
-//                    d.setDept_txt(workFlowBean.getUserFunction().getOrganizationUnit().getId());
-//                    d.setDept_lbl(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
-//                    d.setEmployee(workFlowBean.getCurrentUser().getId());
-//                    d.setEmployeeName(workFlowBean.getCurrentUser().getUserName());
-                    d.setDept_txt(oad.getDeptName().split("-")[1]);
-                    d.setDept_lbl(oad.getDeptId());
-                    d.setEmployee(oad.getEmployeeId());
-                    d.setEmployeeName(oad.getEmployeeName().split("-")[1]);
+                    d.setDept_txt(workFlowBean.getUserFunction().getOrganizationUnit().getId());
+                    d.setDept_lbl(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
+                    d.setEmployee(workFlowBean.getCurrentUser().getId());
+                    d.setEmployeeName(workFlowBean.getCurrentUser().getUserName());
                     Pattern p = Pattern.compile("\\s*|\t|\r|\n");
                     Matcher matcher = p.matcher(oad.getContent());
                     String finishedReplaceStr = matcher.replaceAll("");
@@ -131,33 +114,18 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                     }
                     detailList.add(d);
                 }
+
                 String formInstance = workFlowBean.buildXmlForEFGP("HK_GL034", m, details);
                 String subject = entity.getEmployee() + "加班申请";
                 String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL034", formInstance, subject);
                 String[] rm = msg.split("\\$");
                 if (rm.length == 2) {
-                    boolean isSuccess = true;
-                    StringBuffer users = new StringBuffer();
-                    for (OvertimeApplicationDetail oad : entity.getDetailList()) {
-                        agent1000002Bean.initConfiguration();
-                        String errmsg = agent1000002Bean.sendMsgToUser(oad.getEmployeeId(), "text", "[汉钟精机] 您申请的" + oad.getDate1() + "加班单已完成填单");
-                        if ("ok".equals(errmsg)) {
-                            isSuccess = false;
-                            users.append(oad.getEmployeeName()).append(",");
-                        }
-                    }
-                    if (isSuccess) {
-                        return new ResponseMessage("500", "表单发起成功，" + users + "消息发送失败");
-                    }
-
                     return new ResponseMessage(rm[0], rm[1]);
-
                 } else {
-                    return new ResponseMessage("500", "提交失败");
+                    return new ResponseMessage("200", "Code=200");
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
-                return new ResponseMessage("500", "资料填写有误，核对后请联系管理员");
+                return new ResponseMessage("500", "系统错误更新失败");
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
@@ -202,10 +170,10 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                     seq++;
                     d = new HKGL034DetailModel();
                     d.setSeq(String.valueOf(seq));
-                    d.setDept_txt(oad.getDeptName().split("-")[1]);
-                    d.setDept_lbl(oad.getDeptId());
-                    d.setEmployee(oad.getEmployeeId());
-                    d.setEmployeeName(oad.getEmployeeName().split("-")[1]);
+                    d.setDept_txt(workFlowBean.getUserFunction().getOrganizationUnit().getId());
+                    d.setDept_lbl(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
+                    d.setEmployee(workFlowBean.getCurrentUser().getId());
+                    d.setEmployeeName(workFlowBean.getCurrentUser().getUserName());
                     d.setContent(oad.getNote());
                     d.setDate1_txt(oad.getDate());
                     d.setTime1_txt(oad.getStarttime());
@@ -234,8 +202,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                     return new ResponseMessage("200", "Code=200");
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
-                return null;
+                return new ResponseMessage("500", "系统错误更新失败");
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);

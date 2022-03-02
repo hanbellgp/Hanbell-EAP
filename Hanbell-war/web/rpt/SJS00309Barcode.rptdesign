@@ -201,8 +201,7 @@ if(master!=null){
 	detail = ejbClient.getDetail(params["formid"]); 
 }
 currentRow = 0;]]></method>
-            <method name="fetch"><![CDATA[importPackage(Packages.java.lang);
-if(currentRow < detail.size()){
+            <method name="fetch"><![CDATA[if(currentRow < detail.size()){
 	dataSetRow["customerno"] = master.getCustomerno();
 	dataSetRow["customer"] = master.getCustomer();
 	dataSetRow["itemmodel"] = detail.get(currentRow).getItemModel();
@@ -214,7 +213,6 @@ if(currentRow < detail.size()){
     dataSetRow["shpdate"] = detail.get(currentRow).getShpdateAndLotseq();
     dataSetRow["varnrbarcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/" + detail.get(currentRow).getVarnr()+ ".png";
     dataSetRow["varnrqrcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + detail.get(currentRow).getVarnr()+ ".png";
-    System.out.println("====currentRow2=====>" +"http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png"); 
     dataSetRow["shpqrcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png";
     currentRow++;
     return true;
@@ -367,7 +365,7 @@ return false;
                             <property name="paddingBottom">0pt</property>
                             <label id="188">
                                 <property name="marginTop">0pt</property>
-                                <text-property name="text">1100000429</text-property>
+                                <text-property name="text">A0007001</text-property>
                             </label>
                         </cell>
                     </row>

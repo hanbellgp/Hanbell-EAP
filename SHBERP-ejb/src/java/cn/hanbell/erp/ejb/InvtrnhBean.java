@@ -256,7 +256,7 @@ public class InvtrnhBean extends SuperEJBForERP<Invtrnh> {
     public List<Object[]> getInvtrnhByINV555(String facno, Date queryDateBegin, Date queryDateEnd, String queryno, String querytype, String querywareh, String querydept, String queryuser) {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT invtrnh.trtype,invdou.typedsc,invtrnh.facno,invtrnh.prono,invtrnh.depno, invtrnh.trno,invtrnh.trdate,invtrnh.trseq, invtrnh.itnbr,");
-        sql.append(" invmas.itdsc,invcls.itcls,invcls.clsdsc,invcls.itclscode, invtrnh.wareh,invwh.whdsc, invtrnh.trnqy1,invtrnh.unmsr1,invtrnh.tramt,invtrnh.userno, invtrnh.iocode,invdou.reskind,invtrnh.rescode,invdou.hmark1,invtrnh.hmark1,invdou.depdsckind");
+        sql.append(" invmas.itdsc,invcls.itcls,invcls.clsdsc,invcls.itclscode, invtrnh.wareh,invwh.whdsc, invtrnh.trnqy1,invtrnh.unmsr1,invtrnh.tramt,invtrnh.userno, invtrnh.iocode,invdou.reskind,invtrnh.rescode,invdou.hmark1,invtrnh.hmark1");
         sql.append(" FROM invtrnh, invmas, invwh, invdou, invcls");
         sql.append(" WHERE (invmas.itnbr = invtrnh.itnbr) AND(invtrnh.facno = invwh.facno) AND (invtrnh.prono = invwh.prono) AND (invtrnh.wareh = invwh.wareh) AND");
         sql.append(" (invdou.trtype = invtrnh.trtype) AND (invcls.itcls = invmas.itcls) AND ((invdou.syscode = '10') AND (invdou.reskind IS NOT NULL AND");
