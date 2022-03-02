@@ -34,19 +34,16 @@ public class AttendanceBean extends SuperEJBForEAP<Attendance> {
         }
     }
 
-    public List<Attendance> findByAttendanceAndEmployeeIdAndStatus(String employeeId, String date, String status,String facno) {
+    public List<Attendance> findByAttendanceAndEmployeeIdAndStatus(String employeeid, String date, String status) {
         StringBuffer sql = new StringBuffer("SELECT * FROM attendance where 1=1 ");
-        if (employeeId != null && !"".equals(employeeId)) {
-            sql.append("and  employeeId like '%").append(employeeId).append("%'");
+        if (employeeid != null && !"".equals(employeeid)) {
+            sql.append("and  employeeName like '%").append(employeeid).append("%'");
         }
         if (date != null && !"".equals(date)) {
             sql.append("and  attendanceDate like '%").append(date).append("%'");
         }
         if (status != null && !"All".equals(status)) {
             sql.append("and  status like '%").append(status).append("%'");
-        }
-           if (facno != null && !"".equals(facno)) {
-            sql.append("and  facno ='").append(facno).append("'");
         }
         Query query = getEntityManager().createNativeQuery(sql.toString(), Attendance.class);
         try {

@@ -12,7 +12,6 @@ import cn.hanbell.erp.entity.Cdrsys;
 import cn.hanbell.erp.entity.Cdrsysfmt;
 import cn.hanbell.util.BaseLib;
 import java.util.Date;
-import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -70,41 +69,6 @@ public class CdrsysBean extends SuperEJBForERP<Cdrsys> {
                     return null;
                 }
                 difcode = '2';
-                break;
-            //出货单
-            case "CDR641":
-            case "CDR645":
-            case "CDR647":
-            case "CDR760":
-                if (Objects.equals(decode, '1')) {
-                    autono = sysfmt.getSautoyn();
-                    autochar = sysfmt.getSautochar().toString();
-                    nofmt = sysfmt.getSnofmt();
-                    difcode = '3';
-                } else if (Objects.equals(decode, '2')) {
-                    autono = sysfmt.getOsautoyn();
-                    autochar = sysfmt.getOsautochar().toString();
-                    nofmt = sysfmt.getOsnofmt();
-                    difcode = 'C';
-                }
-                break;
-            //增加三角出货单号
-            case "OCDR641":
-            case "OCDR645":
-            case "OCDR647":
-            case "OCDR710":
-            case "OCDR760":
-                if (Objects.equals(decode, '1')) {
-                    autono = sysfmt.getSeaautoyn();
-                    autochar = sysfmt.getSeaautochar().toString();
-                    nofmt = sysfmt.getSeanofmt();
-                    difcode = 'E';
-                } else if (Objects.equals(decode, '2')) {
-                    autono = sysfmt.getOseaautoyn();
-                    autochar = sysfmt.getOseaautochar().toString();
-                    nofmt = sysfmt.getOseanofmt();
-                    difcode = 'F';
-                }
                 break;
             default:
         }

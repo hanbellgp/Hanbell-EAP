@@ -8,13 +8,10 @@ package cn.hanbell.oa.ejb;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.HKGL031;
 import cn.hanbell.oa.entity.HKJH001serial;
-import cn.hanbell.oa.entity.HKJH005;
-import cn.hanbell.oa.entity.HKJH005Detail;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 
 /**
  *
@@ -22,34 +19,28 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class HKJH005Bean extends SuperEJBForEFGP<HKJH005> {
+public class HKGL031Bean extends SuperEJBForEFGP<HKGL031>{
     
     @EJB
     private HKJH001serialBean hkjh001serialBean;
     
-    @EJB
-    private HKJH005DetailBean hkjh005DetailBean;
-
-    public HKJH005Bean() {
-        super(HKJH005.class);
+    public HKGL031Bean() {
+        super(HKGL031.class);
     }
-
-    public List<HKJH005Detail> getDetailList(String fsn) {
-        return hkjh005DetailBean.findByFSN(fsn);
-    }
-
-    public boolean updateHKJH005(String psn) {
-        HKJH005 h = findByPSN(psn);
+    public boolean updateHKGL031(String psn) {
+        HKGL031 h = findByPSN(psn);
         if (h == null) {
             throw new NullPointerException();
         }
         String contractno = h.getContractno();
         if ("".equals(contractno)){
-        String sealfacno = h.getSealfacno();
-        Date applydate = h.getApplydate();
-        String formatDate = cn.hanbell.util.BaseLib.formatDate("yyyy", applydate);
         
-        HKJH001serial hs = hkjh001serialBean.findByKind("XJ");
+        String sealfacno = h.getSealfacno();
+        String test1 = h.getTest1();
+        Date createtime = h.getCreatetime();
+        String formatDate = cn.hanbell.util.BaseLib.formatDate("yyyy", createtime);
+        
+        HKJH001serial hs = hkjh001serialBean.findByKind("SZ");
 
         String no = "";
         int serialno = hs.getSerialno();
@@ -62,7 +53,7 @@ public class HKJH005Bean extends SuperEJBForEFGP<HKJH005> {
         } else {
             no = "" + serialno;
         }
-        no = sealfacno + this.SS + "XJ" + formatDate + no;
+        no = sealfacno + this.CS + test1 + formatDate + no;
         h.setContractno(no);
         this.update(h);
         serialno++;

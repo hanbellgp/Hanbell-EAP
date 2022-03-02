@@ -1,32 +1,25 @@
 /*
- * To change this license header, choose License Headers in Project Properties. To change this template file, choose
- * Tools | Templates and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package cn.hanbell.erp.jrs;
 
-import cn.hanbell.eap.ejb.ShipmentScheduleBean;
-import cn.hanbell.eap.entity.ShipmentSchedule;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.InvbalBean;
 import cn.hanbell.erp.entity.Invbal;
 import cn.hanbell.erp.entity.InvbalPK;
-import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForERP;
-import cn.hanbell.util.BaseLib;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import javax.ejb.EJB;
-import javax.ws.rs.POST;
+import java.util.Map;
+import javax.inject.Inject;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
-import javax.ws.rs.core.Response;
 
 /**
  *
@@ -35,11 +28,8 @@ import javax.ws.rs.core.Response;
 @Path("shberp/invbal")
 public class InvbalFacadeREST extends SuperRESTForERP<Invbal> {
 
-    @EJB
+    @Inject
     private InvbalBean invbalBean;
-
-    @EJB
-    private ShipmentScheduleBean shipmentScheduleBean;
 
     @Override
     protected SuperEJBForERP getSuperEJBForERP() {
@@ -79,40 +69,52 @@ public class InvbalFacadeREST extends SuperRESTForERP<Invbal> {
         return key;
     }
 
-    @POST
-    @Path("shipmentschedule/{company}/{shipdate}")
+    @GET
+    @Path("list/{itnbr}")
     @Produces({"application/json"})
-    public ResponseMessage updateShipmentScheduleStock(@PathParam("company") PathSegment company,
-        @PathParam("shipdate") PathSegment shipdate, @QueryParam("appid") String appid,
-        @QueryParam("token") String token) {
-        if (isAuthorized(appid, token)) {
-            try {
-                this.company = company.getPath();
-                Date formdateBegin = BaseLib.getDate("yyyy-MM-dd", shipdate.getPath());
-                Date formdateEnd = BaseLib.getDate("yyyy-MM-dd", shipdate.getPath());
-                String wareh = company.getMatrixParameters().getFirst("wareh");
-                List<String> warehList = null;
-                if (wareh != null && !"".equals(wareh)) {
-                    warehList = Arrays.asList(wareh.split(","));
-                }
-                List<ShipmentSchedule> ssList =
-                    shipmentScheduleBean.findByCompanyFormdateAndStatus(this.company, formdateBegin, formdateEnd, "N");
-                if (ssList != null && !ssList.isEmpty()) {
-                    invbalBean.setCompany(this.company);
-                    for (ShipmentSchedule ss : ssList) {
-                        BigDecimal qty = invbalBean.getInvbalQuantity(ss.getCompany(), ss.getItemno(), warehList);
-                        ss.setInvqty(qty);
-                        ss.setDiffqty(ss.getInvqty().subtract(ss.getAppqty()));
-                    }
-                    shipmentScheduleBean.update(ssList);
-                }
-                return new ResponseMessage("200", "更新库存成功");
-            } catch (Exception ex) {
-                throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+    public List<Invbal> findByItnbrAndFilter(@PathParam("itnbr") PathSegment query) {
+        String key, value;
+        List<Invbal> entityList;
+        String facno = "";
+        MultivaluedMap<String, String> mv = query.getMatrixParameters();
+        Map<String, Object> filters = new HashMap<>();
+        for (Map.Entry<String, List<String>> entrySet : mv.entrySet()) {
+            key = entrySet.getKey();
+            value = entrySet.getValue().get(0);
+            filters.put(key, value);
+            if (key.equals("facno")) {
+                facno = value;
             }
-        } else {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
+        invbalBean.setCompany(facno);
+        return invbalBean.findByItnbrAndFilters(query.getPath() + "%", filters, true);
+    }
+
+    @GET
+    @Path("list/{itnbr}/{fuzzy}")
+    @Produces({"application/json"})
+    public List<Invbal> findByItnbrAndFilterFuzzy(@PathParam("itnbr") PathSegment query, @PathParam("fuzzy") Boolean fuzzy) {
+        String key, value;
+        List<Invbal> entityList;
+        String facno = "";
+        MultivaluedMap<String, String> mv = query.getMatrixParameters();
+        Map<String, Object> filters = new HashMap<>();
+        for (Map.Entry<String, List<String>> entrySet : mv.entrySet()) {
+            key = entrySet.getKey();
+            value = entrySet.getValue().get(0);
+            filters.put(key, value);
+            if (key.equals("facno")) {
+                facno = value;
+            }
+        }
+        invbalBean.setCompany(facno);
+        if (fuzzy) {
+            entityList = invbalBean.findByItnbrAndFilters(query.getPath() + "%", filters, true);
+        } else {
+            entityList = invbalBean.findByItnbrAndFilters(query.getPath(), filters, false);
+        }
+        return entityList;
+
     }
 
 }
