@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -68,7 +70,17 @@ public class HKFW005Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "cdrno")
     private String cdrno;
+    @Size(max = 255)
+    @Column(name = "trseq")
+    private String trseq;
+    @Size(max = 255)
+    @Column(name = "dfacno")
+    private String dfacno;
 
+    @JoinColumn(name = "formSerialNumber", referencedColumnName = "formSerialNumber", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private HKFW005 hkfw005;
+    
     public HKFW005Detail() {
     }
 
@@ -171,6 +183,30 @@ public class HKFW005Detail implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.HKFW005Detail[ oid=" + oid + " ]";
+    }
+
+    public String getTrseq() {
+        return trseq;
+    }
+
+    public void setTrseq(String trseq) {
+        this.trseq = trseq;
+    }
+
+    public HKFW005 getHkfw005() {
+        return hkfw005;
+    }
+
+    public void setHkfw005(HKFW005 hkfw005) {
+        this.hkfw005 = hkfw005;
+    }
+
+    public String getDfacno() {
+        return dfacno;
+    }
+
+    public void setDfacno(String dfacno) {
+        this.dfacno = dfacno;
     }
 
 }

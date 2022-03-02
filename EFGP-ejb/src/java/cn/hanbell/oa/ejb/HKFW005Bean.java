@@ -161,4 +161,8 @@ public class HKFW005Bean extends SuperEJBForEFGP<HKFW005> {
         this.detailList = detailList;
     }
 
+    public List<HKFW005Detail> getDetailList(String fsn) {
+        return hkfw005DetailBean.findByFSN(fsn);
+    }
+
 }

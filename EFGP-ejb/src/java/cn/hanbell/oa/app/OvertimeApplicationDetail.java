@@ -28,6 +28,10 @@ public class OvertimeApplicationDetail implements Serializable {
     private String time2;
     private String hour;
     private String content;
+    private String  employeeId;
+    private String employeeName;
+    private String deptId;
+    private String deptName;
 
     public OvertimeApplicationDetail() {
 
@@ -143,6 +147,38 @@ public class OvertimeApplicationDetail implements Serializable {
      */
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 
 }

@@ -73,7 +73,7 @@ public class CRMWorkRecordFacadeREST extends SuperRESTForCRM<CRMWorkRecord> {
                 }
             }
             MCResponseData res = new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
-            res.setData(arr);
+            res.setData(dataList);
             return res;
         } catch (Exception ex) {
             ex.printStackTrace();

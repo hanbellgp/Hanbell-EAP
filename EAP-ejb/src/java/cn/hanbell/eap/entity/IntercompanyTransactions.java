@@ -94,6 +94,9 @@ public class IntercompanyTransactions extends SuperEntity {
     private String remark;
     @Column(name = "sortid")
     private Integer sortid;
+    @Size(max = 2)
+    @Column(name = "isTaxChange")
+    private String isTaxChange;
 
     public IntercompanyTransactions() {
     }
@@ -255,6 +258,14 @@ public class IntercompanyTransactions extends SuperEntity {
     @Override
     public String toString() {
         return "cn.hanbell.eap.entity.IntercompanyTransactions[ id=" + id + " ]";
+    }
+
+    public String getIsTaxChange() {
+        return isTaxChange;
+    }
+
+    public void setIsTaxChange(String isTaxChange) {
+        this.isTaxChange = isTaxChange;
     }
 
 }

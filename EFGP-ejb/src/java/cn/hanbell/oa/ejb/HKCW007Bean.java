@@ -6,24 +6,19 @@
 package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
-import cn.hanbell.oa.entity.HKGC001;
-import cn.hanbell.oa.entity.HSYJG002Detail;
-import java.util.List;
+import cn.hanbell.oa.entity.HKCW007;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 
 /**
  *
- * @author Administrator
+ * @author C2082
  */
 @Stateless
 @LocalBean
-public class HSYJG002DetailBean extends SuperEJBForEFGP<HSYJG002Detail>{
+public class HKCW007Bean extends SuperEJBForEFGP<HKCW007>{
     
-    
-    public HSYJG002DetailBean() {
-        super(HSYJG002Detail.class);
+    public HKCW007Bean() {
+        super(HKCW007.class);
     }
-
 }
