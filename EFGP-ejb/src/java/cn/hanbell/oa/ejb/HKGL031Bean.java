@@ -32,6 +32,9 @@ public class HKGL031Bean extends SuperEJBForEFGP<HKGL031>{
         if (h == null) {
             throw new NullPointerException();
         }
+        String contractno = h.getContractno();
+        if ("".equals(contractno)){
+        
         String sealfacno = h.getSealfacno();
         String test1 = h.getTest1();
         Date createtime = h.getCreatetime();
@@ -57,5 +60,7 @@ public class HKGL031Bean extends SuperEJBForEFGP<HKGL031>{
         hs.setSerialno(serialno);
         hkjh001serialBean.update(hs);
         return true;
+        }
+        return false;
     }
 }

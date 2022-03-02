@@ -34,6 +34,8 @@ public class HKYX014Bean extends SuperEJBForEFGP<HKYX014> {
         if (h == null) {
             throw new NullPointerException();
         }
+        String quotationNo = h.getQuotationNo();
+        if ("".equals(quotationNo)){
         String sealfacno = h.getSealfacno();
         Date applyDate = h.getApplyDate();
         String formatDate = cn.hanbell.util.BaseLib.formatDate("yyyy", applyDate);
@@ -58,5 +60,7 @@ public class HKYX014Bean extends SuperEJBForEFGP<HKYX014> {
         hs.setSerialno(serialno);
         hkjh001serialBean.update(hs);
         return true;
+        }
+        return false;
     }
 }

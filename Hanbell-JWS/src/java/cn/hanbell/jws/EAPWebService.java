@@ -36,6 +36,7 @@ import cn.hanbell.eam.ejb.AssetCardBean;
 import cn.hanbell.eam.ejb.AssetCategoryBean;
 import cn.hanbell.eam.ejb.AssetDisposeBean;
 import cn.hanbell.eam.ejb.AssetItemBean;
+import cn.hanbell.eam.ejb.AssetPositionBean;
 import cn.hanbell.eam.ejb.AssetScrapBean;
 import cn.hanbell.eam.ejb.StationeryDistributeBean;
 import cn.hanbell.eam.ejb.WarehouseBean;
@@ -50,6 +51,7 @@ import cn.hanbell.eam.entity.AssetDisposeDetail;
 import cn.hanbell.eam.entity.AssetDistribute;
 import cn.hanbell.eam.entity.AssetDistributeDetail;
 import cn.hanbell.eam.entity.AssetItem;
+import cn.hanbell.eam.entity.AssetPosition;
 import cn.hanbell.eam.entity.AssetScrap;
 import cn.hanbell.eam.entity.AssetScrapDetail;
 import cn.hanbell.eap.comm.MailNotify;
@@ -149,8 +151,13 @@ import cn.hanbell.oa.ejb.HKGC003Bean;
 import cn.hanbell.oa.ejb.HKGL060Bean;
 import cn.hanbell.oa.ejb.HKCG019Bean;
 import cn.hanbell.oa.ejb.HKCG020Bean;
+import cn.hanbell.oa.ejb.HKGL031Bean;
+import cn.hanbell.oa.ejb.HKJH005Bean;
 import cn.hanbell.oa.ejb.HKJH006Bean;
 import cn.hanbell.oa.ejb.HKXQB001Bean;
+import cn.hanbell.oa.ejb.HKYX011Bean;
+import cn.hanbell.oa.ejb.HKYX014Bean;
+import cn.hanbell.oa.ejb.HSYJG002Bean;
 import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.ejb.SHBCRMREPI13Bean;
 import cn.hanbell.oa.ejb.SHBCRMSERI12Bean;
@@ -168,6 +175,8 @@ import cn.hanbell.oa.entity.HKCW002Detail;
 import cn.hanbell.oa.entity.HKGL060;
 import cn.hanbell.oa.entity.HKGL060Detail;
 import cn.hanbell.oa.entity.HKXQB001;
+import cn.hanbell.oa.entity.HSYJG002;
+import cn.hanbell.oa.entity.HSYJG002Detail;
 import cn.hanbell.oa.entity.HZCW034;
 import cn.hanbell.oa.entity.HZCW034Detail;
 import cn.hanbell.oa.entity.HZJS034;
@@ -276,8 +285,9 @@ public class EAPWebService {
     private StationeryDistributeBean stationeryDistributeBean;
     @EJB
     private WarehouseBean warehouseBean;
-
-    // EJBForEFGP
+    @EJB
+    private AssetPositionBean assetPositionBean;
+    // EJBForEFGP   
     @EJB
     private WorkFlowBean workFlowBean;
     @EJB
@@ -309,7 +319,7 @@ public class EAPWebService {
     @EJB
     private HKJH001Bean hkjh001Bean;
     @EJB
-    private HKJH006Bean hkjh006Bean;    
+    private HKJH006Bean hkjh006Bean;
     @EJB
     private HZCW028Bean hzcw028Bean;
     @EJB
@@ -338,7 +348,15 @@ public class EAPWebService {
     private cn.hanbell.oa.ejb.PLMProjectBean efgpPLMProjectBean;
     @EJB
     private HKXQB001Bean hkxqB001Bean;
-
+    @EJB
+    private HKYX011Bean hkyx011Bean;
+    @EJB
+    private HKGL031Bean hkgl031Bean;
+    @EJB
+    private HKJH005Bean hkjh005Bean;
+    @EJB
+    private HKYX014Bean hkyx014Bean;
+    
     // EJBForERP
     @EJB
     private PricingGroupBean pricingGroupBean;
@@ -410,6 +428,9 @@ public class EAPWebService {
     private ECPurvdrBean ecpurvdrBean;
     @EJB
     private HKCG019Bean hkcg019Bean;
+
+    @EJB
+    private HSYJG002Bean hsyjg002Bean;
     // @EJB
     // private RootCloudBean rootCloudBean;
 
@@ -732,6 +753,7 @@ public class EAPWebService {
             return "404";
         }
     }
+
 
     @WebMethod(operationName = "createEAMAssetAcceptanceByOAHKCW002")
     public String createEAMAssetAcceptanceByOAHKCW002(@WebParam(name = "psn") String psn) {
@@ -2949,6 +2971,69 @@ public class EAPWebService {
             return "404";
         }
     }
+
+    @WebMethod(operationName = "updateOAHKYX011ByOAHKYX011")
+    public String updateOAHKYX011ByOAHKYX011(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkyx011Bean.updateHKYX011(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKYX011ByOAHKYX011", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateOAHKYX014ByOAHKYX014")
+    public String updateOAHKYX014ByOAHKYX014(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkyx014Bean.updateHKYX014(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKYX014ByOAHKYX014", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }    
+    
+    @WebMethod(operationName = "updateOAHKGL031ByOAHKGL031")
+    public String updateOAHKGL031ByOAHKGL031(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkgl031Bean.updateHKGL031(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKGL031ByOAHKGL031", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+ 
+    @WebMethod(operationName = "updateOAHKJH005ByOAHKJH005")
+    public String updateOAHKJH005ByOAHKJH005(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkjh005Bean.updateHKJH005(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKGL031ByOAHKGL031", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+
+    
     @WebMethod(operationName = "updateOAHKJH006ByOAHKJH006")
     public String updateOAHKJH006ByOAHKJH006(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -2963,7 +3048,7 @@ public class EAPWebService {
             return "404";
         }
     }
-    
+
     @WebMethod(operationName = "updateOAProcessInstanceByOAWARMI05")
     public String updateOAProcessInstanceByOAWARMI05(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
