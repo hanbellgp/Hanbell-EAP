@@ -36,11 +36,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKGL033.findBySqrq", query = "SELECT h FROM HKGL033 h WHERE h.sqrq = :sqrq"),
     @NamedQuery(name = "HKGL033.findByUserTitle", query = "SELECT h FROM HKGL033 h WHERE h.userTitle = :userTitle"),
     @NamedQuery(name = "HKGL033.findByDept", query = "SELECT h FROM HKGL033 h WHERE h.dept = :dept"),
-    @NamedQuery(name = "HKGL033.findByProcessSerialNumber", query = "SELECT h FROM HKGL033 h WHERE h.processSerialNumber = :processSerialNumber"),
+    @NamedQuery(name = "HKGL033.findByPSN", query = "SELECT h FROM HKGL033 h WHERE h.processSerialNumber = :psn"),
     @NamedQuery(name = "HKGL033.findByType", query = "SELECT h FROM HKGL033 h WHERE h.type = :type"),
     @NamedQuery(name = "HKGL033.findByHdnDept", query = "SELECT h FROM HKGL033 h WHERE h.hdnDept = :hdnDept"),
     @NamedQuery(name = "HKGL033.findByHdnStyle", query = "SELECT h FROM HKGL033 h WHERE h.hdnStyle = :hdnStyle"),
-    @NamedQuery(name = "HKGL033.findByFormSerialNumber", query = "SELECT h FROM HKGL033 h WHERE h.formSerialNumber = :formSerialNumber"),
+    @NamedQuery(name = "HKGL033.findByFSN", query = "SELECT h FROM HKGL033 h WHERE h.formSerialNumber = :fsn"),
     @NamedQuery(name = "HKGL033.findBySerialNumber", query = "SELECT h FROM HKGL033 h WHERE h.serialNumber = :serialNumber")})
 public class HKGL033 implements Serializable {
 
