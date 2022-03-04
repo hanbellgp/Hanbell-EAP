@@ -8,8 +8,6 @@ package cn.hanbell.oa.ejb;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.HKJH001;
 import cn.hanbell.oa.entity.HKJH001serial;
-import cn.hanbell.util.BaseLib;
-import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -34,13 +32,8 @@ public class HKJH001Bean extends SuperEJBForEFGP<HKJH001> {
         if (h == null) {
             throw new NullPointerException();
         }
-        String contractno = h.getContractno();
-        if ("".equals(contractno)){
         String kind3 = h.getKind3();
-        Date appdate = h.getAppdate();
-        
-        String formatDate = BaseLib.formatDate("yyyy", appdate);
-        String sealfacno = h.getSealfacno();
+        String fanco = h.getFacno();
         if ("AQ1".equals(kind3) || "AQ2".equals(kind3) || "AQ3".equals(kind3)) {
             kind3 = "AQ";
         }
@@ -57,14 +50,12 @@ public class HKJH001Bean extends SuperEJBForEFGP<HKJH001> {
         } else {
             no = "" + serialno;
         }
-        no = sealfacno + this.SS + kind3 + formatDate + no;
+        no = fanco + kind3 + no;
         h.setContractno(no);
         this.update(h);
         serialno++;
         hs.setSerialno(serialno);
         hkjh001serialBean.update(hs);
         return true;
-        }
-        return false;
     }
 }
