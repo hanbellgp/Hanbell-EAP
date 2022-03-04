@@ -150,10 +150,14 @@ import cn.hanbell.oa.ejb.HKGL060Bean;
 import cn.hanbell.oa.ejb.HKCG019Bean;
 import cn.hanbell.oa.ejb.HKCG020Bean;
 import cn.hanbell.oa.ejb.HKGL004Bean;
+import cn.hanbell.oa.ejb.HKGL031Bean;
 import cn.hanbell.oa.ejb.HKGL034Bean;
 import cn.hanbell.oa.ejb.HKGL034DetailBean;
+import cn.hanbell.oa.ejb.HKJH005Bean;
 import cn.hanbell.oa.ejb.HKJH006Bean;
 import cn.hanbell.oa.ejb.HKXQB001Bean;
+import cn.hanbell.oa.ejb.HKYX011Bean;
+import cn.hanbell.oa.ejb.HKYX014Bean;
 import cn.hanbell.oa.ejb.HSPB015Bean;
 import cn.hanbell.oa.ejb.HZGL004Bean;
 import cn.hanbell.oa.ejb.HZGL004BizDetailBean;
@@ -378,6 +382,14 @@ public class EAPWebService {
     private HZGL004Bean hzgl004Bean;
     @EJB
     private HZGL004BizDetailBean hzgl004BizBean;
+        @EJB
+    private HKYX011Bean hkyx011Bean;
+    @EJB
+    private HKGL031Bean hkgl031Bean;
+    @EJB
+    private HKJH005Bean hkjh005Bean;
+    @EJB
+    private HKYX014Bean hkyx014Bean;
 
     // EJBForERP
     @EJB
@@ -2966,6 +2978,69 @@ public class EAPWebService {
             return "404";
         }
     }
+    
+    
+    @WebMethod(operationName = "updateOAHKYX011ByOAHKYX011")
+    public String updateOAHKYX011ByOAHKYX011(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkyx011Bean.updateHKYX011(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKYX011ByOAHKYX011", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateOAHKYX014ByOAHKYX014")
+    public String updateOAHKYX014ByOAHKYX014(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkyx014Bean.updateHKYX014(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKYX014ByOAHKYX014", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }    
+    
+    @WebMethod(operationName = "updateOAHKGL031ByOAHKGL031")
+    public String updateOAHKGL031ByOAHKGL031(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkgl031Bean.updateHKGL031(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKGL031ByOAHKGL031", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+ 
+    @WebMethod(operationName = "updateOAHKJH005ByOAHKJH005")
+    public String updateOAHKJH005ByOAHKJH005(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkjh005Bean.updateHKJH005(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKGL031ByOAHKGL031", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+
 
     @WebMethod(operationName = "updateCRMPORMYByOAJZGHD")
     public String updateCRMPORMYByOAJZGHD(@WebParam(name = "psn") String psn) {

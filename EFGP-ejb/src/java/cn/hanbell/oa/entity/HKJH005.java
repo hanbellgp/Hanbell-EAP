@@ -30,7 +30,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "HKJH005.findAll", query = "SELECT h FROM HKJH005 h"),
     @NamedQuery(name = "HKJH005.findByOID", query = "SELECT h FROM HKJH005 h WHERE h.oid = :oid"),
-    @NamedQuery(name = "HKJH005.findByRemark", query = "SELECT h FROM HKJH005 h WHERE h.remark = :remark"),
     @NamedQuery(name = "HKJH005.findByItnbr", query = "SELECT h FROM HKJH005 h WHERE h.itnbr = :itnbr"),
     @NamedQuery(name = "HKJH005.findByPSN", query = "SELECT h FROM HKJH005 h WHERE h.processSerialNumber = :psn"),
     @NamedQuery(name = "HKJH005.findByBtrseq", query = "SELECT h FROM HKJH005 h WHERE h.btrseq = :btrseq"),
@@ -62,9 +61,6 @@ public class HKJH005 implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "OID")
     private String oid;
-    @Size(max = 255)
-    @Column(name = "remark")
-    private String remark;
     @Size(max = 255)
     @Column(name = "btrno")
     private String btrno;
@@ -125,6 +121,12 @@ public class HKJH005 implements Serializable {
     @Size(max = 255)
     @Column(name = "formSerialNumber")
     private String formSerialNumber;
+    @Size(max = 255)
+    @Column(name = "sealfacno")
+    private String sealfacno;
+    @Size(max = 255)
+    @Column(name = "contractno")
+    private String contractno;
 
     public HKJH005() {
     }
@@ -163,14 +165,6 @@ public class HKJH005 implements Serializable {
 
     public void setOid(String oid) {
         this.oid = oid;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 
     public String getBtrno() {
@@ -331,6 +325,22 @@ public class HKJH005 implements Serializable {
 
     public void setFormSerialNumber(String formSerialNumber) {
         this.formSerialNumber = formSerialNumber;
+    }
+
+    public String getSealfacno() {
+        return sealfacno;
+    }
+
+    public void setSealfacno(String sealfacno) {
+        this.sealfacno = sealfacno;
+    }
+
+    public String getContractno() {
+        return contractno;
+    }
+
+    public void setContractno(String contractno) {
+        this.contractno = contractno;
     }
 
     @Override

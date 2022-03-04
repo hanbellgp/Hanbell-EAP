@@ -6,10 +6,13 @@
 package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
+import cn.hanbell.oa.entity.HKJH001;
+import cn.hanbell.oa.entity.HKJH001serial;
 import cn.hanbell.oa.entity.HKYX011;
 import com.lightshell.comm.BaseLib;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -21,7 +24,8 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class HKYX011Bean extends SuperEJBForEFGP<HKYX011> {
-
+    @EJB
+    private HKJH001serialBean hkjh001serialBean;
     public HKYX011Bean() {
         super(HKYX011.class);
     }
@@ -60,5 +64,39 @@ public class HKYX011Bean extends SuperEJBForEFGP<HKYX011> {
             return null;
         }
     }
+    public boolean updateHKYX011(String psn) {
+        HKYX011 h = findByPSN(psn);
+        if (h == null) {
+            throw new NullPointerException();
+        }
+        String actualDiscountNo = h.getActualDiscountNo();
+        if ("".equals(actualDiscountNo)){
+        String sealfacno = h.getSealfacno();
+        String stampCategory = h.getStampCategory();
+        Date applyDate = h.getApplyDate();
+        String formatDate = cn.hanbell.util.BaseLib.formatDate("yyyy", applyDate);
+        
+        HKJH001serial hs = hkjh001serialBean.findByKind("SZ");
 
+        String no = "";
+        int serialno = hs.getSerialno();
+        if (serialno < 10) {
+            no = "000" + serialno;
+        } else if (serialno < 100) {
+            no = "00" + serialno;
+        } else if (serialno < 1000) {
+            no = "0" + serialno;
+        } else {
+            no = "" + serialno;
+        }
+        no = sealfacno + stampCategory + "SZ" + formatDate + no;
+        h.setActualDiscountNo(no);
+        this.update(h);
+        serialno++;
+        hs.setSerialno(serialno);
+        hkjh001serialBean.update(hs);
+        return true;
+        }
+        return false;
+    }
 }
