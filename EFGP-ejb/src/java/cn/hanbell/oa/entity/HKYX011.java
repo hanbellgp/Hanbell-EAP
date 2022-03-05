@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKYX011.findAll", query = "SELECT h FROM HKYX011 h"),
     @NamedQuery(name = "HKYX011.findByHdncustomertype", query = "SELECT h FROM HKYX011 h WHERE h.hdncustomertype = :hdncustomertype"),
     @NamedQuery(name = "HKYX011.findByCapital", query = "SELECT h FROM HKYX011 h WHERE h.capital = :capital"),
-    @NamedQuery(name = "HKYX011.findByPSN", query = "SELECT h FROM HKYX011 h WHERE h.processSerialNumber = :psn"),
+    @NamedQuery(name = "HKYX011.findByProcessSerialNumber", query = "SELECT h FROM HKYX011 h WHERE h.processSerialNumber = :processSerialNumber"),
     @NamedQuery(name = "HKYX011.findBySaleamountTotal", query = "SELECT h FROM HKYX011 h WHERE h.saleamountTotal = :saleamountTotal"),
     @NamedQuery(name = "HKYX011.findByDiscountamount5", query = "SELECT h FROM HKYX011 h WHERE h.discountamount5 = :discountamount5"),
     @NamedQuery(name = "HKYX011.findByDiscountamount3", query = "SELECT h FROM HKYX011 h WHERE h.discountamount3 = :discountamount3"),
@@ -45,7 +45,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKYX011.findByPrincipal", query = "SELECT h FROM HKYX011 h WHERE h.principal = :principal"),
     @NamedQuery(name = "HKYX011.findByApplyUser", query = "SELECT h FROM HKYX011 h WHERE h.applyUser = :applyUser"),
     @NamedQuery(name = "HKYX011.findByApplyDept", query = "SELECT h FROM HKYX011 h WHERE h.applyDept = :applyDept"),
-    @NamedQuery(name = "HKYX011.findByFSN", query = "SELECT h FROM HKYX011 h WHERE h.formSerialNumber = :fsn"),
+    @NamedQuery(name = "HKYX011.findByFormSerialNumber", query = "SELECT h FROM HKYX011 h WHERE h.formSerialNumber = :formSerialNumber"),
     @NamedQuery(name = "HKYX011.findBySalesnumber5", query = "SELECT h FROM HKYX011 h WHERE h.salesnumber5 = :salesnumber5"),
     @NamedQuery(name = "HKYX011.findByCustomername", query = "SELECT h FROM HKYX011 h WHERE h.customername = :customername"),
     @NamedQuery(name = "HKYX011.findByCustomerno", query = "SELECT h FROM HKYX011 h WHERE h.customerno = :customerno"),
@@ -70,7 +70,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKYX011.findBySalesamount2", query = "SELECT h FROM HKYX011 h WHERE h.salesamount2 = :salesamount2"),
     @NamedQuery(name = "HKYX011.findByRatetotal", query = "SELECT h FROM HKYX011 h WHERE h.ratetotal = :ratetotal"),
     @NamedQuery(name = "HKYX011.findBySalesamount1", query = "SELECT h FROM HKYX011 h WHERE h.salesamount1 = :salesamount1"),
-    @NamedQuery(name = "HKYX011.findByOID", query = "SELECT h FROM HKYX011 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKYX011.findByOid", query = "SELECT h FROM HKYX011 h WHERE h.oid = :oid"),
     @NamedQuery(name = "HKYX011.findByDiscountTotal", query = "SELECT h FROM HKYX011 h WHERE h.discountTotal = :discountTotal"),
     @NamedQuery(name = "HKYX011.findBySalesamount5", query = "SELECT h FROM HKYX011 h WHERE h.salesamount5 = :salesamount5"),
     @NamedQuery(name = "HKYX011.findBySalesamount4", query = "SELECT h FROM HKYX011 h WHERE h.salesamount4 = :salesamount4"),
@@ -192,16 +192,7 @@ public class HKYX011 implements Serializable {
     @Size(max = 255)
     @Column(name = "remark")
     private String remark;
-    @Size(max = 255)
-    @Column(name = "sealfacno")
-    private String sealfacno;
-    @Size(max = 255)
-    @Column(name = "stampCategory")
-    private String stampCategory;
-    @Size(max = 255)
-    @Column(name = "actualDiscountNo")
-    private String actualDiscountNo;
-    
+
     @JoinColumn(name = "principal", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = true)
     private Users user;
@@ -606,30 +597,6 @@ public class HKYX011 implements Serializable {
 
     public void setProcessInstance(ProcessInstance processInstance) {
         this.processInstance = processInstance;
-    }
-
-    public String getSealfacno() {
-        return sealfacno;
-    }
-
-    public void setSealfacno(String sealfacno) {
-        this.sealfacno = sealfacno;
-    }
-
-    public String getStampCategory() {
-        return stampCategory;
-    }
-
-    public void setStampCategory(String stampCategory) {
-        this.stampCategory = stampCategory;
-    }
-
-    public String getActualDiscountNo() {
-        return actualDiscountNo;
-    }
-
-    public void setActualDiscountNo(String actualDiscountNo) {
-        this.actualDiscountNo = actualDiscountNo;
     }
     
 
