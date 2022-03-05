@@ -6,15 +6,14 @@
 package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
-import cn.hanbell.oa.entity.HKGL031;
 import cn.hanbell.oa.entity.HKJH001serial;
-import cn.hanbell.oa.entity.HKJH005;
-import cn.hanbell.oa.entity.HKJH005Detail;
+import cn.hanbell.oa.entity.HKYX011;
+import cn.hanbell.oa.entity.HKYX013;
+import cn.hanbell.oa.entity.HKYX014;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 
 /**
  *
@@ -22,34 +21,26 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class HKJH005Bean extends SuperEJBForEFGP<HKJH005> {
-    
+public class HKYX014Bean extends SuperEJBForEFGP<HKYX014> {
     @EJB
     private HKJH001serialBean hkjh001serialBean;
     
-    @EJB
-    private HKJH005DetailBean hkjh005DetailBean;
-
-    public HKJH005Bean() {
-        super(HKJH005.class);
+    public HKYX014Bean() {
+        super(HKYX014.class);
     }
-
-    public List<HKJH005Detail> getDetailList(String fsn) {
-        return hkjh005DetailBean.findByFSN(fsn);
-    }
-
-    public boolean updateHKJH005(String psn) {
-        HKJH005 h = findByPSN(psn);
+    
+    public boolean updateHKYX014(String psn) {
+        HKYX014 h = findByPSN(psn);
         if (h == null) {
             throw new NullPointerException();
         }
-        String contractno = h.getContractno();
-        if ("".equals(contractno)){
+        String quotationNo = h.getQuotationNo();
+        if ("".equals(quotationNo)){
         String sealfacno = h.getSealfacno();
-        Date applydate = h.getApplydate();
-        String formatDate = cn.hanbell.util.BaseLib.formatDate("yyyy", applydate);
+        Date applyDate = h.getApplyDate();
+        String formatDate = cn.hanbell.util.BaseLib.formatDate("yyyy", applyDate);
         
-        HKJH001serial hs = hkjh001serialBean.findByKind("XJ");
+        HKJH001serial hs = hkjh001serialBean.findByKind("QS");
 
         String no = "";
         int serialno = hs.getSerialno();
@@ -62,8 +53,8 @@ public class HKJH005Bean extends SuperEJBForEFGP<HKJH005> {
         } else {
             no = "" + serialno;
         }
-        no = sealfacno + this.SS + "XJ" + formatDate + no;
-        h.setContractno(no);
+        no = sealfacno + this.OD + "QS" + formatDate + no;
+        h.setQuotationNo(no);
         this.update(h);
         serialno++;
         hs.setSerialno(serialno);

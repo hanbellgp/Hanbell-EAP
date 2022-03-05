@@ -240,7 +240,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             m.setAppDate(date);
             m.setAppUser(entity.getAppUser());
             m.setAppDept(entity.getAppDept());
-            m.setCRMNO(entity.getCrmno() != null ? entity.getCrmno() : "");
+            m.setCRMNO(entity.getCrmno());
             m.setTotaltaxInclusive(entity.getTotaltaxInclusive());
             m.setTotalnotaxesRMB(entity.getTotalnotaxesRMB());
             m.setTotaltaxesRMB(entity.getTotaltaxesRMB());
@@ -377,12 +377,6 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     msg = "预算部门错误";
                     return new MCResponseData(code, msg);
                 }
-                String deptName = r.getDeptName();
-                if (null == null || deptName.isEmpty()) {
-                    code = 107;
-                    msg = "部门名称不能为空";
-                    return new MCResponseData(code, msg);
-                }
                 String centerid = r.getCenterid();
                 BudgetCenter bc = budgetCenterBean.findByDeptid(budgetDept);
                 if (null == bc) {
@@ -396,6 +390,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         return new MCResponseData(code, msg);
                     }
                 }
+
                 String budgetAcc = r.getBudgetAcc();
                 if (null == budgetDetailBean.findBudgetDetail(facno, period, centerid, budgetAcc)) {
                     code = 107;
@@ -729,7 +724,6 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 };
                 //更新SALFI表头金额
                 salfi.setFi057(total);
-                salfi.setFi018("Y");
                 salfiBean.update(salfi);
                 py.setPormyPK(new PORMYPK(my001, my002));
                 py.setMy003(my003);
@@ -741,8 +735,6 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 py.setMy009("Y");
                 py.setMy010(py.getCreator());
                 py.setMy011(my003);
-                py.setMy012("3");
-                py.setMy024(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
                 py.setMy025(mc.getSrcno());//费控单号
                 py.setMy032(BigDecimal.valueOf(mc.getRatio()));
                 py.setMy033(total);//原币总金额
