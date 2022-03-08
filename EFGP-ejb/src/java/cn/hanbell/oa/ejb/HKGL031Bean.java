@@ -40,7 +40,7 @@ public class HKGL031Bean extends SuperEJBForEFGP<HKGL031>{
         Date createtime = h.getCreatetime();
         String formatDate = cn.hanbell.util.BaseLib.formatDate("yyyy", createtime);
         
-        HKJH001serial hs = hkjh001serialBean.findByKind("SZ");
+        HKJH001serial hs = hkjh001serialBean.findByKind(test1);
 
         String no = "";
         int serialno = hs.getSerialno();
