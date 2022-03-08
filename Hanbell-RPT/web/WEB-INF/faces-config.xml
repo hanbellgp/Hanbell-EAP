@@ -51,6 +51,11 @@
             <to-view-id>/app/df/cmsmvSelect.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>sysuserSelect</from-outcome>
+            <to-view-id>/app/df/sysuserSelect.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
 
 </faces-config>
