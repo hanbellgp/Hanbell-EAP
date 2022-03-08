@@ -55,5 +55,30 @@ public class REPTDBean extends SuperEJBForCRM<REPTD> {
             return null;
         }
     }
-}
 
+    /**
+     * 客诉单号找到所有维修单的明细
+     *
+     * @param bq001 客诉单号
+     * @return
+     */
+    public List<REPTD> findByBQ001(String bq001) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select TD.*");
+        sql.append(" from REPTD TD");
+        sql.append(" left join REPTC TC on TD.TD001=TC.TC001 and  TD.TD002=TC.TC002");
+        sql.append(" left join SERBQ BQ on BQ.BQ001=TC.TC054");
+        sql.append(" where BQ.BQ001 is not null ");
+        if (bq001 != null && !"".equals(bq001)) {
+            sql.append(" and BQ.BQ001 like '%").append(bq001).append("%'");
+        }
+        Query query = this.getEntityManager().createNativeQuery(sql.toString(), REPTD.class);
+        try {
+            List<REPTD> o = query.getResultList();
+            return o;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
