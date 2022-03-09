@@ -38,7 +38,7 @@ public class SERBQBean extends SuperEJBForCRM<SERBQ> {
         }
     }
 
-    public List<Object[]> getD50Z0009D0FW(String bq001, String bq112, String createDateBegin, String createDateEnd) {
+    public List<Object[]> getD50Z0009D0FW(String bq001, String bq197, String createDateBegin, String createDateEnd) {
         StringBuffer sql = new StringBuffer();
         sql.append(" select BQ.BQ001 ,sum(TC091),sum(TC026),0.0,BQ.BQ510");
         sql.append(" from  REPTC TC");
@@ -47,8 +47,8 @@ public class SERBQBean extends SuperEJBForCRM<SERBQ> {
         if (bq001 != null && !"".equals(bq001)) {
             sql.append(" and BQ.BQ001 like '%").append(bq001).append("%'");
         }
-        if (bq112 != null && !"".equals(bq112)) {
-            sql.append(" and BQ.BQ112 like '%").append(bq112).append("%'");
+        if (bq197 != null && !"".equals(bq197)) {
+            sql.append(" and BQ.BQ197 like '%").append(bq197).append("%'");
         }
         if (createDateBegin != null && !"".equals(createDateBegin)) {
             sql.append(" and BQ.CREATE_DATE >= '").append(createDateBegin).append("'");
