@@ -11,6 +11,7 @@ import cn.hanbell.costctrl.app.MCBudgetDetail;
 import cn.hanbell.costctrl.app.MCResponseData;
 import cn.hanbell.crm.ejb.SALFIBean;
 import cn.hanbell.crm.entity.SALFI;
+import cn.hanbell.eap.ejb.CrmUserGroupBean;
 import cn.hanbell.eap.ejb.McbudgetBean;
 import cn.hanbell.eap.entity.Mcbudget;
 import cn.hanbell.erp.comm.SuperEJBForERP;
@@ -46,6 +47,8 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
     @EJB
     private McbudgetBean mcbudgetBean;
     @EJB
+    private CrmUserGroupBean crmUserGroupBean;
+    @EJB
     private HZCW017Bean hzcw017Bean;
     @EJB
     private SALFIBean salfiBean;
@@ -79,9 +82,24 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
             String srcno = entity.getSrcno();
             String crmno = entity.getCrmno() == null ? "" : entity.getCrmno();
             String crmtype = entity.getCrmtype() == null ? "" : entity.getCrmtype();
+            //CRM相关人员CRM单号必填
+            boolean checkStatus = crmUserGroupBean.checkStatus(entity.getUserid());
+            if (checkStatus == true) {
+                if (entity.getCrmno() == null || entity.getCrmno().isEmpty()) {
+                    return new MCResponseData(107, "CRM单号不能为空");
+                }
+                if (entity.getCrmtype() == null || entity.getCrmtype().isEmpty()) {
+                    return new MCResponseData(107, "CRM单据类型不能为空");
+                }
+            }
             String loanNo = entity.getLoanNo();
             if (srcno == null || "".equals(srcno)) {
                 return new MCResponseData(107, "来源费控单号不能为空");
+            }
+            //费控单号只能新增一次
+            List<Mcbudget> mcbudgets = mcbudgetBean.findBySrcno(srcno);
+            if (mcbudgets != null && mcbudgets.size() > 0) {
+                return new MCResponseData(107, "此费控单号存在预算新增记录，请确认是否重复！");
             }
             if ("HZCW033".equals(type)) {
                 if (loanNo == null || "".equals(loanNo)) {
@@ -101,11 +119,11 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
                     mcbudget.setLoanNo(loanNo);
                     mcbudgetBean.persist(mcbudget);
                     //更新CRM状态
-                    if (crmtype.isEmpty()) {
+                    if (crmtype.equals("YXJL")) {
                         //营业报销锁定//服务可以重发填写单身
                         SALFI salfi = salfiBean.findByPK(crmno);
                         if (salfi != null) {
-                            salfi.setFi018("Y");
+                            salfi.setFi084("Y");
                             salfiBean.update(salfi);
                         }
                     }
@@ -165,7 +183,6 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
             }
             List<Mcbudget> mcbudgets = mcbudgetBean.findBySrcno(srcno);
             if (!mcbudgets.isEmpty()) {
-
 //                String type = mcbudgets.get(0).getType();
 //                String loanNo = mcbudgets.get(0).getLoanNo();
 //                List<BudgetDetail> budgetDetails = new ArrayList<>();;
@@ -201,7 +218,11 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
 //                    budgetDetailBean.setCompany(facno);
 //                    budgetDetailBean.subtract(budgetDetails);
 //                }
-                mcbudgets.forEach((Mcbudget mcb) -> {
+                //费控中间表状态是1已完成 不能异动
+                for (Mcbudget mcb : mcbudgets) {
+                    if (mcb.getStatus() == 1) {
+                        return new MCResponseData(107, "费控中间表状态是1已完成,不能异动");
+                    }
                     String type = mcb.getType();
                     String loanNo = mcb.getLoanNo();
                     List<BudgetDetail> budgetDetails = new ArrayList<>();;
@@ -234,17 +255,16 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
                     budgetDetailBean.subtract(budgetDetails);
 
                     //更新CRM状态
-                    if (mcb.getCrmtype().isEmpty()) {
+                    if (mcb.getCrmtype().equals("YXJL")) {
                         SALFI salfi = salfiBean.findByPK(mcb.getCrmno());
                         //营业报销释放
                         if (salfi != null) {
-                            salfi.setFi018("N");
+                            salfi.setFi084("N");
                             salfiBean.update(salfi);
                         }
                     }
                     mcbudgetBean.delete(mcb);
-                });
-
+                }
             } else {
                 return new MCResponseData(MessageEnum.Failue_107.getCode(), MessageEnum.Failue_107.getMsg());
             }

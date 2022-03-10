@@ -1211,7 +1211,7 @@ public class TimerBean {
             apmaphBean.setCompany(company);
             purvdrBean.setCompany(company);
             apmtbilBean.setCompany(company);
-            List<Apmaph> apmaphList = apmaphBean.findNeedThrow("1");
+            List<Apmaph> apmaphList = apmaphBean.findNeedThrow("6");
             List<Apmapd> apmapdList;
             List<String> bilnoList;
             int i;

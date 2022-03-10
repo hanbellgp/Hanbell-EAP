@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKYX014.findByPSN", query = "SELECT h FROM HKYX014 h WHERE h.processSerialNumber = :psn"),
     @NamedQuery(name = "HKYX014.findByOldQuotationNo", query = "SELECT h FROM HKYX014 h WHERE h.oldQuotationNo = :oldQuotationNo"),
     @NamedQuery(name = "HKYX014.findBySealfacno", query = "SELECT h FROM HKYX014 h WHERE h.sealfacno = :sealfacno"),
-    @NamedQuery(name = "HKYX014.findByOid", query = "SELECT h FROM HKYX014 h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKYX014.findByOID", query = "SELECT h FROM HKYX014 h WHERE h.oid = :oid"),
     @NamedQuery(name = "HKYX014.findByQuotationNo", query = "SELECT h FROM HKYX014 h WHERE h.quotationNo = :quotationNo"),
     @NamedQuery(name = "HKYX014.findByDivision", query = "SELECT h FROM HKYX014 h WHERE h.division = :division"),
     @NamedQuery(name = "HKYX014.findByApplyUser", query = "SELECT h FROM HKYX014 h WHERE h.applyUser = :applyUser"),

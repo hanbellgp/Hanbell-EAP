@@ -7,6 +7,7 @@ package cn.hanbell.costctrl.jrs;
 
 import cn.hanbell.costctrl.app.MessageEnum;
 import cn.hanbell.costctrl.app.CheckData;
+import cn.hanbell.costctrl.app.MCBudget;
 import cn.hanbell.costctrl.app.MCHZCW028;
 import cn.hanbell.costctrl.app.MCHZCW028reDetail;
 import cn.hanbell.costctrl.app.MCHZCW028tDetail;
@@ -28,7 +29,9 @@ import cn.hanbell.crm.entity.SALFI;
 import cn.hanbell.crm.entity.SALFT;
 import cn.hanbell.crm.entity.SALFTPK;
 import cn.hanbell.eap.ejb.CompanyBean;
+import cn.hanbell.eap.ejb.CrmUserGroupBean;
 import cn.hanbell.eap.ejb.McbudgetBean;
+import cn.hanbell.eap.entity.CrmUserGroup;
 import cn.hanbell.eap.entity.Mcbudget;
 import cn.hanbell.erp.ejb.BudgetCenterBean;
 import cn.hanbell.erp.ejb.BudgetDetailBean;
@@ -50,6 +53,7 @@ import cn.hanbell.oa.model.HZCW028tDetailModel;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -86,6 +90,8 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
     private WorkFlowBean workFlowBean;
     @EJB
     private McbudgetBean mcbudgetBean;
+    @EJB
+    private CrmUserGroupBean crmUserGroupBean;
     @EJB
     private MiscodeBean miscodeBean;
     @EJB
@@ -151,13 +157,19 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     return new MCResponseData(MessageEnum.Failue_109.getCode(), "初始化CRM数据失败");
                 }
             }
+            //更新费控中间表状态为1 已完成
+            List<Mcbudget> mcbudgets = mcbudgetBean.findBySrcno(entity.getSrcno());
+            for (Mcbudget mcb : mcbudgets) {
+                mcb.setStatus(1);
+                mcbudgetBean.update(mcb);
+            }
             //初始化发起人
             workFlowBean.initUserInfo(entity.getAppUser());
             //实例化对象
             HZCW028Model m = new HZCW028Model();
             List<MCHZCW028reDetail> reds = entity.getItems();
             List<HZCW028reDetailModel> rems = new ArrayList<>();
-            Date date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
+            Date date = BaseLib.getDate("yyyy/MM/dd", entity.getAppDate());
             String facno = entity.getFacno();
             if (!reds.isEmpty()) {
                 int seq = 0;
@@ -237,10 +249,10 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             m.setFacno(facno);
             m.setCost(entity.getCost());
             m.setReimbursement(entity.getReimbursement());
-            m.setAppDate(date);
+            m.setAppDate(entity.getAppDate());
             m.setAppUser(entity.getAppUser());
             m.setAppDept(entity.getAppDept());
-            m.setCRMNO(entity.getCrmno());
+            m.setCRMNO(entity.getCrmno() != null ? entity.getCrmno() : "");
             m.setTotaltaxInclusive(entity.getTotaltaxInclusive());
             m.setTotalnotaxesRMB(entity.getTotalnotaxesRMB());
             m.setTotaltaxesRMB(entity.getTotaltaxesRMB());
@@ -307,10 +319,26 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             if (!mc.checkSign()) {
                 return new MCResponseData(MessageEnum.Failue_102.getCode(), MessageEnum.Failue_102.getMsg());
             }
-
-            Date date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())); //日期
-            String period = BaseLib.formatDate("yyyyMM", date);
+            //检查申请日期
+            Date date;
+            String period;
+            try {
+                String d = mc.getAppDate();
+                if (d == null) {
+                    code = 107;
+                    msg = "申请日期不能为空";
+                    return new MCResponseData(code, msg);
+                }
+                date = BaseLib.getDate("yyyy/MM/dd",d); //日期
+                period = BaseLib.formatDate("yyyyMM", date);
+            } catch (Exception e) {
+                code = 107;
+                msg = "申请日期格式错误";
+                return new MCResponseData(code, msg);
+            }
             String tdstatus = "N";
+            double tdssum = 0.00;    //差旅费合计
+            double resum = 0.00;    //费用明细合计     
             String cost = mc.getCost();
             String reimbursement = mc.getReimbursement();
             if (cost.isEmpty() || reimbursement.isEmpty()) {
@@ -342,6 +370,20 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 code = 107;
                 msg = "来源单号不能为空";
                 return new MCResponseData(code, msg);
+            }
+            //CRM相关人员CRM单号必填
+            boolean checkStatus = crmUserGroupBean.checkStatus(appUser);
+            if (checkStatus == true) {
+                if (mc.getCrmno() == null || mc.getCrmno().isEmpty()) {
+                    code = 107;
+                    msg = "CRM单号不能为空";
+                    return new MCResponseData(code, msg);
+                }
+                if (mc.getCrmtype() == null || mc.getCrmtype().isEmpty()) {
+                    code = 107;
+                    msg = "CRM单据类型不能为空";
+                    return new MCResponseData(code, msg);
+                }
             }
             List<MCHZCW028reDetail> items = mc.getItems();
             if (items.isEmpty()) {
@@ -377,6 +419,12 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     msg = "预算部门错误";
                     return new MCResponseData(code, msg);
                 }
+                String deptName = r.getDeptName();
+                if (null == null || deptName.isEmpty()) {
+                    code = 107;
+                    msg = "部门名称不能为空";
+                    return new MCResponseData(code, msg);
+                }
                 String centerid = r.getCenterid();
                 BudgetCenter bc = budgetCenterBean.findByDeptid(budgetDept);
                 if (null == bc) {
@@ -390,7 +438,6 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         return new MCResponseData(code, msg);
                     }
                 }
-
                 String budgetAcc = r.getBudgetAcc();
                 if (null == budgetDetailBean.findBudgetDetail(facno, period, centerid, budgetAcc)) {
                     code = 107;
@@ -437,10 +484,21 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         return new MCResponseData(code, msg);
                     }
                 }
+                //检查报销单明细与费控中间表预扣是否一致
+                if (status == 1) {
+                    Boolean bool = mcbudgetBean.checkMcbudget("HZCW028", srcno, facno, period, centerid, budgetAcc, BigDecimal.valueOf(r.getTaxInclusive()));
+                    if (bool == false) {
+                        code = 107;
+                        msg = "费用明细与预算中间表预扣不一致";
+                        return new MCResponseData(code, msg);
+                    }
+                }
                 //明细含差旅费科目
                 if (r.getBudgetAccname().contains("差旅费")) {
                     tdstatus = "Y";
+                    tdssum += r.getTaxInclusive();
                 }
+                resum += r.getTaxInclusive();
             }
             if ("Y".equals(tdstatus)) {
                 List<MCHZCW028tDetail> travels = mc.getTravel_items();
@@ -457,6 +515,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     msg = "差旅明细不能为空";
                     return new MCResponseData(code, msg);
                 }
+                double tdssum2 = 0.00;
                 for (MCHZCW028tDetail t : travels) {
                     CheckData ch = new CheckData();
                     if (!ch.valiDateFormat(t.getTrafficDate())) {
@@ -489,6 +548,12 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         msg = "差旅金额小计格式错误";
                         return new MCResponseData(code, msg);
                     }
+                    tdssum2 += t.getSubtotal();
+                }
+                if (tdssum != tdssum2) {
+                    code = 107;
+                    msg = "差旅金额小计与差旅费科目金额不一致";
+                    return new MCResponseData(code, msg);
                 }
             }
             //检验部门期间余额
@@ -515,6 +580,22 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     msg = "此费控单号未关连预算";
                     return new MCResponseData(code, msg);
                 }
+                //检查费控中间表与报销总金额是否一致
+                BigDecimal bd = BigDecimal.ZERO;
+                for (Mcbudget mcbudget : mcbudgets) {
+                    bd = bd.add(mcbudget.getPreamts());
+                }
+                if (bd.doubleValue() != mc.getTotaltaxInclusive()) {
+                    code = 107;
+                    msg = "费用明细与预算中间表预扣不一致";
+                    return new MCResponseData(code, msg);
+                }
+            }
+            //费用明细与申请总额原币
+            if (resum != mc.getTotaltaxInclusive()) {
+                code = 107;
+                msg = "费用明细与申请总额不一致";
+                return new MCResponseData(code, msg);
             }
             return new MCResponseData(code, msg);
         } catch (Exception e) {
@@ -533,218 +614,223 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             }
             List<MCHZCW028tDetail> travels = mc.getTravel_items();
             List<MCHZCW028reDetail> reDetails = mc.getItems();
-            SALFI salfi = salfiBean.findByPK(crmno);
-            List<SALFT> salftList = new ArrayList();
-            List<REPLC> replcList = new ArrayList();
-            //销售人员写入SALFT
-            if (salfi != null) {
-                //差旅明细
-                for (MCHZCW028tDetail t : travels) {
-                    if (t.getTaxi() > 0) {
-                        SALFT sal = new SALFT();
-                        sal.setCompany("SHAHANBELL");
-                        sal.setCreator(salfi.getCreator());
-                        sal.setCreateDate(salfi.getCreateDate());
-                        sal.setUsrGroup(salfi.getUsrGroup());
-                        sal.setFlag((short) 2);
-                        int seq = salftList.size() + 1;
-                        DecimalFormat decimalFormat = new DecimalFormat("0000000000");
-                        String fi002 = decimalFormat.format(seq);
-                        sal.setSALFTPK(new SALFTPK(crmno, fi002));
-                        sal.setFt003(sal.getCreator());
-                        String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
-                        sal.setFt004(ft004);
-                        sal.setFt005("");//目的
-                        sal.setFt006(BigDecimal.valueOf(t.getTaxi()));
-                        sal.setFt007("3B001");//出租车费
-                        sal.setFt008(t.getTrafficSummary());
-                        sal.setFt009(t.getTrafficPlace());
-                        sal.setFt010(t.getTrafficPlace());
-                        sal.setFt028(BigDecimal.valueOf(t.getTaxi()));
-                        sal.setFt029(BigDecimal.ZERO);
-                        sal.setFt030(BigDecimal.valueOf(t.getTaxi()));
-                        salftList.add(sal);
+            //销售人员用“YXJL”标识类别
+            if ("YXJL".equals(crmtype)) {
+                SALFI salfi = salfiBean.findByPK(crmno);
+                List<SALFT> salftList = new ArrayList();
+                //销售人员写入SALFT
+                if (salfi != null) {
+                    //差旅明细
+                    for (MCHZCW028tDetail t : travels) {
+                        if (t.getTaxi() > 0) {
+                            SALFT sal = new SALFT();
+                            sal.setCompany("SHAHANBELL");
+                            sal.setCreator(salfi.getCreator());
+                            sal.setCreateDate(salfi.getCreateDate());
+                            sal.setUsrGroup(salfi.getUsrGroup());
+                            sal.setFlag((short) 2);
+                            int seq = salftList.size() + 1;
+                            DecimalFormat decimalFormat = new DecimalFormat("0000000000");
+                            String fi002 = decimalFormat.format(seq);
+                            sal.setSALFTPK(new SALFTPK(crmno, fi002));
+                            sal.setFt003(sal.getCreator());
+                            String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
+                            sal.setFt004(ft004);
+                            sal.setFt005("");//目的
+                            sal.setFt006(BigDecimal.valueOf(t.getTaxi()));
+                            sal.setFt007("3B001");//出租车费
+                            sal.setFt008(t.getTrafficSummary());
+                            sal.setFt009(t.getTrafficPlace());
+                            sal.setFt010(t.getTrafficPlace());
+                            sal.setFt028(BigDecimal.valueOf(t.getTaxi()));
+                            sal.setFt029(BigDecimal.ZERO);
+                            sal.setFt030(BigDecimal.valueOf(t.getTaxi()));
+                            salftList.add(sal);
+                        }
+                        if (t.getTrafficfee() > 0) {
+                            SALFT sal = new SALFT();
+                            sal.setCompany("SHAHANBELL");
+                            sal.setCreator(salfi.getCreator());
+                            sal.setCreateDate(salfi.getCreateDate());
+                            sal.setUsrGroup(salfi.getUsrGroup());
+                            sal.setFlag((short) 2);
+                            int seq = salftList.size() + 1;
+                            DecimalFormat decimalFormat = new DecimalFormat("0000000000");
+                            String fi002 = decimalFormat.format(seq);
+                            sal.setSALFTPK(new SALFTPK(crmno, fi002));
+                            sal.setFt003(sal.getCreator());
+                            String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
+                            sal.setFt004(ft004);
+                            sal.setFt005("");//目的
+                            sal.setFt006(BigDecimal.valueOf(t.getTrafficfee()));
+                            sal.setFt007("3B002");//其他交通费
+                            sal.setFt008(t.getTrafficSummary());
+                            sal.setFt009(t.getTrafficPlace());
+                            sal.setFt010(t.getTrafficPlace());
+                            sal.setFt028(BigDecimal.valueOf(t.getTrafficfee()));
+                            sal.setFt029(BigDecimal.ZERO);
+                            sal.setFt030(BigDecimal.valueOf(t.getTrafficfee()));
+                            salftList.add(sal);
+                        }
+                        if (t.getAllowance() > 0) {
+                            SALFT sal = new SALFT();
+                            sal.setCompany("SHAHANBELL");
+                            sal.setCreator(salfi.getCreator());
+                            sal.setCreateDate(salfi.getCreateDate());
+                            sal.setUsrGroup(salfi.getUsrGroup());
+                            sal.setFlag((short) 2);
+                            int seq = salftList.size() + 1;
+                            DecimalFormat decimalFormat = new DecimalFormat("0000000000");
+                            String fi002 = decimalFormat.format(seq);
+                            sal.setSALFTPK(new SALFTPK(crmno, fi002));
+                            sal.setFt003(sal.getCreator());
+                            String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
+                            sal.setFt004(ft004);
+                            sal.setFt005("");//目的
+                            sal.setFt006(BigDecimal.valueOf(t.getAllowance()));
+                            sal.setFt007("3B003");//出差补贴
+                            sal.setFt008(t.getTrafficSummary());
+                            sal.setFt009(t.getTrafficPlace());
+                            sal.setFt010(t.getTrafficPlace());
+                            sal.setFt028(BigDecimal.valueOf(t.getAllowance()));
+                            sal.setFt029(BigDecimal.ZERO);
+                            sal.setFt030(BigDecimal.valueOf(t.getAllowance()));
+                            salftList.add(sal);
+                        }
+                        if (t.getAccommodation() > 0) {
+                            SALFT sal = new SALFT();
+                            sal.setCompany("SHAHANBELL");
+                            sal.setCreator(salfi.getCreator());
+                            sal.setCreateDate(salfi.getCreateDate());
+                            sal.setUsrGroup(salfi.getUsrGroup());
+                            sal.setFlag((short) 2);
+                            int seq = salftList.size() + 1;
+                            DecimalFormat decimalFormat = new DecimalFormat("0000000000");
+                            String fi002 = decimalFormat.format(seq);
+                            sal.setSALFTPK(new SALFTPK(crmno, fi002));
+                            sal.setFt003(sal.getCreator());
+                            String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
+                            sal.setFt004(ft004);
+                            sal.setFt005("");//目的
+                            sal.setFt006(BigDecimal.valueOf(t.getAccommodation()));
+                            sal.setFt007("3B004");//住宿费
+                            sal.setFt008(t.getTrafficSummary());
+                            sal.setFt009(t.getTrafficPlace());
+                            sal.setFt010(t.getTrafficPlace());
+                            sal.setFt028(BigDecimal.valueOf(t.getAccommodation()));
+                            sal.setFt029(BigDecimal.ZERO);
+                            sal.setFt030(BigDecimal.valueOf(t.getAccommodation()));
+                            salftList.add(sal);
+                        }
                     }
-                    if (t.getTrafficfee() > 0) {
-                        SALFT sal = new SALFT();
-                        sal.setCompany("SHAHANBELL");
-                        sal.setCreator(salfi.getCreator());
-                        sal.setCreateDate(salfi.getCreateDate());
-                        sal.setUsrGroup(salfi.getUsrGroup());
-                        sal.setFlag((short) 2);
-                        int seq = salftList.size() + 1;
-                        DecimalFormat decimalFormat = new DecimalFormat("0000000000");
-                        String fi002 = decimalFormat.format(seq);
-                        sal.setSALFTPK(new SALFTPK(crmno, fi002));
-                        sal.setFt003(sal.getCreator());
-                        String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
-                        sal.setFt004(ft004);
-                        sal.setFt005("");//目的
-                        sal.setFt006(BigDecimal.valueOf(t.getTrafficfee()));
-                        sal.setFt007("3B002");//其他交通费
-                        sal.setFt008(t.getTrafficSummary());
-                        sal.setFt009(t.getTrafficPlace());
-                        sal.setFt010(t.getTrafficPlace());
-                        sal.setFt028(BigDecimal.valueOf(t.getTrafficfee()));
-                        sal.setFt029(BigDecimal.ZERO);
-                        sal.setFt030(BigDecimal.valueOf(t.getTrafficfee()));
-                        salftList.add(sal);
+                    //差旅费含其他
+                    for (MCHZCW028reDetail re : reDetails) {
+                        String accString = "6631;6618;6658;6614";
+                        if (accString.contains(re.getBudgetAcc())) {
+                            SALFT sal = new SALFT();
+                            sal.setCompany("SHAHANBELL");
+                            sal.setCreator(salfi.getCreator());
+                            sal.setCreateDate(salfi.getCreateDate());
+                            sal.setUsrGroup(salfi.getUsrGroup());
+                            sal.setFlag((short) 2);
+                            int seq = salftList.size() + 1;
+                            DecimalFormat decimalFormat = new DecimalFormat("0000000000");
+                            String fi002 = decimalFormat.format(seq);
+                            sal.setSALFTPK(new SALFTPK(crmno, fi002));
+                            sal.setFt003(sal.getCreator());
+                            //String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8,10);
+                            //sal.setFt004(ft004);
+                            sal.setFt005("");//目的
+                            sal.setFt006(BigDecimal.valueOf(re.getTaxInclusive()));
+                            sal.setFt007(re.getBudgetAcc());
+                            sal.setFt008(re.getSummary());
+                            sal.setFt028(BigDecimal.valueOf(re.getNotaxes()));
+                            sal.setFt029(BigDecimal.valueOf(re.getTaxes()));
+                            sal.setFt030(BigDecimal.valueOf(re.getTaxInclusive()));
+                            salftList.add(sal);
+                        }
                     }
-                    if (t.getAllowance() > 0) {
-                        SALFT sal = new SALFT();
-                        sal.setCompany("SHAHANBELL");
-                        sal.setCreator(salfi.getCreator());
-                        sal.setCreateDate(salfi.getCreateDate());
-                        sal.setUsrGroup(salfi.getUsrGroup());
-                        sal.setFlag((short) 2);
-                        int seq = salftList.size() + 1;
-                        DecimalFormat decimalFormat = new DecimalFormat("0000000000");
-                        String fi002 = decimalFormat.format(seq);
-                        sal.setSALFTPK(new SALFTPK(crmno, fi002));
-                        sal.setFt003(sal.getCreator());
-                        String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
-                        sal.setFt004(ft004);
-                        sal.setFt005("");//目的
-                        sal.setFt006(BigDecimal.valueOf(t.getAllowance()));
-                        sal.setFt007("3B003");//出差补贴
-                        sal.setFt008(t.getTrafficSummary());
-                        sal.setFt009(t.getTrafficPlace());
-                        sal.setFt010(t.getTrafficPlace());
-                        sal.setFt028(BigDecimal.valueOf(t.getAllowance()));
-                        sal.setFt029(BigDecimal.ZERO);
-                        sal.setFt030(BigDecimal.valueOf(t.getAllowance()));
-                        salftList.add(sal);
-                    }
-                    if (t.getAccommodation() > 0) {
-                        SALFT sal = new SALFT();
-                        sal.setCompany("SHAHANBELL");
-                        sal.setCreator(salfi.getCreator());
-                        sal.setCreateDate(salfi.getCreateDate());
-                        sal.setUsrGroup(salfi.getUsrGroup());
-                        sal.setFlag((short) 2);
-                        int seq = salftList.size() + 1;
-                        DecimalFormat decimalFormat = new DecimalFormat("0000000000");
-                        String fi002 = decimalFormat.format(seq);
-                        sal.setSALFTPK(new SALFTPK(crmno, fi002));
-                        sal.setFt003(sal.getCreator());
-                        String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
-                        sal.setFt004(ft004);
-                        sal.setFt005("");//目的
-                        sal.setFt006(BigDecimal.valueOf(t.getAccommodation()));
-                        sal.setFt007("3B004");//住宿费
-                        sal.setFt008(t.getTrafficSummary());
-                        sal.setFt009(t.getTrafficPlace());
-                        sal.setFt010(t.getTrafficPlace());
-                        sal.setFt028(BigDecimal.valueOf(t.getAccommodation()));
-                        sal.setFt029(BigDecimal.ZERO);
-                        sal.setFt030(BigDecimal.valueOf(t.getAccommodation()));
-                        salftList.add(sal);
-                    }
+
+                    //新增费用申请记录PORMY,PORMZ
+                    List<PORMZ> pormzList = new ArrayList();
+                    String my001 = "A1";
+                    String my003 = BaseLib.formatDate("yyyyMMdd", BaseLib.getDate());
+                    String my002 = pormyBean.getSerialNumber(my003);
+
+                    PORMY py = new PORMY();
+                    py.setCompany("SHAHANBELL");
+                    py.setCreator(salfi.getCreator());
+                    py.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                    py.setUsrGroup(salfi.getUsrGroup());
+                    //py.setFlag((short) 2);
+
+                    BigDecimal total = BigDecimal.ZERO;
+                    for (SALFT f : salftList) {
+                        PORMZ pz = new PORMZ();
+                        pz.setCompany("SHAHANBELL");
+                        pz.setCreator(salfi.getFi004());
+                        pz.setCreateDate(salfi.getCreateDate());
+                        pz.setUsrGroup(salfi.getFi003());
+                        pz.setFlag((short) 1);
+                        int seq = pormzList.size() + 1;
+                        DecimalFormat decimalFormat = new DecimalFormat("0000");
+                        String mz003 = decimalFormat.format(seq);
+                        pz.setPormzPK(new PORMZPK(my001, my002, mz003));
+                        pz.setMz004("1");
+                        pz.setMz006(f.getSALFTPK().getFt001());
+                        pz.setMz007(f.getSALFTPK().getFt002());
+                        pz.setMz008(my003);
+                        pz.setMz009(f.getFt007());
+                        pz.setMz010(py.getMy006());
+                        pz.setMz011(py.getMy032());
+                        pz.setMz016(f.getFt006());
+                        pz.setMz017(f.getFt006());
+                        pz.setMz018(f.getFt006());
+                        pz.setMz019(BigDecimal.ZERO);
+                        pz.setMz020(f.getFt008());
+                        pz.setMz021(salfi.getCustomer());
+                        pz.setMz031(f.getFt009());
+                        pz.setMz032(f.getFt010());
+                        pz.setMz033(BigDecimal.ONE);
+                        pz.setMz037("3B");
+                        total = total.add(pz.getMz016());
+                        pormzList.add(pz);
+                        //更新费用申请单号
+                        f.setFt021(my001);
+                        f.setFt022(my002);
+                        f.setFt023(mz003);
+                        f.setFt014(salfi.getFi092());   //币别
+                        f.setFt015(salfi.getFi093());   //汇率
+                        f.setFt018("1");    //状态码
+                        salftBean.persist(f);
+                    };
+                    //更新SALFI表头金额
+                    salfi.setFi057(total);
+                    salfi.setFi018("Y");
+                    salfiBean.update(salfi);
+                    py.setPormyPK(new PORMYPK(my001, my002));
+                    py.setMy003(my003);
+                    py.setMy004(py.getUsrGroup());
+                    py.setMy005(py.getCreator());
+                    py.setMy006(mc.getCoin());
+                    py.setMy007("1");
+                    py.setMy008(total);  //本币总金额
+                    py.setMy009("Y");
+                    py.setMy010(py.getCreator());
+                    py.setMy011(my003);
+                    py.setMy012("3");
+                    py.setMy024(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                    py.setMy025(mc.getSrcno());//费控单号
+                    py.setMy032(BigDecimal.valueOf(mc.getRatio()));
+                    py.setMy033(total);//原币总金额
+                    pormyBean.persist(py);
+                    pormzList.forEach((PORMZ m) -> {
+                        pormzBean.persist(m);
+                    });
+                    return true;
                 }
-                //差旅费含其他
-                for (MCHZCW028reDetail re : reDetails) {
-                    String accString = "6631;6618;6658;6614";
-                    if (accString.contains(re.getBudgetAcc())) {
-                        SALFT sal = new SALFT();
-                        sal.setCompany("SHAHANBELL");
-                        sal.setCreator(salfi.getCreator());
-                        sal.setCreateDate(salfi.getCreateDate());
-                        sal.setUsrGroup(salfi.getUsrGroup());
-                        sal.setFlag((short) 2);
-                        int seq = salftList.size() + 1;
-                        DecimalFormat decimalFormat = new DecimalFormat("0000000000");
-                        String fi002 = decimalFormat.format(seq);
-                        sal.setSALFTPK(new SALFTPK(crmno, fi002));
-                        sal.setFt003(sal.getCreator());
-                        //String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8,10);
-                        //sal.setFt004(ft004);
-                        sal.setFt005("");//目的
-                        sal.setFt006(BigDecimal.valueOf(re.getTaxInclusive()));
-                        sal.setFt007(re.getBudgetAcc());
-                        sal.setFt008(re.getSummary());
-                        sal.setFt028(BigDecimal.valueOf(re.getNotaxes()));
-                        sal.setFt029(BigDecimal.valueOf(re.getTaxes()));
-                        sal.setFt030(BigDecimal.valueOf(re.getTaxInclusive()));
-                        salftList.add(sal);
-                    }
-                }
-
-                //新增费用申请记录PORMY,PORMZ
-                List<PORMZ> pormzList = new ArrayList();
-                String my001 = "A1";
-                String my003 = BaseLib.formatDate("yyyyMMdd", BaseLib.getDate());
-                String my002 = pormyBean.getSerialNumber(my003);
-
-                PORMY py = new PORMY();
-                py.setCompany("SHAHANBELL");
-                py.setCreator(salfi.getCreator());
-                py.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                py.setUsrGroup(salfi.getUsrGroup());
-                //py.setFlag((short) 2);
-
-                BigDecimal total = BigDecimal.ZERO;
-                for (SALFT f : salftList) {
-                    PORMZ pz = new PORMZ();
-                    pz.setCompany("SHAHANBELL");
-                    pz.setCreator(salfi.getFi004());
-                    pz.setCreateDate(salfi.getCreateDate());
-                    pz.setUsrGroup(salfi.getFi003());
-                    pz.setFlag((short) 1);
-                    int seq = pormzList.size() + 1;
-                    DecimalFormat decimalFormat = new DecimalFormat("0000");
-                    String mz003 = decimalFormat.format(seq);
-                    pz.setPormzPK(new PORMZPK(my001, my002, mz003));
-                    pz.setMz004("1");
-                    pz.setMz006(f.getSALFTPK().getFt001());
-                    pz.setMz007(f.getSALFTPK().getFt002());
-                    pz.setMz008(my003);
-                    pz.setMz009(f.getFt007());
-                    pz.setMz010(py.getMy006());
-                    pz.setMz011(py.getMy032());
-                    pz.setMz016(f.getFt006());
-                    pz.setMz017(f.getFt006());
-                    pz.setMz018(f.getFt006());
-                    pz.setMz019(BigDecimal.ZERO);
-                    pz.setMz020(f.getFt008());
-                    pz.setMz021(salfi.getCustomer());
-                    pz.setMz031(f.getFt009());
-                    pz.setMz032(f.getFt010());
-                    pz.setMz033(BigDecimal.ONE);
-                    pz.setMz037("3B");
-                    total = total.add(pz.getMz016());
-                    pormzList.add(pz);
-                    //更新费用申请单号
-                    f.setFt021(my001);
-                    f.setFt022(my002);
-                    f.setFt023(mz003);
-                    f.setFt014(salfi.getFi092());   //币别
-                    f.setFt015(salfi.getFi093());   //汇率
-                    f.setFt018("1");    //状态码
-                    salftBean.persist(f);
-                };
-                //更新SALFI表头金额
-                salfi.setFi057(total);
-                salfiBean.update(salfi);
-                py.setPormyPK(new PORMYPK(my001, my002));
-                py.setMy003(my003);
-                py.setMy004(py.getUsrGroup());
-                py.setMy005(py.getCreator());
-                py.setMy006(mc.getCoin());
-                py.setMy007("1");
-                py.setMy008(total);  //本币总金额
-                py.setMy009("Y");
-                py.setMy010(py.getCreator());
-                py.setMy011(my003);
-                py.setMy025(mc.getSrcno());//费控单号
-                py.setMy032(BigDecimal.valueOf(mc.getRatio()));
-                py.setMy033(total);//原币总金额
-                pormyBean.persist(py);
-                pormzList.forEach((PORMZ m) -> {
-                    pormzBean.persist(m);
-                });
-                return true;
-
             }
+            List<REPLC> replcList = new ArrayList();
             //服务人员写入REPLC
             REPTC reptc = reptcBean.findByPK(crmtype, crmno);
             if (reptc != null) {

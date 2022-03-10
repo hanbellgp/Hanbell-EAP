@@ -17,6 +17,7 @@ public class MCBudget extends HmacSha1Signature {
 
     private String type;
     private String srcno;
+    private String userid;
     private String crmno;
     private String crmtype;
     private String loanNo;
@@ -69,6 +70,14 @@ public class MCBudget extends HmacSha1Signature {
 
     public void setCrmtype(String crmtype) {
         this.crmtype = crmtype;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
 }
