@@ -5,6 +5,7 @@
  */
 package cn.hanbell.costctrl.app;
 
+import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -13,11 +14,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Administrator
  */
 @XmlRootElement
-public class MCHZCW028 extends HmacSha1Signature{
+public class MCHZCW028 extends HmacSha1Signature {
 
     private String facno;
     private String cost;
     private String reimbursement;
+    private String appDate;
     private String appUser;
     private String appDept;
     private String crmno;
@@ -167,6 +169,14 @@ public class MCHZCW028 extends HmacSha1Signature{
 
     public void setCrmtype(String crmtype) {
         this.crmtype = crmtype;
+    }
+
+    public String getAppDate() {
+        return appDate;
+    }
+
+    public void setAppDate(String appDate) {
+        this.appDate = appDate;
     }
 
 }
