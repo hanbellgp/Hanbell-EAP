@@ -33,6 +33,7 @@ public class MCHZGL004 {
     private String endDate;
     private Double days;
     private String userTitle;
+    private boolean safeplace;
     private List<MCHZGL004BizDetail> detailList;
 
     public MCHZGL004() {
@@ -285,4 +286,13 @@ public class MCHZGL004 {
         this.detailList = detailList;
     }
 
+    public boolean getSafeplace() {
+        return safeplace;
+    }
+
+    public void setSafeplace(boolean safeplace) {
+        this.safeplace = safeplace;
+    }
+
+    
 }
