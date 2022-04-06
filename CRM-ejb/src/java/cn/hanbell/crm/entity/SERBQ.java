@@ -690,7 +690,9 @@ public class SERBQ implements Serializable {
     @Size(max = 50)
     @Column(name = "BQ507")
     private String bq507;
-
+    @Size(max = 50)
+    @Column(name = "BQ510")
+    private String bq510;
     public SERBQ() {
     }
 
@@ -2052,6 +2054,14 @@ public class SERBQ implements Serializable {
 
     public String getBq507() {
         return bq507;
+    }
+
+    public String getBq510() {
+        return bq510;
+    }
+
+    public void setBq510(String bq510) {
+        this.bq510 = bq510;
     }
 
     public void setBq507(String bq507) {

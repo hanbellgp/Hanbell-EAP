@@ -26,12 +26,14 @@ public class MCHZGL004 {
     private String vehicle;
     private String otherVehicle;
     private String vehicleDesc;
+    private String country;
     private String destination;
     private String destinationDesc;
     private String startDate;
     private String endDate;
     private Double days;
     private String userTitle;
+    private boolean safeplace;
     private List<MCHZGL004BizDetail> detailList;
 
     public MCHZGL004() {
@@ -157,6 +159,14 @@ public class MCHZGL004 {
         this.company = company;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     /**
      * @param applyDate the applyDate to set
      */
@@ -276,4 +286,13 @@ public class MCHZGL004 {
         this.detailList = detailList;
     }
 
+    public boolean getSafeplace() {
+        return safeplace;
+    }
+
+    public void setSafeplace(boolean safeplace) {
+        this.safeplace = safeplace;
+    }
+
+    
 }

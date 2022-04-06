@@ -5,6 +5,7 @@
  */
 package cn.hanbell.costctrl.app;
 
+import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -17,6 +18,7 @@ public class MCHZCW028Master {
     private String facno;
     private String cost;
     private String reimbursement;
+    private Date appDate;
     private String appUser;
     private String appDept;
     private String crmno;
@@ -143,5 +145,13 @@ public class MCHZCW028Master {
 
     public void setRatio(double ratio) {
         this.ratio = ratio;
+    }
+
+    public Date getAppDate() {
+        return appDate;
+    }
+
+    public void setAppDate(Date appDate) {
+        this.appDate = appDate;
     }
 }

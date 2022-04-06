@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Invmas.findAll", query = "SELECT i FROM Invmas i"),
-    @NamedQuery(name = "Invmas.findByItnbr", query = "SELECT i FROM Invmas i WHERE i.itnbr = :itnbr AND (i.stopyn <> 'NNNNNNNNNNNNN' OR i.stopyn is null ) "),
+    @NamedQuery(name = "Invmas.findByItnbr", query = "SELECT i FROM Invmas i WHERE i.itnbr = :itnbr"),
     @NamedQuery(name = "Invmas.findByItclscode", query = "SELECT i FROM Invmas i WHERE i.itclscode = :itclscode"),
     @NamedQuery(name = "Invmas.findByItdsc", query = "SELECT i FROM Invmas i WHERE i.itdsc = :itdsc"),
     @NamedQuery(name = "Invmas.findBySpdsc", query = "SELECT i FROM Invmas i WHERE i.spdsc = :spdsc"),

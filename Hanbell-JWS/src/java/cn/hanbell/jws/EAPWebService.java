@@ -69,6 +69,7 @@ import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.ecpur.ejb.ECPurvdrBean;
 import cn.hanbell.erp.ejb.ApmaphBean;
 import cn.hanbell.erp.ejb.ApmbilBean;
+import cn.hanbell.erp.ejb.ApmpayBean;
 import cn.hanbell.erp.ejb.BomasryBean;
 import cn.hanbell.erp.ejb.BomsubBean;
 import cn.hanbell.erp.ejb.CdrbhadBean;
@@ -100,6 +101,7 @@ import cn.hanbell.erp.ejb.PurachBean;
 import cn.hanbell.erp.ejb.PurhaskBean;
 import cn.hanbell.erp.ejb.PurvdrBean;
 import cn.hanbell.erp.ejb.SecgprgBean;
+import cn.hanbell.erp.entity.Apmaph;
 import cn.hanbell.erp.entity.Bomsub;
 import cn.hanbell.erp.entity.CdrbomsubDefault;
 import cn.hanbell.erp.entity.Cdrcus;
@@ -148,10 +150,14 @@ import cn.hanbell.oa.ejb.HKGL060Bean;
 import cn.hanbell.oa.ejb.HKCG019Bean;
 import cn.hanbell.oa.ejb.HKCG020Bean;
 import cn.hanbell.oa.ejb.HKGL004Bean;
+import cn.hanbell.oa.ejb.HKGL031Bean;
 import cn.hanbell.oa.ejb.HKGL034Bean;
 import cn.hanbell.oa.ejb.HKGL034DetailBean;
+import cn.hanbell.oa.ejb.HKJH005Bean;
 import cn.hanbell.oa.ejb.HKJH006Bean;
 import cn.hanbell.oa.ejb.HKXQB001Bean;
+import cn.hanbell.oa.ejb.HKYX011Bean;
+import cn.hanbell.oa.ejb.HKYX014Bean;
 import cn.hanbell.oa.ejb.HSPB015Bean;
 import cn.hanbell.oa.ejb.HZGL004Bean;
 import cn.hanbell.oa.ejb.HZGL004BizDetailBean;
@@ -159,6 +165,7 @@ import cn.hanbell.oa.ejb.ParticipantActivityInstanceBean;
 import cn.hanbell.oa.ejb.ProcessInstanceBean;
 import cn.hanbell.oa.ejb.SHBCRMREPI13Bean;
 import cn.hanbell.oa.ejb.SHBCRMSERI12Bean;
+import cn.hanbell.oa.ejb.SHBERPAPM828Bean;
 import cn.hanbell.oa.ejb.SHBINV140Bean;
 import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.ejb.VHTV002Bean;
@@ -192,6 +199,7 @@ import cn.hanbell.oa.entity.SERI12;
 import cn.hanbell.oa.entity.SERI12grid2SERI12;
 import cn.hanbell.oa.entity.SHBCRMREPI13;
 import cn.hanbell.oa.entity.SHBCRMSERI12;
+import cn.hanbell.oa.entity.SHBERPAPM828;
 import cn.hanbell.oa.entity.SHBERPINV140;
 import cn.hanbell.oa.entity.SHBERPINV140Detail;
 import cn.hanbell.oa.entity.Users;
@@ -345,6 +353,8 @@ public class EAPWebService {
     @EJB
     private SHBCRMREPI13Bean shbcrmrepi13Bean;
     @EJB
+    private SHBERPAPM828Bean shberpapm828Bean;
+    @EJB
     private SHBINV140Bean shbinv140Bean;
     @EJB
     private VHTV002Bean vhtv002Bean;
@@ -372,8 +382,16 @@ public class EAPWebService {
     private HZGL004Bean hzgl004Bean;
     @EJB
     private HZGL004BizDetailBean hzgl004BizBean;
+    @EJB
+    private HKYX011Bean hkyx011Bean;
+    @EJB
+    private HKGL031Bean hkgl031Bean;
+    @EJB
+    private HKJH005Bean hkjh005Bean;
+    @EJB
+    private HKYX014Bean hkyx014Bean;
 
-// EJBForERP
+    // EJBForERP
     @EJB
     private PricingGroupBean pricingGroupBean;
     @EJB
@@ -388,6 +406,8 @@ public class EAPWebService {
     private ApmbilBean apmbilBean;
     @EJB
     private ApmaphBean apmaphBean;
+    @EJB
+    private ApmpayBean apmpayBean;
     @EJB
     private CdrqhadBean cdrqhadBean;
     @EJB
@@ -1627,6 +1647,22 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "createERPAPM525ByOAAPM828")
+    public String createERPAPM525ByOAAPM828(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = apmpayBean.initByOAAPM828(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "createERPAPM525ByOAAPM828", psn), ex);
+            throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "createERPCDR645ByOAHKFW005")
     public String createERPCDR645ByOAHKFW005(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -2748,6 +2784,31 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "rollbackApmaphByOAAPM828")
+    public String rollbackApmaphByOAAPM828(@WebParam(name = "psn") String psn) {
+        try {
+            SHBERPAPM828 master = shberpapm828Bean.findByPSN(psn);
+            if (master == null) {
+                throw new NullPointerException(psn);
+            }
+            String facno = master.getFacno();
+            String apno = master.getApno();
+            String aptyp = master.getAptyp();
+            apmaphBean.setCompany(facno);
+            Apmaph entity = apmaphBean.findByPK(facno, apno, aptyp);
+            if (entity.getApsta().equals("25")) {
+                entity.setOano("");
+                entity.setApsta("20");
+                entity.setPzsta(' ');
+                apmaphBean.update(entity);
+            }
+            return "200";
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "rollbackApmaphByOAAPM828", psn), ex);
+        }
+        return "404";
+    }
+
     @WebMethod(operationName = "rollbackERPCDR220ByOAHKYX009")
     public String rollbackERPCDR220ByOAHKYX009(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -2923,6 +2984,66 @@ public class EAPWebService {
             ret = hzcw033Bean.updateCRMPORMY(psn);
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "updateCRMPORMYByOAJZGHD", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateOAHKYX011ByOAHKYX011")
+    public String updateOAHKYX011ByOAHKYX011(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkyx011Bean.updateHKYX011(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKYX011ByOAHKYX011", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateOAHKYX014ByOAHKYX014")
+    public String updateOAHKYX014ByOAHKYX014(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkyx014Bean.updateHKYX014(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKYX014ByOAHKYX014", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateOAHKGL031ByOAHKGL031")
+    public String updateOAHKGL031ByOAHKGL031(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkgl031Bean.updateHKGL031(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKGL031ByOAHKGL031", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateOAHKJH005ByOAHKJH005")
+    public String updateOAHKJH005ByOAHKJH005(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkjh005Bean.updateHKJH005(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateOAHKGL031ByOAHKGL031", psn), ex);
         }
         if (ret) {
             return "200";
@@ -3916,8 +4037,6 @@ public class EAPWebService {
         }
     }
 
-
-
     @WebMethod(operationName = "sendOAHKGL034CancelMsgByPSN")
     public String sendOAHKGL034CancelMsgByPSN(@WebParam(name = "psn") String psn) {
         HKGL034 hkgl034 = hkgl034Bean.findByPSN(psn);
@@ -3925,7 +4044,8 @@ public class EAPWebService {
         agent1000002Bean.initConfiguration();
         boolean isSuccess = true;
         for (HKGL034Detail detail : details) {
-            String errmsg = agent1000002Bean.sendMsgToUser(detail.getEmployee(), "text", "[汉钟精机] 您申请的" + detail.getDate1Txt() + "加班单已完成签核");
+            String errmsg = agent1000002Bean.sendMsgToUser(detail.getEmployee(), "text",
+                    "[汉钟精机] 您申请的" + detail.getDate1Txt() + "加班单已完成签核");
             if (!"ok".equals(errmsg)) {
                 isSuccess = false;
             }
@@ -3941,7 +4061,8 @@ public class EAPWebService {
     public String sendOAHKGL004CancelMsgByPSN(@WebParam(name = "psn") String psn) {
         HKGL004 hkgl034 = hkgl004Bean.findByPSN(psn);
         agent1000002Bean.initConfiguration();
-        String errmsg = agent1000002Bean.sendMsgToUser(hkgl034.getEmployee(), "text", "[汉钟精机] 您申请的" + BaseLib.formatDate("yyyy-MM-dd", hkgl034.getDate1()) + "请假单已完成签核");
+        String errmsg = agent1000002Bean.sendMsgToUser(hkgl034.getEmployee(), "text",
+                "[汉钟精机] 您申请的" + BaseLib.formatDate("yyyy-MM-dd", hkgl034.getDate1()) + "请假单已完成签核");
         if ("ok".equals(errmsg)) {
             return "200";
         } else {
@@ -3956,7 +4077,8 @@ public class EAPWebService {
         agent1000002Bean.initConfiguration();
         boolean isSuccess = true;
         for (HZGL004BizDetail detail : details) {
-            String errmsg = agent1000002Bean.sendMsgToUser(detail.getBizEmployeetxt(), "text", "[汉钟精机] 您申请的" + detail.getBizDatetxt() + "出差单已完成签核");
+            String errmsg = agent1000002Bean.sendMsgToUser(detail.getBizEmployeetxt(), "text",
+                    "[汉钟精机] 您申请的" + detail.getBizDatetxt() + "出差单已完成签核");
             if (!"ok".equals(errmsg)) {
                 isSuccess = false;
             }

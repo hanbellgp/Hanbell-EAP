@@ -18,7 +18,7 @@ public class HZCW028Model {
     private String facno;
     private String cost;
     private String reimbursement;
-    private Date appDate;
+    private String appDate;
     private String appUser;
     private String appDept;
     private String CRMNO;
@@ -141,14 +141,6 @@ public class HZCW028Model {
         this.ratio = ratio;
     }
 
-    public Date getAppDate() {
-        return appDate;
-    }
-
-    public void setAppDate(Date appDate) {
-        this.appDate = appDate;
-    }
-
     public double getDeptPeriod() {
         return deptPeriod;
     }
@@ -203,6 +195,14 @@ public class HZCW028Model {
 
     public void setUserTitle(String userTitle) {
         this.userTitle = userTitle;
+    }
+
+    public String getAppDate() {
+        return appDate;
+    }
+
+    public void setAppDate(String appDate) {
+        this.appDate = appDate;
     }
 
 }

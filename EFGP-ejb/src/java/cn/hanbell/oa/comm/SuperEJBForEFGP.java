@@ -33,7 +33,10 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
 
     @PersistenceContext(unitName = "EFGP-ejbPU")
     private EntityManager em;
-
+    //电子章相关代码
+    public static final String SS = "SS";//合同
+    public static final String CS = "CS";//营业
+    public static final String OD = "OD";//报价
     @EJB
     protected ProcessInstanceBean processInstanceBean;
 
@@ -182,6 +185,8 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
         switch (facno) {
             case "C":
                 return "上海汉钟";
+            case "F":
+                return "楚雄汉钟";
             case "G":
                 return "广州分公司";
             case "J":

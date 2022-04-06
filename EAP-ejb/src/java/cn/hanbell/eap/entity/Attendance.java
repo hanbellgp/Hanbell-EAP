@@ -64,6 +64,9 @@ public class Attendance extends SuperEntity {
      @Size(max = 6)
     @Column(name = "checkcode")
     private String checkcode;
+          @Size(max = 5)
+    @Column(name = "facno")
+    private String facno;
     @Size(max = 10)
     @Column(name = "employeeName")
     private String employeeName;
@@ -133,6 +136,9 @@ public class Attendance extends SuperEntity {
     @Size(max = 10)
     @Column(name = "meal")
     private String meal;
+        @Size(max = 10)
+    @Column(name = "child")
+    private String child;
     @Size(max = 10)
     @Column(name = "breakfast")
     private String breakfast;
@@ -183,6 +189,14 @@ public class Attendance extends SuperEntity {
 
     public void setCheckcode(String checkcode) {
         this.checkcode = checkcode;
+    }
+    
+    public String getFacno() {
+        return facno;
+    }
+
+    public void setFacno(String facno) {
+        this.facno = facno;
     }
 
     
@@ -368,6 +382,14 @@ public class Attendance extends SuperEntity {
 
     public void setMeal(String meal) {
         this.meal = meal;
+    }
+
+    public String getChild() {
+        return child;
+    }
+
+    public void setChild(String child) {
+        this.child = child;
     }
 
     public String getBreakfast() {

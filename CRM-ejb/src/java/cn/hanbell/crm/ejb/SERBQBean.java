@@ -8,9 +8,9 @@ package cn.hanbell.crm.ejb;
 import cn.hanbell.crm.comm.SuperEJBForCRM;
 import cn.hanbell.crm.entity.SERBQ;
 import cn.hanbell.util.BaseLib;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -34,6 +34,35 @@ public class SERBQBean extends SuperEJBForCRM<SERBQ> {
             Object o = query.getSingleResult();
             return (SERBQ) o;
         } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Object[]> getD50Z0009D0FW(String bq001, String bq197, String createDateBegin, String createDateEnd) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select BQ.BQ001 ,sum(TC091),sum(TC026),0.0,BQ.BQ510");
+        sql.append(" from  REPTC TC");
+        sql.append(" left join SERBQ BQ on BQ.BQ001=TC.TC054");
+        sql.append(" where BQ.BQ001 is not null ");
+        if (bq001 != null && !"".equals(bq001)) {
+            sql.append(" and BQ.BQ001 like '%").append(bq001).append("%'");
+        }
+        if (bq197 != null && !"".equals(bq197)) {
+            sql.append(" and BQ.BQ197 like '%").append(bq197).append("%'");
+        }
+        if (createDateBegin != null && !"".equals(createDateBegin)) {
+            sql.append(" and BQ.CREATE_DATE >= '").append(createDateBegin).append("'");
+        }
+        if (createDateEnd != null && !"".equals(createDateEnd)) {
+            sql.append(" and BQ.CREATE_DATE <= '").append(createDateEnd).append("'");
+        }
+        sql.append(" group by BQ.BQ001,BQ.BQ510");
+        Query query = this.getEntityManager().createNativeQuery(sql.toString());
+        try {
+            List<Object[]> o = query.getResultList();
+            return o;
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -82,91 +111,4 @@ public class SERBQBean extends SuperEJBForCRM<SERBQ> {
         ls_no += serial;
         return ls_no;
     }
-
-    /**
-     * @Author C2082 客诉单号生成，从数据表中获得数据格式
-     * @param deptno
-     * @param date
-     * @return
-     */
-//    public StringBuffer getBQ001ByDeptAndDate2(String deptno, Date date) {
-//
-//        StringBuffer ls_no = new StringBuffer("");
-//        String serial = "0000";
-//        //部门前缀
-//        if ("".equals(deptno)) {
-//            return ls_no;
-//        }
-//        if (deptno.startsWith("5")) {
-//            ls_no.append("KMKF");
-//        } else {
-//            switch (deptno.substring(0, 2)) {
-//                case "1C":
-//                    ls_no.append("HBKF");
-//                    break;
-//                case "1D":
-//                    ls_no.append("HNKF");
-//                    break;
-//                case "1V":
-//                    ls_no.append("CQKF");
-//                    break;
-//                case "1E":
-//                    ls_no.append("NJKF");
-//                    break;
-//                default:
-//                    ls_no.append("HDKF");
-//                    break;
-//            }
-//        }
-//        //年月日编码格式编码
-//        // GB009    編碼方式        1:年編號、2:月編號、3:日編號
-//        // GB010    流水號碼數      流水號碼數
-//        // B011     年編方式        1.年編4碼、2.年編2碼
-//        String sql1 = "SELECT GB009,GB010,GB011 FROM CRMGB  where GB001='k' AND GB008='Y' AND GB002 LIKE ?";
-//        Query q = getEntityManager().createNativeQuery(sql1);
-//        q.setParameter(1, ls_no.append("%").toString());
-//        List<Object[]> result1 = q.getResultList();
-//        //判断年编号的码数
-//        if (result1.size() == 1) {
-//            //序列数
-//            StringBuffer serl = new StringBuffer("");
-//            for (int i = 0; i < (int) result1.get(0)[1]; i++) {
-//                serl = serl.append("0");
-//            }
-//
-//            switch ((String) result1.get(0)[2]) {
-//                case "1":
-//                    ls_no.append(BaseLib.formatDate("yyyy", date));
-//                    break;
-//                case "2":
-//                    ls_no.append(BaseLib.formatDate("yy", date));
-//                    break;
-//            }
-//            switch ((String) result1.get(0)[0]) {
-//                case "1":
-//                    format.
-//                    break;
-//                case "2":
-//                    ls_no.append(ls_no.append(BaseLib.formatDate("MM", date)));
-//                    break;
-//                case "3":
-//                    ls_no.append(ls_no.append(BaseLib.formatDate("dd", date)));
-//                    break;
-//            }
-//
-//            //编码格式
-//            ls_no = ls_no.append(serl);
-//        }
-//        return ls_no;
-//    }
-//
-//    public String getSerl(int i, String s, String sim) {
-//        SimpleDateFormat format = null;
-//        //年编2码
-//        if (i == 2) {
-//            //判断是否当年或当月或当日
-//            format = new SimpleDateFormat(sim);
-//            
-//        }
-//    }
 }
