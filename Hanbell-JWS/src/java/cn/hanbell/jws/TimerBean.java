@@ -972,10 +972,10 @@ public class TimerBean {
                             } else {
                                 d.setItnbr(pd.getCItnbr());
                             }
-                            d.setItdsc(pd.getCItdsc());
-                            d.setSpdsc(pd.getCSpdsc());
-                            d.setEitdsc(pd.getCEitdsc());
-                            d.setEspdsc(pd.getCEspdsc());
+                            d.setItdsc(filterString(pd.getCItdsc()));
+                            d.setSpdsc(filterString(pd.getCSpdsc()));
+                            d.setEitdsc(filterString(pd.getCEitdsc()));
+                            d.setEspdsc(filterString(pd.getCEspdsc()));
                             d.setKind("1");
                             d.setMorpcode("P");
                             d.setUnmsr1(pd.getUnmsr());
@@ -1121,7 +1121,7 @@ public class TimerBean {
                             dm.setSpdsc(filterString(invmas.getSpdsc()));
                             dm.setQuaqy1(d.getQuaqy1().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                             dm.setUnpris(d.getUnpris().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-                            dm.setLastunpri(d.getListunpri().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            dm.setLastunpri(d.getOldpri().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                             if (d.getHisorders() != null) {
                                 dm.setOrderqty(d.getHisorders().toString());
                             } else {

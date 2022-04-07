@@ -89,7 +89,7 @@ public class MCEmployeeFacadeREST extends SuperRESTForEFGP<Users> {
                 Employee hremp = employeeBean.findByCode(em.getUserId());
                 if (hremp != null) {
                     em.setPhone(hremp.getMobilePhone());
-                    em.setLevelId(hremp.getGrade());
+                    em.setLevelId(hremp.getLevelId());
                 } else {
                     em.setPhone("");
                     em.setLevelId("");
