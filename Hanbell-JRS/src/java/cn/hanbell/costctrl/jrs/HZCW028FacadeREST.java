@@ -420,7 +420,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     return new MCResponseData(code, msg);
                 }
                 String deptName = r.getDeptName();
-                if (null == null || deptName.isEmpty()) {
+                if (deptName == null || deptName.isEmpty()) {
                     code = 107;
                     msg = "部门名称不能为空";
                     return new MCResponseData(code, msg);

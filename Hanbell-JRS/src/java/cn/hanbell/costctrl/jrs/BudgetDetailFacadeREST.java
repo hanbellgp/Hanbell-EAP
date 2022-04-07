@@ -9,6 +9,7 @@ import cn.hanbell.costctrl.app.MessageEnum;
 import cn.hanbell.costctrl.app.MCBudget;
 import cn.hanbell.costctrl.app.MCBudgetDetail;
 import cn.hanbell.costctrl.app.MCResponseData;
+import cn.hanbell.crm.ejb.REPTCBean;
 import cn.hanbell.crm.ejb.SALFIBean;
 import cn.hanbell.crm.entity.SALFI;
 import cn.hanbell.eap.ejb.CrmUserGroupBean;
@@ -52,6 +53,8 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
     private HZCW017Bean hzcw017Bean;
     @EJB
     private SALFIBean salfiBean;
+    @EJB
+    private REPTCBean reptcBean;
 
     public BudgetDetailFacadeREST() {
         super(BudgetDetail.class);
@@ -79,17 +82,32 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
             if (type == null || !("HZCW028".equals(type) || "HZCW033".equals(type))) {
                 return new MCResponseData(107, "单据类型错误");
             }
+            String userid = entity.getUserid();
+            if (userid == null || userid.isEmpty()) {
+                return new MCResponseData(107, "申请人不能为空");
+            }
             String srcno = entity.getSrcno();
             String crmno = entity.getCrmno() == null ? "" : entity.getCrmno();
             String crmtype = entity.getCrmtype() == null ? "" : entity.getCrmtype();
             //CRM相关人员CRM单号必填
-            boolean checkStatus = crmUserGroupBean.checkStatus(entity.getUserid());
+            boolean checkStatus = crmUserGroupBean.checkStatus(userid);
             if (checkStatus == true) {
                 if (entity.getCrmno() == null || entity.getCrmno().isEmpty()) {
                     return new MCResponseData(107, "CRM单号不能为空");
                 }
                 if (entity.getCrmtype() == null || entity.getCrmtype().isEmpty()) {
                     return new MCResponseData(107, "CRM单据类型不能为空");
+                }
+                //检查传入单号单别是否存在
+                if (crmtype.equals("YXJL")) {
+                    SALFI salfi = salfiBean.findByPK(crmno);
+                    if (salfi == null) {
+                        return new MCResponseData(107, "CRM单号错误");
+                    }
+                } else {
+                    if (reptcBean.findByPK(crmtype, crmno) == null) {
+                        return new MCResponseData(107, "CRM单号错误");
+                    }
                 }
             }
             String loanNo = entity.getLoanNo();

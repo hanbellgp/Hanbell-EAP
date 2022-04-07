@@ -342,6 +342,9 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 msg = "申请日期格式错误";
                 return new MCResponseData(code, msg);
             }
+            String tdstatus = "N";
+            double tdssum = 0.00;    //差旅费合计
+            double resum = 0.00;    //费用明细合计
             String cost = mc.getCost();
             String reimbursement = mc.getReimbursement();
             if (cost.isEmpty() || reimbursement.isEmpty()) {
@@ -435,7 +438,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     return new MCResponseData(code, msg);
                 }
                 String deptName = r.getDeptName();
-                if (null == null || deptName.isEmpty()) {
+                if (deptName == null || deptName.isEmpty()) {
                     code = 107;
                     msg = "部门名称不能为空";
                     return new MCResponseData(code, msg);
@@ -500,6 +503,21 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         return new MCResponseData(code, msg);
                     }
                 }
+                //检查报销单明细与费控中间表预扣是否一致
+                if (status == 1) {
+                    Boolean bool = mcbudgetBean.checkMcbudget("HZCW033", srcno, facno, period, centerid, budgetAcc, BigDecimal.valueOf(r.getTaxInclusive()));
+                    if (bool == false) {
+                        code = 107;
+                        msg = "费用明细与预算中间表预扣不一致";
+                        return new MCResponseData(code, msg);
+                    }
+                }
+                //明细含差旅费科目
+                if (r.getBudgetAccname().contains("差旅费")) {
+                    tdstatus = "Y";
+                    tdssum += r.getTaxInclusive();
+                }
+                resum += r.getTaxInclusive();
 
             }
             if (("0".equals(cost) || "1".equals(cost))) {
@@ -567,6 +585,22 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     msg = "此费控单号未关连预算";
                     return new MCResponseData(code, msg);
                 }
+                //检查费控中间表与报销总金额是否一致
+                BigDecimal bd = BigDecimal.ZERO;
+                for (Mcbudget mcbudget : mcbudgets) {
+                    bd = bd.add(mcbudget.getPreamts());
+                }
+                if (bd.doubleValue() != mc.getTotaltaxInclusive()) {
+                    code = 107;
+                    msg = "费用明细与预算中间表预扣不一致";
+                    return new MCResponseData(code, msg);
+                }
+            }
+            //费用明细与申请总额原币
+            if (resum != mc.getTotaltaxInclusive()) {
+                code = 107;
+                msg = "费用明细与申请总额不一致";
+                return new MCResponseData(code, msg);
             }
             return new MCResponseData(code, msg);
         } catch (Exception e) {

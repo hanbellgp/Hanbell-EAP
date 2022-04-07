@@ -57,6 +57,7 @@ public class UsersBean extends SuperEJBForEFGP<Users> {
         if (flag != null && !"".equals(flag)) {
             if ("1".equals(flag)) {
                 sb.append(" where Occupant.leaveDate is null");
+                sb.append(" and Occupant.id not like '0%' and Occupant.id not like '1%' ");
             } else if ("0".equals(flag)) {
                 sb.append(" where Occupant.leaveDate is not null");
             }
