@@ -52,7 +52,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKGL031.findByHdFileType", query = "SELECT h FROM HKGL031 h WHERE h.hdFileType = :hdFileType"),
     @NamedQuery(name = "HKGL031.findByHdnDept1", query = "SELECT h FROM HKGL031 h WHERE h.hdnDept1 = :hdnDept1"),
     @NamedQuery(name = "HKGL031.findByHdnManager", query = "SELECT h FROM HKGL031 h WHERE h.hdnManager = :hdnManager"),
-    @NamedQuery(name = "HKGL031.findByHdnmanage", query = "SELECT h FROM HKGL031 h WHERE h.hdnmanage = :hdnmanage"),
     @NamedQuery(name = "HKGL031.findByStampCategory", query = "SELECT h FROM HKGL031 h WHERE h.stampCategory = :stampCategory"),
     @NamedQuery(name = "HKGL031.findByFacno", query = "SELECT h FROM HKGL031 h WHERE h.facno = :facno"),
     @NamedQuery(name = "HKGL031.findBySealfacno", query = "SELECT h FROM HKGL031 h WHERE h.sealfacno = :sealfacno"),
@@ -134,9 +133,6 @@ public class HKGL031 implements Serializable {
     @Size(max = 255)
     @Column(name = "hdnManager")
     private String hdnManager;
-    @Size(max = 255)
-    @Column(name = "hdnmanage")
-    private String hdnmanage;
     @Size(max = 255)
     @Column(name = "stampCategory")
     private String stampCategory;
@@ -345,14 +341,6 @@ public class HKGL031 implements Serializable {
 
     public void setHdnManager(String hdnManager) {
         this.hdnManager = hdnManager;
-    }
-
-    public String getHdnmanage() {
-        return hdnmanage;
-    }
-
-    public void setHdnmanage(String hdnmanage) {
-        this.hdnmanage = hdnmanage;
     }
 
     public String getStampCategory() {
