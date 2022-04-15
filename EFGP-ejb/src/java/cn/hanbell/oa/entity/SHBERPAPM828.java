@@ -126,6 +126,12 @@ public class SHBERPAPM828 implements Serializable {
     @Column(name = "payda")
     @Temporal(TemporalType.TIMESTAMP)
     private Date payda;
+    @Size(max = 255)
+    @Column(name = "bankName")
+    private String bankName;
+    @Size(max = 255)
+    @Column(name = "bankAccount")
+    private String bankAccount;
 
     public SHBERPAPM828() {
     }
@@ -364,6 +370,22 @@ public class SHBERPAPM828 implements Serializable {
 
     public void setPayda(Date payda) {
         this.payda = payda;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     @Override

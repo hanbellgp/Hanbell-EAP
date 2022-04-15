@@ -1442,6 +1442,8 @@ public class TimerBean {
                         Purvdr purvdr = purvdrBean.findByVdrno(h.getVdrno());
                         if (null != purvdr) {
                             hm.setTickdays(purvdr.getTickdays().toString());
+                            hm.setBankName(purvdr.getTtbankna());
+                            hm.setBankAccount(purvdr.getTtname());
                         } else {
                             hm.setTickdays("0");
                         }
