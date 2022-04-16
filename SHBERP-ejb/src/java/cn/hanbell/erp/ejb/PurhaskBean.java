@@ -281,6 +281,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
             });
             return true;
         } catch (Exception ex) {
+            ex.printStackTrace();
             Logger.getLogger(PurhaskBean.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException(ex);
         }

@@ -24,11 +24,14 @@ public class RequestBody extends HmacSha1Signature {
 
     private String facno;
     private String deptId;
+    private String deptName;
     private String centerId;
     private int page_index;
     private int page_size;
     private String flag;
     private String userId;
+    private String budgetAcc;
+    private String accName;
 
     public RequestBody() {
 
@@ -123,6 +126,30 @@ public class RequestBody extends HmacSha1Signature {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getBudgetAcc() {
+        return budgetAcc;
+    }
+
+    public void setBudgetAcc(String budgetAcc) {
+        this.budgetAcc = budgetAcc;
+    }
+
+    public String getAccName() {
+        return accName;
+    }
+
+    public void setAccName(String accName) {
+        this.accName = accName;
     }
 
 }

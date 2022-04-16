@@ -64,8 +64,14 @@ public class BudgetcenterFacadeREST extends SuperRESTForERP<BudgetCenter> {
             budgetCenterBean.setCompany(facno);
             budgetcenterList = budgetCenterBean.findAll();
             String deptid = entity.getDeptId();
+            String deptName = entity.getDeptName();
             if (deptid != null && !deptid.isEmpty()) {
-                budgetcenterList = budgetcenterList.stream().filter(b -> b.getBudgetCenterPK().getDeptid().equals(deptid)).collect(Collectors.toList());
+                //budgetcenterList = budgetcenterList.stream().filter(b -> b.getBudgetCenterPK().getDeptid().equals(deptid)).collect(Collectors.toList());
+                budgetcenterList = budgetcenterList.stream().filter(b -> b.getBudgetCenterPK().getDeptid().contains(deptid)).collect(Collectors.toList());
+            }
+            //加入部门模糊查询
+            if (deptName != null && !deptName.isEmpty()) {              
+                budgetcenterList = budgetcenterList.stream().filter(b -> b.getDeptname().contains(deptName)).collect(Collectors.toList());
             }
             List<MCBudgetCenter> bclist = new ArrayList<>();
             if (!budgetcenterList.isEmpty()) {
