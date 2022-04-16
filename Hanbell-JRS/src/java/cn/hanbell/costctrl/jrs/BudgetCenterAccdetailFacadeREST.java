@@ -76,10 +76,22 @@ public class BudgetCenterAccdetailFacadeREST extends SuperRESTForERP<BudgetCente
             HashMap<String, Object> filters = new HashMap<String, Object>();
             if (centerid != null && !centerid.isEmpty()) {
                 filters.put("budgetcenteraccdetailPK.centerid", centerid);
+            }else{
+                //责任中心必填
+                 return new MCResponseData(MessageEnum.Failue_111.getCode(), MessageEnum.Failue_111.getMsg());
             }
 //            if (!centerid.isEmpty()) {
 //                budgetcenteraccList = budgetcenteraccList.stream().filter(b -> b.getBudgetCenterAccDetailPK().getCenterid() == centerid).collect(Collectors.toList());
 //            }
+            //加入科目和科目名称模糊查询
+            String budgetacc = entity.getBudgetAcc();
+            if (budgetacc != null && !budgetacc.isEmpty()) {
+                filters.put("budgetcenteraccdetailPK.budgetacc", budgetacc);
+            }
+            String accName = entity.getAccName();
+            if (accName != null && !accName.isEmpty()) {
+                filters.put("budgetAccount.accname", accName);
+            }
             int hasMore = 0;
             int totalCount = budgetCenterAccDetailBean.getRowCount(filters);
             budgetcenteraccList = budgetCenterAccDetailBean.findByFilters(filters, first, page_size);

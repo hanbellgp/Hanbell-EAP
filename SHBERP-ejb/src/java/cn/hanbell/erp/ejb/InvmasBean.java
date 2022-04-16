@@ -7,6 +7,8 @@ package cn.hanbell.erp.ejb;
 
 import cn.hanbell.crm.ejb.WARMBBean;
 import cn.hanbell.crm.entity.WARMB;
+import cn.hanbell.eap.comm.MailNotify;
+import cn.hanbell.eap.ejb.MailNotificationBean;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Invcls;
 import cn.hanbell.erp.entity.Invmas;
@@ -224,6 +226,15 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
             }
             return true;
         } catch (Exception ex) {
+            //加入邮件通知
+            MailNotificationBean mailBean = new MailNotificationBean();
+            mailBean.getTo().clear();
+            mailBean.getTo().add("13120@hanbell.com.cn");
+            mailBean.setMailSubject("OA件号申请单抛转ERP失败");
+            mailBean.setMailContent(
+                    "OA件号申请单号：" + psn + "抛转失败，异常：" + ex);
+            mailBean.notify(new MailNotify());
+            ex.printStackTrace();
             log4j.error(ex);
             throw new RuntimeException(ex);
         }

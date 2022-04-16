@@ -282,7 +282,7 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             userids = list.stream().map(SystemUser::getUserid).collect(Collectors.toList());
         } catch (Exception e) {
             userids.add("C2082");
-            userids.add("C1749");
+            userids.add("C1491");
             userids.add("C1900");
             userids.add("C2244");
         }

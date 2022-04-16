@@ -77,6 +77,7 @@ import cn.hanbell.erp.ejb.PursysBean;
 import cn.hanbell.erp.ejb.PurvdrBuyerBean;
 import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.entity.EquipmentRepair;
+import cn.hanbell.eap.comm.MailNotify;
 import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
 import cn.hanbell.erp.entity.Apmtbil;
@@ -972,10 +973,14 @@ public class TimerBean {
                             } else {
                                 d.setItnbr(pd.getCItnbr());
                             }
-                            d.setItdsc(filterString(pd.getCItdsc()));
-                            d.setSpdsc(filterString(pd.getCSpdsc()));
-                            d.setEitdsc(filterString(pd.getCEitdsc()));
-                            d.setEspdsc(filterString(pd.getCEspdsc()));
+//                            d.setItdsc(filterString(pd.getCItdsc()));
+//                            d.setSpdsc(filterString(pd.getCSpdsc()));
+//                            d.setEitdsc(filterString(pd.getCEitdsc()));
+//                            d.setEspdsc(filterString(pd.getCEspdsc()));
+                            d.setItdsc(pd.getCItdsc());
+                            d.setSpdsc(pd.getCSpdsc());
+                            d.setEitdsc(pd.getCEitdsc());
+                            d.setEspdsc(pd.getCEspdsc());
                             d.setKind("1");
                             d.setMorpcode("P");
                             d.setUnmsr1(pd.getUnmsr());
@@ -1022,6 +1027,20 @@ public class TimerBean {
                 }
             }
         } catch (Exception ex) {
+            //加入邮件通知
+            List<String> emailTo
+                    = eapSystemUserBean.tryFindExceptionInformUsers();
+            eapMailBean.clearReceivers();
+            if (emailTo != null && !emailTo.isEmpty()) {
+                emailTo.forEach((String e) -> {
+                    eapMailBean.getTo().add(e + "@hanbell.com.cn");
+                });
+            }
+            eapMailBean.setMailSubject("PLM件号中间表新增OA失败");
+            eapMailBean.setMailContent(
+                    "PLM件号中间表新增OA失败，异常：" + ex);
+            eapMailBean.notify(new MailNotify());
+            ex.printStackTrace();
             log4j.error("PLM件号抛转轮询时异常", ex);
         }
         log4j.info("PLM件号抛转轮询");
@@ -3373,7 +3392,7 @@ public class TimerBean {
         if (s != null && !s.trim().equals("")) {
             String returnStr = s;
             try {
-                String regEx = "[\\s·`!！@#￥$%^……&*（()）\\+【\\[\\]】｛{}｝\\|、\\\\；;：:‘'“”\"，,《<。.》>、/？?]";
+                String regEx = "[\\s`!！@#￥$%^……&（()）\\+【\\[\\]】｛{}｝\\|、\\\\；;：:‘'“”\"，,《<。.》>、/？?]";
                 Pattern p = Pattern.compile(regEx);
                 Matcher m = p.matcher(returnStr);
                 returnStr = m.replaceAll(" ");
