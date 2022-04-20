@@ -1460,7 +1460,7 @@ public class TimerBean {
                         hm.setVdrna(h.getVdrna());
                         Purvdr purvdr = purvdrBean.findByVdrno(h.getVdrno());
                         if (null != purvdr) {
-                            hm.setTickdays(purvdr.getTickdays().toString());
+                            hm.setTickdays(String.valueOf(purvdr.getTickdays()));
                             hm.setBankName(purvdr.getTtbankna());
                             hm.setBankAccount(purvdr.getTtname());
                         } else {
