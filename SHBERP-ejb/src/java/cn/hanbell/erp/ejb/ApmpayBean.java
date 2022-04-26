@@ -19,12 +19,14 @@ import cn.hanbell.oa.ejb.HZCW017Bean;
 import cn.hanbell.oa.ejb.HZCW028tDetailBean;
 import cn.hanbell.oa.ejb.HZCW033reDetailBean;
 import cn.hanbell.oa.ejb.HZCW033Bean;
+import cn.hanbell.oa.ejb.ProcessCheckBean;
 import cn.hanbell.oa.ejb.SHBERPAPM828Bean;
 import cn.hanbell.oa.entity.HZCW028reDetail;
 import cn.hanbell.oa.entity.HZCW028;
 import cn.hanbell.oa.entity.HZCW017;
 import cn.hanbell.oa.entity.HZCW033reDetail;
 import cn.hanbell.oa.entity.HZCW033;
+import cn.hanbell.oa.entity.ProcessCheck;
 import cn.hanbell.oa.entity.SHBERPAPM828;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
@@ -52,28 +54,26 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
     private ApmaphBean apmaphBean;
     @EJB
     private ApmpadBean apmpadBean;
-
     @EJB
     private ApmsysBean apmsysBean;
-
     @EJB
     private BudgetDetailBean budgetDetailBean;
 
+    @EJB
+    private ProcessCheckBean processCheckBean;
+
+    @EJB
+    private HZCW017Bean jzdBean;
     @EJB
     private HZCW028Bean hzcw028Bean;
     @EJB
     private HZCW028reDetailBean hzcw028reDetailBean;
     @EJB
     private HZCW028tDetailBean hzcw028tDetailBean;
-
-    @EJB
-    private HZCW017Bean jzdBean;
-
     @EJB
     private HZCW033Bean jzghdBean;
     @EJB
     private HZCW033reDetailBean jzghdreDetailBean;
-
     @EJB
     private SHBERPAPM828Bean shberpapm828Bean;
 
@@ -182,6 +182,17 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             aph.setOano(oah.getProcessSerialNumber().substring(4));
             aph.setRefno(payno);
             aph.setApsta("30");
+            // 更新apusrno,cfmusrno为OA审核人
+            List<ProcessCheck> processList;
+            processList = processCheckBean.findByPSN(psn);
+            if (processList.size() > 3) {
+                // 直属主管
+                ProcessCheck pc1 = processList.get(2);
+                aph.setApusrno(pc1.getUserID());
+                // 直属主管之后关卡
+                ProcessCheck pc2 = processList.get(3);
+                aph.setCfmusrno(pc2.getUserID());
+            }
             apmaphBean.update(aph);
             return true;
         } catch (Exception ex) {
