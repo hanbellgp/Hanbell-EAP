@@ -18,13 +18,14 @@ public class MCHZCW028tDetail {
     private String trafficDate;
     private String trafficPlace;
     private String trafficSummary;
-    private String receipt;
+    private int bill_num;
     private double taxi;
     private double trafficfee;
     private double accommodation;
     private double allowance;
     private double subtotal;
     private String travelReport;
+    private double otherFee;
 
     public MCHZCW028tDetail() {
 
@@ -102,20 +103,28 @@ public class MCHZCW028tDetail {
         this.trafficDate = trafficDate;
     }
 
-    public String getReceipt() {
-        return receipt;
-    }
-
-    public void setReceipt(String receipt) {
-        this.receipt = receipt;
-    }
-
     public String getTravelReport() {
         return travelReport;
     }
 
     public void setTravelReport(String travelReport) {
         this.travelReport = travelReport;
+    }
+
+    public int getBill_num() {
+        return bill_num;
+    }
+
+    public void setBill_num(int bill_num) {
+        this.bill_num = bill_num;
+    }
+
+    public double getOtherFee() {
+        return otherFee;
+    }
+
+    public void setOtherFee(double otherFee) {
+        this.otherFee = otherFee;
     }
 
 }

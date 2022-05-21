@@ -38,6 +38,7 @@ public class HZCW033tDetailModel {
     private String startMileage;
     private String endMileage;
     private String totalMileage;
+    private double otherFee;
 
     public HZCW033tDetailModel() {
         
@@ -233,6 +234,14 @@ public class HZCW033tDetailModel {
 
     public void setTotalMileage(String totalMileage) {
         this.totalMileage = totalMileage;
+    }
+
+    public double getOtherFee() {
+        return otherFee;
+    }
+
+    public void setOtherFee(double otherFee) {
+        this.otherFee = otherFee;
     }
 
 }

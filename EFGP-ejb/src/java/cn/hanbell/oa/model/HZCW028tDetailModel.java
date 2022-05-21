@@ -41,6 +41,7 @@ public class HZCW028tDetailModel {
     private String serviceno2;
     private String customerSno2;
     private String isFree;
+    private double otherFee;
 
     public HZCW028tDetailModel() {
         
@@ -260,6 +261,14 @@ public class HZCW028tDetailModel {
 
     public void setIsFree(String isFree) {
         this.isFree = isFree;
+    }
+
+    public double getOtherFee() {
+        return otherFee;
+    }
+
+    public void setOtherFee(double otherFee) {
+        this.otherFee = otherFee;
     }
 
 }
