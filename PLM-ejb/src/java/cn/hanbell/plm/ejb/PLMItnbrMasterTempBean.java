@@ -42,6 +42,16 @@ public class PLMItnbrMasterTempBean extends SuperEJBForPLM<PLMItnbrMasterTemp> {
         return plmItnbrDetailTempBean.findByItemNumber(itemNumber);
     }
 
+    public PLMItnbrMasterTemp findByItemNumber(String itemNumber) {
+        Query query = getEntityManager().createNamedQuery("PLMItnbrMasterTemp.findByItemNumber");
+        query.setParameter("itemNumber", itemNumber);
+        try {
+            return (PLMItnbrMasterTemp) query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     /**
      * @return the detailList
      */

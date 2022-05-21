@@ -15,8 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class HZCW028reDetailModel {
     private int no;
     private String summary;
-    private String budgetDept;
-    private String DeptName;
+    private String budgetDept_txt;
+    private String budgetDept_lbl;
     private double notaxes;
     private double taxes;
     private double taxInclusive;
@@ -37,14 +37,6 @@ public class HZCW028reDetailModel {
 
     public HZCW028reDetailModel() {
 
-    }
-
-    public String getBudgetDept() {
-        return budgetDept;
-    }
-
-    public void setBudgetDept(String budgetDept) {
-        this.budgetDept = budgetDept;
     }
 
     public String getBudgetAcc() {
@@ -143,14 +135,6 @@ public class HZCW028reDetailModel {
         this.centerid = centerid;
     }
 
-    public String getDeptName() {
-        return DeptName;
-    }
-
-    public void setDeptName(String DeptName) {
-        this.DeptName = DeptName;
-    }
-
     public String getAccno() {
         return accno;
     }
@@ -205,6 +189,22 @@ public class HZCW028reDetailModel {
 
     public void setNo(int no) {
         this.no = no;
+    }
+
+    public String getBudgetDept_txt() {
+        return budgetDept_txt;
+    }
+
+    public void setBudgetDept_txt(String budgetDept_txt) {
+        this.budgetDept_txt = budgetDept_txt;
+    }
+
+    public String getBudgetDept_lbl() {
+        return budgetDept_lbl;
+    }
+
+    public void setBudgetDept_lbl(String budgetDept_lbl) {
+        this.budgetDept_lbl = budgetDept_lbl;
     }
     
 }

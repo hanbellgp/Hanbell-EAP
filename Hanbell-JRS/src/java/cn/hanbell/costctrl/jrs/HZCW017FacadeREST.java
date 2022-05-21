@@ -190,6 +190,9 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
                 return new MCResponseData(code, msg);
             }
             String facno = mc.getFacno();
+            miscodeBean.setCompany(facno);
+            budgetCenterBean.setCompany(facno);
+            budgetDetailBean.setCompany(facno);
             if (null == comanyBean.findByCompany(facno)) {
                 code = 107;
                 msg = "传入公司别数据无效";

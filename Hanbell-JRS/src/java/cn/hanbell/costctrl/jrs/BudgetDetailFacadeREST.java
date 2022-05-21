@@ -135,6 +135,8 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
                     mcbudget.setCrmno(crmno);
                     mcbudget.setCrmtype(crmtype);
                     mcbudget.setLoanNo(loanNo);
+                    //初始状态为0
+                    mcbudget.setStatus(0); 
                     mcbudgetBean.persist(mcbudget);
                     //更新CRM状态
                     if (crmtype.equals("YXJL")) {

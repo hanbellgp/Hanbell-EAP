@@ -171,6 +171,8 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             List<HZCW028reDetailModel> rems = new ArrayList<>();
             Date date = BaseLib.getDate("yyyy/MM/dd", entity.getAppDate());
             String facno = entity.getFacno();
+            budgetDetailBean.setCompany(facno);
+            budgetCenterBean.setCompany(facno);
             if (!reds.isEmpty()) {
                 int seq = 0;
                 for (MCHZCW028reDetail re : reds) {
@@ -178,29 +180,29 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     HZCW028reDetailModel rem = new HZCW028reDetailModel();
                     rem.setNo(seq);
                     rem.setSummary(re.getSummary());
-                    rem.setBudgetDept(re.getBudgetDept());
-                    rem.setDeptName(re.getDeptName());
+                    rem.setBudgetDept_txt(re.getBudgetDept());
+                    rem.setBudgetDept_lbl(re.getDeptName());
                     rem.setNotaxes(re.getNotaxes());
                     rem.setTaxes(re.getTaxes());
                     rem.setTaxInclusive(re.getTaxInclusive());
                     rem.setBudgetAcc(re.getBudgetAcc());
                     rem.setBudgetAccname(re.getBudgetAccname());
-                    rem.setResearch(re.getResearch());
+                    rem.setResearch(re.getResearch() != null ? re.getResearch() : "");
                     rem.setAccno(rem.getBudgetAcc());
                     rem.setAccName(rem.getBudgetAccname());
                     //获取科目期余额
                     rem.setAccPeriod(budgetDetailBean.getBudgetBalanceForAccPeriod(facno, date, re.getCenterid(), rem.getBudgetAcc()));
                     rem.setAccYear(budgetDetailBean.getBudgetBalanceForAccYear(facno, date, re.getCenterid(), rem.getBudgetAcc()));
                     rem.setProduct("R");
-                    rem.setEntertainObj(re.getEntertainObj());
+                    rem.setEntertainObj(re.getEntertainObj() != null ? re.getEntertainObj() : "");
                     String entertainDate = re.getEntertainDate();
                     if (entertainDate == null) {
                         rem.setEntertainDate_txt("");
                     } else {
                         rem.setEntertainDate_txt(entertainDate);
                     }
-                    rem.setEntertainPeople(re.getEntertainPeople());
-                    rem.setEntertainReason(re.getEntertainReason());
+                    rem.setEntertainPeople(re.getEntertainPeople() != null ? re.getEntertainPeople() : "");
+                    rem.setEntertainReason(re.getEntertainReason() != null ? re.getEntertainReason() : "");
                     rem.setCenterid(re.getCenterid());
                     rem.setRemark(re.getRemark());
                     rems.add(rem);
@@ -217,11 +219,13 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     tm.setTrafficDate_txt(td.getTrafficDate());
                     tm.setTrafficPlace(td.getTrafficPlace());
                     tm.setTrafficSummary(td.getTrafficSummary());
-                    tm.setReceipt("1");
+                    //单据张数
+                    int bill_num = td.getBill_num();
+                    tm.setReceipt(String.valueOf(bill_num));
                     tm.setTaxi(td.getTaxi());
                     tm.setTrafficfee(td.getTrafficfee());
                     tm.setAccommodation(td.getAccommodation());
-                    tm.setAccommodation(td.getAccommodation());
+                    tm.setAllowance(td.getAllowance());
                     tm.setSubtotal(td.getSubtotal());
                     tm.setTravelReport("");
                     tm.setSort1("");
@@ -240,6 +244,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     tm.setServiceno2("");
                     tm.setCustomerSno2("");
                     tm.setIsFree("");
+                    tm.setOtherFee(td.getOtherFee());
                     tms.add(tm);
                 }
             }
@@ -329,7 +334,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     msg = "申请日期不能为空";
                     return new MCResponseData(code, msg);
                 }
-                date = BaseLib.getDate("yyyy/MM/dd",d); //日期
+                date = BaseLib.getDate("yyyy/MM/dd", d); //日期
                 period = BaseLib.formatDate("yyyyMM", date);
             } catch (Exception e) {
                 code = 107;
@@ -347,6 +352,8 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 return new MCResponseData(code, msg);
             }
             String facno = mc.getFacno();
+            budgetDetailBean.setCompany(facno);
+            budgetCenterBean.setCompany(facno);
             if (null == comanyBean.findByCompany(facno)) {
                 code = 107;
                 msg = "传入公司别数据无效";
@@ -360,6 +367,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 return new MCResponseData(code, msg);
             }
             String coin = mc.getCoin();
+            miscodeBean.setCompany(facno);
             if (null == miscodeBean.findByPK("GA", coin)) {
                 code = 107;
                 msg = "传入币别数据无效";
@@ -548,7 +556,10 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         msg = "差旅金额小计格式错误";
                         return new MCResponseData(code, msg);
                     }
-                    tdssum2 += t.getSubtotal();
+                    //tdssum2 += t.getSubtotal();
+                    //差旅小计只算明细4个费用加起来
+                    tdssum2 = tdssum2 + t.getTaxi() + t.getTrafficfee() + t.getAccommodation() + t.getAllowance();
+
                 }
                 if (tdssum != tdssum2) {
                     code = 107;
@@ -597,6 +608,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 msg = "费用明细与申请总额不一致";
                 return new MCResponseData(code, msg);
             }
+            //加入分摊部门检查    
             return new MCResponseData(code, msg);
         } catch (Exception e) {
             e.printStackTrace();
