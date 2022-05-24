@@ -166,6 +166,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             List<HZCW033reDetailModel> rems = new ArrayList<>();
             Date date = BaseLib.getDate("yyyy/MM/dd", entity.getAppDate());
             String facno = entity.getFacno();
+            budgetDetailBean.setCompany(facno);
+            budgetCenterBean.setCompany(facno);
             if (!reds.isEmpty()) {
                 int seq = 0;
                 for (MCHZCW033reDetail re : reds) {
@@ -173,8 +175,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     HZCW033reDetailModel rem = new HZCW033reDetailModel();
                     rem.setNo(seq);
                     rem.setSummary(re.getSummary());
-                    rem.setBudgetDept(re.getBudgetDept());
-                    rem.setDeptName(re.getDeptName());
+                    rem.setBudgetDept_txt(re.getBudgetDept());
+                    rem.setBudgetDept_lbl(re.getDeptName());
                     rem.setTaxInclusive(re.getTaxInclusive());
                     if (re.getRefund() > 0) {
                         rem.setRefund(re.getRefund());
@@ -187,7 +189,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     rem.setLoanNo(re.getLoanNo());
                     rem.setBudgetAcc(re.getBudgetAcc());
                     rem.setBudgetAccname(re.getBudgetAccname());
-                    rem.setResearch(re.getResearch());
+                    rem.setResearch(re.getResearch() != null ? re.getResearch() : "");
                     rem.setAccno(rem.getBudgetAcc());
                     rem.setAccName(rem.getBudgetAccname());
                     //获取科目期余额
@@ -196,15 +198,15 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     rem.setProduct("R");
                     rem.setNotaxes(re.getNotaxes());
                     rem.setTaxes(re.getTaxes());
-                    rem.setEntertainObj(re.getEntertainObj());
+                    rem.setEntertainObj(re.getEntertainObj() != null ? re.getEntertainObj() : "");
                     String entertainDate = re.getEntertainDate();
                     if (entertainDate == null) {
                         rem.setEntertainDate_txt("");
                     } else {
                         rem.setEntertainDate_txt(entertainDate);
                     }
-                    rem.setEntertainPeople(re.getEntertainPeople());
-                    rem.setEntertainReason(re.getEntertainReason());
+                    rem.setEntertainPeople(re.getEntertainPeople() != null ? re.getEntertainPeople() : "");
+                    rem.setEntertainReason(re.getEntertainReason() != null ? re.getEntertainReason() : "");
                     rem.setCenterid(re.getCenterid());
                     rem.setRemark(re.getRemark());
                     rems.add(rem);
@@ -221,11 +223,14 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     tm.setTrafficDate_txt(td.getTrafficDate());
                     tm.setTrafficPlace(td.getTrafficPlace());
                     tm.setTrafficSummary(td.getTrafficSummary());
-                    tm.setReceipt("1");
+                    //tm.setReceipt("1");
+                    //单据张数
+                    int bill_num = td.getBill_num();
+                    tm.setReceipt(String.valueOf(bill_num));
                     tm.setTaxi(td.getTaxi());
                     tm.setTrafficfee(td.getTrafficfee());
                     tm.setAccommodation(td.getAccommodation());
-                    tm.setAccommodation(td.getAccommodation());
+                    tm.setAllowance(td.getAllowance());
                     tm.setSubtotal(td.getSubtotal());
                     tm.setTravelReport("");
                     tm.setSort1("");
@@ -241,6 +246,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     tm.setStartMileage("");
                     tm.setEndMileage("");
                     tm.setTotalMileage("");
+                    tm.setOtherFee(td.getOtherFee());
                     tms.add(tm);
                 }
             }
@@ -353,6 +359,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 return new MCResponseData(code, msg);
             }
             String facno = mc.getFacno();
+            budgetCenterBean.setCompany(facno);
+            budgetDetailBean.setCompany(facno);
             if (null == comanyBean.findByCompany(facno)) {
                 code = 107;
                 msg = "传入公司别数据无效";
@@ -366,6 +374,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 return new MCResponseData(code, msg);
             }
             String coin = mc.getCoin();
+            miscodeBean.setCompany(facno);
             if (null == miscodeBean.findByPK("GA", coin)) {
                 code = 107;
                 msg = "传入币别数据无效";

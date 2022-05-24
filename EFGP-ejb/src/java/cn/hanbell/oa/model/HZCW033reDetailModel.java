@@ -16,8 +16,8 @@ public class HZCW033reDetailModel {
 
     private int no;
     private String summary;
-    private String budgetDept;
-    private String DeptName;
+    private String budgetDept_lbl;
+    private String budgetDept_txt;
     private double taxInclusive;
     private double refund;
     private double loanAmount;
@@ -43,14 +43,6 @@ public class HZCW033reDetailModel {
 
     public HZCW033reDetailModel() {
 
-    }
-
-    public String getBudgetDept() {
-        return budgetDept;
-    }
-
-    public void setBudgetDept(String budgetDept) {
-        this.budgetDept = budgetDept;
     }
 
     public String getBudgetAcc() {
@@ -149,14 +141,6 @@ public class HZCW033reDetailModel {
         this.centerid = centerid;
     }
 
-    public String getDeptName() {
-        return DeptName;
-    }
-
-    public void setDeptName(String DeptName) {
-        this.DeptName = DeptName;
-    }
-
     public String getAccno() {
         return accno;
     }
@@ -251,6 +235,22 @@ public class HZCW033reDetailModel {
 
     public void setLoanNo(String loanNo) {
         this.loanNo = loanNo;
+    }
+
+    public String getBudgetDept_lbl() {
+        return budgetDept_lbl;
+    }
+
+    public void setBudgetDept_lbl(String budgetDept_lbl) {
+        this.budgetDept_lbl = budgetDept_lbl;
+    }
+
+    public String getBudgetDept_txt() {
+        return budgetDept_txt;
+    }
+
+    public void setBudgetDept_txt(String budgetDept_txt) {
+        this.budgetDept_txt = budgetDept_txt;
     }
 
 }
