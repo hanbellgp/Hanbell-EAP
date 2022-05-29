@@ -34,6 +34,7 @@ public class MCHZCW028 extends HmacSha1Signature {
     private String srcno;
     private List<MCHZCW028reDetail> items;
     private List<MCHZCW028tDetail> travel_items;
+    private List<MCHZCW028attDept> att_depts;
 
     public List<MCHZCW028reDetail> getItems() {
         return items;
@@ -177,6 +178,14 @@ public class MCHZCW028 extends HmacSha1Signature {
 
     public void setAppDate(String appDate) {
         this.appDate = appDate;
+    }
+
+    public List<MCHZCW028attDept> getAtt_depts() {
+        return att_depts;
+    }
+
+    public void setAtt_depts(List<MCHZCW028attDept> att_depts) {
+        this.att_depts = att_depts;
     }
 
 }

@@ -97,10 +97,6 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
             if (rs.getCode() != 200) {
                 return rs;
             }
-            //检查申请人是否重复借款
-            if (!hzcw017Bean.checkArrears(entity.getLoanUser())) {
-                return new MCResponseData(500, "您有借款未还不能再发起借支申请");
-            }
             //初始化发起人
             workFlowBean.initUserInfo(entity.getLoanUser());
             //实例化对象
@@ -180,6 +176,10 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
             }
             if (!mc.checkSign()) {
                 return new MCResponseData(MessageEnum.Failue_102.getCode(), MessageEnum.Failue_102.getMsg());
+            }
+            //检查申请人是否重复借款
+            if (!hzcw017Bean.checkArrears(mc.getLoanUser())) {
+                return new MCResponseData(500, "您有借款未还不能再发起借支申请");
             }
             Date date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())); //日期
             String period = BaseLib.formatDate("yyyyMM", date);

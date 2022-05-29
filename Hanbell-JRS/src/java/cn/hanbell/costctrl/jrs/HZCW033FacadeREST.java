@@ -353,7 +353,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             double resum = 0.00;    //费用明细合计
             String cost = mc.getCost();
             String reimbursement = mc.getReimbursement();
-            if (cost.isEmpty() || reimbursement.isEmpty()) {
+            if (cost == null || cost.isEmpty() || reimbursement == null || reimbursement.isEmpty()) {
                 code = 107;
                 msg = "费用类别或销售性质不能为空";
                 return new MCResponseData(code, msg);
@@ -381,24 +381,10 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 return new MCResponseData(code, msg);
             }
             String srcno = mc.getSrcno();
-            if (srcno.isEmpty()) {
+            if (srcno == null || srcno.isEmpty()) {
                 code = 107;
                 msg = "来源单号不能为空";
                 return new MCResponseData(code, msg);
-            }
-            //CRM相关人员CRM单号必填
-            boolean checkStatus = crmUserGroupBean.checkStatus(appUser);
-            if (checkStatus == true) {
-                if (mc.getCrmno() == null || mc.getCrmno().isEmpty()) {
-                    code = 107;
-                    msg = "CRM单号不能为空";
-                    return new MCResponseData(code, msg);
-                }
-                if (mc.getCrmtype() == null || mc.getCrmtype().isEmpty()) {
-                    code = 107;
-                    msg = "CRM单据类型不能为空";
-                    return new MCResponseData(code, msg);
-                }
             }
             List<MCHZCW033reDetail> items = mc.getItems();
             if (items.isEmpty()) {
@@ -473,7 +459,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     return new MCResponseData(code, msg);
                 }
                 String summary = r.getSummary();
-                if (summary.isEmpty()) {
+                if (summary == null || summary.isEmpty()) {
                     code = 107;
                     msg = "摘要不能为空";
                     return new MCResponseData(code, msg);
@@ -481,7 +467,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 switch (budgetAcc) {
                     case "6731":
                     case "6631":
-                        if (r.getEntertainDate().isEmpty() || r.getEntertainObj().isEmpty() || r.getEntertainPeople().isEmpty() || r.getEntertainReason().isEmpty()) {
+                        if (r.getEntertainDate() == null || r.getEntertainDate().isEmpty() || r.getEntertainObj() == null || r.getEntertainObj().isEmpty() || r.getEntertainPeople() == null || r.getEntertainPeople().isEmpty() || r.getEntertainReason() == null || r.getEntertainReason().isEmpty()) {
                             code = 107;
                             msg = "科目为交际费，招待明细必填";
                             return new MCResponseData(code, msg);
@@ -490,6 +476,16 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         if (!ch.valiDateFormat(r.getEntertainDate())) {
                             code = 107;
                             msg = "招待日期格式错误";
+                            return new MCResponseData(code, msg);
+                        }
+                        break;
+                    case "5107":
+                    case "5307":
+                    case "6607":
+                    case "6707":
+                        if (r.getRemark() == null || r.getRemark().isEmpty()) {
+                            code = 107;
+                            msg = "科目为福利费，备注必填";
                             return new MCResponseData(code, msg);
                         }
                         break;
@@ -502,14 +498,16 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         return new MCResponseData(code, msg);
                     }
                 }
-                //检验科目期间余额
-                String accnoValue = "5117;5309;6617;6717;5137;6637;6737;6631;6731;5118;6618;6718;5136;6636;6736";
-                if (accnoValue.contains(budgetAcc) && !facno.equals("Q")) {
-                    double accp = budgetDetailBean.getBudgetBalanceForAccPeriod(facno, date, centerid, budgetAcc);
-                    if (accp <= 0.00) {
-                        code = 110;
-                        msg = "预算科目" + budgetAcc + "期间余额小于零不能申请";
-                        return new MCResponseData(code, msg);
+                //检验科目期间余额,费控发起前检核
+                if (status == 0) {
+                    String accnoValue = "5117;5309;6617;6717;5137;6637;6737;6631;6731;5118;6618;6718;5136;6636;6736";
+                    if (accnoValue.contains(budgetAcc) && !facno.equals("Q")) {
+                        double accp = budgetDetailBean.getBudgetBalanceForAccPeriod(facno, date, centerid, budgetAcc);
+                        if (accp - notaxes < 0.00) {
+                            code = 110;
+                            msg = "预算科目" + budgetAcc + "期间余额小于零不能申请";
+                            return new MCResponseData(code, msg);
+                        }
                     }
                 }
                 //检查报销单明细与费控中间表预扣是否一致
@@ -535,6 +533,20 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     code = 107;
                     msg = "差旅明细不能为空";
                     return new MCResponseData(code, msg);
+                }
+                //CRM相关人员CRM单号必填
+                boolean checkStatus = crmUserGroupBean.checkStatus(appUser);
+                if (checkStatus == true) {
+                    if (mc.getCrmno() == null || mc.getCrmno().isEmpty()) {
+                        code = 107;
+                        msg = "CRM单号不能为空";
+                        return new MCResponseData(code, msg);
+                    }
+                    if (mc.getCrmtype() == null || mc.getCrmtype().isEmpty()) {
+                        code = 107;
+                        msg = "CRM单据类型不能为空";
+                        return new MCResponseData(code, msg);
+                    }
                 }
                 for (MCHZCW033tDetail t : travels) {
                     CheckData ch = new CheckData();
@@ -571,12 +583,14 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 }
             }
             //检验部门期间余额
-            BudgetCenter budgetCenter = budgetCenterBean.findByDeptid(mc.getAppDept());
-            double depp = budgetDetailBean.getBudgetBalanceForDeptPeriod(facno, date, budgetCenter.getBudgetCenterPK().getCenterid());
-            if (depp <= 0.00) {
-                code = 110;
-                msg = "部门期间余额小于零不能申请";
-                return new MCResponseData(code, msg);
+            if (status == 0) {
+                BudgetCenter budgetCenter = budgetCenterBean.findByDeptid(mc.getAppDept());
+                double depp = budgetDetailBean.getBudgetBalanceForDeptPeriod(facno, date, budgetCenter.getBudgetCenterPK().getCenterid());
+                if (depp < mc.getTotaltaxInclusive()) {
+                    code = 110;
+                    msg = "部门期间余额小于零不能申请";
+                    return new MCResponseData(code, msg);
+                }
             }
             /**
              * 预算中间表检查是否发起过 status =0 预算新增前检查，status=1 预算新增后发起OA检查

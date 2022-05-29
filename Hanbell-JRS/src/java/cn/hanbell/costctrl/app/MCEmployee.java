@@ -24,6 +24,7 @@ public class MCEmployee {
     private String phone;
     private String upperUserId;
     private String status;
+    private int isMainDept;
 
     public MCEmployee() {
 
@@ -117,6 +118,14 @@ public class MCEmployee {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getIsMainDept() {
+        return isMainDept;
+    }
+
+    public void setIsMainDept(int isMainDept) {
+        this.isMainDept = isMainDept;
     }
 
 }
