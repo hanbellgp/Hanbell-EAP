@@ -70,4 +70,17 @@ public class HZCW017Bean extends SuperEJBForEFGP<HZCW017> {
         }
     }
 
+    //获取借款未还信息
+    public List<HZCW017> findByUserno(String userno) {
+        List<HZCW017> hzcw017List;
+        try {
+            Query q = this.getEntityManager().createQuery("SELECT a from HZCW017 a WHERE a.processInstance.currentState = 3 and a.arrears > 0 and a.srcno <> '' and a.loanUser = :loanUser ");
+            q.setParameter("loanUser", userno);
+            hzcw017List = q.getResultList();
+            return hzcw017List;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

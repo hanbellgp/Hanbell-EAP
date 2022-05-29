@@ -179,6 +179,9 @@ public class HZCW017 implements Serializable {
     @JoinColumn(name = "processSerialNumber", referencedColumnName = "serialNumber", insertable = false, updatable = false)
     @OneToOne(optional = true)
     private ProcessInstance processInstance;
+    @Size(max = 255)
+    @Column(name = "srcno")
+    private String srcno;
 
     public HZCW017() {
     }
@@ -530,6 +533,14 @@ public class HZCW017 implements Serializable {
 
     public void setHdnloanProperty(String hdnloanProperty) {
         this.hdnloanProperty = hdnloanProperty;
+    }
+
+    public String getSrcno() {
+        return srcno;
+    }
+
+    public void setSrcno(String srcno) {
+        this.srcno = srcno;
     }
 
 }

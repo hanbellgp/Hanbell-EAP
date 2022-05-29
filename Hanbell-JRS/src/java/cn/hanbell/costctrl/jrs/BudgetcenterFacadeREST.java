@@ -70,20 +70,24 @@ public class BudgetcenterFacadeREST extends SuperRESTForERP<BudgetCenter> {
                 budgetcenterList = budgetcenterList.stream().filter(b -> b.getBudgetCenterPK().getDeptid().contains(deptid)).collect(Collectors.toList());
             }
             //加入部门模糊查询
-            if (deptName != null && !deptName.isEmpty()) {              
+            if (deptName != null && !deptName.isEmpty()) {
                 budgetcenterList = budgetcenterList.stream().filter(b -> b.getDeptname().contains(deptName)).collect(Collectors.toList());
             }
             List<MCBudgetCenter> bclist = new ArrayList<>();
             if (!budgetcenterList.isEmpty()) {
-                budgetcenterList.forEach((BudgetCenter m) -> {
-                    MCBudgetCenter mbc = new MCBudgetCenter();
-                    mbc.setFacno(m.getBudgetCenterPK().getFacno());
-                    mbc.setCenterId(m.getBudgetCenterPK().getCenterid());
-                    mbc.setDeptId(m.getBudgetCenterPK().getDeptid());
-                    mbc.setDeptName(m.getDeptname());
-                    bclist.add(mbc);
-                }
-                );
+                //加入去重（不同产品别）
+                String deptString = "";
+                for (BudgetCenter m : budgetcenterList) {
+                    if (!deptString.contains(m.getBudgetCenterPK().getDeptid())) {
+                        MCBudgetCenter mbc = new MCBudgetCenter();
+                        mbc.setFacno(m.getBudgetCenterPK().getFacno());
+                        mbc.setCenterId(m.getBudgetCenterPK().getCenterid());
+                        mbc.setDeptId(m.getBudgetCenterPK().getDeptid());
+                        mbc.setDeptName(m.getDeptname());
+                        bclist.add(mbc);
+                        deptString += mbc.getDeptId() + ";";
+                    }
+                };
             }
             MCResponseData res = new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
             res.setData(bclist);

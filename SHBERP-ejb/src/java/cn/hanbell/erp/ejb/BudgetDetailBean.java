@@ -6,6 +6,7 @@
 package cn.hanbell.erp.ejb;
 
 import cn.hanbell.erp.comm.SuperEJBForERP;
+import cn.hanbell.erp.entity.BudgetAcc;
 import cn.hanbell.erp.entity.BudgetDetail;
 import cn.hanbell.oa.ejb.HZCW017Bean;
 import cn.hanbell.oa.ejb.HZCW028Bean;
@@ -50,6 +51,8 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
     private HZCW033reDetailBean hzcw033reDetailBean;
     @EJB
     private HZCW017Bean hzcw017Bean;
+    @EJB
+    private BudgetAccBean budgetAccBean;
 
     public BudgetDetailBean() {
         super(BudgetDetail.class);
@@ -362,11 +365,14 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
         q.setParameter("period1", period1);
         q.setParameter("period2", period2);
         q.setParameter("centerid", centerid);
+        budgetAccBean.setCompany(facno);
         try {
             budgetDetails = q.getResultList();
             for (BudgetDetail b : budgetDetails) {
-                deptPeriod = deptPeriod.add(b.getAmts().add(b.getAddamts()).subtract(b.getDecramts()).subtract(b.getPreamts()));
-
+                BudgetAcc ba=budgetAccBean.findByAccno(b.getBudgetDetailPK().getBudgetacc());
+                if(ba != null && ba.getNeedcheck()){
+                      deptPeriod = deptPeriod.add(b.getAmts().add(b.getAddamts()).subtract(b.getDecramts()).subtract(b.getPreamts()));
+                }   
             }
             deptBalance = deptPeriod.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         } catch (Exception ex) {
