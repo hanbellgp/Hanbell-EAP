@@ -239,6 +239,11 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                 case "SJS00309":
                                     content.append(sd.getCustomerItem()).append("| 1100000429| ").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(new DecimalFormat("00").format(sd.getLotseq()));
                                     break;
+                                case "SSD01036":
+                                    // 海达源专属二维码
+                                    content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
+                                            .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc());
+                                    break;
                             }
                             if (content.length() > 0) {
                                 this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + l.getVarnr() + ".png");
