@@ -125,6 +125,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
     @Consumes({"application/json"})
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CheckMCHZCW033(MCHZCW033 entity) {
+        log4j.info(entity.getSrcno() + "每刻发起检查：" + entity.toString());
         MCResponseData rs = new MCResponseData();
         rs = checkBeforeSend(0, entity);
         return rs;
@@ -135,6 +136,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
     @Consumes({"application/json"})
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CreateOAHZCWO33(MCHZCW033 entity) {
+        log4j.info(entity.getSrcno() + "每刻发起检查：" + entity.toString());
         UserTransaction tran = null;
         try {
             InitialContext context = new InitialContext();
@@ -492,7 +494,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     default:
                 }
                 if (budgetAcc.substring(0, 2).equals("53")) {
-                    if (r.getResearch().isEmpty()) {
+                    if (r.getResearch() == null || r.getResearch().isEmpty()) {
                         code = 107;
                         msg = "科目为研发，研发专案号必填";
                         return new MCResponseData(code, msg);
@@ -809,8 +811,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         pz.setMz007(f.getSALFTPK().getFt002());
                         pz.setMz008(my003);
                         pz.setMz009(f.getFt007());
-                        pz.setMz010(py.getMy006());
-                        pz.setMz011(py.getMy032());
+                        pz.setMz010(mc.getCoin());  //币别
+                        pz.setMz011(BigDecimal.valueOf(mc.getRatio()));    //汇率
                         pz.setMz016(f.getFt006());
                         pz.setMz017(f.getFt006());
                         pz.setMz018(f.getFt006());
@@ -891,7 +893,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         rep.setLc025(lc025);
                         rep.setLc030(reptc.getTc069());
                         rep.setLc031(reptc.getTc070());
-                        rep.setLc030(reptc.getTc016());
+                        rep.setLc032(reptc.getTc016());
                         replcList.add(rep);
                     }
                     if (t.getTrafficfee() > 0) {
@@ -905,7 +907,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         DecimalFormat decimalFormat = new DecimalFormat("0000");
                         String lc003 = decimalFormat.format(seq);
                         rep.setREPLCPK(new REPLCPK(crmtype, crmno, lc003));
-                        rep.setLc004("3C002");//出租车费
+                        rep.setLc004("3C002");//其他交通费
                         rep.setLc005(BigDecimal.valueOf(t.getTrafficfee()));
                         rep.setLc006(BigDecimal.ONE);
                         rep.setLc007(BigDecimal.valueOf(t.getTrafficfee()));
@@ -919,7 +921,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         rep.setLc025(lc025);
                         rep.setLc030(reptc.getTc069());
                         rep.setLc031(reptc.getTc070());
-                        rep.setLc030(reptc.getTc016());
+                        rep.setLc032(reptc.getTc016());
                         replcList.add(rep);
                     }
                     if (t.getAllowance() > 0) {
@@ -933,7 +935,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         DecimalFormat decimalFormat = new DecimalFormat("0000");
                         String lc003 = decimalFormat.format(seq);
                         rep.setREPLCPK(new REPLCPK(crmtype, crmno, lc003));
-                        rep.setLc004("3C003");//出租车费
+                        rep.setLc004("3C003");//出差补贴
                         rep.setLc005(BigDecimal.valueOf(t.getAllowance()));
                         rep.setLc006(BigDecimal.ONE);
                         rep.setLc007(BigDecimal.valueOf(t.getAllowance()));
@@ -947,7 +949,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         rep.setLc025(lc025);
                         rep.setLc030(reptc.getTc069());
                         rep.setLc031(reptc.getTc070());
-                        rep.setLc030(reptc.getTc016());
+                        rep.setLc032(reptc.getTc016());
                         replcList.add(rep);
                     }
                     if (t.getAccommodation() > 0) {
@@ -961,7 +963,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         DecimalFormat decimalFormat = new DecimalFormat("0000");
                         String lc003 = decimalFormat.format(seq);
                         rep.setREPLCPK(new REPLCPK(crmtype, crmno, lc003));
-                        rep.setLc004("3C003");//出租车费
+                        rep.setLc004("3C005");//住宿费
                         rep.setLc005(BigDecimal.valueOf(t.getAllowance()));
                         rep.setLc006(BigDecimal.ONE);
                         rep.setLc007(BigDecimal.valueOf(t.getAllowance()));
@@ -975,7 +977,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         rep.setLc025(lc025);
                         rep.setLc030(reptc.getTc069());
                         rep.setLc031(reptc.getTc070());
-                        rep.setLc030(reptc.getTc016());
+                        rep.setLc032(reptc.getTc016());
                         replcList.add(rep);
                     }
                 }
@@ -1053,8 +1055,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     pz.setMz007(r.getREPLCPK().getLc003());
                     pz.setMz008(my003);
                     pz.setMz009(r.getLc004());
-                    pz.setMz010(py.getMy006());
-                    pz.setMz011(py.getMy032());
+                    pz.setMz010(r.getLc030());    //币别
+                    pz.setMz011(r.getLc031());    //汇率
                     pz.setMz016(r.getLc007());
                     pz.setMz017(r.getLc007());
                     pz.setMz018(r.getLc007());
@@ -1082,7 +1084,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 py.setMy009("Y");
                 py.setMy010(py.getCreator());
                 py.setMy011(my003);
-                py.setMy025("");//费控单号
+                py.setMy024(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                py.setMy025(mc.getSrcno());//费控单号
                 py.setMy032(BigDecimal.valueOf(mc.getRatio()));
                 py.setMy033(total);//原币总金额
                 pormyBean.persist(py);

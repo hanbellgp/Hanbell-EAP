@@ -237,6 +237,7 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                 for (Map.Entry<String, String> entry : pzcdrnos.entrySet()) {
                     Cdrhad chad;
                     String pzcdrno;
+                    short li_shptrseq;
                     cdtaList = new ArrayList<>();
                     cdmasList = new ArrayList<>();
                     facno = entry.getValue();
@@ -244,6 +245,7 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                     shpdate = BaseLib.getDate();
                     Cdrhmas chmas = cdrhmasBean.findById(pzcdrno);
                     Character decode = chmas.getDecode();  //国内
+                    li_shptrseq = chmas.getShptrseq();
                     cdrsysBean.setCompany(facno);
                     ls_shpno = cdrsysBean.getSerialNumber(facno, "", "", shpdate, decode, Boolean.TRUE, "CDR645");
                     short seq = 1;
@@ -295,6 +297,12 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                             cdmas.setDrecsta("84");
                             cdmasList.add(cdmas);
                             ldc_shpamts = ldc_shpamts.add(cdta.getShpamts());
+                            //变更出货地址
+                            if (d.getShptrseq() != null && d.getShptrseq() != "") {
+                                if (Short.parseShort(d.getShptrseq()) != li_shptrseq) {
+                                    li_shptrseq = Short.parseShort(d.getShptrseq());
+                                }
+                            }
                             seq++;
                         }
                     }
@@ -310,7 +318,9 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                     chad.setTrtype("L1A");  //国内出货
                     chad.setDepno(chmas.getDepno());
                     chad.setCusno(chmas.getCusno());
-                    chad.setShptrseq(chmas.getShptrseq());
+                    //变更出货单地址选择，从支援单单身获取
+                    //chad.setShptrseq(chmas.getShptrseq());
+                    chad.setShptrseq(li_shptrseq);
                     chad.setIvotrseq(chmas.getIvotrseq());
                     chad.setHoutsta('N');
                     chad.setTax(chmas.getTax());

@@ -5,7 +5,6 @@
  */
 package cn.hanbell.costctrl.app;
 
-import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -186,6 +185,11 @@ public class MCHZCW033 extends HmacSha1Signature {
 
     public void setAtt_depts(List<MCHZCW033attDept> att_depts) {
         this.att_depts = att_depts;
+    }
+
+    @Override
+    public String toString() {
+        return "MCHZCW033{" + "facno=" + facno + ", cost=" + cost + ", reimbursement=" + reimbursement + ", appDate=" + appDate + ", appUser=" + appUser + ", appDept=" + appDept + ", crmno=" + crmno + ", crmtype=" + crmtype + ", totaltaxInclusive=" + totaltaxInclusive + ", totalnotaxesRMB=" + totalnotaxesRMB + ", totaltaxesRMB=" + totaltaxesRMB + ", totaltaxInclusiveRMB=" + totaltaxInclusiveRMB + ", coin=" + coin + ", ratio=" + ratio + ", creator=" + creator + ", srcno=" + srcno + ", items=" + items.toString() + ", travel_items=" + travel_items.toString() + '}';
     }
 
 }

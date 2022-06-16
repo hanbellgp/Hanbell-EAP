@@ -128,4 +128,9 @@ public class MCHZCW033tDetail {
         this.otherFee = otherFee;
     }
 
+    @Override
+    public String toString() {
+        return "MCHZCW033tDetail{" + "no=" + no + ", trafficDate=" + trafficDate + ", trafficPlace=" + trafficPlace + ", trafficSummary=" + trafficSummary + ", bill_num=" + bill_num + ", taxi=" + taxi + ", trafficfee=" + trafficfee + ", accommodation=" + accommodation + ", allowance=" + allowance + ", subtotal=" + subtotal + ", travelReport=" + travelReport + ", otherFee=" + otherFee + '}';
+    }
+
 }

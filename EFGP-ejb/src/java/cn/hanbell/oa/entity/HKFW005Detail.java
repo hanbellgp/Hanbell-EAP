@@ -76,11 +76,17 @@ public class HKFW005Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "dfacno")
     private String dfacno;
+    @Size(max = 255)
+    @Column(name = "shptrseq")
+    private String shptrseq;
+    @Size(max = 255)
+    @Column(name = "shpAddress")
+    private String shpAddress;
 
     @JoinColumn(name = "formSerialNumber", referencedColumnName = "formSerialNumber", insertable = false, updatable = false)
     @ManyToOne(optional = true)
     private HKFW005 hkfw005;
-    
+
     public HKFW005Detail() {
     }
 
@@ -207,6 +213,22 @@ public class HKFW005Detail implements Serializable {
 
     public void setDfacno(String dfacno) {
         this.dfacno = dfacno;
+    }
+
+    public String getShptrseq() {
+        return shptrseq;
+    }
+
+    public void setShptrseq(String shptrseq) {
+        this.shptrseq = shptrseq;
+    }
+
+    public String getShpAddress() {
+        return shpAddress;
+    }
+
+    public void setShpAddress(String shpAddress) {
+        this.shpAddress = shpAddress;
     }
 
 }

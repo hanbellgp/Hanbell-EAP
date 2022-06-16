@@ -5,6 +5,7 @@
  */
 package cn.hanbell.costctrl.jrs;
 
+import cn.hanbell.costctrl.app.CheckData;
 import cn.hanbell.costctrl.app.MessageEnum;
 import cn.hanbell.costctrl.app.MCHZGL004;
 import cn.hanbell.costctrl.app.MCHZGL004BizDetail;
@@ -162,7 +163,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             }
 
             String srcno = mc.getSrcno();
-            if (srcno.isEmpty()) {
+            if (srcno == null || srcno.isEmpty()) {
                 code = 107;
                 msg = "来源单号不能为空";
                 return new MCResponseData(code, msg);
@@ -177,15 +178,27 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             }
             List<MCHZGL004BizDetail> detList = mc.getDetailList();
             if (null == detList || detList.isEmpty()) {
-                return new MCResponseData(MessageEnum.Failue_105.getCode(), MessageEnum.Failue_105.getMsg());
+                return new MCResponseData(MessageEnum.Failue_105.getCode(), "缺少明细资料");
             }
             for (MCHZGL004BizDetail d : detList) {
                 if (d.getBizEmployee() == null || "".equals(d.getBizEmployee())) {
-                    return new MCResponseData(MessageEnum.Failue_105.getCode(), MessageEnum.Failue_105.getMsg());
+                    return new MCResponseData(MessageEnum.Failue_105.getCode(), "出差人员不能为空");
                 }
                 if (d.getBizDate() == null || "".equals(d.getBizDate())) {
-                    return new MCResponseData(MessageEnum.Failue_105.getCode(), MessageEnum.Failue_105.getMsg());
+                    return new MCResponseData(MessageEnum.Failue_105.getCode(), "明细出差日期格式错误");
                 }
+                CheckData ch = new CheckData();
+                if (!ch.valiDateFormat(d.getBizDate())) {
+                    code = 107;
+                    msg = "出差日期格式错误";
+                    return new MCResponseData(code, msg);
+                }
+                if (BaseLib.getDate("yyyy/MM/dd", d.getBizDate()).before(BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())))) {
+                    code = 107;
+                    msg = "出差日期不能小于当前日期";
+                    return new MCResponseData(code, msg);
+                }
+
             }
             return new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
         } catch (Exception e) {

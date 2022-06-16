@@ -243,4 +243,10 @@ public class MCHZCW033reDetail {
     public void setRefund(double refund) {
         this.refund = refund;
     }
+
+    @Override
+    public String toString() {
+        return "MCHZCW033reDetail{" + "no=" + no + ", summary=" + summary + ", budgetDept=" + budgetDept + ", deptName=" + deptName + ", notaxes=" + notaxes + ", taxes=" + taxes + ", taxInclusive=" + taxInclusive + ", budgetAcc=" + budgetAcc + ", budgetAccname=" + budgetAccname + ", research=" + research + ", accno=" + accno + ", accName=" + accName + ", accPeriod=" + accPeriod + ", accYear=" + accYear + ", product=" + product + ", entertainObj=" + entertainObj + ", entertainDate=" + entertainDate + ", entertainPeople=" + entertainPeople + ", entertainReason=" + entertainReason + ", centerid=" + centerid + ", loanNo=" + loanNo + ", loanAmount=" + loanAmount + ", applyAmount=" + applyAmount + ", refund=" + refund + ", remark=" + remark + '}';
+    }
+    
 }
