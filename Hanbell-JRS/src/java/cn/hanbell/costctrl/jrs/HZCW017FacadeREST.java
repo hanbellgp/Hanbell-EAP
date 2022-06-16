@@ -74,6 +74,7 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public MCResponseData checkMCHZCW017(MCHZCW017 entity) {
+        log4j.info(entity.getSrcno() + "每刻发起检查：" + entity.toString());
         try {
             MCResponseData rs = new MCResponseData();
             rs = checkBeforeSend(entity);
@@ -90,7 +91,7 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public MCResponseData createOAHZCW017(MCHZCW017 entity) {
-
+        log4j.info(entity.getSrcno() + "每刻发起检查：" + entity.toString());
         try {
             MCResponseData rs = new MCResponseData();
             rs = checkBeforeSend(entity);

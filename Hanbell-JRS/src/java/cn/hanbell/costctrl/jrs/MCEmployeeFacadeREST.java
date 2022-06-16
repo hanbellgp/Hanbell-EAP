@@ -20,7 +20,9 @@ import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.oa.entity.Users;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -52,7 +54,7 @@ public class MCEmployeeFacadeREST extends SuperRESTForEFGP<Users> {
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public MCResponseData findAll(RequestBody entity) {
-        try {
+        try {          
             //判断token 是否有效
             if (entity == null) {
                 return new MCResponseData(MessageEnum.Failue_107.getCode(), MessageEnum.Failue_107.getMsg());

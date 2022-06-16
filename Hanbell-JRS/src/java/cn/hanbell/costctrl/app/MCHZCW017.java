@@ -62,11 +62,6 @@ public class MCHZCW017 extends HmacSha1Signature implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "cn.hanbell.oa.app.MCHZCW017[ id=" + id + " ]";
-    }
-
     public Long getId() {
         return id;
     }
@@ -217,6 +212,11 @@ public class MCHZCW017 extends HmacSha1Signature implements Serializable {
 
     public void setSrcno(String srcno) {
         this.srcno = srcno;
+    }
+
+    @Override
+    public String toString() {
+        return "MCHZCW017{" + "facno=" + facno + ", loanUser=" + loanUser + ", loanDept=" + loanDept + ", loanProperty=" + loanProperty + ", traffic=" + traffic + ", trafficfee=" + trafficfee + ", accommodation=" + accommodation + ", allowance=" + allowance + ", other=" + other + ", entertain=" + entertain + ", coin=" + coin + ", loanTotal=" + loanTotal + ", preAccno=" + preAccno + ", preAccname=" + preAccname + ", prePayDate=" + prePayDate + ", centerid=" + centerid + ", reason=" + reason + ", srcno=" + srcno + '}';
     }
 
 }

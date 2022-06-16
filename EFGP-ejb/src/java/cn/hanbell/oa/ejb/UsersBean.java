@@ -50,9 +50,9 @@ public class UsersBean extends SuperEJBForEFGP<Users> {
         sb.append(" Manager.id as managerId,");
         sb.append("(case when Occupant.leaveDate is  null then 1 else 0 end ) as status ,Functions.isMain ");
         sb.append("from  Users Occupant ");
-        sb.append("left join Functions  on Functions.occupantOID = Occupant.OID ");
-        sb.append("left join OrganizationUnit inner join Organization on OrganizationUnit.organizationOID=Organization.OID  "
-                + "on Functions.organizationUnitOID=OrganizationUnit.OID ");
+        sb.append("inner join Functions  on Functions.occupantOID = Occupant.OID ");
+        sb.append("inner join OrganizationUnit inner join Organization on OrganizationUnit.organizationOID=Organization.OID  "
+                + "on Functions.organizationUnitOID=OrganizationUnit.OID  and OrganizationUnit.validType = '1' ");
         sb.append(" left join Users Manager on Functions.specifiedManagerOID=Manager.OID ");
         if (flag != null && !"".equals(flag)) {
             if ("1".equals(flag)) {
