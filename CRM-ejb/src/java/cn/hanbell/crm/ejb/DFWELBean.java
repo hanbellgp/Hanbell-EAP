@@ -33,5 +33,15 @@ public class DFWELBean extends SuperEJBForCRM<DFWEL> {
             return null;
         }
     }
-   
+
+    public List<DFWEL> findByEl004(String el004) {
+        Query query = getEntityManager().createNamedQuery("DFWEL.findByEl004");
+        query.setParameter("el004", el004); 
+        try {
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 }

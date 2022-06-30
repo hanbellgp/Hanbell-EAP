@@ -36,7 +36,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "DFWEL.findByEl001", query = "SELECT d FROM DFWEL d WHERE d.el001 = :el001"),
     @NamedQuery(name = "DFWEL.findByEl002", query = "SELECT d FROM DFWEL d WHERE d.el002 = :el002"),
     @NamedQuery(name = "DFWEL.findByEl003", query = "SELECT d FROM DFWEL d WHERE d.el003 = :el003"),
-    @NamedQuery(name = "DFWEL.findByEl004", query = "SELECT d FROM DFWEL d WHERE d.el004 = :el004")})
+    @NamedQuery(name = "DFWEL.findByEl004", query = "SELECT d FROM DFWEL d WHERE d.el004 = :el004")
+})
+
 public class DFWEL implements Serializable {
 
     private static final long serialVersionUID = 1L;

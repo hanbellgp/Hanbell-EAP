@@ -118,6 +118,7 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 bq.setBq002(entity.getCustomerCodeId() == null ? "" : entity.getCustomerCodeId());
                 bq.setBq003(entity.getProductTypeId() == null ? "" : entity.getProductTypeId());
                 bq.setBq005(entity.getEmergencyDrgreeId() == null ? "" : entity.getEmergencyDrgreeId());// 紧急度
+                bq.setBq027(entity.getResponsibilitiesId() == null ? "" : entity.getResponsibilitiesId());// 权责
                 List<Object[]> callers = crmggBean.findCaller(entity.getCustomerCodeId());
                 String caller;
                 String callerphone;
@@ -144,12 +145,12 @@ public class SERBQFacadeREST extends SuperRESTForCRM<SERBQ> {
                 Matcher matcher = p.matcher(entity.getReason());
                 String dest = matcher.replaceAll("");
                 bq.setBq024(dest);
-                List<SERBF> serbfs = serbfBean.findByBF002(entity.getEmployeeId());
-                if (serbfs != null && !serbfs.isEmpty()) {
-                    bq.setBq027(serbfs.get(0).getSERBFPK().getBf001());
-                } else {
-                    bq.setBq027("");
-                }
+              //  List<SERBF> serbfs = serbfBean.findByBF002(entity.getEmployeeId());
+              //  if (serbfs != null && !serbfs.isEmpty()) {
+             //       bq.setBq027(serbfs.get(0).getSERBFPK().getBf001());
+              //  } else {
+              //      bq.setBq027("");
+             //   }
                 bq.setBq031("");
                 bq.setBq034("");
                 bq.setBq035("N");
