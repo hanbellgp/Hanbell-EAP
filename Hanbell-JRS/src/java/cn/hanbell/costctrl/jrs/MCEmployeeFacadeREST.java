@@ -20,7 +20,9 @@ import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.oa.entity.Users;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -52,7 +54,7 @@ public class MCEmployeeFacadeREST extends SuperRESTForEFGP<Users> {
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public MCResponseData findAll(RequestBody entity) {
-        try {
+        try {          
             //判断token 是否有效
             if (entity == null) {
                 return new MCResponseData(MessageEnum.Failue_107.getCode(), MessageEnum.Failue_107.getMsg());
@@ -80,7 +82,7 @@ public class MCEmployeeFacadeREST extends SuperRESTForEFGP<Users> {
                 MCEmployee em = new MCEmployee(row[0].toString(), row[1] == null ? "" : row[1].toString(),
                         row[2] == null ? "" : row[2].toString(), row[3] == null ? "" : row[3].toString(),
                         row[4] == null ? "" : row[4].toString(), row[5] == null ? "" : row[5].toString(), row[6] == null ? "" : row[6].toString());
-                if (em.getDeptId().isEmpty() || em.getDeptId().length()<2) {
+                if (em.getDeptId().isEmpty() || em.getDeptId().length() < 2) {
                     em.setCompany("");
                 } else {
                     System.out.print(em.getDeptId());
@@ -94,6 +96,9 @@ public class MCEmployeeFacadeREST extends SuperRESTForEFGP<Users> {
                     em.setPhone("");
                     em.setLevelId("");
                 }
+                //加入是否主部门
+                int isMain = row[7] == null ? 0 : Integer.valueOf(row[7].toString());
+                em.setIsMainDept(isMain);
                 employeeList.add(em);
             }
             int hasMore = 0;

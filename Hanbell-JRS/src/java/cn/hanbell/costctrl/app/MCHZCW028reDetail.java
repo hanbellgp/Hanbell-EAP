@@ -207,4 +207,10 @@ public class MCHZCW028reDetail {
     public void setNo(int no) {
         this.no = no;
     }
+
+    @Override
+    public String toString() {
+        return "MCHZCW028reDetail{" + "no=" + no + ", summary=" + summary + ", budgetDept=" + budgetDept + ", DeptName=" + DeptName + ", notaxes=" + notaxes + ", taxes=" + taxes + ", taxInclusive=" + taxInclusive + ", budgetAcc=" + budgetAcc + ", budgetAccname=" + budgetAccname + ", research=" + research + ", accno=" + accno + ", accName=" + accName + ", accPeriod=" + accPeriod + ", accYear=" + accYear + ", product=" + product + ", entertainObj=" + entertainObj + ", entertainDate=" + entertainDate + ", entertainPeople=" + entertainPeople + ", entertainReason=" + entertainReason + ", centerid=" + centerid + ", remark=" + remark + '}';
+    }
+        
 }

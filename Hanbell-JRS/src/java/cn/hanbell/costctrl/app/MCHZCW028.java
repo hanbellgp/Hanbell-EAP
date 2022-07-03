@@ -34,6 +34,7 @@ public class MCHZCW028 extends HmacSha1Signature {
     private String srcno;
     private List<MCHZCW028reDetail> items;
     private List<MCHZCW028tDetail> travel_items;
+    private List<MCHZCW028attDept> att_depts;
 
     public List<MCHZCW028reDetail> getItems() {
         return items;
@@ -179,4 +180,17 @@ public class MCHZCW028 extends HmacSha1Signature {
         this.appDate = appDate;
     }
 
+    public List<MCHZCW028attDept> getAtt_depts() {
+        return att_depts;
+    }
+
+    public void setAtt_depts(List<MCHZCW028attDept> att_depts) {
+        this.att_depts = att_depts;
+    }
+
+    @Override
+    public String toString() {
+        return "MCHZCW028{" + "facno=" + facno + ", cost=" + cost + ", reimbursement=" + reimbursement + ", appDate=" + appDate + ", appUser=" + appUser + ", appDept=" + appDept + ", crmno=" + crmno + ", crmtype=" + crmtype + ", totaltaxInclusive=" + totaltaxInclusive + ", totalnotaxesRMB=" + totalnotaxesRMB + ", totaltaxesRMB=" + totaltaxesRMB + ", totaltaxInclusiveRMB=" + totaltaxInclusiveRMB + ", coin=" + coin + ", ratio=" + ratio + ", creator=" + creator + ", srcno=" + srcno + ", items=" + items.toString() + ", travel_items=" + travel_items.toString() + '}';
+    }
+    
 }

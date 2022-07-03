@@ -10,8 +10,10 @@ import javax.ws.rs.Path;
 import cn.hanbell.eam.entity.AssetCard;
 import cn.hanbell.eam.ejb.AssetCardBean;
 import cn.hanbell.eam.ejb.EquipmentRepairBean;
+import cn.hanbell.eam.ejb.SysCodeBean;
 import cn.hanbell.eam.entity.AssetItem;
 import cn.hanbell.eam.entity.EquipmentRepair;
+import cn.hanbell.eam.entity.SysCode;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEAM;
 import com.lightshell.comm.SuperEJB;
@@ -44,7 +46,8 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
     private AssetCardBean assetCardBean;
     @EJB
     private EquipmentRepairBean equipmentrepairBean;
-    
+     @EJB
+    private SysCodeBean sysCodeBean;
     protected SuperEJB superEJB;
     
     @Override

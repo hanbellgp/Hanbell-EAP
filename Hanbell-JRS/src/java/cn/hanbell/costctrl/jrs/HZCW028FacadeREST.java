@@ -129,6 +129,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
     @Consumes({"application/json"})
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CheckMCHZCW028(MCHZCW028 entity) {
+        log4j.info(entity.getSrcno() + "每刻发起检查：" + entity.toString());
         MCResponseData rs = new MCResponseData();
         rs = checkBeforeSend(0, entity);
         return rs;
@@ -139,16 +140,17 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
     @Consumes({"application/json"})
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CreateOAHZCWO28(MCHZCW028 entity) {
+        log4j.info(entity.getSrcno() + "每刻发起检查：" + entity.toString());
         try {
             MCResponseData rs = new MCResponseData();
             rs = checkBeforeSend(1, entity);
             if (rs.getCode() != 200) {
                 return rs;
             }
-            //检查申请人是否重复借款
-            if (!hzcw017Bean.checkArrears(entity.getAppUser())) {
-                return new MCResponseData(109, "您有借款未还不能再发起借支申请");
-            }
+            //检查申请人是否重复借款(发起时检核)
+//            if (!hzcw017Bean.checkArrears(entity.getAppUser())) {
+//                return new MCResponseData(109, "您有借款未还不能再发起借支申请");
+//            }
             tran.begin();
             //初始化CRM资料
             if (entity.getCrmno() != null && !entity.getCrmno().isEmpty()) {
@@ -324,6 +326,10 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             if (!mc.checkSign()) {
                 return new MCResponseData(MessageEnum.Failue_102.getCode(), MessageEnum.Failue_102.getMsg());
             }
+            //检查申请人是否重复借款
+            if (!hzcw017Bean.checkArrears(mc.getAppUser())) {
+                return new MCResponseData(109, "您有借款未还不能再发起借支申请");
+            }
             //检查申请日期
             Date date;
             String period;
@@ -346,7 +352,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             double resum = 0.00;    //费用明细合计     
             String cost = mc.getCost();
             String reimbursement = mc.getReimbursement();
-            if (cost.isEmpty() || reimbursement.isEmpty()) {
+            if (cost == null || cost.isEmpty() || reimbursement == null || reimbursement.isEmpty()) {
                 code = 107;
                 msg = "费用类别或销售性质不能为空";
                 return new MCResponseData(code, msg);
@@ -374,24 +380,10 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 return new MCResponseData(code, msg);
             }
             String srcno = mc.getSrcno();
-            if (srcno.isEmpty()) {
+            if (srcno == null || srcno.isEmpty()) {
                 code = 107;
                 msg = "来源单号不能为空";
                 return new MCResponseData(code, msg);
-            }
-            //CRM相关人员CRM单号必填
-            boolean checkStatus = crmUserGroupBean.checkStatus(appUser);
-            if (checkStatus == true) {
-                if (mc.getCrmno() == null || mc.getCrmno().isEmpty()) {
-                    code = 107;
-                    msg = "CRM单号不能为空";
-                    return new MCResponseData(code, msg);
-                }
-                if (mc.getCrmtype() == null || mc.getCrmtype().isEmpty()) {
-                    code = 107;
-                    msg = "CRM单据类型不能为空";
-                    return new MCResponseData(code, msg);
-                }
             }
             List<MCHZCW028reDetail> items = mc.getItems();
             if (items.isEmpty()) {
@@ -453,7 +445,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     return new MCResponseData(code, msg);
                 }
                 String summary = r.getSummary();
-                if (summary.isEmpty()) {
+                if (summary == null || summary.isEmpty()) {
                     code = 107;
                     msg = "摘要不能为空";
                     return new MCResponseData(code, msg);
@@ -461,7 +453,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 switch (budgetAcc) {
                     case "6731":
                     case "6631":
-                        if (r.getEntertainDate().isEmpty() || r.getEntertainObj().isEmpty() || r.getEntertainPeople().isEmpty() || r.getEntertainReason().isEmpty()) {
+                        if (r.getEntertainDate() == null || r.getEntertainDate().isEmpty() || r.getEntertainObj() == null || r.getEntertainObj().isEmpty() || r.getEntertainPeople() == null || r.getEntertainPeople().isEmpty() || r.getEntertainReason() == null || r.getEntertainReason().isEmpty()) {
                             code = 107;
                             msg = "科目为交际费，招待明细必填";
                             return new MCResponseData(code, msg);
@@ -470,6 +462,16 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         if (!ch.valiDateFormat(r.getEntertainDate())) {
                             code = 107;
                             msg = "招待日期格式错误";
+                            return new MCResponseData(code, msg);
+                        }
+                        break;
+                    case "5107":
+                    case "5307":
+                    case "6607":
+                    case "6707":
+                        if (r.getRemark() == null || r.getRemark().isEmpty()) {
+                            code = 107;
+                            msg = "科目为福利费，备注必填";
                             return new MCResponseData(code, msg);
                         }
                         break;
@@ -482,14 +484,16 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         return new MCResponseData(code, msg);
                     }
                 }
-                //检验科目期间余额
-                String accnoValue = "5117;5309;6617;6717;5137;6637;6737;6631;6731;5118;6618;6718;5136;6636;6736";
-                if (accnoValue.contains(budgetAcc) && !facno.equals("Q")) {
-                    double accp = budgetDetailBean.getBudgetBalanceForAccPeriod(facno, date, centerid, budgetAcc);
-                    if (accp <= 0.00) {
-                        code = 110;
-                        msg = "预算科目" + budgetAcc + "期间余额小于零不能申请";
-                        return new MCResponseData(code, msg);
+                //检验科目期间余额,费控发起前检核
+                if (status == 0) {
+                    String accnoValue = "5117;5309;6617;6717;5137;6637;6737;6631;6731;5118;6618;6718;5136;6636;6736";
+                    if (accnoValue.contains(budgetAcc) && !facno.equals("Q")) {
+                        double accp = budgetDetailBean.getBudgetBalanceForAccPeriod(facno, date, centerid, budgetAcc);
+                        if (accp - notaxes < 0.00) {
+                            code = 110;
+                            msg = "预算科目" + budgetAcc + "期间余额小于零不能申请";
+                            return new MCResponseData(code, msg);
+                        }
                     }
                 }
                 //检查报销单明细与费控中间表预扣是否一致
@@ -522,6 +526,20 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     code = 107;
                     msg = "差旅明细不能为空";
                     return new MCResponseData(code, msg);
+                }
+                //CRM相关人员CRM单号必填
+                boolean checkStatus = crmUserGroupBean.checkStatus(appUser);
+                if (checkStatus == true) {
+                    if (mc.getCrmno() == null || mc.getCrmno().isEmpty()) {
+                        code = 107;
+                        msg = "CRM单号不能为空";
+                        return new MCResponseData(code, msg);
+                    }
+                    if (mc.getCrmtype() == null || mc.getCrmtype().isEmpty()) {
+                        code = 107;
+                        msg = "CRM单据类型不能为空";
+                        return new MCResponseData(code, msg);
+                    }
                 }
                 double tdssum2 = 0.00;
                 for (MCHZCW028tDetail t : travels) {
@@ -563,17 +581,19 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 }
                 if (tdssum != tdssum2) {
                     code = 107;
-                    msg = "差旅金额小计与差旅费科目金额不一致";
+                    msg = "差旅金额小计：" + tdssum2 + "与差旅费科目金额:" + tdssum + "不一致";
                     return new MCResponseData(code, msg);
                 }
             }
             //检验部门期间余额
-            BudgetCenter budgetCenter = budgetCenterBean.findByDeptid(mc.getAppDept());
-            double depp = budgetDetailBean.getBudgetBalanceForDeptPeriod(facno, date, budgetCenter.getBudgetCenterPK().getCenterid());
-            if (depp <= 0.00) {
-                code = 110;
-                msg = "部门期间余额小于零不能申请";
-                return new MCResponseData(code, msg);
+            if (status == 0) {
+                BudgetCenter budgetCenter = budgetCenterBean.findByDeptid(mc.getAppDept());
+                double depp = budgetDetailBean.getBudgetBalanceForDeptPeriod(facno, date, budgetCenter.getBudgetCenterPK().getCenterid());
+                if (depp < mc.getTotaltaxInclusive()) {
+                    code = 110;
+                    msg = "部门期间余额小于零不能申请";
+                    return new MCResponseData(code, msg);
+                }
             }
             /**
              * 预算中间表检查是否发起过 status =0 预算新增前检查，status=1 预算新增后发起OA检查
@@ -793,8 +813,8 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         pz.setMz007(f.getSALFTPK().getFt002());
                         pz.setMz008(my003);
                         pz.setMz009(f.getFt007());
-                        pz.setMz010(py.getMy006());
-                        pz.setMz011(py.getMy032());
+                        pz.setMz010(mc.getCoin());  //币别
+                        pz.setMz011(BigDecimal.valueOf(mc.getRatio()));    //汇率
                         pz.setMz016(f.getFt006());
                         pz.setMz017(f.getFt006());
                         pz.setMz018(f.getFt006());
@@ -875,7 +895,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         rep.setLc025(lc025);
                         rep.setLc030(reptc.getTc069());
                         rep.setLc031(reptc.getTc070());
-                        rep.setLc030(reptc.getTc016());
+                        rep.setLc032(reptc.getTc016());
                         replcList.add(rep);
                     }
                     if (t.getTrafficfee() > 0) {
@@ -889,7 +909,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         DecimalFormat decimalFormat = new DecimalFormat("0000");
                         String lc003 = decimalFormat.format(seq);
                         rep.setREPLCPK(new REPLCPK(crmtype, crmno, lc003));
-                        rep.setLc004("3C002");//出租车费
+                        rep.setLc004("3C002");//其他交通费
                         rep.setLc005(BigDecimal.valueOf(t.getTrafficfee()));
                         rep.setLc006(BigDecimal.ONE);
                         rep.setLc007(BigDecimal.valueOf(t.getTrafficfee()));
@@ -903,7 +923,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         rep.setLc025(lc025);
                         rep.setLc030(reptc.getTc069());
                         rep.setLc031(reptc.getTc070());
-                        rep.setLc030(reptc.getTc016());
+                        rep.setLc032(reptc.getTc016());
                         replcList.add(rep);
                     }
                     if (t.getAllowance() > 0) {
@@ -917,7 +937,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         DecimalFormat decimalFormat = new DecimalFormat("0000");
                         String lc003 = decimalFormat.format(seq);
                         rep.setREPLCPK(new REPLCPK(crmtype, crmno, lc003));
-                        rep.setLc004("3C003");//出租车费
+                        rep.setLc004("3C003");//出差补贴
                         rep.setLc005(BigDecimal.valueOf(t.getAllowance()));
                         rep.setLc006(BigDecimal.ONE);
                         rep.setLc007(BigDecimal.valueOf(t.getAllowance()));
@@ -931,7 +951,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         rep.setLc025(lc025);
                         rep.setLc030(reptc.getTc069());
                         rep.setLc031(reptc.getTc070());
-                        rep.setLc030(reptc.getTc016());
+                        rep.setLc032(reptc.getTc016());
                         replcList.add(rep);
                     }
                     if (t.getAccommodation() > 0) {
@@ -945,7 +965,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         DecimalFormat decimalFormat = new DecimalFormat("0000");
                         String lc003 = decimalFormat.format(seq);
                         rep.setREPLCPK(new REPLCPK(crmtype, crmno, lc003));
-                        rep.setLc004("3C003");//出租车费
+                        rep.setLc004("3C005");//住宿费
                         rep.setLc005(BigDecimal.valueOf(t.getAllowance()));
                         rep.setLc006(BigDecimal.ONE);
                         rep.setLc007(BigDecimal.valueOf(t.getAllowance()));
@@ -959,7 +979,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         rep.setLc025(lc025);
                         rep.setLc030(reptc.getTc069());
                         rep.setLc031(reptc.getTc070());
-                        rep.setLc030(reptc.getTc016());
+                        rep.setLc032(reptc.getTc016());
                         replcList.add(rep);
                     }
                 }
@@ -1038,8 +1058,8 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     pz.setMz007(r.getREPLCPK().getLc003());
                     pz.setMz008(my003);
                     pz.setMz009(r.getLc004());
-                    pz.setMz010(py.getMy006());
-                    pz.setMz011(py.getMy032());
+                    pz.setMz010(r.getLc030());    //币别
+                    pz.setMz011(r.getLc031());    //汇率
                     pz.setMz016(r.getLc007());
                     pz.setMz017(r.getLc007());
                     pz.setMz018(r.getLc007());
@@ -1067,7 +1087,8 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 py.setMy009("Y");
                 py.setMy010(py.getCreator());
                 py.setMy011(my003);
-                py.setMy025("");//费控单号
+                py.setMy024(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                py.setMy025(mc.getSrcno());//费控单号
                 py.setMy032(BigDecimal.valueOf(mc.getRatio()));
                 py.setMy033(total);//原币总金额
                 pormyBean.persist(py);

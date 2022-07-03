@@ -57,8 +57,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrbrdta.findByAsrsUser", query = "SELECT c FROM Cdrbrdta c WHERE c.asrsUser = :asrsUser"),
     @NamedQuery(name = "Cdrbrdta.findByAsrsDmark", query = "SELECT c FROM Cdrbrdta c WHERE c.asrsDmark = :asrsDmark"),
     @NamedQuery(name = "Cdrbrdta.findByAsrsSta", query = "SELECT c FROM Cdrbrdta c WHERE c.asrsSta = :asrsSta"),
-    @NamedQuery(name = "Cdrbrdta.findByPohzfwd", query = "SELECT c FROM Cdrbrdta c WHERE c.pohzfwd = :pohzfwd"),
-    @NamedQuery(name = "Cdrbrdta.findByMarkdesc", query = "SELECT c FROM Cdrbrdta c WHERE c.markdesc = :markdesc")})
+    @NamedQuery(name = "Cdrbrdta.findByPohzfwd", query = "SELECT c FROM Cdrbrdta c WHERE c.pohzfwd = :pohzfwd")})
 public class Cdrbrdta implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -127,9 +126,6 @@ public class Cdrbrdta implements Serializable {
     @Size(max = 2)
     @Column(name = "pohzfwd")
     private String pohzfwd;
-    @Size(max = 60)
-    @Column(name = "markdesc")
-    private String markdesc;
     @JoinColumns({
         @JoinColumn(name = "facno", referencedColumnName = "facno", insertable = false, updatable = false),
         @JoinColumn(name = "brtrno", referencedColumnName = "brtrno", insertable = false, updatable = false)})
@@ -334,14 +330,6 @@ public class Cdrbrdta implements Serializable {
 
     public void setPohzfwd(String pohzfwd) {
         this.pohzfwd = pohzfwd;
-    }
-
-    public String getMarkdesc() {
-        return markdesc;
-    }
-
-    public void setMarkdesc(String markdesc) {
-        this.markdesc = markdesc;
     }
 
     public Cdrbrhad getCdrbrhad() {

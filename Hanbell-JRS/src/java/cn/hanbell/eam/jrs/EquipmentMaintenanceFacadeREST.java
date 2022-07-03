@@ -44,22 +44,22 @@ import org.json.JSONObject;
 public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAnalyResult> {
     @EJB
     private EquipmentAnalyResultBean equipmentAnalyResultBean;
-    
+
     @EJB
     private EquipmentAnalyResultDtaBean equipmentAnalyResultDtaBean;
-    
+
     protected SuperEJB superEJB;
-    
+
     @Override
     protected SuperEJB getSuperEJB() {
         return equipmentAnalyResultBean;
     }
-    
+
 
     public EquipmentMaintenanceFacadeREST() {
         super(EquipmentAnalyResult.class);
     }
-    
+
     @GET
     @Path("autonomous-maintain-tasks/{filters}/{sorts}/{offset}/{pageSize}")
     @Consumes({"application/json"})
@@ -76,12 +76,12 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
-                return autoMaintainDocListRes;
+            return autoMaintainDocListRes;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     @GET
     @Path("autonomous-maintain-detailinfo/{filters}/{sorts}/{offset}/{pageSize}")
     @Consumes({"application/json"})
@@ -94,7 +94,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             List<EquipmentAnalyResultDta> autoMaintainDetailList = new ArrayList<>();
             try {
                 Map<String, Object> filterFields = getFilterFieldsMap(filters);
-                
+
                 autoMaintainInfo = equipmentAnalyResultBean.findById(Integer.parseInt(filterFields.get("docId").toString()));
                 if(autoMaintainInfo != null){
                     Map<String, Object> filterFields_detail = new HashMap<>();
@@ -108,7 +108,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
-                return initDtaRes;
+            return initDtaRes;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
@@ -151,7 +151,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                     }
                     autoMaintainDetail.setException(jsonObject.getString("exception"));
                     autoMaintainDetail.setProblemsolve(jsonObject.getString("problemSolve"));
-                    
+
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd  HH:mm");
                     dateStrTemp = jsonObject.getString("sDate");
                     if(dateStrTemp != null && !dateStrTemp.isEmpty()){
@@ -166,11 +166,11 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                         autoMaintainDetail.setEdate(sdf.parse(dateStrTemp));
                     }
                 }
-                
+
                 //先刷新容器更新数据库
                 equipmentAnalyResultDtaBean.getEntityManager().flush();
                 equipmentAnalyResultDtaBean.getEntityManager().clear ();
-                
+
                 //遍历表身判断单据是否已经完成
                 List<EquipmentAnalyResultDta> analyResultDtaList =  equipmentAnalyResultDtaBean.findByPId(autoMaintainInfo.getFormid());
                 for(EquipmentAnalyResultDta dtaObj : analyResultDtaList){
@@ -178,20 +178,21 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                         completeFlag = false;
                     }
                 }
-                
-                if(completeFlag){
+
+                if (completeFlag) {
                     autoMaintainInfo.setAnalysisresult(mainResultTemp);
                     autoMaintainInfo.setEnddate(new Date());
                     autoMaintainInfo.setStatus("V");
-                }
-                else if(startFlag && autoMaintainInfo.getStatus().equals("N")){
+                } else if (startFlag && autoMaintainInfo.getStatus().equals("N")) {
                     autoMaintainInfo.setStatus("S");
                 }
-                autoMaintainInfo.setStartdate(minOptDate);
+                if (autoMaintainInfo.getStartdate() == null) {//只有开始时间为空时更新开始时间
+                    autoMaintainInfo.setStartdate(minOptDate);
+                }
                 autoMaintainInfo.setOptdate(new Date());
                 autoMaintainInfo.setOptuser(entity.getOptuser());
                 equipmentAnalyResultBean.update(autoMaintainInfo);
-                
+
                 return new ResponseMessage("200", "状态更新成功");
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误Update失败");
@@ -200,7 +201,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     @POST
     @Path("autonomous-maintain-dispatch")
     @Consumes({"application/json"})
@@ -220,21 +221,21 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                 JSONArray jsonArray = new JSONArray(entity.getStatus());
                 JSONArray eqpMaintainDetailList_jsonArray = jsonArray.getJSONArray(0);
                 String resultStrTemp = "";
-                for(Object obj : eqpMaintainDetailList_jsonArray){
+                for (Object obj : eqpMaintainDetailList_jsonArray) {
                     JSONObject jsonObject = (JSONObject) obj;
                     autoMaintainDetail = equipmentAnalyResultDtaBean.findById(jsonObject.getInt("Id"));
                     resultStrTemp = jsonObject.getString("result");
                     //已经完成的不能派工
-                    if(resultStrTemp.equals("正常") || resultStrTemp.equals("异常")){
+                    if (resultStrTemp.equals("正常") || resultStrTemp.equals("异常")) {
                         continue;
                     }
                     autoMaintainDetail.setAnalysisuser(jsonObject.getString("analysisUser"));
                     autoMaintainDetail.setLastanalysisuser(jsonObject.getString("analysisUserName"));
                 }
-                
+
                 autoMaintainInfo.setOptdate(new Date());
                 autoMaintainInfo.setOptuser(entity.getOptuser());
-                
+
                 return new ResponseMessage("200", "状态更新成功");
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误Update失败");
@@ -243,7 +244,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     private HashMap getFilterFieldsMap(PathSegment filters) {
         try {
             MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();

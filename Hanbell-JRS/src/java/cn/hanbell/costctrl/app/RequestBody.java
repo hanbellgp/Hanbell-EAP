@@ -152,4 +152,9 @@ public class RequestBody extends HmacSha1Signature {
         this.accName = accName;
     }
 
+    @Override
+    public String toString() {
+        return "RequestBody{" + "facno=" + facno + ", deptId=" + deptId + ", deptName=" + deptName + ", centerId=" + centerId + ", page_index=" + page_index + ", page_size=" + page_size + ", flag=" + flag + ", userId=" + userId + ", budgetAcc=" + budgetAcc + ", accName=" + accName + '}';
+    }
+     
 }
