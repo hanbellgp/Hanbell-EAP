@@ -28,7 +28,7 @@ public class SERACBean extends SuperEJBForCRM<SERAC> {
     }
 
     public List<Object[]> findProblemType(String BQ003_value,String AK003) {
-        Query query = getEntityManager().createNativeQuery("Select AK002,AK003,AK006,AC002 FROM SERAC, SERAK WHERE AK013 <> 'Y'  AND AK001=? AND AK006 = AC001 And AK003 like ?");
+        Query query = getEntityManager().createNativeQuery("Select AK002,AK003,AK006,AC002,AK008 FROM SERAC, SERAK WHERE AK013 <> 'Y'  AND AK001=? AND AK006 = AC001 And AK003 like ?");
         query.setParameter(1, BQ003_value);
         query.setParameter(2, new StringBuffer("%").append(AK003).append("%").toString());
         try {

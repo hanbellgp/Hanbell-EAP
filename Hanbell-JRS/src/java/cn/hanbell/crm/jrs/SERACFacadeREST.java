@@ -69,6 +69,7 @@ public class SERACFacadeREST extends SuperRESTForCRM<SERAC> {
                 js.put("value", list.get(i)[1]);
                 js.put("value1", list.get(i)[2]);//紧急度
                 js.put("value2", list.get(i)[3]);//紧急度名称
+                js.put("value3", list.get(i)[4]);//权责
                 objs.add(js);
             }
             ResponseData responseData = new ResponseData("200", "seccess");

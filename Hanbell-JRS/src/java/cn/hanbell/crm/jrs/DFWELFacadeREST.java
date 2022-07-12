@@ -44,7 +44,7 @@ public class DFWELFacadeREST extends SuperRESTForCRM<DFWEL> {
 
     
     /**
-     * 产普别选择
+     * 产品别选择
      * 
      * @param appid
      * @param token
@@ -55,7 +55,7 @@ public class DFWELFacadeREST extends SuperRESTForCRM<DFWEL> {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseData<DFWEL> findProduct(@QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
-            List<DFWEL> list = dfwelBean.findAll();
+            List<DFWEL> list = dfwelBean.findByEl004("N");
             if (list == null) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
