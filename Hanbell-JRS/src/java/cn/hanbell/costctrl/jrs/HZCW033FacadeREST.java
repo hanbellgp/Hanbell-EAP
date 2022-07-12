@@ -125,7 +125,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
     @Consumes({"application/json"})
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CheckMCHZCW033(MCHZCW033 entity) {
-        log4j.info(entity.getSrcno() + "每刻发起检查：" + entity.toString());
+        log4j.info(entity.getSrcno() + "每刻发起借支归还单检查：" + entity.toString());
         MCResponseData rs = new MCResponseData();
         rs = checkBeforeSend(0, entity);
         return rs;
@@ -136,7 +136,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
     @Consumes({"application/json"})
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CreateOAHZCWO33(MCHZCW033 entity) {
-        log4j.info(entity.getSrcno() + "每刻发起检查：" + entity.toString());
+        log4j.info(entity.getSrcno() + "每刻发起借支归还单检查：" + entity.toString());
         UserTransaction tran = null;
         try {
             InitialContext context = new InitialContext();

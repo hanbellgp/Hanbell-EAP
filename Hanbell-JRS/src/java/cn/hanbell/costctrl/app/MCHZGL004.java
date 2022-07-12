@@ -173,4 +173,9 @@ public class MCHZGL004 extends HmacSha1Signature {
         this.facno = facno;
     }
 
+    @Override
+    public String toString() {
+        return "MCHZGL004{" + "facno=" + facno + ", applyUser=" + applyUser + ", applyDept=" + applyDept + ", formType=" + formType + ", vehicle=" + vehicle + ", destination=" + destination + ", startDate=" + startDate + ", endDate=" + endDate + ", days=" + days + ", srcno=" + srcno + ", detailList=" + detailList.toString() + '}';
+    }
+    
 }
