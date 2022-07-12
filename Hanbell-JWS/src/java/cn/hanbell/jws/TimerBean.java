@@ -1452,7 +1452,8 @@ public class TimerBean {
                                 dm.setDmark("");
                             } else {
                                 dm.setDmark(d.getDmark());
-                            }
+                            }                            
+                            dm.setBudgetacc(d.getBudgetacc());
                             detailList.add(dm);
                         }
                         workFlowBean.initUserInfo(h.getCfmusrno());

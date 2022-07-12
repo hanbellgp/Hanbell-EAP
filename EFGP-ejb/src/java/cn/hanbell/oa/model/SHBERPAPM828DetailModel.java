@@ -23,6 +23,7 @@ public class SHBERPAPM828DetailModel implements Serializable {
     private BigDecimal apamtfs;
     private BigDecimal apamt;
     private String dmark;
+    private String budgetacc;
 
     public SHBERPAPM828DetailModel() {
         this.apamtfs = BigDecimal.ZERO;
@@ -103,6 +104,14 @@ public class SHBERPAPM828DetailModel implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.SHBERPAPM828DetailModel";
+    }
+
+    public String getBudgetacc() {
+        return budgetacc;
+    }
+
+    public void setBudgetacc(String budgetacc) {
+        this.budgetacc = budgetacc;
     }
 
 }

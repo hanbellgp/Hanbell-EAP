@@ -139,4 +139,9 @@ public class MCHZGL004BizDetail {
         this.bizContent = bizContent;
     }
 
+    @Override
+    public String toString() {
+        return "MCHZGL004BizDetail{" + "bizEmployee=" + bizEmployee + ", bizEmployeeName=" + bizEmployeeName + ", bizDate=" + bizDate + ", bizTime1=" + bizTime1 + ", bizTime2=" + bizTime2 + ", bizObject=" + bizObject + ", bizAddress=" + bizAddress + ", bizContent=" + bizContent + '}';
+    }
+
 }

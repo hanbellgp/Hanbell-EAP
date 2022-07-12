@@ -129,7 +129,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
     @Consumes({"application/json"})
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CheckMCHZCW028(MCHZCW028 entity) {
-        log4j.info(entity.getSrcno() + "每刻发起检查：" + entity.toString());
+        log4j.info(entity.getSrcno() + "每刻发起报销单检查：" + entity.toString());
         MCResponseData rs = new MCResponseData();
         rs = checkBeforeSend(0, entity);
         return rs;
@@ -140,7 +140,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
     @Consumes({"application/json"})
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CreateOAHZCWO28(MCHZCW028 entity) {
-        log4j.info(entity.getSrcno() + "每刻发起检查：" + entity.toString());
+        log4j.info(entity.getSrcno() + "每刻发起报销单检查：" + entity.toString());
         try {
             MCResponseData rs = new MCResponseData();
             rs = checkBeforeSend(1, entity);
@@ -520,8 +520,8 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     return new MCResponseData(code, msg);
                 }
             }
+            List<MCHZCW028tDetail> travels = mc.getTravel_items();
             if (("0".equals(cost) || "1".equals(cost))) {
-                List<MCHZCW028tDetail> travels = mc.getTravel_items();
                 if (travels == null || travels.isEmpty()) {
                     code = 107;
                     msg = "差旅明细不能为空";
@@ -541,6 +541,8 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         return new MCResponseData(code, msg);
                     }
                 }
+            }
+            if (travels != null && travels.size() > 0) {
                 double tdssum2 = 0.00;
                 for (MCHZCW028tDetail t : travels) {
                     CheckData ch = new CheckData();
@@ -665,7 +667,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                             DecimalFormat decimalFormat = new DecimalFormat("0000000000");
                             String fi002 = decimalFormat.format(seq);
                             sal.setSALFTPK(new SALFTPK(crmno, fi002));
-                            sal.setFt003(sal.getCreator());
+                            sal.setFt003(salfi.getFi004());
                             String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
                             sal.setFt004(ft004);
                             sal.setFt005("");//目的
@@ -690,7 +692,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                             DecimalFormat decimalFormat = new DecimalFormat("0000000000");
                             String fi002 = decimalFormat.format(seq);
                             sal.setSALFTPK(new SALFTPK(crmno, fi002));
-                            sal.setFt003(sal.getCreator());
+                            sal.setFt003(salfi.getFi004());
                             String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
                             sal.setFt004(ft004);
                             sal.setFt005("");//目的
@@ -715,7 +717,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                             DecimalFormat decimalFormat = new DecimalFormat("0000000000");
                             String fi002 = decimalFormat.format(seq);
                             sal.setSALFTPK(new SALFTPK(crmno, fi002));
-                            sal.setFt003(sal.getCreator());
+                            sal.setFt003(salfi.getFi004());
                             String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
                             sal.setFt004(ft004);
                             sal.setFt005("");//目的
@@ -740,7 +742,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                             DecimalFormat decimalFormat = new DecimalFormat("0000000000");
                             String fi002 = decimalFormat.format(seq);
                             sal.setSALFTPK(new SALFTPK(crmno, fi002));
-                            sal.setFt003(sal.getCreator());
+                            sal.setFt003(salfi.getFi004());
                             String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8, 10);
                             sal.setFt004(ft004);
                             sal.setFt005("");//目的
@@ -769,9 +771,11 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                             DecimalFormat decimalFormat = new DecimalFormat("0000000000");
                             String fi002 = decimalFormat.format(seq);
                             sal.setSALFTPK(new SALFTPK(crmno, fi002));
-                            sal.setFt003(sal.getCreator());
-                            //String ft004 = t.getTrafficDate().substring(0, 4) + t.getTrafficDate().substring(5, 7) + t.getTrafficDate().substring(8,10);
-                            //sal.setFt004(ft004);
+                            sal.setFt003(salfi.getFi004());
+                            if (re.getBudgetAcc().equals("6631")) {
+                                String ft004 = re.getEntertainDate().substring(0, 4) + re.getEntertainDate().substring(5, 7) + re.getEntertainDate().substring(8, 10);
+                                sal.setFt004(ft004);
+                            }
                             sal.setFt005("");//目的
                             sal.setFt006(BigDecimal.valueOf(re.getTaxInclusive()));
                             sal.setFt007(re.getBudgetAcc());
