@@ -129,6 +129,12 @@ import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.erp.entity.Puracd;
 import cn.hanbell.erp.entity.Purach;
 import cn.hanbell.erp.entity.Purhask;
+import cn.hanbell.kpi.ejb.ScorecardAuditorBean;
+import cn.hanbell.kpi.ejb.ScorecardBean;
+import cn.hanbell.kpi.ejb.ScorecardDetailBean;
+import cn.hanbell.kpi.entity.Scorecard;
+import cn.hanbell.kpi.entity.ScorecardAuditor;
+import cn.hanbell.kpi.entity.ScorecardDetail;
 import cn.hanbell.oa.ejb.HKCG007Bean;
 import cn.hanbell.oa.ejb.HKCG011Bean;
 import cn.hanbell.oa.ejb.HKCG016Bean;
@@ -153,6 +159,7 @@ import cn.hanbell.oa.ejb.HKGL004Bean;
 import cn.hanbell.oa.ejb.HKGL031Bean;
 import cn.hanbell.oa.ejb.HKGL034Bean;
 import cn.hanbell.oa.ejb.HKGL034DetailBean;
+import cn.hanbell.oa.ejb.HKGl076Bean;
 import cn.hanbell.oa.ejb.HKJH005Bean;
 import cn.hanbell.oa.ejb.HKJH006Bean;
 import cn.hanbell.oa.ejb.HKXQB001Bean;
@@ -184,6 +191,11 @@ import cn.hanbell.oa.entity.HKGL034;
 import cn.hanbell.oa.entity.HKGL034Detail;
 import cn.hanbell.oa.entity.HKGL060;
 import cn.hanbell.oa.entity.HKGL060Detail;
+import cn.hanbell.oa.entity.HKGL076;
+import cn.hanbell.oa.entity.HKGL076DetailQ1;
+import cn.hanbell.oa.entity.HKGL076DetailQ2;
+import cn.hanbell.oa.entity.HKGL076DetailQ3;
+import cn.hanbell.oa.entity.HKGL076DetailQ4;
 import cn.hanbell.oa.entity.HKXQB001;
 import cn.hanbell.oa.entity.HSPB015;
 import cn.hanbell.oa.entity.HZCW034;
@@ -390,6 +402,8 @@ public class EAPWebService {
     private HKJH005Bean hkjh005Bean;
     @EJB
     private HKYX014Bean hkyx014Bean;
+    @EJB
+    private HKGl076Bean hkgl076Bean;
 
     // EJBForERP
     @EJB
@@ -472,6 +486,14 @@ public class EAPWebService {
     // EJBForWCO
     @EJB
     private Agent1000002Bean agent1000002Bean;
+
+    // EJBForKPI
+    @EJB
+    ScorecardAuditorBean scorecardAuditorBean;
+    @EJB
+    private ScorecardDetailBean scorecardDetailBean;
+    @EJB
+    ScorecardBean scorecarBean;
 
     /**
      * This is a sample web service operation
@@ -4087,6 +4109,131 @@ public class EAPWebService {
             return "200";
         } else {
             return "400";
+        }
+    }
+
+    @WebMethod(operationName = "updateKPISCORECARDAUDITORByHKGL076")
+    public String updateKPISCORECARDAUDITORByHKGL076(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+        Boolean ret = false;
+        try {
+            HKGL076 hkgl076 = hkgl076Bean.findByPSN(psn);
+            if (hkgl076 == null) {
+                throw new NullPointerException("updateECNGByOAHKCG019找不到流程序号:" + psn);
+            }
+            //删除所有审核人员直接返回
+            int quarter = Integer.valueOf(hkgl076.getAssessmentQuarter().substring(1));
+            List<ScorecardAuditor> deleteList = scorecardAuditorBean.findByPId(Integer.valueOf(hkgl076.getScoreCord()));
+            for (ScorecardAuditor entity : deleteList) {
+                if (entity.getQuarter() == quarter) {
+                    scorecardAuditorBean.delete(entity);
+                }
+            }
+            //流程撤销或终止，删除所有审核人员后直接返回！
+            if ("1".equals(status)) {
+                Scorecard sc = scorecarBean.findById(Integer.valueOf(hkgl076.getScoreCord()));
+                if (quarter == 1) {
+                    sc.setOastatus1("V");
+                    sc.setOapsn1("");
+                } else if (quarter == 2) {
+                    sc.setOastatus1("V");
+                    sc.setOapsn1("");
+                } else if (quarter == 3) {
+                    sc.setOastatus1("V");
+                    sc.setOapsn1("");
+                } else if (quarter == 4) {
+                    sc.setOastatus1("V");
+                    sc.setOapsn1("");
+                }
+                scorecarBean.update(sc);
+                return "200";
+            } else {
+                //先更新数据
+                switch (quarter) {
+                    case 1://第一季度
+                        List<HKGL076DetailQ1> q1List = hkgl076Bean.getQ1Detail(hkgl076.getFormSerialNumber());
+                        for (HKGL076DetailQ1 q1entity : q1List) {
+                            ScorecardDetail sc = scorecardDetailBean.findByPidAndContent(Integer.valueOf(hkgl076.getScoreCord()), q1entity.getContent1());
+                            System.out.println(q1entity.getContent1());
+                            sc.setAq1(scorecardDetailBean.formatEAPEnt(q1entity.getActualValueQ1()));
+                            sc.setPq1(BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q1entity.getAchievementRateQ1()))));
+                            sc.getDeptScore().setQ1(scorecardDetailBean.formatEAPEnt(q1entity.getExplanation1()));
+                            sc.getDeptScore().setSq1(BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q1entity.getScoreQ1()))));
+                            scorecardDetailBean.update(sc);
+                        }
+                        break;
+                    case 2://第二季度
+                        List<HKGL076DetailQ2> q2List = hkgl076Bean.getQ2Detail(hkgl076.getFormSerialNumber());
+                        for (HKGL076DetailQ2 q2entity : q2List) {
+                            ScorecardDetail sc = scorecardDetailBean.findByPidAndContent(Integer.valueOf(hkgl076.getScoreCord()), q2entity.getContent2());
+                            sc.setAq2(scorecardDetailBean.formatEAPEnt(q2entity.getActualValueQ2()));
+                            sc.setPq2(BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q2entity.getAchievementRateQ2()))));
+                            sc.getDeptScore().setQ2(scorecardDetailBean.formatEAPEnt(q2entity.getExplanation2()));
+                            sc.getDeptScore().setSq2(BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q2entity.getScoreQ2()))));
+                            sc.setAh1(scorecardDetailBean.formatEAPEnt(q2entity.getActualValueHalfYear()));
+                            sc.setPh1(BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q2entity.getAchievementRateHalfYear()))));
+                            sc.getDeptScore().setSh1(BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q2entity.getScoreHalfYear()))));
+                            scorecardDetailBean.update(sc);
+                        }
+                        break;
+                    case 3://第三季度
+                        List<HKGL076DetailQ3> q3List = hkgl076Bean.getQ3Detail(hkgl076.getFormSerialNumber());
+                        for (HKGL076DetailQ3 q3entity : q3List) {
+                            ScorecardDetail sc = scorecardDetailBean.findByPidAndContent(Integer.valueOf(hkgl076.getScoreCord()), q3entity.getContent3());
+                            sc.setAq3(scorecardDetailBean.formatEAPEnt(q3entity.getActualValueQ3()));
+                            sc.setPq3(BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q3entity.getAchievementRateQ3()))));
+                            sc.getDeptScore().setQ3(scorecardDetailBean.formatEAPEnt(q3entity.getExplanation3()));
+                            sc.getDeptScore().setSq3(BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q3entity.getScoreQ3()))));
+                            scorecardDetailBean.update(sc);
+                        }
+                        break;
+                    case 4://第四季度
+                        List<HKGL076DetailQ4> q4List = hkgl076Bean.getQ4Detail(hkgl076.getFormSerialNumber());
+                        for (HKGL076DetailQ4 q4entity : q4List) {
+                            ScorecardDetail sc = scorecardDetailBean.findByPidAndContent(Integer.valueOf(hkgl076.getScoreCord()), q4entity.getContent4());
+                            sc.setAq4(scorecardDetailBean.formatEAPEnt(q4entity.getActualValueQ4()));
+                            sc.setPq4(q4entity.getAchievementRateQ4() == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q4entity.getAchievementRateQ4()))));
+                            sc.getDeptScore().setQ4(scorecardDetailBean.formatEAPEnt(q4entity.getExplanation4()));
+                            sc.getDeptScore().setSq4(q4entity.getScoreQ4() == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q4entity.getScoreQ4()))));
+                            sc.setAfy(scorecardDetailBean.formatEAPEnt(q4entity.getActualValueYear()));
+                            sc.setPfy(q4entity.getAchievementRateYear() == null ? BigDecimal.ZERO : BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q4entity.getAchievementRateYear()))));
+                            sc.getDeptScore().setSfy(BigDecimal.valueOf(Double.valueOf(scorecardDetailBean.formatEAPEnt(q4entity.getScoreYear()))));
+
+                            scorecardDetailBean.update(sc);
+                        }
+                        break;
+                }
+                //再更新流程关卡人
+                List<WorkItem> wiList = processInstanceBean.getWorkItemListBySerialNumber(psn);
+                for (WorkItem entity : wiList) {
+                    if (!"申请人".equals(entity.getWorkItemName())) {
+                        Users user = usersBean.findByOID(entity.getPerformerOID());
+                        if (user != null) {
+                            ScorecardAuditor sc = new ScorecardAuditor();
+                            sc.setPid(Integer.valueOf(hkgl076.getScoreCord()));
+                            sc.setAuditorId(user.getId());
+                            sc.setAuditorName(user.getUserName());
+                            sc.setSeq(Integer.valueOf(hkgl076.getAssessmentYear()));
+                            sc.setQuarter(quarter);
+                            scorecardAuditorBean.persist(sc);
+                        }
+                    }
+                }
+                Scorecard sc = scorecarBean.findById(Integer.valueOf(hkgl076.getScoreCord()));
+                if (quarter == 1) {
+                    sc.setOastatus1("V");
+                } else if (quarter == 2) {
+                    sc.setOastatus1("V");
+                } else if (quarter == 3) {
+                    sc.setOastatus1("V");
+                } else if (quarter == 4) {
+                    sc.setOastatus1("V");
+                }
+                scorecarBean.update(sc);
+                return "200";
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "404";
         }
     }
 }

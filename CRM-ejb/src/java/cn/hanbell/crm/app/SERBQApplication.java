@@ -54,7 +54,9 @@ public class SERBQApplication implements Serializable {
     private String sessionkey;
     private String openId;
     private String productTypeId;
+    private String responsibilitiesId;
     private List<SERBQDETAILLApplication> sercadetails;
+   
 
     @Override
     public int hashCode() {
@@ -231,6 +233,14 @@ public class SERBQApplication implements Serializable {
     public void setEmergencyDrgreeId(String emergencyDrgreeId) {
         this.emergencyDrgreeId = emergencyDrgreeId;
     }
+    
+        public String getResponsibilitiesId() {
+        return responsibilitiesId;
+    }
+     
+      public void setResponsibilitiesId(String responsibilitiesId) {
+        this.responsibilitiesId = responsibilitiesId;
+    }
 
     public String getProblemTypeId() {
         return problemTypeId;
@@ -343,5 +353,7 @@ public class SERBQApplication implements Serializable {
     public void setProblemTypeName(String problemTypeName) {
         this.problemTypeName = problemTypeName;
     }
+    
+ 
 
 }

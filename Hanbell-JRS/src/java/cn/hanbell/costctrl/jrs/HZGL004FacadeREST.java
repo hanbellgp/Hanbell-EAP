@@ -59,8 +59,9 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
     @Path("check")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public MCResponseData checkMCHZCW017(MCHZGL004 entity) {
+    public MCResponseData checkMCHZGL004(MCHZGL004 entity) {
         try {
+            log4j.info(entity.getSrcno() + "每刻发起出差单检查：" + entity.toString());
             MCResponseData rs = new MCResponseData();
             rs = checkBeforeSend(entity);
             return rs;
@@ -75,6 +76,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public MCResponseData createOAHZGL004(MCHZGL004 entity) {
+        log4j.info(entity.getSrcno() + "每刻发起出差单检查：" + entity.toString());
         if (entity == null) {
             return new MCResponseData(MessageEnum.Failue_107.getCode(), MessageEnum.Failue_107.getMsg());
         }
@@ -170,10 +172,23 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             }
 
             String applyUser = mc.getApplyUser();
+            String startDate = mc.getStartDate();
+            String endDate = mc.getEndDate();
             Users u = usersBean.findById(applyUser);
             if (null == u || u.getLeaveDate() != null) {
                 code = 107;
                 msg = "传入申请人数据无效";
+                return new MCResponseData(code, msg);
+            }
+            CheckData ch = new CheckData();
+            if (!ch.valiDateFormat(startDate)) {
+                code = 107;
+                msg = "出差日期起格式错误";
+                return new MCResponseData(code, msg);
+            }
+            if (!ch.valiDateFormat(endDate)) {
+                code = 107;
+                msg = "出差日期止格式错误";
                 return new MCResponseData(code, msg);
             }
             List<MCHZGL004BizDetail> detList = mc.getDetailList();
@@ -187,7 +202,6 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 if (d.getBizDate() == null || "".equals(d.getBizDate())) {
                     return new MCResponseData(MessageEnum.Failue_105.getCode(), "明细出差日期格式错误");
                 }
-                CheckData ch = new CheckData();
                 if (!ch.valiDateFormat(d.getBizDate())) {
                     code = 107;
                     msg = "出差日期格式错误";
@@ -196,6 +210,16 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 if (BaseLib.getDate("yyyy/MM/dd", d.getBizDate()).before(BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())))) {
                     code = 107;
                     msg = "出差日期不能小于当前日期";
+                    return new MCResponseData(code, msg);
+                }
+                if (BaseLib.getDate("yyyy/MM/dd", d.getBizDate()).before(BaseLib.getDate("yyyy/MM/dd", startDate))) {
+                    code = 107;
+                    msg = "出差日期不能小于出差日期起";
+                    return new MCResponseData(code, msg);
+                }
+                if (BaseLib.getDate("yyyy/MM/dd", d.getBizDate()).after(BaseLib.getDate("yyyy/MM/dd", endDate))) {
+                    code = 107;
+                    msg = "出差日期不能晚于出差日期止";
                     return new MCResponseData(code, msg);
                 }
 
