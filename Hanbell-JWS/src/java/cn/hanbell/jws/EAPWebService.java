@@ -489,11 +489,11 @@ public class EAPWebService {
 
     // EJBForKPI
     @EJB
-    ScorecardAuditorBean scorecardAuditorBean;
+    private ScorecardAuditorBean scorecardAuditorBean;
     @EJB
     private ScorecardDetailBean scorecardDetailBean;
     @EJB
-    ScorecardBean scorecarBean;
+    private ScorecardBean scorecarBean;
 
     /**
      * This is a sample web service operation
@@ -4135,14 +4135,14 @@ public class EAPWebService {
                     sc.setOastatus1("V");
                     sc.setOapsn1("");
                 } else if (quarter == 2) {
-                    sc.setOastatus1("V");
-                    sc.setOapsn1("");
+                    sc.setOastatus2("V");
+                    sc.setOapsn2("");
                 } else if (quarter == 3) {
-                    sc.setOastatus1("V");
-                    sc.setOapsn1("");
+                    sc.setOastatus3("V");
+                    sc.setOapsn3("");
                 } else if (quarter == 4) {
-                    sc.setOastatus1("V");
-                    sc.setOapsn1("");
+                    sc.setOastatus4("V");
+                    sc.setOapsn4("");
                 }
                 scorecarBean.update(sc);
                 return "200";
@@ -4202,19 +4202,30 @@ public class EAPWebService {
                         }
                         break;
                 }
-                //再更新流程关卡人
+                 //流程关卡更具时间排序
                 List<WorkItem> wiList = processInstanceBean.getWorkItemListBySerialNumber(psn);
+                wiList.sort((WorkItem o1, WorkItem o2) -> {
+                    if (o1.getCreatedTime().compareTo(o2.getCreatedTime()) < 0) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                });
+                //更新关卡人员
+                List<ScorecardAuditor> list = new ArrayList<>();
                 for (WorkItem entity : wiList) {
                     if (!"申请人".equals(entity.getWorkItemName())) {
                         Users user = usersBean.findByOID(entity.getPerformerOID());
                         if (user != null) {
-                            ScorecardAuditor sc = new ScorecardAuditor();
-                            sc.setPid(Integer.valueOf(hkgl076.getScoreCord()));
-                            sc.setAuditorId(user.getId());
-                            sc.setAuditorName(user.getUserName());
-                            sc.setSeq(Integer.valueOf(hkgl076.getAssessmentYear()));
-                            sc.setQuarter(quarter);
-                            scorecardAuditorBean.persist(sc);
+                            ScorecardAuditor sc1 = new ScorecardAuditor();
+                            sc1.setPid(Integer.valueOf(hkgl076.getScoreCord()));
+                            sc1.setAuditorId(user.getId());
+                            sc1.setAuditorName(user.getUserName());
+                            sc1.setSeq(Integer.valueOf(hkgl076.getAssessmentYear()));
+                            sc1.setQuarter(quarter);
+                            sc1.setCredate(entity.getCompletedTime());
+                            sc1.setCreator(sc1.getAuditorId());
+                            scorecardAuditorBean.persist(sc1);
                         }
                     }
                 }
@@ -4222,11 +4233,11 @@ public class EAPWebService {
                 if (quarter == 1) {
                     sc.setOastatus1("V");
                 } else if (quarter == 2) {
-                    sc.setOastatus1("V");
+                    sc.setOastatus2("V");
                 } else if (quarter == 3) {
-                    sc.setOastatus1("V");
+                    sc.setOastatus3("V");
                 } else if (quarter == 4) {
-                    sc.setOastatus1("V");
+                    sc.setOastatus4("V");
                 }
                 scorecarBean.update(sc);
                 return "200";

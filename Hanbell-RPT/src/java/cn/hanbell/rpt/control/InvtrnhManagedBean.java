@@ -176,7 +176,6 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
             //查看月结的历史档数据
             if (queryDate <= monthDate) {
                 list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
-                System.out.println("123");
             } else {
                 list = invtrnBean.getInvtrnhByINV555(queryfacno, queryDateBegin, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
             }
@@ -288,11 +287,9 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     cell14.setCellValue(h[13] != null ? (String) h[13] : "");
                     cell15.setCellValue(h[14] != null ? (String) h[14] : "");
                     cell16.setCellValue(h[15] != null ? (String) h[15] : "");
-                    cell17.setCellValue(h[16] != null ? ((java.math.BigDecimal) h[16]).toString() : "");
-                    cell17.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+                    cell17.setCellValue(h[16] != null ? ((java.math.BigDecimal) h[16]).doubleValue() : 0.0);
                     cell18.setCellValue(h[17] != null ? (String) h[17] : "");
-                    cell19.setCellValue(h[18] != null ? ((java.math.BigDecimal) h[18]).toString() : "");
-                    cell19.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+                    cell19.setCellValue(h[18] != null ? ((java.math.BigDecimal) h[18]).doubleValue() : 0.0);
                     cell20.setCellValue(h[19] != null ? (String) h[19] : "");
                     cell21.setCellValue(h[20] != null ? (String) h[20] : "");
                     cell22.setCellValue(h[21] != null ? (String) h[21] : "");
