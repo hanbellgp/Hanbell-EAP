@@ -76,6 +76,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
             if (h == null) {
                 throw new NullPointerException();
             }
+            reptdBean.setCompany(h.getFacno());
             if ("2".equals(h.getRettype()) && !"".equals(h.getLitnbr().trim())) {
                 String td001 = h.getHdTC001();
                 String td002 = h.getFwno().split(td001)[1];
@@ -162,6 +163,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
         if (hkfw006 == null) {
             throw new NullPointerException();
         }
+        repmiBean.setCompany(hkfw006.getFacno());
         try {
             HKFW006Cdrn30 h = hkfw006CDRN30Bean.findByPSN(psn);
             if (h != null) {
@@ -487,6 +489,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
             if (f == null) {
                 throw new NullPointerException();
             }
+            reptmBean.setCompany(f.getFacno());
             CRMHKFW006 mf = crmhkfw006Bean.findByPSN(psn);
             if (null != mf) {
                 mf.setIsdelete("Y");
@@ -575,21 +578,21 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
         for (int i = 1; i <= 12; i++) {
             sql.append(",");
             sql.append(" (select count(*) from HK_FW006 where supportdept LIKE '").append(deptno).append("' AND rettype=2 and cctype=").append(propertyno);
-            sql.append(" and createdate>='").append(getFirstDayOfMonth(year,i)).append("' AND createdate<='").append(getLastDayOfMonth(year,i)).append("' ) as  '");
+            sql.append(" and createdate>='").append(getFirstDayOfMonth(year, i)).append("' AND createdate<='").append(getLastDayOfMonth(year, i)).append("' ) as  '");
             sql.append("month").append(i).append("'");
         }
-         sql.append(",");
-            sql.append(" (select count(*) from HK_FW006 where supportdept LIKE '").append(deptno).append("' AND rettype=2 and cctype=").append(propertyno);
-            sql.append(" and createdate>='").append(getFirstDayOfMonth(year,1)).append("' AND createdate<='").append(getLastDayOfMonth(year,12)).append("' ) as  '");
-            sql.append("sum").append("'");
+        sql.append(",");
+        sql.append(" (select count(*) from HK_FW006 where supportdept LIKE '").append(deptno).append("' AND rettype=2 and cctype=").append(propertyno);
+        sql.append(" and createdate>='").append(getFirstDayOfMonth(year, 1)).append("' AND createdate<='").append(getLastDayOfMonth(year, 12)).append("' ) as  '");
+        sql.append("sum").append("'");
         Query query = getEntityManager().createNativeQuery(sql.toString());
         List<Object[]> result = query.getResultList();
-        HKFW006StatisticModel m=new HKFW006StatisticModel((String)result.get(0)[0],(String)result.get(0)[1]
-                                                         ,(int)result.get(0)[2],(int)result.get(0)[3],(int)result.get(0)[4],(int)result.get(0)[5]
-                                                         ,(int)result.get(0)[6],(int)result.get(0)[7],(int)result.get(0)[8],(int)result.get(0)[9]
-                                                        ,(int)result.get(0)[10],(int)result.get(0)[11],(int)result.get(0)[12],(int)result.get(0)[13]
-                                                        ,(int)result.get(0)[14]);
-        return  m;
+        HKFW006StatisticModel m = new HKFW006StatisticModel((String) result.get(0)[0], (String) result.get(0)[1],
+                 (int) result.get(0)[2], (int) result.get(0)[3], (int) result.get(0)[4], (int) result.get(0)[5],
+                 (int) result.get(0)[6], (int) result.get(0)[7], (int) result.get(0)[8], (int) result.get(0)[9],
+                 (int) result.get(0)[10], (int) result.get(0)[11], (int) result.get(0)[12], (int) result.get(0)[13],
+                 (int) result.get(0)[14]);
+        return m;
     }
 
     public static String getFirstDayOfMonth(int year, int month) {

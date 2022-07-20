@@ -70,6 +70,8 @@ public class WARMI05Bean extends SuperEJBForEFGP<WARMI05> {
         String ta002 = w.getTa002();
 
         WARTA ta;
+        //设置公司别，对应数据库连接
+        wartaBean.setCompany(w.getTa014());
         ta = wartaBean.findByPK(ta001, ta002);
         ta.setTa200("0");
         wartaBean.update(ta);
@@ -89,6 +91,9 @@ public class WARMI05Bean extends SuperEJBForEFGP<WARMI05> {
         String ta029 = w.getTa029();
 
         WARTA ta;
+        //设置公司别，对应数据库连接
+        wartaBean.setCompany(w.getTa014());
+        wartbBean.setCompany(w.getTa014());
         ta = wartaBean.findByPK(ta001, ta002);
 
         List<WARMI05Detail> detail1 = warmi05DetailBean.findByFSN(w.getFormSerialNumber());

@@ -27,12 +27,20 @@ import org.json.JSONObject;
 public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
 
     // 生产环境
-    // private final String URL = "http://jrs.hanbell.com.cn/Hanbell-WCO/api/sendmsg/send";
+    //private final String URL = "http://jrs.hanbell.com.cn/Hanbell-WCO/api/sendmsg/send";
     // 测试环境
     private final String URL = "http://i2.hanbell.com.cn:8480/Hanbell-WCO/api/sendmsg/send";
 
-    @PersistenceContext(unitName = "CRM-ejbPU")
-    private EntityManager em;
+    protected String company = "C";
+
+    @PersistenceContext(unitName = "CRM-PUSHB")
+    private EntityManager em_shbcrm;
+
+    @PersistenceContext(unitName = "CRM-PUCX")
+    private EntityManager em_cxcrm;
+
+    @PersistenceContext(unitName = "CRM-PUTHB")
+    private EntityManager em_thbcrm;
 
     public SuperEJBForCRM(Class<T> entityClass) {
         super(entityClass);
@@ -40,7 +48,7 @@ public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
 
     @Override
     public EntityManager getEntityManager() {
-        return em;
+        return getEntityManager(getCompany());
     }
 
     // 发送企业微信信息
@@ -65,5 +73,32 @@ public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
 
             return null;
         }
+    }
+
+    protected EntityManager getEntityManager(String facno) {
+        switch (facno) {
+            case "A":
+                return em_thbcrm;
+            case "C":
+                return em_shbcrm;
+            case "F":
+                return em_cxcrm;
+            default:
+                return em_shbcrm;
+        }
+    }
+
+    /**
+     * @return the company
+     */
+    public String getCompany() {
+        return company;
+    }
+
+    /**
+     * @param company the company to set
+     */
+    public void setCompany(String company) {
+        this.company = company;
     }
 }

@@ -489,11 +489,11 @@ public class EAPWebService {
 
     // EJBForKPI
     @EJB
-    ScorecardAuditorBean scorecardAuditorBean;
+    private ScorecardAuditorBean scorecardAuditorBean;
     @EJB
     private ScorecardDetailBean scorecardDetailBean;
     @EJB
-    ScorecardBean scorecarBean;
+    private ScorecardBean scorecarBean;
 
     /**
      * This is a sample web service operation

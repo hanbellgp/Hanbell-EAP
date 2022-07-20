@@ -376,7 +376,11 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         cdrcus.setContactman(oa.getContactman());
         cdrcus.setTel1(oa.getGg024());
         cdrcus.setFax(oa.getGg027());
-        cdrcus.setBegdate(oa.getGg017());
+        if (oa.getGg017() == null || "".equals(oa.getGg017())) {
+            cdrcus.setBegdate(BaseLib.getDate());
+        } else {
+            cdrcus.setBegdate(oa.getGg017());
+        }
         if (oa.getGg031() != null) {
             cdrcus.setCapamt(oa.getGg031().longValue());
         }
