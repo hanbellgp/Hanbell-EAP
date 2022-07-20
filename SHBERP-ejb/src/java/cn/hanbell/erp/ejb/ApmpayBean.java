@@ -195,7 +195,9 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
                 ProcessCheck pc1 = processList.get(2);
                 aph.setApusrno(pc1.getUserID());
                 // 直属主管之后关卡
-                ProcessCheck pc2 = processList.get(3);
+                //ProcessCheck pc2 = processList.get(3);
+                //由于审批中间会取回重办，作如下调整
+                ProcessCheck pc2 = processList.get(processList.size() - 1);
                 aph.setCfmusrno(pc2.getUserID());
             }
             apmaphBean.update(aph);
