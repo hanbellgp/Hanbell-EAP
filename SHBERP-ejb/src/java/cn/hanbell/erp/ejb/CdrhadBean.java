@@ -190,9 +190,8 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
 
     /**
      * OA服务工作支援单零件抛转出货单
-     *
-     * @param psn
-     * @param
+     * @param psn 
+     * @param  OA流程序号
      * @return
      */
     public Boolean initByOAHKFW005(String psn) {
@@ -296,7 +295,7 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                             cdmas.setPreqy2(cdmas.getPreqy2().add(cdta.getShpqy2()));
                             cdmas.setDrecsta("84");
                             cdmasList.add(cdmas);
-                            ldc_shpamts = ldc_shpamts.add(cdta.getShpamts());
+                            ldc_totamts = ldc_totamts.add(cdta.getShpamts());
                             //变更出货地址
                             if (d.getShptrseq() != null && d.getShptrseq() != "") {
                                 if (Short.parseShort(d.getShptrseq()) != li_shptrseq) {

@@ -190,15 +190,23 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             aph.setOano(oah.getProcessSerialNumber().substring(4));
             List<ProcessCheck> processList;
             processList = processCheckBean.findByPSN(psn);
-            if (processList.size() > 3) {
-                // 直属主管
-                ProcessCheck pc1 = processList.get(2);
-                aph.setApusrno(pc1.getUserID());
-                // 直属主管之后关卡
-                //ProcessCheck pc2 = processList.get(3);
-                //由于审批中间会取回重办，作如下调整
-                ProcessCheck pc2 = processList.get(processList.size() - 1);
-                aph.setCfmusrno(pc2.getUserID());
+//            if (processList.size() > 3) {
+//                // 直属主管
+//                ProcessCheck pc1 = processList.get(2);
+//                aph.setApusrno(pc1.getUserID());
+//                // 直属主管之后关卡
+//                ProcessCheck pc2 = processList.get(3);
+//                //由于审批中间会取回重办，作如下调整
+//                //ProcessCheck pc2 = processList.get(processList.size() - 1);
+//                aph.setCfmusrno(pc2.getUserID());
+//            }
+            for(ProcessCheck pc : processList){
+               if(pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
+                  aph.setApusrno(pc.getUserID());
+               }
+                if(pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
+                  aph.setCfmusrno(pc.getUserID());
+               }
             }
             apmaphBean.update(aph);
             return true;
