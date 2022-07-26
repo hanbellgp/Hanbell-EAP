@@ -359,7 +359,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                     syncCQBean.getEntityManager().flush();
                     break;
                 case "L":
-                    // 同步重庆ERP
+                    // 同步真空ERP
                     resetFacno("L");
                     syncZKBean.persist(erp, details);
                     syncZKBean.getEntityManager().flush();

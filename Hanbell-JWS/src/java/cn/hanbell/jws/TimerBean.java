@@ -78,6 +78,7 @@ import cn.hanbell.erp.ejb.PurvdrBuyerBean;
 import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eap.comm.MailNotify;
+import cn.hanbell.erp.ejb.InvhdscBean;
 import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
 import cn.hanbell.erp.entity.Apmtbil;
@@ -108,6 +109,7 @@ import cn.hanbell.erp.entity.Cdrsfksorts;
 import cn.hanbell.erp.entity.Cdrsfkspec;
 import cn.hanbell.erp.entity.Invdta;
 import cn.hanbell.erp.entity.Invhad;
+import cn.hanbell.erp.entity.Invhdsc;
 import cn.hanbell.erp.entity.Invmas;
 import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.erp.entity.Misdept;
@@ -309,6 +311,8 @@ public class TimerBean {
     private SecuserBean secuserBean;
     @EJB
     private SecmembBean secmembBean;
+    @EJB
+    private InvhdscBean invhdscBean;
 
     @EJB
     private ExchangeSHBBean exchangeSHBBean;
@@ -865,6 +869,7 @@ public class TimerBean {
             String prono = "1";
             String trno;
             String wareh;
+            String haddsc;
             Date trdate;
             Date indate;
             List<AssetDistributeDetail> addList;
@@ -880,6 +885,7 @@ public class TimerBean {
                 indate = BaseLib.getDate();
                 trno = "";
                 trseq = 0;
+                haddsc = "";
                 assetDistributeBean.setDetail(e.getFormid());
                 addList = assetDistributeBean.getDetailList();
                 if (addList != null && !addList.isEmpty()) {
@@ -914,6 +920,18 @@ public class TimerBean {
                             invdta.setIocode('0');
                             // 加入库存出入新增列表
                             addedDetail.add(invdta);
+                            //20220720需求根据srcformid找到OA资产申请单，表身研发专案号写入ERP
+                            HKCW002 hkcw002 = hkcw002Bean.findBySrcformid(d.getSrcformid());
+                            if (null != hkcw002) {
+                                List<HKCW002Detail> cw002List = hkcw002Bean.getDetailList(hkcw002.getFormSerialNumber());
+                                for (HKCW002Detail cd : cw002List) {
+                                    if (null != cd.getDmark1() && !"".equals(cd.getDmark1())) {
+                                        if (!haddsc.contains(cd.getDmark1())) {
+                                            haddsc += cd.getDmark1() + ";";
+                                        }
+                                    }
+                                }
+                            }
                         }
                         // INV310表头资料
                         Invhad invhad = new Invhad(facno, prono, trno);
@@ -935,6 +953,15 @@ public class TimerBean {
                             e.setStatus("T");
                             assetDistributeBean.update(e);
                         }
+                        //研发专案号写入表头备注20220720
+                        if (!"".equals(haddsc)) {
+                            String ls_trno = trno.split("\\$")[0];
+                            Invhdsc hdsc = new Invhdsc(facno, prono, ls_trno);
+                            hdsc.setMark1(haddsc);
+                            invhdscBean.setCompany(facno);
+                            invhdscBean.persist(hdsc);
+                        }
+
                     } catch (RuntimeException | ParseException ex) {
                         log4j.error("createERPINV310ByEAMAssetDistribute时异常", ex);
                     }
@@ -1478,6 +1505,8 @@ public class TimerBean {
                             hm.setTickdays(String.valueOf(purvdr.getTickdays()));
                             hm.setBankName(purvdr.getTtbankna());
                             hm.setBankAccount(purvdr.getTtname());
+                            hm.setVdrds(purvdr.getVdrds());
+                            hm.setTel1(purvdr.getTel1());
                         } else {
                             hm.setTickdays("0");
                         }
@@ -1502,6 +1531,8 @@ public class TimerBean {
                         // 表单下方合计栏位(取2位小数)
                         hm.setTotalfs(sumapamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
                         hm.setTotal(sumapamt.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        //大写金额
+                        hm.setAmountInWords(workFlowBean.number2CNMonetaryUnit(hm.getTotal()));
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("SHB_ERP_APM828", hm, details);
                         String subject = "预付款申请：" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款金额：" + hm.getTotal();

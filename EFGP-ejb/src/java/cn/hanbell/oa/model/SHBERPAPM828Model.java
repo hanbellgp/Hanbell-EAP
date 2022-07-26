@@ -39,7 +39,9 @@ public class SHBERPAPM828Model implements Serializable {
     private BigDecimal total;
     private String bankName;
     private String bankAccount;
-
+    private String vdrds;
+    private String amountInWords;
+    private String tel1;
     private Date payda;
     private String rkd;
     private int config;
@@ -284,6 +286,30 @@ public class SHBERPAPM828Model implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.SHBERPAPM828Model";
+    }
+
+    public String getVdrds() {
+        return vdrds;
+    }
+
+    public void setVdrds(String vdrds) {
+        this.vdrds = vdrds;
+    }
+
+    public String getAmountInWords() {
+        return amountInWords;
+    }
+
+    public void setAmountInWords(String amountInWords) {
+        this.amountInWords = amountInWords;
+    }
+
+    public String getTel1() {
+        return tel1;
+    }
+
+    public void setTel1(String tel1) {
+        this.tel1 = tel1;
     }
 
 }
