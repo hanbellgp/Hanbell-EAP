@@ -2,7 +2,6 @@
  * To change this license header, choose License Headers in Project Properties. To change this template file, choose
  * Tools | Templates and open the template in the editor.
  */
-
 package cn.hanbell.oa.entity;
 
 import java.io.Serializable;
@@ -62,6 +61,12 @@ public class SHBERPAPM828Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "ratio")
     private String ratio;
+    @Size(max = 255)
+    @Column(name = "com_apamtfs")
+    private String comApamtfs;
+    @Size(max = 255)
+    @Column(name = "budgetacc")
+    private String budgetacc;
 
     public SHBERPAPM828Detail() {
     }
@@ -142,6 +147,22 @@ public class SHBERPAPM828Detail implements Serializable {
         this.ratio = ratio;
     }
 
+    public String getComApamtfs() {
+        return comApamtfs;
+    }
+
+    public void setComApamtfs(String comApamtfs) {
+        this.comApamtfs = comApamtfs;
+    }
+
+    public String getBudgetacc() {
+        return budgetacc;
+    }
+
+    public void setBudgetacc(String budgetacc) {
+        this.budgetacc = budgetacc;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -155,7 +176,7 @@ public class SHBERPAPM828Detail implements Serializable {
         if (!(object instanceof SHBERPAPM828Detail)) {
             return false;
         }
-        SHBERPAPM828Detail other = (SHBERPAPM828Detail)object;
+        SHBERPAPM828Detail other = (SHBERPAPM828Detail) object;
         if ((this.oid == null && other.oid != null) || (this.oid != null && !this.oid.equals(other.oid))) {
             return false;
         }

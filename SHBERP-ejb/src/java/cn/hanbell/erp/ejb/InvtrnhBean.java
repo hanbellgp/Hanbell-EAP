@@ -261,7 +261,7 @@ public class InvtrnhBean extends SuperEJBForERP<Invtrnh> {
         sql.append(" SELECT  invtrnh.trdate as '交易时间',invtrnh.trtype as '单据别' ,invdou.typedsc as '单据名称',invtrnh.facno as '公司别',invtrnh.prono as '生产地',invtrnh.depno as '对像别'");
         sql.append(" ,case invdou.depdsckind when 'GE' then (select depname from misdept where depno= invtrnh.depno)");
         sql.append(" when 'PJ' then (select vdrna from  purvdr where vdrno=invtrnh.depno)");
-        sql.append(" when 'CS' then (select cusna from  cdrcus where cusno=invtrnh.depno)end '对象名称',");
+        sql.append(" when 'CA' then (select cusna from  cdrcus where cusno=invtrnh.depno)end '对象名称',");
         sql.append("  invtrnh.trno as'交易单号',invtrnh.trseq as'序号', invtrnh.itnbr as '品号',");
         sql.append(" invmas.itdsc as '名称',invcls.itcls as '大类',invcls.clsdsc as '大类名称',");
         sql.append(" case invcls.itclscode when  '1' then  '成品类'");
@@ -282,7 +282,7 @@ public class InvtrnhBean extends SuperEJBForERP<Invtrnh> {
         sql.append(" when '3' then '调拨'");
         sql.append(" when 'Z' then '期末' end  as '出入库',");
         sql.append(" (select mark1+';;'+mark2+';;'+mark3+';;'+mark4");
-        sql.append(" from invhdsc  where facno='C' and prono='1' and trno=invtrnh.trno ) as '备注' ,invdou.reskind '原因别',");
+        sql.append(" from invhdsc  where facno='").append(facno).append("' and prono='1' and trno=invtrnh.trno ) as '备注' ,invdou.reskind '原因别',");
         sql.append(" (select cdesc from miscode where ckind=invdou.reskind  and code=invtrnh.rescode)as '原因内容',invtrnh.hmark1 '申报项目编号'");
         sql.append("  ,case invtrnh.trtype when 'IAA' then (select cdesc from miscode where ckind='91' and code=invtrnh.hmark1 )");
         sql.append(" when 'IAB' then (select cdesc from miscode where ckind='91' and code=invtrnh.hmark1)");
