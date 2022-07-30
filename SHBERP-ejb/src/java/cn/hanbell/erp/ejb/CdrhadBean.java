@@ -25,6 +25,7 @@ import cn.hanbell.oa.entity.HKYX013;
 import cn.hanbell.oa.entity.HKYX013Detail;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -190,8 +191,9 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
 
     /**
      * OA服务工作支援单零件抛转出货单
-     * @param psn 
-     * @param  OA流程序号
+     *
+     * @param psn
+     * @param OA流程序号
      * @return
      */
     public Boolean initByOAHKFW005(String psn) {
@@ -200,9 +202,6 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
         String ls_moveno;
         String retshpno = "";
         Date shpdate;
-        BigDecimal ldc_shpamts = BigDecimal.ZERO;
-        BigDecimal ldc_taxamts = BigDecimal.ZERO;
-        BigDecimal ldc_totamts = BigDecimal.ZERO;
         Map<String, String> pzcdrnos;
         List<Cdrdta> cdtaList;
         List<Cdrdmas> cdmasList;
@@ -242,6 +241,9 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                     facno = entry.getValue();
                     pzcdrno = entry.getKey();
                     shpdate = BaseLib.getDate();
+                    BigDecimal ldc_shpamts = BigDecimal.ZERO;
+                    BigDecimal ldc_taxamts = BigDecimal.ZERO;
+                    BigDecimal ldc_totamts = BigDecimal.ZERO;
                     Cdrhmas chmas = cdrhmasBean.findById(pzcdrno);
                     Character decode = chmas.getDecode();  //国内
                     li_shptrseq = chmas.getShptrseq();
@@ -327,9 +329,9 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                     chad.setCoin(chmas.getCoin());
                     chad.setRatio(chmas.getRatio());
                     chad.setTotamts(ldc_totamts);
-                    ldc_shpamts = ldc_totamts.divide(BigDecimal.ONE.add(chad.getTaxrate()));
+                    ldc_shpamts = ldc_totamts.divide(chad.getTaxrate().add(BigDecimal.ONE), 2, RoundingMode.HALF_UP);
                     chad.setShpamts(ldc_shpamts);
-                    ldc_taxamts = ldc_shpamts.multiply(chad.getTaxrate());
+                    ldc_taxamts = ldc_shpamts.multiply(chad.getTaxrate()).setScale(2, BigDecimal.ROUND_HALF_UP);
                     chad.setTaxamts(ldc_taxamts);
                     chad.setSndcode(chmas.getSndcode());
                     chad.setPaycode(chmas.getPaycode());
