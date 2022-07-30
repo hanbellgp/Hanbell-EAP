@@ -35,6 +35,52 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SHBERPAPM828.findByOID", query = "SELECT s FROM SHBERPAPM828 s WHERE s.oid = :oid")})
 public class SHBERPAPM828 implements Serializable {
 
+    @Size(max = 255)
+    @Column(name = "dmark")
+    private String dmark;
+    @Size(max = 255)
+    @Column(name = "budgetacc")
+    private String budgetacc;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "apamtfs")
+    private Double apamtfs;
+    @Size(max = 255)
+    @Column(name = "apdsc")
+    private String apdsc;
+    @Size(max = 255)
+    @Column(name = "apamt")
+    private String apamt;
+    @Size(max = 255)
+    @Column(name = "hdnappuser")
+    private String hdnappuser;
+    @Size(max = 255)
+    @Column(name = "coin")
+    private String coin;
+    @Size(max = 255)
+    @Column(name = "ratio")
+    private String ratio;
+    @Size(max = 255)
+    @Column(name = "agreedPayment")
+    private String agreedPayment;
+    @Size(max = 255)
+    @Column(name = "check1")
+    private String check1;
+    @Size(max = 255)
+    @Column(name = "purchaseOrder")
+    private String purchaseOrder;
+    @Size(max = 255)
+    @Column(name = "hdnAmanager")
+    private String hdnAmanager;
+    @Size(max = 255)
+    @Column(name = "tel1")
+    private String tel1;
+    @Size(max = 255)
+    @Column(name = "amountInWords")
+    private String amountInWords;
+    @Size(max = 255)
+    @Column(name = "vdrds")
+    private String vdrds;
+
     private static final long serialVersionUID = 1L;
     @Size(max = 255)
     @Column(name = "inuser")
@@ -411,6 +457,126 @@ public class SHBERPAPM828 implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.SHBERPAPM828[ oid=" + oid + " ]";
+    }
+
+    public String getDmark() {
+        return dmark;
+    }
+
+    public void setDmark(String dmark) {
+        this.dmark = dmark;
+    }
+
+    public String getBudgetacc() {
+        return budgetacc;
+    }
+
+    public void setBudgetacc(String budgetacc) {
+        this.budgetacc = budgetacc;
+    }
+
+    public Double getApamtfs() {
+        return apamtfs;
+    }
+
+    public void setApamtfs(Double apamtfs) {
+        this.apamtfs = apamtfs;
+    }
+
+    public String getApdsc() {
+        return apdsc;
+    }
+
+    public void setApdsc(String apdsc) {
+        this.apdsc = apdsc;
+    }
+
+    public String getApamt() {
+        return apamt;
+    }
+
+    public void setApamt(String apamt) {
+        this.apamt = apamt;
+    }
+
+    public String getHdnappuser() {
+        return hdnappuser;
+    }
+
+    public void setHdnappuser(String hdnappuser) {
+        this.hdnappuser = hdnappuser;
+    }
+
+    public String getCoin() {
+        return coin;
+    }
+
+    public void setCoin(String coin) {
+        this.coin = coin;
+    }
+
+    public String getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(String ratio) {
+        this.ratio = ratio;
+    }
+
+    public String getAgreedPayment() {
+        return agreedPayment;
+    }
+
+    public void setAgreedPayment(String agreedPayment) {
+        this.agreedPayment = agreedPayment;
+    }
+
+    public String getCheck1() {
+        return check1;
+    }
+
+    public void setCheck1(String check1) {
+        this.check1 = check1;
+    }
+
+    public String getPurchaseOrder() {
+        return purchaseOrder;
+    }
+
+    public void setPurchaseOrder(String purchaseOrder) {
+        this.purchaseOrder = purchaseOrder;
+    }
+
+    public String getHdnAmanager() {
+        return hdnAmanager;
+    }
+
+    public void setHdnAmanager(String hdnAmanager) {
+        this.hdnAmanager = hdnAmanager;
+    }
+
+    public String getTel1() {
+        return tel1;
+    }
+
+    public void setTel1(String tel1) {
+        this.tel1 = tel1;
+    }
+
+    public String getAmountInWords() {
+        return amountInWords;
+    }
+
+    public void setAmountInWords(String amountInWords) {
+        this.amountInWords = amountInWords;
+    }
+
+    public String getVdrds() {
+        return vdrds;
+    }
+
+    public void setVdrds(String vdrds) {
+        this.vdrds = vdrds;
     }
 
 }
