@@ -56,7 +56,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
     public final String FILE_URL = "smb://172.16.10.157/";
     public final String HOST_PORT = "8086";
     //文件存储的位置，允许读写的用户名密码，账号
-    public final String OA_USERNO = "SHAHANBELL\\ECReader";
+    public final String OA_USERNO = "ECReader";
     public final String OA_PASSWORD = "HanbellPass@word";
 
     @EJB
