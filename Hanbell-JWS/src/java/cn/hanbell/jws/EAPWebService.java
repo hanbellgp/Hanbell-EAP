@@ -1685,6 +1685,22 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "updateERPAPM828ByOAAPM828")
+    public String updateERPAPM828ByOAAPM828(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = apmaphBean.updateByOAAPM828(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM828ByOAAPM828", psn), ex);
+            throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "createERPCDR645ByOAHKFW005")
     public String createERPCDR645ByOAHKFW005(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -4202,7 +4218,7 @@ public class EAPWebService {
                         }
                         break;
                 }
-                 //流程关卡更具时间排序
+                //流程关卡更具时间排序
                 List<WorkItem> wiList = processInstanceBean.getWorkItemListBySerialNumber(psn);
                 wiList.sort((WorkItem o1, WorkItem o2) -> {
                     if (o1.getCreatedTime().compareTo(o2.getCreatedTime()) < 0) {

@@ -10,8 +10,12 @@ import cn.hanbell.erp.entity.Accsped;
 import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
 import cn.hanbell.erp.entity.Invpri;
+import cn.hanbell.oa.ejb.ProcessCheckBean;
 import cn.hanbell.oa.ejb.SHBERPAPM811Bean;
+import cn.hanbell.oa.ejb.SHBERPAPM828Bean;
+import cn.hanbell.oa.entity.ProcessCheck;
 import cn.hanbell.oa.entity.SHBERPAPM811;
+import cn.hanbell.oa.entity.SHBERPAPM828;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -40,6 +44,10 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
 
     @EJB
     private SHBERPAPM811Bean shberpapm811Bean;
+    @EJB
+    private SHBERPAPM828Bean shberpapm828Bean;
+    @EJB
+    private ProcessCheckBean processCheckBean;
 
     private List<Apmapd> apmapdList;
 
@@ -52,12 +60,12 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
         query.setParameter("facno", facno);
         query.setParameter("apno", apno);
         query.setParameter("aptyp", aptyp);
-        return (Apmaph)query.getSingleResult();
+        return (Apmaph) query.getSingleResult();
     }
 
     public List<Apmaph> findNeedThrow(String aptyp) {
-        Query query =
-            this.getEntityManager().createNamedQuery("Apmaph.findNeedThrow").setFirstResult(0).setMaxResults(1);
+        Query query
+                = this.getEntityManager().createNamedQuery("Apmaph.findNeedThrow").setFirstResult(0).setMaxResults(1);
         query.setParameter("aptyp", aptyp);
         return query.getResultList();
     }
@@ -93,12 +101,47 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
 
     }
 
+    /**
+     * 只更新ERP APM828表头状态
+     *
+     * @param psn 流程序号
+     */
+    public Boolean updateByOAAPM828(String psn) {
+        SHBERPAPM828 oah = shberpapm828Bean.findByPSN(psn);
+        if (oah == null) {
+            throw new NullPointerException(psn);
+        }
+        String facno = oah.getFacno();
+        String apno = oah.getApno();
+        String aptyp = oah.getAptyp();
+        this.setCompany(facno);
+        Apmaph aph = findByPK(facno, apno, aptyp);
+        if (aph == null || !aph.getApsta().equals("25")) {
+            throw new NullPointerException(apno);
+        }
+        aph.setApsta("20");
+        // 更新apusrno,cfmusrno为OA审核人
+        aph.setOano(oah.getProcessSerialNumber().substring(4));
+        List<ProcessCheck> processList;
+        processList = processCheckBean.findByPSN(psn);
+        for (ProcessCheck pc : processList) {
+            if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
+                aph.setApusrno(pc.getUserID());
+            }
+            if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
+                aph.setCfmusrno(pc.getUserID());
+            }
+        }
+        update(aph);
+        return true;
+    }
+
     public boolean checkValueyn(String facno, String rkd) {
         accacrBean.setCompany(facno);
         accspedBean.setCompany(facno);
         int l_row, l_acrcount;
         List<Accacr> accacrList = accacrBean.findBySysnoAndKindAndRkd("APM", "71", rkd);
-        List<Accsped> accspedList = accspedBean.findByConfig((short)52);
+        List<Accsped> accspedList = accspedBean.findByConfig((short) 52);
         l_row = 1;
         if (null == accacrList || accacrList.isEmpty()) {
             l_acrcount = 0;
@@ -138,13 +181,13 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
 
         sb.append("select count(*)  from invtrn h,invwh w  where h.facno = w.facno and h.prono = w.prono ");
         sb.append(" and h.wareh = w.wareh and w.costyn = 'Y' and h.facno = '").append(facno)
-            .append("' and h.trdate >= '").append(BaseLib.formatDate("yyyyMMdd", startdate))
-            .append("' and h.trdate < '").append(BaseLib.formatDate("yyyyMMdd", endDate)).append("' and h.itnbr = '")
-            .append(itnbr).append("' and h.trtype in (select trntp from cstrul where facno = '").append(facno)
-            .append("' and kseq = 30 and iocode = '1' and avgco = 'Y')");
+                .append("' and h.trdate >= '").append(BaseLib.formatDate("yyyyMMdd", startdate))
+                .append("' and h.trdate < '").append(BaseLib.formatDate("yyyyMMdd", endDate)).append("' and h.itnbr = '")
+                .append(itnbr).append("' and h.trtype in (select trntp from cstrul where facno = '").append(facno)
+                .append("' and kseq = 30 and iocode = '1' and avgco = 'Y')");
         Query query = getEntityManager().createNativeQuery(sb.toString());
         try {
-            llcount = (int)query.getSingleResult();
+            llcount = (int) query.getSingleResult();
             if (llcount > 0) {
                 return true;
             }
