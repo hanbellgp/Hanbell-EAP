@@ -125,67 +125,62 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             throw new NullPointerException(apno);
         }
         try {
-            //汉声汉扬自动生成APM525，汉钟不生成
-            if ("H".equals(facno) || "Y".equals(facno)) {
-                List<Apmapd> apdList = apmaphBean.findApmapd(facno, apno);
-                if (apdList == null || apdList.isEmpty()) {
-                    throw new NullPointerException(apno);
-                }
-                List<Apmpad> apmpadList = new ArrayList<>();
-                short i = 0;
-                apmsysBean.setCompany(facno);
-                String payno = apmsysBean.getFormId(facno, "APM525", payda, Boolean.TRUE);
-                for (Apmapd apd : apdList) {
-                    // 此处没有处理合并逻辑
-                    i++;
-                    Apmpad apmpad = new Apmpad(facno, '2', payno, i);
-                    apmpad.setAccno(accno);
-                    apmpad.setConfig(config);
-                    apmpad.setDramt(apd.getApamt());
-                    apmpad.setCramt(BigDecimal.ZERO);
-                    apmpad.setDramtfs(apd.getApamtfs());
-                    apmpad.setCramtfs(BigDecimal.ZERO);
-                    apmpad.setCoin(apd.getCoin());
-                    apmpad.setRatio(apd.getRatio());
-                    apmpad.setCuskind("PJ");
-                    apmpad.setVdrno(aph.getVdrno());
-                    apmpad.setVdrna(aph.getVdrna());
-                    apmpad.setTnfamt(BigDecimal.ZERO);
-                    apmpad.setTnfamtfs(BigDecimal.ZERO);
-                    apmpad.setRefno(apno);
-                    apmpad.setRefamt(BigDecimal.ZERO);
-                    apmpad.setRefamtfs(BigDecimal.ZERO);
-                    apmpad.setVouseq(i);
-                    apmpad.setTrntype("");
-                    // 加入列表
-                    apmpadList.add(apmpad);
-                }
-                ApmpayPK pk = new ApmpayPK(facno, '2', payno);
-                Apmpay apmpay = new Apmpay(pk);
-                apmpay.setRkd(rkd);
-                apmpay.setPayda(payda);
-                apmpay.setUsrno(oah.getAppuser());
-                apmpay.setDepno(oah.getAppdept());
-                apmpay.setPaystat('0');
-                apmpay.setSumry(aph.getHmark() != null ? aph.getHmark() : "");
-                apmpay.setTaxym("");
-                apmpay.setSrckind("H");
-                accrnoBean.setCompany(facno);
-                apmpay.setVouno(accrnoBean.getFormId(facno, payda, Boolean.TRUE)); // 设置初稿传票编号
-                // 保存表头
-                persist(apmpay);
-                getEntityManager().flush();
-                // 保存明细
-                apmpadBean.setCompany(facno);
-                for (Apmpad apmpad : apmpadList) {
-                    apmpadBean.persist(apmpad);
-                }
-                // 更新APM828请款状态
-                aph.setRefno(payno);
-                aph.setApsta("30");
-            } else {
-                aph.setApsta("20");
+            List<Apmapd> apdList = apmaphBean.findApmapd(facno, apno);
+            if (apdList == null || apdList.isEmpty()) {
+                throw new NullPointerException(apno);
             }
+            List<Apmpad> apmpadList = new ArrayList<>();
+            short i = 0;
+            apmsysBean.setCompany(facno);
+            String payno = apmsysBean.getFormId(facno, "APM525", payda, Boolean.TRUE);
+            for (Apmapd apd : apdList) {
+                // 此处没有处理合并逻辑
+                i++;
+                Apmpad apmpad = new Apmpad(facno, '2', payno, i);
+                apmpad.setAccno(accno);
+                apmpad.setConfig(config);
+                apmpad.setDramt(apd.getApamt());
+                apmpad.setCramt(BigDecimal.ZERO);
+                apmpad.setDramtfs(apd.getApamtfs());
+                apmpad.setCramtfs(BigDecimal.ZERO);
+                apmpad.setCoin(apd.getCoin());
+                apmpad.setRatio(apd.getRatio());
+                apmpad.setCuskind("PJ");
+                apmpad.setVdrno(aph.getVdrno());
+                apmpad.setVdrna(aph.getVdrna());
+                apmpad.setTnfamt(BigDecimal.ZERO);
+                apmpad.setTnfamtfs(BigDecimal.ZERO);
+                apmpad.setRefno(apno);
+                apmpad.setRefamt(BigDecimal.ZERO);
+                apmpad.setRefamtfs(BigDecimal.ZERO);
+                apmpad.setVouseq(i);
+                apmpad.setTrntype("");
+                // 加入列表
+                apmpadList.add(apmpad);
+            }
+            ApmpayPK pk = new ApmpayPK(facno, '2', payno);
+            Apmpay apmpay = new Apmpay(pk);
+            apmpay.setRkd(rkd);
+            apmpay.setPayda(payda);
+            apmpay.setUsrno(oah.getAppuser());
+            apmpay.setDepno(oah.getAppdept());
+            apmpay.setPaystat('0');
+            apmpay.setSumry(aph.getHmark() != null ? aph.getHmark() : "");
+            apmpay.setTaxym("");
+            apmpay.setSrckind("H");
+            accrnoBean.setCompany(facno);
+            apmpay.setVouno(accrnoBean.getFormId(facno, payda, Boolean.TRUE)); // 设置初稿传票编号
+            // 保存表头
+            persist(apmpay);
+            getEntityManager().flush();
+            // 保存明细
+            apmpadBean.setCompany(facno);
+            for (Apmpad apmpad : apmpadList) {
+                apmpadBean.persist(apmpad);
+            }
+            // 更新APM828请款状态
+            aph.setRefno(payno);
+            aph.setApsta("30");
             // 更新apusrno,cfmusrno为OA审核人
             aph.setOano(oah.getProcessSerialNumber().substring(4));
             List<ProcessCheck> processList;
@@ -200,13 +195,13 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
 //                //ProcessCheck pc2 = processList.get(processList.size() - 1);
 //                aph.setCfmusrno(pc2.getUserID());
 //            }
-            for(ProcessCheck pc : processList){
-               if(pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
-                  aph.setApusrno(pc.getUserID());
-               }
-                if(pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
-                  aph.setCfmusrno(pc.getUserID());
-               }
+            for (ProcessCheck pc : processList) {
+                if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
+                    aph.setApusrno(pc.getUserID());
+                }
+                if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
+                    aph.setCfmusrno(pc.getUserID());
+                }
             }
             apmaphBean.update(aph);
             return true;

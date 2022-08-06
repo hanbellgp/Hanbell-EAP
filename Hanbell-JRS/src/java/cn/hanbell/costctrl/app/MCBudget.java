@@ -21,6 +21,7 @@ public class MCBudget extends HmacSha1Signature {
     private String crmno;
     private String crmtype;
     private String loanNo;
+    private String coin;
 
     private List<MCBudgetDetail> budgetList;
 
@@ -78,6 +79,14 @@ public class MCBudget extends HmacSha1Signature {
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public String getCoin() {
+        return coin;
+    }
+
+    public void setCoin(String coin) {
+        this.coin = coin;
     }
 
 }

@@ -17,7 +17,9 @@ import cn.hanbell.eap.ejb.McbudgetBean;
 import cn.hanbell.eap.entity.Mcbudget;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.BudgetDetailBean;
+import cn.hanbell.erp.ejb.MisrateBean;
 import cn.hanbell.erp.entity.BudgetDetail;
+import cn.hanbell.erp.entity.Misrate;
 import cn.hanbell.jrs.SuperRESTForERP;
 import cn.hanbell.oa.ejb.HZCW017Bean;
 import cn.hanbell.oa.entity.HZCW017;
@@ -45,6 +47,8 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
 
     @EJB
     private BudgetDetailBean budgetDetailBean;
+    @EJB
+    private MisrateBean misrateBean;
     @EJB
     private McbudgetBean mcbudgetBean;
     @EJB
@@ -124,19 +128,32 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
                     return new MCResponseData(107, "借款归还类别借支单单号不能为空");
                 }
             }
+            //加入币别
+            String coin = entity.getCoin();
+            BigDecimal ratio = BigDecimal.ONE;
+            if (null == coin || "".equals(coin) || "RMB".equals(coin)) {
+                ratio = BigDecimal.ONE;
+            } else {
+                misrateBean.setCompany("C");
+                Misrate misrate = misrateBean.findByCoin(coin);
+                if (misrate != null) {
+                    ratio = misrate.getRate();
+                }
+            }
             List<BudgetDetail> budgetDetails = new ArrayList<>();;
             List<MCBudgetDetail> resultList = entity.getBudgetList();
-            if (!resultList.isEmpty()) {
+            if (resultList != null && !resultList.isEmpty()) {
                 final String facno = resultList.get(0).getFacno();
-                resultList.forEach((MCBudgetDetail e) -> {
+                for (MCBudgetDetail e : resultList) {
                     int index = resultList.indexOf(e);
-                    budgetDetails.add(new BudgetDetail(facno, "", e.getPeriod(), e.getCenterid(), e.getBudgetacc(), "R", index, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, e.getPreamts()));
-                    Mcbudget mcbudget = new Mcbudget(type, srcno, facno, e.getPeriod(), e.getCenterid(), e.getBudgetacc(), e.getPreamts());
+                    BigDecimal ldc_preamts = e.getPreamts().multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    budgetDetails.add(new BudgetDetail(facno, "", e.getPeriod(), e.getCenterid(), e.getBudgetacc(), "R", index, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, ldc_preamts));
+                    Mcbudget mcbudget = new Mcbudget(type, srcno, facno, e.getPeriod(), e.getCenterid(), e.getBudgetacc(),ldc_preamts);
                     mcbudget.setCrmno(crmno);
                     mcbudget.setCrmtype(crmtype);
                     mcbudget.setLoanNo(loanNo);
                     //初始状态为0
-                    mcbudget.setStatus(0); 
+                    mcbudget.setStatus(0);
                     mcbudgetBean.persist(mcbudget);
                     //更新CRM状态
                     if (crmtype.equals("YXJL")) {
@@ -156,8 +173,8 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
                             if (null != jz) {
                                 Date date1 = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", jz.getLoanDate())); //借支单日期
                                 String period1 = BaseLib.formatDate("yyyyMM", date1);
-                                if (e.getPreamts().doubleValue() <= jz.getTotalRMB()) {
-                                    u1 = new BudgetDetail(jz.getFacno(), "", period1, jz.getCenterid(), jz.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO.subtract(e.getPreamts()));
+                                if (ldc_preamts.doubleValue() <= jz.getTotalRMB()) {
+                                    u1 = new BudgetDetail(jz.getFacno(), "", period1, jz.getCenterid(), jz.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO.subtract(ldc_preamts));
                                 } else {
                                     u1 = new BudgetDetail(jz.getFacno(), "", period1, jz.getCenterid(), jz.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO.subtract(BigDecimal.valueOf(jz.getTotalRMB())));
                                 }
@@ -169,7 +186,7 @@ public class BudgetDetailFacadeREST extends SuperRESTForERP<BudgetDetail> {
                         }
                     }
 
-                });
+                }
                 budgetDetailBean.setCompany(facno);
                 budgetDetailBean.add(budgetDetails);
                 //budgetDetailBean.getEntityManager().flush();
