@@ -1384,5 +1384,64 @@ return false;]]></method>
                 </cell>
             </row>
         </grid>
+        <grid id="1148">
+            <property name="textAlign">left</property>
+            <property name="verticalAlign">middle</property>
+            <column id="1149"/>
+            <column id="1150"/>
+            <column id="1151"/>
+            <column id="1152"/>
+            <row id="1153">
+                <property name="height">0.7cm</property>
+                <cell id="1154">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <text id="1158">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[出纳：]]></text-property>
+                    </text>
+                </cell>
+                <cell id="1155">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <text id="1159">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[核准：]]></text-property>
+                    </text>
+                </cell>
+                <cell id="1156">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <text id="1160">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[审核：]]></text-property>
+                    </text>
+                </cell>
+                <cell id="1157">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <text id="1161">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[会计：]]></text-property>
+                    </text>
+                </cell>
+            </row>
+        </grid>
     </body>
 </report>
