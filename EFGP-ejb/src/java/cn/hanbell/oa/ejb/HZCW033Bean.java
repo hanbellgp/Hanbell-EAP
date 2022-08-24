@@ -35,7 +35,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
         try {
             HZCW033 h = this.findByPSN(psn);
             List<HZCW033reDetail> details = hzcw033reDetailBean.findByFSN(h.getFormSerialNumber());
-
+            pormyBean.setCompany(h.getFacno());
             //表身循环
             for (int i = 0; i < details.size(); i++) {
                 HZCW033reDetail detail = details.get(i);
@@ -74,6 +74,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
     public Boolean updateCRMPORMY(String psn, String status) {
         try {
             HZCW033 h = this.findByPSN(psn);
+            pormyBean.setCompany(h.getFacno());
             List<HZCW033reDetail> details = hzcw033reDetailBean.findByFSN(h.getFormSerialNumber());
             //OA选择CRM单号后更新CRM状态
             if ("1".equals(status)) {
@@ -147,7 +148,7 @@ public class HZCW033Bean extends SuperEJBForEFGP<HZCW033> {
         try {
             HZCW033 h = this.findByPSN(psn);
             List<HZCW033reDetail> details = hzcw033reDetailBean.findByFSN(h.getFormSerialNumber());
-
+            pormyBean.setCompany(h.getFacno());
             //表身循环
             for (int i = 0; i < details.size(); i++) {
                 HZCW033reDetail detail = details.get(i);

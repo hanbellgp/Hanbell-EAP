@@ -52,6 +52,22 @@ public class HKCW002Bean extends SuperEJBForEFGP<HKCW002> {
         }
     }
 
+    /**
+     * 根据EAM单号查询
+     *
+     * @param srcformid
+     */
+    public HKCW002 findBySrcformid(String srcformid) {
+        Query query = getEntityManager().createNamedQuery("HKCW002.findBySrcformid");
+        try {
+            query.setParameter("srcformid", srcformid);
+            Object o = query.getSingleResult();
+            return (HKCW002) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public void setDetail(String fsn) {
         detailList = hkcw002DetailBean.findByFSN(fsn);
         if (detailList == null) {
@@ -66,4 +82,10 @@ public class HKCW002Bean extends SuperEJBForEFGP<HKCW002> {
         return detailList;
     }
 
+    /**
+     * @return the detailList
+     */
+    public List<HKCW002Detail> getDetailList(String fsn) {
+        return hkcw002DetailBean.findByFSN(fsn);
+    }
 }

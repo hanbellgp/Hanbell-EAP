@@ -44,7 +44,7 @@ public class HZCW028Bean extends SuperEJBForEFGP<HZCW028> {
             if ("1".equals(status)) {
                 HZCW028 h = this.findByPSN(psn);
                 List<HZCW028reDetail> details = hzcw028reDetailBean.findByFSN(h.getFormSerialNumber());
-
+                pormyBean.setCompany(h.getFacno());
                 //表身循环
                 for (int i = 0; i < details.size(); i++) {
                     HZCW028reDetail detail = details.get(i);
@@ -75,7 +75,7 @@ public class HZCW028Bean extends SuperEJBForEFGP<HZCW028> {
             if ("3".equals(status)) {
                 HZCW028 h = this.findByPSN(psn);
                 List<HZCW028reDetail> details = hzcw028reDetailBean.findByFSN(h.getFormSerialNumber());
-
+                pormyBean.setCompany(h.getFacno());
                 //表身循环
                 for (int i = 0; i < details.size(); i++) {
                     HZCW028reDetail detail = details.get(i);
@@ -120,7 +120,7 @@ public class HZCW028Bean extends SuperEJBForEFGP<HZCW028> {
         try {
             HZCW028 h = this.findByPSN(psn);
             List<HZCW028reDetail> details = hzcw028reDetailBean.findByFSN(h.getFormSerialNumber());
-
+            pormyBean.setCompany(h.getFacno());
             //表身循环
             for (int i = 0; i < details.size(); i++) {
                 HZCW028reDetail detail = details.get(i);

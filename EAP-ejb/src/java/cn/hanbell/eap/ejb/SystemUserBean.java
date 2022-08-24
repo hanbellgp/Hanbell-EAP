@@ -43,7 +43,7 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             if (entity.getEmail() != null && !"".equals(entity.getEmail())) {
                 job.add("email", entity.getEmail());
             }
-            if (entity.getTel() != null && !"".equals(entity.getTel())) {
+            if (entity.getTel() != null) {
                 job.add("telephone", entity.getTel());
             }
             if (entity.getJob() != null && !"".equals(entity.getJob()) && isUpdateAlias(entity.getJob())) {

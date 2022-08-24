@@ -41,6 +41,7 @@ public class HKFW004DetailBean extends SuperEJBForEFGP<HKFW004Detail> {
             if (ja == null) {
                 throw new NullPointerException();
             }
+            reptdBean.setCompany(ja.getFacno());
             List<HKFW004Detail> details = this.findByFSN(ja.getFormSerialNumber());
             for (int i = 0; i < details.size(); i++) {
                 HKFW004Detail detail = details.get(i);
@@ -70,6 +71,7 @@ public class HKFW004DetailBean extends SuperEJBForEFGP<HKFW004Detail> {
             if (ja == null) {
                 throw new NullPointerException();
             }
+            reptdBean.setCompany(ja.getFacno());
             List<HKFW004Detail> details = this.findByFSN(ja.getFormSerialNumber());
             for (int i = 0; i < details.size(); i++) {
                 HKFW004Detail detail = details.get(i);

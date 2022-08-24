@@ -46,6 +46,7 @@ public class HKCW003Bean extends SuperEJBForEFGP<HKCW003> {
         if (h == null) {
             throw new NullPointerException();
         }
+        repmfBean.setCompany(h.getFacno());
         List<HKCW003Detail> details = this.getDetailList(h.getFormSerialNumber());
         try {
             //表身循环

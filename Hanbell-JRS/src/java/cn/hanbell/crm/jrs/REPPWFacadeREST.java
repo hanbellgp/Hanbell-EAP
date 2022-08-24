@@ -170,6 +170,7 @@ public class REPPWFacadeREST extends SuperRESTForCRM<REPPW> {
                     ra.setTa016(entity.getDetailList().get(0).getEmployeeId());
                     ra.setTa030("Y");
                     ra.setTa031("0");
+                    ra.setTa079("来至微信小程序");
                     reptaBean.update(ra);
                 }
                 String errmsg = reptaBean.sendMsgString(sendUser.toString(), msg.toString(),
