@@ -134,6 +134,11 @@
                     <property name="name">apamtfs</property>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">facno</property>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
@@ -189,6 +194,9 @@
                 </structure>
                 <structure>
                     <property name="columnName">apamtfs</property>
+                </structure>
+                <structure>
+                    <property name="columnName">facno</property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
@@ -283,6 +291,11 @@
                         <property name="name">apamtfs</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">facno</property>
+                        <property name="dataType">string</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">scriptDS</property>
@@ -312,7 +325,31 @@ if (currentRow<5){
 		dataSetRow["total"] = master.getTotal();
 		dataSetRow["vdrds"] = master.getVdrds();
 		dataSetRow["amountInWords"] = master.getAmountInWords();
-		
+		if(master.getFacno()=='C'){
+		dataSetRow["facno"]="上海汉钟";
+		}else if(master.getFacno()=='G'){
+		dataSetRow["facno"]="广州分公司";
+		}else if(master.getFacno()=='J'){
+		dataSetRow["facno"]="济南分公司";
+		}else if(master.getFacno()=='N'){
+		dataSetRow["facno"]="南京分公司";
+		}else if(master.getFacno()=='C4'){
+		dataSetRow["facno"]="重庆分公司";
+		}else if(master.getFacno()=='K'){
+		dataSetRow["facno"]="上海柯茂";
+		}else if(master.getFacno()=='E'){
+		dataSetRow["facno"]="浙江柯茂";
+		}else if(master.getFacno()=='H'){
+		dataSetRow["facno"]="浙江汉声";
+		}else if(master.getFacno()=='Y'){
+		dataSetRow["facno"]="安徽汉扬";
+		}else if(master.getFacno()=='Q'){
+		dataSetRow["facno"]="世纪东元 ";
+		}else if(master.getFacno()=='F'){
+		dataSetRow["facno"]="楚雄汉钟";
+		}else if(master.getFacno()=='L'){
+		dataSetRow["facno"]="汉钟真空";
+		}
 		dataSetRow["check1"] =master.getCheck1();
 		dataSetRow["purchaseOrder"] == master.getPurchaseOrder();
 		dataSetRow["apno"] =  master.getApno();
@@ -338,6 +375,31 @@ if (currentRow<5){
 		dataSetRow["agreedPayment"] =master.getAgreedPayment();
 		dataSetRow["paydate"] = master.getPaydate();
 		dataSetRow["paytn"] = master.getPaytn();
+						if(master.getFacno()=='C'){
+		dataSetRow["facno"]="上海汉钟";
+		}else if(master.getFacno()=='G'){
+		dataSetRow["facno"]="广州分公司";
+		}else if(master.getFacno()=='J'){
+		dataSetRow["facno"]="济南分公司";
+		}else if(master.getFacno()=='N'){
+		dataSetRow["facno"]="南京分公司";
+		}else if(master.getFacno()=='C4'){
+		dataSetRow["facno"]="重庆分公司";
+		}else if(master.getFacno()=='K'){
+		dataSetRow["facno"]="上海柯茂";
+		}else if(master.getFacno()=='E'){
+		dataSetRow["facno"]="浙江柯茂";
+		}else if(master.getFacno()=='H'){
+		dataSetRow["facno"]="浙江汉声";
+		}else if(master.getFacno()=='Y'){
+		dataSetRow["facno"]="安徽汉扬";
+		}else if(master.getFacno()=='Q'){
+		dataSetRow["facno"]="世纪东元 ";
+		}else if(master.getFacno()=='F'){
+		dataSetRow["facno"]="楚雄汉钟";
+		}else if(master.getFacno()=='L'){
+		dataSetRow["facno"]="汉钟真空";
+		}
 	currentRow++;
 	return true;	
 	}
@@ -361,6 +423,31 @@ if (currentRow<5){
 		dataSetRow["apdsc"] = detail.get(currentRow).getApdsc();
 		dataSetRow["apamtfs"] =detail.get(currentRow).getComApamtfs();
 		dataSetRow["budgetacc"] = detail.get(currentRow).getBudgetacc();
+				if(master.getFacno()=='C'){
+		dataSetRow["facno"]="上海汉钟";
+		}else if(master.getFacno()=='G'){
+		dataSetRow["facno"]="广州分公司";
+		}else if(master.getFacno()=='J'){
+		dataSetRow["facno"]="济南分公司";
+		}else if(master.getFacno()=='N'){
+		dataSetRow["facno"]="南京分公司";
+		}else if(master.getFacno()=='C4'){
+		dataSetRow["facno"]="重庆分公司";
+		}else if(master.getFacno()=='K'){
+		dataSetRow["facno"]="上海柯茂";
+		}else if(master.getFacno()=='E'){
+		dataSetRow["facno"]="浙江柯茂";
+		}else if(master.getFacno()=='H'){
+		dataSetRow["facno"]="浙江汉声";
+		}else if(master.getFacno()=='Y'){
+		dataSetRow["facno"]="安徽汉扬";
+		}else if(master.getFacno()=='Q'){
+		dataSetRow["facno"]="世纪东元 ";
+		}else if(master.getFacno()=='F'){
+		dataSetRow["facno"]="楚雄汉钟";
+		}else if(master.getFacno()=='L'){
+		dataSetRow["facno"]="汉钟真空";
+		}
 		currentRow++;
 		return true;
 	}
@@ -478,14 +565,21 @@ return false;]]></method>
                     <property name="borderTopStyle">solid</property>
                     <property name="borderTopWidth">thin</property>
                     <property name="verticalAlign">middle</property>
-                    <text id="998">
-                        <property name="fontSize">14pt</property>
+                    <data id="1162">
+                        <property name="fontSize">12pt</property>
                         <property name="fontWeight">bold</property>
                         <property name="textAlign">center</property>
-                        <property name="contentType">auto</property>
-                        <text-property name="content"><![CDATA[集 团
-公 用]]></text-property>
-                    </text>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">facno</property>
+                                <text-property name="displayName">facno</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["facno"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">facno</property>
+                    </data>
                 </cell>
                 <cell id="982">
                     <property name="colSpan">1</property>
