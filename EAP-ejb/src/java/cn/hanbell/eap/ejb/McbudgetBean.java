@@ -43,10 +43,18 @@ public class McbudgetBean extends SuperEJBForEAP<Mcbudget> {
         query.setParameter("period", period);
         query.setParameter("centerid", centerid);
         query.setParameter("budgetacc", budgetacc);
-        query.setParameter("preamts", preamts);
         try {
-            return (Mcbudget) query.getSingleResult();
+            Mcbudget m = (Mcbudget) query.getSingleResult();
+            if (null == m) {
+                return null;
+            }
+            if (m.getPreamts().compareTo(preamts) == 0) {
+                return (Mcbudget) query.getSingleResult();
+            } else {
+                return null;
+            }
         } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
     }

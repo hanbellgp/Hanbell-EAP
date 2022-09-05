@@ -635,7 +635,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 for (Mcbudget mcbudget : mcbudgets) {
                     bd = bd.add(mcbudget.getPreamts());
                 }
-                if (bd.doubleValue() != mc.getTotaltaxInclusiveRMB()) {
+                if (bd.compareTo(BigDecimal.valueOf(mc.getTotaltaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP)) !=0) {
                     code = 107;
                     msg = "费用明细与预算中间表预扣不一致";
                     return new MCResponseData(code, msg);
@@ -1113,8 +1113,8 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 py.setMy003(my003);
                 py.setMy004(py.getUsrGroup());
                 py.setMy005(py.getCreator());
-                py.setMy006(mc.getCoin());
-                py.setMy007("1");
+                py.setMy006(coin);
+                py.setMy007(ratio.toString());
                 py.setMy008(total);  //本币总金额
                 py.setMy009("Y");
                 py.setMy010(py.getCreator());

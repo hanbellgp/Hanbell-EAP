@@ -276,7 +276,8 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                             }
                             cdta.setShpqy1(BigDecimal.valueOf(Double.parseDouble(d.getQty())));
                             cdta.setShpqy2(BigDecimal.ZERO);
-                            cdta.setArmqy(cdmas.getArmqy());
+                            //cdta.setArmqy(cdmas.getArmqy());
+                            cdta.setArmqy(cdta.getShpqy1());   //应收账款数量（单单位）
                             cdta.setUnpris(cdmas.getUnpris());
                             cdta.setUnprisrccode(cdmas.getUnprisrccode());
                             cdta.setShpamts(cdta.getUnpris().multiply(cdta.getShpqy1()));
