@@ -170,6 +170,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             String facno = entity.getFacno();
             budgetDetailBean.setCompany(facno);
             budgetCenterBean.setCompany(facno);
+            double totalRefund = 0.00;
             if (!reds.isEmpty()) {
                 int seq = 0;
                 for (MCHZCW033reDetail re : reds) {
@@ -211,6 +212,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     rem.setEntertainReason(re.getEntertainReason() != null ? re.getEntertainReason() : "");
                     rem.setCenterid(re.getCenterid());
                     rem.setRemark(re.getRemark());
+                    totalRefund += re.getRefund();
                     rems.add(rem);
                 }
             }
@@ -263,20 +265,27 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             m.setAppDept(entity.getAppDept());
             m.setCRMNO(entity.getCrmno() != null ? entity.getCrmno() : "");
             m.setTotaltaxInclusive(entity.getTotaltaxInclusive());
-            m.setTotalnotaxesRMB(entity.getTotalnotaxesRMB());
-            m.setTotaltaxesRMB(entity.getTotaltaxesRMB());
-            m.setTotaltaxInclusiveRMB(entity.getTotaltaxInclusiveRMB());
-            m.setCoin(entity.getCoin());
-            //m.setRatio(entity.getRatio());
-            if ("RMB".equals(entity.getCoin())) {
-                m.setRatio(1.000);
+            String coin = entity.getCoin();
+            BigDecimal ratio = BigDecimal.ONE;
+            if (null == coin || "".equals(coin) || "RMB".equals(coin)) {
+                ratio = BigDecimal.ONE;
+                m.setTotalnotaxesRMB(entity.getTotalnotaxesRMB());
+                m.setTotaltaxesRMB(entity.getTotaltaxesRMB());
+                m.setTotaltaxInclusiveRMB(entity.getTotaltaxInclusiveRMB());
             } else {
-                misrateBean.setCompany(m.getFacno());
-                Misrate misrate = misrateBean.findByCoin(entity.getCoin());
+                misrateBean.setCompany("C");
+                Misrate misrate = misrateBean.findByCoin(coin);
                 if (misrate != null) {
-                    m.setRatio(misrate.getRate().doubleValue());
+                    ratio = misrate.getRate();
+                    BigDecimal totalRMB = BigDecimal.valueOf(entity.getTotaltaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    m.setTotalnotaxesRMB(totalRMB.doubleValue());
+                    m.setTotaltaxesRMB(0.00);
+                    m.setTotaltaxInclusiveRMB(totalRMB.doubleValue());
                 }
             }
+            m.setCoin(coin);
+            m.setRatio(ratio.doubleValue());
+            //m.setRatio(entity.getRatio());
             BudgetCenter budgetCenter = budgetCenterBean.findByDeptid(m.getAppDept());
             m.setDeptPeriod(budgetDetailBean.getBudgetBalanceForDeptPeriod(facno, date, budgetCenter.getBudgetCenterPK().getCenterid()));
             m.setDeptYear(budgetDetailBean.getBudgetBalanceForDeptYear(facno, date, budgetCenter.getBudgetCenterPK().getCenterid()));
@@ -286,6 +295,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             m.setCreator(entity.getCreator());
             m.setSrcno(entity.getSrcno());
             m.setDeptqx("");
+            m.setTotalRefund(totalRefund);
             m.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
             //发起流程
             String formInstance = workFlowBean.buildXmlForEFGP("HZ_CW033", m, details);
@@ -625,7 +635,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 for (Mcbudget mcbudget : mcbudgets) {
                     bd = bd.add(mcbudget.getPreamts());
                 }
-                if (bd.doubleValue() != mc.getTotaltaxInclusiveRMB()) {
+                if (bd.compareTo(BigDecimal.valueOf(mc.getTotaltaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP)) != 0) {
                     code = 107;
                     msg = "费用明细与预算中间表预扣不一致";
                     return new MCResponseData(code, msg);

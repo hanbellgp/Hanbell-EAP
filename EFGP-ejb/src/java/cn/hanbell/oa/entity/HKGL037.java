@@ -11,8 +11,10 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -209,6 +211,10 @@ public class HKGL037 implements Serializable {
     @Size(max = 255)
     @Column(name = "isPrint")
     private String isPrint;
+    
+    @JoinColumn(name = "processSerialNumber", referencedColumnName = "serialNumber", insertable = false, updatable = false)
+    @OneToOne
+    private ProcessInstance processInstance;
 
     public HKGL037() {
     }
@@ -592,6 +598,14 @@ public class HKGL037 implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.ejb.HKGL037[ oid=" + oid + " ]";
+    }
+
+    public ProcessInstance getProcessInstance() {
+        return processInstance;
+    }
+
+    public void setProcessInstance(ProcessInstance processInstance) {
+        this.processInstance = processInstance;
     }
 
 }

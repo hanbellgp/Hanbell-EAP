@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mcbudget.findAll", query = "SELECT m FROM Mcbudget m"),
     @NamedQuery(name = "Mcbudget.findById", query = "SELECT m FROM Mcbudget m WHERE m.id = :id"),
     @NamedQuery(name = "Mcbudget.findByProperties", query = "SELECT m FROM Mcbudget m WHERE m.type = :type AND m.srcno = :srcno AND m.facno = :facno "
-            + " AND m.period = :period AND m.centerid = :centerid AND  m.budgetacc = :budgetacc AND m.preamts = :preamts"),
+            + " AND m.period = :period AND m.centerid = :centerid AND  m.budgetacc = :budgetacc"),
     @NamedQuery(name = "Mcbudget.findBySrcno", query = "SELECT m FROM Mcbudget m WHERE m.srcno = :srcno"),
     @NamedQuery(name = "Mcbudget.findByCrmno", query = "SELECT m FROM Mcbudget m WHERE m.crmno = :crmno"),
     @NamedQuery(name = "Mcbudget.findByFacno", query = "SELECT m FROM Mcbudget m WHERE m.facno = :facno"),
@@ -112,6 +112,15 @@ public class Mcbudget implements Serializable {
         this.centerid = centerid;
         this.budgetacc = budgetacc;
         this.preamts = preamts;
+    }
+
+    public Mcbudget(String type, String srcno, String facno, String period, String centerid, String budgetacc) {
+        this.type = type;
+        this.srcno = srcno;
+        this.facno = facno;
+        this.period = period;
+        this.centerid = centerid;
+        this.budgetacc = budgetacc;
     }
 
     public Mcbudget(String type, String srcno, String facno, String period, String centerid, String budgetacc, BigDecimal preamts) {

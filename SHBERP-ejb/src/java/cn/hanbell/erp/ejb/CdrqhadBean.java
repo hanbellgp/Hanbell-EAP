@@ -138,7 +138,7 @@ public class CdrqhadBean extends SuperEJBForERP<Cdrqhad> {
             this.setCompany(facno);
             Cdrqhad cdrqhad = this.findByQuono(h.getQuono());
             if (cdrqhad != null) {
-                cdrqhad.setHquosta('W');
+                cdrqhad.setHquosta('N');
                 cdrqhad.setOacfuser("");
                 update(cdrqhad);
                 //如果是CRM抛转单据，反写CRM状态

@@ -142,6 +142,7 @@ import cn.hanbell.oa.model.SHBERPAPM811DetailModel;
 import cn.hanbell.oa.model.SHBERPAPM811Model;
 import cn.hanbell.oa.model.SHBERPAPM828DetailModel;
 import cn.hanbell.oa.model.SHBERPAPM828Model;
+import cn.hanbell.plm.ejb.PLMItnbrDetailTempBean;
 import cn.hanbell.plm.ejb.PLMItnbrMasterTempBean;
 import cn.hanbell.plm.entity.PLMItnbrDetailTemp;
 import cn.hanbell.plm.entity.PLMItnbrMasterTemp;
@@ -336,6 +337,8 @@ public class TimerBean {
     // EJBForPLM
     @EJB
     private PLMItnbrMasterTempBean plmItnbrMasterTempBean;
+    @EJB
+    private PLMItnbrDetailTempBean plmItnbrDetailTempBean;
 
     @Resource
     TimerService timerService;
@@ -991,6 +994,8 @@ public class TimerBean {
                     fromTHB = pm.getProno().equals("A") || pm.getProno().equals("B");
                     plmDetailList = plmItnbrMasterTempBean.findNeedThrowDetail(pm.getItemNumber());
                     if (plmDetailList != null && !plmDetailList.isEmpty()) {
+                        invmasBean.setCompany(pm.getProno());
+                        List<Invmas> stopList = new ArrayList<>();
                         detailList.clear();// 清除前面的资料
                         i = 0;
                         for (PLMItnbrDetailTemp pd : plmDetailList) {
@@ -1024,16 +1029,32 @@ public class TimerBean {
                             d.setYt("");
                             d.setRemark("");
                             detailList.add(d);
-                        }
-                        if (fromTHB) {
-                            workFlowBean.initUserInfo("C1526");// THB申请的品号转入SHB暂时由唐倩处理
-                        } else {
-                            workFlowBean.initUserInfo(pm.getApplicant());
+
+                            //加入工程变更通知单作废变更前件号逻辑
+                            String ecitnbr = pd.getEcItnbr();
+                            if (null != ecitnbr && !"".equals(ecitnbr) && "N".equals(pd.getCStopyn())) {
+                                Invmas item = invmasBean.findByItnbr(ecitnbr);
+                                if (item != null) {
+                                    item.setItdsc("#" + item.getItdsc());
+                                    item.setStopyn("AAAAAAAAAAAAA");
+                                    item.setNStopyn("N");
+                                    item.setNEcnnewitnbr(pd.getCItnbr());
+                                    item.setNEcnno(pd.getItemNumber());
+                                    stopList.add(item);
+                                    //刷新中间表表身停用状态
+                                    pd.setCStopyn('Y');
+                                    plmItnbrDetailTempBean.update(pd);
+                                }
+                            }
                         }
                         m = new HZJS034Model();
                         if (fromTHB) {
-                            m.setFacno("C");// THB申请的品号转入SHB
+                            //workFlowBean.initUserInfo("C1526");// THB申请的品号转入SHB暂时由唐倩处理
+                            //ec_worker ECN指配承办
+                            workFlowBean.initUserInfo(pm.getEcWorker());
+                            m.setFacno(pm.getEcWorker().substring(0, 1));  //设置承办人发起公司别
                         } else {
+                            workFlowBean.initUserInfo(pm.getCApplicant()); //上海厂开单人
                             m.setFacno(pm.getProno());
                         }
                         m.setEmpl(workFlowBean.getCurrentUser().getId());
@@ -1057,6 +1078,25 @@ public class TimerBean {
                             plmItnbrMasterTempBean.update(pm);
                             plmItnbrMasterTempBean.getEntityManager().flush();
                         }
+                        if (!stopList.isEmpty()) {
+                            invmasBean.update(stopList);
+                            invmasBean.getEntityManager().flush();
+                            if (pm.getProno().equals("C")) {
+                                invmasBean.setCompany("G");
+                                invmasBean.update(stopList);
+                                invmasBean.getEntityManager().flush();
+                                invmasBean.setCompany("J");
+                                invmasBean.update(stopList);
+                                invmasBean.getEntityManager().flush();
+                                invmasBean.setCompany("N");
+                                invmasBean.update(stopList);
+                                invmasBean.getEntityManager().flush();
+                                invmasBean.setCompany("C4");
+                                invmasBean.update(stopList);
+                                invmasBean.getEntityManager().flush();
+                            }
+                        }
+
                     } else {
                         //如果表头有数据，表身无，则刷新表头状态为已抛‘Y’
                         PLMItnbrMasterTemp plmt = plmItnbrMasterTempBean.findByItemNumber(pm.getItemNumber());
@@ -1181,8 +1221,8 @@ public class TimerBean {
                             dm.setSpdsc(filterString(invmas.getSpdsc()));
                             dm.setQuaqy1(d.getQuaqy1().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                             dm.setUnpris(d.getUnpris().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-                            if (d.getOldpri() != null) {
-                                dm.setLastunpri(d.getOldpri().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            if (d.getListunpri() != null) {
+                                dm.setLastunpri(d.getListunpri().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                             } else {
                                 dm.setLastunpri("0");
                             }
