@@ -49,29 +49,51 @@ public class SalarySendBean extends SuperEJBForEAP<SalarySend> {
     }
 
     public SalarySend findByTaskNameAndEmployeeid(String taskname, String employeeid) {
-        StringBuffer sql=new StringBuffer("SELECT * FROM SalarySend s WHERE s.taskname ='");
+        StringBuffer sql = new StringBuffer("SELECT * FROM SalarySend s WHERE s.taskname ='");
         sql.append(taskname).append("'");
-        sql.append( " and s.employeeid='").append(employeeid).append("'");
-        Query query = getEntityManager().createNativeQuery(sql.toString(),SalarySend.class);
+        sql.append(" and s.employeeid='").append(employeeid).append("'");
+        Query query = getEntityManager().createNativeQuery(sql.toString(), SalarySend.class);
         try {
             return (SalarySend) query.getSingleResult();
         } catch (Exception ex) {
             return null;
         }
     }
-    
+
     public String getTaskId(String taskid) {
         String ls_no = "";
         String ls_ta002 = "";
         String serial = "00";
         ls_ta002 = BaseLib.formatDate("yyyyMMdd", new Date());
         String sql = "SELECT * FROM salarysend WHERE taskid like '" + taskid + "%' GROUP BY taskid order by taskid DESC";
-        Query query = getEntityManager().createNativeQuery(sql,SalarySend.class);
+        Query query = getEntityManager().createNativeQuery(sql, SalarySend.class);
         List<SalarySend> result = query.getResultList();
         int m = 0;
         if (null != result && !result.isEmpty()) {
-            SalarySend s=result.get(0);
-            String sub=s.getTaskid().substring(s.getTaskid().length()-2);
+            SalarySend s = result.get(0);
+            String sub = s.getTaskid().substring(s.getTaskid().length() - 2);
+            m = Integer.valueOf(sub);
+            m = m + 1;
+        } else {
+            m = 1;
+        }
+        serial = serial + m;
+        serial = serial.substring(String.valueOf(m).length());
+        ls_no += taskid;
+        ls_no += serial;
+        return ls_no;
+    }
+
+    public String getEdwTaskId(String taskid) {
+        String ls_no = "";
+        String serial = "0000";
+        String sql = "SELECT * FROM salarysend WHERE taskid like '" + taskid + "%' GROUP BY taskid order by taskid DESC";
+        Query query = getEntityManager().createNativeQuery(sql, SalarySend.class);
+        List<SalarySend> result = query.getResultList();
+        int m = 0;
+        if (null != result && !result.isEmpty()) {
+            SalarySend s = result.get(0);
+            String sub = s.getTaskid().substring(s.getTaskid().length() - 4);
             m = Integer.valueOf(sub);
             m = m + 1;
         } else {
