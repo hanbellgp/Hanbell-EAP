@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author C0160
  */
 @Entity
-@Table(name = "PLM_ITNBR_DETAIL_TEMP")
+@Table(name = "PLM_ITNBR_DETAIL")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PLMItnbrDetailTemp.findAll", query = "SELECT p FROM PLMItnbrDetailTemp p"),
@@ -87,6 +87,11 @@ public class PLMItnbrDetailTemp implements Serializable {
     @Size(max = 8)
     @Column(name = "unmsre")
     private String unmsre;
+    @Size(max = 20)
+    @Column(name = "ec_itnbr")
+    private String ecItnbr;
+    @Column(name = "c_stopyn")
+    private Character cStopyn;
 
     public PLMItnbrDetailTemp() {
     }
@@ -246,6 +251,22 @@ public class PLMItnbrDetailTemp implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.plm.entity.PLMItnbrDetailTemp[ id=" + id + " ]";
+    }
+
+    public String getEcItnbr() {
+        return ecItnbr;
+    }
+
+    public void setEcItnbr(String ecItnbr) {
+        this.ecItnbr = ecItnbr;
+    }
+
+    public Character getCStopyn() {
+        return cStopyn;
+    }
+
+    public void setCStopyn(Character cStopyn) {
+        this.cStopyn = cStopyn;
     }
 
 }

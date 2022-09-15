@@ -170,6 +170,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             String facno = entity.getFacno();
             budgetDetailBean.setCompany(facno);
             budgetCenterBean.setCompany(facno);
+            double totalRefund = 0.00;
             if (!reds.isEmpty()) {
                 int seq = 0;
                 for (MCHZCW033reDetail re : reds) {
@@ -211,6 +212,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     rem.setEntertainReason(re.getEntertainReason() != null ? re.getEntertainReason() : "");
                     rem.setCenterid(re.getCenterid());
                     rem.setRemark(re.getRemark());
+                    totalRefund += re.getRefund();
                     rems.add(rem);
                 }
             }
@@ -263,20 +265,27 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             m.setAppDept(entity.getAppDept());
             m.setCRMNO(entity.getCrmno() != null ? entity.getCrmno() : "");
             m.setTotaltaxInclusive(entity.getTotaltaxInclusive());
-            m.setTotalnotaxesRMB(entity.getTotalnotaxesRMB());
-            m.setTotaltaxesRMB(entity.getTotaltaxesRMB());
-            m.setTotaltaxInclusiveRMB(entity.getTotaltaxInclusiveRMB());
-            m.setCoin(entity.getCoin());
-            //m.setRatio(entity.getRatio());
-            if ("RMB".equals(entity.getCoin())) {
-                m.setRatio(1.000);
+            String coin = entity.getCoin();
+            BigDecimal ratio = BigDecimal.ONE;
+            if (null == coin || "".equals(coin) || "RMB".equals(coin)) {
+                ratio = BigDecimal.ONE;
+                m.setTotalnotaxesRMB(entity.getTotalnotaxesRMB());
+                m.setTotaltaxesRMB(entity.getTotaltaxesRMB());
+                m.setTotaltaxInclusiveRMB(entity.getTotaltaxInclusiveRMB());
             } else {
-                misrateBean.setCompany(m.getFacno());
-                Misrate misrate = misrateBean.findByCoin(entity.getCoin());
+                misrateBean.setCompany("C");
+                Misrate misrate = misrateBean.findByCoin(coin);
                 if (misrate != null) {
-                    m.setRatio(misrate.getRate().doubleValue());
+                    ratio = misrate.getRate();
+                    BigDecimal totalRMB = BigDecimal.valueOf(entity.getTotaltaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    m.setTotalnotaxesRMB(totalRMB.doubleValue());
+                    m.setTotaltaxesRMB(0.00);
+                    m.setTotaltaxInclusiveRMB(totalRMB.doubleValue());
                 }
             }
+            m.setCoin(coin);
+            m.setRatio(ratio.doubleValue());
+            //m.setRatio(entity.getRatio());
             BudgetCenter budgetCenter = budgetCenterBean.findByDeptid(m.getAppDept());
             m.setDeptPeriod(budgetDetailBean.getBudgetBalanceForDeptPeriod(facno, date, budgetCenter.getBudgetCenterPK().getCenterid()));
             m.setDeptYear(budgetDetailBean.getBudgetBalanceForDeptYear(facno, date, budgetCenter.getBudgetCenterPK().getCenterid()));
@@ -286,6 +295,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             m.setCreator(entity.getCreator());
             m.setSrcno(entity.getSrcno());
             m.setDeptqx("");
+            m.setTotalRefund(totalRefund);
             m.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
             //发起流程
             String formInstance = workFlowBean.buildXmlForEFGP("HZ_CW033", m, details);
@@ -381,6 +391,16 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 code = 107;
                 msg = "传入币别数据无效";
                 return new MCResponseData(code, msg);
+            }
+            BigDecimal ratio = BigDecimal.ONE;
+            if (null == coin || "".equals(coin) || "RMB".equals(coin)) {
+                ratio = BigDecimal.ONE;
+            } else {
+                misrateBean.setCompany("C");
+                Misrate misrate = misrateBean.findByCoin(coin);
+                if (misrate != null) {
+                    ratio = misrate.getRate();
+                }
             }
             String srcno = mc.getSrcno();
             if (srcno == null || srcno.isEmpty()) {
@@ -514,7 +534,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 }
                 //检查报销单明细与费控中间表预扣是否一致
                 if (status == 1) {
-                    Boolean bool = mcbudgetBean.checkMcbudget("HZCW033", srcno, facno, period, centerid, budgetAcc, BigDecimal.valueOf(r.getTaxInclusive()));
+                    Boolean bool = mcbudgetBean.checkMcbudget("HZCW033", srcno, facno, period, centerid, budgetAcc, BigDecimal.valueOf(r.getTaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP));
                     if (bool == false) {
                         code = 107;
                         msg = "费用明细与预算中间表预扣不一致";
@@ -610,12 +630,12 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     msg = "此费控单号未关连预算";
                     return new MCResponseData(code, msg);
                 }
-                //检查费控中间表与报销总金额是否一致
+                //检查费控中间表与报销总金额是否一致(本币)
                 BigDecimal bd = BigDecimal.ZERO;
                 for (Mcbudget mcbudget : mcbudgets) {
                     bd = bd.add(mcbudget.getPreamts());
                 }
-                if (bd.doubleValue() != mc.getTotaltaxInclusive()) {
+                if (bd.compareTo(BigDecimal.valueOf(mc.getTotaltaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP)) != 0) {
                     code = 107;
                     msg = "费用明细与预算中间表预扣不一致";
                     return new MCResponseData(code, msg);
@@ -644,6 +664,17 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             }
             List<MCHZCW033tDetail> travels = mc.getTravel_items();
             List<MCHZCW033reDetail> reDetails = mc.getItems();
+            String coin = mc.getCoin();
+            BigDecimal ratio = BigDecimal.ONE;
+            if (null == coin || "".equals(coin) || "RMB".equals(coin)) {
+                ratio = BigDecimal.ONE;
+            } else {
+                misrateBean.setCompany("C");
+                Misrate misrate = misrateBean.findByCoin(coin);
+                if (misrate != null) {
+                    ratio = misrate.getRate();
+                }
+            }
             //销售人员用“YXJL”标识类别
             if ("YXJL".equals(crmtype)) {
                 SALFI salfi = salfiBean.findByPK(crmno);
@@ -811,8 +842,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         pz.setMz007(f.getSALFTPK().getFt002());
                         pz.setMz008(my003);
                         pz.setMz009(f.getFt007());
-                        pz.setMz010(mc.getCoin());  //币别
-                        pz.setMz011(BigDecimal.valueOf(mc.getRatio()));    //汇率
+                        pz.setMz010(coin);  //币别
+                        pz.setMz011(ratio);    //汇率
                         pz.setMz016(f.getFt006());
                         pz.setMz017(f.getFt006());
                         pz.setMz018(f.getFt006());
@@ -842,8 +873,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     py.setMy003(my003);
                     py.setMy004(py.getUsrGroup());
                     py.setMy005(py.getCreator());
-                    py.setMy006(mc.getCoin());
-                    py.setMy007("1");
+                    py.setMy006(coin);
+                    py.setMy007(ratio.toString());
                     py.setMy008(total);  //本币总金额
                     py.setMy009("Y");
                     py.setMy010(py.getCreator());
@@ -1078,8 +1109,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 py.setMy003(my003);
                 py.setMy004(py.getUsrGroup());
                 py.setMy005(py.getCreator());
-                py.setMy006(mc.getCoin());
-                py.setMy007("1");
+                py.setMy006(coin);
+                py.setMy007(ratio.toString());
                 py.setMy008(total);  //本币总金额
                 py.setMy009("Y");
                 py.setMy010(py.getCreator());

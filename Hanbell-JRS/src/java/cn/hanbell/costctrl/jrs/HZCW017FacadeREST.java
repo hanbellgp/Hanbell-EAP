@@ -117,7 +117,7 @@ public class HZCW017FacadeREST extends SuperREST<HZCW017> {
             la.setCreator(entity.getLoanUser());
             la.setReason(entity.getReason());
             la.setCoin(entity.getCoin());
-            if ("RMB".endsWith(entity.getCoin())) {
+            if ("RMB".equals(entity.getCoin())) {
                 la.setRatio(1.000);
             } else {
                 misrateBean.setCompany(la.getFacno());
