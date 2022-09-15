@@ -158,6 +158,9 @@ public class HKCW005 implements Serializable {
     @Column(name = "fkxz")
     private String fkxz;
     @Size(max = 255)
+    @Column(name = "fkxz2")
+    private String fkxz2;
+    @Size(max = 255)
     @Column(name = "dept")
     private String dept;
     @Size(max = 255)
@@ -474,6 +477,14 @@ public class HKCW005 implements Serializable {
 
     public void setFkxz(String fkxz) {
         this.fkxz = fkxz;
+    }
+
+    public String getFkxz2() {
+        return fkxz2;
+    }
+
+    public void setFkxz2(String fkxz2) {
+        this.fkxz2 = fkxz2;
     }
 
     public String getDept() {
