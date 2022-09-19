@@ -2202,10 +2202,10 @@ public class TimerBean {
         this.createERPCDR310ByExchPUR415("C", "STW00003", "00", "A", "86005-1", "20200430");// THB->SHB Service
         this.createERPCDR310ByExchPUR415("K", "KTW00004", "00", "A", "86010 ", "20200408");// THB->Comer
         this.createERPCDR310ByExchPUR415("H", "HTW00001", "00", "A", "1139 ", "20200408");// THB->Hanson
-        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00247", "C", "SZJ00065", "SSH01164", "20220201",
-                false);// 卓准
-        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HHB00007", "C", "SZJ00065", "SHB00016", "20220201",
-                false);// 恒工
+//        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00247", "C", "SZJ00065", "SSH01164", "20220201",
+//                false);// 卓准
+//        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HHB00007", "C", "SZJ00065", "SHB00016", "20220201",
+//                false);// 恒工
         // 转给台湾
         this.syncERPPUR410ToExchange("C", "STW00007", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("C", "STW00035", "20200408");// SHB->Exch
@@ -3127,27 +3127,22 @@ public class TimerBean {
                             cd.setCdrqy1(pd.getPoqy1());// 需要处理单位换算问题
                             cd.setCdrqy2(pd.getPoqy2());
                             cd.setArmqy(pd.getApmqy());
-                            // 汉声接收到汉钟的订单上调10%的四舍五入
-                            cd.setUnpris(
-                                    pd.getUnpris().multiply(new BigDecimal("1.1")).setScale(2, RoundingMode.HALF_UP));
+                            cd.setUnpris(pd.getUnpris());
                             cd.setOutdate(pd.getAskdate());
                             cd.setCdrdate(pd.getAskdate());
-                            cd.setTramts(cd.getCdrqy1().multiply(cd.getUnpris()).setScale(2, RoundingMode.HALF_UP));
+                            cd.setTramts(pd.getTramts());
                             cd.setDrecsta("20");
                             cd.setUnprisrccode('1');
                             addedCdrdmas.add(cd);
                             // 计算合计金额
-                            // tramts = tramts.add(pd.getTramts());
-                            tramts = tramts.add(cd.getTramts());
-                            // totamts = totamts.add(pd.getTramts());
-                            totamts = totamts.add(cd.getTramts());
+                            tramts = tramts.add(pd.getTramts());
+                            totamts = totamts.add(pd.getTramts());
                         }
                     }
                     log4j.info("产生ThirdParty订单开始");
                     // 处理订单逻辑
-                    indate = com.lightshell.comm.BaseLib.getDate();
-                    recdate = com.lightshell.comm.BaseLib.getDate("yyyy-MM-dd",
-                            com.lightshell.comm.BaseLib.formatDate("yyyy-MM-dd", indate));
+                              indate = com.lightshell.comm.BaseLib.getDate();
+                    recdate = com.lightshell.comm.BaseLib.getDate("yyyy-MM-dd", com.lightshell.comm.BaseLib.formatDate("yyyy-MM-dd", indate));
                     if (!addedCdrdmas.isEmpty()) {
                         // 设置邮件收件人
                         if (secuser.getEmail() != null && !"".equals(secuser.getEmail().trim())) {
@@ -3243,24 +3238,6 @@ public class TimerBean {
                         nph.setTrivdrno(vdrno);
                         nph.setFromcdrno(pono);
                         nph.setFromcusno(purvdr.getVdrna());
-                        // 汉钟——》汉声的采购单调整
-                        switch (ph.getTax()) {
-                            case '1':
-                                nph.setPoamts(tramts);
-                                nph.setTaxamts(tramts.multiply(ch.getTaxrate()));
-                                nph.setTotamts(nph.getPoamts().add(nph.getTaxamts()));
-                                break;
-                            case '4':
-                                nph.setPoamts(
-                                        totamts.divide(nph.getTaxrate().add(BigDecimal.ONE), 2, RoundingMode.HALF_UP));
-                                nph.setTaxamts(totamts.subtract(nph.getPoamts()));
-                                nph.setTotamts(totamts);
-                                break;
-                            default:
-                                nph.setPoamts(tramts);
-                                nph.setTaxamts(BigDecimal.ZERO);
-                                nph.setTotamts(tramts);
-                        }
                         pursysBean.setCompany(facno);
                         purhadBean.setCompany(facno);
                         purdtaBean.setCompany(facno);
@@ -3270,10 +3247,10 @@ public class TimerBean {
                         purhadBean.persist(nph);
                         purhadBean.getEntityManager().flush();
                         for (Purdta e : npdList) {
-                            // 汉钟——》汉声的采购单调整单价上调10%
-                            e.setUnpris(
-                                    e.getUnpris().multiply(new BigDecimal("1.1")).setScale(2, RoundingMode.HALF_UP));
-                            e.setTramts(e.getUnpris().multiply(e.getPoqy1()).setScale(2, RoundingMode.HALF_UP));
+//                            // 汉钟——》汉声的采购单调整单价上调10%
+//                            e.setUnpris(
+//                                    e.getUnpris().multiply(new BigDecimal("1.1")).setScale(2, RoundingMode.HALF_UP));
+//                            e.setTramts(e.getUnpris().multiply(e.getPoqy1()).setScale(2, RoundingMode.HALF_UP));
                             e.setPurdtaPK(
                                     new PurdtaPK(facno, e.getPurdtaPK().getProno(), npono, e.getPurdtaPK().getTrseq()));
                             purdtaBean.persist(e);

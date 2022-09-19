@@ -79,6 +79,7 @@ public class SalarySend extends SuperEntity {
     private Date confirmtime;
 
     public SalarySend() {
+        this.status="N";
     }
 
     public SalarySend(Integer id) {
