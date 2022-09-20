@@ -67,6 +67,7 @@ public class SHBERPAPM811Model implements Serializable {
     private String vdrno;
     private Double sumivopsfs;
     private Double sumivomsfs;
+    private String isAttachment;
 
     public SHBERPAPM811Model() {
         this.trapyh = "";
@@ -499,6 +500,14 @@ public class SHBERPAPM811Model implements Serializable {
 
     public void setSum_apamtfs(BigDecimal sum_apamtfs) {
         this.sum_apamtfs = sum_apamtfs;
+    }
+
+    public String getIsAttachment() {
+        return isAttachment;
+    }
+
+    public void setIsAttachment(String isAttachment) {
+        this.isAttachment = isAttachment;
     }
 
 }
