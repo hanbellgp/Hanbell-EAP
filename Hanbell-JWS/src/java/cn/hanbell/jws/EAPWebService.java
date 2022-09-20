@@ -1701,6 +1701,22 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "updateERPAPM820ByOAHKCW013")
+    public String updateERPAPM820ByOAHKCW013(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+        Boolean ret = false;
+        try {
+            ret = apmaphBean.updateERPAPM820ByOAHKCW013(psn, status);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM820ByOAHKCW013", psn), ex);
+            throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "createERPCDR645ByOAHKFW005")
     public String createERPCDR645ByOAHKFW005(@WebParam(name = "psn") String psn) {
         Boolean ret = false;

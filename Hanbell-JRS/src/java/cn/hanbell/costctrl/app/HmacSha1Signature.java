@@ -63,7 +63,7 @@ public class HmacSha1Signature {
             }
             long n = new Date().getTime();
             int minutes = (int) ((n - time_stamp) / (1000 * 60));
-            if (minutes > MINUTE || minutes < 0) {
+            if (minutes > MINUTE || minutes < -60) {
                 return false;
             }
             String lsign = HmacSha1Signature.calculateRFC2104HMAC(appid + time_stamp, KEY);
