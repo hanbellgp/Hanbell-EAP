@@ -145,7 +145,7 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
      *
      * @param psn 流程序号
      */
-    public Boolean updateERPAPM820ByOAHKCW013(String psn) {
+    public Boolean updateERPAPM820ByOAHKCW013(String psn, String status) {
         HKCW013 oah = hkcw013Bean.findByPSN(psn);
         if (oah == null) {
             throw new NullPointerException(psn);
@@ -158,18 +158,25 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
         if (aph == null || !aph.getApsta().equals("25")) {
             throw new NullPointerException(apno);
         }
-        aph.setApsta("20");
-        // 更新apusrno,cfmusrno为OA审核人
-        aph.setOano(oah.getProcessSerialNumber().substring(4));
-        List<ProcessCheck> processList;
-        processList = processCheckBean.findByPSN(psn);
-        for (ProcessCheck pc : processList) {
-            if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
-                aph.setApusrno(pc.getUserID());
+        //"3"流程完成, "1"流程撤销
+        if ("3".equals(status)) {
+            aph.setApsta("20");
+            // 更新apusrno,cfmusrno为OA审核人
+            aph.setOano(oah.getProcessSerialNumber().substring(4));
+            List<ProcessCheck> processList;
+            processList = processCheckBean.findByPSN(psn);
+            for (ProcessCheck pc : processList) {
+                if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
+                    aph.setApusrno(pc.getUserID());
+                }
+                if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
+                    aph.setCfmusrno(pc.getUserID());
+                }
             }
-            if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
-                aph.setCfmusrno(pc.getUserID());
-            }
+        } else if ("1".equals(status)) {
+            aph.setOano("");
+            aph.setApsta("20");
+            aph.setPzsta(' ');
         }
         update(aph);
         return true;
