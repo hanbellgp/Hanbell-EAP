@@ -5,6 +5,8 @@
  */
 package cn.hanbell.jws;
 
+import cn.hanbell.eap.ejb.SystemUserBean;
+import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.erp.ejb.ApmpayBean;
 import cn.hanbell.erp.ejb.BudgetDetailBean;
 import cn.hanbell.erp.ejb.CdrbrhadBean;
@@ -15,17 +17,39 @@ import cn.hanbell.erp.ejb.InvbatBean;
 import cn.hanbell.erp.ejb.InvclsBean;
 import cn.hanbell.erp.ejb.InvhadBean;
 import cn.hanbell.erp.ejb.InvmasBean;
+import cn.hanbell.erp.ejb.InvsafqyBean;
+import cn.hanbell.erp.ejb.InvsysBean;
+import cn.hanbell.erp.ejb.ManmotBean;
+import cn.hanbell.erp.ejb.ManpihBean;
+import cn.hanbell.erp.ejb.PurdisBean;
+import cn.hanbell.erp.ejb.PurdtaBean;
 import cn.hanbell.erp.ejb.PurhaskBean;
 import cn.hanbell.erp.ejb.PurvdrBean;
+import cn.hanbell.erp.entity.Invbal;
+import cn.hanbell.erp.entity.Invsafqy;
+import cn.hanbell.erp.entity.Invsys;
+import cn.hanbell.erp.entity.Manmot;
+import cn.hanbell.erp.entity.Purdis;
 import cn.hanbell.oa.ejb.HZCW028Bean;
 import cn.hanbell.oa.ejb.HZCW033Bean;
+import cn.hanbell.oa.ejb.WorkFlowBean;
+import cn.hanbell.oa.model.HZPB131DetailModel;
+import cn.hanbell.oa.model.HZPB131Model;
+import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import javax.ejb.EJB;
-import javax.jws.WebService;
+import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import javax.ejb.Stateless;
+import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.Style;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -69,6 +93,8 @@ public class SHBERPWebService {
     private PurhaskBean purhaskBean;
     @EJB
     private PurvdrBean purvdrBean;
+    @EJB
+    private ManmotBean manmotBean;
 
     private final Logger log4j = LogManager.getLogger("cn.hanbell.eap");
 
@@ -555,4 +581,18 @@ public class SHBERPWebService {
         }
     }
 
+    @WebMethod(operationName = "updateMAN345ByOAPSN")
+    public String updateMAN345ByOAPSN(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+        Boolean ret = false;
+        try {
+            ret = manmotBean.updateByOAPSN(psn, status);
+        } catch (Exception ex) {
+            log4j.error("updatePUR120ByOAPSN时异常", ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
 }
