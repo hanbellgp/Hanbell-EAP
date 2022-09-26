@@ -78,6 +78,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             m.setApplyDate(BaseLib.getDate());
             m.setApplyUser(workFlowBean.getCurrentUser().getId());
             m.setHdn_applyUser(workFlowBean.getCurrentUser().getUserName());
+            m.setSrcno("WX");
             OrganizationUnit ou = workFlowBean.findOrgUnitByDeptno(entity.getApplyDept());
             if (ou == null) {
                 throw new NullPointerException(entity.getApplyDept() + "不存在");
