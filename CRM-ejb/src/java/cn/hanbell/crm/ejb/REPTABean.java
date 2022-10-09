@@ -61,7 +61,7 @@ public class REPTABean extends SuperEJBForCRM<REPTA> {
     }
 
     public List<Object[]> getReptaByTA001AndTA031(String ta001, String ta002) {
-        StringBuffer sql = new StringBuffer("SELECT top 50 TA002,TA003,TA004,TA009,TA005,TA006,TA007,TA013, TA500 ,TA197,TA198,TA071,TA010,TA017 FROM REPTA WHERE TA001=? and TA031='0' and TA035='1' ");
+        StringBuffer sql = new StringBuffer("SELECT top 50 TA002,TA003,TA004,TA009,TA005,TA006,TA007,TA013, TA500 ,TA197,TA198,TA071,TA010,TA017 FROM REPTA WHERE TA001=? and TA031='0' and TA035='1'  and TA030='Y'  and TA014='Y'");
         if (ta002 != null && !"".equals(ta002)) {
             sql = sql.append(" and TA002 like '%").append(ta002).append("%'");
         }
