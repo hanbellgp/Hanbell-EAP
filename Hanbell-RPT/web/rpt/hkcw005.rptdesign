@@ -129,6 +129,11 @@
                     <property name="name">grid1</property>
                     <property name="dataType">integer</property>
                 </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">fkxz2</property>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
@@ -181,6 +186,9 @@
                 </structure>
                 <structure>
                     <property name="columnName">grid1</property>
+                </structure>
+                <structure>
+                    <property name="columnName">fkxz2</property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
@@ -270,6 +278,11 @@
                         <property name="name">grid1</property>
                         <property name="dataType">integer</property>
                     </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">fkxz2</property>
+                        <property name="dataType">string</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">scriptDS</property>
@@ -319,6 +332,7 @@ if (currentRow<6){
       	dataSetRow["vdrno"] =master.getVdrno();
       	dataSetRow["fkfs"] =master.getFkfs();
       	dataSetRow["fkxz"] =master.getFkxz();
+      	dataSetRow["fkxz2"] =master.getFkxz2();
       	dataSetRow["zy"] =detail.get(currentRow).getZy();
       	dataSetRow["fkje"] =detail.get(currentRow).getFkje();
       	dataSetRow["dept"] =detail.get(currentRow).getDept().getOrganizationUnitName();
@@ -343,6 +357,7 @@ if (currentRow<6){
       	dataSetRow["vdrno"] =master.getVdrno();
       	dataSetRow["fkfs"] =master.getFkfs();
       	dataSetRow["fkxz"] =master.getFkxz();
+      	dataSetRow["fkxz2"] =master.getFkxz2();
         currentRow++;
         return true;
 	}
@@ -365,6 +380,7 @@ if (currentRow<6){
       	dataSetRow["vdrno"] =master.getVdrno();
       	dataSetRow["fkfs"] =master.getFkfs();
       	dataSetRow["fkxz"] =master.getFkxz();
+      	dataSetRow["fkxz2"] =master.getFkxz2();
       	dataSetRow["zy"] =detail.get(currentRow).getZy();
       	dataSetRow["fkje"] =detail.get(currentRow).getFkje();
       	dataSetRow["dept"] =detail.get(currentRow).getDept().getOrganizationUnitName();
@@ -914,6 +930,24 @@ return false;]]></method>
                     <property name="dataType">string</property>
                     <property name="allowExport">true</property>
                 </structure>
+                <structure>
+                    <property name="name">color17</property>
+                    <expression name="expression" type="javascript">dataSetRow["fkxz2"]=="10"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color18</property>
+                    <expression name="expression" type="javascript">dataSetRow["fkxz2"]=="11"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color19</property>
+                    <expression name="expression" type="javascript">dataSetRow["fkxz2"]=="12"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
             <column id="1247">
                 <property name="width">2.8cm</property>
@@ -956,10 +990,12 @@ return false;]]></method>
                     </text>
                 </cell>
             </row>
-            <row id="1252">
+            <row id="1478">
                 <property name="verticalAlign">middle</property>
                 <property name="height">0.8cm</property>
-                <cell id="1253">
+                <cell id="1479">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">2</property>
                     <property name="borderLeftStyle">solid</property>
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
@@ -970,7 +1006,7 @@ return false;]]></method>
                         <text-property name="text">付款性质:</text-property>
                     </label>
                 </cell>
-                <cell id="1254">
+                <cell id="1480">
                     <property name="borderLeftStyle">solid</property>
                     <property name="borderLeftWidth">thin</property>
                     <property name="borderRightStyle">solid</property>
@@ -988,6 +1024,25 @@ return false;]]></method>
 <span style='background-color:<VALUE-OF>row["color13"]</VALUE-OF>'> □</span> 工会
 <span style='background-color:<VALUE-OF>row["color14"]</VALUE-OF>'> □</span> 分公司拨款
 <span style='background-color:<VALUE-OF>row["color15"]</VALUE-OF>'> □</span> 其他类]]></text-property>
+                    </text>
+                </cell>
+            </row>
+            <row id="1252">
+                <property name="verticalAlign">middle</property>
+                <property name="height">0.8cm</property>
+                <cell id="1254">
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="1481">
+                        <property name="textAlign">left</property>
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color17"]</VALUE-OF>'> □</span> 员工工资
+<span style='background-color:<VALUE-OF>row["color18"]</VALUE-OF>'> □</span> 劳务工资
+<span style='background-color:<VALUE-OF>row["color19"]</VALUE-OF>'> □</span> 工会经费
+]]></text-property>
                     </text>
                 </cell>
             </row>

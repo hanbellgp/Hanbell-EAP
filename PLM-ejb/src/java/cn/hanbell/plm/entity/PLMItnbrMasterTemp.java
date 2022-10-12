@@ -25,14 +25,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author C0160
  */
 @Entity
-@Table(name = "PLM_ITNBR_MASTER_TEMP")
+@Table(name = "PLM_ITNBR_MASTER")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PLMItnbrMasterTemp.findAll", query = "SELECT p FROM PLMItnbrMasterTemp p"),
     @NamedQuery(name = "PLMItnbrMasterTemp.findByItemNumber", query = "SELECT p FROM PLMItnbrMasterTemp p WHERE p.itemNumber = :itemNumber"),
     @NamedQuery(name = "PLMItnbrMasterTemp.findById", query = "SELECT p FROM PLMItnbrMasterTemp p WHERE p.id = :id"),
     @NamedQuery(name = "PLMItnbrMasterTemp.findByProno", query = "SELECT p FROM PLMItnbrMasterTemp p WHERE p.prono = :prono"),
-    @NamedQuery(name = "PLMItnbrMasterTemp.findNeedThrow", query = "SELECT p FROM PLMItnbrMasterTemp p WHERE p.prono<>'A' AND p.prono<>'B' AND p.prono<>'' AND (p.cTriggerYn <> 'Y' OR p.cTriggerYn is null)")})
+    @NamedQuery(name = "PLMItnbrMasterTemp.findNeedThrow", query = "SELECT p FROM PLMItnbrMasterTemp p WHERE p.cProno<>'A' AND p.cProno<>'B' AND p.cProno<>'' AND (p.cTriggerYn <> 'Y' OR p.cTriggerYn is null)"
+            + " union SELECT p FROM PLMItnbrMasterTemp p WHERE p.cProno in ('A','B') AND p.ecWorker<>'' AND p.type in ('E','D') AND (p.cTriggerYn <> 'Y' OR p.cTriggerYn is null)")})
 public class PLMItnbrMasterTemp implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -72,6 +73,21 @@ public class PLMItnbrMasterTemp implements Serializable {
     private String applyType;
     @Column(name = "c_trigger_yn")
     private Character cTriggerYn;
+    @Size(max = 128)
+    @Column(name = "ecnno")
+    private String ecnno;
+    @Size(max = 30)
+    @Column(name = "ec_worker")
+    private String ecWorker;
+    @Size(max = 3)
+    @Column(name = "c_prono")
+    private String cProno;
+    @Size(max = 30)
+    @Column(name = "c_applicant")
+    private String cApplicant;
+    @Size(max = 50)
+    @Column(name = "c_apply_dep")
+    private String cApplyDep;
 
     public PLMItnbrMasterTemp() {
     }
@@ -199,6 +215,46 @@ public class PLMItnbrMasterTemp implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.plm.entity.PLMItnbrMasterTemp[ id=" + id + " ]";
+    }
+
+    public String getEcnno() {
+        return ecnno;
+    }
+
+    public void setEcnno(String ecnno) {
+        this.ecnno = ecnno;
+    }
+
+    public String getEcWorker() {
+        return ecWorker;
+    }
+
+    public void setEcWorker(String ecWorker) {
+        this.ecWorker = ecWorker;
+    }
+
+    public String getCProno() {
+        return cProno;
+    }
+
+    public void setCProno(String cProno) {
+        this.cProno = cProno;
+    }
+
+    public String getCApplicant() {
+        return cApplicant;
+    }
+
+    public void setCApplicant(String cApplicant) {
+        this.cApplicant = cApplicant;
+    }
+
+    public String getCApplyDep() {
+        return cApplyDep;
+    }
+
+    public void setCApplyDep(String cApplyDep) {
+        this.cApplyDep = cApplyDep;
     }
 
 }

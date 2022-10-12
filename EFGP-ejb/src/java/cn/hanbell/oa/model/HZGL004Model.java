@@ -39,7 +39,7 @@ public class HZGL004Model {
     private String hdn_employee;
     private String isWechat;
     private String safeplace;
-
+    private String srcno;
     public HZGL004Model() {
 
     }
@@ -360,6 +360,14 @@ public class HZGL004Model {
 
     public void setSafeplace(String safeplace) {
         this.safeplace = safeplace;
+    }
+
+    public String getSrcno() {
+        return srcno;
+    }
+
+    public void setSrcno(String srcno) {
+        this.srcno = srcno;
     }
 
 }

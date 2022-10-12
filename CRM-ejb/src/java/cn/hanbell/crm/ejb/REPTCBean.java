@@ -202,11 +202,14 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
         sb.append("LEFT JOIN CRMGG ON GG001 = TC007 ");
         sb.append("LEFT JOIN SERBQ ON BQ001=TC054 AND BQ059<>3 ");
         sb.append("WHERE TC091=0 AND TC034<>'V' ");
-        sb.append("AND REPTC.CREATE_DATE>'20210101' AND TC016 ='").append(userId).append("'");
-        sb.append(" UNION ALL SELECT FI001,'',FI005,FI024,GG003 FROM SALFI ");
+        sb.append("AND REPTC.CREATE_DATE>'20160101' AND TC016 ='").append(userId).append("'");
+        sb.append(" UNION ALL SELECT FI001,'YXJL' as FI002,SALFI.CREATE_DATE,FI024,GG003 FROM SALFI ");
+        sb.append("LEFT JOIN SALFT ON FT001 =FI001  AND FT002='' ");
         sb.append("LEFT JOIN CRMGG ON CRMGG.GG001 =FI024 ");
-        sb.append("WHERE FI057=0 AND FI018='N' ");
-        sb.append("AND SALFI.CREATE_DATE>'20210101' ");
+        sb.append("WHERE FI057=0 AND FI018='Y' ");
+        sb.append("AND (FI084='N' OR FI084='') ");
+        sb.append("AND GG003<>'' ");
+        //sb.append("AND SALFI.CREATE_DATE>'20210101' ");
         sb.append("AND SALFI.FI004 = '").append(userId).append("'");
         Query query = getEntityManager().createNativeQuery(sb.toString());
         List result = query.getResultList();

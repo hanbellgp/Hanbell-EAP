@@ -36,6 +36,7 @@ public class HZCW033Model {
     private int days;
     private String deptqx; //流程部门
     private String userTitle;
+    private double totalRefund;
 
     public String getFacno() {
         return facno;
@@ -140,7 +141,7 @@ public class HZCW033Model {
     public void setRatio(double ratio) {
         this.ratio = ratio;
     }
-    
+
     public double getDeptPeriod() {
         return deptPeriod;
     }
@@ -203,6 +204,14 @@ public class HZCW033Model {
 
     public void setAppDate(String appDate) {
         this.appDate = appDate;
+    }
+
+    public double getTotalRefund() {
+        return totalRefund;
+    }
+
+    public void setTotalRefund(double totalRefund) {
+        this.totalRefund = totalRefund;
     }
 
 }

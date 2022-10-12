@@ -98,4 +98,22 @@ public class PurdtaBean extends SuperEJBForERP<Purdta> {
         return qty;
     }
 
+    public BigDecimal getUndeliveredQuantity(String facno, String itnbr) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" SELECT sum(purdta.poqy1)-sum(purdta.okqy1)");
+        sql.append(" FROM purdta,purhad");
+        sql.append(" WHERE  purhad.facno = purdta.facno  and purhad.pono = purdta.pono and purdta.dposta < '95'");
+        sql.append("  and purhad.facno='").append(facno).append("'");
+        sql.append("  and itnbr='").append(itnbr).append("'");
+        sql.append("  and purhad.hmark1 in( 'YW','',null)");
+
+        try {
+            Query q = this.getEntityManager().createNativeQuery(sql.toString());
+            BigDecimal result = (BigDecimal)q.getSingleResult();
+            return result == null ? BigDecimal.ZERO : result;
+        } catch (Exception var6) {
+            var6.printStackTrace();
+            return BigDecimal.ZERO;
+        }
+    }
 }
