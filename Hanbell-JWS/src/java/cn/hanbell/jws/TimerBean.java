@@ -3738,7 +3738,7 @@ public class TimerBean {
                 List<HZPB131DetailModel> detailList = new ArrayList();
                 LinkedHashMap<String, List<?>> details = new LinkedHashMap();
                 details.put("purDetail", detailList);
-                this.workFlowBean.initUserInfo((String) user[0]);
+              
                 HZPB131Model head = new HZPB131Model();
                 head.setFacno("C");
                 head.setApplyUser((String) user[0]);
@@ -3820,6 +3820,7 @@ public class TimerBean {
                     detailList.add(detail);
                 }
                 try {
+                    this.workFlowBean.initUserInfo((String) user[0]);
                     String formInstance = this.workFlowBean.buildXmlForEFGP("HZ_PB131", head, details);
                     String subject = BaseLib.formatDate("yyyyMMdd", new Date()) + "MAN345采购草稿签核表";
                     String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HZ_PB131", formInstance, subject);
