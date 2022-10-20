@@ -62,6 +62,9 @@ public class HKCW013Detail implements Serializable {
     @Column(name = "apdsc")
     private String apdsc;
     @Size(max = 255)
+    @Column(name = "acpamt")
+    private String acpamt;
+    @Size(max = 255)
     @Column(name = "budgetacc")
     private String budgetacc;
     @Size(max = 255)
@@ -88,6 +91,9 @@ public class HKCW013Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "ratio")
     private String ratio;
+        @Size(max = 255)
+    @Column(name = "payqty")
+    private String payqty;
 
     public HKCW013Detail() {
     }
@@ -111,6 +117,7 @@ public class HKCW013Detail implements Serializable {
     public void setCmpCenterid(String cmpCenterid) {
         this.cmpCenterid = cmpCenterid;
     }
+
     public String getDmark() {
         return dmark;
     }
@@ -133,6 +140,14 @@ public class HKCW013Detail implements Serializable {
 
     public void setApdsc(String apdsc) {
         this.apdsc = apdsc;
+    }
+
+    public String getAcpamt() {
+        return acpamt;
+    }
+
+    public void setAcpamt(String acpamt) {
+        this.acpamt = acpamt;
     }
 
     public String getBudgetacc() {
@@ -207,6 +222,14 @@ public class HKCW013Detail implements Serializable {
         this.ratio = ratio;
     }
 
+    public String getPayqty() {
+        return payqty;
+    }
+
+    public void setPayqty(String payqty) {
+        this.payqty = payqty;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -231,5 +254,5 @@ public class HKCW013Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKCW013Detail[ oid=" + oid + " ]";
     }
-    
+
 }

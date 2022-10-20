@@ -5,6 +5,7 @@
  */
 package cn.hanbell.oa.entity;
 
+import cn.hanbell.oa.ejb.WorkFlowBean;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -208,7 +209,10 @@ public class HKCW013 implements Serializable {
     @Size(max = 255)
     @Column(name = "ratio")
     private String ratio;
-
+    @Size(max = 255)
+    @Column(name = "cmp_sum_tax")
+    private String cmpSumTax;
+     
     public HKCW013() {
     }
 
@@ -568,6 +572,14 @@ public class HKCW013 implements Serializable {
         this.ratio = ratio;
     }
 
+    public String getCmpSumTax() {
+        return cmpSumTax;
+    }
+
+    public void setCmpSumTax(String cmpSumTax) {
+        this.cmpSumTax = cmpSumTax;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -592,5 +604,9 @@ public class HKCW013 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKCW013[ oid=" + oid + " ]";
     }
-    
+
+    public String getCompanyName() {
+        WorkFlowBean WorkFlowBean = new WorkFlowBean();
+        return WorkFlowBean.getCompanyName(this.facno);
+    }
 }
