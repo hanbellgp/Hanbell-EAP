@@ -23,6 +23,7 @@ public class HZPB131DetailModel implements Serializable {
     private String manNo;
     private String hdnManStatus;
     private String transferred;
+    private String first10MonthsAverage;
     public HZPB131DetailModel() {
     }
 
@@ -168,6 +169,14 @@ public class HZPB131DetailModel implements Serializable {
 
     public void setTransferred(String transferred) {
         this.transferred = transferred;
+    }
+
+    public String getFirst10MonthsAverage() {
+        return first10MonthsAverage;
+    }
+
+    public void setFirst10MonthsAverage(String first10MonthsAverage) {
+        this.first10MonthsAverage = first10MonthsAverage;
     }
 
     public int hashCode() {
