@@ -117,6 +117,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             m.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
             m.setHdn_employee(workFlowBean.getCurrentUser().getId());
             m.setHdn_days(m.getDays());
+            m.setSrcno(entity.getSrcno());
             int seq = 0;
             for (MCHZGL004BizDetail mcd : entity.getDetailList()) {
                 seq++;

@@ -52,6 +52,7 @@ import cn.hanbell.oa.model.HZCW028reDetailModel;
 import cn.hanbell.oa.model.HZCW028tDetailModel;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -598,7 +599,9 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     tdssum2 = tdssum2 + t.getTaxi() + t.getTrafficfee() + t.getAccommodation() + t.getAllowance();
 
                 }
-                if (tdssum != tdssum2) {
+                BigDecimal bdsum = new BigDecimal(tdssum).setScale(2, BigDecimal.ROUND_HALF_UP);
+                BigDecimal bdsum2 = new BigDecimal(tdssum2).setScale(2, BigDecimal.ROUND_HALF_UP);
+                if (bdsum.compareTo(bdsum2) != 0) {
                     code = 107;
                     msg = "差旅金额小计：" + tdssum2 + "与差旅费科目金额:" + tdssum + "不一致";
                     return new MCResponseData(code, msg);
@@ -635,14 +638,15 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 for (Mcbudget mcbudget : mcbudgets) {
                     bd = bd.add(mcbudget.getPreamts());
                 }
-                if (bd.compareTo(BigDecimal.valueOf(mc.getTotaltaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP)) !=0) {
+                if (bd.compareTo(BigDecimal.valueOf(mc.getTotaltaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP)) != 0) {
                     code = 107;
                     msg = "费用明细与预算中间表预扣不一致";
                     return new MCResponseData(code, msg);
                 }
             }
             //费用明细与申请总额原币
-            if (resum != mc.getTotaltaxInclusive()) {
+            //if (resum != mc.getTotaltaxInclusive()) {
+            if (new BigDecimal(resum).setScale(2, BigDecimal.ROUND_HALF_UP).compareTo(new BigDecimal(mc.getTotaltaxInclusive()).setScale(2, BigDecimal.ROUND_HALF_UP)) != 0) {
                 code = 107;
                 msg = "费用明细与申请总额不一致";
                 return new MCResponseData(code, msg);

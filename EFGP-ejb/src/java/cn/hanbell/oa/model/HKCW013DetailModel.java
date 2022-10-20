@@ -32,6 +32,7 @@ public class HKCW013DetailModel implements Serializable {
     private String cmp_centerid;
     private String budgetacc;
     private String cmp_budgetacc;
+    private BigDecimal payqty;
 
     public HKCW013DetailModel() {
         this.acpamtfs = BigDecimal.ZERO;
@@ -189,6 +190,14 @@ public class HKCW013DetailModel implements Serializable {
 
     public void setCom_apamt(BigDecimal com_apamt) {
         this.com_apamt = com_apamt;
+    }
+
+    public BigDecimal getPayqty() {
+        return payqty;
+    }
+
+    public void setPayqty(BigDecimal payqty) {
+        this.payqty = payqty;
     }
 
 }

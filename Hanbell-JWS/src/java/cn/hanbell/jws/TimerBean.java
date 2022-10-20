@@ -1552,6 +1552,10 @@ public class TimerBean {
             int i;
             BigDecimal sumapamtfs;
             BigDecimal sumapamt;
+            BigDecimal sumtaxfs;
+            BigDecimal sumtax;
+            BigDecimal sumbilnum8fs;
+            BigDecimal sumbilnum8;
             if (apmaphList != null && !apmaphList.isEmpty()) {
                 for (Apmaph h : apmaphList) {
                     apmapdList = apmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),
@@ -1561,6 +1565,10 @@ public class TimerBean {
                         i = 0;
                         sumapamtfs = BigDecimal.ZERO;
                         sumapamt = BigDecimal.ZERO;
+                        sumtaxfs = BigDecimal.ZERO;
+                        sumtax = BigDecimal.ZERO;
+                        sumbilnum8fs = BigDecimal.ZERO;
+                        sumbilnum8 = BigDecimal.ZERO;
 
                         for (Apmapd d : apmapdList) {
                             i++;
@@ -1606,6 +1614,18 @@ public class TimerBean {
                             } else {
                                 dm.setCmp_budgetacc(budgetacc.getAccname());
                             }
+                            dm.setPayqty(d.getPayqty());
+                            // 计算海关代徵,税额
+                            apmtbilBean.setCompany(company);
+                            Apmtbil apmtbil = apmtbilBean.findByPK(company, d.getBilno());
+                            if (null != apmtbil) {
+                                sumtaxfs = sumtaxfs.add(apmtbil.getBiltaxfs());
+                                sumtax = sumtax.add(apmtbil.getBiltax());
+                                if ('8' == apmtbil.getBilnum()) {
+                                    sumbilnum8 = sumbilnum8.add(apmtbil.getBiltax());
+                                    sumbilnum8fs = sumbilnum8fs.add(apmtbil.getBiltaxfs());
+                                }
+                            }
                             detailList.add(dm);
                         }
                         workFlowBean.initUserInfo(h.getUserno());
@@ -1646,9 +1666,10 @@ public class TimerBean {
                         hm.setRkd("MR01");
                         hm.setConfig(36);
                         hm.setAccno("1123");
-                        // 表单下方合计栏位(取2位小数)
-                        hm.setTotalfs(sumapamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
-                        hm.setTotal(sumapamt.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        // 表单下方合计总金额栏位(取2位小数)
+                        hm.setCmp_sum_tax(sumtax.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setTotalfs(sumapamtfs.add(sumtaxfs).subtract(sumbilnum8fs).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setTotal(sumapamt.add(sumtax).subtract(sumbilnum8).setScale(2, BigDecimal.ROUND_HALF_UP));
                         //大写金额
                         hm.setAmountInWords(workFlowBean.number2CNMonetaryUnit(hm.getTotal()));
                         // 构建表单实例

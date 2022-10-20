@@ -67,6 +67,7 @@ import cn.hanbell.eap.entity.Demands;
 import cn.hanbell.eap.entity.Department;
 import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.ecpur.ejb.ECPurvdrBean;
+import cn.hanbell.erp.ejb.Apmanp585hBean;
 import cn.hanbell.erp.ejb.ApmaphBean;
 import cn.hanbell.erp.ejb.ApmbilBean;
 import cn.hanbell.erp.ejb.ApmpayBean;
@@ -101,6 +102,7 @@ import cn.hanbell.erp.ejb.PurachBean;
 import cn.hanbell.erp.ejb.PurhaskBean;
 import cn.hanbell.erp.ejb.PurvdrBean;
 import cn.hanbell.erp.ejb.SecgprgBean;
+import cn.hanbell.erp.entity.Apmanp585h;
 import cn.hanbell.erp.entity.Apmaph;
 import cn.hanbell.erp.entity.Bomsub;
 import cn.hanbell.erp.entity.CdrbomsubDefault;
@@ -155,6 +157,7 @@ import cn.hanbell.oa.ejb.HKGC003Bean;
 import cn.hanbell.oa.ejb.HKGL060Bean;
 import cn.hanbell.oa.ejb.HKCG019Bean;
 import cn.hanbell.oa.ejb.HKCG020Bean;
+import cn.hanbell.oa.ejb.HKCW015Bean;
 import cn.hanbell.oa.ejb.HKGL004Bean;
 import cn.hanbell.oa.ejb.HKGL031Bean;
 import cn.hanbell.oa.ejb.HKGL034Bean;
@@ -186,6 +189,7 @@ import cn.hanbell.oa.entity.HKCG019;
 import cn.hanbell.oa.entity.HKCG020;
 import cn.hanbell.oa.entity.HKCW002;
 import cn.hanbell.oa.entity.HKCW002Detail;
+import cn.hanbell.oa.entity.HKCW015;
 import cn.hanbell.oa.entity.HKGL004;
 import cn.hanbell.oa.entity.HKGL034;
 import cn.hanbell.oa.entity.HKGL034Detail;
@@ -404,6 +408,8 @@ public class EAPWebService {
     private HKYX014Bean hkyx014Bean;
     @EJB
     private HKGl076Bean hkgl076Bean;
+    @EJB
+    private HKCW015Bean hkcw015Bean;
 
     // EJBForERP
     @EJB
@@ -422,6 +428,8 @@ public class EAPWebService {
     private ApmaphBean apmaphBean;
     @EJB
     private ApmpayBean apmpayBean;
+    @EJB
+    private Apmanp585hBean apmanp585hBean;
     @EJB
     private CdrqhadBean cdrqhadBean;
     @EJB
@@ -3820,6 +3828,36 @@ public class EAPWebService {
             ret = !(response == null || "".equals(response));
         } catch (NullPointerException | JSONException ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "updateEProcurementByOAHKCG020", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateERPAPM585ByOAHKCW015")
+    public String updateERPAPM585ByOAHKCW015(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            HKCW015 h = hkcw015Bean.findByPSN(psn);
+            if (h == null) {
+                throw new NullPointerException("updateERPAPM585ByOAHKCW015找不到流程序号:" + psn);
+            }
+            String facno = h.getFacno();
+            if (null == facno || "".equals(facno)) {
+                throw new NullPointerException("updateERPAPM585ByOAHKCW015付款凭单未设置正确的公司别" + facno);
+            }
+            apmanp585hBean.setCompany(facno);
+            Apmanp585h apm = apmanp585hBean.findByOAPSN(psn);
+            if (apm == null) {
+                throw new NullPointerException("updateERPAPM585ByOAHKCW015找不到ERP单据");
+            }
+            apm.setExtcnt((short) 2);
+            apmanp585hBean.update(apm);
+            ret = true;
+        } catch (NullPointerException | JSONException ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM585ByOAHKCW015", psn), ex);
         }
         if (ret) {
             return "200";

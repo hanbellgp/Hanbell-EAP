@@ -642,7 +642,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 }
             }
             //费用明细与申请总额原币
-            if (resum != mc.getTotaltaxInclusive()) {
+            //if (resum != mc.getTotaltaxInclusive()) {
+            if (new BigDecimal(resum).setScale(2, BigDecimal.ROUND_HALF_UP).compareTo(new BigDecimal(mc.getTotaltaxInclusive()).setScale(2, BigDecimal.ROUND_HALF_UP)) != 0) {
                 code = 107;
                 msg = "费用明细与申请总额不一致";
                 return new MCResponseData(code, msg);
