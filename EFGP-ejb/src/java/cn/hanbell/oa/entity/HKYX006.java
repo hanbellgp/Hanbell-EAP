@@ -184,6 +184,9 @@ public class HKYX006 implements Serializable {
     @Size(max = 255)
     @Column(name = "formSerialNumber")
     private String formSerialNumber;
+    @Size(max = 255)
+    @Column(name = "sccode")
+    private String sccode;
 
     public HKYX006() {
     }
@@ -607,6 +610,14 @@ public class HKYX006 implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.HKYX006[ oid=" + oid + " ]";
+    }
+
+    public String getSccode() {
+        return sccode;
+    }
+
+    public void setSccode(String sccode) {
+        this.sccode = sccode;
     }
 
 }

@@ -86,7 +86,7 @@ public class HmacSha1Signature {
         }
         long n = new Date().getTime();
         int minutes = (int) ((n - t) / (1000 * 60));
-        if (minutes > MINUTE || minutes < 0) {
+        if (minutes > MINUTE || minutes < -60) {
             code = 103;
             msg = "授权码过期";
         }

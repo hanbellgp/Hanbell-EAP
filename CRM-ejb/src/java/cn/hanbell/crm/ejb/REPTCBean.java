@@ -209,7 +209,7 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
         sb.append("WHERE FI057=0 AND FI018='Y' ");
         sb.append("AND (FI084='N' OR FI084='') ");
         sb.append("AND GG003<>'' ");
-        //sb.append("AND SALFI.CREATE_DATE>'20210101' ");
+        sb.append("AND SALFI.CREATE_DATE>'20200101' ");
         sb.append("AND SALFI.FI004 = '").append(userId).append("'");
         Query query = getEntityManager().createNativeQuery(sb.toString());
         List result = query.getResultList();
