@@ -3811,6 +3811,11 @@ public class TimerBean {
                     startDate = BaseLib.formatDate("yyyyMM", calendar.getTime());
                     BigDecimal annualAverage = manpihBean.findAvgDraw(m.getManmotPK().getFacno(), m.getItnbrf(), startDate, endDate, 12);
                     detail.setAnnualAverage(annualAverage.toString());
+                    calendar.setTime(com.lightshell.comm.BaseLib.getDate("yyyyMM",endDate));
+                    calendar.add(Calendar.MONTH, -2);
+                    endDate = com.lightshell.comm.BaseLib.formatDate("yyyyMM", calendar.getTime());
+                    BigDecimal first10MonthsAverage = manpihBean.findAvgDraw(m.getManmotPK().getFacno(), m.getItnbrf(), startDate,endDate , 10);
+                    detail.setFirst10MonthsAverage(first10MonthsAverage.toString());
                     detail.setPurDraftRequirements(m.getDraftqty().toString());
                     detail.setActualRequisitions(m.getManqty().toString());
                     detail.setSysRequirementDate_txt(BaseLib.formatDate("yyyy/MM/dd", m.getMandate()));
