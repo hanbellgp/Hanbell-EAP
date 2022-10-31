@@ -370,7 +370,7 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
             budgetDetails = q.getResultList();
             for (BudgetDetail b : budgetDetails) {
                 BudgetAcc ba=budgetAccBean.findByAccno(b.getBudgetDetailPK().getBudgetacc());
-                if(ba != null && ba.getNeedcheck()){
+                if(ba != null && !ba.getAccclass().equals("00")){
                       deptPeriod = deptPeriod.add(b.getAmts().add(b.getAddamts()).subtract(b.getDecramts()).subtract(b.getPreamts()));
                 }   
             }
