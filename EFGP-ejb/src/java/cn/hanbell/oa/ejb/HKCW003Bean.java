@@ -75,11 +75,11 @@ public class HKCW003Bean extends SuperEJBForEFGP<HKCW003> {
                     pk.setMf009(mf009);
                     m.setREPMFPK(pk);
                     if ("".equals(detail.getCost()) && "".equals(detail.getAsscost())) {
-                        repmf.setMf003(null);
+                        m.setMf003(BigDecimal.ZERO);
                     } else if (!"".equals(detail.getCost())) {
-                        repmf.setMf003(BigDecimal.valueOf(Double.parseDouble(detail.getCost())));
+                        m.setMf003(BigDecimal.valueOf(Double.parseDouble(detail.getCost())));
                     } else if (!"".equals(detail.getAsscost()) && "".equals(detail.getCost())) {
-                        repmf.setMf003(BigDecimal.valueOf(Double.parseDouble(detail.getAsscost())));
+                        m.setMf003(BigDecimal.valueOf(Double.parseDouble(detail.getAsscost())));
                     }
                     m.setMf004(BaseLib.formatDate("yyyyMMdd", h.getApplydate()));
                     m.setMf007("OA抛转" + h.getProcessSerialNumber());

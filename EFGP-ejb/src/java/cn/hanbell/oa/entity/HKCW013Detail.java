@@ -91,7 +91,7 @@ public class HKCW013Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "ratio")
     private String ratio;
-        @Size(max = 255)
+    @Size(max = 255)
     @Column(name = "payqty")
     private String payqty;
 
