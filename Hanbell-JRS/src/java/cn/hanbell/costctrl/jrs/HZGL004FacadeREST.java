@@ -208,11 +208,11 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                     msg = "出差日期格式错误";
                     return new MCResponseData(code, msg);
                 }
-                if (BaseLib.getDate("yyyy/MM/dd", d.getBizDate()).before(BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())))) {
-                    code = 107;
-                    msg = "出差日期不能小于当前日期";
-                    return new MCResponseData(code, msg);
-                }
+//                if (BaseLib.getDate("yyyy/MM/dd", d.getBizDate()).before(BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())))) {
+//                    code = 107;
+//                    msg = "出差日期不能小于当前日期";
+//                    return new MCResponseData(code, msg);
+//                }
                 if (BaseLib.getDate("yyyy/MM/dd", d.getBizDate()).before(BaseLib.getDate("yyyy/MM/dd", startDate))) {
                     code = 107;
                     msg = "出差日期不能小于出差日期起";

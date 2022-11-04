@@ -988,7 +988,7 @@ public class TimerBean {
                             assetDistributeBean.update(e);
                         }
                         //研发专案号写入表头备注20220720
-                        if (!"".equals(haddsc)) {
+                        if (!"".equals(haddsc.trim())) {
                             String ls_trno = trno.split("\\$")[0];
                             Invhdsc hdsc = new Invhdsc(facno, prono, ls_trno);
                             hdsc.setMark1(haddsc);
