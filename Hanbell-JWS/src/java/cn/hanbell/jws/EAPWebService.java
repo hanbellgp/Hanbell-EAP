@@ -522,6 +522,14 @@ public class EAPWebService {
         if (ret) {
             return "200";
         } else {
+            //加入邮件通知
+            mailBean.clearReceivers();
+            mailBean.getTo().add("C1491@hanbell.com.cn");
+            mailBean.getTo().add("C1278@hanbell.com.cn");
+            mailBean.getTo().add("C1900@hanbell.com.cn");
+            mailBean.setMailSubject("OA新增标准成本更新CRM失败");
+            mailBean.setMailContent("OA新增标准成本更新CRM失败，流程序号：" + psn);
+            mailBean.notify(new MailNotify());
             return "404";
         }
     }
@@ -2539,6 +2547,29 @@ public class EAPWebService {
         if (ret != null && !"".equals(ret)) {
             return "200";
         } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "createERPINV310ByOASHBERPINV310")
+    public String createERPINV310ByOASHBERPINV310(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = invhadBean.initByOASHBERPINV310(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "createERPINV310ByOASHBERPINV310", psn), ex);
+            throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+          //加入邮件通知
+            mailBean.clearReceivers();
+            mailBean.getTo().add("C1491@hanbell.com.cn");
+            mailBean.getTo().add("C1900@hanbell.com.cn");
+            mailBean.setMailSubject("OA新增手工领料单失败");
+            mailBean.setMailContent("OA新增手工领料单抛转ERP 失败，流程序号：" + psn);
+            mailBean.notify(new MailNotify());
             return "404";
         }
     }
