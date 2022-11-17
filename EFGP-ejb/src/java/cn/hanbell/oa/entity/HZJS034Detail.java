@@ -216,6 +216,9 @@ public class HZJS034Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "clsdsc")
     private String clsdsc;
+    @Size(max = 255)
+    @Column(name = "AHclass")
+    private String ahclass;
 
     public HZJS034Detail() {
     }
@@ -655,6 +658,14 @@ public class HZJS034Detail implements Serializable {
 
     public void setRate2(String rate2) {
         this.rate2 = rate2;
+    }
+
+    public String getAhclass() {
+        return ahclass;
+    }
+
+    public void setAhclass(String ahclass) {
+        this.ahclass = ahclass;
     }
 
 }
