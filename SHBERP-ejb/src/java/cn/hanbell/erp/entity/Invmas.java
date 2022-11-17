@@ -352,6 +352,9 @@ public class Invmas implements Serializable {
     @Size(min = 1, max = 4)
     @Column(name = "itcls")
     private String itcls;
+    @Size(min = 1, max = 20)
+    @Column(name = "ahclass")
+    private String ahclass;
 
     public Invmas() {
     }
@@ -1045,6 +1048,14 @@ public class Invmas implements Serializable {
 
     public void setModdate(Date moddate) {
         this.moddate = moddate;
+    }
+
+    public String getAhclass() {
+        return ahclass;
+    }
+
+    public void setAhclass(String ahclass) {
+        this.ahclass = ahclass;
     }
 
 }
