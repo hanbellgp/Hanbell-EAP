@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -108,6 +110,9 @@ public class HKGL037Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "bm_lbl")
     private String bmLbl;
+    @JoinColumn(name = "formSerialNumber", referencedColumnName = "formSerialNumber", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private HKGL037 hkgl037;
 
     public HKGL037Detail() {
     }
@@ -293,4 +298,11 @@ public class HKGL037Detail implements Serializable {
         return "cn.hanbell.oa.ejb.HKGL037Detail[ oid=" + oid + " ]";
     }
 
+    public HKGL037 getHkgl037() {
+        return hkgl037;
+    }
+
+    public void setHkgl037(HKGL037 hkgl037) {
+        this.hkgl037 = hkgl037;
+    }
 }
