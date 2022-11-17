@@ -125,6 +125,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setUnmsr2(detail.getUnmsr2()); // 设置单位二
                     m.setUnmsr1e(detail.getUnmsr1e()); // 设置数量单位一（英文）
                     m.setFvco('F'); // 设置固定变动区分码
+                    m.setAhclass(detail.getAhclass());//设置机体分类
                     if ("".equals(detail.getUnmsr2()) || "N".equals(detail.getIsDUnit())) {
                         if (facno.equals("H") || facno.equals("Y")) {
                             m.setJudco("111111");
