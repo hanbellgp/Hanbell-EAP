@@ -635,7 +635,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 for (Mcbudget mcbudget : mcbudgets) {
                     bd = bd.add(mcbudget.getPreamts());
                 }
-                if (bd.compareTo(BigDecimal.valueOf(mc.getTotaltaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP)) != 0) {
+                if (bd.setScale(2, BigDecimal.ROUND_HALF_UP).compareTo(BigDecimal.valueOf(mc.getTotaltaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP)) != 0) {
                     code = 107;
                     msg = "费用明细与预算中间表预扣不一致";
                     return new MCResponseData(code, msg);

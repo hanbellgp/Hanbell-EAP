@@ -1569,7 +1569,7 @@ public class TimerBean {
                         sumtax = BigDecimal.ZERO;
                         sumbilnum8fs = BigDecimal.ZERO;
                         sumbilnum8 = BigDecimal.ZERO;
-
+                        List<String> bilList = new ArrayList<>();
                         for (Apmapd d : apmapdList) {
                             i++;
                             dm = new HKCW013DetailModel();
@@ -1615,16 +1615,19 @@ public class TimerBean {
                                 dm.setCmp_budgetacc(budgetacc.getAccname());
                             }
                             dm.setPayqty(d.getPayqty());
-                            // 计算海关代徵,税额
-                            apmtbilBean.setCompany(company);
-                            Apmtbil apmtbil = apmtbilBean.findByPK(company, d.getBilno());
-                            if (null != apmtbil) {
-                                sumtaxfs = sumtaxfs.add(apmtbil.getBiltaxfs());
-                                sumtax = sumtax.add(apmtbil.getBiltax());
-                                if ('8' == apmtbil.getBilnum()) {
-                                    sumbilnum8 = sumbilnum8.add(apmtbil.getBiltax());
-                                    sumbilnum8fs = sumbilnum8fs.add(apmtbil.getBiltaxfs());
+                            if (!bilList.contains(d.getBilno())) {
+                                // 计算海关代徵,税额
+                                apmtbilBean.setCompany(company);
+                                Apmtbil apmtbil = apmtbilBean.findByPK(company, d.getBilno());
+                                if (null != apmtbil) {
+                                    sumtaxfs = sumtaxfs.add(apmtbil.getBiltaxfs());
+                                    sumtax = sumtax.add(apmtbil.getBiltax());
+                                    if ('8' == apmtbil.getBilnum()) {
+                                        sumbilnum8 = sumbilnum8.add(apmtbil.getBiltax());
+                                        sumbilnum8fs = sumbilnum8fs.add(apmtbil.getBiltaxfs());
+                                    }
                                 }
+                                bilList.add(d.getBilno());
                             }
                             detailList.add(dm);
                         }
@@ -1634,7 +1637,9 @@ public class TimerBean {
                         hm.setApno(h.getApmaphPK().getApno());
                         hm.setAppdate(h.getApdate());
                         hm.setAppuser(h.getApusrno());
-                        hm.setAppdept(h.getDepno());
+                        //hm.setAppdept(h.getDepno());
+                        //修正人员部门不对应问题
+                        hm.setAppdept(workFlowBean.getCurrentUser().getDeptno());
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
@@ -1751,7 +1756,8 @@ public class TimerBean {
                         hm.setApno(h.getApmaphPK().getApno());
                         hm.setAppdate(h.getApdate());
                         hm.setAppuser(h.getApusrno());
-                        hm.setAppdept(h.getDepno());
+                        //hm.setAppdept(h.getDepno());
+                        hm.setAppdept(workFlowBean.getCurrentUser().getDeptno());
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
@@ -3759,7 +3765,7 @@ public class TimerBean {
                 List<HZPB131DetailModel> detailList = new ArrayList();
                 LinkedHashMap<String, List<?>> details = new LinkedHashMap();
                 details.put("purDetail", detailList);
-              
+
                 HZPB131Model head = new HZPB131Model();
                 head.setFacno("C");
                 head.setApplyUser((String) user[0]);
@@ -3832,10 +3838,10 @@ public class TimerBean {
                     startDate = BaseLib.formatDate("yyyyMM", calendar.getTime());
                     BigDecimal annualAverage = manpihBean.findAvgDraw(m.getManmotPK().getFacno(), m.getItnbrf(), startDate, endDate, 12);
                     detail.setAnnualAverage(annualAverage.toString());
-                    calendar.setTime(com.lightshell.comm.BaseLib.getDate("yyyyMM",endDate));
+                    calendar.setTime(com.lightshell.comm.BaseLib.getDate("yyyyMM", endDate));
                     calendar.add(Calendar.MONTH, -2);
                     endDate = com.lightshell.comm.BaseLib.formatDate("yyyyMM", calendar.getTime());
-                    BigDecimal first10MonthsAverage = manpihBean.findAvgDraw(m.getManmotPK().getFacno(), m.getItnbrf(), startDate,endDate , 10);
+                    BigDecimal first10MonthsAverage = manpihBean.findAvgDraw(m.getManmotPK().getFacno(), m.getItnbrf(), startDate, endDate, 10);
                     detail.setFirst10MonthsAverage(first10MonthsAverage.toString());
                     detail.setPurDraftRequirements(m.getDraftqty().toString());
                     detail.setActualRequisitions(m.getManqty().toString());

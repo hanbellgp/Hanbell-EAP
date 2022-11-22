@@ -286,7 +286,7 @@ public class HKCW013Model implements Serializable {
 
     @Override
     public String toString() {
-        return "cn.hanbell.oa.entity.SHBERPAPM828Model";
+        return "cn.hanbell.oa.entity.HKCW013Model";
     }
 
     public String getVdrds() {
