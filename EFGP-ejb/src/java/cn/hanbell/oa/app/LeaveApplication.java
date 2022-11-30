@@ -6,6 +6,7 @@
 package cn.hanbell.oa.app;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,6 +43,7 @@ public class LeaveApplication implements Serializable {
     private double leaveMinute;
 
     private String reason;
+    private List<HKGL004FilesApplication> hkgl004Files;
 
     public Long getId() {
         return id;
@@ -261,6 +263,15 @@ public class LeaveApplication implements Serializable {
         this.reason = reason;
     }
 
+    public List<HKGL004FilesApplication> getHkgl004Files() {
+        return hkgl004Files;
+    }
+
+    public void setHkgl004Files(List<HKGL004FilesApplication> hkgl004Files) {
+        this.hkgl004Files = hkgl004Files;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;
