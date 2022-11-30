@@ -44,15 +44,21 @@ public class McbudgetBean extends SuperEJBForEAP<Mcbudget> {
         query.setParameter("centerid", centerid);
         query.setParameter("budgetacc", budgetacc);
         try {
-            Mcbudget m = (Mcbudget) query.getSingleResult();
-            if (null == m) {
+            List resultList = query.getResultList();
+            if (null == resultList || resultList.isEmpty()) {
                 return null;
             }
-            if (m.getPreamts().compareTo(preamts) == 0) {
-                return (Mcbudget) query.getSingleResult();
-            } else {
-                return null;
-            }
+            return (Mcbudget) resultList.get(0);
+              //存在多笔中间表明细科目+金额一样情况，在总金额再核对
+//            Mcbudget m = (Mcbudget) query.getSingleResult();
+//            if (null == m) {
+//                return null;
+//            }
+//            if (m.getPreamts().compareTo(preamts) == 0) {
+//                return (Mcbudget) query.getSingleResult();
+//            } else {
+//                return null;
+//            }
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
