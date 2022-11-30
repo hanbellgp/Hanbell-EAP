@@ -271,7 +271,6 @@ public class LeaveApplication implements Serializable {
         this.hkgl004Files = hkgl004Files;
     }
 
-    
     @Override
     public int hashCode() {
         int hash = 0;
