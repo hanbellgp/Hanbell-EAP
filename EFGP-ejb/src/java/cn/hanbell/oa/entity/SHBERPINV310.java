@@ -142,6 +142,9 @@ public class SHBERPINV310 implements Serializable {
     @Size(max = 255)
     @Column(name = "spdsc")
     private String spdsc;
+    @Size(max = 255)
+    @Column(name = "erpDept")
+    private String erpDept;
 
     public SHBERPINV310() {
     }
@@ -389,6 +392,14 @@ public class SHBERPINV310 implements Serializable {
 
     public void setErptrno(String erptrno) {
         this.erptrno = erptrno;
+    }
+
+    public String getErpDept() {
+        return erpDept;
+    }
+
+    public void setErpDept(String erpDept) {
+        this.erpDept = erpDept;
     }
 
 }

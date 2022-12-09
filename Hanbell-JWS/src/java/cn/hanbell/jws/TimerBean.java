@@ -79,6 +79,7 @@ import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eap.comm.MailNotify;
 import cn.hanbell.eap.entity.SystemUser;
+import cn.hanbell.erp.ejb.ApmsysBean;
 import cn.hanbell.erp.ejb.BudgetAccBean;
 import cn.hanbell.erp.ejb.InvhdscBean;
 import cn.hanbell.erp.ejb.InvsafqyBean;
@@ -255,6 +256,8 @@ public class TimerBean {
     private ApmaphBean apmaphBean;
     @EJB
     private ApmtbilBean apmtbilBean;
+    @EJB
+    private ApmsysBean apmsysBean;
     @EJB
     private BomasryBean bomasryBean;
     @EJB
@@ -1398,6 +1401,15 @@ public class TimerBean {
                         sumivomsfs = 0.00;
                         bilnoList = new ArrayList<>();
                         String isAttachment = "";
+                        String ls_mark = "";     //备注栏位记录OA是否免签和
+                        Date payda1 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
+                        String vdrno = h.getVdrno();
+                        Date apdate = h.getApdate();
+                        Date payda2 = apmsysBean.getpurdate2(company, vdrno, apdate);
+                        payda2 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", payda2));
+                        if (payda1.compareTo(payda2) == 0) {    //未变更付款日期且无短溢沽，免签
+                            ls_mark = "OA免签";
+                        }
                         for (Apmapd d : apmapdList) {
                             i++;
                             dm = new SHBERPAPM811DetailModel();
@@ -1448,6 +1460,7 @@ public class TimerBean {
                                 if (!d.getApdsc().contains("税率差") && !d.getApdsc().contains("税差")) {
                                     isAttachment = "Y";
                                 }
+                                ls_mark = h.getHmark();
                             }
                             detailList.add(dm);
                             // 计算海关代徵,税额
@@ -1490,10 +1503,10 @@ public class TimerBean {
                         hm.setIndate(h.getIndate());
                         hm.setInuser(h.getUserno());
                         hm.setIsretmoney(h.getIsretmoney().toString());
-                        if (null == h.getHmark()) {
+                        if (null == ls_mark) {
                             hm.setHmark("");
                         } else {
-                            hm.setHmark(h.getHmark());
+                            hm.setHmark(ls_mark);
                         }
                         // 表单下方合计栏位(取2位小数)
                         hm.setSum_apamtfs(sumapamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
