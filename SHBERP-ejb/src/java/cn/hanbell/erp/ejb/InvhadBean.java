@@ -1231,7 +1231,18 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             invhad.setTrtype(IAB.getTrtype());
             invhad.setTrdate(trdate);
             //1ERP作业部门 2.费用归属部门-->作业部门
-            invhad.setDepno(e.getUseDept());
+            switch (e.getErpDept()) {
+                case "1":
+                    invhad.setDepno("1P121");  //加工二组精车
+                    break;
+                case "2":
+                    invhad.setDepno("1P122");  //加工二组精研
+                    break;
+                default:
+                    invhad.setDepno(e.getUseDept());
+                    break;
+
+            }
             invhad.setIocode(IAB.getIocode());
             invhad.setResno(e.getCode().equals("") ? "K01" : e.getCode());
             invhad.setSourceno(e.getProcessSerialNumber().substring(8));
