@@ -8,16 +8,22 @@ package cn.hanbell.oa.jrs;
 import cn.hanbell.oa.app.LeaveApplication;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
+import cn.hanbell.oa.app.HKGL004FilesApplication;
 import cn.hanbell.oa.app.MCHKGL004;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HKGL004Bean;
+import cn.hanbell.oa.ejb.HKPB033WorkFlowBean;
+import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.entity.HKGL004;
 import cn.hanbell.oa.entity.OrganizationUnit;
+import cn.hanbell.oa.entity.Users;
 import cn.hanbell.oa.model.HKGL004Model;
 import cn.hanbell.util.BaseLib;
 import cn.hanbell.wco.ejb.Agent1000002Bean;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ejb.EJB;
@@ -28,7 +34,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-
+import org.json.JSONObject;
+import org.json.XML;
 
 /**
  *
@@ -42,7 +49,13 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
     private HKGL004Bean hkgl004Bean;
 
     @EJB
+    private UsersBean userBean;
+
+    @EJB
     private Agent1000002Bean agent1000002Bean;
+
+    @EJB
+    private HKPB033WorkFlowBean hkpb033WorkFlowBean;
 
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
@@ -63,6 +76,29 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
             try {
+                List<JSONObject> files = new ArrayList<>();
+                for (HKGL004FilesApplication e : entity.getHkgl004Files()) {
+                    String fileName = String.valueOf(BaseLib.getDate().getTime()).concat(".").concat(e.getImageType());
+                    String fileInfo = workFlowBean.reserveNoCmDocument(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, fileName);
+                    JSONObject requestedJSON = XML.toJSONObject(fileInfo);
+                    //路径
+                    StringBuffer url = new StringBuffer("");
+                    url.append(workFlowBean.FILE_URL);
+                    url.append(requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").getString("filePathToSave")).append("/");
+                    StringBuffer fileName1 = new StringBuffer("");
+                    fileName1.append(requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").getString("physicalName"));
+                    fileName1.append(".").append(e.getImageType());
+                    workFlowBean.getShareFileContent(workFlowBean.OA_USERNO, workFlowBean.OA_PASSWORD, url.toString().replace("\\", "/") + fileName1, e.getData());
+                    JSONObject attachment = new JSONObject();
+                    attachment.append("OID", requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").get("OID"));
+                    attachment.append("id", fileName1.toString());
+                    attachment.append("fileSize", workFlowBean.getFileSize(workFlowBean.OA_USERNO, workFlowBean.OA_PASSWORD, url.toString().replace("\\", "/")));
+                    attachment.append("fileType", e.getImageType());
+                    attachment.append("name", fileName1.toString());
+                    attachment.append("originalFileName", fileName1.toString());
+                    attachment.append("uploadTime", new Date().getTime());
+                    files.add(attachment);
+                }
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(new Date());
                 calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -110,13 +146,14 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                 Matcher m = p.matcher(entity.getReason());
                 String finishedReplaceStr = m.replaceAll("");
                 la.setReason(finishedReplaceStr);
-                String formInstance = workFlowBean.buildXmlForEFGP("HK_GL004", la, null);
+                Users user = userBean.findById(entity.getEmployee());
+                String formInstance = hkpb033WorkFlowBean.buildXmlForEFGP("HK_GL004", la, files, null);
                 String subject = la.getHdn_employee() + entity.getDate1() + "开始请假" + entity.getLeaveDay() + "天" + entity.getLeaveHour() + "时" + entity.getLeaveMinute() + "分";
                 String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL004", formInstance, subject);
                 String[] rm = msg.split("\\$");
                 if (rm.length == 2) {
                     agent1000002Bean.initConfiguration();
-                    agent1000002Bean.sendMsgToUser(entity.getEmployee(), "text", "[汉钟精机] 您申请的" + entity.getDate1()+ "请假单已完成填单");
+                    agent1000002Bean.sendMsgToUser(entity.getEmployee(), "text", "[汉钟精机] 您申请的" + entity.getDate1() + "请假单已完成填单");
                     return new ResponseMessage(rm[0], rm[1]);
                 } else {
                     return new ResponseMessage("200", "Code=200");
