@@ -145,6 +145,7 @@ import cn.hanbell.erp.entity.Secuser;
 import cn.hanbell.exch.ejb.ExchangeSHBBean;
 import cn.hanbell.mes.entity.MuserRole;
 import cn.hanbell.oa.ejb.HKCW002Bean;
+import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.oa.entity.HKCW002;
 import cn.hanbell.oa.entity.HKCW002Detail;
@@ -250,6 +251,8 @@ public class TimerBean {
     private HKCW002Bean hkcw002Bean;
     @EJB
     private WorkFlowBean workFlowBean;
+    @EJB
+    private UsersBean usersBean;
 
     // EJBForERP
     @EJB
@@ -1062,6 +1065,10 @@ public class TimerBean {
                             d.setIsDUnit("N");
                             d.setYt("");
                             d.setRemark("");
+                            d.setGenre2("");
+                            d.setGenre3("");
+                            d.setModelDsc1("");
+                            d.setModelDsc2("");
                             detailList.add(d);
 
                             //加入工程变更通知单作废变更前件号逻辑
@@ -1401,7 +1408,7 @@ public class TimerBean {
                         sumivomsfs = 0.00;
                         bilnoList = new ArrayList<>();
                         String isAttachment = "";
-                        String ls_mark = "";     //备注栏位记录OA是否免签和
+                        String ls_mark = h.getHmark();     //备注栏位记录OA是否免签和
                         Date payda1 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
                         String vdrno = h.getVdrno();
                         Date apdate = h.getApdate();
@@ -1540,6 +1547,7 @@ public class TimerBean {
                         if (rm != null && rm.length == 2 && rm[0].equals("200")) {
                             // 更新ERP APM811状态
                             h.setApsta("25");
+                            h.setHmark(ls_mark);
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }
@@ -1652,7 +1660,7 @@ public class TimerBean {
                         hm.setAppuser(h.getApusrno());
                         //hm.setAppdept(h.getDepno());
                         //修正人员部门不对应问题
-                        hm.setAppdept(workFlowBean.getCurrentUser().getDeptno());
+                        hm.setAppdept(usersBean.checkDeptno(h.getApusrno(), h.getDepno()));
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
@@ -2444,6 +2452,7 @@ public class TimerBean {
         this.syncERPPUR410ToExchange("C", "STW00007", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("C", "STW00035", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("C", "SXG00007", "20200408");// SHB->Exch
+        this.syncERPPUR410ToExchange("C", "STW00045", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("K", "KTW00001", "20200408");// Comer->Exch
         log4j.info("ERP集团内部交易互转轮询结束");
     }
