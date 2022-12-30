@@ -640,6 +640,7 @@ public class ApmsysBean extends SuperEJBForERP<Apmsys> {
                 ca.add(Calendar.DATE, li_tickdays);
                 payda = ca.getTime();
                 li_month = ca.get(Calendar.MONTH) + 1;
+                li_year = ca.get(Calendar.YEAR);      
                 payda = BaseLib.getDate("yyyy/MM/dd", li_year + "/" + String.format("%02d", li_month) + "/" + "25");
             }
             return payda;

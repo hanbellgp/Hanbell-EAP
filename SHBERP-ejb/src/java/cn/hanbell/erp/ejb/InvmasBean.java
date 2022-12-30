@@ -178,6 +178,11 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setDwg(BigDecimal.ZERO);
                     m.setDwl(BigDecimal.ZERO);
                     m.setDwt(BigDecimal.ZERO);
+                    //20221213 加入分类2分类3及机型说明
+                    m.setGenre2(detail.getGenre2());
+                    m.setGenre3(detail.getGenre3());
+                    m.setModelDsc1(detail.getModelDsc1());
+                    m.setModelDsc2(detail.getModelDsc2());                    
                     persist(m);
                     this.getEntityManager().flush();
 
