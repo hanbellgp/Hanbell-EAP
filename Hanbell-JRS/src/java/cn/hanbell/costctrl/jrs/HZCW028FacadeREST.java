@@ -589,7 +589,9 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                         msg = "出差补贴费格式错误";
                         return new MCResponseData(code, msg);
                     }
-                    if (!String.valueOf(t.getSubtotal()).matches(regex) || t.getSubtotal() == 0.00) {
+                    //if (!String.valueOf(t.getSubtotal()).matches(regex) || t.getSubtotal() == 0.00) {
+                    //每刻报销行程摘要写入差旅明细允许金额0
+                    if (!String.valueOf(t.getSubtotal()).matches(regex)) {
                         code = 107;
                         msg = "差旅金额小计格式错误";
                         return new MCResponseData(code, msg);

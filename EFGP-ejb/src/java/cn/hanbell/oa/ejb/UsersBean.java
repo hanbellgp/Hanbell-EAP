@@ -71,4 +71,47 @@ public class UsersBean extends SuperEJBForEFGP<Users> {
         return arr;
     }
 
+    /**
+     *
+     * @param userId
+     * @return 用户单元组织及主管的数组
+     */
+    public List getOrganizationUnitAndManager(String userId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("select distinct Occupant.id as userId,Occupant.userName as userName , OrganizationUnit.id as unitId,");
+        sb.append(" OrganizationUnit.organizationUnitName  as unitName ,Manager.id as managerId, isMain ");
+        sb.append(" from  Functions");
+        sb.append(" inner join Users Occupant  on Functions.occupantOID = Occupant.OID ");
+        sb.append(" inner join OrganizationUnit inner join Organization on OrganizationUnit.organizationOID=Organization.OID  on Functions.organizationUnitOID=OrganizationUnit.OID");
+        sb.append(" inner join FunctionDefinition on Functions.definitionOID=FunctionDefinition.OID ");
+        sb.append(" left join FunctionLevel on Functions.approvalLevelOID=FunctionLevel.OID ");
+        sb.append(" left join Users Manager on Functions.specifiedManagerOID=Manager.OID ");
+        sb.append(" where Occupant.id = '").append(userId).append("' AND Occupant.leaveDate is null ");
+        sb.append(" order by  isMain DESC ");
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        return query.getResultList();
+    }
+
+    /**
+     * 根据userid 和deptno 判断部门是否正确，
+     *
+     * @param userId
+     * @param deptno
+     * @return 正确返回当前部门，不正确返回用户主部门 或者空字符
+     */
+    public String checkDeptno(String userId, String deptno) {
+        List objList = getOrganizationUnitAndManager(userId);
+        if (null == objList || objList.isEmpty()) {
+            throw new NullPointerException(userId + "账号无法正确找到OA中组织");
+        } else {
+            for (int i = 0; i < objList.size(); i++) {
+                Object[] row = (Object[]) objList.get(i);
+                if (null != row[2] && row[2].toString().equals(deptno)) {
+                    return deptno;
+                }
+            }
+            Object[] row = (Object[]) objList.get(0);
+            return row[2] != null ? row[2].toString() : "";
+        }
+    }
 }

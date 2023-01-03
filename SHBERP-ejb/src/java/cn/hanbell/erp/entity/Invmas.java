@@ -355,6 +355,12 @@ public class Invmas implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "ahclass")
     private String ahclass;
+    @Size(max = 50)
+    @Column(name = "ModelDsc1")
+    private String ModelDsc1;
+    @Size(max = 50)
+    @Column(name = "ModelDsc2")
+    private String ModelDsc2;
 
     public Invmas() {
     }
@@ -1056,6 +1062,22 @@ public class Invmas implements Serializable {
 
     public void setAhclass(String ahclass) {
         this.ahclass = ahclass;
+    }
+
+    public String getModelDsc1() {
+        return ModelDsc1;
+    }
+
+    public void setModelDsc1(String ModelDsc1) {
+        this.ModelDsc1 = ModelDsc1;
+    }
+
+    public String getModelDsc2() {
+        return ModelDsc2;
+    }
+
+    public void setModelDsc2(String ModelDsc2) {
+        this.ModelDsc2 = ModelDsc2;
     }
 
 }

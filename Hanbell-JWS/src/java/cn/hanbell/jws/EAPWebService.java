@@ -1685,6 +1685,22 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "createERPAPM250ByOAAPM820")
+    public String createERPAPM250ByOAAPM820(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = apmbilBean.initByOAAPM820(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "createERPAPM250ByOAAPM820", psn), ex);
+            throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "createERPAPM525ByOAAPM828")
     public String createERPAPM525ByOAAPM828(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -2563,7 +2579,7 @@ public class EAPWebService {
         if (ret) {
             return "200";
         } else {
-          //加入邮件通知
+            //加入邮件通知
             mailBean.clearReceivers();
             mailBean.getTo().add("C1491@hanbell.com.cn");
             mailBean.getTo().add("C1900@hanbell.com.cn");
