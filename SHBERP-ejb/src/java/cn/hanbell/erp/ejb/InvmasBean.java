@@ -168,7 +168,12 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setIndate(BaseLib.getDate());
                     m.setLowlevelcst((short) 0); // 设置低阶码
                     m.setJityn(detail.getJityn().charAt(0)); // 即时到货管制
-                    m.setGenre1(detail.getHdgenre1()); // 设置产品别
+                    //汉声汉扬不使用此产品别分类
+                    if (facno.equals("H") || facno.equals("Y")) {
+                        m.setGenre1(""); // 设置产品别
+                    } else {
+                        m.setGenre1(detail.getHdgenre1()); // 设置产品别
+                    }
                     m.setDwf(BigDecimal.ZERO);
                     m.setDwg(BigDecimal.ZERO);
                     m.setDwl(BigDecimal.ZERO);

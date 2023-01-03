@@ -1181,6 +1181,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         invmasBean.setCompany(facno);
         invsernoBean.setCompany(facno);
         invsysBean.setCompany(facno);
+        invbalBean.setCompany(facno);
         try {
             trdate = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
             String mon = BaseLib.formatDate("yyyyMM", trdate);
@@ -1229,12 +1230,13 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             invhad = new Invhad(facno, prono, trno);
             invhad.setTrtype(IAB.getTrtype());
             invhad.setTrdate(trdate);
+            //1ERP作业部门 2.费用归属部门-->作业部门
             invhad.setDepno(e.getUseDept());
             invhad.setIocode(IAB.getIocode());
             invhad.setResno(e.getCode().equals("") ? "K01" : e.getCode());
             invhad.setSourceno(e.getProcessSerialNumber().substring(8));
             invhad.setStatus('N');
-            invhad.setUserno(e.getApplyUser());
+            invhad.setUserno(e.getInputUser());
             invhad.setIndate(indate);
             invhad.setPrtcnt((short) 0);
             invhad.setAsrsQty(BigDecimal.ZERO);

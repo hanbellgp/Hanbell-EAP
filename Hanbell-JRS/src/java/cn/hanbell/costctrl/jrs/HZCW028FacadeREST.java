@@ -603,7 +603,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 BigDecimal bdsum2 = new BigDecimal(tdssum2).setScale(2, BigDecimal.ROUND_HALF_UP);
                 if (bdsum.compareTo(bdsum2) != 0) {
                     code = 107;
-                    msg = "差旅金额小计：" + tdssum2 + "与差旅费科目金额:" + tdssum + "不一致";
+                    msg = "差旅金额小计：" + bdsum2 + "与差旅费科目金额:" + bdsum + "不一致";
                     return new MCResponseData(code, msg);
                 }
             }
@@ -638,7 +638,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 for (Mcbudget mcbudget : mcbudgets) {
                     bd = bd.add(mcbudget.getPreamts());
                 }
-                if (bd.compareTo(BigDecimal.valueOf(mc.getTotaltaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP)) != 0) {
+                if (bd.setScale(2, BigDecimal.ROUND_HALF_UP).compareTo(BigDecimal.valueOf(mc.getTotaltaxInclusive()).multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP)) != 0) {
                     code = 107;
                     msg = "费用明细与预算中间表预扣不一致";
                     return new MCResponseData(code, msg);
