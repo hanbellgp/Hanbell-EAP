@@ -1414,7 +1414,8 @@ public class TimerBean {
                         Date apdate = h.getApdate();
                         Date payda2 = apmsysBean.getpurdate2(company, vdrno, apdate);
                         payda2 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", payda2));
-                        if (payda1.compareTo(payda2) == 0) {    //未变更付款日期且无短溢沽，免签
+                        //1.SCM抛转 2.未变更付款日期且无短溢沽，免签
+                        if (ls_mark.startsWith(company + "AP") && payda1.compareTo(payda2) == 0) {
                             ls_mark = "OA免签";
                         }
                         for (Apmapd d : apmapdList) {
