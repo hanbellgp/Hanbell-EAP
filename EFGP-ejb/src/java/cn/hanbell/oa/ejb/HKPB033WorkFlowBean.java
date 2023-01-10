@@ -79,7 +79,7 @@ public class HKPB033WorkFlowBean extends SuperEJBForEFGP<FormInstance> implement
             try {
                 f.setAccessible(true);
                 if ("auditor".equals(f.getName()) || "securityOfficer".equals(f.getName()) || "sectionSupervisor".equals(f.getName())
-                        || "departmentHead".equals(f.getName()) || "safetySectionChief".equals(f.getName()) || "signatory".equals(f.getName())) {
+                        || "departmentHead".equals(f.getName()) || "safetySectionChief".equals(f.getName()) || "signatory".equals(f.getName()) || (f.getName().equals("creator") || f.getName().equals("empl") || f.getName().equals("emply") || f.getName().equals("employee") || f.getName().endsWith("user") || f.getName().endsWith("userno") || f.getName().endsWith("User") || f.getName().endsWith("Userno")) && (!f.getName().startsWith("hdn"))) {
                     if (f.get(master) != null && !"".equals(f.get(master))) {
                         Users user = this.findUserByUserno(f.get(master).toString());
                         if (user == null) {
