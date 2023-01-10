@@ -43,7 +43,7 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             if (entity.getEmail() != null && !"".equals(entity.getEmail())) {
                 job.add("email", entity.getEmail());
             }
-            if (entity.getTel() != null) {
+            if (entity.getTel() != null && !"".equals(entity.getTel())) {
                 job.add("telephone", entity.getTel());
             }else{
                  job.add("telephone", "");
@@ -273,7 +273,7 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
      * @param 发送的部门
      * @return 发生异常后需要通知的人员
      */
-    public  List<String> tryFindExceptionInformUsers() {
+    public List<String> tryFindExceptionInformUsers() {
         List<String> userids = new ArrayList();
         try {
             List<SystemUser> list = findByDeptnoAndSyncWeChatStatus("13120");
