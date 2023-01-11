@@ -12,6 +12,10 @@ import cn.hanbell.eam.entity.EquipmentAnalyResultDta;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEAM;
 import com.lightshell.comm.SuperEJB;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +36,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
+import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,6 +47,7 @@ import org.json.JSONObject;
 @Stateless
 @Path("shbeam/eqpmaintenance")
 public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAnalyResult> {
+
     @EJB
     private EquipmentAnalyResultBean equipmentAnalyResultBean;
 
@@ -49,12 +55,15 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
     private EquipmentAnalyResultDtaBean equipmentAnalyResultDtaBean;
 
     protected SuperEJB superEJB;
+    //生产环境
+     private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
+
+    //private final String filePathTemp = "D:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
         return equipmentAnalyResultBean;
     }
-
 
     public EquipmentMaintenanceFacadeREST() {
         super(EquipmentAnalyResult.class);
@@ -71,8 +80,8 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             try {
                 Map<String, Object> filterFields = getFilterFieldsMap(filters);
                 Map<String, String> sortFields = getSortFieldsMap(sorts);
-                
-                autoMaintainDocListRes = equipmentAnalyResultBean.getEquipmentAnalyResultListByNativeQuery(filterFields,sortFields);
+
+                autoMaintainDocListRes = equipmentAnalyResultBean.getEquipmentAnalyResultListByNativeQuery(filterFields, sortFields);
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
@@ -96,7 +105,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                 Map<String, Object> filterFields = getFilterFieldsMap(filters);
 
                 autoMaintainInfo = equipmentAnalyResultBean.findById(Integer.parseInt(filterFields.get("docId").toString()));
-                if(autoMaintainInfo != null){
+                if (autoMaintainInfo != null) {
                     Map<String, Object> filterFields_detail = new HashMap<>();
                     Map<String, String> sortFields_detail = new LinkedHashMap<>();
                     filterFields_detail.put("pid", autoMaintainInfo.getFormid());
@@ -113,6 +122,36 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
+
+    public boolean GenerateImage(String imgData, String imgFilePath) throws IOException { // 对字节数组字符串进行Base64解码并生成图片
+        if (imgData == null) // 图像数据为空
+        {
+            return false;
+        }
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(imgFilePath);
+            // Base64解码
+            byte[] b = Base64.decodeBase64(imgData);
+            for (int i = 0; i < b.length; ++i) {
+                if (b[i] < 0) {// 调整异常数据
+                    b[i] += 256;
+                }
+            }
+            out.write(b);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            out.flush();
+            out.close();
+            return true;
+        }
+    }
+
 
     @POST
     @Path("autonomous-maintain-start")
@@ -138,13 +177,13 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                 String mainResultTemp = "正常";
                 boolean completeFlag = true;
                 boolean startFlag = false;
-                for(Object obj : eqpMaintainDetailList_jsonArray){
+                for (Object obj : eqpMaintainDetailList_jsonArray) {
                     JSONObject jsonObject = (JSONObject) obj;
                     autoMaintainDetail = equipmentAnalyResultDtaBean.findById(jsonObject.getInt("Id"));
                     resultStrTemp = jsonObject.getString("result");
-                    if(resultStrTemp.equals("正常") || resultStrTemp.equals("异常")){
+                    if (resultStrTemp.equals("正常") || resultStrTemp.equals("异常")) {
                         startFlag = true;
-                        if(!resultStrTemp.equals("正常")){
+                        if (!resultStrTemp.equals("正常")) {
                             mainResultTemp = "异常";
                         }
                         autoMaintainDetail.setAnalysisresult(resultStrTemp);
@@ -152,29 +191,38 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                     autoMaintainDetail.setException(jsonObject.getString("exception"));
                     autoMaintainDetail.setProblemsolve(jsonObject.getString("problemSolve"));
 
+                    String filepath = jsonObject.getString("filePath");
+                    if (filepath != null && !"".equals(filepath)&&!filepath.substring(0,2).equals("..")) {//存在上传图片时进行图片上传
+                        String fileNameTemp = autoMaintainDetail.getPid() + "_" + autoMaintainDetail.getSeq() + "_" + System.currentTimeMillis() + ".jpg";
+                        String relativePath = "../../resources/app/res/" + fileNameTemp;
+                        //保存至服务器本地
+                         GenerateImage(filepath, filePathTemp + fileNameTemp);
+                        //download(filepath, filePathTemp + fileNameTemp);
+                        autoMaintainDetail.setFilepath(relativePath);
+                    }
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd  HH:mm");
                     dateStrTemp = jsonObject.getString("sDate");
-                    if(dateStrTemp != null && !dateStrTemp.isEmpty()){
+                    if (dateStrTemp != null && !dateStrTemp.isEmpty()) {
                         Date startDateTemp = sdf.parse(dateStrTemp);
                         autoMaintainDetail.setSdate(startDateTemp);
-                        if(startDateTemp.compareTo(minOptDate) < 0){
+                        if (startDateTemp.compareTo(minOptDate) < 0) {
                             minOptDate = startDateTemp;
                         }
                     }
                     dateStrTemp = jsonObject.getString("eDate");
-                    if(dateStrTemp != null && !dateStrTemp.isEmpty()){
+                    if (dateStrTemp != null && !dateStrTemp.isEmpty()) {
                         autoMaintainDetail.setEdate(sdf.parse(dateStrTemp));
                     }
                 }
 
                 //先刷新容器更新数据库
                 equipmentAnalyResultDtaBean.getEntityManager().flush();
-                equipmentAnalyResultDtaBean.getEntityManager().clear ();
+                equipmentAnalyResultDtaBean.getEntityManager().clear();
 
                 //遍历表身判断单据是否已经完成
-                List<EquipmentAnalyResultDta> analyResultDtaList =  equipmentAnalyResultDtaBean.findByPId(autoMaintainInfo.getFormid());
-                for(EquipmentAnalyResultDta dtaObj : analyResultDtaList){
-                     if(!("正常".equals(dtaObj.getAnalysisresult()) || "异常".equals(dtaObj.getAnalysisresult()))){
+                List<EquipmentAnalyResultDta> analyResultDtaList = equipmentAnalyResultDtaBean.findByPId(autoMaintainInfo.getFormid());
+                for (EquipmentAnalyResultDta dtaObj : analyResultDtaList) {
+                    if (!("正常".equals(dtaObj.getAnalysisresult()) || "异常".equals(dtaObj.getAnalysisresult()))) {
                         completeFlag = false;
                     }
                 }
