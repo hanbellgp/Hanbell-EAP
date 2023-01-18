@@ -70,9 +70,12 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
 
     @PersistenceContext(unitName = "PU_zkerp")
     private EntityManager em_zkerp;
-    
+
     @PersistenceContext(unitName = "PU_chuxiongerp")
     private EntityManager em_chuxiongerp;
+
+    @PersistenceContext(unitName = "PU_yinchuanerp")
+    private EntityManager em_yinchuanerp;
 
     @PersistenceContext(unitName = "PU_thberp")
     private EntityManager em_thberp;
@@ -181,7 +184,9 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
             case "X":
                 return em_hkerp;
             case "F":
-                return em_chuxiongerp;    
+                return em_chuxiongerp;
+            case "C5":
+                return em_yinchuanerp;
             default:
                 return em_shberp;
         }
