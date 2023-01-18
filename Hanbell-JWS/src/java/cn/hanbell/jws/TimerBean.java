@@ -1415,7 +1415,7 @@ public class TimerBean {
                         Date payda2 = apmsysBean.getpurdate2(company, vdrno, apdate);
                         payda2 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", payda2));
                         //1.SCM抛转 2.未变更付款日期且无短溢沽，免签
-                        if (ls_mark.startsWith(company + "AP") && payda1.compareTo(payda2) == 0) {
+                        if (ls_mark != null && ls_mark.startsWith(company + "AP") && payda1.compareTo(payda2) == 0) {
                             ls_mark = "OA免签";
                         }
                         for (Apmapd d : apmapdList) {
@@ -1556,7 +1556,15 @@ public class TimerBean {
                 }
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             log4j.error(ex);
+            //加入邮件通知
+            eapMailBean.getTo().clear();
+            eapMailBean.getTo().add("13120@hanbell.com.cn");
+            eapMailBean.setMailSubject("ERP-APM811抛转OA审批失败");
+            eapMailBean.setMailContent(
+                    company + "公司别 ERP-APM811抛转OA审批申请单" + "抛转失败，异常：" + ex);
+            eapMailBean.notify(new MailNotify());
         }
     }
 
@@ -1779,7 +1787,7 @@ public class TimerBean {
                         hm.setAppdate(h.getApdate());
                         hm.setAppuser(h.getApusrno());
                         //hm.setAppdept(h.getDepno());
-                        hm.setAppdept(workFlowBean.getCurrentUser().getDeptno());
+                        hm.setAppdept(usersBean.checkDeptno(h.getApusrno(), h.getDepno()));
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());

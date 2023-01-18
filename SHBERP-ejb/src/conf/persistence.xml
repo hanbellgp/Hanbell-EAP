@@ -121,12 +121,20 @@
             <property name="eclipselink.canonicalmodel.subpackage" value="zk"/>
         </properties>
     </persistence-unit>
-	    <persistence-unit name="PU_chuxiongerp" transaction-type="JTA">
+    <persistence-unit name="PU_chuxiongerp" transaction-type="JTA">
         <jta-data-source>jdbc/chuxiongerp</jta-data-source>
         <shared-cache-mode>NONE</shared-cache-mode>
         <validation-mode>NONE</validation-mode>
         <properties>
             <property name="eclipselink.canonicalmodel.subpackage" value="cx"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="PU_yinchuanerp" transaction-type="JTA">
+        <jta-data-source>jdbc/yinchuanerp</jta-data-source>
+        <shared-cache-mode>NONE</shared-cache-mode>
+        <validation-mode>NONE</validation-mode>
+        <properties>
+            <property name="eclipselink.canonicalmodel.subpackage" value="yc"/>
         </properties>
     </persistence-unit>
     <persistence-unit name="PU_thberp" transaction-type="JTA">
