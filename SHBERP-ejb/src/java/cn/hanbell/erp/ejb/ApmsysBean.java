@@ -638,9 +638,14 @@ public class ApmsysBean extends SuperEJBForERP<Apmsys> {
                 payda = BaseLib.getDate("yyyy/MM/dd", li_year + "/" + String.format("%02d", li_month) + "/" + "25");
             } else {
                 ca.add(Calendar.DATE, li_tickdays);
-                payda = ca.getTime();
+                //payda = ca.getTime();
+                //具体日期大于25号的，月份+1
+                int li_day = ca.get(Calendar.DATE);
+                if (li_day > 25) {
+                    ca.add(Calendar.MONTH, 1);
+                }
                 li_month = ca.get(Calendar.MONTH) + 1;
-                li_year = ca.get(Calendar.YEAR);      
+                li_year = ca.get(Calendar.YEAR);
                 payda = BaseLib.getDate("yyyy/MM/dd", li_year + "/" + String.format("%02d", li_month) + "/" + "25");
             }
             return payda;
