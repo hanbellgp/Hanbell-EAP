@@ -40,6 +40,7 @@ public class HZGL004Model {
     private String isWechat;
     private String safeplace;
     private String srcno;
+
     public HZGL004Model() {
 
     }

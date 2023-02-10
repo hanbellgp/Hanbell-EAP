@@ -5,6 +5,7 @@
  */
 package cn.hanbell.oa.entity;
 
+import cn.hanbell.oa.ejb.WorkFlowBean;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -57,13 +58,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HKCW013.findByTotalfs", query = "SELECT h FROM HKCW013 h WHERE h.totalfs = :totalfs"),
     @NamedQuery(name = "HKCW013.findByApno", query = "SELECT h FROM HKCW013 h WHERE h.apno = :apno"),
     @NamedQuery(name = "HKCW013.findByBankAccount", query = "SELECT h FROM HKCW013 h WHERE h.bankAccount = :bankAccount"),
-    @NamedQuery(name = "HKCW013.findByExpamt", query = "SELECT h FROM HKCW013 h WHERE h.expamt = :expamt"),
     @NamedQuery(name = "HKCW013.findByVdrno", query = "SELECT h FROM HKCW013 h WHERE h.vdrno = :vdrno"),
     @NamedQuery(name = "HKCW013.findByOid", query = "SELECT h FROM HKCW013 h WHERE h.oid = :oid"),
     @NamedQuery(name = "HKCW013.findByApdsc", query = "SELECT h FROM HKCW013 h WHERE h.apdsc = :apdsc"),
     @NamedQuery(name = "HKCW013.findByTerdate", query = "SELECT h FROM HKCW013 h WHERE h.terdate = :terdate"),
     @NamedQuery(name = "HKCW013.findByCheck1", query = "SELECT h FROM HKCW013 h WHERE h.check1 = :check1"),
-    @NamedQuery(name = "HKCW013.findByExpamtfs", query = "SELECT h FROM HKCW013 h WHERE h.expamtfs = :expamtfs"),
     @NamedQuery(name = "HKCW013.findBySerialNumber", query = "SELECT h FROM HKCW013 h WHERE h.serialNumber = :serialNumber"),
     @NamedQuery(name = "HKCW013.findByPurchaseOrder", query = "SELECT h FROM HKCW013 h WHERE h.purchaseOrder = :purchaseOrder"),
     @NamedQuery(name = "HKCW013.findByIndate", query = "SELECT h FROM HKCW013 h WHERE h.indate = :indate"),
@@ -158,9 +157,6 @@ public class HKCW013 implements Serializable {
     @Column(name = "bankAccount")
     private String bankAccount;
     @Size(max = 255)
-    @Column(name = "expamt")
-    private String expamt;
-    @Size(max = 255)
     @Column(name = "vdrno")
     private String vdrno;
     @Id
@@ -178,9 +174,6 @@ public class HKCW013 implements Serializable {
     @Size(max = 255)
     @Column(name = "check1")
     private String check1;
-    @Size(max = 255)
-    @Column(name = "expamtfs")
-    private String expamtfs;
     @Size(max = 255)
     @Column(name = "SerialNumber")
     private String serialNumber;
@@ -208,7 +201,10 @@ public class HKCW013 implements Serializable {
     @Size(max = 255)
     @Column(name = "ratio")
     private String ratio;
-
+    @Size(max = 255)
+    @Column(name = "cmp_sum_tax")
+    private String cmpSumTax;
+     
     public HKCW013() {
     }
 
@@ -440,14 +436,6 @@ public class HKCW013 implements Serializable {
         this.bankAccount = bankAccount;
     }
 
-    public String getExpamt() {
-        return expamt;
-    }
-
-    public void setExpamt(String expamt) {
-        this.expamt = expamt;
-    }
-
     public String getVdrno() {
         return vdrno;
     }
@@ -487,15 +475,7 @@ public class HKCW013 implements Serializable {
     public void setCheck1(String check1) {
         this.check1 = check1;
     }
-
-    public String getExpamtfs() {
-        return expamtfs;
-    }
-
-    public void setExpamtfs(String expamtfs) {
-        this.expamtfs = expamtfs;
-    }
-
+    
     public String getSerialNumber() {
         return serialNumber;
     }
@@ -568,6 +548,14 @@ public class HKCW013 implements Serializable {
         this.ratio = ratio;
     }
 
+    public String getCmpSumTax() {
+        return cmpSumTax;
+    }
+
+    public void setCmpSumTax(String cmpSumTax) {
+        this.cmpSumTax = cmpSumTax;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -592,5 +580,9 @@ public class HKCW013 implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKCW013[ oid=" + oid + " ]";
     }
-    
+
+    public String getCompanyName() {
+        WorkFlowBean WorkFlowBean = new WorkFlowBean();
+        return WorkFlowBean.getCompanyName(this.facno);
+    }
 }

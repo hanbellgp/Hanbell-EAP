@@ -216,6 +216,21 @@ public class HZJS034Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "clsdsc")
     private String clsdsc;
+    @Size(max = 255)
+    @Column(name = "AHclass")
+    private String ahclass;
+    @Size(max = 255)
+    @Column(name = "genre2")
+    private String genre2;
+    @Size(max = 255)
+    @Column(name = "genre3")
+    private String genre3;
+    @Size(max = 255)
+    @Column(name = "ModelDsc1")
+    private String ModelDsc1;
+    @Size(max = 255)
+    @Column(name = "ModelDsc2")
+    private String ModelDsc2;
 
     public HZJS034Detail() {
     }
@@ -655,6 +670,46 @@ public class HZJS034Detail implements Serializable {
 
     public void setRate2(String rate2) {
         this.rate2 = rate2;
+    }
+
+    public String getAhclass() {
+        return ahclass;
+    }
+
+    public void setAhclass(String ahclass) {
+        this.ahclass = ahclass;
+    }
+
+    public String getGenre2() {
+        return genre2;
+    }
+
+    public void setGenre2(String genre2) {
+        this.genre2 = genre2;
+    }
+
+    public String getGenre3() {
+        return genre3;
+    }
+
+    public void setGenre3(String genre3) {
+        this.genre3 = genre3;
+    }
+
+    public String getModelDsc1() {
+        return ModelDsc1;
+    }
+
+    public void setModelDsc1(String ModelDsc1) {
+        this.ModelDsc1 = ModelDsc1;
+    }
+
+    public String getModelDsc2() {
+        return ModelDsc2;
+    }
+
+    public void setModelDsc2(String ModelDsc2) {
+        this.ModelDsc2 = ModelDsc2;
     }
 
 }

@@ -125,6 +125,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setUnmsr2(detail.getUnmsr2()); // 设置单位二
                     m.setUnmsr1e(detail.getUnmsr1e()); // 设置数量单位一（英文）
                     m.setFvco('F'); // 设置固定变动区分码
+                    m.setAhclass(detail.getAhclass());//设置机体分类
                     if ("".equals(detail.getUnmsr2()) || "N".equals(detail.getIsDUnit())) {
                         if (facno.equals("H") || facno.equals("Y")) {
                             m.setJudco("111111");
@@ -167,11 +168,21 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setIndate(BaseLib.getDate());
                     m.setLowlevelcst((short) 0); // 设置低阶码
                     m.setJityn(detail.getJityn().charAt(0)); // 即时到货管制
-                    m.setGenre1(detail.getHdgenre1()); // 设置产品别
+                    //汉声汉扬不使用此产品别分类
+                    if (facno.equals("H") || facno.equals("Y")) {
+                        m.setGenre1(""); // 设置产品别
+                    } else {
+                        m.setGenre1(detail.getHdgenre1()); // 设置产品别
+                    }
                     m.setDwf(BigDecimal.ZERO);
                     m.setDwg(BigDecimal.ZERO);
                     m.setDwl(BigDecimal.ZERO);
                     m.setDwt(BigDecimal.ZERO);
+                    //20221213 加入分类2分类3及机型说明
+                    m.setGenre2(detail.getGenre2());
+                    m.setGenre3(detail.getGenre3());
+                    m.setModelDsc1(detail.getModelDsc1());
+                    m.setModelDsc2(detail.getModelDsc2());                    
                     persist(m);
                     this.getEntityManager().flush();
 

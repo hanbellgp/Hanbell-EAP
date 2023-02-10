@@ -25,6 +25,7 @@ import cn.hanbell.oa.ejb.HKFW006Inv310DetailBean;
 import cn.hanbell.oa.ejb.HKGC001Bean;
 import cn.hanbell.oa.ejb.HKGC003Bean;
 import cn.hanbell.oa.ejb.HKPB054Bean;
+import cn.hanbell.oa.ejb.SHBERPINV310Bean;
 import cn.hanbell.oa.ejb.SHBERPINV325Bean;
 import cn.hanbell.oa.ejb.WARMI05Bean;
 import cn.hanbell.oa.entity.HKFW006;
@@ -36,6 +37,8 @@ import cn.hanbell.oa.entity.HKGC003;
 import cn.hanbell.oa.entity.HKGC003Detail;
 import cn.hanbell.oa.entity.HKPB054;
 import cn.hanbell.oa.entity.HKPB054WLDetail;
+import cn.hanbell.oa.entity.SHBERPINV310;
+import cn.hanbell.oa.entity.SHBERPINV310Detail;
 import cn.hanbell.oa.entity.SHBERPINV325;
 import cn.hanbell.oa.entity.SHBERPINV325Detail;
 import cn.hanbell.oa.entity.WARMI05;
@@ -80,6 +83,8 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
     private WARMI05Bean warmi05Bean;
     @EJB
     private HKPB054Bean hkpb054Bean;
+    @EJB
+    private SHBERPINV310Bean shberpinv310Bean;
 
     //EJBForERP
     @EJB
@@ -636,7 +641,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         Date trdate;
         Date indate = BaseLib.getDate();
         String trtype;
-
+        String mark = "";
         facno = e.getFacno();
         prono = e.getProno();
         trtype = e.getTrtype();
@@ -676,7 +681,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 //获取品号资料
                 m = invmasBean.findByItnbr(d.getItnbr());
                 if (m == null) {
-                    throw new RuntimeException(psn + "流程序号" + d.getItnbr() + "ERP中不存在");
+                    throw new RuntimeException(psn + "流程序号" + d.getItnbr() + "件号ERP中不存在");
                 }
                 // 增加调拨库号成本属性是否一致判断
                 if (!Objects.equals(invwhBean.findByWareh(d.getDfromwareh()).getCostyn(), invwhBean.findByWareh(d.getDtowareh()).getCostyn())) {
@@ -714,6 +719,8 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 invdta.setIocode('1');
                 invdta.setDmark2("EFGP");
                 addedDetail.add(invdta);
+                //加入将OA表身备注写入表头
+                mark += d.getBz();
             }
 
             trno = invsernoBean.getTrno(facno, "", trtype, trdate, true);
@@ -738,6 +745,35 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             getEntityManager().flush();
             e.setRelformid(trno);
             shberpinv325Bean.update(e);
+            //更新表头备注
+            if (!"".equals(mark.trim())) {
+                List<String> ss = getStringArray(mark, 60, new ArrayList<>());
+                if (!ss.isEmpty()) {
+                    Invhdsc hdsc = new Invhdsc(facno, prono, trno);
+                    for (int i = 0; i < ss.size() && i < 4; i++) {
+                        switch (i) {
+                            case 0:
+                                hdsc.setMark1(ss.get(i));
+                                break;
+                            case 1:
+                                hdsc.setMark2(ss.get(i));
+                                break;
+                            case 2:
+                                hdsc.setMark3(ss.get(i));
+                                break;
+                            case 3:
+                                hdsc.setMark4(ss.get(i));
+                                break;
+
+                            default:
+                                hdsc.setMark1(ss.get(0));
+                                break;
+                        }
+                    }
+                    invhdscBean.setCompany(facno);
+                    invhdscBean.persist(hdsc);
+                }
+            }
             return trno;
         } catch (ParseException | RuntimeException ex) {
             log4j.error(psn + "流程序号initByOASHBERPINV325异常", ex);
@@ -1104,6 +1140,166 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         }
     }
 
+    public Boolean initByOASHBERPINV310(String psn) throws Exception {
+        SHBERPINV310 e = shberpinv310Bean.findByPSN(psn);
+        //判断流程是否存在
+        if (e == null) {
+            throw new NullPointerException(psn + "流程实例不存在");
+        }
+        String fsn = e.getFormSerialNumber();
+        List<SHBERPINV310Detail> details = shberpinv310Bean.getDetailByFSN(fsn);
+        //判断明细是否存在
+        if (details == null || details.isEmpty()) {
+            throw new NullPointerException("OA表单中不存在手工领料单明细");
+        }
+        String facno;
+        String prono;
+        String trno;
+        Date trdate;
+        BigDecimal trnqy;
+        Date indate = BaseLib.getDate();
+
+        facno = e.getFacno();
+        prono = "1";
+        //获取ERP库存交易类别
+        invdouBean.setCompany(facno);
+        Invdou IAB = invdouBean.findByTrtype("IAB");
+        if (IAB == null) {
+            throw new NullPointerException("库存交易单据类别错误，ERP不存在" + "IAB");
+        }
+        //手工领料单
+        int trseq = 0;
+        Invhad invhad;
+        Invdta invdta;
+        Invmas invmas;
+        Invbal invbal;
+        List<Invdta> addedIAB = new ArrayList<>();
+        HashMap<SuperEJBForERP, List<?>> detailIABAdded = new HashMap<>();
+        detailIABAdded.put(invdtaBean, addedIAB);
+
+        this.setCompany(facno);
+        invmasBean.setCompany(facno);
+        invsernoBean.setCompany(facno);
+        invsysBean.setCompany(facno);
+        invbalBean.setCompany(facno);
+        try {
+            trdate = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
+            String mon = BaseLib.formatDate("yyyyMM", trdate);
+            Invsys invsys = invsysBean.findByFacno(facno);
+            //如果已月结就改成次月1号
+            if (mon.equals(invsys.getLmonth())) {
+                Calendar c = Calendar.getInstance();
+                c.setTime(trdate);
+                c.add(Calendar.MONTH, 1);
+                c.set(Calendar.DATE, 1);
+                trdate = c.getTime();
+            }
+            for (SHBERPINV310Detail d : details) {
+                //获取品号资料
+                invmas = invmasBean.findByItnbr(d.getItnbr());
+                if (invmas == null) {
+                    throw new RuntimeException(d.getItnbr() + "ERP中不存在");
+                }
+                //判断是否有库存数量
+                invbal = invbalBean.findByItnbrAndWareh(d.getItnbr(), d.getWareh());
+                if (invbal == null) {
+                    throw new RuntimeException(d.getItnbr() + "ERP中不存在库存信息");
+                } else {
+                    trnqy = new BigDecimal(d.getQty());
+                    if (invbal.getOnhand1().compareTo(trnqy) == -1) {
+                        throw new RuntimeException(d.getItnbr() + "ERP中库存不足");
+                    }
+                }
+                trseq++;
+                //调拨出去
+                invdta = new Invdta(d.getItnbr(), facno, prono, "", trseq);
+                invdta.setTrtype(IAB.getTrtype());
+                invdta.setItcls(invmas.getItcls());
+                invdta.setItclscode(invmas.getItclscode());
+                invdta.setTrnqy1(BigDecimal.valueOf(Double.parseDouble(d.getQty())));
+                invdta.setTrnqy2(BigDecimal.ZERO);
+                invdta.setTrnqy3(BigDecimal.ZERO);
+                invdta.setUnmsr1(invmas.getUnmsr1());
+                invdta.setWareh(d.getWareh());
+                invdta.setFixnr("");
+                invdta.setVarnr("");
+                invdta.setIocode(IAB.getIocode());
+                addedIAB.add(invdta);
+            }
+            trno = invsernoBean.getTrno(facno, "", IAB.getTrtype(), trdate, true);
+            invhad = new Invhad(facno, prono, trno);
+            invhad.setTrtype(IAB.getTrtype());
+            invhad.setTrdate(trdate);
+            //1ERP作业部门 2.费用归属部门-->作业部门
+            switch (e.getErpDept()) {
+                case "1":
+                    invhad.setDepno("1P121");  //加工二组精车
+                    break;
+                case "2":
+                    invhad.setDepno("1P122");  //加工二组精研
+                    break;
+                default:
+                    invhad.setDepno(e.getUseDept());
+                    break;
+
+            }
+            invhad.setIocode(IAB.getIocode());
+            invhad.setResno(e.getCode().equals("") ? "K01" : e.getCode());
+            invhad.setSourceno(e.getProcessSerialNumber().substring(8));
+            invhad.setStatus('N');
+            invhad.setUserno(e.getInputUser());
+            invhad.setIndate(indate);
+            invhad.setPrtcnt((short) 0);
+            invhad.setAsrsQty(BigDecimal.ZERO);
+            invhad.setHmark2(e.getChangeCode());
+            invhad.setHmark1("00");  //申报项目
+            //明细列表交易单号赋值
+            for (Invdta d : addedIAB) {
+                d.getInvdtaPK().setTrno(trno);
+            }
+            //更新ERP INV310
+            this.persist(invhad, detailIABAdded);
+            getEntityManager().flush();
+            //单号回写OA
+            e.setErptrno(trno);
+            shberpinv310Bean.update(e);
+            //更新表头备注
+            if (!"".equals(e.getRemarks().trim())) {
+                List<String> ss = getStringArray(e.getRemarks().trim(), 60, new ArrayList<>());
+                if (!ss.isEmpty()) {
+                    Invhdsc hdsc = new Invhdsc(facno, prono, trno);
+                    for (int i = 0; i < ss.size() && i < 4; i++) {
+                        switch (i) {
+                            case 0:
+                                hdsc.setMark1(ss.get(i));
+                                break;
+                            case 1:
+                                hdsc.setMark2(ss.get(i));
+                                break;
+                            case 2:
+                                hdsc.setMark3(ss.get(i));
+                                break;
+                            case 3:
+                                hdsc.setMark4(ss.get(i));
+                                break;
+
+                            default:
+                                hdsc.setMark1(ss.get(0));
+                                break;
+                        }
+                    }
+                    invhdscBean.setCompany(facno);
+                    invhdscBean.persist(hdsc);
+                }
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            log4j.error("initByOASHBERPINV310", ex.toString());
+            throw ex;
+        }
+    }
+
     /**
      *
      * @param kfno
@@ -1209,13 +1405,36 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             sql.append("  SELECT *");
             sql.append(" FROM invhad where trno='").append(trno).append("' and facno='").append(facno).append("' and prono='").append(prono).append("' and trtype='").append(trtype).append("'");
 
-            Query q = getEntityManager().createNativeQuery(sql.toString(),Invhad.class);
+            Query q = getEntityManager().createNativeQuery(sql.toString(), Invhad.class);
 
             List<Invhad> s = q.getResultList();
-            return s ;
+            return s;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    //对包含中文的字符长度做处理
+    public List<String> getStringArray(String s, int slength, List<String> arrList) {
+        int k = 0;
+        for (int i = 0; i < s.length(); i++) {
+            String si = s.substring(i, i + 1);
+            if (si.matches("[^\\x00-\\xff]")) { //匹配中文字符
+                k += 2;
+            } else {
+                k += 1;
+            }
+            if (k >= slength) {
+                arrList.add(s.substring(0, i + 1));
+                if (!s.substring(i + 1).trim().equals("")) {
+                    return getStringArray(s.substring(i + 1), slength, arrList);
+                }
+            }
+        }
+        if (k < slength) {
+            arrList.add(s.substring(0));
+        }
+        return arrList;
     }
 }

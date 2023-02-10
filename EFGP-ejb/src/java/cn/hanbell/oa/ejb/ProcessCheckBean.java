@@ -56,7 +56,7 @@ public class ProcessCheckBean extends SuperEJBForEFGP<ProcessCheck> {
             for (int i = 0; i < result.size(); i++) {
                 Object[] row = (Object[]) result.get(i);
                 newEntity = new ProcessCheck(row[0].toString(), row[2].toString(), row[3].toString(), row[4].toString(), row[5].toString(), row[6].toString(), Integer.parseInt(row[1].toString()));
-                newEntity.setExecutiveComment(row[7].toString());
+                newEntity.setExecutiveComment(null == row[7] ? "" : row[7].toString());
                 dataList.add(newEntity);
             }
         }

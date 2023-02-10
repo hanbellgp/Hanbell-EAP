@@ -111,6 +111,7 @@ public class ManmotBean extends SuperEJBForERP<Manmot> {
                 if ("C".equals(detail.getHdnManStatus())) {
                     m.setOastatus("V");
                     m.setManstatus('C');
+                    m.setCfmuserno(m.getOauserno());
                 } else if ("B".equals(detail.getHdnManStatus())) {
                     m.setOastatus("X");
                     m.setManstatus('B');

@@ -79,6 +79,7 @@ import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eap.comm.MailNotify;
 import cn.hanbell.eap.entity.SystemUser;
+import cn.hanbell.erp.ejb.ApmsysBean;
 import cn.hanbell.erp.ejb.BudgetAccBean;
 import cn.hanbell.erp.ejb.InvhdscBean;
 import cn.hanbell.erp.ejb.InvsafqyBean;
@@ -144,6 +145,7 @@ import cn.hanbell.erp.entity.Secuser;
 import cn.hanbell.exch.ejb.ExchangeSHBBean;
 import cn.hanbell.mes.entity.MuserRole;
 import cn.hanbell.oa.ejb.HKCW002Bean;
+import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.oa.entity.HKCW002;
 import cn.hanbell.oa.entity.HKCW002Detail;
@@ -249,12 +251,16 @@ public class TimerBean {
     private HKCW002Bean hkcw002Bean;
     @EJB
     private WorkFlowBean workFlowBean;
+    @EJB
+    private UsersBean usersBean;
 
     // EJBForERP
     @EJB
     private ApmaphBean apmaphBean;
     @EJB
     private ApmtbilBean apmtbilBean;
+    @EJB
+    private ApmsysBean apmsysBean;
     @EJB
     private BomasryBean bomasryBean;
     @EJB
@@ -988,7 +994,7 @@ public class TimerBean {
                             assetDistributeBean.update(e);
                         }
                         //研发专案号写入表头备注20220720
-                        if (!"".equals(haddsc)) {
+                        if (!"".equals(haddsc.trim())) {
                             String ls_trno = trno.split("\\$")[0];
                             Invhdsc hdsc = new Invhdsc(facno, prono, ls_trno);
                             hdsc.setMark1(haddsc);
@@ -1059,6 +1065,10 @@ public class TimerBean {
                             d.setIsDUnit("N");
                             d.setYt("");
                             d.setRemark("");
+                            d.setGenre2("");
+                            d.setGenre3("");
+                            d.setModelDsc1("");
+                            d.setModelDsc2("");
                             detailList.add(d);
 
                             //加入工程变更通知单作废变更前件号逻辑
@@ -1398,6 +1408,15 @@ public class TimerBean {
                         sumivomsfs = 0.00;
                         bilnoList = new ArrayList<>();
                         String isAttachment = "";
+                        String ls_mark = h.getHmark();     //备注栏位记录OA是否免签和
+                        Date payda1 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
+                        String vdrno = h.getVdrno();
+                        Date apdate = h.getApdate();
+                        Date payda2 = apmsysBean.getpurdate2(company, vdrno, apdate);
+                        payda2 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", payda2));
+                        if (payda1.compareTo(payda2) == 0) {    //未变更付款日期且无短溢沽，免签
+                            ls_mark = "OA免签";
+                        }
                         for (Apmapd d : apmapdList) {
                             i++;
                             dm = new SHBERPAPM811DetailModel();
@@ -1448,6 +1467,7 @@ public class TimerBean {
                                 if (!d.getApdsc().contains("税率差") && !d.getApdsc().contains("税差")) {
                                     isAttachment = "Y";
                                 }
+                                ls_mark = h.getHmark();
                             }
                             detailList.add(dm);
                             // 计算海关代徵,税额
@@ -1490,10 +1510,10 @@ public class TimerBean {
                         hm.setIndate(h.getIndate());
                         hm.setInuser(h.getUserno());
                         hm.setIsretmoney(h.getIsretmoney().toString());
-                        if (null == h.getHmark()) {
+                        if (null == ls_mark) {
                             hm.setHmark("");
                         } else {
-                            hm.setHmark(h.getHmark());
+                            hm.setHmark(ls_mark);
                         }
                         // 表单下方合计栏位(取2位小数)
                         hm.setSum_apamtfs(sumapamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
@@ -1527,6 +1547,7 @@ public class TimerBean {
                         if (rm != null && rm.length == 2 && rm[0].equals("200")) {
                             // 更新ERP APM811状态
                             h.setApsta("25");
+                            h.setHmark(ls_mark);
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }
@@ -1552,6 +1573,10 @@ public class TimerBean {
             int i;
             BigDecimal sumapamtfs;
             BigDecimal sumapamt;
+            BigDecimal sumtaxfs;
+            BigDecimal sumtax;
+            BigDecimal sumbilnum8fs;
+            BigDecimal sumbilnum8;
             if (apmaphList != null && !apmaphList.isEmpty()) {
                 for (Apmaph h : apmaphList) {
                     apmapdList = apmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),
@@ -1561,7 +1586,11 @@ public class TimerBean {
                         i = 0;
                         sumapamtfs = BigDecimal.ZERO;
                         sumapamt = BigDecimal.ZERO;
-
+                        sumtaxfs = BigDecimal.ZERO;
+                        sumtax = BigDecimal.ZERO;
+                        sumbilnum8fs = BigDecimal.ZERO;
+                        sumbilnum8 = BigDecimal.ZERO;
+                        List<String> bilList = new ArrayList<>();
                         for (Apmapd d : apmapdList) {
                             i++;
                             dm = new HKCW013DetailModel();
@@ -1606,6 +1635,21 @@ public class TimerBean {
                             } else {
                                 dm.setCmp_budgetacc(budgetacc.getAccname());
                             }
+                            dm.setPayqty(d.getPayqty());
+                            if (!bilList.contains(d.getBilno())) {
+                                // 计算海关代徵,税额
+                                apmtbilBean.setCompany(company);
+                                Apmtbil apmtbil = apmtbilBean.findByPK(company, d.getBilno());
+                                if (null != apmtbil) {
+                                    sumtaxfs = sumtaxfs.add(apmtbil.getBiltaxfs());
+                                    sumtax = sumtax.add(apmtbil.getBiltax());
+                                    if ('8' == apmtbil.getBilnum()) {
+                                        sumbilnum8 = sumbilnum8.add(apmtbil.getBiltax());
+                                        sumbilnum8fs = sumbilnum8fs.add(apmtbil.getBiltaxfs());
+                                    }
+                                }
+                                bilList.add(d.getBilno());
+                            }
                             detailList.add(dm);
                         }
                         workFlowBean.initUserInfo(h.getUserno());
@@ -1614,7 +1658,9 @@ public class TimerBean {
                         hm.setApno(h.getApmaphPK().getApno());
                         hm.setAppdate(h.getApdate());
                         hm.setAppuser(h.getApusrno());
-                        hm.setAppdept(h.getDepno());
+                        //hm.setAppdept(h.getDepno());
+                        //修正人员部门不对应问题
+                        hm.setAppdept(usersBean.checkDeptno(h.getApusrno(), h.getDepno()));
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
@@ -1646,9 +1692,10 @@ public class TimerBean {
                         hm.setRkd("MR01");
                         hm.setConfig(36);
                         hm.setAccno("1123");
-                        // 表单下方合计栏位(取2位小数)
-                        hm.setTotalfs(sumapamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
-                        hm.setTotal(sumapamt.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        // 表单下方合计总金额栏位(取2位小数)
+                        hm.setCmp_sum_tax(sumtax.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setTotalfs(sumapamtfs.add(sumtaxfs).subtract(sumbilnum8fs).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setTotal(sumapamt.add(sumtax).subtract(sumbilnum8).setScale(2, BigDecimal.ROUND_HALF_UP));
                         //大写金额
                         hm.setAmountInWords(workFlowBean.number2CNMonetaryUnit(hm.getTotal()));
                         // 构建表单实例
@@ -1730,7 +1777,8 @@ public class TimerBean {
                         hm.setApno(h.getApmaphPK().getApno());
                         hm.setAppdate(h.getApdate());
                         hm.setAppuser(h.getApusrno());
-                        hm.setAppdept(h.getDepno());
+                        //hm.setAppdept(h.getDepno());
+                        hm.setAppdept(workFlowBean.getCurrentUser().getDeptno());
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
@@ -2404,6 +2452,7 @@ public class TimerBean {
         this.syncERPPUR410ToExchange("C", "STW00007", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("C", "STW00035", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("C", "SXG00007", "20200408");// SHB->Exch
+        this.syncERPPUR410ToExchange("C", "STW00045", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("K", "KTW00001", "20200408");// Comer->Exch
         log4j.info("ERP集团内部交易互转轮询结束");
     }
@@ -3738,7 +3787,7 @@ public class TimerBean {
                 List<HZPB131DetailModel> detailList = new ArrayList();
                 LinkedHashMap<String, List<?>> details = new LinkedHashMap();
                 details.put("purDetail", detailList);
-                this.workFlowBean.initUserInfo((String) user[0]);
+
                 HZPB131Model head = new HZPB131Model();
                 head.setFacno("C");
                 head.setApplyUser((String) user[0]);
@@ -3811,6 +3860,11 @@ public class TimerBean {
                     startDate = BaseLib.formatDate("yyyyMM", calendar.getTime());
                     BigDecimal annualAverage = manpihBean.findAvgDraw(m.getManmotPK().getFacno(), m.getItnbrf(), startDate, endDate, 12);
                     detail.setAnnualAverage(annualAverage.toString());
+                    calendar.setTime(com.lightshell.comm.BaseLib.getDate("yyyyMM", endDate));
+                    calendar.add(Calendar.MONTH, -2);
+                    endDate = com.lightshell.comm.BaseLib.formatDate("yyyyMM", calendar.getTime());
+                    BigDecimal first10MonthsAverage = manpihBean.findAvgDraw(m.getManmotPK().getFacno(), m.getItnbrf(), startDate, endDate, 10);
+                    detail.setFirst10MonthsAverage(first10MonthsAverage.toString());
                     detail.setPurDraftRequirements(m.getDraftqty().toString());
                     detail.setActualRequisitions(m.getManqty().toString());
                     detail.setSysRequirementDate_txt(BaseLib.formatDate("yyyy/MM/dd", m.getMandate()));
@@ -3820,6 +3874,7 @@ public class TimerBean {
                     detailList.add(detail);
                 }
                 try {
+                    this.workFlowBean.initUserInfo((String) user[0]);
                     String formInstance = this.workFlowBean.buildXmlForEFGP("HZ_PB131", head, details);
                     String subject = BaseLib.formatDate("yyyyMMdd", new Date()) + "MAN345采购草稿签核表";
                     String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HZ_PB131", formInstance, subject);

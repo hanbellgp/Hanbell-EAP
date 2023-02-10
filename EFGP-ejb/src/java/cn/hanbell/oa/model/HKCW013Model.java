@@ -46,6 +46,7 @@ public class HKCW013Model implements Serializable {
     private String rkd;
     private int config;
     private String accno;
+    private BigDecimal cmp_sum_tax;
 
     public HKCW013Model() {
         this.trapyh = "";
@@ -285,7 +286,7 @@ public class HKCW013Model implements Serializable {
 
     @Override
     public String toString() {
-        return "cn.hanbell.oa.entity.SHBERPAPM828Model";
+        return "cn.hanbell.oa.entity.HKCW013Model";
     }
 
     public String getVdrds() {
@@ -310,6 +311,14 @@ public class HKCW013Model implements Serializable {
 
     public void setTel1(String tel1) {
         this.tel1 = tel1;
+    }
+
+    public BigDecimal getCmp_sum_tax() {
+        return cmp_sum_tax;
+    }
+
+    public void setCmp_sum_tax(BigDecimal cmp_sum_tax) {
+        this.cmp_sum_tax = cmp_sum_tax;
     }
 
 }

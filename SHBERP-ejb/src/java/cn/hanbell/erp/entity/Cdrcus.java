@@ -304,6 +304,9 @@ public class Cdrcus implements Serializable {
     @Size(max = 400)
     @Column(name = "skfs")
     private String skfs;
+    @Size(max = 8)
+    @Column(name = "SCCode")
+    private String SCCode;
 
     public Cdrcus() {
         this.decode = '1';
@@ -966,6 +969,14 @@ public class Cdrcus implements Serializable {
     @Override
     public String toString() {
         return cusno;
+    }
+
+    public String getSCCode() {
+        return SCCode;
+    }
+
+    public void setSCCode(String SCCode) {
+        this.SCCode = SCCode;
     }
 
 }
