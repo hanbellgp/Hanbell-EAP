@@ -1059,7 +1059,7 @@ public class TimerBean {
                             d.setEspdsc(pd.getCEspdsc());
                             d.setKind("1");
                             d.setMorpcode("P");
-                            d.setUnmsr1(pd.getUnmsr());
+                            d.setUnmsr1(pd.getC_unmsr());
                             d.setUnmsr1e(pd.getUnmsre());
                             d.setUnmsr2("");
                             d.setIsDUnit("N");
