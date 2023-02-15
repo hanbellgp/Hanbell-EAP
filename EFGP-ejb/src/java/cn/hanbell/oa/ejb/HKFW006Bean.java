@@ -129,7 +129,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                             td.setTd502(h.getFormSerialNumber() + ";" + td.getTd502());     //退货OA单号
                         }
                         //判断退货数量VS实领数量
-                        if (td.getTd500().compareTo(td.getTd020()) > -1) {
+                        if (td.getTd500().compareTo(td.getTd009()) > -1) {
                             td.setTd047("Y");
                         }
                     } else if ("3".equals(status)) {
