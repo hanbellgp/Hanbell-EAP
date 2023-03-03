@@ -588,16 +588,12 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 if (m == null) {
                     throw new NullPointerException();
                 }
-                if ("".equals(detail.getCost())) {
-                    m.setCost(null);
-                } else {
+                if (!"".equals(detail.getCost())) {
                     m.setCost(BigDecimal.valueOf(Double.parseDouble(detail.getCost())));
-                }
-                if ("".equals(detail.getAsscost())) {
-                    m.setAsscost(null);
-                } else {
-                    m.setAsscost(BigDecimal.valueOf(Double.parseDouble(detail.getAsscost())));
-                }
+                } 
+                if (!"".equals(detail.getAsscost())) {
+                     m.setAsscost(BigDecimal.valueOf(Double.parseDouble(detail.getAsscost())));
+                } 
                 update(m);
             }
             return true;

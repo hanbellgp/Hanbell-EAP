@@ -192,6 +192,12 @@ public class HKYX007 implements Serializable {
     @Size(max = 255)
     @Column(name = "tickdays")
     private short tickdays;
+    @Size(max = 255)
+    @Column(name = "chkSCCode")
+    private String chkSCCode;
+    @Size(max = 255)
+    @Column(name = "SCCode")
+    private String SCCode;
 
     public HKYX007() {
     }
@@ -623,6 +629,22 @@ public class HKYX007 implements Serializable {
 
     public void setTickdays(short tickdays) {
         this.tickdays = tickdays;
+    }
+
+    public String getChkSCCode() {
+        return chkSCCode;
+    }
+
+    public void setChkSCCode(String chkSCCode) {
+        this.chkSCCode = chkSCCode;
+    }
+
+    public String getSCCode() {
+        return SCCode;
+    }
+
+    public void setSCCode(String SCCode) {
+        this.SCCode = SCCode;
     }
 
 }
