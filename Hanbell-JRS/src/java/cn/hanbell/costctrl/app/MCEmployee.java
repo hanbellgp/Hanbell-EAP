@@ -25,12 +25,14 @@ public class MCEmployee {
     private String upperUserId;
     private String status;
     private int isMainDept;
+    private String levelValue;
+    private String functionLevelName;
 
     public MCEmployee() {
 
     }
 
-    public MCEmployee(String userId, String userName, String deptId, String deptName, String email,String upperUserId, String status) {
+    public MCEmployee(String userId, String userName, String deptId, String deptName, String email, String upperUserId, String status) {
         this.userId = userId;
         this.userName = userName;
         this.deptId = deptId;
@@ -126,6 +128,22 @@ public class MCEmployee {
 
     public void setIsMainDept(int isMainDept) {
         this.isMainDept = isMainDept;
+    }
+
+    public String getLevelValue() {
+        return levelValue;
+    }
+
+    public void setLevelValue(String levelValue) {
+        this.levelValue = levelValue;
+    }
+
+    public String getFunctionLevelName() {
+        return functionLevelName;
+    }
+
+    public void setFunctionLevelName(String functionLevelName) {
+        this.functionLevelName = functionLevelName;
     }
 
 }
