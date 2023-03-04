@@ -566,6 +566,8 @@ public class TimerBean {
                                 if (manager != null) {
                                     eu.setManagerId(manager.getCode());
                                 }
+                                eu.setBirthdayDate(e.getBirthDate());
+                                eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
                                 eu.setPhone(e.getMobilePhone());
                                 eu.setEmail(e.getEmail());
                                 eu.setOptuserToSystem();
