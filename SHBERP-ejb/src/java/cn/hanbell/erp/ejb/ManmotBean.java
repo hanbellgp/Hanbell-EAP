@@ -112,11 +112,11 @@ public class ManmotBean extends SuperEJBForERP<Manmot> {
                     m.setOastatus("V");
                     m.setManstatus('C');
                     m.setCfmuserno(m.getOauserno());
+                    m.setComfirdate(new Date());
                 } else if ("B".equals(detail.getHdnManStatus())) {
                     m.setOastatus("X");
                     m.setManstatus('B');
                 }
-
                 m.setCfmdate(new Date());
                 m.setCfmuserno(m.getOauserno());
                 m.setMandateo(m.getMandate());
