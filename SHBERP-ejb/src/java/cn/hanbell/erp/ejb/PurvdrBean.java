@@ -554,6 +554,9 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         if (oa.getCbtickdays().equals("1")) {
             erp.setTickdays(oa.getTickdays());
         }
+        if (oa.getChkpaycode().equals("1") && oa.getPaycode() != null && !"0".equals(oa.getPaycode())) {
+            erp.setPaycode(oa.getPaycode().charAt(0));
+        }
 
         try {
             update(erp);

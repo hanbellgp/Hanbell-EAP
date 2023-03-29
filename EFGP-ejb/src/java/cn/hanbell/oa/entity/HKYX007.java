@@ -198,6 +198,12 @@ public class HKYX007 implements Serializable {
     @Size(max = 255)
     @Column(name = "SCCode")
     private String SCCode;
+    @Size(max = 255)
+    @Column(name = "chkcustomerType")
+    private String chkcustomerType;
+    @Size(max = 255)
+    @Column(name = "cussta")
+    private String cussta;
 
     public HKYX007() {
     }
@@ -645,6 +651,22 @@ public class HKYX007 implements Serializable {
 
     public void setSCCode(String SCCode) {
         this.SCCode = SCCode;
+    }
+
+    public String getChkcustomerType() {
+        return chkcustomerType;
+    }
+
+    public void setChkcustomerType(String chkcustomerType) {
+        this.chkcustomerType = chkcustomerType;
+    }
+
+    public String getCussta() {
+        return cussta;
+    }
+
+    public void setCussta(String cussta) {
+        this.cussta = cussta;
     }
 
 }

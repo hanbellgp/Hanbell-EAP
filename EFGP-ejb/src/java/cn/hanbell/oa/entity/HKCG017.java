@@ -233,6 +233,12 @@ public class HKCG017 implements Serializable {
     @Size(max = 255)
     @Column(name = "tickdays")
     private short tickdays;
+    @Size(max = 10)
+    @Column(name = "chkpaycode")
+    private String chkpaycode;
+    @Size(max = 10)
+    @Column(name = "paycode")
+    private String paycode;
 
     public HKCG017() {
     }
@@ -672,6 +678,22 @@ public class HKCG017 implements Serializable {
 
     public void setBtickdays(short btickdays) {
         this.btickdays = btickdays;
+    }
+
+    public String getChkpaycode() {
+        return chkpaycode;
+    }
+
+    public void setChkpaycode(String chkpaycode) {
+        this.chkpaycode = chkpaycode;
+    }
+
+    public String getPaycode() {
+        return paycode;
+    }
+
+    public void setPaycode(String paycode) {
+        this.paycode = paycode;
     }
 
 }
