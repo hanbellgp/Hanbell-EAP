@@ -228,6 +228,8 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
                 return true;
             case "代組長":
                 return true;
+            case "代组长":
+                return true;
             case "代課長":
                 return true;
             case "代副理":
