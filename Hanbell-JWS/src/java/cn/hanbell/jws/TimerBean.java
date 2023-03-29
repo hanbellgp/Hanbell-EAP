@@ -1075,7 +1075,7 @@ public class TimerBean {
 
                             //加入工程变更通知单作废变更前件号逻辑
                             String ecitnbr = pd.getEcItnbr();
-                            if (null != ecitnbr && !"".equals(ecitnbr) && "N".equals(pd.getCStopyn())) {
+                            if (null != ecitnbr && !"".equals(ecitnbr) && pd.getCStopyn() == 'N') {
                                 Invmas item = invmasBean.findByItnbr(ecitnbr);
                                 if (item != null) {
                                     item.setItdsc("#" + item.getItdsc());

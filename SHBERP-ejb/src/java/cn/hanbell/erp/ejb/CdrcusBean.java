@@ -797,6 +797,9 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         if (Objects.equals(oa.getChkSCCode(), "1") && (oa.getSCCode() != null) && !"".equals(oa.getSCCode())) {
             cdrcus.setSCCode(oa.getSCCode());
         }
+         if (Objects.equals(oa.getChkcustomerType(), "1") && (oa.getCussta() != null) && !"".equals(oa.getCussta())  && !"0".equals(oa.getCussta())) {
+            cdrcus.setCussta(oa.getCussta().charAt(0));
+        }
         if (Objects.equals(oa.getChkman(), "1") && (oa.getMan() != null) && !"".equals(oa.getMan())) {
             origman = oa.getBman();
             cdrcusmanBean.setCompany(facno);
