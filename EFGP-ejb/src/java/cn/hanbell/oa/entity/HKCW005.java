@@ -364,10 +364,27 @@ public class HKCW005 implements Serializable {
     @Size(max = 255)
     @Column(name = "otherDescription")
     private String otherDescription;
+    @Column(name = "amount5")
+    private Double amount5;
+    @Column(name = "paydate5")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date paydate5;
+    @Size(max = 255)
+    @Column(name = "paymentTerms5")
+    private String paymentTerms5;
+    @Column(name = "amount6")
+    private Double amount6;
+    @Column(name = "paydate6")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date paydate6;
+    @Size(max = 255)
+    @Column(name = "paymentTerms6")
+    private String paymentTerms6;
 
     @JoinColumn(name = "lkr", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = true)
     private Users user;
+
     public HKCW005() {
     }
 
@@ -1054,11 +1071,60 @@ public class HKCW005 implements Serializable {
     public void setUser(Users user) {
         this.user = user;
     }
-    
+
+    public Double getAmount5() {
+        return amount5;
+    }
+
+    public void setAmount5(Double amount5) {
+        this.amount5 = amount5;
+    }
+
+    public Date getPaydate5() {
+        return paydate5;
+    }
+
+    public void setPaydate5(Date paydate5) {
+        this.paydate5 = paydate5;
+    }
+
+    public String getPaymentTerms5() {
+        return paymentTerms5;
+    }
+
+    public void setPaymentTerms5(String paymentTerms5) {
+        this.paymentTerms5 = paymentTerms5;
+    }
+
+    public Double getAmount6() {
+        return amount6;
+    }
+
+    public void setAmount6(Double amount6) {
+        this.amount6 = amount6;
+    }
+
+    public Date getPaydate6() {
+        return paydate6;
+    }
+
+    public void setPaydate6(Date paydate6) {
+        this.paydate6 = paydate6;
+    }
+
+    public String getPaymentTerms6() {
+        return paymentTerms6;
+    }
+
+    public void setPaymentTerms6(String paymentTerms6) {
+        this.paymentTerms6 = paymentTerms6;
+    }
+
     public String getCompanyName() {
         WorkFlowBean WorkFlowBean = new WorkFlowBean();
         return WorkFlowBean.getCompanyName(this.facno);
     }
+
     public String getBibName() {
         switch (this.bib) {
             case "1":
@@ -1084,7 +1150,8 @@ public class HKCW005 implements Serializable {
         }
         return "";
     }
-     public String getCategoryValue() {
+
+    public String getCategoryValue() {
         switch (this.category) {
             case "1":
                 return "全资";

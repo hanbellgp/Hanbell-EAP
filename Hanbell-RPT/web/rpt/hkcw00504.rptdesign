@@ -111,6 +111,36 @@
                     <property name="name">remainingAmount</property>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">amount5</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">amount6</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">23</property>
+                    <property name="name">paydate5</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">24</property>
+                    <property name="name">paydate6</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">25</property>
+                    <property name="name">paymentTerms5</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">26</property>
+                    <property name="name">paymentTerms6</property>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
@@ -172,6 +202,24 @@
                 </structure>
                 <structure>
                     <property name="columnName">remainingAmount</property>
+                </structure>
+                <structure>
+                    <property name="columnName">amount5</property>
+                </structure>
+                <structure>
+                    <property name="columnName">amount6</property>
+                </structure>
+                <structure>
+                    <property name="columnName">paydate5</property>
+                </structure>
+                <structure>
+                    <property name="columnName">paydate6</property>
+                </structure>
+                <structure>
+                    <property name="columnName">paymentTerms5</property>
+                </structure>
+                <structure>
+                    <property name="columnName">paymentTerms6</property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
@@ -276,6 +324,36 @@
                         <property name="name">remainingAmount</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">amount5</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">amount6</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">paydate5</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">24</property>
+                        <property name="name">paydate6</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
+                        <property name="name">paymentTerms5</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">26</property>
+                        <property name="name">paymentTerms6</property>
+                        <property name="dataType">string</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">scriptDS</property>
@@ -298,6 +376,10 @@ dataSetRow["amount1"] = master.getAmount1();
 dataSetRow["amount2"] = master.getAmount2();
 dataSetRow["amount3"] = master.getAmount3();
 dataSetRow["amount4"] = master.getAmount4();
+dataSetRow["amount5"] = master.getAmount5();
+dataSetRow["amount6"] = master.getAmount6();
+dataSetRow["paydate6"] = master.getPaydate6();
+dataSetRow["paydate5"] = master.getPaydate5();
 dataSetRow["paydate4"] = master.getPaydate4();
 dataSetRow["paydate1"] = master.getPaydate1();
 dataSetRow["paydate2"] = master.getPaydate2();
@@ -306,6 +388,8 @@ dataSetRow["paymentTerms1"] = master.getPaymentTerms1();
 dataSetRow["paymentTerms2"] = master.getPaymentTerms2();
 dataSetRow["paymentTerms3"] = master.getPaymentTerms3();
 dataSetRow["paymentTerms4"] = master.getPaymentTerms4();
+dataSetRow["paymentTerms5"] = master.getPaymentTerms5();
+dataSetRow["paymentTerms6"] = master.getPaymentTerms6();
 dataSetRow["allamount"] = master.getAllamount();
 dataSetRow["remainingAmount"] = master.getRemainingAmount();
 return true;
@@ -585,6 +669,7 @@ return false;]]></method>
             </row>
         </grid>
         <grid id="115">
+            <property name="height">2.0520833333333335in</property>
             <column id="116">
                 <property name="width">2.7cm</property>
             </column>
@@ -680,7 +765,7 @@ return false;]]></method>
             <row id="139">
                 <cell id="140">
                     <property name="colSpan">1</property>
-                    <property name="rowSpan">5</property>
+                    <property name="rowSpan">7</property>
                     <property name="borderBottomStyle">solid</property>
                     <property name="borderBottomWidth">thin</property>
                     <property name="borderLeftStyle">solid</property>
@@ -782,7 +867,7 @@ return false;]]></method>
                 </cell>
                 <cell id="146">
                     <property name="colSpan">1</property>
-                    <property name="rowSpan">4</property>
+                    <property name="rowSpan">6</property>
                     <property name="borderBottomStyle">solid</property>
                     <property name="borderBottomWidth">thin</property>
                     <property name="borderLeftStyle">solid</property>
@@ -1065,6 +1150,178 @@ return false;]]></method>
                             </structure>
                         </list-property>
                         <property name="resultSetColumn">paymentTerms4</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="262">
+                <property name="height">0.23958333333333334in</property>
+                <cell id="264">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <text id="269">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[第五批]]></text-property>
+                    </text>
+                </cell>
+                <cell id="265">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <data id="271">
+                        <property name="textAlign">center</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">amount5</property>
+                                <text-property name="displayName">amount5</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["amount5"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">amount5</property>
+                    </data>
+                </cell>
+                <cell id="266">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <data id="273">
+                        <property name="textAlign">center</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">paydate5</property>
+                                <text-property name="displayName">paydate5</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["paydate5"]</expression>
+                                <property name="dataType">date</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">paydate5</property>
+                    </data>
+                </cell>
+                <cell id="267">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <data id="275">
+                        <property name="textAlign">center</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">paymentTerms5</property>
+                                <text-property name="displayName">paymentTerms5</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["paymentTerms5"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">paymentTerms5</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="255">
+                <property name="height">0.23958333333333334in</property>
+                <cell id="257">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <text id="270">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[第六批]]></text-property>
+                    </text>
+                </cell>
+                <cell id="258">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <data id="272">
+                        <property name="textAlign">center</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">amount6</property>
+                                <text-property name="displayName">amount6</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["amount6"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">amount6</property>
+                    </data>
+                </cell>
+                <cell id="259">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <data id="274">
+                        <property name="textAlign">center</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">paydate6</property>
+                                <text-property name="displayName">paydate6</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["paydate6"]</expression>
+                                <property name="dataType">date</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">paydate6</property>
+                    </data>
+                </cell>
+                <cell id="260">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <data id="276">
+                        <property name="textAlign">center</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">paymentTerms6</property>
+                                <text-property name="displayName">paymentTerms6</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["paymentTerms6"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">paymentTerms6</property>
                     </data>
                 </cell>
             </row>
