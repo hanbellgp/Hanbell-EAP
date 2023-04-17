@@ -1782,7 +1782,6 @@ public class TimerBean {
                             dm.setBudgetacc(d.getBudgetacc() != null ? d.getBudgetacc() : "");
                             detailList.add(dm);
                         }
-                        workFlowBean.initUserInfo(h.getUserno());
                         hm = new SHBERPAPM828Model();
                         hm.setFacno(h.getApmaphPK().getFacno());
                         hm.setApno(h.getApmaphPK().getApno());
@@ -1826,6 +1825,7 @@ public class TimerBean {
                         hm.setTotal(sumapamt.setScale(2, BigDecimal.ROUND_HALF_UP));
                         //大写金额
                         hm.setAmountInWords(workFlowBean.number2CNMonetaryUnit(hm.getTotal()));
+                        workFlowBean.initUserInfo(h.getUserno());
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("SHB_ERP_APM828", hm, details);
                         String subject = "预付款申请：" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款金额：" + hm.getTotal();
