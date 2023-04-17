@@ -162,6 +162,7 @@ import cn.hanbell.oa.ejb.HKGL004Bean;
 import cn.hanbell.oa.ejb.HKGL031Bean;
 import cn.hanbell.oa.ejb.HKGL034Bean;
 import cn.hanbell.oa.ejb.HKGL034DetailBean;
+import cn.hanbell.oa.ejb.HKGL037Bean;
 import cn.hanbell.oa.ejb.HKGl076Bean;
 import cn.hanbell.oa.ejb.HKJH005Bean;
 import cn.hanbell.oa.ejb.HKJH006Bean;
@@ -410,6 +411,8 @@ public class EAPWebService {
     private HKGl076Bean hkgl076Bean;
     @EJB
     private HKCW015Bean hkcw015Bean;
+    @EJB
+    private HKGL037Bean hkgl037Bean;
 
     // EJBForERP
     @EJB
@@ -2676,6 +2679,26 @@ public class EAPWebService {
         }
     }
 
+  /**
+   * 返台申请单结案自动申请派公务车
+   * @param psn
+   * @return 
+   */
+    @WebMethod(operationName = "createOAHKGL037ByOAHKGL055")
+    public String createOAHKGL037ByOAHKGL055(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkgl037Bean.initByHKGL055(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "createOAHKGL037ByOAHKGL055", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "createPLMProjectByOAPLMProject")
     public String createPLMProjectByOAPLMProject(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -3892,11 +3915,12 @@ public class EAPWebService {
                 throw new NullPointerException("updateERPAPM585ByOAHKCW015找不到流程序号:" + psn);
             }
             String facno = h.getFacno();
+            String fsn  = h.getFormSerialNumber();
             if (null == facno || "".equals(facno)) {
                 throw new NullPointerException("updateERPAPM585ByOAHKCW015付款凭单未设置正确的公司别" + facno);
             }
             apmanp585hBean.setCompany(facno);
-            Apmanp585h apm = apmanp585hBean.findByOAPSN(psn);
+            Apmanp585h apm = apmanp585hBean.findByOAPSN(fsn);
             if (apm == null) {
                 throw new NullPointerException("updateERPAPM585ByOAHKCW015找不到ERP单据");
             }

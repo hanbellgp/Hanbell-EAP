@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -233,6 +234,8 @@ public class HKFW005 implements Serializable {
     @Size(max = 255)
     @Column(name = "cdruserno")
     private String cdruserno;
+    @Transient
+    private Boolean isHighYellow;
 
     public HKFW005() {
     }
@@ -788,9 +791,22 @@ public class HKFW005 implements Serializable {
         this.supportDept = supportDept;
     }
 
+    public void setCdruserno(String cdruserno) {
+        this.cdruserno = cdruserno;
+    }
+
+    public Boolean getIsHighYellow() {
+        return isHighYellow;
+    }
+
+    public void setIsHighYellow(Boolean isHighYellow) {
+        this.isHighYellow = isHighYellow;
+    }
+
     /**
      * 获取物流公司
-     * @return 
+     *
+     * @return
      */
     public String getWlcompanyValue() {
         switch (this.wlcompany) {
@@ -849,7 +865,50 @@ public class HKFW005 implements Serializable {
         return cdruserno;
     }
 
-    public void setCdruserno(String cdruserno) {
-        this.cdruserno = cdruserno;
+    public String getYStyleValue() {
+        String var1 = this.ysstyle;
+        byte var2 = -1;
+        switch (var1.hashCode()) {
+            case 49:
+                if (var1.equals("1")) {
+                    var2 = 0;
+                }
+                break;
+            case 50:
+                if (var1.equals("2")) {
+                    var2 = 1;
+                }
+                break;
+            case 51:
+                if (var1.equals("3")) {
+                    var2 = 2;
+                }
+                break;
+            case 52:
+                if (var1.equals("4")) {
+                    var2 = 3;
+                }
+                break;
+            case 53:
+                if (var1.equals("5")) {
+                    var2 = 4;
+                }
+        }
+
+        switch (var2) {
+            case 0:
+                return "快递";
+            case 1:
+                return "服务部货运";
+            case 2:
+                return "资材部货运";
+            case 3:
+                return "自提";
+            case 4:
+                return "专车";
+            default:
+                return "";
+        }
     }
+
 }
