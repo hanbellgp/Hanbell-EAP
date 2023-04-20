@@ -154,19 +154,6 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
             Date monDate = BaseLib.getDate("yyyyMM", invsys.getLmonth());
             Calendar c = Calendar.getInstance();
             c.setTime(this.queryDateBegin);
-            //查询结束的时间大于月结的一个月时间并且数据两个开始年月和结束年月不同。则分开查询合并。
-//            if (c.getTime().getTime() <= queryDateEnd.getTime() && queryDateBegin.getTime() < c.getTime().getTime()) {
-//                c.add(Calendar.DAY_OF_MONTH, -1);
-//                list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, c.getTime(), changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
-//                c.add(Calendar.DAY_OF_MONTH, 1);
-//                List<Object[]> o = invtrnBean.getInvtrnhByINV555(queryfacno, c.getTime(), queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
-//                list.addAll(o);
-//            } else if (c.getTime().getTime() <= queryDateBegin.getTime() && c.getTime().getTime() <= queryDateEnd.getTime()) {
-//                list = invtrnBean.getInvtrnhByINV555(queryfacno, queryDateBegin, queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
-//            } else {
-//                list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, queryDateEnd, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
-//            }
-
             int monthDate = Integer.valueOf(invsys.getLmonth());
             String m = String.valueOf(c.get(Calendar.MONTH) + 1);
             if (c.get(Calendar.MONTH) + 1 <= 9) {
@@ -242,6 +229,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     Cell cell25 = row.createCell(25);
                     Cell cell26 = row.createCell(26);
                     Cell cell27 = row.createCell(27);
+                    Cell cell28 = row.createCell(28);
+                    Cell cell29 = row.createCell(29);
                     cell.setCellStyle(cellStyle);
                     cell1.setCellStyle(cellStyle);
                     cell2.setCellStyle(cellStyle);
@@ -270,6 +259,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     cell25.setCellStyle(cellStyle);
                     cell26.setCellStyle(cellStyle);
                     cell27.setCellStyle(cellStyle);
+                    cell28.setCellStyle(cellStyle);
+                    cell29.setCellStyle(cellStyle);
                     Date d = (Date) h[0];
                     cell1.setCellValue(h[0] != null ? BaseLib.formatDate("yyyy/MM/dd", d) : "");
                     cell2.setCellValue(h[1] != null ? (String) h[1] : "");
@@ -298,6 +289,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     cell25.setCellValue(h[24] != null ? (String) h[24] : "");
                     cell26.setCellValue(h[25] != null ? (String) h[25] : "");
                     cell27.setCellValue(h[26] != null ? (String) h[26] : "");
+                    cell28.setCellValue(h[27] != null ? (String) h[27] : "");
+                    cell29.setCellValue(h[28] != null ? (String) h[28] : "");
                     i++;
                 }
                 FileOutputStream os = null;
