@@ -64,7 +64,7 @@ public class InvtrnBean extends SuperEJBForERP<Invtrn> {
         sql.append("  select depname from cdrhadasry");
         sql.append(" left join misdept on cdrhadasry.shpdepno=misdept.depno");
         sql.append(" where cdrhadasry.facno=invtrn.facno and cdrhadasry.prono=invtrn.prono and cdrhadasry.trno=invtrn.trno");
-        sql.append("  ) end 'ARY打单部门'");
+        sql.append("  ) end 'ARY打单部门',invtrn.hmark1,invtrn.hmark2");
         sql.append(" FROM invtrn, invmas, invwh, invdou, invcls");
         sql.append(" WHERE (invmas.itnbr = invtrn.itnbr) AND(invtrn.facno = invwh.facno) AND (invtrn.prono = invwh.prono) AND (invtrn.wareh = invwh.wareh) AND");
         sql.append(" (invdou.trtype = invtrn.trtype) AND (invcls.itcls = invmas.itcls) AND ((invdou.syscode = '10') AND (invdou.reskind IS NOT NULL AND");
