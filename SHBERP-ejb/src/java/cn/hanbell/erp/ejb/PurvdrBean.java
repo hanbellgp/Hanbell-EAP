@@ -72,6 +72,8 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
     private SyncCQBean syncCQBean;
     @EJB
     private SyncZKBean syncZKBean;
+    @EJB
+    private SyncYCBean syncYCBean;
 
     private Purvdr purvdr;
 
@@ -188,6 +190,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             case "J":
             case "N":
             case "C4":
+            case "C5":
             case "L":
                 facno = "C";
                 code = "S";
@@ -358,6 +361,12 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                     syncCQBean.persist(erp, details);
                     syncCQBean.getEntityManager().flush();
                     break;
+                case "C5":
+                    // 同步银川汉钟ERP
+                    resetFacno("C5");
+                    syncYCBean.persist(erp, details);
+                    syncYCBean.getEntityManager().flush();
+                    break;
                 case "L":
                     // 同步真空ERP
                     resetFacno("L");
@@ -394,6 +403,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             case "J":
             case "N":
             case "C4":
+            case "C5":
             case "L":
                 facno = "C";
                 code = "S";
@@ -438,6 +448,11 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                         // 同步重庆ERP
                         syncCQBean.update(erp, null);
                         syncCQBean.getEntityManager().flush();
+                        break;
+                    case "C5":
+                        // 同步银川ERP
+                        syncYCBean.update(erp, null);
+                        syncYCBean.getEntityManager().flush();
                         break;
                     case "L":
                         // 同步真空ERP
@@ -495,6 +510,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             case "J":
             case "N":
             case "C4":
+            case "C5":
             case "L":
                 facno = "C";
                 code = "S";
@@ -586,6 +602,12 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                     // resetFacno("C4");
                     syncCQBean.update(erp, null);
                     syncCQBean.getEntityManager().flush();
+                    break;
+                case "C5":
+                    // 同步银川ERP
+                    // resetFacno("C5");
+                    syncYCBean.update(erp, null);
+                    syncYCBean.getEntityManager().flush();
                     break;
                 case "L":
                     // 同步真空ERP

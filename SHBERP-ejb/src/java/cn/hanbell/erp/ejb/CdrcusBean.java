@@ -67,6 +67,8 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
     @EJB
     private SyncCQBean syncCQBean;
     @EJB
+    private SyncYCBean syncYCBean;
+    @EJB
     private SyncZKBean syncZKBean;
     @EJB
     private SyncSHBBean syncSHBBean;
@@ -300,6 +302,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             case "J":
             case "N":
             case "C4":
+            case "C5":
             case "L":
                 facno = "C";
                 code = "S";
@@ -631,6 +634,12 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                     syncCQBean.persist(cdrcus, detailAdded);
                     syncCQBean.getEntityManager().flush();
                     break;
+                case "C5":
+                    // 同步银川ERP
+                    resetFacno("C5");
+                    syncYCBean.persist(cdrcus, detailAdded);
+                    syncYCBean.getEntityManager().flush();
+                    break;
                 case "L":
                     // 同步真空ERP
                     resetFacno("L");
@@ -797,7 +806,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         if (Objects.equals(oa.getChkSCCode(), "1") && (oa.getSCCode() != null) && !"".equals(oa.getSCCode())) {
             cdrcus.setSCCode(oa.getSCCode());
         }
-         if (Objects.equals(oa.getChkcustomerType(), "1") && (oa.getCussta() != null) && !"".equals(oa.getCussta())  && !"0".equals(oa.getCussta())) {
+        if (Objects.equals(oa.getChkcustomerType(), "1") && (oa.getCussta() != null) && !"".equals(oa.getCussta()) && !"0".equals(oa.getCussta())) {
             cdrcus.setCussta(oa.getCussta().charAt(0));
         }
         if (Objects.equals(oa.getChkman(), "1") && (oa.getMan() != null) && !"".equals(oa.getMan())) {
@@ -815,6 +824,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                     case "J":
                     case "N":
                     case "C4":
+                    case "C5":
                     case "L":
                         // 分公司发起,同步删除SHB_ERP中的负责业务信息
                         cdrcusmanBean.setCompany("C");
@@ -854,6 +864,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                 case "J":
                 case "N":
                 case "C4":
+                case "C5":
                 case "L":
                     // 分公司发起,同步SHB_ERP
                     resetFacno("C");
