@@ -107,8 +107,8 @@ public class HKGL037Bean extends SuperEJBForEFGP<HKGL037> {
             d.setCfcs(aa.getDepartureCity());
             d.setAddress1(aa.getDepartureCity());
             d.setMdsf("上海市");
-            d.setMdcs(aa.getDestination());
-            d.setAddress2(aa.getDestination());
+            d.setMdcs(aa.getDestinationCity());
+            d.setAddress2(aa.getDestinationCity());
             d.setSy(aa.getCause());
             d.setGsmc("");
             detailList.add(d);

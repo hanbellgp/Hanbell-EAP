@@ -39,4 +39,12 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
         return em_VHBERP;
     }
 
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
 }

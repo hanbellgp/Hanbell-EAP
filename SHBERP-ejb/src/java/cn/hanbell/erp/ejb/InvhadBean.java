@@ -5,6 +5,8 @@
  */
 package cn.hanbell.erp.ejb;
 
+import cn.hanbell.eap.comm.MailNotify;
+import cn.hanbell.eap.ejb.MailNotificationBean;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Invbal;
 import cn.hanbell.erp.entity.Invbat;
@@ -1296,6 +1298,14 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         } catch (Exception ex) {
             ex.printStackTrace();
             log4j.error("initByOASHBERPINV310", ex.toString());
+            //加入邮件通知
+            MailNotificationBean mailBean = new MailNotificationBean();
+            mailBean.getTo().clear();
+            mailBean.getTo().add("13120@hanbell.com.cn");
+            mailBean.setMailSubject("OA手工领料单抛转ERP失败");
+            mailBean.setMailContent(
+                    "OA手工领料申请单号：" + psn + "抛转失败，异常：" + ex);
+            mailBean.notify(new MailNotify());
             throw ex;
         }
     }

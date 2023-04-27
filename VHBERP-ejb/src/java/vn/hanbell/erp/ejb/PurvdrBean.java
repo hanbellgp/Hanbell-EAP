@@ -14,7 +14,7 @@ import vn.hanbell.erp.entity.Purvdr;
 
 /**
  *
- * @author C1368
+ * @author C1491
  */
 @Stateless
 @LocalBean
