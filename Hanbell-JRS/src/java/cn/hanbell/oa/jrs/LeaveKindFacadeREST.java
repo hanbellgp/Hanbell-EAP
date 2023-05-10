@@ -44,12 +44,16 @@ public class LeaveKindFacadeREST extends SuperRESTForEFGP<KV> {
                 dataList.add(new KV("6", "产假"));
                 dataList.add(new KV("7", "陪产假"));
                 dataList.add(new KV("8", "哺乳假"));
-                dataList.add(new KV("9", "无薪假"));
                 dataList.add(new KV("10", "工伤假"));
                 dataList.add(new KV("11", "公假"));
                 dataList.add(new KV("12", "丧假"));
                 dataList.add(new KV("13", "补休假"));
-                dataList.add(new KV("18", "育儿假"));
+                dataList.add(new KV("14", "无薪假"));
+                dataList.add(new KV("15", "迟到"));
+                dataList.add(new KV("16", "早退"));
+                dataList.add(new KV("17", "忘打卡"));
+                dataList.add(new KV("18", "探亲假"));
+                dataList.add(new KV("19", "育儿假"));
                 return dataList;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
