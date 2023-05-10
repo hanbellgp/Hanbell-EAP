@@ -24,6 +24,7 @@ public class HZPB131DetailModel implements Serializable {
     private String hdnManStatus;
     private String transferred;
     private String first10MonthsAverage;
+    private String errrorRequisitions;
     public HZPB131DetailModel() {
     }
 
@@ -191,4 +192,13 @@ public class HZPB131DetailModel implements Serializable {
     public String toString() {
         return "HZPB131DetailModel{seq=" + this.seq + ", itemno=" + this.itemno + ", itdsc=" + this.itdsc + ", inventory=" + this.inventory + ", safetyStock=" + this.safetyStock + ", purNotEntered=" + this.purNotEntered + ", batch=" + this.batch + ", multiple=" + this.multiple + ", leadTime=" + this.leadTime + ", first3MonthsAverage=" + this.first3MonthsAverage + ", annualAverage=" + this.annualAverage + ", purDraftRequirements=" + this.purDraftRequirements + ", sysRequirementDate_txt=" + this.sysRequirementDate_txt + ", actualRequisitions=" + this.actualRequisitions + ", actDemandDate_txt=" + this.actDemandDate_txt + '}';
     }
+
+    public String getErrrorRequisitions() {
+        return errrorRequisitions;
+    }
+
+    public void setErrrorRequisitions(String errrorRequisitions) {
+        this.errrorRequisitions = errrorRequisitions;
+    }
+    
 }

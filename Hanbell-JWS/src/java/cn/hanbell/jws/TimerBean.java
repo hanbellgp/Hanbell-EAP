@@ -186,6 +186,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
@@ -4063,6 +4064,34 @@ public class TimerBean {
                     detail.setHdnManStatus("C");
                     detailList.add(detail);
                 }
+                //计算采购异常量
+                Map<String, List<HZPB131DetailModel>> detailGroupItnbr = detailList.stream().collect(Collectors.groupingBy(entity -> entity.getItemno()));
+                for (HZPB131DetailModel d : detailList) {
+                    detailGroupItnbr.forEach((name, list) -> {
+                        if (d.getItemno().equals(name)) {
+                            double sum = 0.0;
+                            double leadTime = Double.parseDouble(d.getLeadTime());
+                            double avgMonth = Double.parseDouble(d.getFirst3MonthsAverage()) > Double.parseDouble(d.getAnnualAverage()) ? Double.parseDouble(d.getFirst3MonthsAverage()) : Double.parseDouble(d.getAnnualAverage());
+                            if (leadTime <= 15) {
+                                avgMonth = avgMonth * 1.5;
+                            } else if (15 < leadTime && leadTime <= 30) {
+                                avgMonth = avgMonth * 2;
+                            } else if (30 < leadTime && leadTime <= 60) {
+                                avgMonth = avgMonth * 3;
+                            } else {
+                                avgMonth = avgMonth * 5;
+                            }
+                            sum = list.stream().mapToDouble(entity -> Double.parseDouble(entity.getActualRequisitions())).sum();
+                            double x = Double.parseDouble(d.getInventory()) + Double.parseDouble(d.getPurNotEntered())
+                                    + Double.parseDouble(d.getTransferred()) - Double.parseDouble(d.getSafetyStock()) + sum - avgMonth;
+                            if (x > 0 && Double.parseDouble(d.getActualRequisitions()) > Double.parseDouble(d.getPurDraftRequirements())) {
+                                d.setErrrorRequisitions(String.valueOf(x));
+                            } else {
+                                d.setErrrorRequisitions("0");
+                            }
+                        }
+                    });
+                }
                 try {
                     this.workFlowBean.initUserInfo((String) user[0]);
                     String formInstance = this.workFlowBean.buildXmlForEFGP("HZ_PB131", head, details);
@@ -4086,7 +4115,6 @@ public class TimerBean {
                 }
             }
         } catch (Exception var21) {
-
             var21.printStackTrace();
         }
     }

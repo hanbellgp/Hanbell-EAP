@@ -39,6 +39,7 @@ public class HKGL037Application implements Serializable {
     private String purpose;
     private String purposeDesc;
     private String hmark1;
+    private String mksystem;
     private List<HKGL037DetailApplication> detailList;
 
     public Long getId() {
@@ -184,6 +185,14 @@ public class HKGL037Application implements Serializable {
 
     public void setHmark1(String hmark1) {
         this.hmark1 = hmark1;
+    }
+
+    public String getMksystem() {
+        return mksystem;
+    }
+
+    public void setMksystem(String mksystem) {
+        this.mksystem = mksystem;
     }
 
 }
