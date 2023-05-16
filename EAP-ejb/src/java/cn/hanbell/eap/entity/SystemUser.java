@@ -129,6 +129,9 @@ public class SystemUser extends SuperEntity {
     @Column(name = "birthdayDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date birthdayDate;
+    @Size(max = 50)
+    @Column(name = "type")
+    private String type;
 
     public SystemUser() {
         this.password = "e10adc3949ba59abbe56e057f20f883e";//123456
@@ -386,6 +389,14 @@ public class SystemUser extends SuperEntity {
 
     public void setBirthdayDate(Date birthdayDate) {
         this.birthdayDate = birthdayDate;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
