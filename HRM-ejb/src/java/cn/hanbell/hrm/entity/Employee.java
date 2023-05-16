@@ -67,6 +67,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Employee.findByOwnerId", query = "SELECT e FROM Employee e WHERE e.ownerId = :ownerId")})
 public class Employee implements Serializable {
 
+    @JoinColumn(name = "EmployTypeId", referencedColumnName = "CodeInfoId", insertable = false, updatable = false)
+    @ManyToOne(optional = true)
+    private CodeInfo employeeType;
+
     @JoinColumn(name = "DepartmentId", referencedColumnName = "DepartmentId", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Department department;
@@ -517,6 +521,14 @@ public class Employee implements Serializable {
      */
     public CodeInfo getDecisionlevelInfo() {
         return decisionlevelInfo;
+    }
+
+    public CodeInfo getEmployeeType() {
+        return employeeType;
+    }
+
+    public void setEmployeeType(CodeInfo employeeType) {
+        this.employeeType = employeeType;
     }
 
     /**
