@@ -80,6 +80,9 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
     @EJB
     private SyncCQBean syncCQBean;
     @EJB
+    private SyncYCBean syncYCBean;
+
+    @EJB
     private SyncHYBean syncHYBean;
 
     @EJB
@@ -182,7 +185,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setGenre2(detail.getGenre2());
                     m.setGenre3(detail.getGenre3());
                     m.setModelDsc1(detail.getModelDsc1());
-                    m.setModelDsc2(detail.getModelDsc2());                    
+                    m.setModelDsc2(detail.getModelDsc2());
                     persist(m);
                     this.getEntityManager().flush();
 
@@ -228,6 +231,9 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
 
                         syncCQBean.persist(m, null);
                         syncCQBean.getEntityManager().flush();
+
+                        syncYCBean.persist(m, null);
+                        syncYCBean.getEntityManager().flush();
                     } else if (facno.equals("H")) {
                         // 汉扬
                         syncHYBean.persist(m, null);
@@ -253,10 +259,8 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
 
     // 件号转移申请单
     public Boolean initByOASHBINV140(String psn) {
-
         SHBERPINV140 h = shbinv140Bean.findByPSN(psn);
         List<SHBERPINV140Detail> details = shbinv140DetailBean.findByFSN(h.getFormSerialNumber());
-
         try {
             // 表身循环
             for (int i = 0; i < details.size(); i++) {
@@ -375,6 +379,9 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
 
                         syncCQBean.persist(m, null);
                         syncCQBean.getEntityManager().flush();
+                        
+                        syncYCBean.persist(m, null);
+                        syncYCBean.getEntityManager().flush();
                     }
                 }
             }
@@ -484,6 +491,22 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         update(e);
                         this.getEntityManager().flush();
                     }
+                    
+                    this.setCompany("C5");
+                    if (this.findByItnbr(detail.getItnbr()) != null) {
+                        Invmas e = this.findByItnbr(detail.getItnbr());
+                        e.setItdsc(detail.getItdsc()); // 设置中文品名
+                        e.setSpdsc(detail.getSpdsc()); // 设置中文规格
+                        e.setEitdsc(detail.getEitdsc()); // 设置英文品名
+                        e.setEspdsc(detail.getEspdsc()); // 设置英文规格
+                        e.setSitdsc(detail.getSitdsc()); // 设置品号简名
+                        e.setItdsc2(detail.getItdsc2());
+                        e.setSpdsc2(detail.getSpdsc2());
+                        e.setModdate(BaseLib.getDate());
+                        e.setModman(h.getApplyuser());
+                        update(e);
+                        this.getEntityManager().flush();
+                    }
 
                     // 更新CRM件号2017/7/11
                     WARMB warmb = warmbBean.findByMB001(detail.getItnbr());
@@ -559,6 +582,9 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     this.setCompany("C4");
                     update(invmasList);
                     this.getEntityManager().flush();
+                    this.setCompany("C5");
+                    update(invmasList);
+                    this.getEntityManager().flush();
                 }
             }
             return true;
@@ -588,14 +614,10 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 if (m == null) {
                     throw new NullPointerException();
                 }
-                if ("".equals(detail.getCost())) {
-                    m.setCost(null);
-                } else {
+                if (!"".equals(detail.getCost())) {
                     m.setCost(BigDecimal.valueOf(Double.parseDouble(detail.getCost())));
                 }
-                if ("".equals(detail.getAsscost())) {
-                    m.setAsscost(null);
-                } else {
+                if (!"".equals(detail.getAsscost())) {
                     m.setAsscost(BigDecimal.valueOf(Double.parseDouble(detail.getAsscost())));
                 }
                 update(m);

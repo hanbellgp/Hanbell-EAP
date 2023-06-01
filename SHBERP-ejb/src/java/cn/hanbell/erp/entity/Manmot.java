@@ -245,10 +245,14 @@ public class Manmot implements Serializable {
     @NotNull
     @Column(name = "draftqty")
     private BigDecimal draftqty;
-    
+
     @JoinColumn(name = "itnbrf", referencedColumnName = "itnbr", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Invmas invmas;
+
+    @Column(name = "comfirdate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date comfirdate;
 
     public Manmot() {
     }
@@ -641,7 +645,7 @@ public class Manmot implements Serializable {
         this.oauserno = oauserno;
     }
 
-    public String  getOadate() {
+    public String getOadate() {
         return oadate;
     }
 
@@ -656,13 +660,21 @@ public class Manmot implements Serializable {
     public void setDraftqty(BigDecimal draftqty) {
         this.draftqty = draftqty;
     }
-    
+
     public Invmas getInvmas() {
         return invmas;
     }
 
     public void setInvmas(Invmas invmas) {
         this.invmas = invmas;
+    }
+
+    public Date getComfirdate() {
+        return comfirdate;
+    }
+
+    public void setComfirdate(Date comfirdate) {
+        this.comfirdate = comfirdate;
     }
 
     @Override
@@ -689,5 +701,5 @@ public class Manmot implements Serializable {
     public String toString() {
         return "cn.hanbell.erp.entity.Manmot[ manmotPK=" + manmotPK + " ]";
     }
-    
+
 }

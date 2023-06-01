@@ -92,6 +92,9 @@ public class PLMItnbrDetailTemp implements Serializable {
     private String ecItnbr;
     @Column(name = "c_stopyn")
     private Character cStopyn;
+    @Size(max = 8)
+    @Column(name = "c_unmsr")
+    private String c_unmsr;
 
     public PLMItnbrDetailTemp() {
     }
@@ -267,6 +270,14 @@ public class PLMItnbrDetailTemp implements Serializable {
 
     public void setCStopyn(Character cStopyn) {
         this.cStopyn = cStopyn;
+    }
+
+    public String getC_unmsr() {
+        return c_unmsr;
+    }
+
+    public void setC_unmsr(String c_unmsr) {
+        this.c_unmsr = c_unmsr;
     }
 
 }

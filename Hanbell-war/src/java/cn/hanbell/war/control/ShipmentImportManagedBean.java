@@ -230,7 +230,6 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                     content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
                                             .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc());
                                     break;
-
                                 //冰山冷热专属二维码
                                 case "SLN00028":
                                     content.append(sd.getCustomerItem()).append(" ").append(sd.getItemDesc()).append("|").append(sd.getItemModel());
@@ -243,6 +242,18 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                     // 海达源专属二维码
                                     content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
                                             .append(BaseLib.formatDate("yyyyMMdd", h.getShpdate())).append(".").append(sd.getCustomerItemDesc());
+                                    break;
+                                case "SSD00730":
+                                    // 青岛海信日立
+                                    content.append(sd.getCustomerItem());
+                                    if (sd.getCustomerItem().length() != 8) {
+                                        for (int i = 1; i <= 8 - sd.getCustomerItem().length(); i++) {
+                                            content.append("0");
+                                        }
+                                    }
+                                    content.append(ShipmentPrintManagedBean.SSD00730Year.valueOf("YEAR" + BaseLib.formatDate("yyyy", sd.getShpdate())).getValue())
+                                            .append(ShipmentPrintManagedBean.SSD00730Month.valueOf("MONTH" + Integer.valueOf(BaseLib.formatDate("MM", sd.getShpdate()))).getValue())
+                                            .append(ShipmentPrintManagedBean.SSD00730Day.valueOf("DAY" + Integer.valueOf(BaseLib.formatDate("dd", sd.getShpdate()))).getValue()).append("200753").append(sd.getVarnr().substring(sd.getVarnr().length()-4));
                                     break;
                             }
                             if (content.length() > 0) {
@@ -335,4 +346,48 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
         this.queryModel = queryModel;
     }
 
+    enum SSD00730Year {
+        YEAR2022("B"), YEAR2023("A"), YEAR2024("9"), YEAR2025("8"), YEAR2026("7"), YEAR2027("6"),
+        YEAR2028("5"), YEAR2029("4"), YEAR2030("3"), YEAR2031("2"), YEAR2032("1");
+        String value;
+
+        SSD00730Year(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+    enum SSD00730Month {
+        MONTH1("1"), MONTH2("A"), MONTH3("2"), MONTH4("B"), MONTH5("3"), MONTH6("C"),
+        MONTH7("4"), MONTH8("D"), MONTH9("5"), MONTH10("E"), MONTH11("6"), MONTH12("F");
+        String value;
+
+        SSD00730Month(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+    enum SSD00730Day {
+        DAY1("1"), DAY2("2"), DAY3("3"), DAY4("4"), DAY5("5"), DAY6("6"),
+        DAY7("7"), DAY8("8"), DAY9("9"), DAY10("A"), DAY11("B"), DAY12("C"),
+        DAY13("D"), DAY14("E"), DAY15("F"), DAY16("G"), DAY17("H"), DAY18("J"),
+        DAY19("K"), DAY20("L"), DAY21("M"), DAY22("N"), DAY23("P"), DAY24("Q"),
+        DAY25("R"), DAY26("S"), DAY27("T"), DAY28("U"), DAY29("V"), DAY30("W"), DAY31("Y");
+        String value;
+
+        SSD00730Day(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
 }

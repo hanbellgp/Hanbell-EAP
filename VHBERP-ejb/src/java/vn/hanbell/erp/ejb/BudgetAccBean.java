@@ -3,26 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.hanbell.erp.ejb;
+package vn.hanbell.erp.ejb;
 
-import cn.hanbell.erp.comm.SuperEJBForERP;
-import cn.hanbell.erp.entity.BudgetAcc;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
+import vn.hanbell.erp.comm.SuperEJBForERP;
+import vn.hanbell.erp.entity.BudgetAcc;
 
 /**
  *
- * @author C1491
+ * @author Administrator
  */
 @Stateless
 @LocalBean
 public class BudgetAccBean extends SuperEJBForERP<BudgetAcc> {
-
+    
     public BudgetAccBean() {
         super(BudgetAcc.class);
     }
-
+    
     public BudgetAcc findByAccno(String accno) {
         Query query = getEntityManager().createNamedQuery("BudgetAcc.findByAccno");
         query.setParameter("accno", accno);
@@ -32,5 +32,5 @@ public class BudgetAccBean extends SuperEJBForERP<BudgetAcc> {
             return null;
         }
     }
-
+    
 }

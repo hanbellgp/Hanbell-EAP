@@ -54,7 +54,7 @@ public class MCEmployeeFacadeREST extends SuperRESTForEFGP<Users> {
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public MCResponseData findAll(RequestBody entity) {
-        try {          
+        try {
             //判断token 是否有效
             if (entity == null) {
                 return new MCResponseData(MessageEnum.Failue_107.getCode(), MessageEnum.Failue_107.getMsg());
@@ -85,7 +85,6 @@ public class MCEmployeeFacadeREST extends SuperRESTForEFGP<Users> {
                 if (em.getDeptId().isEmpty() || em.getDeptId().length() < 2) {
                     em.setCompany("");
                 } else {
-                    System.out.print(em.getDeptId());
                     em.setCompany(usersBean.getCompanyByDeptId(em.getDeptId()));
                 }
                 Employee hremp = employeeBean.findByCode(em.getUserId());
@@ -99,7 +98,13 @@ public class MCEmployeeFacadeREST extends SuperRESTForEFGP<Users> {
                 //加入是否主部门
                 int isMain = row[7] == null ? 0 : Integer.valueOf(row[7].toString());
                 em.setIsMainDept(isMain);
+                //加入核决层级
+                String levelValue = row[8] == null ? "" : row[8].toString();
+                String levelName = row[9] == null ? "" : row[9].toString();
+                em.setLevelValue(levelValue);
+                em.setFunctionLevelName(levelName);
                 employeeList.add(em);
+
             }
             int hasMore = 0;
             MCResponseData res = new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
