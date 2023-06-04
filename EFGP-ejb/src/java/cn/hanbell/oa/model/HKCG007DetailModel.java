@@ -63,8 +63,8 @@ public class HKCG007DetailModel implements Serializable {
     @Column(name = "dmark2name")
     private String dmark2name;
     @Size(max = 255)
-    @Column(name = "purdaskdescs")
-    private String purdaskdescs;
+    @Column(name = "purdaskdescs2")
+    private String purdaskdescs2;
     @Size(max = 255)
     @Column(name = "accPeriod")
     private String accPeriod;
@@ -115,6 +115,8 @@ public class HKCG007DetailModel implements Serializable {
     private String buyername;
     private String monavg;
     private String prqyYear;
+    private String DR3;
+    private String purdaskdescs;
 
     public HKCG007DetailModel() {
     }
@@ -410,5 +412,13 @@ public class HKCG007DetailModel implements Serializable {
 
     public void setPrqyYear(String prqyYear) {
         this.prqyYear = prqyYear;
+    }
+
+    public String getPurdaskdescs2() {
+        return purdaskdescs2;
+    }
+
+    public void setPurdaskdescs2(String purdaskdescs2) {
+        this.purdaskdescs2 = purdaskdescs2;
     }
 }

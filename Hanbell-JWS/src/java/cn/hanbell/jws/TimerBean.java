@@ -145,10 +145,12 @@ import cn.hanbell.erp.entity.Secuser;
 import cn.hanbell.exch.ejb.ExchangeSHBBean;
 import cn.hanbell.mes.entity.MuserRole;
 import cn.hanbell.oa.ejb.HKCW002Bean;
+import cn.hanbell.oa.ejb.InvmasmarkBean;
 import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.oa.entity.HKCW002;
 import cn.hanbell.oa.entity.HKCW002Detail;
+import cn.hanbell.oa.entity.Invmasmark;
 import cn.hanbell.oa.model.HKCW013DetailModel;
 import cn.hanbell.oa.model.HKCW013Model;
 import cn.hanbell.oa.model.HKYX009DetailModel;
@@ -256,6 +258,8 @@ public class TimerBean {
     private WorkFlowBean workFlowBean;
     @EJB
     private UsersBean usersBean;
+    @EJB
+    private InvmasmarkBean imBean;
 
     // EJBForERP
     @EJB
@@ -1049,6 +1053,9 @@ public class TimerBean {
                 boolean fromTHB;
                 int i, j;
                 String k;
+                //获取件号分类2规则
+                List<Invmasmark> genre2Map;
+                genre2Map = imBean.findAll();
                 for (PLMItnbrMasterTemp pm : plmMasterList) {
                     fromTHB = pm.getCProno().equals("A") || pm.getCProno().equals("B");
                     plmDetailList = plmItnbrMasterTempBean.findNeedThrowDetail(pm.getItemNumber());
@@ -1088,6 +1095,13 @@ public class TimerBean {
                             d.setYt("");
                             d.setRemark("");
                             d.setGenre2("");
+                            //invmasmark 分类2对应件号规则自动带出20230519
+                            for (Invmasmark im : genre2Map) {
+                                if (d.getItnbr().contains(im.getGrpcode())) {
+                                    d.setGenre2(im.getGenre2());
+                                    continue;
+                                }
+                            }
                             d.setGenre3("");
                             d.setModelDsc1("");
                             d.setModelDsc2("");
@@ -1183,7 +1197,7 @@ public class TimerBean {
             eapMailBean.setMailSubject("PLM件号中间表新增OA失败");
             eapMailBean.setMailContent(
                     "PLM件号中间表新增OA失败，异常：" + ex);
-            eapMailBean.notify(new MailNotify());
+           // eapMailBean.notify(new MailNotify());
             ex.printStackTrace();
             log4j.error("PLM件号抛转轮询时异常", ex);
         }
