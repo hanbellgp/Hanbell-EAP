@@ -45,8 +45,8 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
             }
             if (entity.getTel() != null && !"".equals(entity.getTel())) {
                 job.add("telephone", entity.getTel());
-            }else{
-                 job.add("telephone", "");
+            } else {
+                job.add("telephone", "");
             }
             if (entity.getJob() != null && !"".equals(entity.getJob()) && isUpdateAlias(entity.getJob())) {
                 job.add("alias", entity.getJob());
@@ -66,8 +66,18 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
                 attr.add("type", 0);
                 attr.add("name", "岗位");
                 attr.add("text", textValue);
+
+                JsonObjectBuilder textValue1 = Json.createObjectBuilder();
+                textValue1.add("value", entity.getUserid());
+                JsonObjectBuilder attr1 = Json.createObjectBuilder();
+                attr1.add("type", 0);
+                attr1.add("name", "工号");
+                attr1.add("text", textValue1);
+
                 JsonArrayBuilder attrs = Json.createArrayBuilder();
                 attrs.add(attr);
+                attrs.add(attr1);
+
                 JsonObjectBuilder extattr = Json.createObjectBuilder();
                 extattr.add("attrs", attrs);
                 job.add("extattr", extattr);

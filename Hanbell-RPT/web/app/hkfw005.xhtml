@@ -28,6 +28,16 @@
                     </p:column>
                 </p:row>
                 <p:row>
+                    <p:column><h:outputLabel value="表单单号" for="queryFormSerialNumber" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryFormSerialNumber"  value="#{hkfw005ManagedQueryBean.queryFormSerialNumber}" title="表单单号" />
+                    </p:column>
+                    <p:column><h:outputLabel value="客户名称" for="queryCustomer" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryCustomer"  value="#{hkfw005ManagedQueryBean.queryCustomer}" title="客诉单号" />
+                    </p:column>
+                </p:row>
+                <p:row>
                     <p:column><h:outputLabel value="签核开始日期" for="queryDateBegin" /></p:column>
                     <p:column>
                         <p:calendar id="queryDateBegin" value="#{hkfw005ManagedQueryBean.queryDateBegin}" title="开始日期" pattern="yyyy/MM/dd"
@@ -58,6 +68,7 @@
                         </p:selectOneMenu>
                     </p:column>
                 </p:row>
+
             </p:panelGrid>
             <p:toolbar id="toolbar" styleClass="topToolbar">
                 <f:facet name="left">
@@ -71,9 +82,11 @@
                                      update=":formList"/>
                     <p:commandButton id="btnQuery" value="查询" actionListener="#{hkfw005ManagedQueryBean.query()}" icon="ui-icon-search"
                                      update=":formList"/>
+                    <p:commandButton id="btnUpdate" value="更新" actionListener="#{hkfw005ManagedQueryBean.update()}" icon="ui-icon-pencil"
+                                     update=":formList"/>
                 </f:facet>
             </p:toolbar>
-            <p:dataTable value="#{hkfw005ManagedQueryBean.model}"  var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+            <p:dataTable value="#{hkfw005ManagedQueryBean.entityList}"  var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="15,30,45" lazy="true" selectionMode="single"  selection="#{hkfw005ManagedQueryBean.currentEntity}" rowKey="#{item.oid}" >
                 <f:facet name="header">
@@ -86,6 +99,12 @@
                         <h:outputText value="流程序号"/>
                     </f:facet>
                     <h:outputText value="#{item.processSerialNumber}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="流程序号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.formSerialNumber}"/>
                 </p:column>
                 <p:column styleClass="Wid10">
                     <f:facet name="header">
@@ -140,7 +159,5 @@
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>
-
     </ui:define>
-
 </ui:composition>

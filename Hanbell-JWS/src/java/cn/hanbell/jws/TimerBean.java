@@ -513,7 +513,7 @@ public class TimerBean {
                     cn.hanbell.hrm.entity.Employee manager = hrmEmployeeBean.findByEmployeeId(e.getDirectorId());
                     String company = e.getCode().substring(0, 1);
                     if ("C".equals(company) || "K".equals(company) || "E".equals(company) || "H".equals(company)
-                            || "Y".equals(company) || "Q".equals(company) || isTWEmployee(company)) {
+                            || "Y".equals(company) || "Q".equals(company) || "V".equals(company) || isTWEmployee(company)) {
                         // EAP
                         cn.hanbell.eap.entity.SystemUser eu = eapSystemUserBean.findByUserId(e.getCode());
                         if (eu == null) {
