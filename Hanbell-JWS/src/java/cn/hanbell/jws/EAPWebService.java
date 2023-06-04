@@ -488,6 +488,12 @@ public class EAPWebService {
     @EJB
     private ECPurvdrBean ecpurvdrBean;
 
+    //EJBForVHBERP
+    @EJB
+    private vn.hanbell.erp.ejb.ApmbilBean vhbapmbilBean;
+    @EJB
+    private vn.hanbell.erp.ejb.ApmaphBean vhbapmaphBean;
+
     // EJBForPLM
     @EJB
     private cn.hanbell.plm.ejb.PLMProjectBean plmPLMProjectBean;
@@ -1704,6 +1710,22 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "createVHBERPAPM250ByOAVHBAPM820")
+    public String createVHBERPAPM250ByOAVHBAPM820(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = vhbapmbilBean.initByOAAPM820(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "createVHBERPAPM250ByOAVHBAPM820", psn), ex);
+            throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "createERPAPM525ByOAAPM828")
     public String createERPAPM525ByOAAPM828(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -1741,6 +1763,22 @@ public class EAPWebService {
         Boolean ret = false;
         try {
             ret = apmaphBean.updateERPAPM820ByOAHKCW013(psn, status);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM820ByOAHKCW013", psn), ex);
+            throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateVHBERPAPM820ByOAVHTV005")
+    public String updateVHBERPAPM820ByOAVHTV005(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+        Boolean ret = false;
+        try {
+            ret = vhbapmaphBean.updateERPAPM820ByOAHKCW013(psn, status);
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM820ByOAHKCW013", psn), ex);
             throw new RuntimeException(ex);
@@ -2679,11 +2717,12 @@ public class EAPWebService {
         }
     }
 
-  /**
-   * 返台申请单结案自动申请派公务车
-   * @param psn
-   * @return 
-   */
+    /**
+     * 返台申请单结案自动申请派公务车
+     *
+     * @param psn
+     * @return
+     */
     @WebMethod(operationName = "createOAHKGL037ByOAHKGL055")
     public String createOAHKGL037ByOAHKGL055(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -3915,7 +3954,7 @@ public class EAPWebService {
                 throw new NullPointerException("updateERPAPM585ByOAHKCW015找不到流程序号:" + psn);
             }
             String facno = h.getFacno();
-            String fsn  = h.getFormSerialNumber();
+            String fsn = h.getFormSerialNumber();
             if (null == facno || "".equals(facno)) {
                 throw new NullPointerException("updateERPAPM585ByOAHKCW015付款凭单未设置正确的公司别" + facno);
             }

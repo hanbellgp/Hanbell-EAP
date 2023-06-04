@@ -51,7 +51,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
     //public final String HOST_ADD = "http://oa.hanbell.com.cn";
     public final String HOST_ADD = "http://172.16.10.157";
     //正式环境
-    // public final String FILE_URL = "smb://172.16.10.115/";
+    //public final String FILE_URL = "smb://172.16.10.115/";
     //测试环境
     public final String FILE_URL = "smb://172.16.10.157/";
     public final String HOST_PORT = "8086";
@@ -91,7 +91,8 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
         for (Field f : fields) {
             try {
                 f.setAccessible(true);
-                if ((f.getName().equals("creator") || f.getName().equals("empl") || f.getName().equals("emply") || f.getName().equals("employee") || f.getName().endsWith("user") || f.getName().endsWith("userno") || f.getName().endsWith("User") || f.getName().endsWith("Userno")) && (!f.getName().startsWith("hdn"))) {
+                if ("auditor".equals(f.getName()) || "securityOfficer".equals(f.getName()) || "sectionSupervisor".equals(f.getName())
+                        || "departmentHead".equals(f.getName()) || "safetySectionChief".equals(f.getName()) || "signatory".equals(f.getName()) || (f.getName().equals("creator") || f.getName().equals("empl") || f.getName().equals("emply") || f.getName().equals("employee") || f.getName().endsWith("user") || f.getName().endsWith("userno") || f.getName().endsWith("User") || f.getName().endsWith("Userno")) && (!f.getName().startsWith("hdn"))) {
                     if (f.get(master) != null && !"".equals(f.get(master))) {
                         Users user = this.findUserByUserno(f.get(master).toString());
                         if (user == null) {

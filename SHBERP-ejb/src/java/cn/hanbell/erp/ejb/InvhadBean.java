@@ -21,6 +21,7 @@ import cn.hanbell.erp.entity.InvhdscPK;
 import cn.hanbell.erp.entity.Invmas;
 import cn.hanbell.erp.entity.Invsys;
 import cn.hanbell.erp.entity.Invtrn;
+import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.oa.ejb.HKFW006Bean;
 import cn.hanbell.oa.ejb.HKFW006Inv310Bean;
 import cn.hanbell.oa.ejb.HKFW006Inv310DetailBean;
@@ -1233,18 +1234,24 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             invhad.setTrtype(IAB.getTrtype());
             invhad.setTrdate(trdate);
             //1ERP作业部门 2.费用归属部门-->作业部门
-            switch (e.getErpDept()) {
-                case "1":
-                    invhad.setDepno("1P121");  //加工二组精车
-                    break;
-                case "2":
-                    invhad.setDepno("1P122");  //加工二组精研
-                    break;
-                default:
-                    invhad.setDepno(e.getUseDept());
-                    break;
-
+//            switch (e.getErpDept()) {
+//                case "1":
+//                    invhad.setDepno("1P121");  //加工二组精车
+//                    break;
+//                case "2":
+//                    invhad.setDepno("1P122");  //加工二组精研
+//                    break;
+//                default:
+//                    invhad.setDepno(e.getUseDept());
+//                    break;
+//
+//            }
+            miscodeBean.setCompany(facno);
+            Miscode miscode = miscodeBean.findByPK("GE", e.getUseDept());
+            if (null == miscode) {
+                throw new RuntimeException(e.getUseDept() + "作业部门ERP中不存在");
             }
+            invhad.setDepno(e.getUseDept());
             invhad.setIocode(IAB.getIocode());
             invhad.setResno(e.getCode().equals("") ? "K01" : e.getCode());
             invhad.setSourceno(e.getProcessSerialNumber().substring(8));

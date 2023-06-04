@@ -129,7 +129,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                             td.setTd502(h.getFormSerialNumber() + ";" + td.getTd502());     //退货OA单号
                         }
                         //判断退货数量VS实领数量
-                        if (td.getTd500().compareTo(td.getTd009()) > -1) {
+                        if (td.getTd500().compareTo(td.getTd009()) > 0) {
                             td.setTd047("Y");
                         }
                     } else if ("3".equals(status)) {
@@ -141,7 +141,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                             if (td.getTd502().contains(h.getFormSerialNumber())) {
                                 td.setTd500(td.getTd500().subtract(BigDecimal.valueOf(Double.valueOf(detail.getRetqty()))));
                                 td.setTd502(td.getTd502().replace(h.getFormSerialNumber(), ""));
-                                if (td.getTd500().compareTo(td.getTd020()) < 0) {
+                                if (td.getTd500().compareTo(td.getTd020()) <= 0) {
                                     td.setTd047("N");
                                 }
                             }
