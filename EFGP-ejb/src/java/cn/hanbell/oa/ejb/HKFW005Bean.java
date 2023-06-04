@@ -10,7 +10,9 @@ import cn.hanbell.crm.entity.REPTC;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.HKFW005;
 import cn.hanbell.oa.entity.HKFW005Detail;
+import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -165,4 +167,49 @@ public class HKFW005Bean extends SuperEJBForEFGP<HKFW005> {
         return hkfw005DetailBean.findByFSN(fsn);
     }
 
+    public List<HKFW005> findByHKCW005QueryPage(Date createDateBegin, Date createDateEnd, String formSerialNumber, String customer, Date signDateBegin, Date signDateEnd,
+            String state, String workItemName) {
+        try {
+            StringBuffer sql = new StringBuffer("select * from HK_FW005 a,ProcessInstance  b where a.processSerialNumber=b.serialNumber");
+            if ("1".equals(state)) {
+                //结案单据
+                StringBuffer workitemSql = new StringBuffer();
+                if ("ALL".equals(workItemName)) {
+                    workitemSql.append(" select contextOID from WorkItem where workItemName in (N'仓储课长',N'仓储主管',N'帐管（运费录入）') and completedTime is null");
+                } else {
+                    workitemSql.append("  select contextOID from WorkItem where workItemName in (");
+                    workitemSql.append(workItemName);
+                    workitemSql.append(" )  and completedTime is null");
+                }
+                if (signDateBegin != null) {
+                    workitemSql.append(" and  createdTime>='").append(BaseLib.formatDate("yyyyMMdd", signDateBegin)).append("'");
+                }
+                if (signDateEnd != null) {
+                    workitemSql.append(" and  createdTime<='").append(BaseLib.formatDate("yyyyMMdd", signDateEnd)).append("'");
+                }
+                sql.append(" and b.contextOID in (").append(workitemSql).append(") ");
+            } else if ("3".equals(state)) {
+                sql.append(" and  b.currentState='3'");
+            }
+
+            if (createDateBegin != null) {
+                sql.append(" and b.createdTime>='").append(BaseLib.formatDate("yyyyMMdd", createDateBegin)).append("'");
+            }
+            if (createDateEnd != null) {
+                sql.append(" and b.createdTime<='").append(BaseLib.formatDate("yyyyMMdd", createDateEnd)).append("'");
+            }
+            
+            if (formSerialNumber != null && !"".equals(formSerialNumber)) {
+                sql.append(" and a.formSerialNumber like N'%").append(formSerialNumber).append("%'");
+            }
+            if (customer != null && !"".equals(customer)) {
+                sql.append(" and a.cusna like N'%").append(customer).append("%'");
+            }
+            Query query = getEntityManager().createNativeQuery(sql.toString(), HKFW005.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
