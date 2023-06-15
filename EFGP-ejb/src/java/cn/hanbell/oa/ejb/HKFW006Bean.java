@@ -129,7 +129,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                             td.setTd502(h.getFormSerialNumber() + ";" + td.getTd502());     //退货OA单号
                         }
                         //判断退货数量VS实领数量
-                        if (td.getTd500().compareTo(td.getTd009()) > 0) {
+                        if (td.getTd500().compareTo(BigDecimal.ZERO) > 0 && td.getTd500().compareTo(td.getTd009()) > -1) {
                             td.setTd047("Y");
                         }
                     } else if ("3".equals(status)) {
@@ -588,10 +588,10 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
         Query query = getEntityManager().createNativeQuery(sql.toString());
         List<Object[]> result = query.getResultList();
         HKFW006StatisticModel m = new HKFW006StatisticModel((String) result.get(0)[0], (String) result.get(0)[1],
-                 (int) result.get(0)[2], (int) result.get(0)[3], (int) result.get(0)[4], (int) result.get(0)[5],
-                 (int) result.get(0)[6], (int) result.get(0)[7], (int) result.get(0)[8], (int) result.get(0)[9],
-                 (int) result.get(0)[10], (int) result.get(0)[11], (int) result.get(0)[12], (int) result.get(0)[13],
-                 (int) result.get(0)[14]);
+                (int) result.get(0)[2], (int) result.get(0)[3], (int) result.get(0)[4], (int) result.get(0)[5],
+                (int) result.get(0)[6], (int) result.get(0)[7], (int) result.get(0)[8], (int) result.get(0)[9],
+                (int) result.get(0)[10], (int) result.get(0)[11], (int) result.get(0)[12], (int) result.get(0)[13],
+                (int) result.get(0)[14]);
         return m;
     }
 
