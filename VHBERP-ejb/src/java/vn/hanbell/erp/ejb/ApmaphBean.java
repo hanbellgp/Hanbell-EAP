@@ -67,7 +67,7 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
      *
      * @param psn 流程序号
      */
-    public Boolean updateERPAPM820ByOAHKCW013(String psn, String status) {
+    public Boolean updateVHBERPAPM820ByOAVHTV005(String psn, String status) {
         VHTV005 oah = vhtv005Bean.findByPSN(psn);
         if (oah == null) {
             throw new NullPointerException(psn);

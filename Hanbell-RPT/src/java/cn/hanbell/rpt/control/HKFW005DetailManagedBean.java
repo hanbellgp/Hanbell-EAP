@@ -39,12 +39,11 @@ public class HKFW005DetailManagedBean extends SuperQueryBean<HKFW005Detail> {
     private HKFW005DetailBean hkfw005DetailBean;
 
     private String queryType;
-
     private Date queryCreateDateBegin;
-
     private Date queryCreateDateEnd;
-
     private String queryAssignee;
+    private String queryCusna;
+    private String queryFormSn;
 
     /**
      * Creates a new instance of HKFW005DetailManagedBean
@@ -170,6 +169,12 @@ public class HKFW005DetailManagedBean extends SuperQueryBean<HKFW005Detail> {
             if (this.queryCreateDateEnd != null && !"".equals(this.queryCreateDateEnd)) {
                 this.model.getFilterFields().put("hkfw005.createdateEnd", queryCreateDateEnd);
             }
+            if (this.queryCusna != null && !"".equals(this.queryCusna)) {
+                this.model.getFilterFields().put("hkfw005.cusna", queryCusna);
+            }
+            if (this.queryFormSn != null && !"".equals(this.queryFormSn)) {
+                this.model.getFilterFields().put("formSerialNumber", queryFormSn);
+            }
             if (!"ALL".equals(this.queryType)) {
                 this.model.getFilterFields().put("hkfw005.type", queryType);
             }
@@ -238,6 +243,22 @@ public class HKFW005DetailManagedBean extends SuperQueryBean<HKFW005Detail> {
 
     public void setQueryType(String queryType) {
         this.queryType = queryType;
+    }
+
+    public String getQueryCusna() {
+        return queryCusna;
+    }
+
+    public void setQueryCusna(String queryCusna) {
+        this.queryCusna = queryCusna;
+    }
+
+    public String getQueryFormSn() {
+        return queryFormSn;
+    }
+
+    public void setQueryFormSn(String queryFormSn) {
+        this.queryFormSn = queryFormSn;
     }
 
 }
