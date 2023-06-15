@@ -1778,7 +1778,7 @@ public class EAPWebService {
     public String updateVHBERPAPM820ByOAVHTV005(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
         Boolean ret = false;
         try {
-            ret = vhbapmaphBean.updateERPAPM820ByOAHKCW013(psn, status);
+            ret = vhbapmaphBean.updateVHBERPAPM820ByOAVHTV005(psn, status);
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM820ByOAHKCW013", psn), ex);
             throw new RuntimeException(ex);

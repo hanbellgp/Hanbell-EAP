@@ -421,4 +421,12 @@ public class HKCG007DetailModel implements Serializable {
     public void setPurdaskdescs2(String purdaskdescs2) {
         this.purdaskdescs2 = purdaskdescs2;
     }
+
+    public String getDR3() {
+        return DR3;
+    }
+
+    public void setDR3(String DR3) {
+        this.DR3 = DR3;
+    }
 }
