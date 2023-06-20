@@ -948,12 +948,6 @@ return false;]]></method>
                     <property name="dataType">string</property>
                     <property name="allowExport">true</property>
                 </structure>
-                <structure>
-                    <property name="name">color20</property>
-                    <expression name="expression" type="javascript">dataSetRow["fkxz2"]=="14"?"black":""</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
             </list-property>
             <column id="1247">
                 <property name="width">2.8cm</property>
@@ -1026,7 +1020,6 @@ return false;]]></method>
 <span style='background-color:<VALUE-OF>row["color9"]</VALUE-OF>'> □</span> 理财
 <span style='background-color:<VALUE-OF>row["color10"]</VALUE-OF>'> □</span> 金融衍生性产品
 <span style='background-color:<VALUE-OF>row["color11"]</VALUE-OF>'> □</span> 证券投资
-<span style='background-color:<VALUE-OF>row["color20"]</VALUE-OF>'> □</span> 定存
 <span style='background-color:<VALUE-OF>row["color12"]</VALUE-OF>'> □</span> 对外投资
 <span style='background-color:<VALUE-OF>row["color13"]</VALUE-OF>'> □</span> 工会
 <span style='background-color:<VALUE-OF>row["color14"]</VALUE-OF>'> □</span> 分公司拨款
