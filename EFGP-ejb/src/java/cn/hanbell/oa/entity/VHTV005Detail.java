@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "VHTV005Detail.findByComApamt", query = "SELECT v FROM VHTV005Detail v WHERE v.comApamt = :comApamt"),
     @NamedQuery(name = "VHTV005Detail.findByAcpamt", query = "SELECT v FROM VHTV005Detail v WHERE v.acpamt = :acpamt"),
     @NamedQuery(name = "VHTV005Detail.findByTemamt", query = "SELECT v FROM VHTV005Detail v WHERE v.temamt = :temamt"),
-    @NamedQuery(name = "VHTV005Detail.findByFSN", query = "SELECT v FROM VHTV005Detail v WHERE v.formSerialNumber = :fsn"),
+    @NamedQuery(name = "VHTV005Detail.findByFormSerialNumber", query = "SELECT v FROM VHTV005Detail v WHERE v.formSerialNumber = :formSerialNumber"),
     @NamedQuery(name = "VHTV005Detail.findBySeq", query = "SELECT v FROM VHTV005Detail v WHERE v.seq = :seq"),
     @NamedQuery(name = "VHTV005Detail.findByCoin", query = "SELECT v FROM VHTV005Detail v WHERE v.coin = :coin"),
     @NamedQuery(name = "VHTV005Detail.findByRatio", query = "SELECT v FROM VHTV005Detail v WHERE v.ratio = :ratio")})

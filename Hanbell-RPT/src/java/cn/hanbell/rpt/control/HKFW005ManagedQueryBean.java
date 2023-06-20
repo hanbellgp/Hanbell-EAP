@@ -112,7 +112,7 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
 
     @Override
     public void print() {
-        entityList = hkfw005Bean.findByHKCW005QueryPage(queryDateBegin, queryDateEnd, queryFormSerialNumber, queryCustomer, queryDateBegin, queryDateEnd, queryState, queryWorkItemName);
+        entityList = hkfw005Bean.findByHKCW005QueryPage(queryCreateDateBegin, queryCreateDateEnd, queryFormSerialNumber, queryCustomer, queryDateBegin, queryDateEnd, queryState, queryWorkItemName);
         if (entityList == null || entityList.isEmpty()) {
             return;
         }
@@ -207,7 +207,7 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
 
     public void update() {
         try {
-            entityList = hkfw005Bean.findByHKCW005QueryPage(queryDateBegin, queryDateEnd, queryFormSerialNumber, queryCustomer, queryDateBegin, queryDateEnd, queryState, queryWorkItemName);
+            entityList = hkfw005Bean.findByHKCW005QueryPage(queryCreateDateBegin, queryCreateDateEnd, queryFormSerialNumber, queryCustomer, queryDateBegin, queryDateEnd, queryState, queryWorkItemName);
             if (entityList == null || entityList.isEmpty()) {
                 return;
             }

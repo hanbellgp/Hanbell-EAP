@@ -28,7 +28,7 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
-
+    
     @EJB
     private SERBQBean serbqBean;
     @EJB
@@ -37,11 +37,11 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
     private SERI12grid1SERI12Bean seri12grid1seri12Bean;
     @EJB
     private SERI12grid2SERI12Bean seri12grid2SERI12Bean;
-
+    
     public SERI12Bean() {
         super(SERI12.class);
     }
-
+    
     public boolean updateSerbq(String psn) {
         SERI12 h = findByPSN(psn);
         if (h == null) {
@@ -60,8 +60,7 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         String BQ038;
         // List<Seri12> seri12 = findByFSN(h.getFormSerialNumber());
         BQ001 = h.getBq001();
-        //BQ035 = h.getBq035();
-        BQ035 = "Y";  //改为已结案状态
+        BQ035 = h.getBq035();
         // BQ129 = h.getBq129();
 
         // if (null != BQ129) {
@@ -163,7 +162,7 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         BQ.setBq504(BQ133);
         BQ.setBq505(BQ134);
         BQ.setBq059("3");
-
+        
         String aa;
         try {
             aa = BaseLib.formatDate("yyyyMMdd", BaseLib.getDate("yyyy/MM/dd", BQ037));
@@ -172,9 +171,9 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         }
         BQ.setBq037(aa);
         BQ.setBq038(BQ038);
-
+        
         serbqBean.update(BQ);
-
+        
         List<SERI12grid1SERI12> detail1 = seri12grid1seri12Bean.findByFSN(h.getFormSerialNumber());
         for (int i = 1; (i - 1) < detail1.size(); i++) {
             SERBR BR;
@@ -190,7 +189,7 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         }
         return true;
     }
-
+    
     public Boolean updateSERBQ(String psn) {
         SERI12 h = findByPSN(psn);
         if (h == null) {
@@ -210,8 +209,7 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         String BQ038;
         // List<Seri12> seri12 = findByFSN(h.getFormSerialNumber());
         BQ001 = h.getBq001();
-        //BQ035 = h.getBq035();
-        BQ035 = "Y";  // 改为已结案状态
+        BQ035 = h.getBq035();
         // BQ500 = h.getBq500();
 
         // if (null != BQ500) {
@@ -303,7 +301,7 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         //CRM 未填写公司别信息，暂时只通过单号识别
         if (BQ001.startsWith("YZKF")) {
             facno = "F";
-
+            
         } else {
             facno = "C";
         }
@@ -321,7 +319,7 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         BQ.setBq504(BQ504);
         BQ.setBq505(BQ505);
         BQ.setBq059("3");
-
+        
         String aa;
         try {
             aa = BaseLib.formatDate("yyyyMMdd", BaseLib.getDate("yyyy/MM/dd", BQ037));
@@ -330,9 +328,9 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         }
         BQ.setBq037(aa);
         BQ.setBq038(BQ038);
-
+        
         serbqBean.update(BQ);
-
+        
         List<SERI12grid1SERI12> detail1 = seri12grid1seri12Bean.findByFSN(h.getFormSerialNumber());
         for (int i = 1; (i - 1) < detail1.size(); i++) {
             SERBR BR;
@@ -349,7 +347,7 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
         }
         return true;
     }
-
+    
     public List<SERI12grid2SERI12> getDeviceList(String fsn) {
         try {
             return seri12grid2SERI12Bean.findByFSN(fsn);
@@ -357,7 +355,7 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
             return null;
         }
     }
-
+    
     public SERI12 findByBq001(String kfno) {
         Query query = getEntityManager().createNamedQuery("SERI12.findByBq001");
         query.setParameter("bq001", kfno);
@@ -367,7 +365,7 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
             return null;
         }
     }
-
+    
     public List<SERI12> findByBq037(String begin, String end) {
         Query query = getEntityManager().createNamedQuery("SERI12.findByBq037");
         query.setParameter("begin", begin);
@@ -378,7 +376,7 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
             return null;
         }
     }
-
+    
     public SERI12 findByPSNAndBQ110(String psn) {
         Query query = getEntityManager().createNamedQuery("SERI12.findByPSNAndBQ110");
         query.setParameter("psn", psn);
@@ -388,5 +386,5 @@ public class SERI12Bean extends SuperEJBForEFGP<SERI12> {
             return null;
         }
     }
-
+    
 }

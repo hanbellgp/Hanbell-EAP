@@ -49,8 +49,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Apmaph.findByUserno", query = "SELECT a FROM Apmaph a WHERE a.userno = :userno"),
     @NamedQuery(name = "Apmaph.findByCfmdate", query = "SELECT a FROM Apmaph a WHERE a.cfmdate = :cfmdate"),
     @NamedQuery(name = "Apmaph.findByCfmusrno", query = "SELECT a FROM Apmaph a WHERE a.cfmusrno = :cfmusrno"),
-    @NamedQuery(name = "Apmaph.findByPK",
-            query = "SELECT a FROM Apmaph a WHERE a.apmaphPK.facno = :facno AND a.apmaphPK.apno = :apno AND a.apmaphPK.aptyp = :aptyp"),
+    @NamedQuery(name = "Apmaph.findByHmark", query = "SELECT a FROM Apmaph a WHERE a.hmark = :hmark"),
+    @NamedQuery(name = "Apmaph.findByRefno", query = "SELECT a FROM Apmaph a WHERE a.refno = :refno"),
+    @NamedQuery(name = "Apmaph.findByPyhyn", query = "SELECT a FROM Apmaph a WHERE a.pyhyn = :pyhyn"),
     @NamedQuery(name = "Apmaph.findNeedThrow",
             query = "SELECT a FROM Apmaph a WHERE a.apsta = '20' and a.pzsta = 'Y' and (a.oano is null or a.oano = '') and a.apmaphPK.aptyp = :aptyp ORDER BY a.apmaphPK.facno ,a.apmaphPK.apno,a.apmaphPK.aptyp")})
 public class Apmaph implements Serializable {

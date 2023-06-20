@@ -5,9 +5,6 @@
  */
 package cn.hanbell.erp.ejb;
 
-import cn.hanbell.edw.ejb.RdpmOrderOABean;
-import cn.hanbell.edw.entity.RdpmOrderOA;
-import cn.hanbell.edw.entity.RdpmOrderOAPK;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Invmas;
 import cn.hanbell.erp.entity.Miscode;
@@ -63,8 +60,6 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
     private PurqnamBean purqnamBean;
     @EJB
     private PurdaskdscBean purdaskdscBean;
-    @EJB
-    private RdpmOrderOABean rdpmOrderOABean;
 
     public PurhaskBean() {
         super(Purhask.class);
@@ -87,7 +82,6 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
         List<Purdask> purdasks = new ArrayList<>();
         List<Purqnam> purqnams = new ArrayList<>();
         List<Purdaskdsc> purdaskdscs = new ArrayList<>();
-        List<RdpmOrderOA> rdpmOrderOAs = new ArrayList<>();
         try {
             HKCG007 q = hkcg007Bean.findByPSN(psn);
             if (q == null) {
@@ -219,33 +213,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     pd.setHandays4(pv.getHandays4());
                     pd.setTickdays(pv.getTickdays());
                     pd.setDecode(pv.getDecode());
-                    pd.setPosrccode(detail.getPosrccode().charAt(0)); //单价来源码
-
-                    //20230609生成研发请购明细(厂商为浙江汉声，采购备注是3D开头的请购单明细)
-                    if ((detail.getVdrno().equals("SZJ00065") || detail.getVdrno().equals("KZJ00053") || detail.getVdrno().equals("EZJ00053")) && detail.getPurdaskdescs().startsWith("3D")) {
-                        RdpmOrderOA r = new RdpmOrderOA();
-                        String formId = detail.getFormSerialNumber();
-                        int formTrseq = i+1;
-                        String RequestItnbr = detail.getItnbr();
-                        RdpmOrderOAPK rpk = new RdpmOrderOAPK(formId, formTrseq, RequestItnbr);
-                        r.setRdpmOrderOAPK(rpk);
-                        r.setFacno(facno);
-                        r.setDepno(q.getDepno());
-                        r.setRequestUserno(q.getAppuser());
-                        r.setRequestItdsc(detail.getItdsc());
-                        r.setRequestSpec(detail.getSpdsc());
-                        r.setRequstQty(Integer.parseInt(detail.getPrqy1()));
-                        r.setCreateDate(q.getAppDate());
-                        r.setRequestDate(pd.getRqtdate());
-                        r.setAskDate(pd.getAskdate());
-                        r.setBuyerno(detail.getBuyer());
-                        r.setSourcePrNo(detail.getDmark1());
-                        r.setSourcePrName(detail.getDmark1name());
-                        r.setHmark(detail.getPurdaskdescs());
-                        r.setFlag("Y");
-                        r.setUpdateTime(BaseLib.getDate());
-                        rdpmOrderOAs.add(r);
-                    }
+                    pd.setPosrccode(detail.getPosrccode().charAt(0));            //单价来源码
                 }
                 pd.setPrepayamts(BigDecimal.ZERO);
                 if (null == detail.getAddcode() || "".equals(detail.getAddcode())) {
@@ -310,9 +278,6 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
             purdaskdscBean.setCompany(facno);
             purdaskdscs.forEach((purdaskdsc) -> {
                 purdaskdscBean.persist(purdaskdsc);
-            });
-            rdpmOrderOAs.forEach((rdpmOrderOA) -> {
-                rdpmOrderOABean.persist(rdpmOrderOA);
             });
             return true;
         } catch (Exception ex) {

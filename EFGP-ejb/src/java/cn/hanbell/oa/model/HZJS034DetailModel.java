@@ -166,11 +166,6 @@ public class HZJS034DetailModel implements Serializable {
     @Size(max = 255)
     @Column(name = "rate2")
     private String rate2;
-    private String AHclass;
-    private String ModelDsc1;
-    private String ModelDsc2;
-    private String genre2;
-    private String genre3;
 
     public String getAHclass() {
         return AHclass;
@@ -211,6 +206,11 @@ public class HZJS034DetailModel implements Serializable {
     public void setModelDsc2(String ModelDsc2) {
         this.ModelDsc2 = ModelDsc2;
     }
+    private String AHclass;
+    private String genre2;
+    private String genre3;
+    private String ModelDsc1;
+    private String ModelDsc2;
 
     public HZJS034DetailModel() {
 

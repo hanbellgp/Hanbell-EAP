@@ -201,7 +201,7 @@ public class REPTCBean extends SuperEJBForCRM<REPTC> {
         sb.append("SELECT TC002,TC001,TC003,TC007,GG003 FROM REPTC ");
         sb.append("LEFT JOIN CRMGG ON GG001 = TC007 ");
         sb.append("LEFT JOIN SERBQ ON BQ001=TC054 AND BQ059<>3 ");
-        sb.append("WHERE TC091=0 AND TC034= 'N' ");
+        sb.append("WHERE TC091=0 AND TC034<>'V' ");
         sb.append("AND REPTC.CREATE_DATE>'20160101' AND TC016 ='").append(userId).append("'");
         sb.append(" UNION ALL SELECT FI001,'YXJL' as FI002,SALFI.CREATE_DATE,FI024,GG003 FROM SALFI ");
         sb.append("LEFT JOIN SALFT ON FT001 =FI001  AND FT002='' ");

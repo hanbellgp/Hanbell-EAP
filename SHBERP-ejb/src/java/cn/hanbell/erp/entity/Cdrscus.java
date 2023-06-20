@@ -107,8 +107,6 @@ public class Cdrscus implements Serializable {
     @Column(name = "indate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date indate;
-    @Column(name = "status")
-    private Character status;
 
     public Cdrscus() {
     }
@@ -280,14 +278,6 @@ public class Cdrscus implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.erp.entity.Cdrscus[ cdrscusPK=" + cdrscusPK + " ]";
-    }
-
-    public Character getStatus() {
-        return status;
-    }
-
-    public void setStatus(Character status) {
-        this.status = status;
     }
 
 }
