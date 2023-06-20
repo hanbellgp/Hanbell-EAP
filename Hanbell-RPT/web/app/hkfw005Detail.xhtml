@@ -29,12 +29,12 @@
                     </p:column>
                 </p:row>
                 <p:row>
-               
-                        <p:column><h:outputLabel value="签核人" for="queryAssignee" /></p:column>
-                        <p:column>
-                            <p:inputText id="queryAssignee"  value="#{hkfw005DetailManagedBean.queryAssignee}"  placeholder="请输入工号" />
-                        </p:column>
-               
+
+                    <p:column><h:outputLabel value="签核人" for="queryAssignee" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryAssignee"  value="#{hkfw005DetailManagedBean.queryAssignee}"  placeholder="请输入工号" />
+                    </p:column>
+
                     <p:column><h:outputLabel value="单据类型" for="queryType" /></p:column>
                     <p:column>
                         <p:selectOneMenu id="queryType" value="#{hkfw005DetailManagedBean.queryType}" title="单据类型" >
@@ -43,6 +43,17 @@
                             <f:selectItem itemLabel="整机支援" itemValue="2"/>
                             <f:selectItem itemLabel="维修支援" itemValue="3"/>
                         </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="客户名称" for="queryCusna" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryCusna"  value="#{hkfw005DetailManagedBean.queryCusna}"  placeholder="请输入客户名称" />
+                    </p:column>
+
+                    <p:column><h:outputLabel value="表单单号" for="queryFormSn" /></p:column>
+                    <p:column>
+                        <p:inputText id="queryFormSn"  value="#{hkfw005DetailManagedBean.queryFormSn}"  placeholder="请输入表单单号" />
                     </p:column>
                 </p:row>
 

@@ -380,30 +380,6 @@ public class HKCW005 implements Serializable {
     @Size(max = 255)
     @Column(name = "paymentTerms6")
     private String paymentTerms6;
-    @Size(max = 255)
-    @Column(name = "storageType")
-    private String storageType;
-    @Size(max = 255)
-    @Column(name = "storageType1")
-    private String storageType1;
-    @Size(max = 255)
-    @Column(name = "storageType2")
-    private String storageType2;
-    @Size(max = 255)
-    @Column(name = "storageType3")
-    private String storageType3;
-    @Size(max = 255)
-    @Column(name = "storageType4")
-    private String storageType4;
-    @Size(max = 255)
-    @Column(name = "dcOther")
-    private String dcOther;
-    @Size(max = 255)
-    @Column(name = "deadline2")
-    private String deadline2;
-    @Size(max = 255)
-    @Column(name = "bondrate2")
-    private String bondrate2;
 
     @JoinColumn(name = "lkr", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = true)
@@ -1142,70 +1118,6 @@ public class HKCW005 implements Serializable {
 
     public void setPaymentTerms6(String paymentTerms6) {
         this.paymentTerms6 = paymentTerms6;
-    }
-
-    public String getStorageType() {
-        return storageType;
-    }
-
-    public void setStorageType(String storageType) {
-        this.storageType = storageType;
-    }
-
-    public String getStorageType1() {
-        return storageType1;
-    }
-
-    public void setStorageType1(String storageType1) {
-        this.storageType1 = storageType1;
-    }
-
-    public String getStorageType2() {
-        return storageType2;
-    }
-
-    public void setStorageType2(String storageType2) {
-        this.storageType2 = storageType2;
-    }
-
-    public String getStorageType3() {
-        return storageType3;
-    }
-
-    public void setStorageType3(String storageType3) {
-        this.storageType3 = storageType3;
-    }
-
-    public String getStorageType4() {
-        return storageType4;
-    }
-
-    public void setStorageType4(String storageType4) {
-        this.storageType4 = storageType4;
-    }
-
-    public String getDcOther() {
-        return dcOther;
-    }
-
-    public void setDcOther(String dcOther) {
-        this.dcOther = dcOther;
-    }
-
-    public String getDeadline2() {
-        return deadline2;
-    }
-
-    public void setDeadline2(String deadline2) {
-        this.deadline2 = deadline2;
-    }
-
-    public String getBondrate2() {
-        return bondrate2;
-    }
-
-    public void setBondrate2(String bondrate2) {
-        this.bondrate2 = bondrate2;
     }
 
     public String getCompanyName() {
