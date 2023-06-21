@@ -202,11 +202,11 @@ public class ReportManagedBean extends SuperReportManagedBean {
                             this.reportRunAndOutput(reportPath + "hkcw00504.rptdesign", reportParams, null, "pdf", baos);
                             pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
                             break;
-//                        case "7"://分公司拨款补充表
-//                            baos = new ByteArrayOutputStream();
-//                            this.reportRunAndOutput(reportPath + "hkcw00505.rptdesign", reportParams, null, "pdf", baos);
-//                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
-//                            break;
+                        case "14"://定存
+                            baos = new ByteArrayOutputStream();
+                            this.reportRunAndOutput(reportPath + "hkcw00505.rptdesign", reportParams, null, "pdf", baos);
+                            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+                            break;
                     }
                 }
                 // 生成签核流程

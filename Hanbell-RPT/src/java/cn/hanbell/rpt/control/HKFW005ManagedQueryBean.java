@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.text.Collator;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -83,6 +84,9 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
 
     private Date queryCreateDateEnd;
 
+    private String queryFormSerialNumber;
+    private String queryCustomer;
+
     private final String TMSURL = "http://172.16.10.95:9090/api/TMS_Freight/";
 
     /**
@@ -97,13 +101,18 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
         setSuperEJB(hkfw005Bean);
         this.model = new HKFW005Model(hkfw005Bean);
         this.model.getFilterFields().put("type <>", "4");
+        queryCreateDateEnd=BaseLib.getDate();
+        Calendar c=Calendar.getInstance();
+        c.setTime(queryCreateDateEnd);
+        c.add(Calendar.MONTH, -2);
+        queryCreateDateBegin=c.getTime();
         super.init();
         this.queryState = "1";
     }
 
     @Override
     public void print() {
-        entityList = hkfw005Bean.findByFilters(model.getFilterFields(), model.getSortFields());
+        entityList = hkfw005Bean.findByHKCW005QueryPage(queryDateBegin, queryDateEnd, queryFormSerialNumber, queryCustomer, queryDateBegin, queryDateEnd, queryState, queryWorkItemName);
         if (entityList == null || entityList.isEmpty()) {
             return;
         }
@@ -192,39 +201,13 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
 
     @Override
     public void query() {
-        List<String> psnList = null;
-        this.model.getFilterFields().clear();
-        if (this.model != null && this.model.getFilterFields() != null) {
-            //在流程关卡中的一定是未结案单据
-            if ("1".equals(this.queryState)) {
-                if ("ALL".equals(queryWorkItemName)) {
-                    psnList = workItemBean.findProcessNumbersByWorkItemName("PKG_HK_FW005", "N'仓储课长',N'仓储主管',N'帐管（运费录入）'", queryDateBegin, queryDateEnd);
-                } else {
-                    psnList = workItemBean.findProcessNumbersByWorkItemName("PKG_HK_FW005", queryWorkItemName, queryDateBegin, queryDateEnd);
-                }
-
-                if (psnList != null && !psnList.isEmpty()) {
-                    this.model.getFilterFields().put("processInstance.serialNumber IN ", psnList);
-                } else {
-                    this.model.getFilterFields().put("processInstance.serialNumber = ", "");
-                }
-            } else {
-                if (this.queryCreateDateBegin != null && !"".equals(this.queryCreateDateBegin)) {
-                    this.model.getFilterFields().put("createdateBegin", queryCreateDateBegin);
-                }
-                if (this.queryCreateDateEnd != null && !"".equals(this.queryCreateDateEnd)) {
-                    this.model.getFilterFields().put("createdateEnd", queryCreateDateEnd);
-                }
-                if (!"ALL".equals(this.queryState)) {
-                    this.model.getFilterFields().put("processInstance.currentState = ", Integer.valueOf(this.queryState));
-                }
-            }
-        }
+       entityList=hkfw005Bean.findByHKCW005QueryPage(queryCreateDateBegin, queryCreateDateEnd, queryFormSerialNumber, queryCustomer, queryDateBegin, queryDateEnd, queryState, queryWorkItemName);
+       System.out.println(entityList.size());
     }
 
     public void update() {
         try {
-            entityList = hkfw005Bean.findByFilters(model.getFilterFields(), model.getSortFields());
+            entityList = hkfw005Bean.findByHKCW005QueryPage(queryDateBegin, queryDateEnd, queryFormSerialNumber, queryCustomer, queryDateBegin, queryDateEnd, queryState, queryWorkItemName);
             if (entityList == null || entityList.isEmpty()) {
                 return;
             }
@@ -351,8 +334,6 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
                 i1 = cellStyle.getFillForegroundColor();
                 i1 = yellowSytle.getFillBackgroundColor();
                 i1 = yellowSytle.getFillForegroundColor();
-
-                System.out.println("--11--" + e.getProcessSerialNumber());
                 if (e.getIsHighYellow()) {
                     cell.setCellStyle(yellowSytle);
                 } else {
@@ -519,7 +500,7 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
                     cell.setCellStyle(cellStyle);
                 }
                 cell = row.createCell(21);
-                cell.setCellValue(e.getYsstyle()!= null ? e.getYStyleValue() : "");
+                cell.setCellValue(e.getYsstyle() != null ? e.getYStyleValue() : "");
                 if (e.getIsHighYellow()) {
                     cell.setCellStyle(yellowSytle);
                 } else {
@@ -740,6 +721,22 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
 
     public void setQueryCreateDateEnd(Date queryCreateDateEnd) {
         this.queryCreateDateEnd = queryCreateDateEnd;
+    }
+
+    public String getQueryFormSerialNumber() {
+        return queryFormSerialNumber;
+    }
+
+    public void setQueryFormSerialNumber(String queryFormSerialNumber) {
+        this.queryFormSerialNumber = queryFormSerialNumber;
+    }
+
+    public String getQueryCustomer() {
+        return queryCustomer;
+    }
+
+    public void setQueryCustomer(String queryCustomer) {
+        this.queryCustomer = queryCustomer;
     }
 
 }
