@@ -56,9 +56,9 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
 
     protected SuperEJB superEJB;
     //生产环境
-     private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
+    //private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
 
-    //private final String filePathTemp = "D:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    private final String filePathTemp = "D:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
