@@ -120,7 +120,8 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                         filterFields.put(key, value);
                     }
                 }
-                spareStockList = equipmentSpareStockBean.getEquipmentSpareStockListByNativeQuery(filterFields.get("basicInfo").toString());
+                String company =filterFields.get("company").toString();
+                spareStockList = equipmentSpareStockBean.getEquipmentSpareStockListByNativeQuery(filterFields.get("basicInfo").toString(),company);
                 
                 System.out.print(spareStockList);
                 
