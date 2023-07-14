@@ -609,8 +609,8 @@ public class TimerBean {
                                 eapSystemUserBean.update(eu);
                             }
                         }
-                        // 台湾人员不更新ERP
-                        if (isTWEmployee(company) == false) {
+                        // 台湾人员,越南不更新ERP
+                        if (isTWEmployee(company) == false && !"V".equals(company)) {
                             // ERP
                             miscodeBean.setCompany(company);
                             misdeptBean.setCompany(company);
