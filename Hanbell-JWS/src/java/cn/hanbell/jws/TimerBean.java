@@ -1386,6 +1386,7 @@ public class TimerBean {
                         //hm.setAppdept(h.getDepno());
                         //修正人员部门不对应问题
                         hm.setAppdept(usersBean.checkDeptno(h.getApusrno(), h.getDepno()));
+                        hm.setHdnappDept(workFlowBean.getOrganizationUnit().getOrganizationUnitName());
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
