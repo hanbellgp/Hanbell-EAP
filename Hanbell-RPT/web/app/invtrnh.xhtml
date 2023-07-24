@@ -66,6 +66,13 @@
                     </p:column>
                 </p:row>
                 <p:row>
+                      <p:column><h:outputLabel value="系统名称" for="querySyscode" /></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="querySyscode" value="#{invtrnhManagedBean.querySyscode}" title="系统名称" >
+                            <f:selectItem itemLabel="库存系统" itemValue="10"/>
+                            <f:selectItem itemLabel="制令系统" itemValue="50"/>
+                        </p:selectOneMenu>
+                    </p:column>
                     <p:column><h:outputLabel value="交易条件始" for="queryDateBegin" /></p:column>
                     <p:column>
                         <p:calendar id="queryDateBegin" value="#{invtrnhManagedBean.queryDateBegin}" title="交易条件始" pattern="yyyy/MM/dd"/>

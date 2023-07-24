@@ -254,53 +254,41 @@ public class InvtrnhBean extends SuperEJBForERP<Invtrnh> {
         }
     }
 
-    public List<Object[]> getInvtrnhByINV555(String facno, Date queryDate, String queryno, String querytype, String querywareh, String querydept, String queryuser) {
+    public List<Object[]> getInvtrnhByINV555(String facno, Date queryDate, String syscode, String queryno, String querytype, String querywareh, String querydept, String queryuser) {
         StringBuffer sql = new StringBuffer();
         Calendar c = Calendar.getInstance();
         c.setTime(queryDate);
-        sql.append(" SELECT  invtrnh.trdate as '交易时间',invtrnh.trtype as '单据别' ,invdou.typedsc as '单据名称',invtrnh.facno as '公司别',invtrnh.prono as '生产地',invtrnh.depno as '对像别'");
-        sql.append(" ,case invdou.depdsckind when 'GE' then (select depname from misdept where depno= invtrnh.depno)");
-        sql.append(" when 'PJ' then (select vdrna from  purvdr where vdrno=invtrnh.depno)");
-        sql.append(" when 'CA' then (select cusna from  cdrcus where cusno=invtrnh.depno)end '对象名称',");
-        sql.append("  invtrnh.trno as'交易单号',invtrnh.trseq as'序号', invtrnh.itnbr as '品号',");
-        sql.append(" invmas.itdsc as '名称',invcls.itcls as '大类',invcls.clsdsc as '大类名称',");
-        sql.append(" case invcls.itclscode when  '1' then  '成品类'");
-        sql.append(" when  '2' then  '半成品类'");
-        sql.append(" when  '3' then  '原料类'");
-        sql.append(" when  '4' then  '物料类'");
-        sql.append(" when  '5' then  '在制品类'");
-        sql.append(" when  '6' then  '商品'");
-        sql.append(" when  '7' then  '费用'");
-        sql.append(" when  '8' then  '列管资产'");
-        sql.append(" when  'A' then  '包装物'");
-        sql.append(" when  'B' then  '低质易耗品' end as '归类',");
-        sql.append(" invtrnh.wareh as '仓库',invwh.whdsc as'仓库名称', invtrnh.trnqy1 as'数量',");
-        sql.append(" invtrnh.unmsr1 as '单位',invtrnh.tramt as '金额',invtrnh.userno as '录入人员',");
-        sql.append(" case invtrnh.iocode when '0' then '期初'");
-        sql.append(" when '1' then '入库'");
-        sql.append(" when '2' then '出库'");
-        sql.append(" when '3' then '调拨'");
-        sql.append(" when 'Z' then '期末' end  as '出入库',");
-        sql.append(" (select mark1+';;'+mark2+';;'+mark3+';;'+mark4");
-        sql.append(" from invhdsc  where facno='").append(facno).append("' and prono='1' and trno=invtrnh.trno ) as '备注' ,invdou.reskind '原因别',");
-        sql.append(" (select cdesc from miscode where ckind=invdou.reskind  and code=invtrnh.rescode)as '原因内容',invtrnh.hmark1 '申报项目编号'");
-        sql.append("  ,case invtrnh.trtype when 'IAA' then (select cdesc from miscode where ckind='91' and code=invtrnh.hmark1 )");
-        sql.append(" when 'IAB' then (select cdesc from miscode where ckind='91' and code=invtrnh.hmark1)");
-        sql.append("  else ''end '申报项目',");
-        sql.append(" case invtrnh.trtype when 'ARY' then (");
-        sql.append("  select depname from cdrhadasry");
-        sql.append(" left join misdept on cdrhadasry.shpdepno=misdept.depno");
-        sql.append(" where cdrhadasry.facno=invtrnh.facno and cdrhadasry.prono=invtrnh.prono and cdrhadasry.trno=invtrnh.trno");
-        sql.append("  ) end 'ARY打单部门',invtrnh.hmark1,invtrnh.hmark2");
-        sql.append(" FROM invtrnh, invmas, invwh, invdou, invcls");
-        sql.append("  WHERE (invmas.itnbr = invtrnh.itnbr) AND(invtrnh.facno = invwh.facno) AND (invtrnh.prono = invwh.prono) AND (invtrnh.wareh = invwh.wareh) AND");
-        sql.append(" (invdou.trtype = invtrnh.trtype) AND (invcls.itcls = invmas.itcls) AND ((invdou.syscode = '10') AND (invdou.reskind IS NOT NULL AND");
-        sql.append(" ltrim(invdou.reskind) <> '') AND (invdou.iocode IN ('1', '2') OR invdou.iocode = '3' AND invdou.trtype IN (SELECT trntp FROM cstrul WHERE facno = invtrnh.facno AND avgco = 'Y')))");
-        sql.append(" AND (invtrnh.facno = '").append(facno).append("'").append(" AND invtrnh.prono = '1' AND (invdou.depdsckind IN (SELECT ckind  FROM misckind)) AND");
-        sql.append(" year(invtrnh.trdate )=" + c.get(Calendar.YEAR));
-        sql.append(" and month(invtrnh.trdate )=" + (c.get(Calendar.MONTH) + 1));
-        sql.append(")");
-
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
+        Date begindate = c.getTime();
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date enddate = c.getTime();
+        sql.append(" select  invtrnh.trdate as '交易时间',invtrnh.trtype as '单据别' ,invdou.typedsc as '单据名称',invtrnh.facno as '公司别',invtrnh.prono as '生产地',invtrnh.depno as '对像别' ,");
+        sql.append(" case invdou.depdsckind when 'GE' then (select depname from misdept where depno= invtrnh.depno)");
+        sql.append("    when 'PJ' then (select vdrna from  purvdr where vdrno=invtrnh.depno)");
+        sql.append("    when 'CA' then (select cusna from  cdrcus where cusno=invtrnh.depno)end '对象名称',");
+        sql.append(" invtrnh.trno as'交易单号',invtrnh.trseq as'序号', invtrnh.itnbr as '品号', invmas.itdsc as '名称',invcls.itcls as '大类',invcls.clsdsc as '大类名称',");
+        sql.append(" case invcls.itclscode when  '1' then  '成品类' when  '2' then  '半成品类' when  '3' then  '原料类' when  '4' then  '物料类'");
+        sql.append("    when  '5' then  '在制品类' when  '6' then  '商品'");
+        sql.append("    when  '7' then  '费用' when  '8' then  '列管资产' when  'A' then  '包装物' when  'B' then  '低质易耗品' end as '归类',");
+        sql.append(" invtrnh.wareh as '仓库',invwh.whdsc as'仓库名称',invtrnh.trnqy1 as'数量', invtrnh.unmsr1 as '单位',invtrnh.tramt as '金额',invtrnh.userno as '录入人员',");
+        sql.append(" case invtrnh.iocode when '0' then '期初' when '1' then '入库' when '2' then '出库'");
+        sql.append(" when '3' then '调拨' when 'Z' then '期末' end  as '出入库',");
+        sql.append(" (select mark1+';;'+mark2+';;'+mark3+';;'+mark4 from invhdsc  where facno='").append(facno).append("' and prono='1' and trno=invtrnh.trno ) as '备注' ,");
+        sql.append(" invdou.reskind '原因别',");
+        sql.append(" (select cdesc from miscode where ckind=invdou.reskind  and code=invtrnh.rescode)as '原因内容',");
+        sql.append(" invtrnh.hmark1 '申报项目编号'  ,");
+        sql.append(" case invtrnh.trtype when 'IAA' then (select cdesc from miscode where ckind='91' and code=invtrnh.hmark1 ) when 'IAB' then (select cdesc from miscode where ckind='91' and code=invtrnh.hmark1)  else ''end '申报项目',");
+        sql.append(" case invtrnh.trtype when 'ARY' then (  select depname from cdrhadasry left join misdept on cdrhadasry.shpdepno=misdept.depno where cdrhadasry.facno=invtrnh.facno and cdrhadasry.prono=invtrnh.prono and cdrhadasry.facno='").append(facno).append("'and cdrhadasry.prono='1'  and cdrhadasry.trno=invtrnh.trno  ) end 'ARY打单部门',");
+        sql.append(" invtrnh.hmark1,invtrnh.hmark2,");
+        sql.append("  (select kfno from invhadh where facno= '").append(facno).append("' and prono='1' and invhadh.trno=invtrnh.trno )as '来源单号'");
+        sql.append(" FROM  invdou,invwh,invtrnh, invmas,   invcls");
+        sql.append(" WHERE (invtrnh.facno = invwh.facno) AND (invtrnh.prono = invwh.prono) and (invmas.itnbr = invtrnh.itnbr)  AND (invtrnh.wareh = invwh.wareh) AND (invdou.trtype = invtrnh.trtype) AND (invcls.itcls = invmas.itcls)");
+        sql.append(" AND (invtrnh.facno = '").append(facno).append("' AND invtrnh.prono = '1'");
+        sql.append(" AND trdate>='").append(BaseLib.formatDate("YYYY-MM-dd", begindate)).append("'");
+        sql.append(" AND trdate<='").append(BaseLib.formatDate("YYYY-MM-dd", enddate)).append("')");
+        if (!"".equals(syscode) && syscode != null) {
+            sql.append(" AND invdou.syscode = '").append(syscode).append("'");
+        }
         if (!"".equals(queryno) && queryno != null) {
             sql.append(" and invtrnh.trno in (").append(queryno).append(")");
         }
@@ -314,8 +302,13 @@ public class InvtrnhBean extends SuperEJBForERP<Invtrnh> {
             sql.append(" and invtrnh.depno in (").append(querydept).append(")");
         }
         if (!"".equals(queryuser) && queryuser != null) {
-            sql.append(" and invtrn.userno in (").append(queryuser).append(")");
+            sql.append(" and invtrnh.userno in (").append(queryuser).append(")");
         }
+        if ("10".equals(syscode)) {
+            sql.append("AND (invdou.reskind IS NOT NULL AND ltrim(invdou.reskind) <> '')");
+        }
+        sql.append("AND (invdou.iocode IN ('1', '2') OR invdou.iocode = '3' AND invdou.trtype IN (SELECT trntp FROM cstrul WHERE facno = '").append(facno).append("' AND avgco = 'Y')) AND (invdou.depdsckind IN (SELECT ckind  FROM misckind))");
+
         try {
             Query query = getEntityManager().createNativeQuery(sql.toString());
             return query.getResultList();
