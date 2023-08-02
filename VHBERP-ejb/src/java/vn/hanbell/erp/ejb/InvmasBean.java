@@ -49,6 +49,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
         if (h == null) {
             throw new NullPointerException();
         }
+        this.setCompany(h.getFacno());
         List<VHTK001Detail> details = vhtk001Bean.getDetailList(h.getFormSerialNumber());
         try {
             //表身循环

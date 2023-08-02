@@ -85,9 +85,18 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                 return false;
             }
             //判断ERP中是否已经抛转
+            facno = q.getFacno();
+            prono = q.getProno();
+            this.setCompany(facno);
             if (this.findBySrcno(q.getProcessSerialNumber().substring(4)) != null) {
                 return false;
             }
+            invmasBean.setCompany(facno);
+            purvdrBean.setCompany(facno);
+            miscodeBean.setCompany(facno);
+            purdaskBean.setCompany(facno);
+            purqnamBean.setCompany(facno);
+            purdaskdscBean.setCompany(facno);
             List<VHTM001purDetail> details = vhtm001Bean.getPurDetails(q.getFormSerialNumber());
             for (VHTM001purDetail detail : details) {
                 if (!"9".equals(detail.getItnbr())) {
@@ -97,8 +106,6 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     }
                 }
             }
-            facno = q.getFacno();
-            prono = q.getProno();
             date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
             String prno = pursysBean.getNewPrno(facno, prono, date, Boolean.TRUE);
             Purhask p = new Purhask();

@@ -5,8 +5,6 @@
  */
 package vn.hanbell.erp.ejb;
 
-
-
 import cn.hanbell.oa.ejb.VHTV001Bean;
 import cn.hanbell.oa.ejb.VHTV002Bean;
 import cn.hanbell.oa.ejb.VHTV002reDetailBean;
@@ -138,7 +136,7 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
                 VHTV003reDetail detail = details.get(i);
                 //预算金额更新逻辑
                 BudgetDetail u;
-                u = new BudgetDetail(facno, "", period, detail.getCenterid(), detail.getBudgetAcc(), "R", i + 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(Double.valueOf(detail.getTaxInclusive())*(v.getRatio())));
+                u = new BudgetDetail(facno, "", period, detail.getCenterid(), detail.getBudgetAcc(), "R", i + 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(Double.valueOf(detail.getTaxInclusive()) * (v.getRatio())));
                 budgetDetails.add(u);
 
             }
@@ -177,7 +175,7 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
                 VHTV003reDetail detail = details.get(i);
                 //预算金额更新逻辑
                 BudgetDetail u;
-                u = new BudgetDetail(facno, "", period, detail.getCenterid(), detail.getBudgetAcc(), "R", i + 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(Double.valueOf(detail.getTaxInclusive() )* (v.getRatio())));
+                u = new BudgetDetail(facno, "", period, detail.getCenterid(), detail.getBudgetAcc(), "R", i + 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(Double.valueOf(detail.getTaxInclusive()) * (v.getRatio())));
                 budgetDetails.add(u);
             }
 
@@ -199,9 +197,11 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
     }
 
     public Boolean addByOAVHTV001(String psn) {
-        String period;
+        String period, facno;
         Date date;
         VHTV001 j = vhtv001Bean.findByPSN(psn);
+        facno = j.getFacno();
+        this.setCompany(facno);
         List<BudgetDetail> budgetDetails = new ArrayList<>();
 
         try {
@@ -211,7 +211,7 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
 
             //预算金额更新逻辑
             BudgetDetail u;
-            u = new BudgetDetail("V", "", period, j.getCenterid(), j.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(j.getTotalRMB()));
+            u = new BudgetDetail(facno, "", period, j.getCenterid(), j.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(j.getTotalRMB()));
             budgetDetails.add(u);
             this.add(budgetDetails);
             this.getEntityManager().flush();
@@ -223,9 +223,11 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
     }
 
     public Boolean subtractByOAVHTV001(String psn) {
-        String period;
+        String period, facno;
         Date date;
         VHTV001 j = vhtv001Bean.findByPSN(psn);
+        facno = j.getFacno();
+        this.setCompany(facno);
         List<BudgetDetail> budgetDetails = new ArrayList<>();
         try {
             date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", j.getLoanDate())); //付款日期
@@ -233,7 +235,7 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
             System.out.println(period);
             //预算金额更新逻辑
             BudgetDetail u;
-            u = new BudgetDetail("V", "", period, j.getCenterid(), j.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(j.getTotalRMB()));
+            u = new BudgetDetail(facno, "", period, j.getCenterid(), j.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(j.getTotalRMB()));
             budgetDetails.add(u);
             this.subtract(budgetDetails);
             this.getEntityManager().flush();
@@ -249,6 +251,7 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
         Date date;
         VHTV002 j = vhtv002Bean.findByPSN(psn);
         String facno = j.getFacno();
+        this.setCompany(facno);
         List<BudgetDetail> budgetDetails = new ArrayList<>();
 
         try {
@@ -274,12 +277,11 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
             Date date1 = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", jz.getLoanDate())); //借支单日期
             String period1 = BaseLib.formatDate("yyyyMM", date1);
             if (j.getTotaltaxInclusiveRMB() <= jz.getTotalRMB()) {
-                u1 = new BudgetDetail("V", "", period1, jz.getCenterid(), jz.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO.subtract(BigDecimal.valueOf(j.getTotaltaxInclusiveRMB())));
+                u1 = new BudgetDetail(facno, "", period1, jz.getCenterid(), jz.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO.subtract(BigDecimal.valueOf(j.getTotaltaxInclusiveRMB())));
             } else {
-                u1 = new BudgetDetail("V", "", period1, jz.getCenterid(), jz.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO.subtract(BigDecimal.valueOf(jz.getTotalRMB())));
+                u1 = new BudgetDetail(facno, "", period1, jz.getCenterid(), jz.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO.subtract(BigDecimal.valueOf(jz.getTotalRMB())));
             }
             budgetDetails.add(u1);
-
             this.add(budgetDetails);
             this.getEntityManager().flush();
 
@@ -295,31 +297,26 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
         Date date;
         VHTV002 j = vhtv002Bean.findByPSN(psn);
         String facno = j.getFacno();
+        this.setCompany(facno);
         List<BudgetDetail> budgetDetails = new ArrayList<>();
-
         try {
-
             date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", j.getAppDate())); //付款日期
             period = BaseLib.formatDate("yyyyMM", date);
-            System.out.println(period);
+            //System.out.println(period);
             List<VHTV002reDetail> details = vhtv002reDetailBean.findByFSN(j.getFormSerialNumber());
-
             for (int i = 0; i < details.size(); i++) {
-
                 VHTV002reDetail detail = details.get(i);
-
                 //预算金额更新逻辑
                 BudgetDetail u;
                 u = new BudgetDetail(facno, "", period, detail.getCenterid(), detail.getBudgetAcc(), "R", i + 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(Double.valueOf(detail.getTaxInclusive()) * (j.getRatio())));
                 budgetDetails.add(u);
-
             }
             //改变借支单科目预扣
             BudgetDetail u1;
             VHTV001 jz = vhtv001Bean.findByPSN(details.get(0).getLoanNo());
             Date date1 = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", jz.getLoanDate())); //借支单日期
             String period1 = BaseLib.formatDate("yyyyMM", date1);
-            u1 = new BudgetDetail("V", "", period1, jz.getCenterid(), jz.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO.subtract(BigDecimal.valueOf(j.getTotaltaxInclusiveRMB())));
+            u1 = new BudgetDetail(facno, "", period1, jz.getCenterid(), jz.getPreAccno(), "R", 1, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO.subtract(BigDecimal.valueOf(j.getTotaltaxInclusiveRMB())));
             budgetDetails.add(u1);
 
             this.subtract(budgetDetails);
