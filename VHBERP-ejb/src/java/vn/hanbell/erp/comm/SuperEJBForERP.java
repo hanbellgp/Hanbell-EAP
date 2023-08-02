@@ -29,6 +29,8 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
 
     @PersistenceContext(unitName = "VHBERP-ejbPU")
     private EntityManager em_VHBERP;
+    @PersistenceContext(unitName = "VBHBERP-ejbPU")
+    private EntityManager em_VBHBERP;
 
     public SuperEJBForERP(Class<T> entityClass) {
         super(entityClass);
@@ -36,7 +38,18 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
 
     @Override
     public EntityManager getEntityManager() {
-        return em_VHBERP;
+        return getEntityManager(getCompany());
+    }
+
+    protected EntityManager getEntityManager(String facno) {
+        switch (facno) {
+            case "V":
+                return em_VHBERP;
+            case "VB":
+                return em_VBHBERP;
+            default:
+                return em_VHBERP;
+        }
     }
 
     public String getCompany() {

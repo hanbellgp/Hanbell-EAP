@@ -69,7 +69,10 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
         VHTV003 v = vhtv003Bean.findByPSN(psn);
         String facno = v.getFacno();
         List<BudgetDetail> budgetDetails = new ArrayList<>();
-
+        accspedBean.setCompany(facno);
+        apmpadBean.setCompany(facno);
+        miscodeBean.setCompany(facno);
+        budgetDetailBean.setCompany(facno);
         try {
             date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())); //付款日期
             period = BaseLib.formatDate("yyyyMM", date);
@@ -259,13 +262,20 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
 
         VHTV001 j = vhtv001Bean.findByPSN(psn);
         Date date;
+        String facno;
         try {
             date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())); //付款日期
-
+            facno = j.getFacno();
             Apmpay h = new Apmpay();
             ApmpayPK pk = new ApmpayPK();
-            pk.setFacno("V");
+            pk.setFacno(facno);
             pk.setPaycode('2');
+            this.setCompany(facno);
+            apmsysBean.setCompany(facno);
+            accrnoBean.setCompany(facno);
+            miscodeBean.setCompany(facno);
+            accspedBean.setCompany(facno);
+            apmpadBean.setCompany(facno);
             pk.setPayno(apmsysBean.getFormId("V", "APM525", date, Boolean.TRUE));
 
             h.setApmpayPK(pk);
@@ -287,7 +297,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             List<Apmpad> apmpads = new ArrayList<>();
             Apmpad apmpad = new Apmpad();
             ApmpadPK apmpadPK = new ApmpadPK();
-            apmpadPK.setFacno("V");
+            apmpadPK.setFacno(facno);
             apmpadPK.setPaycode('2');
             apmpadPK.setPayno(pk.getPayno());
             apmpadPK.setTrse((short) (1));
@@ -329,7 +339,7 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
 
             Apmpad apmpad2 = new Apmpad();
             ApmpadPK apmpadPK2 = new ApmpadPK();
-            apmpadPK2.setFacno("V");
+            apmpadPK2.setFacno(facno);
             apmpadPK2.setPaycode('2');
             apmpadPK2.setPayno(pk.getPayno());
             apmpadPK2.setTrse((short) (2));
@@ -388,6 +398,13 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
         try {
             date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate())); //付款日期
             period = BaseLib.formatDate("yyyyMM", date);
+            this.setCompany(facno);
+            apmsysBean.setCompany(facno);
+            accrnoBean.setCompany(facno);
+            accspedBean.setCompany(facno);
+            miscodeBean.setCompany(facno);
+            apmpadBean.setCompany(facno);
+            budgetDetailBean.setCompany(facno);
             Apmpay h = new Apmpay();
             ApmpayPK pk = new ApmpayPK();
             pk.setFacno(facno);

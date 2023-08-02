@@ -149,6 +149,9 @@ public class VHTV001 implements Serializable {
     @Size(max = 255)
     @Column(name = "hdnloanProperty")
     private String hdnloanProperty;
+    @Size(max = 255)
+    @Column(name = "facno")
+    private String facno;
 
     public VHTV001() {
     }
@@ -508,6 +511,14 @@ public class VHTV001 implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.VHTV001[ oid=" + oid + " ]";
+    }
+
+    public String getFacno() {
+        return facno;
+    }
+
+    public void setFacno(String facno) {
+        this.facno = facno;
     }
 
 }
