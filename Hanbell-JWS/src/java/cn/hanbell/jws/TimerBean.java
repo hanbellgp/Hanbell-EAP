@@ -610,7 +610,7 @@ public class TimerBean {
                             }
                         }
                         // 台湾人员,越南不更新ERP
-                        if (isTWEmployee(company) == false && !"V".equals(company)) {
+                        if (isTWEmployee(company) == false && !company.startsWith("V")) {
                             // ERP
                             miscodeBean.setCompany(company);
                             misdeptBean.setCompany(company);
