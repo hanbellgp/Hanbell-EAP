@@ -5,6 +5,8 @@
  */
 package cn.hanbell.erp.ejb;
 
+import cn.hanbell.eap.comm.ErrorMailNotify;
+import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.edw.ejb.RdpmOrderOABean;
 import cn.hanbell.edw.entity.RdpmOrderOA;
 import cn.hanbell.edw.entity.RdpmOrderOAPK;
@@ -64,7 +66,11 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
     @EJB
     private PurdaskdscBean purdaskdscBean;
     @EJB
+    private PurcontractBean purcontractBean;
+    @EJB
     private RdpmOrderOABean rdpmOrderOABean;
+    @EJB
+    private ErrorMailNotificationBean mailBean;
 
     public PurhaskBean() {
         super(Purhask.class);
@@ -220,12 +226,28 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     pd.setTickdays(pv.getTickdays());
                     pd.setDecode(pv.getDecode());
                     pd.setPosrccode(detail.getPosrccode().charAt(0)); //单价来源码
-
+                    //检查合约价
+                    if (detail.getPosrccode().equals("1") && !"9".equals(detail.getItnbr())) {
+                        BigDecimal pcunpris = purcontractBean.getUnprisByItnbrAndVdr(facno, prono, detail.getItnbr(), detail.getVdrno(), pd.getRqtdate(), pd.getApmqy());
+                        if (0 != pcunpris.compareTo(pd.getUnpris())) {
+                            //加入邮件通知
+                            if (!"".equals(pd.getBuyer())) {
+                                mailBean.getTo().add(pd.getBuyer() + "@hanbell.com.cn");
+                            }
+                            mailBean.getTo().add("C1491@hanbell.com.cn");
+                            mailBean.setMailSubject("OA请购单合约价异常");
+                            mailBean.setMailContent(
+                                    "OA请购单合约价异常，件号：" + detail.getItnbr() + " 厂商代号 ：" + detail.getVdrno() + " 需求日期 ：" + pd.getRqtdate()
+                                    + "*** OA价格：" + pd.getUnpris() + "  ,实际合约价格： " + pcunpris);
+                            mailBean.notify(new ErrorMailNotify());
+                            pd.setUnpris(BigDecimal.ZERO);
+                        }
+                    }
                     //20230609生成研发请购明细(厂商为浙江汉声，采购备注是3D开头的请购单明细)
                     if ((detail.getVdrno().equals("SZJ00065") || detail.getVdrno().equals("KZJ00053") || detail.getVdrno().equals("EZJ00053")) && detail.getPurdaskdescs().startsWith("3D")) {
                         RdpmOrderOA r = new RdpmOrderOA();
                         String formId = detail.getFormSerialNumber();
-                        int formTrseq = i+1;
+                        int formTrseq = i + 1;
                         String RequestItnbr = detail.getItnbr();
                         RdpmOrderOAPK rpk = new RdpmOrderOAPK(formId, formTrseq, RequestItnbr);
                         r.setRdpmOrderOAPK(rpk);

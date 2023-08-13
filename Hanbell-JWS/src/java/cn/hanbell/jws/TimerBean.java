@@ -1198,7 +1198,7 @@ public class TimerBean {
             eapMailBean.setMailSubject("PLM件号中间表新增OA失败");
             eapMailBean.setMailContent(
                     "PLM件号中间表新增OA失败，异常：" + ex);
-            // eapMailBean.notify(new MailNotify());
+            eapMailBean.notify(new MailNotify());
             ex.printStackTrace();
             log4j.error("PLM件号抛转轮询时异常", ex);
         }
