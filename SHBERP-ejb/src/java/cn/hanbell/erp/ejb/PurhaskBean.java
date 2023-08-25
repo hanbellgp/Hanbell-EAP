@@ -46,7 +46,7 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class PurhaskBean extends SuperEJBForERP<Purhask> {
-
+    
     @EJB
     private PursysBean pursysBean;
     @EJB
@@ -71,11 +71,11 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
     private RdpmOrderOABean rdpmOrderOABean;
     @EJB
     private ErrorMailNotificationBean mailBean;
-
+    
     public PurhaskBean() {
         super(Purhask.class);
     }
-
+    
     public Purhask findBySrcno(String srcno) {
         Query query = getEntityManager().createNamedQuery("Purhask.findBySrcno");
         query.setParameter("srcno", srcno);
@@ -85,7 +85,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
             return null;
         }
     }
-
+    
     public Boolean initByOAQGD(String psn) {
         Date date;
         String facno;
@@ -237,7 +237,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                             mailBean.getTo().add("C1491@hanbell.com.cn");
                             mailBean.setMailSubject("OA请购单合约价异常");
                             mailBean.setMailContent(
-                                    "OA请购单合约价异常，件号：" + detail.getItnbr() + " 厂商代号 ：" + detail.getVdrno() + " 需求日期 ：" + pd.getRqtdate()
+                                    "OA请购单合约价异常，流程序号: "+ psn +",件号：" + detail.getItnbr() + " 厂商代号 ：" + detail.getVdrno() + " 需求日期 ：" + pd.getRqtdate()
                                     + "*** OA价格：" + pd.getUnpris() + "  ,实际合约价格： " + pcunpris);
                             mailBean.notify(new ErrorMailNotify());
                             pd.setUnpris(BigDecimal.ZERO);
@@ -263,6 +263,8 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                         r.setBuyerno(detail.getBuyer());
                         r.setSourcePrNo(detail.getDmark1());
                         r.setSourcePrName(detail.getDmark1name());
+                        r.setPrno(prno);
+                        r.setTrseq(i + 1);
                         r.setHmark(detail.getPurdaskdescs());
                         r.setFlag("Y");
                         r.setUpdateTime(BaseLib.getDate());
@@ -318,7 +320,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     purdaskdsc.setMarka("");
                     purdaskdscs.add(purdaskdsc);
                 }
-
+                
             }
             this.persist(p);
             purdaskBean.setCompany(q.getFacno());

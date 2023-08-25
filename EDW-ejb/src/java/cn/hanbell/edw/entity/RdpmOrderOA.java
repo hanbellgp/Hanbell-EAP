@@ -85,6 +85,11 @@ public class RdpmOrderOA implements Serializable {
     @Size(max = 100)
     @Column(name = "SourcePrName")
     private String sourcePrName;
+    @Size(max = 20)
+    @Column(name = "Prno")
+    private String Prno;
+    @Column(name = "Trseq")
+    private int Trseq;
     @Size(max = 100)
     @Column(name = "hmark")
     private String hmark;
@@ -258,5 +263,21 @@ public class RdpmOrderOA implements Serializable {
     public String toString() {
         return "cn.hanbell.edw.entity.RdpmOrderOA[ rdpmOrderOAPK=" + rdpmOrderOAPK + " ]";
     }
-    
+
+    public String getPrno() {
+        return Prno;
+    }
+
+    public void setPrno(String Prno) {
+        this.Prno = Prno;
+    }
+
+    public int getTrseq() {
+        return Trseq;
+    }
+
+    public void setTrseq(int Trseq) {
+        this.Trseq = Trseq;
+    }
+
 }

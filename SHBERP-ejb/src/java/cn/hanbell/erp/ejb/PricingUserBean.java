@@ -34,4 +34,15 @@ public class PricingUserBean extends SuperEJBForERP<PricingUser> {
         }
     }
 
+    public PricingUser findByPricingtypeAndUserid(String pricingtype, String userid) {
+        Query query = getEntityManager().createNamedQuery("PricingUser.findByPricingtypeAndUserid");
+        query.setParameter("pricingtype", pricingtype);
+        query.setParameter("userid", userid);
+        try {
+            return (PricingUser) query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
 }
