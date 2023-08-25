@@ -143,7 +143,9 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
 
         if (currentEntity != null && detailList != null) {
             String f;
+            int i=0;
             for (ShipmentDetail sd : detailList) {
+                i++;
                 if (sd.getShpno() != null) {
                     // 汉钟出货单条码
                     f = this.getAppResPath() + sd.getShpno() + ".png";
@@ -189,7 +191,6 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
                                 break;
                             case "SSD01036":
                                 // 海达源专属二维码
-                                SSD00730Year.valueOf("YEAR2022").getValue();
                                 content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
                                         .append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(".").append(sd.getCustomerItemDesc());
                                 break;
@@ -198,6 +199,9 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
                                 content.append(ShipmentPrintManagedBean.SSD00730Year.valueOf("YEAR" + BaseLib.formatDate("yyyy", sd.getShpdate())).getValue())
                                         .append(ShipmentPrintManagedBean.SSD00730Month.valueOf("MONTH" + Integer.valueOf(BaseLib.formatDate("MM", sd.getShpdate()))).getValue())
                                         .append(ShipmentPrintManagedBean.SSD00730Day.valueOf("DAY" + Integer.valueOf(BaseLib.formatDate("dd", sd.getShpdate()))).getValue()).append("200753").append(sd.getVarnr().substring(sd.getVarnr().length() - 4));
+                            case "SHB00221":
+                                //三河同飞
+                                content.append(sd.getCustomerItem()).append("0200020").append(BaseLib.formatDate("yyMMdd", sd.getShpdate())).append("000").append(String.format("%04d", i));
                                 break;
                         }
                         if (content.length() > 0) {
