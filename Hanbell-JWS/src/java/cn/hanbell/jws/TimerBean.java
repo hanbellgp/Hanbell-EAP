@@ -86,6 +86,7 @@ import cn.hanbell.erp.ejb.InvsafqyBean;
 import cn.hanbell.erp.ejb.InvsysBean;
 import cn.hanbell.erp.ejb.ManmotBean;
 import cn.hanbell.erp.ejb.ManpihBean;
+import cn.hanbell.erp.ejb.PricingUserBean;
 import cn.hanbell.erp.ejb.PurdisBean;
 import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
@@ -127,6 +128,7 @@ import cn.hanbell.erp.entity.Manmot;
 import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.erp.entity.Misdept;
 import cn.hanbell.erp.entity.Misrate;
+import cn.hanbell.erp.entity.PricingUser;
 import cn.hanbell.erp.entity.Puracd;
 import cn.hanbell.erp.entity.Purach;
 import cn.hanbell.erp.entity.Purdis;
@@ -358,6 +360,8 @@ public class TimerBean {
     private ManpihBean manpihBean;
     @EJB
     private InvsafqyBean invsafqyBean;
+    @EJB
+    private PricingUserBean pricingUserBean;
 
     @EJB
     private ExchangeSHBBean exchangeSHBBean;
@@ -1460,6 +1464,7 @@ public class TimerBean {
             List<Cdrqdta> cdrqdtaList;
             String facno;
             String quono;
+            String oilspecial = "";
             int i;
             if (cdrqhadList != null && !cdrqhadList.isEmpty()) {
                 for (Cdrqhad h : cdrqhadList) {
@@ -1513,6 +1518,10 @@ public class TimerBean {
                             } else {
                                 dm.setDiffitting("0");
                             }
+                            //服务部需求油品特殊流程
+                            if (d.getItnbr().startsWith("52001-")) {
+                                oilspecial = "Y";
+                            }
                             detailList.add(dm);
                         }
                         hm = new HKYX009Model();
@@ -1532,7 +1541,15 @@ public class TimerBean {
                         Cdrcus cdrcus = cdrcusBean.findByCusno(h.getCusno());
                         hm.setCusna(cdrcus.getCusna());
                         hm.setMancode(h.getMancode());
-
+                        //服务部需求带出定价群组Pricinguser
+                        hm.setPricgroup("");
+                        pricingUserBean.setCompany("C");
+                        PricingUser pu = pricingUserBean.findByPricingtypeAndUserid(h.getPricingtype(), h.getCusno());
+                        if (null != pu) {
+                            Miscode mis = miscodeBean.findByPK("1D", pu.getPricingUserPK().getGroupid());
+                            hm.setPricgroup(mis.getCdesc());
+                        }
+                        hm.setOilspecial(oilspecial);
                         Secuser secuser = secuserBean.findByUserno(h.getMancode());
                         hm.setMancodesc(secuser.getUsername());
                         // hm.setDepno(workFlowBean.getCurrentUser().getDeptno());
