@@ -525,7 +525,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 }
                 //明细含差旅费科目
                 if (r.getBudgetAccname().contains("差旅费")) {
-                    tdstatus = "Y";
+                    //tdstatus = "Y";
                     tdssum += r.getTaxInclusive();
                 }
                 resum += r.getTaxInclusive();

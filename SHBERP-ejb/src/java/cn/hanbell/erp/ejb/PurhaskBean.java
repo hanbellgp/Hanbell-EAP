@@ -266,7 +266,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                         r.setPrno(prno);
                         r.setTrseq(i + 1);
                         r.setHmark(detail.getPurdaskdescs());
-                        r.setFlag("Y");
+                        r.setFlag("N");
                         r.setUpdateTime(BaseLib.getDate());
                         rdpmOrderOAs.add(r);
                     }
