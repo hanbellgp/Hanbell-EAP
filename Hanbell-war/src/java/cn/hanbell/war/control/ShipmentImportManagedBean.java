@@ -259,6 +259,10 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                     //三河同飞
                                     content.append(sd.getCustomerItem()).append("0200020").append(BaseLib.formatDate("yyMMdd", sd.getShpdate())).append("000").append(String.format("%04d", seq));
                                     break;
+                                case "SGD00205":
+                                    content.append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
+                                            .append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate()));
+                                    break;
                             }
                             if (content.length() > 0) {
                                 this.generateQRCode(content.toString(), 300, 300, this.getAppResPath(), "QR" + h.getCusno() + l.getVarnr() + ".png");
