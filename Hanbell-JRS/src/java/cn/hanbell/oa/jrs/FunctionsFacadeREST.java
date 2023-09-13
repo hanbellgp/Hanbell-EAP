@@ -10,10 +10,13 @@ import cn.hanbell.jrs.SuperRESTForEFGP;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.FunctionLevelBean;
 import cn.hanbell.oa.ejb.FunctionsBean;
+import cn.hanbell.oa.ejb.OrganizationUnitBean;
 import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.entity.FunctionLevel;
 import cn.hanbell.oa.entity.Functions;
+import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.oa.entity.Users;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -43,6 +46,8 @@ public class FunctionsFacadeREST extends SuperRESTForEFGP<Functions> {
 
     @EJB
     private FunctionLevelBean functionLevelBean;
+    @EJB
+    private OrganizationUnitBean organizationUnitBean;
 
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
@@ -75,14 +80,25 @@ public class FunctionsFacadeREST extends SuperRESTForEFGP<Functions> {
     @GET
     @Path("functionlevel/manager/{id}/{level}")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseObject<Users> findManagerByIdAndLevel(@PathParam("id") String userid, @PathParam("level") String level, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseObject<Users> findManagerByIdAndLevel(@PathParam("id") String userid, @PathParam("level") String level, @QueryParam("appid") String appid, @QueryParam("token") String token, @QueryParam("deptno") String deptno) {
         //获取当前员工的部门职等。
         if (isAuthorized(appid, token)) {
             ResponseObject resp = new ResponseObject("200", "success");
             Users entity = usersBean.findUserByUserno(userid);
-            Functions function = funtionsBean.findByUserOIDAndIsMain(entity.getOid());
+
+            Functions function = null;
+            OrganizationUnit organizationUnit = null;
+            if (deptno == null) {
+                function = funtionsBean.findByUserOIDAndIsMain(entity.getOid());
+                organizationUnit = function.getOrganizationUnit();
+            } else {
+                organizationUnit = organizationUnitBean.findOrgUnitByDeptno(deptno);
+                function = funtionsBean.findByUserOIDAndOrgUnitOID(entity.getOid(), organizationUnit.getOid());
+            }
+
             //搜查的职等
             List<FunctionLevel> fuctionLevels = functionLevelBean.findByFunctionLevelName(level);
+            int lvl = fuctionLevels.get(0).getLevelValue();
             if (function != null && fuctionLevels != null && !fuctionLevels.isEmpty()) {
                 //当前员工的职等相同或者小于搜查的职等（OA中的职等越小代表职位越高）
                 if (function.getFunctionLevel().getLevelValue() <= fuctionLevels.get(0).getLevelValue()) {
@@ -91,11 +107,11 @@ public class FunctionsFacadeREST extends SuperRESTForEFGP<Functions> {
                 } else {
                     //根据部门往上找经理级
                     try {
-                        Users user = getManager(fuctionLevels.get(0).getLevelValue(), function.getOrganizationUnit().getOid(), null);
-                        if (user == null) {
-                            user = getManager(fuctionLevels.get(0).getLevelValue() - 1000, function.getOrganizationUnit().getOid(), null);
+                        Users user = null;
+                        while (user == null) {
+                            user = getManager(lvl, organizationUnit.getOid(), null);
+                            organizationUnit = organizationUnitBean.findByOID(organizationUnit.getSuperUnitOID());
                         }
-                        System.out.print("user=" + user);
                         resp.setObject(user);
                         return resp;
                     } catch (Exception ex) {
@@ -112,58 +128,62 @@ public class FunctionsFacadeREST extends SuperRESTForEFGP<Functions> {
     }
 
     public Users getManager(int functionlevel, String organizationOid, Users user) throws Exception {
-        while (true) {
-            List<Functions> functions = funtionsBean.findByOrgUnitOID(organizationOid);
-            if (functions == null || functions.isEmpty()) {
-                return null;
-            } else {
-                for (Functions entity : functions) {
-                    if (entity.getFunctionLevel().getLevelValue() == functionlevel) {
-                        user = entity.getUsers();
-                        return user;
-                    }
+        List<Functions> functions = funtionsBean.findByOrgUnitOID(organizationOid);
+        if (functions == null || functions.isEmpty()) {
+            return null;
+        } else {
+            functions.sort((Functions o1, Functions o2) -> {
+                if (o1.getFunctionLevel().getLevelValue() < o2.getFunctionLevel().getLevelValue()) {
+                    return 1;
+                } else {
+                    return -1;
                 }
-                organizationOid = functions.get(0).getOrganizationUnit().getSuperUnitOID();
+            });
+            for (Functions entity : functions) {
+                if (entity.getFunctionLevel().getLevelValue() <= functionlevel) {
+                    return  entity.getUsers();
+                }
             }
         }
-    }
-}
-
-class FunctionsResponseResult {
-
-    private Integer size;
-    private List<Functions> result;
-
-    public FunctionsResponseResult() {
-
+        return null;
     }
 
-    /**
-     * @return the size
-     */
-    public Integer getSize() {
-        return size;
-    }
+    class FunctionsResponseResult {
 
-    /**
-     * @param size the size to set
-     */
-    public void setSize(Integer size) {
-        this.size = size;
-    }
+        private Integer size;
+        private List<Functions> result;
 
-    /**
-     * @return the result
-     */
-    public List<Functions> getResult() {
-        return result;
-    }
+        public FunctionsResponseResult() {
 
-    /**
-     * @param result the result to set
-     */
-    public void setResult(List<Functions> result) {
-        this.result = result;
+        }
+
+        /**
+         * @return the size
+         */
+        public Integer getSize() {
+            return size;
+        }
+
+        /**
+         * @param size the size to set
+         */
+        public void setSize(Integer size) {
+            this.size = size;
+        }
+
+        /**
+         * @return the result
+         */
+        public List<Functions> getResult() {
+            return result;
+        }
+
+        /**
+         * @param result the result to set
+         */
+        public void setResult(List<Functions> result) {
+            this.result = result;
+        }
     }
 
 }

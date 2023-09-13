@@ -594,6 +594,13 @@ public class TimerBean {
                                 if (manager != null) {
                                     eu.setManagerId(manager.getCode());
                                 }
+                                //复职的情况下需要把eap数据库中人员状态从X变成N,为了后续企业微信的更新，设置更新企业微信的状态。
+                                if (eu.getStatus().equals("X") && e.getLastModifiedDate().before(e.getLastWorkDate())) {
+                                    eu.setStatus("N");
+                                    eu.setOptuserToSystem();
+                                    eu.setSyncWeChatDate(null);
+                                    eu.setSyncWeChatStatus("");
+                                }
                                 eu.setBirthdayDate(e.getBirthDate());
                                 eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
                                 eu.setPhone(e.getMobilePhone());
@@ -602,11 +609,12 @@ public class TimerBean {
                                 eu.setOptdate(e.getLastModifiedDate());
                                 flag = true;
                             }
-                            if (!eu.getStatus().equals("X")
-                                    && e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
+                            if (!eu.getStatus().equals("X") && e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
                                 eu.setStatus("X");
                                 eu.setOptuserToSystem();
                                 eu.setOptdate(e.getLastModifiedDate());
+                                eu.setBirthdayDate(null);
+                                eu.setWorkingAgeBeginDate(null);
                                 flag = true;
                             }
                             if (flag) {
