@@ -212,7 +212,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         miscodeBean.setCompany(facno);
         m = miscodeBean.findByCkindAndCdesc("NB", oa.getTtbankna());
         if (m == null) {
-            m = new Miscode("NB", miscodeBean.getFormId("NB", "B", 4));
+            m = new Miscode("NB", miscodeBean.getFormId("NB", "B", 5));
             m.setCdesc(oa.getTtbankna());
             m.setStatus('Y');
             m.setMascreyn('N');
