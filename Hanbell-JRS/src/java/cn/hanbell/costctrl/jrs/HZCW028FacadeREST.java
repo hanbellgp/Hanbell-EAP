@@ -7,7 +7,6 @@ package cn.hanbell.costctrl.jrs;
 
 import cn.hanbell.costctrl.app.MessageEnum;
 import cn.hanbell.costctrl.app.CheckData;
-import cn.hanbell.costctrl.app.MCBudget;
 import cn.hanbell.costctrl.app.MCHZCW028;
 import cn.hanbell.costctrl.app.MCHZCW028reDetail;
 import cn.hanbell.costctrl.app.MCHZCW028tDetail;
@@ -28,10 +27,11 @@ import cn.hanbell.crm.entity.REPTC;
 import cn.hanbell.crm.entity.SALFI;
 import cn.hanbell.crm.entity.SALFT;
 import cn.hanbell.crm.entity.SALFTPK;
+import cn.hanbell.eap.comm.ErrorMailNotify;
 import cn.hanbell.eap.ejb.CompanyBean;
 import cn.hanbell.eap.ejb.CrmUserGroupBean;
+import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.eap.ejb.McbudgetBean;
-import cn.hanbell.eap.entity.CrmUserGroup;
 import cn.hanbell.eap.entity.Mcbudget;
 import cn.hanbell.erp.ejb.BudgetCenterBean;
 import cn.hanbell.erp.ejb.BudgetDetailBean;
@@ -52,9 +52,7 @@ import cn.hanbell.oa.model.HZCW028reDetailModel;
 import cn.hanbell.oa.model.HZCW028tDetailModel;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -63,7 +61,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -93,6 +90,8 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
     private McbudgetBean mcbudgetBean;
     @EJB
     private CrmUserGroupBean crmUserGroupBean;
+    @EJB
+    private ErrorMailNotificationBean mailBean;
     @EJB
     private MiscodeBean miscodeBean;
     @EJB
@@ -309,6 +308,15 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             try {
                 e.printStackTrace();
                 tran.rollback();
+                //加入邮件通知
+                if (!"".equals(entity.getAppUser())) {
+                    mailBean.getTo().add(entity.getAppUser() + "@hanbell.com.cn");
+                }
+                mailBean.getTo().add("13120@hanbell.cn");
+                mailBean.setMailSubject("每刻费用报销单抛转OA失败");
+                mailBean.setMailContent(
+                        "每刻费用申请单抛转异常，申请人: " + entity.getAppUser() + ",  每刻单号：" + entity.getSrcno() + " 出现异常：" + e.toString());
+                mailBean.notify(new ErrorMailNotify());
                 return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
             } catch (Exception ex) {
                 Logger.getLogger(HZCW028FacadeREST.class.getName()).log(Level.SEVERE, null, ex);

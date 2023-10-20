@@ -70,6 +70,7 @@ import cn.hanbell.ecpur.ejb.ECPurvdrBean;
 import cn.hanbell.erp.ejb.Apmanp585hBean;
 import cn.hanbell.erp.ejb.ApmaphBean;
 import cn.hanbell.erp.ejb.ApmbilBean;
+import cn.hanbell.erp.ejb.ApmchpBean;
 import cn.hanbell.erp.ejb.ApmpayBean;
 import cn.hanbell.erp.ejb.BomasryBean;
 import cn.hanbell.erp.ejb.BomsubBean;
@@ -487,6 +488,8 @@ public class EAPWebService {
     private CrmreppalogBean crmreppalogBean;
     @EJB
     private ECPurvdrBean ecpurvdrBean;
+    @EJB
+    private ApmchpBean apmchpBean;
 
     //EJBForVHBERP
     @EJB
@@ -3968,6 +3971,22 @@ public class EAPWebService {
             ret = true;
         } catch (NullPointerException | JSONException ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM585ByOAHKCW015", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "updateERPAPM540ByOAHKCW018")
+    public String updateERPAPM540ByOAHKCW018(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = apmchpBean.updateByOAHKCW018(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateByOAHKCW018", psn), ex);
+            throw ex;
         }
         if (ret) {
             return "200";

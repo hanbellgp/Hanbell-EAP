@@ -10,6 +10,8 @@ import cn.hanbell.costctrl.app.MessageEnum;
 import cn.hanbell.costctrl.app.MCHZGL004;
 import cn.hanbell.costctrl.app.MCHZGL004BizDetail;
 import cn.hanbell.costctrl.app.MCResponseData;
+import cn.hanbell.eap.comm.ErrorMailNotify;
+import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.jrs.SuperRESTForEFGP;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HZGL004Bean;
@@ -30,8 +32,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 
 /**
  *
@@ -45,6 +45,8 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
     private HZGL004Bean hzgl004Bean;
     @EJB
     private UsersBean usersBean;
+    @EJB
+    private ErrorMailNotificationBean mailBean;
 
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
@@ -148,6 +150,14 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 return new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
             }
         } catch (Exception ex) {
+            if (!"".equals(entity.getApplyUser())) {
+                mailBean.getTo().add(entity.getApplyUser()+ "@hanbell.com.cn");
+            }
+            mailBean.getTo().add("13120@hanbell.cn");
+            mailBean.setMailSubject("每刻费用报销单抛转OA失败");
+            mailBean.setMailContent(
+                    "每刻出差申请单抛转异常，申请人 ：" + entity.getApplyUser()+"每刻单号: " + entity.getSrcno() + ",  出现异常：" + ex.toString());
+            mailBean.notify(new ErrorMailNotify());
             ex.printStackTrace();
             return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
         }
