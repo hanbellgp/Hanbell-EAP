@@ -21,6 +21,8 @@ import com.lowagie.text.pdf.PdfReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -113,7 +115,11 @@ public class ReportManagedBean extends SuperReportManagedBean {
             reportParams.put("sortFields", paramMap.get("sortFields")[0]);
         }
         reportOutputFormat = systemProgram.getRptformat();
-        String fileName = systemProgram.getApi() + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + "."
+         SecureRandom secureRandom = new SecureRandom();
+
+        // 生成一个 1000 位的随机数
+        BigInteger randomNumber = new BigInteger(20, secureRandom);
+        String fileName = systemProgram.getApi() +randomNumber+ "."
                 + reportOutputFormat;
         String reportName = reportPath + systemProgram.getRptdesign();
         String outputName = reportOutputPath + fileName;
@@ -209,13 +215,16 @@ public class ReportManagedBean extends SuperReportManagedBean {
                             break;
                     }
                 }
+               
                 // 生成签核流程
                 this.setReportClass(Class.forName("cn.hanbell.efgp.rpt.ProcessCheckReport").getClassLoader());// 设置成流程报表
                 reportParams.remove("JNDIName");
                 reportParams.put("JNDIName",
                         "java:global/Hanbell-EAP/EFGP-ejb/ProcessCheckBean!cn.hanbell.oa.ejb.ProcessCheckBean");// 设置成流程报表Bean
+                 
                 // 初始配置
                 this.reportInitAndConfig();
+                
                 // 生成报表
                 baos = new ByteArrayOutputStream();
                 //服务工作支援单打印签核意见
