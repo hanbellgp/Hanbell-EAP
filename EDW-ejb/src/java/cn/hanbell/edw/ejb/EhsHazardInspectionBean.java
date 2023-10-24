@@ -85,15 +85,10 @@ public class EhsHazardInspectionBean extends SuperEJBForEDW<EhsHazardInspection>
             }
             d = d + "-";
             int c = code.length();
-            Query query = getEntityManager().createNativeQuery("select max(id) from EhsHazardInspection where substring(id,1," + c + ")='" + (code) + "'");
-            if (query.getSingleResult() != null) {
-                maxid = query.getSingleResult().toString();
-                m = maxid.length();
-                id = Integer.parseInt(maxid.substring(m - len, m)) + 1;
-                newid = code + d + String.format("%0" + len + "d", id);
-            } else {
-                newid = code + d + String.format("%0" + len + "d", 1);
-            }
+            Query query = getEntityManager().createNativeQuery("select * from EhsHazardInspection where substring(id,1," + c + ")='" + (code) + "'");
+            List results = query.getResultList();
+            int rsize = results.size() + 1;
+            newid = code + d + rsize;
             return newid;
         } else {
             return "";

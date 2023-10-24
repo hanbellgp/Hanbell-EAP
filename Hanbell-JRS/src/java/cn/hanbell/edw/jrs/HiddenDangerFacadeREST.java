@@ -79,9 +79,9 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
     //生产环境
     //private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //测试环境
-    private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+//   private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //测试环境
-   // private final String filePathTemp = "E:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    private final String filePathTemp = "E:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
 //    private final String filePathTemp = "E:\\Java\\glassfish5.0.1b05\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     @Override
@@ -720,7 +720,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 filterFields.put("post", entity.getPost());
                 filterFields.put("deptNo", entity.getDeptNo().substring(0, 3));
                 eStandard = ehsSafemanagerStandardBean.findByFilters(filterFields);
-                eStandard = ehsSafemanagerStandardBean.findAll();
+//                eStandard = ehsSafemanagerStandardBean.findAll();
                 if (eStandard.isEmpty()) {
                     return new ResponseMessage("500", "系统错误Update失败");
                 }
