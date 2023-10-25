@@ -83,7 +83,6 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
     //测试环境
     private final String filePathTemp = "E:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
-//    private final String filePathTemp = "E:\\Java\\glassfish5.0.1b05\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     @Override
     protected SuperEJB getSuperEJB() {
         return ehsHiddenDangerBean;
