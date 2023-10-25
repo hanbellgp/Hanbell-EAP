@@ -5,6 +5,7 @@
  */
 package cn.hanbell.erp.ejb;
 
+import cn.hanbell.eap.comm.ErrorMailNotify;
 import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Apmchp;
@@ -223,7 +224,7 @@ public class ApmchpBean extends SuperEJBForERP<Apmchp> {
             mailBean.getTo().add("13120@hanbell.cn");
             mailBean.setMailSubject("OA厂商变更付款信息失败");
             mailBean.setMailContent("OA厂商变更付款信息抛转异常，OA单号: " + psn + ",  出现异常：" + ex.toString());
-            // mailBean.notify(new ErrorMailNotify());
+            mailBean.notify(new ErrorMailNotify());
             ex.printStackTrace();
             log4j.error(ex);
             throw new RuntimeException(ex);
