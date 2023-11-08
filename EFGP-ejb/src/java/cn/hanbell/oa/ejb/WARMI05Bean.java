@@ -108,7 +108,6 @@ public class WARMI05Bean extends SuperEJBForEFGP<WARMI05> {
             tb = wartbBean.findByPK(ta001, ta002, wd.getTb003());
             if ("1".equals(step)) {
                 tb.setTb033(bd);
-                wartbBean.update(tb);
             } else {
                 tb.setTb032(tb.getTb032().add(BigDecimal.ONE));
                 tb.setTb033(BigDecimal.ZERO);
@@ -117,8 +116,15 @@ public class WARMI05Bean extends SuperEJBForEFGP<WARMI05> {
                 } else if ("JCDX".equals(ta001) || "JCDF".equals(ta001)) {
                     ta.setTa028(ta028);
                 }
-                wartbBean.update(tb);
             }
+            //更新TB009实际领料数量 2023/11/9
+            if (tb009 == null || tb009.equals("")) {
+                tb009 = wd.getTb007();
+            } else {
+                tb009 = wd.getTb009();
+            }
+            tb.setTb009(BigDecimal.valueOf(Double.valueOf(tb009)));
+            wartbBean.update(tb);
         }
         if (!"1".equals(step)) {
             ta.setTa200("3");

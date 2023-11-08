@@ -79,7 +79,7 @@ public class ApmchpBean extends SuperEJBForERP<Apmchp> {
                 //更新批次付款明细档apmchp
                 List<Apmchp> chpList = findByTrno(facno, vdrno, trno);
                 List<Apmchp> addList = new ArrayList<>();
-                if (null == chpList) {
+                if (null == chpList || chpList.size() == 0) {
                     BigDecimal sum = BigDecimal.ZERO;
                     if (!"".equals(oad.getPayDate1txt())) {
                         Apmchp apmchp = new Apmchp();
