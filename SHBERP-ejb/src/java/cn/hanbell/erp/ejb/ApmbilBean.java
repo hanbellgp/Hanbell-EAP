@@ -420,6 +420,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                     erph.setCfmusrno(pc1.getUserID());
                     erph.setApusrno(pc2.getUserID());
                 }
+                apmaphBean.setCompany(facno);
                 apmaphBean.update(erph);
             }
             return true;
@@ -600,6 +601,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                     aph.setCfmusrno(pc.getUserID());
                 }
             }
+            apmaphBean.setCompany(facno);
             apmaphBean.update(aph);
             return true;
         } catch (Exception ex) {
