@@ -167,9 +167,9 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
             int queryDate = Integer.valueOf(String.valueOf(c.get(Calendar.YEAR)) + m);
             //查看月结的历史档数据
             if (queryDate <= monthDate) {
-                list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin,this.querySyscode, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
+                list = invtrnhBean.getInvtrnhByINV555(queryfacno, queryDateBegin, this.querySyscode, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
             } else {
-                list = invtrnBean.getInvtrnhByINV555(queryfacno, queryDateBegin,this.querySyscode, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
+                list = invtrnBean.getInvtrnhByINV555(queryfacno, queryDateBegin, this.querySyscode, changeVlaue(queryno), changeVlaue(querytype), changeVlaue(querywareh), changeVlaue(querydept), changeVlaue(queryuser));
             }
 
         } catch (ParseException ex) {
@@ -190,7 +190,7 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                 is = new FileInputStream(file);
                 this.fileName = this.facnoView + "INVTRNH" + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + ".xlsx";
                 this.fileFullName = this.reportOutputPath + this.fileName;
-                SXSSFWorkbook  sxssfWorkbook =new SXSSFWorkbook(new XSSFWorkbook(is),1000);
+                SXSSFWorkbook sxssfWorkbook = new SXSSFWorkbook(new XSSFWorkbook(is), 1000);
                 CellStyle cellStyle = sxssfWorkbook.createCellStyle();
                 short border = 1;
                 cellStyle.setBorderBottom(border);
@@ -198,12 +198,12 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                 cellStyle.setBorderRight(border);
                 cellStyle.setBorderTop(border);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-               SXSSFSheet sheet = (SXSSFSheet)sxssfWorkbook.getSheetAt(0);
+                SXSSFSheet sheet = (SXSSFSheet) sxssfWorkbook.getSheetAt(0);
                 sxssfWorkbook.setSheetName(0, this.facnoView + sdf.format(new Date()) + "库存异动单");
-               
+
                 int i = 1;
                 for (Object[] h : list) {
-                    SXSSFRow row =(SXSSFRow) sheet.createRow(i);
+                    SXSSFRow row = (SXSSFRow) sheet.createRow(i);
                     Cell cell = row.createCell(0);
                     cell.setCellValue(i);
                     Cell cell1 = row.createCell(1);
@@ -236,6 +236,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     Cell cell28 = row.createCell(28);
                     Cell cell29 = row.createCell(29);
                     Cell cell30 = row.createCell(30);
+                    Cell cell31 = row.createCell(31);
+                    Cell cell32 = row.createCell(32);
                     cell.setCellStyle(cellStyle);
                     cell1.setCellStyle(cellStyle);
                     cell2.setCellStyle(cellStyle);
@@ -266,7 +268,9 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     cell27.setCellStyle(cellStyle);
                     cell28.setCellStyle(cellStyle);
                     cell29.setCellStyle(cellStyle);
-                     cell30.setCellStyle(cellStyle);
+                    cell30.setCellStyle(cellStyle);
+                    cell31.setCellStyle(cellStyle);
+                    cell32.setCellStyle(cellStyle);
                     Date d = (Date) h[0];
                     cell1.setCellValue(h[0] != null ? BaseLib.formatDate("yyyy/MM/dd", d) : "");
                     cell2.setCellValue(h[1] != null ? (String) h[1] : "");
@@ -298,6 +302,8 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
                     cell28.setCellValue(h[27] != null ? (String) h[27] : "");
                     cell29.setCellValue(h[28] != null ? (String) h[28] : "");
                     cell30.setCellValue(h[29] != null ? (String) h[29] : "");
+                    cell31.setCellValue(h[30] != null ? (String) h[30] : "");
+                    cell32.setCellValue(h[31] != null ? (String) h[31] : "");
                     i++;
                 }
                 FileOutputStream os = null;
@@ -409,8 +415,6 @@ public class InvtrnhManagedBean extends SuperQueryBean<Invtrnh> {
         }
         return sb.substring(0, sb.length() - 1);
     }
-    
-    
 
     public String getIocodeValue(String ioccode) {
         switch (ioccode) {
