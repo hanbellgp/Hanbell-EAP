@@ -5,7 +5,9 @@
  */
 package cn.hanbell.erp.ejb;
 
+import cn.hanbell.eap.comm.ErrorMailNotify;
 import cn.hanbell.eap.comm.MailNotify;
+import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.eap.ejb.MailNotificationBean;
 import cn.hanbell.erp.entity.Apmbil;
 import cn.hanbell.erp.comm.SuperEJBForERP;
@@ -426,13 +428,13 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
             return true;
         } catch (Exception ex) {
             //加入邮件通知
-            MailNotificationBean mailBean = new MailNotificationBean();
+            ErrorMailNotificationBean mailBean = new ErrorMailNotificationBean();
             mailBean.getTo().clear();
             mailBean.getTo().add("13120@hanbell.com.cn");
             mailBean.setMailSubject("OA进货验收类冲暂估立账申请单抛转ERP失败");
             mailBean.setMailContent(
                     "OA进货验收类冲暂估立账申请单单号：" + psn + "抛转失败，异常：" + ex);
-            mailBean.notify(new MailNotify());
+            mailBean.notify(new ErrorMailNotify());
             ex.printStackTrace();
             log4j.error(ex);
             throw new RuntimeException(ex);
