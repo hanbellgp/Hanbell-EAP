@@ -126,7 +126,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     //生产环境
     //private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //测试环境
-    private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
+    private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -562,7 +562,11 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 
                             String errmsg = sendMsgString(entity.getHitchdutyuser(), msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
                         } else {
-                            equipInvenTemp.setRstatus("60");
+                            if (companyCodeStr.equals("C")) {
+                                equipInvenTemp.setRstatus("55");
+                            } else {
+                                equipInvenTemp.setRstatus("60");
+                            }
                             equipInvenTemp.setHitchdutydeptno(null);
                             equipInvenTemp.setHitchdutydeptname(null);
                             equipInvenTemp.setHitchdutyuser(null);
@@ -1381,6 +1385,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<SystemUser> sysUserListRes = new ArrayList<SystemUser>();
             List<SysCode> sysCodeList = new ArrayList<SysCode>();
             List<SysCode> repairManagerList = new ArrayList<SysCode>();
+            List<SysCode> leaderManagerList = new ArrayList<SysCode>();
             SystemUser repairUserObj = new SystemUser();
             SystemUser serviceUserObj = new SystemUser();
             AssetCard assetCardRes = new AssetCard();
@@ -1436,6 +1441,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 
                 if (eqpRepairListRes.size() > 0) {
                     repairManagerList = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairmanager");
+                    leaderManagerList = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairHeadmanId");
 //                    repairResTemp.setId(eqpRepairListRes.get(0).getId());
 //                    repairResTemp.setFormid(eqpRepairListRes.get(0).getFormid());
 //                    repairResTemp.setFormdate(eqpRepairListRes.get(0).getFormdate());
