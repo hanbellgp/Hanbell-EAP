@@ -54,6 +54,8 @@ public class InvtrnBean extends SuperEJBForERP<Invtrn> {
         sql.append(" case invtrn.trtype when 'ARY' then (  select depname from cdrhadasry left join misdept on cdrhadasry.shpdepno=misdept.depno where cdrhadasry.facno=invtrn.facno and cdrhadasry.prono=invtrn.prono and cdrhadasry.facno='").append(facno).append("'and cdrhadasry.prono='1'  and cdrhadasry.trno=invtrn.trno  ) end 'ARY打单部门',");
         sql.append(" invtrn.hmark1,invtrn.hmark2,");
         sql.append("  (select kfno from invhadh where facno= '").append(facno).append("' and prono='1' and invhadh.trno=invtrn.trno )as '来源单号'");
+        sql.append(" ,case  when invtrn.trtype='IAF' or invtrn.trtype='IAG' then (select cdesc from cdrcus,miscode where cdrcus.SCCode=miscode.code and ckind='3C' and cdrcus.cusno=invtrn.depno) end as '客户性质',");
+        sql.append(" case  when invtrn.trtype='IAF' or invtrn.trtype='IAG' then (select miscode.cusds from cdrcus,miscode where cdrcus.SCCode=miscode.code and ckind='3C' and cdrcus.cusno=invtrn.depno) end as '客户归类'");
         sql.append(" FROM  invdou,invwh,invtrn, invmas,   invcls");
         sql.append(" WHERE (invtrn.facno = invwh.facno) AND (invtrn.prono = invwh.prono) and (invmas.itnbr = invtrn.itnbr)  AND (invtrn.wareh = invwh.wareh) AND (invdou.trtype = invtrn.trtype) AND (invcls.itcls = invmas.itcls)");
         sql.append(" AND (invtrn.facno = '").append(facno).append("' AND invtrn.prono = '1'");
