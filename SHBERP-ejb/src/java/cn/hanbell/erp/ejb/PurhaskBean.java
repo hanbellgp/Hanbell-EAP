@@ -231,6 +231,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                         BigDecimal pcunpris = purcontractBean.getUnprisByItnbrAndVdr(facno, prono, detail.getItnbr(), detail.getVdrno(), pd.getRqtdate(), pd.getApmqy());
                         if (0 != pcunpris.compareTo(pd.getUnpris())) {
                             //加入邮件通知
+                            mailBean.getTo().clear();
                             if (!"".equals(pd.getBuyer())) {
                                 mailBean.getTo().add(pd.getBuyer() + "@hanbell.com.cn");
                             }
