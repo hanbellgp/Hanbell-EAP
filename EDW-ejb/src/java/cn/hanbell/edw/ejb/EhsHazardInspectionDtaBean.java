@@ -46,7 +46,7 @@ public class EhsHazardInspectionDtaBean extends SuperEJBForEDW<EhsHazardInspecti
 //                sb.append("  OR e.rectifierId = '");
 //                sb.append(filters.get("userid")).append("')");
 //            } else {
-                strMap.put(key, value);
+            strMap.put(key, value);
 //            }
         }
         sb.append(")").append(exFilterStr);
@@ -72,7 +72,7 @@ public class EhsHazardInspectionDtaBean extends SuperEJBForEDW<EhsHazardInspecti
         return results;
 
     }
-    
+
     @Override
     public String getFormId(Date day, String code, String format, int len) {
         //流水码不按年份重新编号
@@ -99,10 +99,11 @@ public class EhsHazardInspectionDtaBean extends SuperEJBForEDW<EhsHazardInspecti
             return "";
         }
     }
+
     @Override
     public int getRowCount(Map<String, Object> filters) {
-        
-             StringBuilder sb = new StringBuilder();
+
+        StringBuilder sb = new StringBuilder();
         String exFilterStr = "";
         String companyFilter = "";
         sb.append("SELECT COUNT(e) FROM ");
@@ -114,7 +115,7 @@ public class EhsHazardInspectionDtaBean extends SuperEJBForEDW<EhsHazardInspecti
             String key = entry.getKey();
             Object value = entry.getValue();
             if ("userid".equals(key)) {
-                 sb.append("  AND (e.presentingId = '");
+                sb.append("  AND (e.presentingId = '");
                 sb.append(filters.get("userid")).append("'");
                 sb.append("  OR e.rectifierId = '");
                 sb.append(filters.get("userid")).append("')");
@@ -127,13 +128,22 @@ public class EhsHazardInspectionDtaBean extends SuperEJBForEDW<EhsHazardInspecti
         if (filters != null) {
             this.setQueryFilter(sb, filters);
         }
-      
-      final Query query = this.getEntityManager().createQuery(sb.toString());
+
+        final Query query = this.getEntityManager().createQuery(sb.toString());
         if (filters != null) {
             this.setQueryParam(query, filters);
         }
         return Integer.parseInt(query.getSingleResult().toString());
-        
+
+    }
+
+    public int getMaxCount() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT max(CONVERT(int, ID)) ID FROM   EhsHazardInspectionDta ");
+       Query query = getEntityManager().createNativeQuery(sb.toString());
+        String maxString = query.getSingleResult().toString();
+        return Integer.parseInt(maxString);
+
     }
 
 }

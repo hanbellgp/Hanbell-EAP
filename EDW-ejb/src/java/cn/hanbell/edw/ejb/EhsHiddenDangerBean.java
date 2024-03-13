@@ -47,6 +47,8 @@ public class EhsHiddenDangerBean extends SuperEJBForEDW<EhsHiddenDanger> {
                 if (!filters.containsKey("月安全课长")) {//当点进来的是月安全课长不筛选对应的人员
                     sb.append("  AND (e.presentingId = '");
                     sb.append(filters.get("userid")).append("'");
+                    sb.append("  OR e.acceptedId = '");
+                    sb.append(filters.get("userid")).append("'");
                     sb.append("  OR e.rectifierId = '");
                     sb.append(filters.get("userid")).append("')");
                 }
@@ -102,7 +104,7 @@ public class EhsHiddenDangerBean extends SuperEJBForEDW<EhsHiddenDanger> {
     public String getFormId(Date day, String code, String format, int len) {
         //流水码不按年份重新编号
         String maxid, newid;
-        
+
         int id, m;
         if (day != null && code != null && len > 0) {
             String d = "";
@@ -113,7 +115,7 @@ public class EhsHiddenDangerBean extends SuperEJBForEDW<EhsHiddenDanger> {
             int c = code.length();
             Query query = getEntityManager().createNativeQuery("select max(id) from EhsHiddenDanger where substring(id,1," + c + ")='" + (code) + "'");
             if (query.getSingleResult() != null) {
-                
+
                 maxid = query.getSingleResult().toString();
                 m = maxid.length();
                 id = Integer.parseInt(maxid.substring(m - len, m)) + 1;
