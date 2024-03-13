@@ -45,7 +45,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
@@ -78,12 +77,11 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
     private EhsSecureBean ehsSecureBean;
     protected SuperEJB superEJB;
     //生产环境
-    private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //测试环境
 //   private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
-    //本地环境
-    //private final String filePathTemp = "E:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    //测试环境
+    private final String filePathTemp = "E:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -92,7 +90,6 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
 
     public HiddenDangerFacadeREST() {
         super(EhsHiddenDanger.class);
-
     }
 
     @GET
@@ -226,9 +223,6 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 hiddenTemp.setAcceptedId(entity.getAcceptedId());
                 hiddenTemp.setAcceptedName(entity.getAcceptedName());
                 hiddenTemp.setCheckOpinions(entity.getCheckOpinions());
-                if ("30".equals(hiddenTemp.getRstatus()) && hiddenTemp.getRectificationMeasures() != null) {
-                    hiddenTemp.setRectificationCompletionDate(new Date());
-                }
                 if (entity.getId() == null)//判断是否是新建单子
                 {
                     hiddenTemp.setId(formid);
@@ -240,8 +234,8 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     if (null != hiddenTemp.getRstatus()) {
                         switch (hiddenTemp.getRstatus()) {
                             case "10":
-                                if (hiddenTemp.getRectificationType().equals("03")) {//无需整改时节点换成验收
-                                    hiddenTemp.setRstatus("60");
+                                if (hiddenTemp.getRectificationType().equals("02")) {//无需整改时节点换成验收
+                                    hiddenTemp.setRstatus("45");
                                     hiddenTemp.setStatus("V");
                                 } else {
                                     hiddenTemp.setRstatus("30");
@@ -283,7 +277,9 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     }
                     hiddenTemp.setUpdateTime(new Date());
                 }
-
+                if (hiddenTemp.getRstatus() == "45" && hiddenTemp.getRectificationMeasures() != null) {
+                    hiddenTemp.setRectificationCompletionDate(new Date());
+                }
                 if (eDta.size() > 0) {//更新隐患单号到明细
                     eDta.get(0).setHiddenDangerId(hiddenTemp.getId());
                     ehsHazardInspectionDtaBean.update(eDta);
@@ -377,8 +373,6 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
     public List<Object> getHiddenDocImageInfo(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             String companyCodeStr = "";
-            String deptno = "";
-            String docType = "";
             this.superEJB = ehsHiddenDangerFileBean;
             List<Object> list = new ArrayList<>();
             List<EhsHiddenDangerFile> hiddenImageListRes = new ArrayList<>();
@@ -395,15 +389,10 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 String key, value = "";
                 if (filtersMM != null) {
                     companyCodeStr = filtersMM.getFirst("company");
-                    deptno = filtersMM.getFirst("deptno");
-                    docType = filtersMM.getFirst("docType");
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
-                        if (!"deptno".equals(key) && !"docType".equals(key)) {
-                            filterFields.put(key, value);
-                        }
-
+                        filterFields.put(key, value);
                     }
                 }
                 if (sortsMM != null) {
@@ -417,20 +406,14 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 hiddenTypeList = ehsHiddenDangerParameterBean.getTroubleNameList(companyCodeStr, "YH", "HiddenType");
                 rectificationTypeList = ehsHiddenDangerParameterBean.getTroubleNameList(companyCodeStr, "YH", "RectificationType");
                 Map<String, Object> filterSecure = new HashMap<>();
-                //获取所有整改人，部分只搜索自己部门的整改人
                 filterSecure.put("company", companyCodeStr);
                 filterSecure.put("position", "整改人");
-                if (docType.equals("岗位自查") || docType.equals("班组巡查") || docType.equals("课长巡查")) {
-                    filterSecure.put("deptNo", deptno.substring(0, 2));
-                }
                 rectifierList = ehsSecureBean.findByFilters(filterSecure);
-                //获取课长信息
                 filterSecure.clear();
                 filterSecure.put("company", companyCodeStr);
                 filterSecure.put("position", "单位课长");
                 acceptList = ehsSecureBean.findByFilters(filterSecure);
-                //获取月安全课长
-                filterSecure.clear();
+
                 filterSecure.put("company", companyCodeStr);
                 filterSecure.put("position", "月安全课长");
                 filterSecure.put("remark", new Date().getMonth() + 1 + "");
@@ -734,7 +717,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 EhsHazardInspection eInspection = new EhsHazardInspection();
                 List<EhsHazardInspectionDta> eInspectionDta = new ArrayList<>();
                 filterFields.put("post", entity.getPost());
-                filterFields.put("deptNo", entity.getDeptNo().substring(0, 2));
+                filterFields.put("deptNo", entity.getDeptNo().substring(0, 3));
                 eStandard = ehsSafemanagerStandardBean.findByFilters(filterFields);
 //                eStandard = ehsSafemanagerStandardBean.findAll();
                 if (eStandard.isEmpty()) {
@@ -754,7 +737,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 eInspection.setCreateId(entity.getCreateId());
                 eInspection.setCreateTime(new Date());
                 int i = 1;
-                int id = ehsHazardInspectionDtaBean.getMaxCount() + 1;//获取当前多少条
+                int id = ehsHazardInspectionDtaBean.findAll().size() + 1;//获取当前多少条
                 for (EhsSafemanagerStandard ehsStandard : eStandard) {
                     EhsHazardInspectionDta eDta = new EhsHazardInspectionDta();
                     eDta.setSeq(i + "");
@@ -774,58 +757,6 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误Update失败");
             }
-        } else {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        }
-    }
-
-    /**
-     * 获取整改人名单
-     *
-     * @param filters
-     * @param sorts
-     * @param offset
-     * @param pageSize
-     * @param appid
-     * @param token
-     * @return
-     */
-    @GET
-    @Path("secureUser/{filters}/{sorts}/{offset}/{pageSize}")
-    @Consumes({"application/json"})
-    @Produces({"application/json"})
-    public List<EhsSecure> findByOrganizationUnitId(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-        if (isAuthorized(appid, token)) {
-            List<EhsSecure> eList = new ArrayList<>();
-            try {
-                MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
-                MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
-                Map<String, Object> filterFields = new HashMap<>();
-                Map<String, String> sortFields = new LinkedHashMap<>();
-                String key, value;
-                if (filtersMM != null) {
-                    for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
-                        key = entrySet.getKey();
-                        value = entrySet.getValue().get(0);
-                        filterFields.put(key, value);
-                    }
-                }
-                if (sortsMM != null) {
-                    for (Map.Entry<String, List<String>> entrySet : sortsMM.entrySet()) {
-                        key = entrySet.getKey();
-                        value = entrySet.getValue().get(0);
-                        sortFields.put(key, value);
-                    }
-                }
-                filterFields.put("position", "整改人");
-                filterFields.put("company", "C");
-                sortFields.put("secureId", "ASC");
-                eList = ehsSecureBean.findByFilters(filterFields, offset, pageSize, sortFields);
-
-            } catch (Exception ex) {
-                throw new WebApplicationException(Response.Status.NOT_FOUND);
-            }
-            return eList;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
