@@ -78,8 +78,8 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
     private EhsSecureBean ehsSecureBean;
     protected SuperEJB superEJB;
     //生产环境
-    private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
-     //private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    //private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //测试环境
 //   private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //本地环境
@@ -240,8 +240,8 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     if (null != hiddenTemp.getRstatus()) {
                         switch (hiddenTemp.getRstatus()) {
                             case "10":
-                                if (hiddenTemp.getRectificationType().equals("02")) {//无需整改时节点换成验收
-                                    hiddenTemp.setRstatus("45");
+                                if (hiddenTemp.getRectificationType().equals("03")) {//无需整改时节点换成验收
+                                    hiddenTemp.setRstatus("60");
                                     hiddenTemp.setStatus("V");
                                 } else {
                                     hiddenTemp.setRstatus("30");
@@ -417,17 +417,20 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 hiddenTypeList = ehsHiddenDangerParameterBean.getTroubleNameList(companyCodeStr, "YH", "HiddenType");
                 rectificationTypeList = ehsHiddenDangerParameterBean.getTroubleNameList(companyCodeStr, "YH", "RectificationType");
                 Map<String, Object> filterSecure = new HashMap<>();
+                //获取所有整改人，部分只搜索自己部门的整改人
                 filterSecure.put("company", companyCodeStr);
                 filterSecure.put("position", "整改人");
                 if (docType.equals("岗位自查") || docType.equals("班组巡查") || docType.equals("课长巡查")) {
                     filterSecure.put("deptNo", deptno.substring(0, 2));
                 }
                 rectifierList = ehsSecureBean.findByFilters(filterSecure);
+                //获取课长信息
                 filterSecure.clear();
                 filterSecure.put("company", companyCodeStr);
                 filterSecure.put("position", "单位课长");
                 acceptList = ehsSecureBean.findByFilters(filterSecure);
-
+                //获取月安全课长
+                filterSecure.clear();
                 filterSecure.put("company", companyCodeStr);
                 filterSecure.put("position", "月安全课长");
                 filterSecure.put("remark", new Date().getMonth() + 1 + "");
@@ -751,7 +754,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 eInspection.setCreateId(entity.getCreateId());
                 eInspection.setCreateTime(new Date());
                 int i = 1;
-                int id = ehsHazardInspectionDtaBean.findAll().size() + 1;//获取当前多少条
+                int id = ehsHazardInspectionDtaBean.getMaxCount() + 1;//获取当前多少条
                 for (EhsSafemanagerStandard ehsStandard : eStandard) {
                     EhsHazardInspectionDta eDta = new EhsHazardInspectionDta();
                     eDta.setSeq(i + "");
