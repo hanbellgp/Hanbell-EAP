@@ -61,7 +61,7 @@ public class HKFW004DetailBean extends SuperEJBForEFGP<HKFW004Detail> {
 
             Logger.getLogger(HZCW028Bean.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }
+}
 
     }
 

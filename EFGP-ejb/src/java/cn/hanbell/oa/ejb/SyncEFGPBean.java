@@ -19,7 +19,7 @@ import javax.persistence.PersistenceContext;
 @LocalBean
 public class SyncEFGPBean extends SuperSyncBean {
 
-    @PersistenceContext(unitName = "EFGP-syncPU")
+   @PersistenceContext(unitName = "EFGP-syncPU")
     private EntityManager em;
 
     @Override

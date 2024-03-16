@@ -245,9 +245,9 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                     break;
                                 case "SSD00730":
                                     // 青岛海信日立
-                                    content.append(sd.getCustomerItem());
-                                    if (sd.getCustomerItem().length() != 8) {
-                                        for (int i = 1; i <= 8 - sd.getCustomerItem().length(); i++) {
+                                    content.append(sd.getCustomerItem().trim());
+                                    if (content.length() != 8) {
+                                        for (int i = 1; i <= 8 - sd.getCustomerItem().trim().length(); i++) {
                                             content.append("0");
                                         }
                                     }

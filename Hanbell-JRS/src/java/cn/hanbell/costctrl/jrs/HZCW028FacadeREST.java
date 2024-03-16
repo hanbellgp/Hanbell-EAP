@@ -181,7 +181,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     seq++;
                     HZCW028reDetailModel rem = new HZCW028reDetailModel();
                     rem.setNo(seq);
-                    rem.setSummary(re.getSummary());
+                    rem.setSummary(filterString(re.getSummary()));
                     rem.setBudgetDept_txt(re.getBudgetDept());
                     rem.setBudgetDept_lbl(re.getDeptName());
                     rem.setNotaxes(re.getNotaxes());
@@ -220,7 +220,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     tm.setNo(tseq);
                     tm.setTrafficDate_txt(td.getTrafficDate());
                     tm.setTrafficPlace(td.getTrafficPlace());
-                    tm.setTrafficSummary(td.getTrafficSummary());
+                    tm.setTrafficSummary(filterString(td.getTrafficSummary()));
                     //单据张数
                     int bill_num = td.getBill_num();
                     tm.setReceipt(String.valueOf(bill_num));
@@ -291,7 +291,11 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             m.setCreator(entity.getCreator());
             m.setSrcno(entity.getSrcno());
             m.setDeptqx("");
-            m.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
+            if (null == workFlowBean.getUserTitle()) {
+                throw new RuntimeException("获取请款人职等失败");
+            } else {
+                m.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
+            }
             //发起流程
             String formInstance = workFlowBean.buildXmlForEFGP("HZ_CW028", m, details);
             String subject = m.getAppUser() + "发起报销申请";
@@ -309,6 +313,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 e.printStackTrace();
                 tran.rollback();
                 //加入邮件通知
+                mailBean.clearReceivers();
                 if (!"".equals(entity.getAppUser())) {
                     mailBean.getTo().add(entity.getAppUser() + "@hanbell.com.cn");
                 }
@@ -316,7 +321,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 mailBean.setMailSubject("每刻费用报销单抛转OA失败");
                 mailBean.setMailContent(
                         "每刻费用申请单抛转异常，申请人: " + entity.getAppUser() + ",  每刻单号：" + entity.getSrcno() + " 出现异常：" + e.toString());
-                mailBean.notify(new ErrorMailNotify());
+//                mailBean.notify(new ErrorMailNotify());
                 return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
             } catch (Exception ex) {
                 Logger.getLogger(HZCW028FacadeREST.class.getName()).log(Level.SEVERE, null, ex);

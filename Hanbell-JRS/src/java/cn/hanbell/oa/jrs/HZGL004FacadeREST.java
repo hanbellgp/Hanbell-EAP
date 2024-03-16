@@ -163,9 +163,9 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                         users.append(mcd.getBizEmployeeName()).append(",");
                     }
                 }
-                if (isSuccess) {
-                    return new ResponseMessage("500", "表单发起成功，" + users + "消息发送失败");
-                }
+//                if (isSuccess) {
+//                    return new ResponseMessage("500", "表单发起成功，" + users + "消息发送失败");
+//                }
                 return new ResponseMessage(rm[0], rm[1]);
             } else {
                 return new ResponseMessage("200", "Code=200");

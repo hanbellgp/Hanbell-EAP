@@ -92,8 +92,8 @@ public class MCEmployeeFacadeREST extends SuperRESTForEFGP<Users> {
                     em.setPhone(hremp.getMobilePhone());
                     em.setLevelId(hremp.getLevelId());
                 } else {
-                    em.setPhone("");
-                    em.setLevelId("");
+                em.setPhone("");
+                em.setLevelId("");
                 }
                 //加入是否主部门
                 int isMain = row[7] == null ? 0 : Integer.valueOf(row[7].toString());

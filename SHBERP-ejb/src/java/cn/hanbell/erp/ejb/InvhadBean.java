@@ -625,7 +625,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         }
     }
 
-    public String initByOASHBERPINV325(String psn) {
+    public String initByOASHBERPINV325(String psn) { 
         SHBERPINV325 e = shberpinv325Bean.findByPSN(psn);
         if (e == null) {
             throw new NullPointerException();

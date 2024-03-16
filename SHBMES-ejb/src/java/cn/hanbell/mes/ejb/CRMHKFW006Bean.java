@@ -13,7 +13,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Administrator
+ * @author C1491
  */
 @Stateless
 @LocalBean
@@ -32,5 +32,4 @@ public class CRMHKFW006Bean extends SuperEJBForMES<CRMHKFW006> {
             return null;
         }
     }
-
 }
