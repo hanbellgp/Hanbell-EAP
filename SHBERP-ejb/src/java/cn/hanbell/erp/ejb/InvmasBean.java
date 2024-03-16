@@ -120,10 +120,10 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setItnbr(detail.getItnbr()); // 设置件号
                     m.setItcls(detail.getItcls()); // 设置品号大类
                     m.setItclscode(detail.getItclscode().charAt(0)); // 设置品号归类
-                    m.setItdsc(detail.getItdsc()); // 设置中文品名
-                    m.setSpdsc(detail.getSpdsc()); // 设置中文规格
-                    m.setEitdsc(detail.getEitdsc()); // 设置英文品名
-                    m.setEspdsc(detail.getEspdsc()); // 设置英文规格
+                    m.setItdsc(filterString(detail.getItdsc())); // 设置中文品名
+                    m.setSpdsc(filterString(detail.getSpdsc())); // 设置中文规格
+                    m.setEitdsc(filterString(detail.getEitdsc())); // 设置英文品名
+                    m.setEspdsc(filterString(detail.getEspdsc())); // 设置英文规格
                     m.setUnmsr1(detail.getUnmsr1()); // 设置单位一
                     m.setUnmsr2(detail.getUnmsr2()); // 设置单位二
                     m.setUnmsr1e(detail.getUnmsr1e()); // 设置数量单位一（英文）
@@ -193,7 +193,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     if (facno.equals("C") || facno.equals("K")) {
                         Scminvmas scm = new Scminvmas();
                         scm.setItnbr(detail.getItnbr());
-                        scm.setItdsc(detail.getItdsc());
+                        scm.setItdsc(filterString(detail.getItdsc()));
                         scm.setProducttype(detail.getProducttype());
                         scm.setLevel1(detail.getLevel1());
                         scm.setLevel2(detail.getLevel2());
@@ -379,7 +379,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
 
                         syncCQBean.persist(m, null);
                         syncCQBean.getEntityManager().flush();
-                        
+
                         syncYCBean.persist(m, null);
                         syncYCBean.getEntityManager().flush();
                     }
@@ -491,7 +491,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         update(e);
                         this.getEntityManager().flush();
                     }
-                    
+
                     this.setCompany("C5");
                     if (this.findByItnbr(detail.getItnbr()) != null) {
                         Invmas e = this.findByItnbr(detail.getItnbr());

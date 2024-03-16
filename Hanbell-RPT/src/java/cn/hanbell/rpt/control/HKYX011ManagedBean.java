@@ -333,6 +333,12 @@ public class HKYX011ManagedBean extends SuperQueryBean<HKYX011> {
                     org.getOrganizationUnitName(), entity.getDiscountTotal(),
                     entity.getNumbertotal(), entity.getSaleamountTotal(), entity.getRatetotal(), entity.getRemark(), entity.getPeriod()};
                 list.add(o);
+            } else {
+                Object[] o = {entity.getApplyDate(), entity.getCustomerno(),
+                    entity.getCustomername(), "",
+                    "", entity.getDiscountTotal(),
+                    entity.getNumbertotal(), entity.getSaleamountTotal(), entity.getRatetotal(), entity.getRemark(), entity.getPeriod()};
+                list.add(o);
             }
         }
     }

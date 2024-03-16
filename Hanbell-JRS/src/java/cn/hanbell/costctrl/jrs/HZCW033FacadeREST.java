@@ -902,7 +902,7 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         pormzBean.persist(m);
                     });
                     return true;
-                }
+}
             }
             //服务人员写入REPLC
             List<REPLC> replcList = new ArrayList();

@@ -5,7 +5,7 @@
  */
 package cn.hanbell.oa.ejb;
 
-import cn.hanbell.crm.ejb.REPTCBean;
+
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.D50Z0009D0;
 import java.util.List;
@@ -23,8 +23,6 @@ public class D50Z0009D0Bean extends SuperEJBForEFGP<D50Z0009D0> {
 
     @EJB
     private D50Z0009D0DetailBean d50Z0009D0DetailBean;
-    @EJB
-    private REPTCBean reptcBean;
     private List<D50Z0009D0> detailList;
 
     public D50Z0009D0Bean() {

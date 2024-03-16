@@ -17,6 +17,8 @@ import cn.hanbell.oa.entity.Users;
 import cn.hanbell.util.SuperEJB;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -332,6 +334,30 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
         // 除了0.00其他数据都要带特殊字符：整
         sb.append(CN_FULL);
         return sb.toString();
+    }
+
+    // 优化抛转时件号相关字符问题
+    public String filterString(String s) {
+        if (s != null && !s.trim().equals("")) {
+            String returnStr = s;
+            try {
+                //String regEx = "[\\s`!！@#￥$%^……&（()）\\+【\\[\\]】｛{}｝\\|、\\\\；;：:‘'“”\"，,《<。.》>、/？?]";
+                String regEx = "[\\s`&²³\\t\\r\\n ]";
+                Pattern p = Pattern.compile(regEx);
+                Matcher m = p.matcher(returnStr);
+                returnStr = m.replaceAll(" ");
+                //returnStr = removeNonAscii(returnStr);
+            } catch (Exception ex) {
+                log4j.error(ex);
+            }
+            return returnStr;
+        }
+        return s;
+    }
+
+    //去除非ascii码字符
+    public String removeNonAscii(String str) {
+        return str.replaceAll("[^\\x00-\\x7F]", "");
     }
 
     /**
