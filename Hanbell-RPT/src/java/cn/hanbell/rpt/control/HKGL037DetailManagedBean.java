@@ -14,7 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -70,102 +69,34 @@ public class HKGL037DetailManagedBean extends SuperQueryBean<HKGL037Detail> {
         Cell cell;
         Row row;
         row = sheet.createRow(0);
-
-        if (this.getQueryType().equals('3')) {
-            row.createCell(0).setCellValue("单据类型");
-            row.createCell(1).setCellValue("申请日期");
-            row.createCell(2).setCellValue("申请人");
-            row.createCell(3).setCellValue("申请部门");
-            row.createCell(4).setCellValue("出发地");
-            row.createCell(5).setCellValue("目的地");
-            row.createCell(6).setCellValue("事由");
-            row.createCell(7).setCellValue("用车日期");
-            row.createCell(8).setCellValue("表单单号");
-            int i = 1;
-            for (HKGL037Detail e : entityList) {
-                row = sheet.createRow(i);
-                row.createCell(0).setCellValue(getCdesc("type", e.getHkgl037().getClxz()));
-                if (null == e.getHkgl037().getSqrq() || "".equals(e.getHkgl037().getSqrq())) {
-                    row.createCell(1).setCellValue("");
-                } else {
-                    cell = row.createCell(1);
-                    cell.setCellValue(e.getHkgl037().getSqrq());
-                    cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy/MM/dd"));
-                    cell.setCellStyle(cellStyle);
-                }
-                row.createCell(2).setCellValue(e.getHkgl037().getHdnDept() != null ? e.getHkgl037().getHdnDept() : "");
-                row.createCell(3).setCellValue(e.getHkgl037().getHdnEmply());
-                row.createCell(4).setCellValue(e.getAddress1());
-                row.createCell(5).setCellValue(e.getAddress2());
-                row.createCell(6).setCellValue(e.getSy());
-                if (null == e.getYcrqTxt() || e.getYcrqTxt().equals("")) {
-                    row.createCell(7).setCellValue("");
-                } else {
-                    cell = row.createCell(7);
-                    cell.setCellValue(e.getYcrqTxt());
-                    cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy/MM/dd"));
-                    cell.setCellStyle(cellStyle);
-                }
-                row.createCell(8).setCellValue(e.getFormSerialNumber());
-                i++;
-            }
-            for (int c = 0; c < 9; c++) {
-                sheet.autoSizeColumn(c);
-            }
-        } else {
-            row.createCell(0).setCellValue("单据类型");
-            row.createCell(1).setCellValue("日期");
-            row.createCell(2).setCellValue("申请部门");
-            row.createCell(3).setCellValue("驾驶员");
-            row.createCell(4).setCellValue("目的地");
-            row.createCell(5).setCellValue("事由");
-            row.createCell(6).setCellValue("始公里数");
-            row.createCell(7).setCellValue("终公里数");
-            row.createCell(8).setCellValue("里程合计");
-            row.createCell(9).setCellValue("回厂时间");
-            row.createCell(10).setCellValue("车牌号");
-            row.createCell(11).setCellValue("车牌号");
-            row.createCell(12).setCellValue("表单单号");
-            int i = 1;
-            for (HKGL037Detail e : entityList) {
-                row = sheet.createRow(i);
-                row.createCell(0).setCellValue(getCdesc("type", e.getHkgl037().getClxz()));
-                if (null == e.getHkgl037().getCctime() || e.getHkgl037().getCctime().equals("")) {
-                    row.createCell(1).setCellValue("");
-                } else {
-                    cell = row.createCell(1);
-                    cell.setCellValue(e.getHkgl037().getCctime());
-                    cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy/MM/dd"));
-                    cell.setCellStyle(cellStyle);
-                }
-                row.createCell(2).setCellValue(e.getHkgl037().getHdnDept() != null ? e.getHkgl037().getHdnDept() : "");
-                if ("1".equals(e.getHkgl037().getClxz())) {
-                    row.createCell(3).setCellValue(e.getHkgl037().getHdnJsy());
-                } else {
-                    row.createCell(3).setCellValue(e.getHkgl037().getHdnEmply());
-                }
-                row.createCell(4).setCellValue(e.getAddress2());
-                row.createCell(5).setCellValue(e.getSy());
-                row.createCell(6).setCellValue(e.getHkgl037().getSgls() != null ? e.getHkgl037().getSgls() : 0.00);
-                row.createCell(7).setCellValue(e.getHkgl037().getZgls() != null ? e.getHkgl037().getZgls() : 0.00);
-                row.createCell(8).setCellValue(e.getHkgl037().getTotal() != null ? e.getHkgl037().getTotal() : 0.00);
-                if (null == e.getHkgl037().getHctime() || e.getHkgl037().getHctime().equals("")) {
-                    row.createCell(9).setCellValue("");
-                } else {
-                    cell = row.createCell(9);
-                    cell.setCellValue(e.getHkgl037().getHctime());
-                    cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy/MM/dd"));
-                    cell.setCellStyle(cellStyle);
-                }
-                row.createCell(10).setCellValue(e.getHkgl037().getCph());
-                row.createCell(11).setCellValue(e.getHkgl037().getCpno());
-                row.createCell(12).setCellValue(e.getFormSerialNumber());
-                i++;
-            }
-            for (int c = 0; c < 13; c++) {
-                sheet.autoSizeColumn(c);
-            }
+        row.createCell(0).setCellValue("日期");
+        row.createCell(1).setCellValue("地点");
+        row.createCell(2).setCellValue("事由");
+        row.createCell(3).setCellValue("部门");
+        row.createCell(4).setCellValue("起点里程");
+        row.createCell(5).setCellValue("讫点里程");
+        row.createCell(6).setCellValue("回厂日期");
+        row.createCell(7).setCellValue("里程");
+        row.createCell(8).setCellValue("驾驶");
+        row.createCell(9).setCellValue("自算");
+        int i = 1;
+        for (HKGL037Detail e : entityList) {
+            row = sheet.createRow(i);
+            row.createCell(0).setCellValue(BaseLib.formatDate("yyyy-MM-dd", e.getHkgl037().getYcrq()));
+            row.createCell(1).setCellValue(e.getMdsf() + e.getMdcs() + e.getAddress2());
+            row.createCell(2).setCellValue(e.getSy());
+            row.createCell(3).setCellValue(e.getHkgl037().getHdnDept());
+            row.createCell(4).setCellValue(e.getHkgl037().getSgls());
+            row.createCell(5).setCellValue(e.getHkgl037().getZgls());
+            row.createCell(6).setCellValue(BaseLib.formatDate("yyyy-MM-dd", e.getHkgl037().getHctime()));
+            row.createCell(7).setCellValue(e.getHkgl037().getTotal());
+            row.createCell(8).setCellValue(e.getHkgl037().getHdnEmply());
+            i++;
         }
+        for (int c = 0; c < 9; c++) {
+            sheet.autoSizeColumn(c);
+        }
+
         OutputStream os = null;
         try {
             os = new FileOutputStream(fileFullName);
