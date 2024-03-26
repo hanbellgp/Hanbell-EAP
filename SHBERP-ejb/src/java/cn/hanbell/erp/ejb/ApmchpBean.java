@@ -95,8 +95,14 @@ public class ApmchpBean extends SuperEJBForERP<Apmchp> {
                         apmchp.setPayyn("Y");
                         apmchp.setPayptn(payptn);
                         apmchp.setVouno("");
-                        apmchp.setHpayamt(BigDecimal.ZERO);
-                        apmchp.setHpayamtfs(BigDecimal.ZERO);
+                        //有提前付款利息
+                        if (!"".equals(oad.getPayInterest())) {
+                            apmchp.setHpayamtfs(BigDecimal.valueOf(Double.valueOf(oad.getPayInterest())));
+                            apmchp.setHpayamt(apmchp.getHpayamtfs().multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        } else {
+                            apmchp.setHpayamt(BigDecimal.ZERO);
+                            apmchp.setHpayamtfs(BigDecimal.ZERO);
+                        }
                         sum = sum.add(apmchp.getPayamtfs());
                         addList.add(apmchp);
 
@@ -163,11 +169,18 @@ public class ApmchpBean extends SuperEJBForERP<Apmchp> {
                         continue;
                     }
                     BigDecimal srcpayamtfs = srcApmchp.getPayamtfs();   //变更前付款金额
+                    BigDecimal srchpayamtfs = srcApmchp.getHpayamtfs(); //变更前已付款金额
+                    BigDecimal srchpayamt = srcApmchp.getHpayamt();
                     BigDecimal sum = BigDecimal.ZERO;
                     //更新付款日期/金额
                     srcApmchp.setPayda(sdf.parse(oad.getPayDate1txt()));
                     srcApmchp.setPayamtfs(BigDecimal.valueOf(Double.valueOf(oad.getPayAmount1())));
                     srcApmchp.setPayamt(srcApmchp.getPayamtfs().multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP));
+                    //有提前付款利息
+                    if (!"".equals(oad.getPayInterest())) {
+                        srcApmchp.setHpayamtfs(srchpayamtfs.add(BigDecimal.valueOf(Double.valueOf(oad.getPayInterest()))));
+                        srcApmchp.setHpayamt(srcApmchp.getHpayamtfs().multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP));
+                    }
                     sum = sum.add(srcApmchp.getPayamtfs());
 
                     if (!"".equals(oad.getPayDate2txt()) && !oad.getPayDate2txt().equals(oad.getPayDate1txt())) {
@@ -209,9 +222,9 @@ public class ApmchpBean extends SuperEJBForERP<Apmchp> {
                         sum = sum.add(apmchp3.getPayamtfs());
                         addList.add(apmchp3);
                     }
-                    if (srcpayamtfs.compareTo(sum) != 0) {
-                        throw new RuntimeException("此笔立账申请原未付款金额 :" + srcpayamtfs
-                                + "不等于拆分后金额合计: " + sum + "立账申请单号 ：" + trno + ",序号： " + trseq);
+                    if ((srcpayamtfs.subtract(srchpayamtfs)).compareTo(sum) != 0) {
+                        throw new RuntimeException("此笔立账申请原付款金额 :" + srcpayamtfs + " 减去已付款金额" + srchpayamtfs
+                                + " 不等于拆分后金额合计: " + sum + "立账申请单号 ：" + trno + ",序号： " + trseq);
                     }
                     for (Apmchp a : addList) {
                         this.persist(a);
@@ -221,10 +234,10 @@ public class ApmchpBean extends SuperEJBForERP<Apmchp> {
             }
             return true;
         } catch (Exception ex) {
-            mailBean.getTo().add("13120@hanbell.cn");
-            mailBean.setMailSubject("OA厂商变更付款信息失败");
-            mailBean.setMailContent("OA厂商变更付款信息抛转异常，OA单号: " + psn + ",  出现异常：" + ex.toString());
-            mailBean.notify(new ErrorMailNotify());
+//            mailBean.getTo().add("13120@hanbell.cn");
+//            mailBean.setMailSubject("OA厂商变更付款信息失败");
+//            mailBean.setMailContent("OA厂商变更付款信息抛转异常，OA单号: " + psn + ",  出现异常：" + ex.toString());
+//            mailBean.notify(new ErrorMailNotify());
             ex.printStackTrace();
             log4j.error(ex);
             throw new RuntimeException(ex);
