@@ -31,7 +31,7 @@ public class DCSBean extends SuperEJBForCRM<DCS> {
         }
         Query query = getEntityManager().createNativeQuery(s);
         query.setParameter(1, city);
-        
+
         query.setParameter(2, "%"+cityname+"%");
         try {
             List<Object[]> list = query.getResultList();

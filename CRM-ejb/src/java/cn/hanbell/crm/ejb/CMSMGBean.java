@@ -20,12 +20,13 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class CMSMGBean extends SuperEJBForCRM<CMSMG>{
-    
+public class CMSMGBean extends SuperEJBForCRM<CMSMG> {
+
     public CMSMGBean() {
         super(CMSMG.class);
     }
-      public List<CMSMG> findByMG001(String mg001) {
+
+    public List<CMSMG> findByMG001(String mg001) {
         Query query = getEntityManager().createNamedQuery("CMSMG.findByMg001");
         query.setParameter("mg001", mg001);
         try {
@@ -34,6 +35,5 @@ public class CMSMGBean extends SuperEJBForCRM<CMSMG>{
             return null;
         }
     }
-    
-    
+
 }

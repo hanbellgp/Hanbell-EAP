@@ -378,6 +378,8 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                     } else {
                         chad.setIssevhad('Y');
                     }
+                    this.setCompany(facno);
+                    cdrdtaBean.setCompany(facno);
                     persist(chad);
                     this.getEntityManager().flush();
                     for (Cdrdta dta : cdtaList) {
