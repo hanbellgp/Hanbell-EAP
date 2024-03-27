@@ -55,7 +55,7 @@ public class HKGL037DetailManagedBean extends SuperQueryBean<HKGL037Detail> {
 
     @Override
     public void print() {
-        entityList = hkgl037DetailBean.findByFilters(model.getFilterFields(), model.getSortFields());
+         entityList = hkgl037DetailBean.findByFilters(model.getFilterFields(), model.getSortFields());
         if (entityList == null || entityList.isEmpty()) {
             return;
         }
@@ -78,11 +78,13 @@ public class HKGL037DetailManagedBean extends SuperQueryBean<HKGL037Detail> {
         row.createCell(6).setCellValue("回厂日期");
         row.createCell(7).setCellValue("里程");
         row.createCell(8).setCellValue("驾驶");
-        row.createCell(9).setCellValue("自算");
+        row.createCell(9).setCellValue("车牌号1");
+        row.createCell(10).setCellValue("车牌号2");
+        row.createCell(11).setCellValue("自算");
         int i = 1;
         for (HKGL037Detail e : entityList) {
             row = sheet.createRow(i);
-            row.createCell(0).setCellValue(BaseLib.formatDate("yyyy-MM-dd", e.getHkgl037().getYcrq()));
+            row.createCell(0).setCellValue(e.getYcrqTxt());
             row.createCell(1).setCellValue(e.getMdsf() + e.getMdcs() + e.getAddress2());
             row.createCell(2).setCellValue(e.getSy());
             row.createCell(3).setCellValue(e.getHkgl037().getHdnDept());
@@ -91,6 +93,8 @@ public class HKGL037DetailManagedBean extends SuperQueryBean<HKGL037Detail> {
             row.createCell(6).setCellValue(BaseLib.formatDate("yyyy-MM-dd", e.getHkgl037().getHctime()));
             row.createCell(7).setCellValue(e.getHkgl037().getTotal());
             row.createCell(8).setCellValue(e.getHkgl037().getHdnEmply());
+            row.createCell(9).setCellValue("0".equals(e.getHkgl037().getCph())? "" : e.getHkgl037().getCph());
+            row.createCell(10).setCellValue(e.getHkgl037().getCpno());
             i++;
         }
         for (int c = 0; c < 9; c++) {
