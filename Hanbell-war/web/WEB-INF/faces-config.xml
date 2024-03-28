@@ -150,6 +150,11 @@
             <to-view-id>/app/erp/billprintView.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>repmiimport</from-outcome>
+            <to-view-id>/app/crm/repmiimport.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <description>ERP权限查询</description>
