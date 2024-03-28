@@ -10,6 +10,8 @@ import cn.hanbell.util.SuperEJB;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -62,10 +64,10 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
     @PersistenceContext(unitName = "PU_qtcerp")
     private EntityManager em_qtcerp;
 
-    @PersistenceContext(unitName = "PU_sderp")
+    //@PersistenceContext(unitName = "PU_sderp")
     private EntityManager em_sderp;
 
-    @PersistenceContext(unitName = "PU_hkerp")
+    // @PersistenceContext(unitName = "PU_hkerp")
     private EntityManager em_hkerp;
 
     @PersistenceContext(unitName = "PU_zkerp")
@@ -77,7 +79,7 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
     @PersistenceContext(unitName = "PU_yinchuanerp")
     private EntityManager em_yinchuanerp;
 
-    @PersistenceContext(unitName = "PU_thberp")
+    //@PersistenceContext(unitName = "PU_thberp")
     private EntityManager em_thberp;
 
     public SuperEJBForERP(Class<T> entityClass) {
@@ -156,7 +158,7 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
     protected EntityManager getEntityManager(String facno) {
         switch (facno) {
             case "A":
-                return em_thberp;
+            // return em_thberp;
             case "C":
                 return em_shberp;
             case "G":
@@ -180,9 +182,11 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
             case "Q":
                 return em_qtcerp;
             case "W":
-                return em_sderp;
+                //  return em_sderp;
+                return null;
             case "X":
-                return em_hkerp;
+                //  return em_hkerp;
+                return null;
             case "F":
                 return em_chuxiongerp;
             case "C5":
@@ -190,6 +194,30 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
             default:
                 return em_shberp;
         }
+    }
+
+    // 优化抛转时件号相关字符问题
+    public String filterString(String s) {
+        if (s != null && !s.trim().equals("")) {
+            String returnStr = s;
+            try {
+                //String regEx = "[\\s`!！@#￥$%^……&（()）\\+【\\[\\]】｛{}｝\\|、\\\\；;：:‘'“”\"，,《<。.》>、/？?]";
+                String regEx = "[\\s`&²³\\t\\r\\n ]";
+                Pattern p = Pattern.compile(regEx);
+                Matcher m = p.matcher(returnStr);
+                returnStr = m.replaceAll(" ");
+                //returnStr = removeNonAscii(returnStr);
+            } catch (Exception ex) {
+                log4j.error(ex);
+            }
+            return returnStr;
+        }
+        return s;
+    }
+
+    //去除非ascii码字符
+    public String removeNonAscii(String str) {
+        return str.replaceAll("[^\\x00-\\x7F]", "");
     }
 
     /**
