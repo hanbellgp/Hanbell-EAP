@@ -83,7 +83,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
     //测试环境
 //   private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //本地环境
-    //private final String filePathTemp = "E:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+  //  private final String filePathTemp = "D:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -224,6 +224,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 hiddenTemp.setRectifierId(entity.getRectifierId());
                 hiddenTemp.setRectifierName(entity.getRectifierName());
                 hiddenTemp.setAcceptedId(entity.getAcceptedId());
+                hiddenTemp.setRectificationReasons(entity.getRectificationReasons());
                 hiddenTemp.setAcceptedName(entity.getAcceptedName());
                 hiddenTemp.setCheckOpinions(entity.getCheckOpinions());
                 if ("30".equals(hiddenTemp.getRstatus()) && hiddenTemp.getRectificationMeasures() != null) {
