@@ -28,6 +28,47 @@ public class EhsHazardInspectionBean extends SuperEJBForEDW<EhsHazardInspection>
         super(EhsHazardInspection.class);
     }
 
+    @Override
+    public List<EhsHazardInspection> findByFilters(Map<String, Object> filters, Map<String, String> orderBy) {
+         String exFilterStr = "";
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT e FROM ");
+        sb.append(this.className);
+        sb.append(" e WHERE 1=1 ");
+        Map<String, Object> strMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> entry : filters.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if ("patrolType".equals(key)) {
+                sb.append("  AND (e.patrolType = '");
+                sb.append(filters.get("patrolType")).append("'");
+            } else {
+                strMap.put(key, value);
+            }
+        }
+           sb.append(")").append(exFilterStr);
+       filters = strMap;
+        if (filters != null) {
+            this.setQueryFilter(sb, filters);
+        }
+        if (orderBy != null && orderBy.size() > 0) {
+            sb.append(" ORDER BY ");
+            for (final Map.Entry<String, String> o : orderBy.entrySet()) {
+                sb.append(" e.").append(o.getKey()).append(" ").append(o.getValue()).append(",");
+            }
+            sb.deleteCharAt(sb.lastIndexOf(","));
+        }
+        //生成SQL
+        Query query = getEntityManager().createQuery(sb.toString());
+
+        //参数赋值
+        if (filters != null) {
+            this.setQueryParam(query, filters);
+        }
+        List results = query.getResultList();
+        return results;
+    }
+
     public List<EhsHazardInspection> getEhsHazardInspectionList(Map<String, Object> filters, Map<String, String> orderBy) {
         StringBuilder sb = new StringBuilder();
         String exFilterStr = "";

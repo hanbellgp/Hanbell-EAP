@@ -139,6 +139,9 @@ public class EhsHiddenDanger implements Serializable {
     @Size(max = 30)
     @Column(name = "CheckId")
     private String checkId;
+    @Size(max = 200)
+    @Column(name = "RectificationReasons")
+    private String rectificationReasons;
 
     public EhsHiddenDanger() {
     }
@@ -362,6 +365,14 @@ public class EhsHiddenDanger implements Serializable {
         return hash;
     }
 
+    public String getRectificationReasons() {
+        return rectificationReasons;
+    }
+
+    public void setRectificationReasons(String rectificationReasons) {
+        this.rectificationReasons = rectificationReasons;
+    }
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -379,5 +390,5 @@ public class EhsHiddenDanger implements Serializable {
     public String toString() {
         return "cn.hanbell.edw.entity.EhsHiddenDanger[ id=" + id + " ]";
     }
-    
+
 }
