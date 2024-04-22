@@ -42,24 +42,70 @@ public class EhsHiddenDangerBean extends SuperEJBForEDW<EhsHiddenDanger> {
         for (Map.Entry<String, Object> entry : filters.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
-
             if ("userid".equals(key)) {
-                if (!filters.containsKey("月安全课长")) {//当点进来的是月安全课长不筛选对应的人员
-                    sb.append("  AND (e.presentingId = '");
-                    sb.append(filters.get("userid")).append("'");
-                    sb.append("  OR e.acceptedId = '");
-                    sb.append(filters.get("userid")).append("'");
-                    sb.append("  OR e.rectifierId = '");
-                    sb.append(filters.get("userid")).append("')");
+                if (filters.containsKey("月安全课长")) {//当点进来的是月安全课长不筛选对应的人员
+//                    sb.append("  AND (e.presentingId = '");
+//                    sb.append(filters.get("userid")).append("'");
+//                    sb.append("  OR e.acceptedId = '");
+//                    
+//                    sb.append(filters.get("userid")).append("'");
+//                    sb.append("  OR e.rectifierId = '");
+//                    sb.append(filters.get("userid")).append("')");
                 }
             } else if ("rstatus".equals(key)) {
                 if (Integer.parseInt(value.toString()) == 10) {
-                    sb.append("  AND (e.rstatus =10  )");
+                    //获取整改人的待处理单据
+                    sb.append("  AND (e.rstatus =10  ");
+                    sb.append("  AND e.rectifierId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    //获取整改人的待处理单据
+                    sb.append("  OR (e.rstatus =30  ");
+                    sb.append("  AND e.rectifierId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    //获取会签人的待处理单据
+                    sb.append("  OR (e.rstatus =45  ");
+                    sb.append("  AND e.acceptedId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    //获取排查人的待处理单据
+                    sb.append("  OR (e.rstatus =60  ");
+                    sb.append("  AND e.acceptedId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    //获取复核人的待处理单据
+                    if (filters.containsKey("月安全课长")) {
+                        sb.append("  OR (e.rstatus =75 ) ");
+                    }
                 }
                 if (Integer.parseInt(value.toString()) == 30) {
-                    sb.append("  AND (e.rstatus >10  AND e.rstatus <95)");
+                    //获取整改人的待处理单据
+                    sb.append("  AND (e.rstatus !=10   AND e.rstatus !=95  ");
+                    sb.append("  AND e.rectifierId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    //获取整改人的待处理单据
+                    sb.append("  OR (e.rstatus !=30  AND e.rstatus !=95");
+                    sb.append("  AND e.rectifierId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    //获取会签人的待处理单据
+                    sb.append("  OR (e.rstatus !=45  AND e.rstatus !=95");
+                    sb.append("  AND e.acceptedId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    //获取排查人的待处理单据
+                    sb.append("  OR (e.rstatus !=60  AND e.rstatus !=95");
+                    sb.append("  AND e.acceptedId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    //获取复核人的待处理单据
+                    if (filters.containsKey("月安全课长")) {
+                        sb.append("  OR (e.rstatus !=75 AND e.rstatus !=95 ) ");
+                    }
                 }
                 if (Integer.parseInt(value.toString()) == 95) {
+                    if (!filters.containsKey("月安全课长")) {//当点进来的是月安全课长不筛选对应的人员
+                        sb.append("  AND (e.presentingId = '");
+                        sb.append(filters.get("userid")).append("'");
+                        sb.append("  OR e.acceptedId = '");
+                        sb.append(filters.get("userid")).append("'");
+                        sb.append("  OR e.rectifierId = '");
+                        sb.append(filters.get("userid")).append("')");
+                    }
                     strMap.put(key, value);
                 }
             } else if ("formdateBegin".equals(key)) {
