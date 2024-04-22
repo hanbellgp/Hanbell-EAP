@@ -30,6 +30,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,6 +53,11 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -83,7 +91,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
     //测试环境
 //   private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //本地环境
-  //  private final String filePathTemp = "D:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    //  private final String filePathTemp = "D:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -290,84 +298,88 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     ehsHazardInspectionDtaBean.update(eDta);
                 }
                 ehsHiddenDangerBean.update(hiddenTemp);
-//                if ((!"2".equals(entity.getId())) && assetCardTemp != null) {
-//                    StringBuffer msg = new StringBuffer("收到新的报修单:");
-////                    StringBuffer userStrTemp = new StringBuffer(entity.getServiceuser().toUpperCase());
-//                    msg.append(formid).append("<br/>");
-//                    msg.append("资产编号:").append(assetCardTemp.getFormid()).append("<br/>");
-//                    msg.append("设备名称:").append(assetCardTemp.getAssetDesc()).append("<br/>");
-//                    msg.append("设备位置:").append(assetCardTemp.getPosition1().getName()).append(assetCardTemp.getPosition2().getName());
-//                    if (assetCardTemp.getPosition3() != null) {
-//                        msg.append(assetCardTemp.getPosition3().getName()).append("<br/>");
-//                    } else {
-//                        msg.append("<br/>");
-//                    }
-//                    msg.append("提报人:").append(entity.getPresentingId()).append("-").append(entity.getPresentingName()).append("<br/>");
-//                    msg.append("整改人:").append(entity.getRectifierId()).append("-").append(entity.getRectifierName()).append("<br/>");
-//                    msg.append("详情请至微信小程序查看!");
-//
-//                    //sysUserList = systemUserBean.findByDeptno("1W300");
-////                    String repairDeptMangerId = sysCodeBean.findBySyskindAndCode(companyCodeStr, "RD", "repairleaders").getCvalue();
-////
-////                    if (repairDeptMangerId != null && !repairDeptMangerId.equals("")) {
-////                        userStrTemp.append("|").append(repairDeptMangerId.toUpperCase());
-////                    }
-////
-////                    if ("C0-1".equalsIgnoreCase(assetCardTemp.getPosition2().getPosition())) {
-////                        userStrTemp.append("|").append("C0299");
-////                    } else if ("C0-2".equalsIgnoreCase(assetCardTemp.getPosition2().getPosition())) {
-////                        userStrTemp.append("|").append("C0141");
-////                    }
-//
-//                    String errmsg = sendMsgString(null, msg.toString(), sessionKey, openId);
-//
-//                    // 发送失败，抛异常，使事务回滚
-//                    if (!"200".equals(errmsg)) {
-//                        //throw new RuntimeException("发送失败,请联系管理员");
-//                        return new ResponseMessage("203", formid);
-//                    }
-//                } else if (assetCardTemp == null) {
-//                    StringBuffer msg = new StringBuffer("收到新的报修单:");
-//                    StringBuffer userStrTemp = new StringBuffer(entity.getServiceuser().toUpperCase());
-//                    msg.append(formid).append("<br/>");
-//                    msg.append("资产编号:").append("无<br/>");
-//                    msg.append("设备名称:").append("其他设备<br/>");
-//                    msg.append("设备位置:").append(entity.getRepairarea()).append("<br/>");
-//                    msg.append("报修人:").append(entity.getRepairuser()).append("-").append(entity.getRepairusername()).append("<br/>");
-//                    msg.append("维修人:").append(entity.getServiceuser()).append("-").append(entity.getServiceusername()).append("<br/>");
-//                    msg.append("详情请至微信小程序查看!");
-//
-////                    sysUserList = systemUserBean.findByDeptno("1W300");
-////                    if(sysUserList.size() > 0)
-////                    {
-////                        userStrTemp.append("|").append(sysUserList.get(0).getUserid().toUpperCase());
-////                    }
-//                    String repairDeptMangerId = sysCodeBean.findBySyskindAndCode(companyCodeStr, "RD", "repairleaders").getCvalue();
-//
-//                    if (repairDeptMangerId != null && !repairDeptMangerId.equals("")) {
-//                        userStrTemp.append("|").append(repairDeptMangerId.toUpperCase());
-//                    }
-//
-//                    if ("枫泾厂".equalsIgnoreCase(entity.getRepairarea()) || "枫泾总部".equalsIgnoreCase(entity.getRepairarea())) {
-//                        userStrTemp.append("|").append("C0299");
-//                    } else if ("兴塔厂".equalsIgnoreCase(entity.getRepairarea()) || "枫泾一厂".equalsIgnoreCase(entity.getRepairarea())) {
-//                        userStrTemp.append("|").append("C0141");
-//                    }
-//
-//                    String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
-//
-//                    // 发送失败，抛异常，使事务回滚
-//                    if (!"200".equals(errmsg)) {
-//                        //throw new RuntimeException("发送失败,请联系管理员");
-//                        return new ResponseMessage("203", formid);
-//                    }
-//                }
+                List<EhsSecure> checkList = new ArrayList<EhsSecure>();
+                Map<String, Object> filterSecure = new HashMap<>();
+                filterSecure.put("position", "月安全课长");
+                filterSecure.put("remark", new Date().getMonth() + 1 + "");
+                checkList = ehsSecureBean.findByFilters(filterSecure);
+                if (hiddenTemp.getRstatus().equals("10")) {
+                    StringBuffer msg = new StringBuffer("收到新的隐患单:");
+                    StringBuffer userStrTemp = new StringBuffer(entity.getRectifierId().toUpperCase());
+                    msg.append(formid).append("<br/>");
+                    msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
+                    msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
+                    msg.append("排查人:").append(entity.getPresentingId()).append("-").append(entity.getPresentingName()).append("<br/>");
+                    msg.append("整改人:").append(entity.getRectifierName()).append("<br/>");
+                    msg.append("详情请至微信小程序查看!");
+                    String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
+                    // 发送失败，抛异常，使事务回滚
+                    if (!"200".equals(errmsg)) {
+                        //throw new RuntimeException("发送失败,请联系管理员");
+                        return new ResponseMessage("203", formid);
+                    }
+                } else if (hiddenTemp.getRstatus().equals("45") || hiddenTemp.getRstatus().equals("60")) {
+                    StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
+                    StringBuffer userStrTemp = new StringBuffer(checkList.get(0).getSecureId().toUpperCase());
+                    msg.append(hiddenTemp.getId()).append("<br/>");
+                    msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
+                    msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
+                    msg.append("排查人:").append(entity.getPresentingId()).append("-").append(entity.getPresentingName()).append("<br/>");
+                    msg.append("整改人:").append(entity.getRectifierName()).append("<br/>");
+                    msg.append("详情请至微信小程序查看!");
+                    String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
+                    // 发送失败，抛异常，使事务回滚
+                    if (!"200".equals(errmsg)) {
+                        //throw new RuntimeException("发送失败,请联系管理员");
+                        return new ResponseMessage("203", formid);
+                    }
+                } else if (hiddenTemp.getRstatus().equals("75")) {
+                    StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
+                    StringBuffer userStrTemp = new StringBuffer(entity.getAcceptedId().toUpperCase());
+                    msg.append(hiddenTemp.getId()).append("<br/>");
+                    msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
+                    msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
+                    msg.append("排查人:").append(entity.getPresentingId()).append("-").append(entity.getPresentingName()).append("<br/>");
+                    msg.append("整改人:").append(entity.getRectifierName()).append("<br/>");
+                    msg.append("详情请至微信小程序查看!");
+                    String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
+                    // 发送失败，抛异常，使事务回滚
+                    if (!"200".equals(errmsg)) {
+                        //throw new RuntimeException("发送失败,请联系管理员");
+                        return new ResponseMessage("203", formid);
+                    }
+                }
+
                 return new ResponseMessage("200", hiddenTemp.getId());
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误Insert失败");
             }
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    // 发送企业微信信息
+    public String sendMsgString(String userId, String msg, String sessionkey, String openid)
+            throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
+        String URL = "http://172.16.10.51/Hanbell-WCO/api/sendmsg/send";
+        StringBuilder jsonString = new StringBuilder("{'userId':'");
+        jsonString.append(userId).append("','msg':'").append(msg).append("','sessionkey':'").append(sessionkey)
+                .append("','openid':'").append(openid).append("'}");
+        JSONObject jo = new JSONObject(jsonString.toString());
+        HttpPost httpPost = new HttpPost(URL);
+        httpPost.setHeader("content-type", "application/json");
+        httpPost.setEntity(new StringEntity(jo.toString(), "UTF-8"));
+        try {
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                return "200";
+            } else {
+                return "500";
+            }
+        } catch (Exception var5) {
+            return null;
         }
     }
 
@@ -829,6 +841,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
             return eList;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+
         }
     }
 
