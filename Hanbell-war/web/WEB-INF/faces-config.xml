@@ -131,6 +131,11 @@
             <to-view-id>/app/crm/repmiimport.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+                <navigation-case>
+            <from-outcome>qrcodeprint</from-outcome>
+            <to-view-id>/app/other/qrcodeprint.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <description>发票签收回执打印</description>
