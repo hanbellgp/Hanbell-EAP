@@ -61,6 +61,7 @@ public class HKGL037Model implements Serializable {
     private String hdncph;
     private String hdnDept;
     private String MKsystem;
+    private String hzgl004;
 
     public HKGL037Model() {
         this.ghuser = "";
@@ -348,6 +349,14 @@ public class HKGL037Model implements Serializable {
 
     public void setMKsystem(String MKsystem) {
         this.MKsystem = MKsystem;
+    }
+
+    public String getHzgl004() {
+        return hzgl004;
+    }
+
+    public void setHzgl004(String hzgl004) {
+        this.hzgl004 = hzgl004;
     }
 
 }
