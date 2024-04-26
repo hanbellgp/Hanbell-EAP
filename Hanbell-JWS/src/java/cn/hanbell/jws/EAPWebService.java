@@ -491,12 +491,12 @@ public class EAPWebService {
     @EJB
     private ApmchpBean apmchpBean;
 
-    //EJBForVHBERP
-    @EJB
-    private vn.hanbell.erp.ejb.ApmbilBean vhbapmbilBean;
-    @EJB
-    private vn.hanbell.erp.ejb.ApmaphBean vhbapmaphBean;
-
+//    //EJBForVHBERP
+//    @EJB
+//    private vn.hanbell.erp.ejb.ApmbilBean vhbapmbilBean;
+//    @EJB
+//    private vn.hanbell.erp.ejb.ApmaphBean vhbapmaphBean;
+//
     // EJBForPLM
     @EJB
     private cn.hanbell.plm.ejb.PLMProjectBean plmPLMProjectBean;
@@ -1713,22 +1713,21 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "createVHBERPAPM250ByOAVHBAPM820")
-    public String createVHBERPAPM250ByOAVHBAPM820(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = vhbapmbilBean.initByOAAPM820(psn);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "createVHBERPAPM250ByOAVHBAPM820", psn), ex);
-            throw new RuntimeException(ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
+//    @WebMethod(operationName = "createVHBERPAPM250ByOAVHBAPM820")
+//    public String createVHBERPAPM250ByOAVHBAPM820(@WebParam(name = "psn") String psn) {
+//        Boolean ret = false;
+//        try {
+//            ret = vhbapmbilBean.initByOAAPM820(psn);
+//        } catch (Exception ex) {
+//            log4j.error(String.format("执行%s:参数%s时异常", "createVHBERPAPM250ByOAVHBAPM820", psn), ex);
+//            throw new RuntimeException(ex);
+//        }
+//        if (ret) {
+//            return "200";
+//        } else {
+//            return "404";
+//        }
+//    }
     @WebMethod(operationName = "createERPAPM525ByOAAPM828")
     public String createERPAPM525ByOAAPM828(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -1777,22 +1776,21 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "updateVHBERPAPM820ByOAVHTV005")
-    public String updateVHBERPAPM820ByOAVHTV005(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
-        Boolean ret = false;
-        try {
-            ret = vhbapmaphBean.updateVHBERPAPM820ByOAVHTV005(psn, status);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM820ByOAHKCW013", psn), ex);
-            throw new RuntimeException(ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
+//    @WebMethod(operationName = "updateVHBERPAPM820ByOAVHTV005")
+//    public String updateVHBERPAPM820ByOAVHTV005(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+//        Boolean ret = false;
+//        try {
+//            ret = vhbapmaphBean.updateVHBERPAPM820ByOAVHTV005(psn, status);
+//        } catch (Exception ex) {
+//            log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM820ByOAHKCW013", psn), ex);
+//            throw new RuntimeException(ex);
+//        }
+//        if (ret) {
+//            return "200";
+//        } else {
+//            return "404";
+//        }
+//    }
     @WebMethod(operationName = "createERPCDR645ByOAHKFW005")
     public String createERPCDR645ByOAHKFW005(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -2731,6 +2729,27 @@ public class EAPWebService {
         Boolean ret = false;
         try {
             ret = hkgl037Bean.initByHKGL055(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "createOAHKGL037ByOAHKGL055", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    /**
+     * 出差单结案自动申请派车
+     *
+     * @param psn
+     * @return
+     */
+    @WebMethod(operationName = "createOAHKGL037ByOAHZGL004")
+    public String createOAHKGL037ByOAHZGL004(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkgl037Bean.initByHZGL004(psn);
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "createOAHKGL037ByOAHKGL055", psn), ex);
         }

@@ -211,7 +211,10 @@ public class HKGL037 implements Serializable {
     @Size(max = 255)
     @Column(name = "isPrint")
     private String isPrint;
-    
+    @Size(max = 255)
+    @Column(name = "hzgl004")
+    private String hzgl004;
+
     @JoinColumn(name = "processSerialNumber", referencedColumnName = "serialNumber", insertable = false, updatable = false)
     @OneToOne
     private ProcessInstance processInstance;
@@ -606,6 +609,14 @@ public class HKGL037 implements Serializable {
 
     public void setProcessInstance(ProcessInstance processInstance) {
         this.processInstance = processInstance;
+    }
+
+    public String getHzgl004() {
+        return hzgl004;
+    }
+
+    public void setHzgl004(String hzgl004) {
+        this.hzgl004 = hzgl004;
     }
 
 }
