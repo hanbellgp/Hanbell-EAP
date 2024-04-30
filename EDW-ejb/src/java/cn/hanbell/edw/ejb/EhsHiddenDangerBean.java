@@ -68,7 +68,7 @@ public class EhsHiddenDangerBean extends SuperEJBForEDW<EhsHiddenDanger> {
                     sb.append(filters.get("userid")).append("')");
                     //获取排查人的待处理单据
                     sb.append("  OR (e.rstatus =60  ");
-                    sb.append("  AND e.acceptedId = '");
+                    sb.append("  AND e.presentingId = '");
                     sb.append(filters.get("userid")).append("')");
                     //获取复核人的待处理单据
                     if (filters.containsKey("月安全课长")) {
@@ -76,21 +76,51 @@ public class EhsHiddenDangerBean extends SuperEJBForEDW<EhsHiddenDanger> {
                     }
                 }
                 if (Integer.parseInt(value.toString()) == 30) {
-                    //获取整改人的待处理单据
-                    sb.append("  AND (e.rstatus !=10   AND e.rstatus !=95  ");
-                    sb.append("  AND e.rectifierId = '");
-                    sb.append(filters.get("userid")).append("')");
-                    //获取整改人的待处理单据
-                    sb.append("  OR (e.rstatus !=30  AND e.rstatus !=95");
-                    sb.append("  AND e.rectifierId = '");
-                    sb.append(filters.get("userid")).append("')");
-                    //获取会签人的待处理单据
-                    sb.append("  OR (e.rstatus !=45  AND e.rstatus !=95");
+                    sb.append("  AND (e.rstatus =10    ");
                     sb.append("  AND e.acceptedId = '");
                     sb.append(filters.get("userid")).append("')");
+                    
                     //获取排查人的待处理单据
-                    sb.append("  OR (e.rstatus !=60  AND e.rstatus !=95");
+                    sb.append("  OR (e.rstatus =10");
+                    sb.append("  AND e.presentingId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    //获取整改人的待处理单据
+                    sb.append("  OR (e.rstatus =30 ");
                     sb.append("  AND e.acceptedId = '");
+                    sb.append(filters.get("userid")).append("')");
+                     //获取整改人的待处理单据
+                    sb.append("  OR (e.rstatus =30 ");
+                    sb.append("  AND e.presentingId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    //获取整改人的待处理单据
+                    sb.append("  OR (e.rstatus =45");
+                    sb.append("  AND e.rectifierId = '");
+                    sb.append(filters.get("userid")).append("')");
+                       //获取整改人的待处理单据
+                    sb.append("  OR (e.rstatus =45");
+                    sb.append("  AND e.presentingId = '");
+                    sb.append(filters.get("userid")).append("')");
+              //获取整改人的待处理单据
+                    sb.append("  OR (e.rstatus =60");
+                    sb.append("  AND e.acceptedId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    
+                      sb.append("  OR (e.rstatus =60");
+                    sb.append("  AND e.rectifierId = '");
+                    sb.append(filters.get("userid")).append("')");
+                     //获取排查人的待处理单据
+                    sb.append("  OR (e.rstatus =75");
+                    sb.append("  AND e.presentingId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    
+                        //获取排查人的待处理单据
+                    sb.append("  OR (e.rstatus =75");
+                    sb.append("  AND e.acceptedId = '");
+                    sb.append(filters.get("userid")).append("')");
+                    
+                        //获取排查人的待处理单据
+                    sb.append("  OR (e.rstatus =75");
+                    sb.append("  AND e.rectifierId = '");
                     sb.append(filters.get("userid")).append("')");
                     //获取复核人的待处理单据
                     if (filters.containsKey("月安全课长")) {
