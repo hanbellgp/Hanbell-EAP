@@ -318,9 +318,9 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                         //throw new RuntimeException("发送失败,请联系管理员");
                         return new ResponseMessage("203", formid);
                     }
-                } else if (hiddenTemp.getRstatus().equals("45") || hiddenTemp.getRstatus().equals("60")) {
+                } else if (hiddenTemp.getRstatus().equals("45") ) {
                     StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
-                    StringBuffer userStrTemp = new StringBuffer(checkList.get(0).getSecureId().toUpperCase());
+                    StringBuffer userStrTemp = new StringBuffer(entity.getAcceptedId().toUpperCase());
                     msg.append(hiddenTemp.getId()).append("<br/>");
                     msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
                     msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
@@ -333,9 +333,24 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                         //throw new RuntimeException("发送失败,请联系管理员");
                         return new ResponseMessage("203", formid);
                     }
-                } else if (hiddenTemp.getRstatus().equals("75")) {
+                }  else if (hiddenTemp.getRstatus().equals("60")) {
                     StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
-                    StringBuffer userStrTemp = new StringBuffer(entity.getAcceptedId().toUpperCase());
+                    StringBuffer userStrTemp = new StringBuffer(entity.getPresentingId().toUpperCase());
+                    msg.append(hiddenTemp.getId()).append("<br/>");
+                    msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
+                    msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
+                    msg.append("排查人:").append(entity.getPresentingId()).append("-").append(entity.getPresentingName()).append("<br/>");
+                    msg.append("整改人:").append(entity.getRectifierName()).append("<br/>");
+                    msg.append("详情请至微信小程序查看!");
+                    String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
+                    // 发送失败，抛异常，使事务回滚
+                    if (!"200".equals(errmsg)) {
+                        //throw new RuntimeException("发送失败,请联系管理员");
+                        return new ResponseMessage("203", formid);
+                    }
+                }else if (hiddenTemp.getRstatus().equals("75")) {
+                    StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
+                    StringBuffer userStrTemp = new StringBuffer(checkList.get(0).getSecureId());
                     msg.append(hiddenTemp.getId()).append("<br/>");
                     msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
                     msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
