@@ -16,6 +16,7 @@ import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.war.lazy.QrcodeModel;
 import cn.hanbell.war.rpt.QrcodePrintReport;
 import cn.hanbell.war.rpt.SGD00933QrcodePrint;
+import cn.hanbell.war.rpt.SSH00849QrcodePrint;
 import cn.hanbell.war.web.FormMultiBean;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -86,6 +87,7 @@ public class QrcodePrintManagedBean extends FormMultiBean<Qrcode, QrcodeDetail> 
     public void construct() {
         typeList = new ArrayList<Type>();
         typeList.add(new Type("SGD00933QrCode", "广东汉德出货二维码"));
+         typeList.add(new Type("SSH00849QrCode", "上海萨震出货二维码"));
         companyList = companyBean.findAll();
         super.construct();
     }
@@ -108,10 +110,10 @@ public class QrcodePrintManagedBean extends FormMultiBean<Qrcode, QrcodeDetail> 
         String reportName = "", outputName, reportFormat;
         // 设置报表名称
         // 设置导出文件名称
-        fileName = "SGD00933QrCode" + BaseLib.formatDate("yyyyMMddHHmmss", getDate()) + ".pdf";
+        fileName = this.currentEntity.getType() + BaseLib.formatDate("yyyyMMddHHmmss", getDate()) + ".pdf";
         outputName = reportOutputPath + fileName;
         reportClassLoader = Class.forName("cn.hanbell.war.rpt.SGD00933QrcodePrint").getClassLoader();
-        reportName = reportPath + "SGD00933QrCode.rptdesign";
+        reportName = reportPath + this.currentEntity.getType()+".rptdesign";
         OutputStream os = new FileOutputStream(outputName);
         PdfCopyFields pdfCopy = new PdfCopyFields(os);
         HashMap<String, Object> reportParams = new HashMap<>();
@@ -119,6 +121,8 @@ public class QrcodePrintManagedBean extends FormMultiBean<Qrcode, QrcodeDetail> 
         QrcodePrintReport report = null;
         if (this.currentEntity.getType().equals("SGD00933QrCode")) {//机体广州汉德二维码
             report = new SGD00933QrcodePrint();
+        }else if(this.currentEntity.getType().equals("SSH00849QrCode")){
+              report = new SSH00849QrcodePrint();
         }
         report.setEJB(qrcodeBean);
         report.initQrcode(this.currentEntity.getFormid(), this.getAppResPath());
@@ -209,11 +213,25 @@ public class QrcodePrintManagedBean extends FormMultiBean<Qrcode, QrcodeDetail> 
                 head.setStatus("N");
                 head.setCreator(user.getUserid());
                 head.setCredateToNow();
-                int columnCount = sheet.getRow(0).getLastCellNum();
+            
                 Cell cell;
-                sheet.getRow(0).getLastCellNum();
+                int column=0,row=0;
+                while(true){//获取行数
+                    cell = sheet.getRow(row).getCell(0);
+                    if( getValue(cell)==null ||  "".equals(getValue(cell))){
+                        break;
+                    }
+                    row++;
+                }
+                while(true){//获取列数
+                    cell = sheet.getRow(0).getCell(column);
+                    if( getValue(cell)==null ||  "".equals(getValue(cell))){
+                        break;
+                    }
+                    column++;
+                }
                 List<QrcodeDetail> addDetail = new ArrayList<>();
-                for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                for (int i = 1; i <= row; i++) {
                     QrcodeDetail detail = new QrcodeDetail();
                     detail.setSeq(i);
                     cell = sheet.getRow(i).getCell(0);
@@ -221,8 +239,9 @@ public class QrcodePrintManagedBean extends FormMultiBean<Qrcode, QrcodeDetail> 
                     if (detail.getContent1() == null || "".equals(detail.getContent1())) {
                         break;
                     }
-                    for (int j = 0; j < columnCount; j++) {
+                    for (int j = 0; j < column; j++) {
                         cell = sheet.getRow(i).getCell(j);
+                        
                         detail.setContent(j + 1, getValue(cell));
                     }
                     addDetail.add(detail);

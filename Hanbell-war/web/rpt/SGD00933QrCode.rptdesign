@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.6.0.v201606072122</property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <data-sources>
+        <script-data-source name="scriptDS" id="225"/>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="dataDetail" id="226">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">itnbr</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">itdsc</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">spdsc</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">count</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">pc</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">supplier</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">qrcode1</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">qrcode2</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">itnbr</property>
+                </structure>
+                <structure>
+                    <property name="columnName">itdsc</property>
+                </structure>
+                <structure>
+                    <property name="columnName">spdsc</property>
+                </structure>
+                <structure>
+                    <property name="columnName">count</property>
+                </structure>
+                <structure>
+                    <property name="columnName">pc</property>
+                </structure>
+                <structure>
+                    <property name="columnName">supplier</property>
+                </structure>
+                <structure>
+                    <property name="columnName">qrcode1</property>
+                </structure>
+                <structure>
+                    <property name="columnName">qrcode2</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">itnbr</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">itdsc</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">spdsc</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">count</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">pc</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">supplier</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">qrcode1</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">qrcode2</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">scriptDS</property>
+            <method name="open"><![CDATA[
+importPackage(Packages.cn.hanbell.war.rpt);
+
+ejbClient = new SGD00933QrcodePrint();
+
+ejbClient.setEJB(params["JNDIName"]);
+master = ejbClient.getEntity(params["id"]);
+if(master!=null){
+	detail = ejbClient.getDetail(master.getFormid()); 
+}
+
+currentRow = 0;]]></method>
+            <method name="fetch"><![CDATA[importPackage(Packages.java.lang);
+System.out.println(detail.size());
+if(currentRow < detail.size()){
+	System.out.println(currentRow+"="+detail.get(currentRow).getContent3());
+	dataSetRow["itnbr"] = detail.get(currentRow).getContent1();
+	dataSetRow["itdsc"] = detail.get(currentRow).getContent2();
+	dataSetRow["spdsc"] = detail.get(currentRow).getContent3();
+    dataSetRow["count"] = detail.get(currentRow).getContent4()+"  "+detail.get(currentRow).getContent5();
+    dataSetRow["pc"] = detail.get(currentRow).getContent7();
+    dataSetRow["supplier"] = detail.get(currentRow).getContent8();
+    dataSetRow["qrcode1"] = "http://127.0.0.1/Hanbell-war/resources/app/res/" +master.getFormid()+detail.get(currentRow).getSeq()+ "Qrcode1.png";
+    
+    dataSetRow["qrcode2"] = "http://127.0.0.1/Hanbell-war/resources/app/res/" +master.getFormid()+detail.get(currentRow).getSeq()+ "Qrcode2.png";
+    currentRow++;
+    return true;
+}
+return false;
+]]></method>
+            <method name="close"><![CDATA[ejbClient = null;]]></method>
+        </script-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">custom</property>
+            <property name="topMargin">0in</property>
+            <property name="leftMargin">0in</property>
+            <property name="bottomMargin">0in</property>
+            <property name="rightMargin">0in</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="height">73mm</property>
+            <property name="width">73mm</property>
+            <property name="headerHeight">0in</property>
+            <property name="footerHeight">0in</property>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <list id="300">
+            <property name="dataSet">dataDetail</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">itnbr</property>
+                    <text-property name="displayName">itnbr</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["itnbr"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">itdsc</property>
+                    <text-property name="displayName">itdsc</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["itdsc"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">spdsc</property>
+                    <text-property name="displayName">spdsc</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["spdsc"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">count</property>
+                    <text-property name="displayName">count</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["count"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">pc</property>
+                    <text-property name="displayName">pc</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["pc"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">supplier</property>
+                    <text-property name="displayName">supplier</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["supplier"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">qrcode1</property>
+                    <text-property name="displayName">qrcode1</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["qrcode1"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">qrcode2</property>
+                    <text-property name="displayName">qrcode2</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["qrcode2"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <header>
+                <text id="4">
+                    <property name="fontFamily">"宋体"</property>
+                    <property name="fontSize">0.5cm</property>
+                    <property name="fontWeight">normal</property>
+                    <property name="textAlign">center</property>
+                    <property name="contentType">auto</property>
+                    <text-property name="content"><![CDATA[原材料标签]]></text-property>
+                </text>
+            </header>
+            <detail>
+                <grid id="245">
+                    <property name="height">1.1666666666666667in</property>
+                    <column id="246">
+                        <property name="width">1.5cm</property>
+                    </column>
+                    <column id="247"/>
+                    <column id="248">
+                        <property name="width">2.3cm</property>
+                    </column>
+                    <row id="249">
+                        <cell id="250"/>
+                        <cell id="251"/>
+                        <cell id="252">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">6</property>
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <image id="165">
+                                <property name="height">2cm</property>
+                                <property name="width">2cm</property>
+                                <property name="source">url</property>
+                                <expression name="uri" type="javascript">row["qrcode1"]</expression>
+                            </image>
+                        </cell>
+                    </row>
+                    <row id="286">
+                        <property name="height">0.4cm</property>
+                        <cell id="287">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="288">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                    </row>
+                    <row id="253">
+                        <property name="height">0.7cm</property>
+                        <cell id="254">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <text id="32">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="contentType">auto</property>
+                                <text-property name="content"><![CDATA[料号:]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="255">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <data id="232">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="textUnderline">underline</property>
+                                <property name="resultSetColumn">itnbr</property>
+                            </data>
+                        </cell>
+                    </row>
+                    <row id="257">
+                        <cell id="258">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <text id="33">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="contentType">auto</property>
+                                <text-property name="content"><![CDATA[品名:]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="259">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <data id="231">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="textUnderline">underline</property>
+                                <property name="resultSetColumn">itdsc</property>
+                            </data>
+                        </cell>
+                    </row>
+                    <row id="261">
+                        <cell id="262">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <text id="34">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="contentType">auto</property>
+                                <text-property name="content"><![CDATA[规格:]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="263">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <data id="230">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="textUnderline">underline</property>
+                                <property name="resultSetColumn">spdsc</property>
+                            </data>
+                        </cell>
+                    </row>
+                    <row id="265">
+                        <property name="height">0.7cm</property>
+                        <cell id="266">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <text id="35">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="contentType">auto</property>
+                                <text-property name="content"><![CDATA[数量:]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="267">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <data id="227">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="textUnderline">underline</property>
+                                <property name="resultSetColumn">count</property>
+                            </data>
+                        </cell>
+                    </row>
+                </grid>
+                <grid id="269">
+                    <property name="height">1.0625in</property>
+                    <column id="270"/>
+                    <column id="271">
+                        <property name="width">1.7cm</property>
+                    </column>
+                    <column id="272"/>
+                    <row id="273">
+                        <property name="height">0.125in</property>
+                        <cell id="274">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">3</property>
+                            <image id="285">
+                                <property name="height">2.3cm</property>
+                                <property name="width">2.3cm</property>
+                                <property name="source">url</property>
+                                <expression name="uri" type="javascript">row["qrcode2"]</expression>
+                            </image>
+                        </cell>
+                        <cell id="275">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="276">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                    </row>
+                    <row id="277">
+                        <property name="height">0.3020833333333333in</property>
+                        <cell id="279">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <text id="48">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="textUnderline">none</property>
+                                <property name="textAlign">left</property>
+                                <property name="whiteSpace">pre</property>
+                                <property name="display">block</property>
+                                <property name="contentType">auto</property>
+                                <text-property name="content"><![CDATA[批次:]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="280">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <data id="229">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="textUnderline">underline</property>
+                                <property name="resultSetColumn">pc</property>
+                            </data>
+                        </cell>
+                    </row>
+                    <row id="281">
+                        <property name="height">0.4270833333333333in</property>
+                        <cell id="283">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <text id="49">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="textAlign">left</property>
+                                <property name="whiteSpace">pre</property>
+                                <property name="contentType">auto</property>
+                                <text-property name="content"><![CDATA[供应商:]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="284">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <data id="233">
+                                <property name="fontFamily">"宋体"</property>
+                                <property name="fontSize">0.4cm</property>
+                                <property name="textUnderline">underline</property>
+                                <property name="resultSetColumn">supplier</property>
+                            </data>
+                        </cell>
+                    </row>
+                    <row id="296">
+                        <property name="height">0.20833333333333334in</property>
+                        <cell id="297">
+                            <text id="295">
+                                <property name="fontSize">0.2cm</property>
+                                <property name="textAlign">center</property>
+                                <property name="contentType">auto</property>
+                                <text-property name="content"><![CDATA[订单号]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="298"/>
+                        <cell id="299"/>
+                    </row>
+                </grid>
+            </detail>
+        </list>
+    </body>
+</report>
