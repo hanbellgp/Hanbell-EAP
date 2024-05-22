@@ -40,6 +40,18 @@ public class HZGL004Model {
     private String isWechat;
     private String safeplace;
     private String srcno;
+    
+    //派车单栏位
+    private String useCar;
+    private String clxz;
+    private String employee;
+    private String cpno;
+    private String ycyy;
+    private String accommodation;
+    private String departure;
+    private String accommRegistration;
+    private String lxfs;
+    private String bzsm;
 
     public HZGL004Model() {
 
@@ -369,6 +381,86 @@ public class HZGL004Model {
 
     public void setSrcno(String srcno) {
         this.srcno = srcno;
+    }
+
+    public String getClxz() {
+        return clxz;
+    }
+
+    public void setClxz(String clxz) {
+        this.clxz = clxz;
+    }
+
+    public String getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(String employee) {
+        this.employee = employee;
+    }
+
+    public String getCpno() {
+        return cpno;
+    }
+
+    public void setCpno(String cpno) {
+        this.cpno = cpno;
+    }
+
+    public String getYcyy() {
+        return ycyy;
+    }
+
+    public void setYcyy(String ycyy) {
+        this.ycyy = ycyy;
+    }
+
+    public String getAccommodation() {
+        return accommodation;
+    }
+
+    public void setAccommodation(String accommodation) {
+        this.accommodation = accommodation;
+    }
+
+    public String getDeparture() {
+        return departure;
+    }
+
+    public void setDeparture(String departure) {
+        this.departure = departure;
+    }
+
+    public String getAccommRegistration() {
+        return accommRegistration;
+    }
+
+    public void setAccommRegistration(String accommRegistration) {
+        this.accommRegistration = accommRegistration;
+    }
+
+    public String getLxfs() {
+        return lxfs;
+    }
+
+    public void setLxfs(String lxfs) {
+        this.lxfs = lxfs;
+    }
+
+    public String getBzsm() {
+        return bzsm;
+    }
+
+    public void setBzsm(String bzsm) {
+        this.bzsm = bzsm;
+    }
+
+    public String getUseCar() {
+        return useCar;
+    }
+
+    public void setUseCar(String useCar) {
+        this.useCar = useCar;
     }
 
 }
