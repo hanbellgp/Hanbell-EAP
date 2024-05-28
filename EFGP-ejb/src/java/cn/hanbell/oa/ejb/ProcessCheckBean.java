@@ -51,7 +51,7 @@ public class ProcessCheckBean extends SuperEJBForEFGP<ProcessCheck> {
         Query query = getEntityManager().createNativeQuery(sb.toString());
         List result = query.getResultList();
         List<ProcessCheck> dataList = new ArrayList<>();
-        if (!result.isEmpty() && null != result) {
+        if (null != result && !result.isEmpty()) {
             ProcessCheck newEntity;
             for (int i = 0; i < result.size(); i++) {
                 Object[] row = (Object[]) result.get(i);
