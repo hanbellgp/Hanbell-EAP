@@ -4263,9 +4263,23 @@ public class EAPWebService {
                 ret = true;
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             log4j.error(String.format("执行%s:参数%s时异常", "createCustomerComplaintByEAP", psn), ex);
-            mailBean.getTo().clear();
-            mailBean.getCc().clear();
+               List<String> emailTo
+                        = mailSettingBean.findRecipientTo("cn.hanbell.jws.EAPWebService.createCustomerComplaintByEAP");
+                List<String> emailCc
+                        = mailSettingBean.findRecipientCc("cn.hanbell.jws.EAPWebService.createCustomerComplaintByEAP");
+                List<String> emailBcc
+                        = mailSettingBean.findRecipientBcc("cn.hanbell.jws.EAPWebService.createCustomerComplaintByEAP");
+                      if (emailTo != null && !emailTo.isEmpty()) {
+                    mailBean.getTo().addAll(emailTo);
+                }
+                if (emailCc != null && !emailCc.isEmpty()) {
+                    mailBean.getCc().addAll(emailCc);
+                }
+                if (emailBcc != null && !emailBcc.isEmpty()) {
+                    mailBean.getBcc().addAll(emailBcc);
+                }
             mailBean.setMailSubject("客诉结案抛转详细失败");
             mailBean.setMailContent("流程号：" + psn + "————————异常" + ex.toString());
             mailBean.notify(new MailNotify());

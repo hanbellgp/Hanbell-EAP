@@ -62,9 +62,6 @@ public class HZGL004carDetail implements Serializable {
     @Column(name = "mdcs")
     private String mdcs;
     @Size(max = 255)
-    @Column(name = "contact")
-    private String contact;
-    @Size(max = 255)
     @Column(name = "bmdept_txt")
     private String bmdeptTxt;
     @Size(max = 255)
@@ -146,7 +143,7 @@ public class HZGL004carDetail implements Serializable {
     public void setOid(String oid) {
         this.oid = oid;
     }
-
+    
     public String getKrlxfs() {
         return krlxfs;
     }
@@ -169,14 +166,6 @@ public class HZGL004carDetail implements Serializable {
 
     public void setMdcs(String mdcs) {
         this.mdcs = mdcs;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
     }
 
     public String getBmdeptTxt() {

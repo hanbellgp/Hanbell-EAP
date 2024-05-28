@@ -168,7 +168,7 @@ public class HKGL037Bean extends SuperEJBForEFGP<HKGL037> {
             Users currentUser = workFlowBean.getCurrentUser();
             m = new HKGL037Model();
             m.setSqrq(BaseLib.getDate());
-            m.setEmply(aa.getApplyUser());
+            m.setEmployee(aa.getApplyUser());
             m.setDept(aa.getApplyDept());
             m.setLxfs(aa.getLxfs());
             m.setClxz(aa.getClxz());
@@ -205,7 +205,7 @@ public class HKGL037Bean extends SuperEJBForEFGP<HKGL037> {
                 d.setGhuser_lbl(car.getGhuserLbl());
                 d.setBmdept_txt(car.getBmdeptTxt());
                 d.setBmdept_lbl(car.getBmdeptLbl());
-                d.setContact(car.getContact());
+                d.setContact(aa.getLxfs());
                 d.setKr(car.getKr());
                 d.setKrlxfs(car.getKrlxfs());
                 d.setYcrq_txt(car.getYcrqTxt());
@@ -233,6 +233,7 @@ public class HKGL037Bean extends SuperEJBForEFGP<HKGL037> {
             }
             return true;
         } catch (Exception ex) {
+            ex.printStackTrace();
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
             return false;
         }
