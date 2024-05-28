@@ -204,8 +204,14 @@ public class HKCG017 implements Serializable {
     @Column(name = "Checkbox18")
     private String checkbox18;
     @Size(max = 255)
+    @Column(name = "Checkbox19")
+    private String checkbox19;
+    @Size(max = 255)
     @Column(name = "belse")
     private String belse;
+    @Size(max = 255)
+    @Column(name = "vdrsta")
+    private String vdrsta;
     @Size(max = 255)
     @Column(name = "purkind")
     private String purkind;
@@ -694,6 +700,22 @@ public class HKCG017 implements Serializable {
 
     public void setPaycode(String paycode) {
         this.paycode = paycode;
+    }
+
+    public String getCheckbox19() {
+        return checkbox19;
+    }
+
+    public void setCheckbox19(String checkbox19) {
+        this.checkbox19 = checkbox19;
+    }
+
+    public String getVdrsta() {
+        return vdrsta;
+    }
+
+    public void setVdrsta(String vdrsta) {
+        this.vdrsta = vdrsta;
     }
 
 }
