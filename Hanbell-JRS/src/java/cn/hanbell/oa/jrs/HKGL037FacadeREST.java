@@ -47,8 +47,9 @@ public class HKGL037FacadeREST extends SuperRESTForEFGP<KV> {
             try {
                 List<KV> dataList = new ArrayList<>();
                 dataList.add(new KV("1", "公务车"));
-                dataList.add(new KV("2", "私车公用"));
+                dataList.add(new KV("2", "私车公用(燃油车)"));
                 dataList.add(new KV("3", "外叫车"));
+                dataList.add(new KV("4", "私车公用(电车)"));
                 return dataList;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
