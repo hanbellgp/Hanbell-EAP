@@ -213,6 +213,13 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 Map<String, Object> filterFields = new HashMap<>();
                 filterFields.put("id", docPid);
                 List<EhsHazardInspectionDta> eDta = ehsHazardInspectionDtaBean.findByFilters(filterFields);
+                Map<String, Object> hiddenFields = new HashMap<>();
+                 hiddenFields.put("id", entity.getId());
+                List<EhsHiddenDanger> ehsList=ehsHiddenDangerBean.findByFilters(hiddenFields);
+                if (ehsList.size()>0) {
+                    hiddenTemp=ehsList.get(0);
+                }
+                
                 hiddenTemp.setCompany(entity.getCompany());
                 hiddenTemp.setId(entity.getId());
                 hiddenTemp.setHiddenType(entity.getHiddenType());
@@ -222,7 +229,6 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 hiddenTemp.setHiddenLocation(entity.getHiddenLocation());
                 hiddenTemp.setHiddenDescribe(entity.getHiddenDescribe());
                 hiddenTemp.setHiddenSource(entity.getHiddenSource());
-                hiddenTemp.setRectificationCompletionDate(entity.getRectificationCompletionDate());
                 hiddenTemp.setCreateTime(entity.getCreateTime());
                 hiddenTemp.setRectificationDeadline(entity.getRectificationDeadline());
                 hiddenTemp.setPresentingId(entity.getPresentingId());
