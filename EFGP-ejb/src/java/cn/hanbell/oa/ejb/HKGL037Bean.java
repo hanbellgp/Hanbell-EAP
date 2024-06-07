@@ -167,6 +167,7 @@ public class HKGL037Bean extends SuperEJBForEFGP<HKGL037> {
             workFlowBean.initUserInfo(aa.getApplyUser());
             Users currentUser = workFlowBean.getCurrentUser();
             m = new HKGL037Model();
+            m.setEmply(aa.getApplyUser());
             m.setSqrq(BaseLib.getDate());
             m.setEmployee(aa.getApplyUser());
             m.setDept(aa.getApplyDept());
