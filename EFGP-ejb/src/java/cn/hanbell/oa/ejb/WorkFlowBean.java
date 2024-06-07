@@ -57,7 +57,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
     public final String HOST_PORT = "8086";
     //文件存储的位置，允许读写的用户名密码，账号
     public final String OA_USERNO = "ECReader";
-    public final String OA_PASSWORD = "HanbellPass@word";
+    public final String OA_PASSWORD = "HanbellP@ssw0rd";
 
     @EJB
     private ParticipantActivityInstanceBean participantActivityInstanceBean;
@@ -304,6 +304,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             serialNo = object.toString();
             return "200$" + serialNo;
         } catch (ServiceException | RemoteException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
             currentUser = null;
