@@ -304,6 +304,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             serialNo = object.toString();
             return "200$" + serialNo;
         } catch (ServiceException | RemoteException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
             currentUser = null;
