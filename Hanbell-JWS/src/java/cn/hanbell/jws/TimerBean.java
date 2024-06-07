@@ -177,6 +177,7 @@ import cn.hanbell.plm.ejb.PLMItnbrDetailTempBean;
 import cn.hanbell.plm.ejb.PLMItnbrMasterTempBean;
 import cn.hanbell.plm.entity.PLMItnbrDetailTemp;
 import cn.hanbell.plm.entity.PLMItnbrMasterTemp;
+import cn.hanbell.wco.ejb.Agent1000002Bean;
 import com.lightshell.comm.BaseLib;
 import com.lightshell.comm.SuperEJB;
 import java.lang.reflect.Method;
@@ -404,6 +405,11 @@ public class TimerBean {
     @EJB
     private PLMItnbrDetailTempBean plmItnbrDetailTempBean;
 
+    // EJBForWCO
+    @EJB
+    private Agent1000002Bean wechatCorpBean;
+
+    private final String errMsgUser = "C2082";
     @Resource
     TimerService timerService;
 
@@ -415,103 +421,110 @@ public class TimerBean {
     public void syncOrganizationByHRM() {
         try {
             // 同步部门
+            wechatCorpBean.initConfiguration();
+            wechatCorpBean.sendMsgToUser(errMsgUser, "text", "HR同步EAP更新开始");
             log4j.info("syncOrganizationByHRM开始");
             List<cn.hanbell.hrm.entity.Department> departmentList = hrmDepartmentBean.findAll();
             if (departmentList != null && !departmentList.isEmpty()) {
                 departmentList.forEach((hd) -> {
-                    // EAP
-                    cn.hanbell.eap.entity.Department ep = null;
-                    cn.hanbell.hrm.entity.Department hp = hrmDepartmentBean.findByDepartmentId(hd.getParentId());
-                    if (hp != null) {
-                        ep = eapDepartmentBean.findByDeptno(hp.getCode());
-                    }
-                    cn.hanbell.eap.entity.Department ed = eapDepartmentBean.findByDeptno(hd.getCode());
-                    if (ed == null) {
-                        ed = new cn.hanbell.eap.entity.Department();
-                        ed.setCompany(workFlowBean.getCompanyByDeptId(hd.getCode()));
-                        ed.setDeptno(hd.getCode());
-                        ed.setDept(hd.getName());
-                        if (ep != null) {
-                            ed.setParentDept(ep);
+                    try {
+                        // EAP
+                        cn.hanbell.eap.entity.Department ep = null;
+                        cn.hanbell.hrm.entity.Department hp = hrmDepartmentBean.findByDepartmentId(hd.getParentId());
+                        if (hp != null) {
+                            ep = eapDepartmentBean.findByDeptno(hp.getCode());
                         }
-                        if (hd.getFlag()) {
-                            ed.setStatus("N");
-                        } else {
-                            ed.setStatus("X");
-                        }
-                        ed.setCreatorToSystem();
-                        ed.setCredateToNow();
-                        eapDepartmentBean.persist(ed);
-                    } else {
-                        if (!ed.getDept().equals(hd.getName()) || !Objects.equals(ed.getParentDept(), ep)
-                                || (ed.getOptdate() != null && ed.getOptdate().before(hd.getLastModifiedDate()))) {
+                        cn.hanbell.eap.entity.Department ed = eapDepartmentBean.findByDeptno(hd.getCode());
+                        if (ed == null) {
+                            ed = new cn.hanbell.eap.entity.Department();
+                            ed.setCompany(workFlowBean.getCompanyByDeptId(hd.getCode()));
+                            ed.setDeptno(hd.getCode());
                             ed.setDept(hd.getName());
                             if (ep != null) {
                                 ed.setParentDept(ep);
                             }
-                            if (!hd.getFlag()) {
-                                ed.setStatus("X");
-                            } else {
+                            if (hd.getFlag()) {
                                 ed.setStatus("N");
+                            } else {
+                                ed.setStatus("X");
                             }
-                            ed.setOptuserToSystem();
-                            ed.setOptdate(hd.getLastModifiedDate());
-                            eapDepartmentBean.update(ed);
-                        }
-                    }
-                    String d = hd.getCode().substring(0, 1);
-                    // CRM
-                    if (d.equals("1") || d.equals("5")) {
-                        CMSME cd = cmsmeBean.findById(hd.getCode());
-                        if (cd == null) {
-                            cd = new CMSME();
-                            cd.setMe001(hd.getCode());
-                            cd.setMe002(hd.getName());
-                            cd.setFlag((short) 1);
-                            cd.setCreator("CRMDS");
-                            cd.setUsrGroup("0000");
-                            cd.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                            cmsmeBean.persist(cd);
+                            ed.setCreatorToSystem();
+                            ed.setCredateToNow();
+                            eapDepartmentBean.persist(ed);
                         } else {
-                            if (!cd.getMe002().equals(hd.getName())) {
+                            if (!ed.getDept().equals(hd.getName()) || !Objects.equals(ed.getParentDept(), ep)
+                                    || (ed.getOptdate() != null && ed.getOptdate().before(hd.getLastModifiedDate()))) {
+                                ed.setDept(hd.getName());
+                                if (ep != null) {
+                                    ed.setParentDept(ep);
+                                }
+                                if (!hd.getFlag()) {
+                                    ed.setStatus("X");
+                                } else {
+                                    ed.setStatus("N");
+                                }
+                                ed.setOptuserToSystem();
+                                ed.setOptdate(hd.getLastModifiedDate());
+                                eapDepartmentBean.update(ed);
+                            }
+                        }
+                        String d = hd.getCode().substring(0, 1);
+                        // CRM
+                        if (d.equals("1") || d.equals("5")) {
+                            CMSME cd = cmsmeBean.findById(hd.getCode());
+                            if (cd == null) {
+                                cd = new CMSME();
+                                cd.setMe001(hd.getCode());
                                 cd.setMe002(hd.getName());
-                                cd.setModifier("CRMDS");
-                                cd.setModiDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                                cmsmeBean.update(cd);
+                                cd.setFlag((short) 1);
+                                cd.setCreator("CRMDS");
+                                cd.setUsrGroup("0000");
+                                cd.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                cmsmeBean.persist(cd);
+                            } else {
+                                if (!cd.getMe002().equals(hd.getName())) {
+                                    cd.setMe002(hd.getName());
+                                    cd.setModifier("CRMDS");
+                                    cd.setModiDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                    cmsmeBean.update(cd);
+                                }
                             }
                         }
-                    }
-                    // MES
-                    if (d.equals("1")) {
-                        cn.hanbell.mes.entity.MDepartment md = mesDepartmentBean.findByDepartmentid(hd.getCode());
-                        if (md == null) {
-                            md = new cn.hanbell.mes.entity.MDepartment();
-                            md.setSysid(BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()));
-                            md.setDepartmentid(hd.getCode());
-                            md.setDepartmentname(hd.getName());
-                            if (hp != null) {
-                                md.setPdepartmentid(hp.getCode());
-                            }
-                            md.setSequences(hd.getCode());
-                            md.setModifyuser("HRM");
-                            md.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", hd.getLastModifiedDate()));
-                            mesDepartmentBean.persist(md);
-                        } else {
-                            boolean flag = false;
-                            if (!md.getDepartmentname().equals(hd.getName())) {
+                        // MES
+                        if (d.equals("1")) {
+                            cn.hanbell.mes.entity.MDepartment md = mesDepartmentBean.findByDepartmentid(hd.getCode());
+                            if (md == null) {
+                                md = new cn.hanbell.mes.entity.MDepartment();
+                                md.setSysid(BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()));
+                                md.setDepartmentid(hd.getCode());
                                 md.setDepartmentname(hd.getName());
-                                flag = true;
-                            }
-                            if (hp != null && !hp.getCode().equals(md.getPdepartmentid())) {
-                                md.setPdepartmentid(hp.getCode());
-                                flag = true;
-                            }
-                            if (flag) {
+                                if (hp != null) {
+                                    md.setPdepartmentid(hp.getCode());
+                                }
+                                md.setSequences(hd.getCode());
                                 md.setModifyuser("HRM");
                                 md.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", hd.getLastModifiedDate()));
-                                mesDepartmentBean.update(md);
+                                mesDepartmentBean.persist(md);
+                            } else {
+                                boolean flag = false;
+                                if (!md.getDepartmentname().equals(hd.getName())) {
+                                    md.setDepartmentname(hd.getName());
+                                    flag = true;
+                                }
+                                if (hp != null && !hp.getCode().equals(md.getPdepartmentid())) {
+                                    md.setPdepartmentid(hp.getCode());
+                                    flag = true;
+                                }
+                                if (flag) {
+                                    md.setModifyuser("HRM");
+                                    md.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", hd.getLastModifiedDate()));
+                                    mesDepartmentBean.update(md);
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        wechatCorpBean.sendMsgToUser(errMsgUser, "text", String.format("部门%s更新失败", hd.getCode()));
                     }
                 });
             }
@@ -522,60 +535,17 @@ public class TimerBean {
 
             if (employeeList != null && !employeeList.isEmpty()) {
                 employeeList.forEach((e) -> {
-                    boolean flag = false;
-                    cn.hanbell.hrm.entity.Employee manager = hrmEmployeeBean.findByEmployeeId(e.getDirectorId());
-                    String company = e.getCode().substring(0, 1);
-                    if ("C".equals(company) || "K".equals(company) || "E".equals(company) || "H".equals(company)
-                            || "Y".equals(company) || "Q".equals(company) || "V".equals(company) || isTWEmployee(company)) {
-                        // EAP
-                        cn.hanbell.eap.entity.SystemUser eu = eapSystemUserBean.findByUserId(e.getCode());
-                        if (eu == null) {
-                            eu = new cn.hanbell.eap.entity.SystemUser();
-                            eu.setUserid(e.getCode());
-                            eu.setUsername(e.getCnName());
-                            if (e.getJob() != null) {
-                                eu.setJobCode(e.getJob().getCode());
-                                eu.setJob(e.getJob().getName());
-                            }
-                            if (e.getPosition() != null) {
-                                eu.setPositionCode(e.getPosition().getCode());
-                                eu.setPosition(e.getPosition().getName());
-                            }
-                            if (e.getEmployeeType() != null) {
-                                eu.setType(e.getEmployeeType().getScName());
-                            }
-                            eu.setLevelId(e.getLevelId());
-                            if (e.getDecisionlevelInfo() != null) {
-                                eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
-                            }
-                            eu.setDeptno(e.getDepartment().getCode());
-                            if (manager != null) {
-                                eu.setManagerId(manager.getCode());
-                            }
-                            if (e.getTelephone() != null) {
-                                eu.setTel(e.getTelephone());
-                            }
-                            eu.setPhone(e.getMobilePhone());
-                            eu.setEmail(e.getEmail());
-                            eu.setCreatorToSystem();
-                            eu.setCredateToNow();
-                            eu.setOptdate(eu.getCredate());
-                            eu.setBirthdayDate(e.getBirthDate());
-                            eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
-                            // HR中已离职
-                            if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
-                                eu.setSyncWeChatStatus("X");
-                                eu.setSyncWeChatDate(e.getLastModifiedDate());
-                                eu.setStatus("X");
-                                eu.setTel("");
-                                eu.setOptuserToSystem();
-                                eu.setOptdate(e.getLastModifiedDate());
-                                eu.setBirthdayDate(null);
-                                eu.setWorkingAgeBeginDate(null);
-                            }
-                            eapSystemUserBean.persist(eu);
-                        } else {
-                            if (eu.getOptdate() != null && eu.getOptdate().before(e.getLastModifiedDate())) {
+                    try {
+                        boolean flag = false;
+                        cn.hanbell.hrm.entity.Employee manager = hrmEmployeeBean.findByEmployeeId(e.getDirectorId());
+                        String company = e.getCode().substring(0, 1);
+                        if ("C".equals(company) || "K".equals(company) || "E".equals(company) || "H".equals(company)
+                                || "Y".equals(company) || "Q".equals(company) || "V".equals(company) || isTWEmployee(company)) {
+                            // EAP
+                            cn.hanbell.eap.entity.SystemUser eu = eapSystemUserBean.findByUserId(e.getCode());
+                            if (eu == null) {
+                                eu = new cn.hanbell.eap.entity.SystemUser();
+                                eu.setUserid(e.getCode());
                                 eu.setUsername(e.getCnName());
                                 if (e.getJob() != null) {
                                     eu.setJobCode(e.getJob().getCode());
@@ -592,157 +562,208 @@ public class TimerBean {
                                 if (e.getDecisionlevelInfo() != null) {
                                     eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
                                 }
-                                if (e.getTelephone() != null) {
-                                    eu.setTel(e.getTelephone());
-                                }
                                 eu.setDeptno(e.getDepartment().getCode());
                                 if (manager != null) {
                                     eu.setManagerId(manager.getCode());
                                 }
-                                //复职的情况下需要把eap数据库中人员状态从X变成N,为了后续企业微信的更新，设置更新企业微信的状态。
-                                if (eu.getStatus().equals("X") && e.getLastModifiedDate().before(e.getLastWorkDate())) {
-                                    eu.setStatus("N");
-                                    eu.setOptuserToSystem();
-                                    eu.setSyncWeChatDate(null);
-                                    eu.setSyncWeChatStatus("");
+                                if (e.getTelephone() != null) {
+                                    eu.setTel(e.getTelephone());
                                 }
-                                eu.setBirthdayDate(e.getBirthDate());
-                                eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
                                 eu.setPhone(e.getMobilePhone());
                                 eu.setEmail(e.getEmail());
-                                eu.setOptuserToSystem();
-                                eu.setOptdate(e.getLastModifiedDate());
-                                flag = true;
-                            }
-                            if (!eu.getStatus().equals("X") && e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
-                                eu.setStatus("X");
-                                eu.setOptuserToSystem();
-                                eu.setOptdate(e.getLastModifiedDate());
-                                eu.setBirthdayDate(null);
-                                eu.setWorkingAgeBeginDate(null);
-                                flag = true;
-                            }
-                            if (flag) {
-                                eapSystemUserBean.update(eu);
-                            }
-                        }
-                        // 台湾人员,越南不更新ERP
-                        if (isTWEmployee(company) == false && !company.startsWith("V")) {
-                            // ERP
-                            miscodeBean.setCompany(company);
-                            misdeptBean.setCompany(company);
-                            secmembBean.setCompany(company);
-                            secuserBean.setCompany(company);
-                            Secuser erpuser = secuserBean.findByUserno(e.getCode());
-                            Misdept erpdept = misdeptBean.findByDepno(e.getDepartment().getCode());
-                            if (erpdept == null) {
-                                // 增加部门
-                                erpdept = new Misdept(company, e.getDepartment().getCode());
-                                erpdept.setDepname(e.getDepartment().getName());
-                                erpdept.setUplevel("/");
-                                erpdept.setChildren(0);
-                                misdeptBean.persist(erpdept);
-                                // 加入miscode类别GE中
-                                miscodeBean.persistIfNotExist("GE", erpdept.getMisdeptPK().getDepno(),
-                                        erpdept.getDepname(), 'N');
-                            }
-                            if (erpuser != null) {
-                                Secmemb secmemb
-                                        = secmembBean.findByPK(company, e.getDepartment().getCode(), e.getCode());
-                                if (secmemb == null) {
-                                    // 人员加入部门
-                                    secmemb = new Secmemb(company, e.getDepartment().getCode(), e.getCode());
-                                    secmemb.setSupvisor('N');
-                                    secmemb.setAuth('N');
-                                    secmembBean.persist(secmemb);
+                                eu.setCreatorToSystem();
+                                eu.setCredateToNow();
+                                eu.setOptdate(eu.getCredate());
+                                eu.setBirthdayDate(e.getBirthDate());
+                                eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
+                                // HR中已离职
+                                if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
+                                    eu.setSyncWeChatStatus("X");
+                                    eu.setSyncWeChatDate(e.getLastModifiedDate());
+                                    eu.setStatus("X");
+                                    eu.setTel("");
+                                    eu.setOptuserToSystem();
+                                    eu.setOptdate(e.getLastModifiedDate());
+                                    eu.setBirthdayDate(null);
+                                    eu.setWorkingAgeBeginDate(null);
                                 }
-                                erpuser.setPdepno(e.getDepartment().getCode());
-                                secuserBean.update(erpuser);
+                                eapSystemUserBean.persist(eu);
+                            } else {
+                                if (eu.getOptdate() != null && eu.getOptdate().before(e.getLastModifiedDate())) {
+                                    eu.setUsername(e.getCnName());
+                                    if (e.getJob() != null) {
+                                        eu.setJobCode(e.getJob().getCode());
+                                        eu.setJob(e.getJob().getName());
+                                    }
+                                    if (e.getPosition() != null) {
+                                        eu.setPositionCode(e.getPosition().getCode());
+                                        eu.setPosition(e.getPosition().getName());
+                                    }
+                                    if (e.getEmployeeType() != null) {
+                                        eu.setType(e.getEmployeeType().getScName());
+                                    }
+                                    eu.setLevelId(e.getLevelId());
+                                    if (e.getDecisionlevelInfo() != null) {
+                                        eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
+                                    }
+                                    if (e.getTelephone() != null) {
+                                        eu.setTel(e.getTelephone());
+                                    }
+                                    eu.setDeptno(e.getDepartment().getCode());
+                                    if (manager != null) {
+                                        eu.setManagerId(manager.getCode());
+                                    }
+                                    //复职的情况下需要把eap数据库中人员状态从X变成N,为了后续企业微信的更新，设置更新企业微信的状态。
+                                    if (eu.getStatus().equals("X") && e.getLastModifiedDate().before(e.getLastWorkDate())) {
+                                        eu.setStatus("N");
+                                        eu.setOptuserToSystem();
+                                        eu.setSyncWeChatDate(null);
+                                        eu.setSyncWeChatStatus("");
+                                    }
+                                    eu.setBirthdayDate(e.getBirthDate());
+                                    eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
+                                    eu.setPhone(e.getMobilePhone());
+                                    eu.setEmail(e.getEmail());
+                                    eu.setOptuserToSystem();
+                                    eu.setOptdate(e.getLastModifiedDate());
+                                    flag = true;
+                                }
+                                if (!eu.getStatus().equals("X") && e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
+                                    eu.setStatus("X");
+                                    eu.setOptuserToSystem();
+                                    eu.setOptdate(e.getLastModifiedDate());
+                                    eu.setBirthdayDate(null);
+                                    eu.setWorkingAgeBeginDate(null);
+                                    flag = true;
+                                }
+                                if (flag) {
+                                    eapSystemUserBean.update(eu);
+                                }
+                            }
+                            // 台湾人员,越南不更新ERP
+                            if (isTWEmployee(company) == false && !company.startsWith("V")) {
+                                // ERP
+                                miscodeBean.setCompany(company);
+                                misdeptBean.setCompany(company);
+                                secmembBean.setCompany(company);
+                                secuserBean.setCompany(company);
+                                Secuser erpuser = secuserBean.findByUserno(e.getCode());
+                                Misdept erpdept = misdeptBean.findByDepno(e.getDepartment().getCode());
+                                if (erpdept == null) {
+                                    // 增加部门
+                                    erpdept = new Misdept(company, e.getDepartment().getCode());
+                                    erpdept.setDepname(e.getDepartment().getName());
+                                    erpdept.setUplevel("/");
+                                    erpdept.setChildren(0);
+                                    misdeptBean.persist(erpdept);
+                                    // 加入miscode类别GE中
+                                    miscodeBean.persistIfNotExist("GE", erpdept.getMisdeptPK().getDepno(),
+                                            erpdept.getDepname(), 'N');
+                                }
+                                if (erpuser != null) {
+                                    Secmemb secmemb
+                                            = secmembBean.findByPK(company, e.getDepartment().getCode(), e.getCode());
+                                    if (secmemb == null) {
+                                        // 人员加入部门
+                                        secmemb = new Secmemb(company, e.getDepartment().getCode(), e.getCode());
+                                        secmemb.setSupvisor('N');
+                                        secmemb.setAuth('N');
+                                        secmembBean.persist(secmemb);
+                                    }
+                                    erpuser.setPdepno(e.getDepartment().getCode());
+                                    secuserBean.update(erpuser);
+                                }
                             }
                         }
-                    }
-                    if ("C".equals(company) || "K".equals(company)) {
-                        // CRM
-                        DSCMA cu = dscmaBean.findById(e.getCode());
-                        CMSMV cuDept = cmsmvBean.findById(e.getCode());
-                        if (cu == null) {
-                            cu = new DSCMA();
-                            cu.setMa001(e.getCode());
-                            cu.setMa002(e.getCnName());
-                            cu.setFlag((short) 1);
-                            cu.setCreator("CRMDS");
-                            cu.setUsrGroup("0000");
-                            cu.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                            dscmaBean.persist(cu);
-                        }
-                        if (cuDept == null) {
-                            cuDept = new CMSMV();
-                            cuDept.setMv001(e.getCode());
-                            cuDept.setMv002(e.getCnName());
-                            cuDept.setMv004(e.getDepartment().getCode());
-                            cuDept.setFlag((short) 1);
-                            cuDept.setCreator("CRMDS");
-                            cuDept.setUsrGroup("0000");
-                            cuDept.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                            cmsmvBean.persist(cuDept);
-                        } else {
-                            if (!cuDept.getMv004().equals(e.getDepartment().getCode())) {
+                        if ("C".equals(company) || "K".equals(company)) {
+                            // CRM
+                            DSCMA cu = dscmaBean.findById(e.getCode());
+                            CMSMV cuDept = cmsmvBean.findById(e.getCode());
+                            if (cu == null) {
+                                cu = new DSCMA();
+                                cu.setMa001(e.getCode());
+                                cu.setMa002(e.getCnName());
+                                cu.setFlag((short) 1);
+                                cu.setCreator("CRMDS");
+                                cu.setUsrGroup("0000");
+                                cu.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                dscmaBean.persist(cu);
+                            }
+                            if (cuDept == null) {
+                                cuDept = new CMSMV();
+                                cuDept.setMv001(e.getCode());
+                                cuDept.setMv002(e.getCnName());
                                 cuDept.setMv004(e.getDepartment().getCode());
-                                cuDept.setModifier("CRMDS");
-                                cuDept.setModiDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                                cmsmvBean.update(cuDept);
+                                cuDept.setFlag((short) 1);
+                                cuDept.setCreator("CRMDS");
+                                cuDept.setUsrGroup("0000");
+                                cuDept.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                cmsmvBean.persist(cuDept);
+                            } else {
+                                if (!cuDept.getMv004().equals(e.getDepartment().getCode())) {
+                                    cuDept.setMv004(e.getDepartment().getCode());
+                                    cuDept.setModifier("CRMDS");
+                                    cuDept.setModiDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                    cmsmvBean.update(cuDept);
+                                }
                             }
                         }
-                    }
-                    if ("C".equals(company) || "K".equals(company)) {
-                        // MES
-                        cn.hanbell.mes.entity.MUser mu = mesUserBean.findByUserid(e.getCode());
-                        if (mu == null) {
-                            mu = new cn.hanbell.mes.entity.MUser();
-                            mu.setUserid(e.getCode());
-                            mu.setUsername(e.getCnName());
-                            // 设置默认初始密码为123456
-                            mu.setPassword("B37EE351B8753658");
-                            mu.setStatus("Y");
-                            mu.setDepartmentid(e.getDepartment().getCode());
-                            mu.setEmail(e.getEmail());
-                            mu.setModifyuser("HRM");
-                            mu.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", e.getLastModifiedDate()));
-                            mesUserBean.persist(mu);
-                            // 加入mes初始权限
-                            MuserRole mur1 = new MuserRole(mu.getUserid(), "CS", "QCUSER");
-                            MuserRole mur2 = new MuserRole(mu.getUserid(), "CS", "QZUSER");
-                            MuserRole mur3 = new MuserRole(mu.getUserid(), "BS", "WEBUSER");
-                            MuserRole mur4 = new MuserRole(mu.getUserid(), "BS", "UQFUSER");
-                            mesUserRoleBean.persist(mur1);
-                            mesUserRoleBean.persist(mur2);
-                            mesUserRoleBean.persist(mur3);
-                            mesUserRoleBean.persist(mur4);
-                        } else {
-                            flag = false;
-                            if (!mu.getDepartmentid().equals(e.getDepartment().getCode())) {
+                        if ("C".equals(company) || "K".equals(company)) {
+                            // MES
+                            cn.hanbell.mes.entity.MUser mu = mesUserBean.findByUserid(e.getCode());
+                            if (mu == null) {
+                                mu = new cn.hanbell.mes.entity.MUser();
+                                mu.setUserid(e.getCode());
+                                mu.setUsername(e.getCnName());
+                                // 设置默认初始密码为123456
+                                mu.setPassword("B37EE351B8753658");
+                                mu.setStatus("Y");
                                 mu.setDepartmentid(e.getDepartment().getCode());
                                 mu.setEmail(e.getEmail());
                                 mu.setModifyuser("HRM");
                                 mu.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", e.getLastModifiedDate()));
-                                flag = true;
-                            }
-                            if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
-                                mu.setStatus("N");
-                                mu.setModifyuser("HRM");
-                                mu.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", e.getLastModifiedDate()));
-                                flag = true;
-                            }
-                            if (flag) {
-                                mesUserBean.update(mu);
+                                mesUserBean.persist(mu);
+                                // 加入mes初始权限
+                                MuserRole mur1 = new MuserRole(mu.getUserid(), "CS", "QCUSER");
+                                MuserRole mur2 = new MuserRole(mu.getUserid(), "CS", "QZUSER");
+                                MuserRole mur3 = new MuserRole(mu.getUserid(), "BS", "WEBUSER");
+                                MuserRole mur4 = new MuserRole(mu.getUserid(), "BS", "UQFUSER");
+                                mesUserRoleBean.persist(mur1);
+                                mesUserRoleBean.persist(mur2);
+                                mesUserRoleBean.persist(mur3);
+                                mesUserRoleBean.persist(mur4);
+                            } else {
+                                flag = false;
+                                if (!mu.getDepartmentid().equals(e.getDepartment().getCode())) {
+                                    mu.setDepartmentid(e.getDepartment().getCode());
+                                    mu.setEmail(e.getEmail());
+                                    mu.setModifyuser("HRM");
+                                    mu.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", e.getLastModifiedDate()));
+                                    flag = true;
+                                }
+                                if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
+                                    mu.setStatus("N");
+                                    mu.setModifyuser("HRM");
+                                    mu.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", e.getLastModifiedDate()));
+                                    flag = true;
+                                }
+                                if (flag) {
+                                    mesUserBean.update(mu);
+                                }
                             }
                         }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        wechatCorpBean.sendMsgToUser(errMsgUser, "text", String.format("人员%s更新失败", e.getCode()));
                     }
                 });
                 log4j.info("syncOrganizationByHRM,同步EAP/ERP/CRM/MES员工资料结束");
             }
+            wechatCorpBean.sendMsgToUser(errMsgUser, "text", "HR同步EAP更新结束");
             log4j.info("syncOrganizationByHRM结束");
         } catch (Exception ex) {
+            ex.printStackTrace();
+            wechatCorpBean.sendMsgToUser(errMsgUser, "text", "HR同步EAP更新发生异常！");
             log4j.error("syncOrganizationByHRM出现异常", ex);
         }
     }

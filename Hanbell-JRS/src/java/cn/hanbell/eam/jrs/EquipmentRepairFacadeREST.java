@@ -124,9 +124,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     protected SuperEJB superEJB;
 
     //生产环境
-    private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    //private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //测试环境
-    //private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -164,6 +164,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipInvenTemp.setRepairusername(entity.getRepairusername());
                 equipInvenTemp.setFormdate(new Date());
                 equipInvenTemp.setHitchtime(entity.getHitchtime());
+                 if (equipInvenTemp.getHitchurgency()==null&&entity.getHitchurgency().equals("03")) {//第一次创单时，停机记录停机时间点
+                    equipInvenTemp.setDowninitiatetime(new Date());
+                }
                 equipInvenTemp.setHitchurgency(entity.getHitchurgency());
                 equipInvenTemp.setItemno(entity.getItemno());
                 equipInvenTemp.setFormid(formid);
@@ -171,7 +174,6 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipInvenTemp.setRepairarea(entity.getRepairarea());
                 equipInvenTemp.setRepairmethodtype(entity.getRepairmethodtype());
                 equipInvenTemp.setHitchdesc(entity.getHitchdesc());
-                equipInvenTemp.setHitchurgency(entity.getHitchurgency());
                 equipInvenTemp.setStatus("N");
                 equipInvenTemp.setRepairdeptno(entity.getRepairdeptno());
                 equipInvenTemp.setRepairdeptname(entity.getRepairdeptname());
@@ -199,7 +201,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 //                Date date = Date.from( localDateTime.atZone( ZoneId.systemDefault()).toInstant());
 //                equipInvenTemp.setFormdate(date);
 //                equipInvenTemp.setDmark(entity.getDmark());
-
+               
                 if ("2".equals(entity.getRepairmethodtype()) && (entity.getServiceuser() == null || entity.getServiceuser().equals(""))) {
                     equipInvenTemp.setServiceuser(entity.getRepairuser());
                     equipInvenTemp.setServiceusername(entity.getRepairusername());
@@ -781,6 +783,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         equipInvenTemp.setExcepttime(entity.getExcepttime());
                         equipInvenTemp.setStopworktime(entity.getStopworktime());
                         equipInvenTemp.setAbrasehitch(entity.getAbrasehitch());
+                        if (!equipInvenTemp.getHitchurgency().equals("03")&& equipInvenTemp.getHitchtype()==null&&entity.getHitchtype().equals("03")) {
+                            equipInvenTemp.setDowninitiatetime(new Date());
+                        }
                         equipInvenTemp.setHitchtype(entity.getHitchtype());
                         equipInvenTemp.setHitchsort1(entity.getHitchsort1());
                         equipInvenTemp.setHitchdesc(entity.getHitchdesc());
@@ -1143,17 +1148,42 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 EquipmentRepair eqpRepairTemp = new EquipmentRepair();
                 EquipmentRepairHis eqpRepairHisTemp = new EquipmentRepairHis();
                 List<EquipmentRepairHis> eqpRepairList = new ArrayList<EquipmentRepairHis>();
+                 List<SysCode> repairManagerList = new ArrayList<SysCode>();
                 eqpRepairTemp = equipmentrepairBean.findById(entity.getId());
                 String rStatus = eqpRepairTemp.getRstatus();
+             
+                eqpRepairTemp.setStatus("N");
+                if (entity.getRepairmethodtype().equals("2")) {//自主维修转单时将维修方式转换为维修课维修并记录时间
+                    eqpRepairTemp.setRepairmethodtype("1");
+                    eqpRepairTemp.setAutotransfertime(new Date());
+                    if (eqpRepairTemp!=null) {
+                            StringBuffer msg = new StringBuffer("收到转移单<br/>");
+                            msg.append("转移人:").append(eqpRepairTemp.getServiceuser()).append("-").append(eqpRepairTemp.getServiceusername()).append("<br/>");
+                            msg.append("报修单号:").append(eqpRepairTemp.getFormid()).append("<br/>");
+                            msg.append("资产编号:").append(eqpRepairTemp.getAssetno().getFormid()).append("<br/>");
+                            msg.append("设备名称:").append(eqpRepairTemp.getAssetno().getAssetDesc()).append("<br/>");
+                            msg.append("设备位置:").append(eqpRepairTemp.getAssetno().getPosition1().getName()).append(eqpRepairTemp.getAssetno().getPosition2().getName());
+                            if (eqpRepairTemp.getAssetno().getPosition3() != null) {
+                                msg.append(eqpRepairTemp.getAssetno().getPosition3().getName()).append("<br/>");
+                            } else {
+                                msg.append("<br/>");
+                            }
+                            msg.append("报修人:").append(eqpRepairTemp.getRepairuser()).append("-").append(eqpRepairTemp.getRepairusername()).append("<br/>");
+                            msg.append("维修人:").append(entity.getServiceuser()).append("-").append(entity.getServiceusername()).append("<br/>");
+                            msg.append("详情请至微信小程序查看!");
 
-                if (!rStatus.equals("10")) {
-                    return new ResponseMessage("301", "数据库异常");
+                            String errmsg = sendMsgString(entity.getServiceuser(), msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
+                    }
                 }
-
+                if (entity.getRepairmethodtype().equals("1")) {//维修课维修转单时将维修方式转换为委外维修并记录时间
+                      repairManagerList = sysCodeBean.getTroubleNameList(eqpRepairTemp.getCompany(), "RD", "repairleaders");
+                    if (entity.getServiceuser().equals(repairManagerList.get(0).getCvalue())) {//只有维修转单转给维修课长时才转到委外
+                        eqpRepairTemp.setRepairmethodtype("3");
+                        eqpRepairTemp.setRepairtransfertime(new Date());
+                    }
+                }
                 eqpRepairTemp.setServiceuser(entity.getServiceuser());
                 eqpRepairTemp.setServiceusername(entity.getServiceusername());
-                eqpRepairTemp.setStatus("N");
-
                 equipmentrepairBean.persist(eqpRepairTemp);
 
                 eqpRepairList = equipmentRepairHisBean.findByPId(eqpRepairTemp.getFormid());
