@@ -36,6 +36,7 @@ import cn.hanbell.oa.entity.HKCW003Detail;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -558,9 +559,11 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 HKJS001Detail d = details.get(i);
                 item = findByItnbr(d.getBjh());
                 if (item != null) {
-                    item.setItdsc("#" + item.getItdsc());
+                   //item.setItdsc("#" + item.getItdsc());
                     item.setStopyn("AAAAAAAAAAAAA");
-                    item.setNStopyn("N");
+                   // item.setNStopyn("N");
+                    item.setModdate(new Date());
+                    item.setModman(h.getApplyuser());
                     item.setNEcnnewitnbr(d.getAjh());
                     item.setNEcnno(h.getBgbh());
                     invmasList.add(item);
