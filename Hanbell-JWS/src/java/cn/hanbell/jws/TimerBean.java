@@ -1146,7 +1146,7 @@ public class TimerBean {
                             if (null != ecitnbr && !"".equals(ecitnbr) && pd.getCStopyn() == 'N') {
                                 Invmas item = invmasBean.findByItnbr(ecitnbr);
                                 if (item != null) {
-                                    //item.setItdsc("#" + item.getItdsc());
+                                    item.setItdsc("#" + item.getItdsc());
                                     item.setStopyn("AAAAAAAAAAAAA");
                                     //item.setNStopyn("N");
                                     item.setNEcnnewitnbr(pd.getCItnbr());
