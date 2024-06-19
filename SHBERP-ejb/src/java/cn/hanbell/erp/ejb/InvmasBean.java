@@ -559,7 +559,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 HKJS001Detail d = details.get(i);
                 item = findByItnbr(d.getBjh());
                 if (item != null) {
-                   //item.setItdsc("#" + item.getItdsc());
+                   item.setItdsc("#" + item.getItdsc());
                     item.setStopyn("AAAAAAAAAAAAA");
                    // item.setNStopyn("N");
                     item.setModdate(new Date());
