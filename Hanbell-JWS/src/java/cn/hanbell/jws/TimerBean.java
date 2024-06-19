@@ -1151,11 +1151,18 @@ public class TimerBean {
                             if (null != ecitnbr && !"".equals(ecitnbr) && pd.getCStopyn() == 'N') {
                                 Invmas item = invmasBean.findByItnbr(ecitnbr);
                                 if (item != null) {
-                                    item.setItdsc("#" + item.getItdsc());
+                                    //item.setItdsc("#" + item.getItdsc());
                                     item.setStopyn("AAAAAAAAAAAAA");
-                                    item.setNStopyn("N");
+                                    //item.setNStopyn("N");
                                     item.setNEcnnewitnbr(pd.getCItnbr());
                                     item.setNEcnno(pd.getItemNumber());
+                                    item.setModdate(new Date());
+                                    if(fromTHB){
+                                        item.setModman(pm.getEcWorker());
+                                    }else{
+                                        item.setModman(pm.getCApplicant());
+                                    }
+                                    item.setModman(k);
                                     stopList.add(item);
                                     //刷新中间表表身停用状态
                                     pd.setCStopyn('Y');
