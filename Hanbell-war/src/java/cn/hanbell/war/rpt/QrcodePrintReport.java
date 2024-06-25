@@ -9,7 +9,6 @@ import cn.hanbell.eap.ejb.QrcodeBean;
 import cn.hanbell.eap.ejb.QrcodeDetailBean;
 import cn.hanbell.eap.entity.Qrcode;
 import cn.hanbell.eap.entity.QrcodeDetail;
-import cn.hanbell.erp.ejb.CdrhadBean;
 import cn.hanbell.war.control.ShipmentPrintManagedBean;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -17,7 +16,6 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
-import com.lightshell.comm.SuperEJB;
 import com.lightshell.comm.SuperMultiReportBean;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -28,9 +26,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 /**
  *
