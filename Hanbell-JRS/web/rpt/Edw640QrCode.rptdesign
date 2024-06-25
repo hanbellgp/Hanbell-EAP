@@ -110,7 +110,7 @@ System.out.println(detail.get(currentRow).getContent1());
 	dataSetRow["content3"] = detail.get(currentRow).getContent3();
     dataSetRow["content4"] = detail.get(currentRow).getContent4();
     dataSetRow["content5"] = detail.get(currentRow).getContent5();
-    dataSetRow["url"] = "http://127.0.0.1:8480/Hanbell-JRS/resources/app/res/EDW640code" + (currentRow+1)+ ".png";
+    dataSetRow["url"] = "http://127.0.0.1/Hanbell-JRS/resources/app/res/EDW640code" + (currentRow+1)+ ".png";
     currentRow++;
     return true;
 }
@@ -129,10 +129,10 @@ return false;
         <simple-master-page name="Simple MasterPage" id="2">
             <property name="type">custom</property>
             <property name="orientation">portrait</property>
-            <property name="topMargin">0.25cm</property>
-            <property name="leftMargin">0.25cm</property>
-            <property name="bottomMargin">0.25cm</property>
-            <property name="rightMargin">0.25cm</property>
+            <property name="topMargin">0cm</property>
+            <property name="leftMargin">0cm</property>
+            <property name="bottomMargin">0cm</property>
+            <property name="rightMargin">0cm</property>
             <property name="letterSpacing">normal</property>
             <property name="height">2.5cm</property>
             <property name="width">6cm</property>
@@ -192,40 +192,72 @@ return false;
             <detail>
                 <grid id="115">
                     <property name="marginTop">1pt</property>
-                    <property name="marginRight">1pt</property>
+                    <property name="marginLeft">6pt</property>
+                    <property name="textAlign">right</property>
                     <property name="pageBreakAfter">always</property>
-                    <property name="height">1.1875in</property>
-                    <column id="117"/>
+                    <property name="height">1.09375in</property>
+                    <property name="width">2.1354166666666665in</property>
+                    <column id="117">
+                        <property name="width">2.778125cm</property>
+                    </column>
                     <column id="198"/>
-                    <row id="199">
-                        <cell id="200">
-                            <property name="colSpan">1</property>
-                            <property name="rowSpan">4</property>
+                    <row id="206">
+                        <property name="height">0.3125in</property>
+                        <cell id="207">
                             <property name="paddingTop">0pt</property>
                             <property name="paddingBottom">0pt</property>
                             <property name="textAlign">right</property>
-                            <property name="verticalAlign">middle</property>
-                            <data id="203">
-                                <property name="textAlign">right</property>
-                                <property name="resultSetColumn">content1</property>
-                            </data>
+                            <property name="verticalAlign">top</property>
+                            <image id="205">
+                                <property name="borderBottomStyle">none</property>
+                                <property name="borderLeftStyle">none</property>
+                                <property name="borderRightStyle">none</property>
+                                <property name="borderTopStyle">none</property>
+                                <property name="marginTop">2pt</property>
+                                <property name="height">0.125in</property>
+                                <property name="width">0.9895833333333334in</property>
+                                <property name="source">embed</property>
+                                <property name="imageName">HanbellLogo.png</property>
+                            </image>
                         </cell>
-                        <cell id="201">
+                        <cell id="208">
                             <property name="colSpan">1</property>
-                            <property name="rowSpan">4</property>
+                            <property name="rowSpan">2</property>
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderLeftStyle">none</property>
+                            <property name="borderRightStyle">none</property>
+                            <property name="borderTopStyle">none</property>
                             <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
                             <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <property name="verticalAlign">top</property>
                             <image id="165">
-                                <property name="height">2cm</property>
-                                <property name="width">2cm</property>
+                                <property name="borderBottomStyle">none</property>
+                                <property name="borderLeftStyle">none</property>
+                                <property name="borderRightStyle">none</property>
+                                <property name="borderTopStyle">none</property>
+                                <property name="height">2.4cm</property>
+                                <property name="width">2.4cm</property>
                                 <property name="source">url</property>
                                 <expression name="uri" type="javascript">row["url"]</expression>
                             </image>
                         </cell>
                     </row>
-                    <row id="184"/>
-                    <row id="179"/>
-                    <row id="189"/>
+                    <row id="179">
+                        <cell id="200">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">1</property>
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="textAlign">right</property>
+                            <property name="verticalAlign">top</property>
+                            <data id="203">
+                                <property name="textAlign">center</property>
+                                <property name="resultSetColumn">content1</property>
+                            </data>
+                        </cell>
+                    </row>
                 </grid>
             </detail>
         </list>

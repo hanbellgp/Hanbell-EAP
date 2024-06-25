@@ -86,6 +86,7 @@ public class QrcodePrintManagedBean extends FormMultiBean<Qrcode, QrcodeDetail> 
     @Override
     public void construct() {
         typeList = new ArrayList<Type>();
+         typeList.add(new Type("", "全部"));
         typeList.add(new Type("SGD00933QrCode", "广东汉德出货二维码"));
          typeList.add(new Type("SSH00849QrCode", "上海萨震出货二维码"));
         companyList = companyBean.findAll();

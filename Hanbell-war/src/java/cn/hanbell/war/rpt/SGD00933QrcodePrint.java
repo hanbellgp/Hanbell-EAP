@@ -7,7 +7,6 @@ package cn.hanbell.war.rpt;
 
 import cn.hanbell.eap.entity.Qrcode;
 import cn.hanbell.eap.entity.QrcodeDetail;
-import java.util.List;
 
 /**
  *
