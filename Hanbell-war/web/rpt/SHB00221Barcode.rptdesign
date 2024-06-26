@@ -212,10 +212,10 @@ if(currentRow < detail.size()){
     dataSetRow["fixnr"] = detail.get(currentRow).getFixnr();
     dataSetRow["varnr"] = detail.get(currentRow).getVarnr();
     dataSetRow["shpdate"] = detail.get(currentRow).getShpdate();
-    dataSetRow["varnrbarcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/" + detail.get(currentRow).getVarnr()+ ".png";
-    dataSetRow["varnrqrcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + detail.get(currentRow).getVarnr()+ ".png";
-    System.out.println("====currentRow2=====>" +"http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png"); 
-    dataSetRow["shpqrcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png";
+    dataSetRow["varnrbarcode"] = "http://127.0.0.1/Hanbell-war/resources/app/res/" + detail.get(currentRow).getVarnr()+ ".png";
+    dataSetRow["varnrqrcode"] = "http://127.0.0.1/Hanbell-war/resources/app/res/QR" + detail.get(currentRow).getVarnr()+ ".png";
+    System.out.println("====currentRow2=====>" +"http://127.0.0.1/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png"); 
+    dataSetRow["shpqrcode"] = "http://127.0.0.1/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png";
     currentRow++;
     return true;
 }
