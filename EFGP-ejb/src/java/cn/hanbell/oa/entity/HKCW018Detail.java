@@ -72,8 +72,8 @@ public class HKCW018Detail implements Serializable {
     @Column(name = "payamtfs")
     private String payamtfs;
     @Size(max = 255)
-    @Column(name = "payDate_txt")
-    private String payDatetxt;
+    @Column(name = "payDate")
+    private String payDate;
     @Size(max = 255)
     @Column(name = "trseq")
     private String trseq;
@@ -232,14 +232,6 @@ public class HKCW018Detail implements Serializable {
         this.payamtfs = payamtfs;
     }
 
-    public String getPayDatetxt() {
-        return payDatetxt;
-    }
-
-    public void setPayDatetxt(String payDatetxt) {
-        this.payDatetxt = payDatetxt;
-    }
-
     public String getTrseq() {
         return trseq;
     }
@@ -254,6 +246,14 @@ public class HKCW018Detail implements Serializable {
 
     public void setPayda(String payda) {
         this.payda = payda;
+    }
+
+    public String getPayDate() {
+        return payDate;
+    }
+
+    public void setPayDate(String payDate) {
+        this.payDate = payDate;
     }
 
 }

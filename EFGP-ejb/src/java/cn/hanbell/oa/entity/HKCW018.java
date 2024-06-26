@@ -56,18 +56,9 @@ public class HKCW018 implements Serializable {
     @Size(max = 255)
     @Column(name = "applyUser")
     private String applyUser;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "payAmount4")
-    private Double payAmount4;
     @Size(max = 255)
     @Column(name = "applyDept")
     private String applyDept;
-    @Column(name = "payAmount2")
-    private Double payAmount2;
-    @Column(name = "payAmount3")
-    private Double payAmount3;
-    @Column(name = "payAmount1")
-    private Double payAmount1;
     @Size(max = 255)
     @Column(name = "invoiceNumber")
     private String invoiceNumber;
@@ -189,45 +180,13 @@ public class HKCW018 implements Serializable {
     public void setApplyUser(String applyUser) {
         this.applyUser = applyUser;
     }
-
-    public Double getPayAmount4() {
-        return payAmount4;
-    }
-
-    public void setPayAmount4(Double payAmount4) {
-        this.payAmount4 = payAmount4;
-    }
-
+    
     public String getApplyDept() {
         return applyDept;
     }
 
     public void setApplyDept(String applyDept) {
         this.applyDept = applyDept;
-    }
-
-    public Double getPayAmount2() {
-        return payAmount2;
-    }
-
-    public void setPayAmount2(Double payAmount2) {
-        this.payAmount2 = payAmount2;
-    }
-
-    public Double getPayAmount3() {
-        return payAmount3;
-    }
-
-    public void setPayAmount3(Double payAmount3) {
-        this.payAmount3 = payAmount3;
-    }
-
-    public Double getPayAmount1() {
-        return payAmount1;
-    }
-
-    public void setPayAmount1(Double payAmount1) {
-        this.payAmount1 = payAmount1;
     }
 
     public String getInvoiceNumber() {

@@ -200,6 +200,7 @@ public class RPTWebService {
                         }
                     }
                     eapMailBean.addCc(hsypb004Bean.getMailAddress(entity.getApplyUser()));
+                    eapMailBean.addBcc("C1491@hanbell.com.cn");
                     eapMailBean.setMailContent(hsypb004Bean.getMailContent(formid));
                     // 获取文件
                     File file = new File(outputName);
