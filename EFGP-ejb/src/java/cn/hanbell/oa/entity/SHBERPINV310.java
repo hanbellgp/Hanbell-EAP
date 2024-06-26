@@ -145,6 +145,12 @@ public class SHBERPINV310 implements Serializable {
     @Size(max = 255)
     @Column(name = "erpDept")
     private String erpDept;
+    @Size(max = 255)
+    @Column(name = "trtype")
+    private String trtype;
+    @Size(max = 255)
+    @Column(name = "dmark1")
+    private String dmark1;
 
     public SHBERPINV310() {
     }
@@ -400,6 +406,22 @@ public class SHBERPINV310 implements Serializable {
 
     public void setErpDept(String erpDept) {
         this.erpDept = erpDept;
+    }
+
+    public String getTrtype() {
+        return trtype;
+    }
+
+    public void setTrtype(String trtype) {
+        this.trtype = trtype;
+    }
+
+    public String getDmark1() {
+        return dmark1;
+    }
+
+    public void setDmark1(String dmark1) {
+        this.dmark1 = dmark1;
     }
 
 }
