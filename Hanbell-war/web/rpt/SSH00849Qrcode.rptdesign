@@ -125,7 +125,7 @@ if(currentRow < detail.size()){
 	}
     dataSetRow["fixnr"] = fixnrSpdsc;
     
-    dataSetRow["shpqrcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/" +master.getFormid()+detail.get(currentRow).getSeq()+ "Qrcode.png";
+    dataSetRow["shpqrcode"] = "http://127.0.0.1/Hanbell-war/resources/app/res/" +master.getFormid()+detail.get(currentRow).getSeq()+ "Qrcode.png";
     currentRow++;
     return true;
 }

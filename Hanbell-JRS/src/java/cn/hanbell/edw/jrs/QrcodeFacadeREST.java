@@ -105,7 +105,7 @@ public class QrcodeFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
         HashMap<String, Object> reportParams = new HashMap<>();
         ByteArrayOutputStream baos;
         Edw640QrcodePrint report = new Edw640QrcodePrint();
-        report.initQrcode(qrcode.getQrcodes(), 200, 220, appResPath, "EDW640");
+        report.initQrcode(qrcode.getQrcodes(), 800, 800, appResPath, "EDW640");
         // 设置报表参数
         baos = new ByteArrayOutputStream();
         reportParams.put("data", qrcode.getQrcodes());
