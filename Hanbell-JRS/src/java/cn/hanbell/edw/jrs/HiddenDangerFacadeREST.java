@@ -804,7 +804,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 }
                 ehsHazardInspectionBean.persist(eInspection);
                 ehsHazardInspectionDtaBean.update(eInspectionDta);
-                return new ResponseMessage("200", "状态更新成功");
+                return new ResponseMessage("200", formid);
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误Update失败");
             }
