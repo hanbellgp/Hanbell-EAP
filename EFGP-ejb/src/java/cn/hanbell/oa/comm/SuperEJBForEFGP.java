@@ -159,6 +159,8 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
                 return "C4";
             case "1R":
                 return "W";
+            case "XA":
+                return "C5";//银川
         }
         switch (deptId.substring(0, 1)) {
             case "1":
@@ -166,7 +168,7 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
             case "2":
                 return "H";
             case "3":
-                return "V";
+                return "VN";
             case "4":
                 return "Q";
             case "5":
@@ -179,6 +181,10 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
                 return "E";
             case "9":
                 return "L";
+            case "Y":
+                return "F";//楚雄汉钟
+            case "W":
+                return "VB";//越南北宁
         }
         return "";
     }

@@ -204,6 +204,8 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.TimerService;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -754,7 +756,8 @@ public class TimerBean {
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        wechatCorpBean.sendMsgToUser(errMsgUser, "text", String.format("人员%s更新失败", e.getCode()));
+                        sendMsg(errMsgUser, String.format("人员%s更新失败", e.getCode()));
+                       // wechatCorpBean.sendMsgToUser(errMsgUser, "text", String.format("人员%s更新失败", e.getCode()));
                     }
                 });
                 log4j.info("syncOrganizationByHRM,同步EAP/ERP/CRM/MES员工资料结束");
@@ -763,10 +766,20 @@ public class TimerBean {
             log4j.info("syncOrganizationByHRM结束");
         } catch (Exception ex) {
             ex.printStackTrace();
-            wechatCorpBean.sendMsgToUser(errMsgUser, "text", "HR同步EAP更新发生异常！");
+            sendMsg(errMsgUser, "HR同步EAP更新发生异常");
+            //wechatCorpBean.sendMsgToUser(errMsgUser, "text", "HR同步EAP更新发生异常！");
             log4j.error("syncOrganizationByHRM出现异常", ex);
         }
     }
+    
+    
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public boolean sendMsg(String userno, String content) {
+        wechatCorpBean.initConfiguration();
+        wechatCorpBean.sendMsgToUser(userno, "text", content);
+        return true;
+    }
+
 
     @Schedule(minute = "*/30", hour = "8-20", persistent = false)
     public void createEAMAssetAcceptanceByERPPUR530() {
