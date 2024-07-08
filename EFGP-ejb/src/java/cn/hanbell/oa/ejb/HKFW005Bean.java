@@ -167,44 +167,31 @@ public class HKFW005Bean extends SuperEJBForEFGP<HKFW005> {
         return hkfw005DetailBean.findByFSN(fsn);
     }
 
-    public List<HKFW005> findByHKCW005QueryPage(Date createDateBegin, Date createDateEnd, String formSerialNumber, String customer, Date signDateBegin, Date signDateEnd,
-            String state, String workItemName) {
+    public List<HKFW005> findByHKCW005QueryPage(Date createDateBegin, Date createDateEnd, String fsn,String psn,String cusno,String cusna,String userid) {
         try {
-            StringBuffer sql = new StringBuffer("select * from HK_FW005 a,ProcessInstance  b where a.processSerialNumber=b.serialNumber");
-            if ("1".equals(state)) {
-                //结案单据
-                StringBuffer workitemSql = new StringBuffer();
-                if ("ALL".equals(workItemName)) {
-                    workitemSql.append(" select contextOID from WorkItem where workItemName in (N'仓储课长',N'仓储主管',N'帐管（运费录入）') and completedTime is null");
-                } else {
-                    workitemSql.append("  select contextOID from WorkItem where workItemName in (");
-                    workitemSql.append(workItemName);
-                    workitemSql.append(" )  and completedTime is null");
-                }
-                if (signDateBegin != null) {
-                    workitemSql.append(" and  createdTime>='").append(BaseLib.formatDate("yyyyMMdd", signDateBegin)).append("'");
-                }
-                if (signDateEnd != null) {
-                    workitemSql.append(" and  createdTime<='").append(BaseLib.formatDate("yyyyMMdd", signDateEnd)).append("'");
-                }
-                sql.append(" and b.contextOID in (").append(workitemSql).append(") ");
-            } else if ("3".equals(state)) {
-                sql.append(" and  b.currentState='3'");
-            }
-
+            StringBuffer sql = new StringBuffer("select a.* from HK_FW005 a,ProcessInstance  b,WorkItem c,WorkAssignment d ,Users e");
+            sql.append(" where a.processSerialNumber=b.serialNumber and c.contextOID=b.contextOID and c.OID=d.workItemOID and d.assigneeOID=e.OID");
+            sql.append(" and b.currentState='1' and c.currentState in ('1','0') and e.id='").append(userid).append("'");
             if (createDateBegin != null) {
-                sql.append(" and b.createdTime>='").append(BaseLib.formatDate("yyyyMMdd", createDateBegin)).append("'");
+                sql.append(" and b.createdTime>='").append(BaseLib.formatDate("yyyy-MM-dd", createDateBegin)).append("'");
             }
             if (createDateEnd != null) {
-                sql.append(" and b.createdTime<='").append(BaseLib.formatDate("yyyyMMdd", createDateEnd)).append("'");
+                sql.append(" and b.createdTime<='").append(BaseLib.formatDate("yyyy-MM-dd", createDateEnd)).append("'");
             }
-            
-            if (formSerialNumber != null && !"".equals(formSerialNumber)) {
-                sql.append(" and a.formSerialNumber like N'%").append(formSerialNumber).append("%'");
+
+            if (fsn != null && !"".equals(fsn)) {
+                sql.append(" and a.formSerialNumber like N'%").append(fsn).append("%'");
             }
-            if (customer != null && !"".equals(customer)) {
-                sql.append(" and a.cusna like N'%").append(customer).append("%'");
+            if (psn != null && !"".equals(psn)) {
+                sql.append(" and a.processSerialNumber like N'%").append(psn).append("%'");
             }
+            if (cusno != null && !"".equals(cusno)) {
+                sql.append(" and a.cusno like N'%").append(cusno).append("%'");
+            }
+            if (cusna != null && !"".equals(cusna)) {
+                sql.append(" and a.cusna like N'%").append(cusna).append("%'");
+            }
+            sql.append(" order by a.processSerialNumber asc");
             Query query = getEntityManager().createNativeQuery(sql.toString(), HKFW005.class);
             return query.getResultList();
         } catch (Exception e) {

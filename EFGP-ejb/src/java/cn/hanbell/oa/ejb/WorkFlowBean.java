@@ -210,15 +210,16 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             // 建立一个WebServices调用连接
             Call call = BaseLib.getAXISCall(host, port, "/NaNaWeb/services/WorkflowService?wsdl");
             // 接受一个工作项目
-            call.setOperationName(new QName("WorkflowService", "acceptWorkItem"));
-            params = new Object[]{workItemOID, userId};
-            call.invoke(params);
+//            call.setOperationName(new QName("WorkflowService", "acceptWorkItem"));
+//            params = new Object[]{workItemOID, userId};
+//            call.invoke(params);
             // 审批一个工作项目
             call.setOperationName(new QName("WorkflowService", "completeWorkItem"));
             params = new Object[]{workItemOID, userId, comment};
             call.invoke(params);
             return "200$success";
         } catch (ServiceException | RemoteException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

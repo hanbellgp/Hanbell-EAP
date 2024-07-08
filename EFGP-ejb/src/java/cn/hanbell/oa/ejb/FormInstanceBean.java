@@ -9,6 +9,7 @@ import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.FormInstance;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.persistence.Query;
 
 /**
  *
@@ -20,6 +21,17 @@ public class FormInstanceBean extends SuperEJBForEFGP<FormInstance> {
 
     public FormInstanceBean() {
         super(FormInstance.class);
+    }
+
+    public FormInstance findBySerialNumber(String serialNumber) {
+        Query query = getEntityManager().createNamedQuery("FormInstance.findBySerialNumber");
+        query.setParameter("serialNumber", serialNumber);
+        try {
+            Object o = query.getSingleResult();
+            return (FormInstance) o;
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
 }
