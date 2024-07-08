@@ -622,6 +622,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             }
             return true;
         } catch (Exception ex) {
+            ex.printStackTrace();
             log4j.error(ex);
             return false;
         } finally {

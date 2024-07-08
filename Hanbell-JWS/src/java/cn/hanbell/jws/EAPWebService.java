@@ -1092,6 +1092,10 @@ public class EAPWebService {
                     // EAM资产申请明细
                     int i = 0;
                     for (HKCW002Detail d : detailList) {
+                        //B006消耗品道具不产生
+                        if ("B006".equals(d.getCategory())) {
+                            continue;
+                        }
                         i++;
                         aad = new AssetApplyDetail();
                         aad.setSeq(i);

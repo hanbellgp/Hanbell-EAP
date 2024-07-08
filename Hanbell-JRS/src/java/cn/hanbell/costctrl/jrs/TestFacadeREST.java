@@ -27,9 +27,12 @@ import cn.hanbell.erp.ejb.ApmaphBean;
 import cn.hanbell.erp.ejb.ApmsysBean;
 import cn.hanbell.erp.ejb.ApmtbilBean;
 import cn.hanbell.erp.ejb.BudgetAccBean;
+import cn.hanbell.erp.ejb.CdrcusBean;
+import cn.hanbell.erp.ejb.CdrqhadBean;
 import cn.hanbell.erp.ejb.InvmasBean;
 import cn.hanbell.erp.ejb.MiscodeBean;
 import cn.hanbell.erp.ejb.MisdeptBean;
+import cn.hanbell.erp.ejb.PricingUserBean;
 import cn.hanbell.erp.ejb.PurachBean;
 import cn.hanbell.erp.ejb.PurhaskBean;
 import cn.hanbell.erp.ejb.PurvdrBean;
@@ -39,9 +42,13 @@ import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
 import cn.hanbell.erp.entity.Apmtbil;
 import cn.hanbell.erp.entity.BudgetAcc;
+import cn.hanbell.erp.entity.Cdrcus;
+import cn.hanbell.erp.entity.Cdrqdta;
+import cn.hanbell.erp.entity.Cdrqhad;
 import cn.hanbell.erp.entity.Invmas;
 import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.erp.entity.Misdept;
+import cn.hanbell.erp.entity.PricingUser;
 import cn.hanbell.erp.entity.Puracd;
 import cn.hanbell.erp.entity.Purach;
 import cn.hanbell.erp.entity.Purhask;
@@ -59,6 +66,8 @@ import cn.hanbell.oa.entity.HKCW002Detail;
 import cn.hanbell.oa.entity.Invmasmark;
 import cn.hanbell.oa.model.HKCW013DetailModel;
 import cn.hanbell.oa.model.HKCW013Model;
+import cn.hanbell.oa.model.HKYX009DetailModel;
+import cn.hanbell.oa.model.HKYX009Model;
 import cn.hanbell.oa.model.HZJS034DetailModel;
 import cn.hanbell.oa.model.HZJS034Model;
 import cn.hanbell.oa.model.SHBERPAPM811DetailModel;
@@ -120,6 +129,12 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
     private SecuserBean secuserBean;
     @EJB
     private SecmembBean secmembBean;
+    @EJB
+    private CdrqhadBean cdrqhadBean;
+    @EJB
+    private CdrcusBean cdrcusBean;
+    @EJB
+    private PricingUserBean pricingUserBean;
 
     @EJB
     private HKCW002Bean hkcw002Bean;
@@ -652,7 +667,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
     @GET
     @Path("apm820/oa")
     @Consumes({"application/json"})
-    public void createOAHKCW013ByERPAPM820(String company) {
+    public void createOAHKCW013ByERPAPM820(@QueryParam("company") String company) {
         HKCW013Model hm;
         HKCW013DetailModel dm;
         List<HKCW013DetailModel> detailList = new ArrayList<>();
@@ -805,6 +820,143 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                             h.setApsta("25");
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
+    }
+
+    @GET
+    @Path("cdrqhad/oa")
+    @Consumes({"application/json"})
+    public void createOAHKYX009ByERPCDR220(@QueryParam("company") String company) {
+        HKYX009Model hm;
+        HKYX009DetailModel dm;
+        List<HKYX009DetailModel> detailList = new ArrayList<>();
+        LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
+        details.put("Detail", detailList);
+        try {
+            cdrqhadBean.setCompany(company);
+            List<Cdrqhad> cdrqhadList = cdrqhadBean.findNeedThrow();
+            List<Cdrqdta> cdrqdtaList;
+            String facno;
+            String quono;
+            String oilspecial = "";
+            int i;
+            if (cdrqhadList != null && !cdrqhadList.isEmpty()) {
+                for (Cdrqhad h : cdrqhadList) {
+                    facno = h.getCdrqhadPK().getFacno();
+                    quono = h.getCdrqhadPK().getQuono();
+                    cdrqdtaList = cdrqhadBean.findNeedThrowDetail(facno, quono);
+                    cdrcusBean.setCompany(facno);
+                    invmasBean.setCompany(facno);
+                    miscodeBean.setCompany(facno);
+                    secuserBean.setCompany(facno);
+                    if (cdrqdtaList != null && !cdrqdtaList.isEmpty()) {
+                        detailList.clear();// 清除前面的资料
+                        i = 0;
+                        for (Cdrqdta d : cdrqdtaList) {
+                            i++;
+                            dm = new HKYX009DetailModel();
+                            dm.setSeq(String.valueOf(i));
+                            dm.setTrseq(String.valueOf(d.getCdrqdtaPK().getTrseq()));
+                            dm.setItnbr(d.getItnbr());
+                            dm.setItnbrcus(d.getItnbrcus());
+                            Invmas invmas = invmasBean.findByItnbr(d.getItnbr());
+                            dm.setItdsc(filterString(invmas.getItdsc()));
+                            dm.setSpdsc(filterString(invmas.getSpdsc()));
+                            dm.setQuaqy1(d.getQuaqy1().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            dm.setUnpris(d.getUnpris().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            if (d.getListunpri() != null) {
+                                dm.setLastunpri(d.getListunpri().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            } else {
+                                dm.setLastunpri("0");
+                            }
+                            if (d.getHisorders() != null) {
+                                dm.setOrderqty(d.getHisorders().toString());
+                            } else {
+                                dm.setOrderqty("0");
+                            }
+                            dm.setTramts(d.getTramts().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            if (d.getCdrdate() != null) {
+                                dm.setCdrdate(BaseLib.formatDate("yyyy/MM/dd", d.getCdrdate()));
+                            } else {
+                                dm.setCdrdate(BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
+                            }
+                            if (null == d.getQxb()) {
+                                dm.setPeratio("");
+                            } else {
+                                dm.setPeratio(d.getQxb());
+                            }
+                            dm.setRefmodel("");
+                            dm.setRefratio("");
+                            if (d.getDiffprice() != null) {
+                                dm.setDiffitting(d.getDiffprice().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            } else {
+                                dm.setDiffitting("0");
+                            }
+                            //服务部需求油品特殊流程
+                            if (d.getItnbr().startsWith("52001-")) {
+                                oilspecial = "Y";
+                            }
+                            detailList.add(dm);
+                        }
+                        hm = new HKYX009Model();
+                        hm.setFacno(facno);
+                        hm.setQuono(quono);
+                        hm.setQuodate(h.getQuodate());
+                        hm.setCfmdate(h.getCfmdate());
+                        hm.setIsspecial(h.getIsspecial());
+                        hm.setPricingtype(h.getPricingtype());
+                        hm.setQuotype(h.getQuotype().toString());
+                        Miscode miscode = miscodeBean.findByPK("1C", h.getPricingtype());
+                        hm.setPricingtypedsc(miscode.getCdesc());
+                        hm.setCoin(h.getCoin());
+                        hm.setRatio(h.getRatio().doubleValue());
+                        hm.setLevelp(h.getLevelp());
+                        hm.setCusno(h.getCusno());
+                        Cdrcus cdrcus = cdrcusBean.findByCusno(h.getCusno());
+                        hm.setCusna(cdrcus.getCusna());
+                        hm.setMancode(h.getMancode());
+                        //服务部需求带出定价群组Pricinguser
+                        hm.setPricgroup("");
+                        pricingUserBean.setCompany("C");
+                        PricingUser pu = pricingUserBean.findByPricingtypeAndUserid(h.getPricingtype(), h.getCusno());
+                        if (null != pu) {
+                            Miscode mis = miscodeBean.findByPK("1D", pu.getPricingUserPK().getGroupid());
+                            hm.setPricgroup(mis.getCdesc());
+                        }
+                        hm.setOilspecial(oilspecial);
+                        Secuser secuser = secuserBean.findByUserno(h.getMancode());
+                        hm.setMancodesc(secuser.getUsername());
+                        // hm.setDepno(workFlowBean.getCurrentUser().getDeptno());
+                        hm.setDepno(h.getDepno()); // 报价部门
+                        hm.setCfmuser(h.getCfmuserno());
+                        // 设置审批原因
+                        hm.setApprresno(miscodeBean.findByPK("1O", h.getApprresno()).getCdesc());
+                        // 加入付款条件叙述
+                        hm.setPaycodedsc(h.getPaycodedsc());
+                        workFlowBean.initUserInfo(h.getUserno());
+                        // 构建表单实例
+                        String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);
+                        String subject = "客户:" + hm.getCusna() + "申请原因： " + hm.getApprresno() + ".  业务员:"
+                                + hm.getMancode() + hm.getMancodesc();
+                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT,
+                                "PKG_HK_YX009", formInstance, subject);
+                        String[] rm = msg.split("\\$");
+                        if (rm != null) {
+                            log4j.info(h.getCdrqhadPK().getQuono());
+                            log4j.info(Arrays.toString(rm));
+                        }
+                        if (rm != null && rm.length == 2 && rm[0].equals("200")) {
+                            // 更新ERP CDR220状态
+                            h.setHquosta('O');
+                            cdrqhadBean.setCompany(facno);
+                            cdrqhadBean.update(h);
+                            cdrqhadBean.getEntityManager().flush();
                         }
                     }
                 }
