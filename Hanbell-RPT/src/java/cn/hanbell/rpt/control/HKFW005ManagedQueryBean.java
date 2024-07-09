@@ -580,8 +580,8 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
      */
     public void login() {
         try {
-//            if (cn.hanbell.util.BaseLib.ADAuth("172.16.10.190:389", this.currentUserid + "@hanbell.com.cn", this.password)) {
-            if (true) {
+            if (cn.hanbell.util.BaseLib.ADAuth("172.16.10.190:389", this.currentUserid + "@hanbell.com.cn", this.password)) {
+     //       if (true) {
                 islogin = true;
                 this.currentUserName = systemUserBean.findByUserId(this.currentUserid).getUsername();
                 query();
