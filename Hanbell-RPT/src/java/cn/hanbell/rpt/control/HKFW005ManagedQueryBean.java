@@ -622,6 +622,8 @@ public class HKFW005ManagedQueryBean extends SuperQueryBean<HKFW005> {
                     List<WorkItem> works = workItemBean.findByContextOID(HKFW005.getProcessInstance().getContextOID());
                     for (WorkItem w : works) {
                         if (w.getCompletedTime() == null) {
+                            w.setCurrentState(1);
+                            workItemBean.update(w);
                             String success = workFlowBean.completeWorkItem(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, w.getOID(), this.currentUserid, String.format("%s(%s)后台签核", this.currentUserName, this.currentUserid));
                             break;
                         }
