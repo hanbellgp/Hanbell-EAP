@@ -173,10 +173,10 @@ public class HKFW005Bean extends SuperEJBForEFGP<HKFW005> {
             sql.append(" where a.processSerialNumber=b.serialNumber and c.contextOID=b.contextOID and c.OID=d.workItemOID and d.assigneeOID=e.OID");
             sql.append(" and b.currentState='1' and c.currentState in ('1','0') and e.id='").append(userid).append("'");
             if (createDateBegin != null) {
-                sql.append(" and b.createdTime>='").append(BaseLib.formatDate("yyyy-MM-dd", createDateBegin)).append("'");
+                sql.append(" and c.createdTime>='").append(BaseLib.formatDate("yyyy-MM-dd", createDateBegin)).append("'");
             }
             if (createDateEnd != null) {
-                sql.append(" and b.createdTime<='").append(BaseLib.formatDate("yyyy-MM-dd", createDateEnd)).append("'");
+                sql.append(" and c.createdTime<='").append(BaseLib.formatDate("yyyy-MM-dd", createDateEnd)).append("'");
             }
 
             if (fsn != null && !"".equals(fsn)) {
