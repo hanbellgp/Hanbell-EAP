@@ -91,7 +91,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
     //测试环境
 //   private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //本地环境
-    //  private final String filePathTemp = "D:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    // private final String filePathTemp = "F:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -214,7 +214,12 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 filterFields.put("id", docPid);
                 List<EhsHazardInspectionDta> eDta = ehsHazardInspectionDtaBean.findByFilters(filterFields);
                 Map<String, Object> hiddenFields = new HashMap<>();
-                 hiddenFields.put("id", entity.getId());
+                String id="";
+                id=entity.getId();
+                if (id==null) {
+                    id="测试";
+                }
+                 hiddenFields.put("id",id );
                 List<EhsHiddenDanger> ehsList=ehsHiddenDangerBean.findByFilters(hiddenFields);
                 if (ehsList.size()>0) {
                     hiddenTemp=ehsList.get(0);
@@ -448,6 +453,18 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     }
                 }
                 hiddenImageListRes = ehsHiddenDangerFileBean.findByFilters(filterFields);
+                 List<Object> hiddenImageListResObj = new ArrayList<>();
+                  for (EhsHiddenDangerFile eh : hiddenImageListRes) {
+                    // 将字节数组转换为Base64编码
+                    Object [] obj =new Object[2];
+                    java.io.File imageFile = new java.io.File(filePathTemp + eh.getFileName());
+                    byte[] imageBytes = null;
+                    imageBytes = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(imageFile.getPath()));
+                    String base64String = java.util.Base64.getEncoder().encodeToString(imageBytes);
+                    obj[0]="data:image/png;base64," + base64String;
+                    obj[1]=eh.getFileType();
+                    hiddenImageListResObj.add(obj);
+                }
                 hiddenTypeList = ehsHiddenDangerParameterBean.getTroubleNameList(companyCodeStr, "YH", "HiddenType");
                 rectificationTypeList = ehsHiddenDangerParameterBean.getTroubleNameList(companyCodeStr, "YH", "RectificationType");
                 Map<String, Object> filterSecure = new HashMap<>();
@@ -469,7 +486,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 filterSecure.put("position", "月安全课长");
                 filterSecure.put("remark", new Date().getMonth() + 1 + "");
                 checkList = ehsSecureBean.findByFilters(filterSecure);
-                list.add(hiddenImageListRes);
+                list.add(hiddenImageListResObj);
                 list.add(hiddenTypeList);
                 list.add(rectificationTypeList);
                 list.add(rectifierList);
