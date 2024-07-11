@@ -799,7 +799,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 eInspection.setPatrolId(entity.getCreateId());
                 eInspection.setPatrolName(entity.getUpdateId());
                 eInspection.setPatrolType("岗位自查");
-                eInspection.setPatrolPost("岗位自查");
+                eInspection.setPatrolPost(eStandard.get(0).getPost());
                 eInspection.setResult("待检");
                 eInspection.setStatus("S");
                 eInspection.setCreateId(entity.getCreateId());
