@@ -757,7 +757,7 @@ public class TimerBean {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         sendMsg(errMsgUser, String.format("人员%s更新失败", e.getCode()));
-                       // wechatCorpBean.sendMsgToUser(errMsgUser, "text", String.format("人员%s更新失败", e.getCode()));
+                        // wechatCorpBean.sendMsgToUser(errMsgUser, "text", String.format("人员%s更新失败", e.getCode()));
                     }
                 });
                 log4j.info("syncOrganizationByHRM,同步EAP/ERP/CRM/MES员工资料结束");
@@ -771,15 +771,13 @@ public class TimerBean {
             log4j.error("syncOrganizationByHRM出现异常", ex);
         }
     }
-    
-    
+
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public boolean sendMsg(String userno, String content) {
         wechatCorpBean.initConfiguration();
         wechatCorpBean.sendMsgToUser(userno, "text", content);
         return true;
     }
-
 
     @Schedule(minute = "*/30", hour = "8-20", persistent = false)
     public void createEAMAssetAcceptanceByERPPUR530() {
@@ -1170,9 +1168,9 @@ public class TimerBean {
                                     item.setNEcnnewitnbr(pd.getCItnbr());
                                     item.setNEcnno(pd.getItemNumber());
                                     item.setModdate(new Date());
-                                    if(fromTHB){
+                                    if (fromTHB) {
                                         item.setModman(pm.getEcWorker());
-                                    }else{
+                                    } else {
                                         item.setModman(pm.getCApplicant());
                                     }
                                     item.setModman(k);
@@ -1683,14 +1681,15 @@ public class TimerBean {
                         sumivomsfs = 0.00;
                         bilnoList = new ArrayList<>();
                         String isAttachment = "";
-                        String ls_mark = h.getHmark();     //备注栏位记录OA是否免签和
+                        String ls_mark = "";     //备注栏位记录OA是否免签和
+                        String ls_hmark = h.getHmark();
                         Date payda1 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
                         String vdrno = h.getVdrno();
                         Date apdate = h.getApdate();
                         Date payda2 = apmsysBean.getpurdate2(company, vdrno, apdate);
                         payda2 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", payda2));
                         //1.SCM抛转 2.未变更付款日期且无短溢沽，免签
-                        if (ls_mark != null && ls_mark.startsWith(company + "AP") && payda1.compareTo(payda2) == 0) {
+                        if (ls_hmark != null && ls_hmark.startsWith(company + "AP") && payda1.compareTo(payda2) == 0) {
                             ls_mark = "OA免签";
                         }
                         for (Apmapd d : apmapdList) {
@@ -1743,7 +1742,11 @@ public class TimerBean {
                                 if (!d.getApdsc().contains("税率差") && !d.getApdsc().contains("税差")) {
                                     isAttachment = "Y";
                                 }
-                                ls_mark = h.getHmark();
+                                ls_mark = ls_hmark;
+                            }
+                            //9件号或者验收别7NK，51A
+                            if ("9".equals(d.getItnbr()) || "51A".equals(d.getOgdkid()) || "7NK".equals(d.getOgdkid())) {
+                                ls_mark = ls_hmark;
                             }
                             detailList.add(dm);
                             // 计算海关代徵,税额
@@ -1827,7 +1830,7 @@ public class TimerBean {
                         if (rm != null && rm.length == 2 && rm[0].equals("200")) {
                             // 更新ERP APM811状态
                             h.setApsta("25");
-                            h.setHmark(ls_mark);
+                            h.setHmark(ls_hmark + ls_mark);
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }
