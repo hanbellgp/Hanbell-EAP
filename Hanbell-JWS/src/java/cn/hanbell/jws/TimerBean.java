@@ -85,6 +85,7 @@ import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eap.comm.MailNotify;
 import cn.hanbell.eap.entity.SystemUser;
+import cn.hanbell.erp.ejb.ApmpyhBean;
 import cn.hanbell.erp.ejb.ApmsysBean;
 import cn.hanbell.erp.ejb.BudgetAccBean;
 import cn.hanbell.erp.ejb.InvhdscBean;
@@ -96,6 +97,7 @@ import cn.hanbell.erp.ejb.PricingUserBean;
 import cn.hanbell.erp.ejb.PurdisBean;
 import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
+import cn.hanbell.erp.entity.Apmpyh;
 import cn.hanbell.erp.entity.Apmtbil;
 import cn.hanbell.erp.entity.Bomsub;
 import cn.hanbell.erp.entity.BudgetAcc;
@@ -275,6 +277,8 @@ public class TimerBean {
     // EJBForERP
     @EJB
     private ApmaphBean apmaphBean;
+    @EJB
+    private ApmpyhBean apmpyhBean;
     @EJB
     private ApmtbilBean apmtbilBean;
     @EJB
@@ -1744,6 +1748,11 @@ public class TimerBean {
                                 }
                                 ls_mark = ls_hmark;
                             }
+                            //有加扣款的验收请款单
+                            Apmpyh apmpyh = apmpyhBean.findByPK(company, d.getAcpno());
+                            if (null == apmpyh || apmpyh.getPsamt().compareTo(apmpyh.getMsamt()) != 0) {
+                                ls_mark = ls_hmark;
+                            }
                             //9件号或者验收别7NK，51A
                             if ("9".equals(d.getItnbr()) || "51A".equals(d.getOgdkid()) || "7NK".equals(d.getOgdkid())) {
                                 ls_mark = ls_hmark;
@@ -1830,7 +1839,9 @@ public class TimerBean {
                         if (rm != null && rm.length == 2 && rm[0].equals("200")) {
                             // 更新ERP APM811状态
                             h.setApsta("25");
-                            h.setHmark(ls_hmark + ls_mark);
+                            if ("OA免签".equals(ls_mark)) {
+                                h.setHmark(ls_hmark + ls_mark);
+                            }
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }
