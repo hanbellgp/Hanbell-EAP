@@ -275,7 +275,11 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                         r.setPrno(prno);
                         r.setTrseq(i + 1);
                         r.setHmark(detail.getPurdaskdescs());
-                        r.setFlag("N");
+                        if (RequestItnbr.startsWith("1") || RequestItnbr.startsWith("2") || RequestItnbr.startsWith("3")) {
+                            r.setFlag("N");
+                        } else {
+                            r.setFlag("X");
+                        }
                         r.setUpdateTime(BaseLib.getDate());
                         rdpmOrderOAs.add(r);
                     }
@@ -353,7 +357,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                 }
                 mailBean.getCc().add("C1491@hanbell.com.cn");
                 mailBean.setMailSubject("OA请购单合约价异常");
-                mailBean.setMailContent("OA请购单单身有合约价异常，流程序号: " + psn + ",ERP请购单号： " + prno+"请在ERP--PUR250追踪处理");
+                mailBean.setMailContent("OA请购单单身有合约价异常，流程序号: " + psn + ",ERP请购单号： " + prno + "请在ERP--PUR250追踪处理");
                 mailBean.notify(new ErrorMailNotify());
             }
             return true;
