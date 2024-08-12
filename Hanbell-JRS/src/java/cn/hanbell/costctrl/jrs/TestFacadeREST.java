@@ -24,6 +24,7 @@ import cn.hanbell.eap.comm.MailNotify;
 import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.eap.ejb.MailNotificationBean;
 import cn.hanbell.erp.ejb.ApmaphBean;
+import cn.hanbell.erp.ejb.ApmpyhBean;
 import cn.hanbell.erp.ejb.ApmsysBean;
 import cn.hanbell.erp.ejb.ApmtbilBean;
 import cn.hanbell.erp.ejb.BudgetAccBean;
@@ -40,6 +41,7 @@ import cn.hanbell.erp.ejb.SecmembBean;
 import cn.hanbell.erp.ejb.SecuserBean;
 import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
+import cn.hanbell.erp.entity.Apmpyh;
 import cn.hanbell.erp.entity.Apmtbil;
 import cn.hanbell.erp.entity.BudgetAcc;
 import cn.hanbell.erp.entity.Cdrcus;
@@ -117,6 +119,8 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
     private PurvdrBean purvdrBean;
     @EJB
     private ApmtbilBean apmtbilBean;
+    @EJB
+    private ApmpyhBean apmpyhBean;
     @EJB
     private MiscodeBean miscodeBean;
     @EJB
@@ -503,14 +507,15 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         sumivomsfs = 0.00;
                         bilnoList = new ArrayList<>();
                         String isAttachment = "";
-                        String ls_mark = h.getHmark();     //备注栏位记录OA是否免签和
+                        String ls_mark = "";     //备注栏位记录OA是否免签和
+                        String ls_hmark = h.getHmark();
                         Date payda1 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
                         String vdrno = h.getVdrno();
                         Date apdate = h.getApdate();
                         Date payda2 = apmsysBean.getpurdate2(company, vdrno, apdate);
                         payda2 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", payda2));
                         //1.SCM抛转 2.未变更付款日期且无短溢沽，免签
-                        if (ls_mark != null && ls_mark.startsWith(company + "AP") && payda1.compareTo(payda2) == 0) {
+                        if (ls_hmark != null && ls_hmark.startsWith(company + "AP") && payda1.compareTo(payda2) == 0) {
                             ls_mark = "OA免签";
                         }
                         for (Apmapd d : apmapdList) {
@@ -521,8 +526,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                             dm.setAcpno(d.getAcpno());
                             dm.setSponr(d.getSponr());
                             dm.setItnbr(d.getItnbr());
-                            //dm.setItdsc(filterString(d.getItdsc()));
-                            dm.setItdsc(d.getItdsc());
+                            dm.setItdsc(filterString(d.getItdsc()));
                             dm.setPric(d.getPric().toString());
                             dm.setPayqty(d.getPayqty().toString());
                             sumqty += d.getPayqty().doubleValue();
@@ -564,7 +568,17 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                                 if (!d.getApdsc().contains("税率差") && !d.getApdsc().contains("税差")) {
                                     isAttachment = "Y";
                                 }
-                                ls_mark = h.getHmark();
+                                ls_mark = ls_hmark;
+                            }
+                            //有加扣款的验收请款单
+                            apmpyhBean.setCompany(company);
+                            Apmpyh apmpyh = apmpyhBean.findByPK(company, d.getAcpno());
+                            if (null == apmpyh || apmpyh.getPsamt().compareTo(apmpyh.getMsamt()) != 0) {
+                                ls_mark = ls_hmark;
+                            }
+                            //9件号或者验收别7NK，51A
+                            if ("9".equals(d.getItnbr()) || "51A".equals(d.getOgdkid()) || "7NK".equals(d.getOgdkid())) {
+                                ls_mark = ls_hmark;
                             }
                             detailList.add(dm);
                             // 计算海关代徵,税额
@@ -589,6 +603,10 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         hm.setAppdept(h.getDepno());
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
+                        //集团内部厂商免签(STW00007/STW00045/KTW00001/ETW00001) 
+                        if ("STW00007".equals(h.getVdrno()) || "STW00045".equals(h.getVdrno()) || "KTW00001".equals(h.getVdrno()) || "ETW00001".equals(h.getVdrno())) {
+                            ls_mark = "OA免签";
+                        }
                         hm.setVdrna(h.getVdrna());
                         Purvdr purvdr = purvdrBean.findByVdrno(h.getVdrno());
                         if (null != purvdr) {
@@ -600,9 +618,9 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         hm.setPyhyn(h.getPyhyn());
                         hm.setApno(h.getApmaphPK().getApno());
                         hm.setPaytn(h.getPaytn());
-                        hm.setPaydate(com.lightshell.comm.BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
+                        hm.setPaydate(BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
                         // 票据到期日 n_pur_apmlib --> uf_getpurdate
-                        hm.setTerdate(com.lightshell.comm.BaseLib.formatDate("yyyy/MM/dd", h.getTerda()));
+                        hm.setTerdate(BaseLib.formatDate("yyyy/MM/dd", h.getTerda()));
                         hm.setApsta(h.getApsta());
                         hm.setIndate(h.getIndate());
                         hm.setInuser(h.getUserno());
@@ -644,7 +662,9 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         if (rm != null && rm.length == 2 && rm[0].equals("200")) {
                             // 更新ERP APM811状态
                             h.setApsta("25");
-                            h.setHmark(ls_mark);
+                            if ("OA免签".equals(ls_mark)) {
+                                h.setHmark(ls_hmark + ls_mark);
+                            }
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }
@@ -656,7 +676,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
             log4j.error(ex);
             //加入邮件通知
             eapMailBean.getTo().clear();
-            eapMailBean.getTo().add("13120@hanbell.com.cn");
+            eapMailBean.getTo().add("C1491@hanbell.com.cn");
             eapMailBean.setMailSubject("ERP-APM811抛转OA审批失败");
             eapMailBean.setMailContent(
                     company + "公司别 ERP-APM811抛转OA审批申请单" + "抛转失败，异常：" + ex);
