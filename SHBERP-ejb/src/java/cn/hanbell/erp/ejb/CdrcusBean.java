@@ -946,10 +946,18 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
                 k += 1;
             }
             if (k >= slength) {
-                arrList.add(s.substring(0, i + 1));
-                if (!s.substring(i + 1).trim().equals("")) {
-                    return getStringArray(s.substring(i + 1), slength, arrList);
+                if (si.matches("[^\\x00-\\xff]")) { //匹配中文字符  
+                    arrList.add(s.substring(0, i));
+                    if (!s.substring(i).trim().equals("")) {
+                        return getStringArray(s.substring(i), slength, arrList);
+                    }
+                } else {
+                    arrList.add(s.substring(0, i + 1));
+                    if (!s.substring(i + 1).trim().equals("")) {
+                        return getStringArray(s.substring(i + 1), slength, arrList);
+                    }
                 }
+
             }
         }
         if (k < slength) {
