@@ -45,9 +45,10 @@ public class MCHZGL004 {
     private String registrationkey;
     private String telcontact;
     private String hmark1;
-    
+
     private List<MCHZGL004BizDetail> detailList;
     private List<MCHZGL004CarDetail> cardetailList;
+    private List<HZGL004FilesApplication> hzgl004Files;
     public MCHZGL004() {
 
     }
@@ -392,6 +393,14 @@ public class MCHZGL004 {
 
     public void setCardetailList(List<MCHZGL004CarDetail> cardetailList) {
         this.cardetailList = cardetailList;
+    }
+
+    public List<HZGL004FilesApplication> getHzgl004Files() {
+        return hzgl004Files;
+    }
+
+    public void setHzgl004Files(List<HZGL004FilesApplication> hzgl004Files) {
+        this.hzgl004Files = hzgl004Files;
     }
 
 }

@@ -7,13 +7,18 @@ package cn.hanbell.oa.jrs;
 
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
+import cn.hanbell.oa.app.HKGL004FilesApplication;
+import cn.hanbell.oa.app.HZGL004FilesApplication;
 import cn.hanbell.oa.app.MCHZGL004;
 import cn.hanbell.oa.app.MCHZGL004BizDetail;
 import cn.hanbell.oa.app.MCHZGL004CarDetail;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
+import cn.hanbell.oa.ejb.HKPB033WorkFlowBean;
 import cn.hanbell.oa.ejb.HZGL004Bean;
+import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.entity.HZGL004;
 import cn.hanbell.oa.entity.OrganizationUnit;
+import cn.hanbell.oa.entity.Users;
 import cn.hanbell.oa.model.HZGL004BizDetailModel;
 import cn.hanbell.oa.model.HZGL004CarDetailModel;
 import cn.hanbell.oa.model.HZGL004Model;
@@ -34,6 +39,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import org.json.JSONObject;
+import org.json.XML;
 
 /**
  *
@@ -48,6 +55,9 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
 
     @EJB
     private Agent1000002Bean agent1000002Bean;
+    
+            @EJB
+    private UsersBean userBean;
 
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
@@ -75,6 +85,30 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
         details.put("bizDetail", detailList);
         details.put("carDetail", cardetailList);
         try {
+            List<JSONObject> files = new ArrayList<>();
+            for (HZGL004FilesApplication e : entity.getHzgl004Files()) {
+                String fileName = String.valueOf(BaseLib.getDate().getTime()).concat(".").concat(e.getImageType());
+                String fileInfo = workFlowBean.reserveNoCmDocument(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, fileName);
+                JSONObject requestedJSON = XML.toJSONObject(fileInfo);
+                //路径
+                StringBuffer url = new StringBuffer("");
+                url.append(workFlowBean.FILE_URL);
+                url.append(requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").getString("filePathToSave")).append("/");
+                StringBuffer fileName1 = new StringBuffer("");
+                fileName1.append(requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").getString("physicalName"));
+                fileName1.append(".").append(e.getImageType());
+                System.out.print(url.toString().replace("\\", "/") + fileName1);
+                workFlowBean.getShareFileContent(workFlowBean.OA_USERNO, workFlowBean.OA_PASSWORD, url.toString().replace("\\", "/") + fileName1, e.getData());
+                JSONObject attachment = new JSONObject();
+                attachment.append("OID", requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").get("OID"));
+                attachment.append("id", fileName1.toString());
+                attachment.append("fileSize", workFlowBean.getFileSize(workFlowBean.OA_USERNO, workFlowBean.OA_PASSWORD, url.toString().replace("\\", "/")));
+                attachment.append("fileType", e.getImageType());
+                attachment.append("name", fileName1.toString());
+                attachment.append("originalFileName", fileName1.toString());
+                attachment.append("uploadTime", new Date().getTime());
+                files.add(attachment);
+            }
             //初始化发起人
             workFlowBean.initUserInfo(entity.getApplyUser());
             //实例化对象
@@ -191,7 +225,8 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             }
 
             //发起流程
-            String formInstance = workFlowBean.buildXmlForEFGP("HZ_GL004", m, details);
+            Users user = userBean.findById(entity.getApplyUser());
+            String formInstance = workFlowBean.buildXmlForEFGP("HZ_GL004", m, details,files,user.getOid());
             String subject = m.getHdn_applyUser() + entity.getStartDate() + "开始出差" + entity.getDays() + "天";
             String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HZ_GL004", formInstance, subject);
             String[] rm = msg.split("\\$");
