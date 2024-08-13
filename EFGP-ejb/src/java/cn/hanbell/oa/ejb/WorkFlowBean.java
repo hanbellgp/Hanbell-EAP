@@ -38,6 +38,7 @@ import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileOutputStream;
 import org.apache.axis.client.Call;
 import org.apache.commons.codec.binary.Base64;
+import org.json.JSONObject;
 
 /**
  *
@@ -57,7 +58,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
     public final String HOST_PORT = "8086";
     //文件存储的位置，允许读写的用户名密码，账号
     public final String OA_USERNO = "ECReader";
-    public final String OA_PASSWORD = "HanbellP@ssw0rd";
+    public final String OA_PASSWORD = "HanbellPass@word";
 
     @EJB
     private ParticipantActivityInstanceBean participantActivityInstanceBean;
@@ -68,6 +69,34 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
 
     public WorkFlowBean() {
         super(FormInstance.class);
+    }
+
+    public String buildXmlForEFGP(String formName, Object master, LinkedHashMap<String, List<?>> details, List<JSONObject> files,String userOid) {
+        StringBuilder xmlBuilder = new StringBuilder();
+        if (files == null || files.isEmpty()) {
+            xmlBuilder.append("<").append(formName).append(">");
+            buildXmlForEFGPMaster(xmlBuilder, formName, master);
+            if (details != null && !details.isEmpty()) {
+                for (Map.Entry<String, List<?>> e : details.entrySet()) {
+                    xmlBuilder.append(buildXmlForEFGPDetails(e.getKey(), e.getValue()));
+                }
+            }
+            xmlBuilder.append("</").append(formName).append(">");
+            return xmlBuilder.toString();
+        }else{
+             xmlBuilder.append("<").append(formName).append(">");
+            buildXmlForEFGPFile(xmlBuilder,files,userOid);
+            buildXmlForEFGPMaster(xmlBuilder, formName, master);
+            if (details != null && !details.isEmpty()) {
+                for (Map.Entry<String, List<?>> e : details.entrySet()) {
+                    xmlBuilder.append(buildXmlForEFGPDetails(e.getKey(), e.getValue()));
+                }
+            }
+            xmlBuilder.append("</").append(formName).append(">");
+            return xmlBuilder.toString();
+      //  return null;
+        }
+  
     }
 
     public String buildXmlForEFGP(String formName, Object master, LinkedHashMap<String, List<?>> details) {
@@ -127,7 +156,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                     }
                 } else {
                     builder.append("<").append(f.getName()).append("  id=\"").append(f.getName()).append("\"  dataType=\"").append(f.getType().getName()).append("\" perDataProId=\"\">");
-                    builder.append(f.get(master)).append("</").append(f.getName()).append(">");
+                    builder.append(f.get(master)==null?"":f.get(master)).append("</").append(f.getName()).append(">");
                 }
             } catch (IllegalArgumentException | IllegalAccessException ex) {
                 log4j.error(ex);
@@ -169,6 +198,36 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             }
         }
         builder.append("</record>");
+    }
+    
+    
+      protected void buildXmlForEFGPFile( StringBuilder builder,List<JSONObject> files, String userOID) throws RuntimeException {
+
+        if (files != null && !files.isEmpty()) {
+            builder.append("<Attachment id=\"Attachment\">");
+            builder.append("<attachments>");
+            for (JSONObject j : files) {
+                System.out.println(j.toString());
+                builder.append("<attachment");
+                builder.append(" OID=\"").append(j.getJSONArray("OID").getString(0)).append("\"");
+               
+                builder.append(" fileSize=\"").append(j.getJSONArray("fileSize").getLong(0)).append("\"");
+                builder.append(" id=\"").append(j.getJSONArray("id").getString(0)).append("\"");
+                builder.append(" fileType=\"").append(j.getJSONArray("fileType").getString(0)).append("\"");
+                builder.append(" name=\"").append(j.getJSONArray("name").getString(0)).append("\"");
+                builder.append(" originalFileName=\"").append(j.getJSONArray("originalFileName").getString(0)).append("\"");
+                builder.append(" uploadTime=\"").append(j.getJSONArray("uploadTime").getLong(0)).append("\"");
+                builder.append(">");
+                builder.append("<description></description>");
+                builder.append("<permission>");
+                builder.append("<user OID=\"").append(userOID).append("\"");
+                builder.append(" restriction=\"1\">").append("</user>");
+                builder.append("</permission>");
+                builder.append("</attachment>");
+            }
+            builder.append("</attachments>");
+            builder.append("</Attachment>");
+        }
     }
 
     public String completeWorkItem(String host, String port, String psn, String definitionId, String userId, String comment) throws Exception {
