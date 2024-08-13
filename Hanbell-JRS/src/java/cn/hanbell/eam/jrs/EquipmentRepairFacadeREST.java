@@ -38,9 +38,11 @@ import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEAM;
 import com.lightshell.comm.SuperEJB;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.security.KeyManagementException;
@@ -124,9 +126,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     protected SuperEJB superEJB;
 
     //生产环境
-    private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+     private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //测试环境
-    //private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
+  //  private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -164,6 +166,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipInvenTemp.setRepairusername(entity.getRepairusername());
                 equipInvenTemp.setFormdate(new Date());
                 equipInvenTemp.setHitchtime(entity.getHitchtime());
+                if (equipInvenTemp.getHitchurgency() == null && entity.getHitchurgency().equals("03")) {//第一次创单时，停机记录停机时间点
+                    equipInvenTemp.setDowninitiatetime(new Date());
+                }
                 equipInvenTemp.setHitchurgency(entity.getHitchurgency());
                 equipInvenTemp.setItemno(entity.getItemno());
                 equipInvenTemp.setFormid(formid);
@@ -171,7 +176,6 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipInvenTemp.setRepairarea(entity.getRepairarea());
                 equipInvenTemp.setRepairmethodtype(entity.getRepairmethodtype());
                 equipInvenTemp.setHitchdesc(entity.getHitchdesc());
-                equipInvenTemp.setHitchurgency(entity.getHitchurgency());
                 equipInvenTemp.setStatus("N");
                 equipInvenTemp.setRepairdeptno(entity.getRepairdeptno());
                 equipInvenTemp.setRepairdeptname(entity.getRepairdeptname());
@@ -562,7 +566,11 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 
                             String errmsg = sendMsgString(entity.getHitchdutyuser(), msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
                         } else {
-                            equipInvenTemp.setRstatus("60");
+                            if (companyCodeStr.equals("C")) {
+                                equipInvenTemp.setRstatus("55");
+                            } else {
+                                equipInvenTemp.setRstatus("60");
+                            }
                             equipInvenTemp.setHitchdutydeptno(null);
                             equipInvenTemp.setHitchdutydeptname(null);
                             equipInvenTemp.setHitchdutyuser(null);
@@ -777,6 +785,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         equipInvenTemp.setExcepttime(entity.getExcepttime());
                         equipInvenTemp.setStopworktime(entity.getStopworktime());
                         equipInvenTemp.setAbrasehitch(entity.getAbrasehitch());
+                        if (!equipInvenTemp.getHitchurgency().equals("03") && equipInvenTemp.getHitchtype() == null && entity.getHitchtype().equals("03")) {
+                            equipInvenTemp.setDowninitiatetime(new Date());
+                        }
                         equipInvenTemp.setHitchtype(entity.getHitchtype());
                         equipInvenTemp.setHitchsort1(entity.getHitchsort1());
                         equipInvenTemp.setHitchdesc(entity.getHitchdesc());
@@ -1139,17 +1150,42 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 EquipmentRepair eqpRepairTemp = new EquipmentRepair();
                 EquipmentRepairHis eqpRepairHisTemp = new EquipmentRepairHis();
                 List<EquipmentRepairHis> eqpRepairList = new ArrayList<EquipmentRepairHis>();
+                List<SysCode> repairManagerList = new ArrayList<SysCode>();
                 eqpRepairTemp = equipmentrepairBean.findById(entity.getId());
                 String rStatus = eqpRepairTemp.getRstatus();
 
-                if (!rStatus.equals("10")) {
-                    return new ResponseMessage("301", "数据库异常");
-                }
+                eqpRepairTemp.setStatus("N");
+                if (entity.getRepairmethodtype().equals("2")) {//自主维修转单时将维修方式转换为维修课维修并记录时间
+                    eqpRepairTemp.setRepairmethodtype("1");
+                    eqpRepairTemp.setAutotransfertime(new Date());
+                    if (eqpRepairTemp != null) {
+                        StringBuffer msg = new StringBuffer("收到转移单<br/>");
+                        msg.append("转移人:").append(eqpRepairTemp.getServiceuser()).append("-").append(eqpRepairTemp.getServiceusername()).append("<br/>");
+                        msg.append("报修单号:").append(eqpRepairTemp.getFormid()).append("<br/>");
+                        msg.append("资产编号:").append(eqpRepairTemp.getAssetno().getFormid()).append("<br/>");
+                        msg.append("设备名称:").append(eqpRepairTemp.getAssetno().getAssetDesc()).append("<br/>");
+                        msg.append("设备位置:").append(eqpRepairTemp.getAssetno().getPosition1().getName()).append(eqpRepairTemp.getAssetno().getPosition2().getName());
+                        if (eqpRepairTemp.getAssetno().getPosition3() != null) {
+                            msg.append(eqpRepairTemp.getAssetno().getPosition3().getName()).append("<br/>");
+                        } else {
+                            msg.append("<br/>");
+                        }
+                        msg.append("报修人:").append(eqpRepairTemp.getRepairuser()).append("-").append(eqpRepairTemp.getRepairusername()).append("<br/>");
+                        msg.append("维修人:").append(entity.getServiceuser()).append("-").append(entity.getServiceusername()).append("<br/>");
+                        msg.append("详情请至微信小程序查看!");
 
+                        String errmsg = sendMsgString(entity.getServiceuser(), msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
+                    }
+                }
+                if (entity.getRepairmethodtype().equals("1")) {//维修课维修转单时将维修方式转换为委外维修并记录时间
+                    repairManagerList = sysCodeBean.getTroubleNameList(eqpRepairTemp.getCompany(), "RD", "repairleaders");
+                    if (entity.getServiceuser().equals(repairManagerList.get(0).getCvalue())) {//只有维修转单转给维修课长时才转到委外
+                        eqpRepairTemp.setRepairmethodtype("3");
+                        eqpRepairTemp.setRepairtransfertime(new Date());
+                    }
+                }
                 eqpRepairTemp.setServiceuser(entity.getServiceuser());
                 eqpRepairTemp.setServiceusername(entity.getServiceusername());
-                eqpRepairTemp.setStatus("N");
-
                 equipmentrepairBean.persist(eqpRepairTemp);
 
                 eqpRepairList = equipmentRepairHisBean.findByPId(eqpRepairTemp.getFormid());
@@ -1381,6 +1417,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<SystemUser> sysUserListRes = new ArrayList<SystemUser>();
             List<SysCode> sysCodeList = new ArrayList<SysCode>();
             List<SysCode> repairManagerList = new ArrayList<SysCode>();
+            List<SysCode> leaderManagerList = new ArrayList<SysCode>();
             SystemUser repairUserObj = new SystemUser();
             SystemUser serviceUserObj = new SystemUser();
             AssetCard assetCardRes = new AssetCard();
@@ -1436,6 +1473,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 
                 if (eqpRepairListRes.size() > 0) {
                     repairManagerList = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairmanager");
+                    leaderManagerList = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairHeadmanId");
 //                    repairResTemp.setId(eqpRepairListRes.get(0).getId());
 //                    repairResTemp.setFormid(eqpRepairListRes.get(0).getFormid());
 //                    repairResTemp.setFormdate(eqpRepairListRes.get(0).getFormdate());
@@ -1548,7 +1586,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     @Path("getRepairDocImageList/{filters}/{sorts}/{offset}/{pageSize}")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public List<EquipmentRepairFile> getRepairDocImageList(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public List<Object> getRepairDocImageList(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             this.superEJB = equipmentrepairfileBean;
             List<EquipmentRepairFile> eqpRepairImageListRes = new ArrayList<>();
@@ -1587,11 +1625,22 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 //assetCardListRes = superEJB.findByFilters(filterFields, offset, pageSize, sortFields);
                 //eqpRepairImageListRes = equipmentrepairfileBean.findByPId(value);
                 eqpRepairImageListRes = equipmentrepairfileBean.findByFilters(filterFields);
+                List<Object> list = new ArrayList<>();
+                for (EquipmentRepairFile eq : eqpRepairImageListRes) {
+                    // 将字节数组转换为Base64编码
+                    java.io.File imageFile = new java.io.File(filePathTemp + eq.getFilename());
+                    byte[] imageBytes = null;
+                    imageBytes = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(imageFile.getPath()));
+                    String base64String = java.util.Base64.getEncoder().encodeToString(imageBytes);
+                    list.add("data:image/png;base64," + base64String);
+                }
+
+                return list;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
+
 //            return assetCardListRes;
-            return eqpRepairImageListRes;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }

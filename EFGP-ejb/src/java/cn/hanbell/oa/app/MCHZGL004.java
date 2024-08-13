@@ -5,7 +5,6 @@
  */
 package cn.hanbell.oa.app;
 
-import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -34,8 +33,21 @@ public class MCHZGL004 {
     private Double days;
     private String userTitle;
     private boolean safeplace;
-    private List<MCHZGL004BizDetail> detailList;
 
+    //派车单栏位
+    private String useCar;
+    private String clxz;
+    private String privatedriverno;
+    private String privatecarno;
+    private String purpose;
+    private String staykey;
+    private String departurekey;
+    private String registrationkey;
+    private String telcontact;
+    private String hmark1;
+    
+    private List<MCHZGL004BizDetail> detailList;
+    private List<MCHZGL004CarDetail> cardetailList;
     public MCHZGL004() {
 
     }
@@ -294,5 +306,92 @@ public class MCHZGL004 {
         this.safeplace = safeplace;
     }
 
-    
+    public String getUseCar() {
+        return useCar;
+    }
+
+    public void setUseCar(String useCar) {
+        this.useCar = useCar;
+    }
+
+    public String getClxz() {
+        return clxz;
+    }
+
+    public void setClxz(String clxz) {
+        this.clxz = clxz;
+    }
+
+    public String getPrivatedriverno() {
+        return privatedriverno;
+    }
+
+    public void setPrivatedriverno(String privatedriverno) {
+        this.privatedriverno = privatedriverno;
+    }
+
+    public String getPrivatecarno() {
+        return privatecarno;
+    }
+
+    public void setPrivatecarno(String privatecarno) {
+        this.privatecarno = privatecarno;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+
+    public String getStaykey() {
+        return staykey;
+    }
+
+    public void setStaykey(String staykey) {
+        this.staykey = staykey;
+    }
+
+    public String getDeparturekey() {
+        return departurekey;
+    }
+
+    public void setDeparturekey(String departurekey) {
+        this.departurekey = departurekey;
+    }
+
+    public String getRegistrationkey() {
+        return registrationkey;
+    }
+
+    public void setRegistrationkey(String registrationkey) {
+        this.registrationkey = registrationkey;
+    }
+
+    public String getTelcontact() {
+        return telcontact;
+    }
+
+    public void setTelcontact(String telcontact) {
+        this.telcontact = telcontact;
+    }
+
+    public String getHmark1() {
+        return hmark1;
+    }
+
+    public void setHmark1(String hmark1) {
+        this.hmark1 = hmark1;
+    }
+
+    public List<MCHZGL004CarDetail> getCardetailList() {
+        return cardetailList;
+    }
+
+    public void setCardetailList(List<MCHZGL004CarDetail> cardetailList) {
+        this.cardetailList = cardetailList;
+    }
+
 }

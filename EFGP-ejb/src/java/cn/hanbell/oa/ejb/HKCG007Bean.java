@@ -276,7 +276,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                         d.setCtotamts("0.00");
                         d.setCtramts("0.00");
                         d.setCtaxamts("0.00");
-                        d.setQtotamts("0.00");
+                        //d.setQtotamts("0.00");
                         detailList.add(d);
                     }
                 }

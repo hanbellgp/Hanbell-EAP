@@ -8,11 +8,17 @@ package cn.hanbell.jws;
 
 import cn.hanbell.crm.ejb.CMSMEBean;
 import cn.hanbell.crm.ejb.CMSMVBean;
-import cn.hanbell.crm.ejb.DDGABean;
-import cn.hanbell.crm.ejb.DDGCBean;
-import cn.hanbell.crm.ejb.REPPABean;
-import cn.hanbell.crm.ejb.SyncCRMBean;
-import cn.hanbell.crm.ejb.WARTABean;
+//import cn.hanbell.crm.ejb.DDGABean;
+//import cn.hanbell.crm.ejb.DDGCBean;
+//import cn.hanbell.crm.ejb.REPPABean;
+//import cn.hanbell.crm.ejb.SyncCRMBean;
+//import cn.hanbell.crm.ejb.WARTABean;
+//import cn.hanbell.crm.entity.DDGA;
+//import cn.hanbell.crm.entity.DDGB;
+//import cn.hanbell.crm.entity.DDGC;
+//import cn.hanbell.crm.entity.DDGD;
+//import cn.hanbell.crm.entity.REPPA;
+//import cn.hanbell.crm.entity.REPPB;
 import cn.hanbell.crm.entity.CMSME;
 import cn.hanbell.crm.entity.CMSMV;
 import cn.hanbell.crm.entity.DDGA;
@@ -79,6 +85,7 @@ import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eap.comm.MailNotify;
 import cn.hanbell.eap.entity.SystemUser;
+import cn.hanbell.erp.ejb.ApmpyhBean;
 import cn.hanbell.erp.ejb.ApmsysBean;
 import cn.hanbell.erp.ejb.BudgetAccBean;
 import cn.hanbell.erp.ejb.InvhdscBean;
@@ -86,9 +93,11 @@ import cn.hanbell.erp.ejb.InvsafqyBean;
 import cn.hanbell.erp.ejb.InvsysBean;
 import cn.hanbell.erp.ejb.ManmotBean;
 import cn.hanbell.erp.ejb.ManpihBean;
+import cn.hanbell.erp.ejb.PricingUserBean;
 import cn.hanbell.erp.ejb.PurdisBean;
 import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
+import cn.hanbell.erp.entity.Apmpyh;
 import cn.hanbell.erp.entity.Apmtbil;
 import cn.hanbell.erp.entity.Bomsub;
 import cn.hanbell.erp.entity.BudgetAcc;
@@ -127,6 +136,7 @@ import cn.hanbell.erp.entity.Manmot;
 import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.erp.entity.Misdept;
 import cn.hanbell.erp.entity.Misrate;
+import cn.hanbell.erp.entity.PricingUser;
 import cn.hanbell.erp.entity.Puracd;
 import cn.hanbell.erp.entity.Purach;
 import cn.hanbell.erp.entity.Purdis;
@@ -169,6 +179,7 @@ import cn.hanbell.plm.ejb.PLMItnbrDetailTempBean;
 import cn.hanbell.plm.ejb.PLMItnbrMasterTempBean;
 import cn.hanbell.plm.entity.PLMItnbrDetailTemp;
 import cn.hanbell.plm.entity.PLMItnbrMasterTemp;
+import cn.hanbell.wco.ejb.Agent1000002Bean;
 import com.lightshell.comm.BaseLib;
 import com.lightshell.comm.SuperEJB;
 import java.lang.reflect.Method;
@@ -195,6 +206,8 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.TimerService;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -216,16 +229,16 @@ public class TimerBean {
     private CMSMEBean cmsmeBean;
     @EJB
     private CMSMVBean cmsmvBean;
-    @EJB
-    private REPPABean reppaBean;
-    @EJB
-    private DDGABean ddgaBean;
-    @EJB
-    private DDGCBean ddgcBean;
-    @EJB
-    private SyncCRMBean syncCRMBean;
-    @EJB
-    private WARTABean wartaBean;
+//    @EJB
+//    private REPPABean reppaBean;
+//    @EJB
+//    private DDGABean ddgaBean;
+//    @EJB
+//    private DDGCBean ddgcBean;
+//    @EJB
+//    private SyncCRMBean syncCRMBean;
+//    @EJB
+//    private WARTABean wartaBean;
 
     // EJBForEAM
     @EJB
@@ -264,6 +277,8 @@ public class TimerBean {
     // EJBForERP
     @EJB
     private ApmaphBean apmaphBean;
+    @EJB
+    private ApmpyhBean apmpyhBean;
     @EJB
     private ApmtbilBean apmtbilBean;
     @EJB
@@ -358,23 +373,24 @@ public class TimerBean {
     private ManpihBean manpihBean;
     @EJB
     private InvsafqyBean invsafqyBean;
+    @EJB
+    private PricingUserBean pricingUserBean;
     
     @EJB
     private ExchangeSHBBean exchangeSHBBean;
     @EJB
     private tw.hanbell.exch.ejb.PurhadBean exchPurhadBean;
-
-    //EJBForVHBERP
-    @EJB
-    private vn.hanbell.erp.ejb.ApmaphBean VHBapmaphBean;
-    @EJB
-    private vn.hanbell.erp.ejb.PurvdrBean VHBpurvdrBean;
-    @EJB
-    private vn.hanbell.erp.ejb.MiscodeBean VHBmiscodeBean;
-    @EJB
-    private vn.hanbell.erp.ejb.BudgetAccBean VHBbudgetaccBean;
-    @EJB
-    private vn.hanbell.erp.ejb.ApmtbilBean VHBapmtbilBean;
+//    //EJBForVHBERP
+//    @EJB
+//    private vn.hanbell.erp.ejb.ApmaphBean VHBapmaphBean;
+//    @EJB
+//    private vn.hanbell.erp.ejb.PurvdrBean VHBpurvdrBean;
+//    @EJB
+//    private vn.hanbell.erp.ejb.MiscodeBean VHBmiscodeBean;
+//    @EJB
+//    private vn.hanbell.erp.ejb.BudgetAccBean VHBbudgetaccBean;
+//    @EJB
+//    private vn.hanbell.erp.ejb.ApmtbilBean VHBapmtbilBean;
     // EJBForHRM
     @EJB
     private cn.hanbell.hrm.ejb.DepartmentBean hrmDepartmentBean;
@@ -394,7 +410,12 @@ public class TimerBean {
     private PLMItnbrMasterTempBean plmItnbrMasterTempBean;
     @EJB
     private PLMItnbrDetailTempBean plmItnbrDetailTempBean;
+
+    // EJBForWCO
+    @EJB
+    private Agent1000002Bean wechatCorpBean;
     
+    private final String errMsgUser = "C2082";
     @Resource
     TimerService timerService;
     
@@ -406,103 +427,110 @@ public class TimerBean {
     public void syncOrganizationByHRM() {
         try {
             // 同步部门
+            wechatCorpBean.initConfiguration();
+            wechatCorpBean.sendMsgToUser(errMsgUser, "text", "HR同步EAP更新开始");
             log4j.info("syncOrganizationByHRM开始");
             List<cn.hanbell.hrm.entity.Department> departmentList = hrmDepartmentBean.findAll();
             if (departmentList != null && !departmentList.isEmpty()) {
                 departmentList.forEach((hd) -> {
-                    // EAP
-                    cn.hanbell.eap.entity.Department ep = null;
-                    cn.hanbell.hrm.entity.Department hp = hrmDepartmentBean.findByDepartmentId(hd.getParentId());
-                    if (hp != null) {
-                        ep = eapDepartmentBean.findByDeptno(hp.getCode());
-                    }
-                    cn.hanbell.eap.entity.Department ed = eapDepartmentBean.findByDeptno(hd.getCode());
-                    if (ed == null) {
-                        ed = new cn.hanbell.eap.entity.Department();
-                        ed.setCompany(workFlowBean.getCompanyByDeptId(hd.getCode()));
-                        ed.setDeptno(hd.getCode());
-                        ed.setDept(hd.getName());
-                        if (ep != null) {
-                            ed.setParentDept(ep);
+                    try {
+                        // EAP
+                        cn.hanbell.eap.entity.Department ep = null;
+                        cn.hanbell.hrm.entity.Department hp = hrmDepartmentBean.findByDepartmentId(hd.getParentId());
+                        if (hp != null) {
+                            ep = eapDepartmentBean.findByDeptno(hp.getCode());
                         }
-                        if (hd.getFlag()) {
-                            ed.setStatus("N");
-                        } else {
-                            ed.setStatus("X");
-                        }
-                        ed.setCreatorToSystem();
-                        ed.setCredateToNow();
-                        eapDepartmentBean.persist(ed);
-                    } else {
-                        if (!ed.getDept().equals(hd.getName()) || !Objects.equals(ed.getParentDept(), ep)
-                                || (ed.getOptdate() != null && ed.getOptdate().before(hd.getLastModifiedDate()))) {
+                        cn.hanbell.eap.entity.Department ed = eapDepartmentBean.findByDeptno(hd.getCode());
+                        if (ed == null) {
+                            ed = new cn.hanbell.eap.entity.Department();
+                            ed.setCompany(workFlowBean.getCompanyByDeptId(hd.getCode()));
+                            ed.setDeptno(hd.getCode());
                             ed.setDept(hd.getName());
                             if (ep != null) {
                                 ed.setParentDept(ep);
                             }
-                            if (!hd.getFlag()) {
-                                ed.setStatus("X");
-                            } else {
+                            if (hd.getFlag()) {
                                 ed.setStatus("N");
+                            } else {
+                                ed.setStatus("X");
                             }
-                            ed.setOptuserToSystem();
-                            ed.setOptdate(hd.getLastModifiedDate());
-                            eapDepartmentBean.update(ed);
-                        }
-                    }
-                    String d = hd.getCode().substring(0, 1);
-                    // CRM
-                    if (d.equals("1") || d.equals("5")) {
-                        CMSME cd = cmsmeBean.findById(hd.getCode());
-                        if (cd == null) {
-                            cd = new CMSME();
-                            cd.setMe001(hd.getCode());
-                            cd.setMe002(hd.getName());
-                            cd.setFlag((short) 1);
-                            cd.setCreator("CRMDS");
-                            cd.setUsrGroup("0000");
-                            cd.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                            cmsmeBean.persist(cd);
+                            ed.setCreatorToSystem();
+                            ed.setCredateToNow();
+                            eapDepartmentBean.persist(ed);
                         } else {
-                            if (!cd.getMe002().equals(hd.getName())) {
+                            if (!ed.getDept().equals(hd.getName()) || !Objects.equals(ed.getParentDept(), ep)
+                                    || (ed.getOptdate() != null && ed.getOptdate().before(hd.getLastModifiedDate()))) {
+                                ed.setDept(hd.getName());
+                                if (ep != null) {
+                                    ed.setParentDept(ep);
+                                }
+                                if (!hd.getFlag()) {
+                                    ed.setStatus("X");
+                                } else {
+                                    ed.setStatus("N");
+                                }
+                                ed.setOptuserToSystem();
+                                ed.setOptdate(hd.getLastModifiedDate());
+                                eapDepartmentBean.update(ed);
+                            }
+                        }
+                        String d = hd.getCode().substring(0, 1);
+                        // CRM
+                        if (d.equals("1") || d.equals("5")) {
+                            CMSME cd = cmsmeBean.findById(hd.getCode());
+                            if (cd == null) {
+                                cd = new CMSME();
+                                cd.setMe001(hd.getCode());
                                 cd.setMe002(hd.getName());
-                                cd.setModifier("CRMDS");
-                                cd.setModiDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                                cmsmeBean.update(cd);
+                                cd.setFlag((short) 1);
+                                cd.setCreator("CRMDS");
+                                cd.setUsrGroup("0000");
+                                cd.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                cmsmeBean.persist(cd);
+                            } else {
+                                if (!cd.getMe002().equals(hd.getName())) {
+                                    cd.setMe002(hd.getName());
+                                    cd.setModifier("CRMDS");
+                                    cd.setModiDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                    cmsmeBean.update(cd);
+                                }
                             }
                         }
-                    }
-                    // MES
-                    if (d.equals("1")) {
-                        cn.hanbell.mes.entity.MDepartment md = mesDepartmentBean.findByDepartmentid(hd.getCode());
-                        if (md == null) {
-                            md = new cn.hanbell.mes.entity.MDepartment();
-                            md.setSysid(BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()));
-                            md.setDepartmentid(hd.getCode());
-                            md.setDepartmentname(hd.getName());
-                            if (hp != null) {
-                                md.setPdepartmentid(hp.getCode());
-                            }
-                            md.setSequences(hd.getCode());
-                            md.setModifyuser("HRM");
-                            md.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", hd.getLastModifiedDate()));
-                            mesDepartmentBean.persist(md);
-                        } else {
-                            boolean flag = false;
-                            if (!md.getDepartmentname().equals(hd.getName())) {
+                        // MES
+                        if (d.equals("1")) {
+                            cn.hanbell.mes.entity.MDepartment md = mesDepartmentBean.findByDepartmentid(hd.getCode());
+                            if (md == null) {
+                                md = new cn.hanbell.mes.entity.MDepartment();
+                                md.setSysid(BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()));
+                                md.setDepartmentid(hd.getCode());
                                 md.setDepartmentname(hd.getName());
-                                flag = true;
-                            }
-                            if (hp != null && !hp.getCode().equals(md.getPdepartmentid())) {
-                                md.setPdepartmentid(hp.getCode());
-                                flag = true;
-                            }
-                            if (flag) {
+                                if (hp != null) {
+                                    md.setPdepartmentid(hp.getCode());
+                                }
+                                md.setSequences(hd.getCode());
                                 md.setModifyuser("HRM");
                                 md.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", hd.getLastModifiedDate()));
-                                mesDepartmentBean.update(md);
+                                mesDepartmentBean.persist(md);
+                            } else {
+                                boolean flag = false;
+                                if (!md.getDepartmentname().equals(hd.getName())) {
+                                    md.setDepartmentname(hd.getName());
+                                    flag = true;
+                                }
+                                if (hp != null && !hp.getCode().equals(md.getPdepartmentid())) {
+                                    md.setPdepartmentid(hp.getCode());
+                                    flag = true;
+                                }
+                                if (flag) {
+                                    md.setModifyuser("HRM");
+                                    md.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", hd.getLastModifiedDate()));
+                                    mesDepartmentBean.update(md);
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        wechatCorpBean.sendMsgToUser(errMsgUser, "text", String.format("部门%s更新失败", hd.getCode()));
                     }
                 });
             }
@@ -513,60 +541,17 @@ public class TimerBean {
             
             if (employeeList != null && !employeeList.isEmpty()) {
                 employeeList.forEach((e) -> {
-                    boolean flag = false;
-                    cn.hanbell.hrm.entity.Employee manager = hrmEmployeeBean.findByEmployeeId(e.getDirectorId());
-                    String company = e.getCode().substring(0, 1);
-                    if ("C".equals(company) || "K".equals(company) || "E".equals(company) || "H".equals(company)
-                            || "Y".equals(company) || "Q".equals(company) || "V".equals(company) || isTWEmployee(company)) {
-                        // EAP
-                        cn.hanbell.eap.entity.SystemUser eu = eapSystemUserBean.findByUserId(e.getCode());
-                        if (eu == null) {
-                            eu = new cn.hanbell.eap.entity.SystemUser();
-                            eu.setUserid(e.getCode());
-                            eu.setUsername(e.getCnName());
-                            if (e.getJob() != null) {
-                                eu.setJobCode(e.getJob().getCode());
-                                eu.setJob(e.getJob().getName());
-                            }
-                            if (e.getPosition() != null) {
-                                eu.setPositionCode(e.getPosition().getCode());
-                                eu.setPosition(e.getPosition().getName());
-                            }
-                            if (e.getEmployeeType() != null) {
-                                eu.setType(e.getEmployeeType().getScName());
-                            }
-                            eu.setLevelId(e.getLevelId());
-                            if (e.getDecisionlevelInfo() != null) {
-                                eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
-                            }
-                            eu.setDeptno(e.getDepartment().getCode());
-                            if (manager != null) {
-                                eu.setManagerId(manager.getCode());
-                            }
-                            if (e.getTelephone() != null) {
-                                eu.setTel(e.getTelephone());
-                            }
-                            eu.setPhone(e.getMobilePhone());
-                            eu.setEmail(e.getEmail());
-                            eu.setCreatorToSystem();
-                            eu.setCredateToNow();
-                            eu.setOptdate(eu.getCredate());
-                            eu.setBirthdayDate(e.getBirthDate());
-                            eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
-                            // HR中已离职
-                            if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
-                                eu.setSyncWeChatStatus("X");
-                                eu.setSyncWeChatDate(e.getLastModifiedDate());
-                                eu.setStatus("X");
-                                eu.setTel("");
-                                eu.setOptuserToSystem();
-                                eu.setOptdate(e.getLastModifiedDate());
-                                eu.setBirthdayDate(null);
-                                eu.setWorkingAgeBeginDate(null);
-                            }
-                            eapSystemUserBean.persist(eu);
-                        } else {
-                            if (eu.getOptdate() != null && eu.getOptdate().before(e.getLastModifiedDate())) {
+                    try {
+                        boolean flag = false;
+                        cn.hanbell.hrm.entity.Employee manager = hrmEmployeeBean.findByEmployeeId(e.getDirectorId());
+                        String company = e.getCode().substring(0, 1);
+                        if ("C".equals(company) || "K".equals(company) || "E".equals(company) || "H".equals(company)
+                                || "Y".equals(company) || "Q".equals(company) || "V".equals(company) || isTWEmployee(company)) {
+                            // EAP
+                            cn.hanbell.eap.entity.SystemUser eu = eapSystemUserBean.findByUserId(e.getCode());
+                            if (eu == null) {
+                                eu = new cn.hanbell.eap.entity.SystemUser();
+                                eu.setUserid(e.getCode());
                                 eu.setUsername(e.getCnName());
                                 if (e.getJob() != null) {
                                     eu.setJobCode(e.getJob().getCode());
@@ -583,151 +568,219 @@ public class TimerBean {
                                 if (e.getDecisionlevelInfo() != null) {
                                     eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
                                 }
-                                if (e.getTelephone() != null) {
-                                    eu.setTel(e.getTelephone());
-                                }
                                 eu.setDeptno(e.getDepartment().getCode());
                                 if (manager != null) {
                                     eu.setManagerId(manager.getCode());
                                 }
-                                eu.setBirthdayDate(e.getBirthDate());
-                                eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
+                                if (e.getTelephone() != null) {
+                                    eu.setTel(e.getTelephone());
+                                }
                                 eu.setPhone(e.getMobilePhone());
                                 eu.setEmail(e.getEmail());
-                                eu.setOptuserToSystem();
-                                eu.setOptdate(e.getLastModifiedDate());
-                                flag = true;
-                            }
-                            if (!eu.getStatus().equals("X")
-                                    && e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
-                                eu.setStatus("X");
-                                eu.setOptuserToSystem();
-                                eu.setOptdate(e.getLastModifiedDate());
-                                flag = true;
-                            }
-                            if (flag) {
-                                eapSystemUserBean.update(eu);
-                            }
-                        }
-                        // 台湾人员不更新ERP
-                        if (isTWEmployee(company) == false) {
-                            // ERP
-                            miscodeBean.setCompany(company);
-                            misdeptBean.setCompany(company);
-                            secmembBean.setCompany(company);
-                            secuserBean.setCompany(company);
-                            Secuser erpuser = secuserBean.findByUserno(e.getCode());
-                            Misdept erpdept = misdeptBean.findByDepno(e.getDepartment().getCode());
-                            if (erpdept == null) {
-                                // 增加部门
-                                erpdept = new Misdept(company, e.getDepartment().getCode());
-                                erpdept.setDepname(e.getDepartment().getName());
-                                erpdept.setUplevel("/");
-                                erpdept.setChildren(0);
-                                misdeptBean.persist(erpdept);
-                                // 加入miscode类别GE中
-                                miscodeBean.persistIfNotExist("GE", erpdept.getMisdeptPK().getDepno(),
-                                        erpdept.getDepname(), 'N');
-                            }
-                            if (erpuser != null) {
-                                Secmemb secmemb
-                                        = secmembBean.findByPK(company, e.getDepartment().getCode(), e.getCode());
-                                if (secmemb == null) {
-                                    // 人员加入部门
-                                    secmemb = new Secmemb(company, e.getDepartment().getCode(), e.getCode());
-                                    secmemb.setSupvisor('N');
-                                    secmemb.setAuth('N');
-                                    secmembBean.persist(secmemb);
+                                eu.setCreatorToSystem();
+                                eu.setCredateToNow();
+                                eu.setOptdate(eu.getCredate());
+                                eu.setBirthdayDate(e.getBirthDate());
+                                eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
+                                // HR中已离职
+                                if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
+                                    eu.setSyncWeChatStatus("X");
+                                    eu.setSyncWeChatDate(e.getLastModifiedDate());
+                                    eu.setStatus("X");
+                                    eu.setTel("");
+                                    eu.setOptuserToSystem();
+                                    eu.setOptdate(e.getLastModifiedDate());
+                                    eu.setBirthdayDate(null);
+                                    eu.setWorkingAgeBeginDate(null);
                                 }
-                                erpuser.setPdepno(e.getDepartment().getCode());
-                                secuserBean.update(erpuser);
+                                eapSystemUserBean.persist(eu);
+                            } else {
+                                if (eu.getOptdate() != null && eu.getOptdate().before(e.getLastModifiedDate())) {
+                                    eu.setUsername(e.getCnName());
+                                    if (e.getJob() != null) {
+                                        eu.setJobCode(e.getJob().getCode());
+                                        eu.setJob(e.getJob().getName());
+                                    }
+                                    if (e.getPosition() != null) {
+                                        eu.setPositionCode(e.getPosition().getCode());
+                                        eu.setPosition(e.getPosition().getName());
+                                    }
+                                    if (e.getEmployeeType() != null) {
+                                        eu.setType(e.getEmployeeType().getScName());
+                                    }
+                                    eu.setLevelId(e.getLevelId());
+                                    if (e.getDecisionlevelInfo() != null) {
+                                        eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
+                                    }
+                                    if (e.getTelephone() != null) {
+                                        eu.setTel(e.getTelephone());
+                                    }
+                                    eu.setDeptno(e.getDepartment().getCode());
+                                    if (manager != null) {
+                                        eu.setManagerId(manager.getCode());
+                                    }
+                                    //复职的情况下需要把eap数据库中人员状态从X变成N,为了后续企业微信的更新，设置更新企业微信的状态。
+                                    if (eu.getStatus().equals("X") && e.getLastModifiedDate().before(e.getLastWorkDate())) {
+                                        eu.setStatus("N");
+                                        eu.setOptuserToSystem();
+                                        eu.setSyncWeChatDate(null);
+                                        eu.setSyncWeChatStatus("");
+                                    }
+                                    eu.setBirthdayDate(e.getBirthDate());
+                                    eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
+                                    eu.setPhone(e.getMobilePhone());
+                                    eu.setEmail(e.getEmail());
+                                    eu.setOptuserToSystem();
+                                    eu.setOptdate(e.getLastModifiedDate());
+                                    flag = true;
+                                }
+                                if (!eu.getStatus().equals("X") && e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
+                                    eu.setStatus("X");
+                                    eu.setOptuserToSystem();
+                                    eu.setOptdate(e.getLastModifiedDate());
+                                    eu.setBirthdayDate(null);
+                                    eu.setWorkingAgeBeginDate(null);
+                                    flag = true;
+                                }
+                                if (flag) {
+                                    eapSystemUserBean.update(eu);
+                                }
+                            }
+                            // 台湾人员,越南不更新ERP
+                            if (isTWEmployee(company) == false && !company.startsWith("V")) {
+                                // ERP
+                                miscodeBean.setCompany(company);
+                                misdeptBean.setCompany(company);
+                                secmembBean.setCompany(company);
+                                secuserBean.setCompany(company);
+                                Secuser erpuser = secuserBean.findByUserno(e.getCode());
+                                Misdept erpdept = misdeptBean.findByDepno(e.getDepartment().getCode());
+                                if (erpdept == null) {
+                                    // 增加部门
+                                    erpdept = new Misdept(company, e.getDepartment().getCode());
+                                    erpdept.setDepname(e.getDepartment().getName());
+                                    erpdept.setUplevel("/");
+                                    erpdept.setChildren(0);
+                                    misdeptBean.persist(erpdept);
+                                    // 加入miscode类别GE中
+                                    miscodeBean.persistIfNotExist("GE", erpdept.getMisdeptPK().getDepno(),
+                                            erpdept.getDepname(), 'N');
+                                }
+                                if (erpuser != null) {
+                                    Secmemb secmemb
+                                            = secmembBean.findByPK(company, e.getDepartment().getCode(), e.getCode());
+                                    if (secmemb == null) {
+                                        // 人员加入部门
+                                        secmemb = new Secmemb(company, e.getDepartment().getCode(), e.getCode());
+                                        secmemb.setSupvisor('N');
+                                        secmemb.setAuth('N');
+                                        secmembBean.persist(secmemb);
+                                    }
+                                    erpuser.setPdepno(e.getDepartment().getCode());
+                                    secuserBean.update(erpuser);
+                                }
                             }
                         }
-                    }
-                    if ("C".equals(company) || "K".equals(company)) {
-                        // CRM
-                        DSCMA cu = dscmaBean.findById(e.getCode());
-                        CMSMV cuDept = cmsmvBean.findById(e.getCode());
-                        if (cu == null) {
-                            cu = new DSCMA();
-                            cu.setMa001(e.getCode());
-                            cu.setMa002(e.getCnName());
-                            cu.setFlag((short) 1);
-                            cu.setCreator("CRMDS");
-                            cu.setUsrGroup("0000");
-                            cu.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                            dscmaBean.persist(cu);
-                        }
-                        if (cuDept == null) {
-                            cuDept = new CMSMV();
-                            cuDept.setMv001(e.getCode());
-                            cuDept.setMv002(e.getCnName());
-                            cuDept.setMv004(e.getDepartment().getCode());
-                            cuDept.setFlag((short) 1);
-                            cuDept.setCreator("CRMDS");
-                            cuDept.setUsrGroup("0000");
-                            cuDept.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                            cmsmvBean.persist(cuDept);
-                        } else {
-                            if (!cuDept.getMv004().equals(e.getDepartment().getCode())) {
+                        if ("C".equals(company) || "K".equals(company)) {
+                            // CRM
+                            DSCMA cu = dscmaBean.findById(e.getCode());
+                            CMSMV cuDept = cmsmvBean.findById(e.getCode());
+                            if (cu == null) {
+                                cu = new DSCMA();
+                                cu.setMa001(e.getCode());
+                                cu.setMa002(e.getCnName());
+                                cu.setFlag((short) 1);
+                                cu.setCreator("CRMDS");
+                                cu.setUsrGroup("0000");
+                                cu.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                dscmaBean.persist(cu);
+                            }
+                            if (cuDept == null) {
+                                cuDept = new CMSMV();
+                                cuDept.setMv001(e.getCode());
+                                cuDept.setMv002(e.getCnName());
                                 cuDept.setMv004(e.getDepartment().getCode());
-                                cuDept.setModifier("CRMDS");
-                                cuDept.setModiDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
-                                cmsmvBean.update(cuDept);
+                                cuDept.setFlag((short) 1);
+                                cuDept.setCreator("CRMDS");
+                                cuDept.setUsrGroup("0000");
+                                cuDept.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                cmsmvBean.persist(cuDept);
+                            } else {
+                                if (!cuDept.getMv004().equals(e.getDepartment().getCode())) {
+                                    cuDept.setMv004(e.getDepartment().getCode());
+                                    cuDept.setModifier("CRMDS");
+                                    cuDept.setModiDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                    cmsmvBean.update(cuDept);
+                                }
                             }
                         }
-                    }
-                    if ("C".equals(company) || "K".equals(company)) {
-                        // MES
-                        cn.hanbell.mes.entity.MUser mu = mesUserBean.findByUserid(e.getCode());
-                        if (mu == null) {
-                            mu = new cn.hanbell.mes.entity.MUser();
-                            mu.setUserid(e.getCode());
-                            mu.setUsername(e.getCnName());
-                            // 设置默认初始密码为123456
-                            mu.setPassword("B37EE351B8753658");
-                            mu.setStatus("Y");
-                            mu.setDepartmentid(e.getDepartment().getCode());
-                            mu.setEmail(e.getEmail());
-                            mu.setModifyuser("HRM");
-                            mu.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", e.getLastModifiedDate()));
-                            mesUserBean.persist(mu);
-                            // 加入mes初始权限
-                            MuserRole mur1 = new MuserRole(mu.getUserid(), "CS", "QCUSER");
-                            MuserRole mur2 = new MuserRole(mu.getUserid(), "CS", "QZUSER");
-                            MuserRole mur3 = new MuserRole(mu.getUserid(), "BS", "WEBUSER");
-                            MuserRole mur4 = new MuserRole(mu.getUserid(), "BS", "UQFUSER");
-                            mesUserRoleBean.persist(mur1);
-                            mesUserRoleBean.persist(mur2);
-                            mesUserRoleBean.persist(mur3);
-                            mesUserRoleBean.persist(mur4);
-                        } else {
-                            flag = false;
-                            if (!mu.getDepartmentid().equals(e.getDepartment().getCode())) {
+                        if ("C".equals(company) || "K".equals(company)) {
+                            // MES
+                            cn.hanbell.mes.entity.MUser mu = mesUserBean.findByUserid(e.getCode());
+                            if (mu == null) {
+                                mu = new cn.hanbell.mes.entity.MUser();
+                                mu.setUserid(e.getCode());
+                                mu.setUsername(e.getCnName());
+                                // 设置默认初始密码为123456
+                                mu.setPassword("B37EE351B8753658");
+                                mu.setStatus("Y");
                                 mu.setDepartmentid(e.getDepartment().getCode());
                                 mu.setEmail(e.getEmail());
                                 mu.setModifyuser("HRM");
                                 mu.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", e.getLastModifiedDate()));
-                                flag = true;
-                            }
-                            if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
-                                mu.setStatus("N");
-                                mu.setModifyuser("HRM");
-                                mu.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", e.getLastModifiedDate()));
-                                flag = true;
-                            }
-                            if (flag) {
-                                mesUserBean.update(mu);
+                                mesUserBean.persist(mu);
+                                // 加入mes初始权限
+                                MuserRole mur1 = new MuserRole(mu.getUserid(), "CS", "QCUSER");
+                                MuserRole mur2 = new MuserRole(mu.getUserid(), "CS", "QZUSER");
+                                MuserRole mur3 = new MuserRole(mu.getUserid(), "BS", "WEBUSER");
+                                MuserRole mur4 = new MuserRole(mu.getUserid(), "BS", "UQFUSER");
+                                mesUserRoleBean.persist(mur1);
+                                mesUserRoleBean.persist(mur2);
+                                mesUserRoleBean.persist(mur3);
+                                mesUserRoleBean.persist(mur4);
+                            } else {
+                                flag = false;
+                                if (!mu.getDepartmentid().equals(e.getDepartment().getCode())) {
+                                    mu.setDepartmentid(e.getDepartment().getCode());
+                                    mu.setEmail(e.getEmail());
+                                    mu.setModifyuser("HRM");
+                                    mu.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", e.getLastModifiedDate()));
+                                    flag = true;
+                                }
+                                if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
+                                    mu.setStatus("N");
+                                    mu.setModifyuser("HRM");
+                                    mu.setModifytime(BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", e.getLastModifiedDate()));
+                                    flag = true;
+                                }
+                                if (flag) {
+                                    mesUserBean.update(mu);
+                                }
                             }
                         }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        sendMsg(errMsgUser, String.format("人员%s更新失败", e.getCode()));
+                        // wechatCorpBean.sendMsgToUser(errMsgUser, "text", String.format("人员%s更新失败", e.getCode()));
                     }
                 });
                 log4j.info("syncOrganizationByHRM,同步EAP/ERP/CRM/MES员工资料结束");
             }
+            wechatCorpBean.sendMsgToUser(errMsgUser, "text", "HR同步EAP更新结束");
             log4j.info("syncOrganizationByHRM结束");
         } catch (Exception ex) {
+            ex.printStackTrace();
+            sendMsg(errMsgUser, "HR同步EAP更新发生异常");
+            //wechatCorpBean.sendMsgToUser(errMsgUser, "text", "HR同步EAP更新发生异常！");
             log4j.error("syncOrganizationByHRM出现异常", ex);
         }
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public boolean sendMsg(String userno, String content) {
+        wechatCorpBean.initConfiguration();
+        wechatCorpBean.sendMsgToUser(userno, "text", content);
+        return true;
     }
     
     @Schedule(minute = "*/30", hour = "8-20", persistent = false)
@@ -1078,14 +1131,14 @@ public class TimerBean {
                             } else {
                                 d.setItnbr(pd.getCItnbr());
                             }
-//                            d.setItdsc(filterString(pd.getCItdsc()));
-//                            d.setSpdsc(filterString(pd.getCSpdsc()));
-//                            d.setEitdsc(filterString(pd.getCEitdsc()));
-//                            d.setEspdsc(filterString(pd.getCEspdsc()));
-                            d.setItdsc(pd.getCItdsc());
-                            d.setSpdsc(pd.getCSpdsc());
-                            d.setEitdsc(pd.getCEitdsc());
-                            d.setEspdsc(pd.getCEspdsc());
+                            d.setItdsc(filterString(pd.getCItdsc()));
+                            d.setSpdsc(filterString(pd.getCSpdsc()));
+                            d.setEitdsc(filterString(pd.getCEitdsc()));
+                            d.setEspdsc(filterString(pd.getCEspdsc()));
+//                            d.setItdsc(pd.getCItdsc());
+//                            d.setSpdsc(pd.getCSpdsc());
+//                            d.setEitdsc(pd.getCEitdsc());
+//                            d.setEspdsc(pd.getCEspdsc());
                             d.setKind("1");
                             d.setMorpcode("P");
                             d.setUnmsr1(pd.getC_unmsr());
@@ -1103,7 +1156,7 @@ public class TimerBean {
                                     d.setGenre3(im.getGenre3());
                                     continue;
                                 }
-                            }                        
+                            }
                             d.setModelDsc1("");
                             d.setModelDsc2("");
                             detailList.add(d);
@@ -1115,9 +1168,16 @@ public class TimerBean {
                                 if (item != null) {
                                     item.setItdsc("#" + item.getItdsc());
                                     item.setStopyn("AAAAAAAAAAAAA");
-                                    item.setNStopyn("N");
+                                    //item.setNStopyn("N");
                                     item.setNEcnnewitnbr(pd.getCItnbr());
                                     item.setNEcnno(pd.getItemNumber());
+                                    item.setModdate(new Date());
+                                    if (fromTHB) {
+                                        item.setModman(pm.getEcWorker());
+                                    } else {
+                                        item.setModman(pm.getCApplicant());
+                                    }
+                                    item.setModman(k);
                                     stopList.add(item);
                                     //刷新中间表表身停用状态
                                     pd.setCStopyn('Y');
@@ -1198,7 +1258,7 @@ public class TimerBean {
             eapMailBean.setMailSubject("PLM件号中间表新增OA失败");
             eapMailBean.setMailContent(
                     "PLM件号中间表新增OA失败，异常：" + ex);
-            // eapMailBean.notify(new MailNotify());
+            eapMailBean.notify(new MailNotify());
             ex.printStackTrace();
             log4j.error("PLM件号抛转轮询时异常", ex);
         }
@@ -1281,172 +1341,173 @@ public class TimerBean {
         log4j.info("ERP-APM820费用类立账申请抛转EFGP签核轮询结束");
     }
     
-    @Schedule(minute = "*/5", hour = "7-23", persistent = false)
-    public void createVHTV005ByVHBERPAPM820() {
-        log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询开始");
-        VHTV005Model hm;
-        VHTV005DetailModel dm;
-        String company = "V";
-        List<VHTV005DetailModel> detailList = new ArrayList<>();
-        LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
-        details.put("Detail", detailList);
-        try {
-            VHBapmaphBean.setCompany(company);
-            VHBpurvdrBean.setCompany(company);
-            List<vn.hanbell.erp.entity.Apmaph> apmaphList = VHBapmaphBean.findNeedThrow("0");
-            List<vn.hanbell.erp.entity.Apmapd> apmapdList;
-            int i;
-            BigDecimal sumapamtfs;
-            BigDecimal sumapamt;
-            BigDecimal sumtaxfs;
-            BigDecimal sumtax;
-            BigDecimal sumbilnum8fs;
-            BigDecimal sumbilnum8;
-            if (apmaphList != null && !apmaphList.isEmpty()) {
-                for (vn.hanbell.erp.entity.Apmaph h : apmaphList) {
-                    apmapdList = VHBapmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),
-                            h.getApmaphPK().getAptyp());
-                    if (apmapdList != null && !apmapdList.isEmpty()) {
-                        detailList.clear();// 清除前面的资料
-                        i = 0;
-                        sumapamtfs = BigDecimal.ZERO;
-                        sumapamt = BigDecimal.ZERO;
-                        sumtaxfs = BigDecimal.ZERO;
-                        sumtax = BigDecimal.ZERO;
-                        sumbilnum8fs = BigDecimal.ZERO;
-                        sumbilnum8 = BigDecimal.ZERO;
-                        List<String> bilList = new ArrayList<>();
-                        for (vn.hanbell.erp.entity.Apmapd d : apmapdList) {
-                            i++;
-                            dm = new VHTV005DetailModel();
-                            dm.setSeq(String.valueOf(i));
-                            if (d.getApdsc() == null || d.getApdsc().isEmpty() || d.getApdsc().length() == 0
-                                    || d.getApdsc().equals("null")) {
-                                dm.setApdsc("");
-                            } else {
-                                dm.setApdsc(d.getApdsc());
-                            }
-                            dm.setBilno(d.getBilno() != null ? d.getBilno() : "");
-                            dm.setCoin(d.getCoin());
-                            dm.setRatio(d.getRatio().toString());
-                            dm.setAcpamt(d.getAcpamt());
-                            dm.setAcpamtfs(d.getAcpamtfs());
-                            dm.setTemamt(d.getTemamt());
-                            dm.setTemamtfs(d.getTemamtfs());
-                            dm.setCom_apamtfs(d.getAcpamtfs().subtract(d.getTemamtfs()));
-                            dm.setCom_apamt(d.getAcpamt().subtract(d.getTemamt()));
-                            // 请款合计金额
-                            sumapamtfs = sumapamtfs.add(d.getApamtfs());
-                            sumapamt = sumapamt.add(d.getApamt());
-                            if (d.getDmark() == null || d.getDmark().isEmpty() || d.getDmark().length() == 0
-                                    || d.getDmark().equals("null")) {
-                                dm.setDmark("");
-                            } else {
-                                dm.setDmark(d.getDmark());
-                            }
-                            dm.setCenterid(d.getCenterid() != null ? d.getCenterid() : "");
-                            VHBmiscodeBean.setCompany(company);
-                            vn.hanbell.erp.entity.Miscode miscode = VHBmiscodeBean.findByPK("9N", dm.getCenterid());
-                            if (miscode == null) {
-                                dm.setCmp_centerid("");
-                            } else {
-                                dm.setCmp_centerid(miscode.getCdesc());
-                            }
-                            dm.setBudgetacc(d.getBudgetacc() != null ? d.getBudgetacc() : "");
-                            VHBbudgetaccBean.setCompany(company);
-                            vn.hanbell.erp.entity.BudgetAcc budgetacc = VHBbudgetaccBean.findByAccno(dm.getBudgetacc());
-                            if (budgetacc == null) {
-                                dm.setCmp_budgetacc("");
-                            } else {
-                                dm.setCmp_budgetacc(budgetacc.getAccname());
-                            }
-                            dm.setPayqty(d.getPayqty());
-                            if (!bilList.contains(d.getBilno())) {
-                                // 计算海关代徵,税额
-                                VHBapmtbilBean.setCompany(company);
-                                vn.hanbell.erp.entity.Apmtbil apmtbil = VHBapmtbilBean.findByPK(company, d.getBilno());
-                                if (null != apmtbil) {
-                                    sumtaxfs = sumtaxfs.add(apmtbil.getBiltaxfs());
-                                    sumtax = sumtax.add(apmtbil.getBiltax());
-                                    if ('8' == apmtbil.getBilnum()) {
-                                        sumbilnum8 = sumbilnum8.add(apmtbil.getBiltax());
-                                        sumbilnum8fs = sumbilnum8fs.add(apmtbil.getBiltaxfs());
-                                    }
-                                }
-                                bilList.add(d.getBilno());
-                            }
-                            detailList.add(dm);
-                        }
-                        workFlowBean.initUserInfo(h.getUserno());
-                        hm = new VHTV005Model();
-                        hm.setFacno(h.getApmaphPK().getFacno());
-                        hm.setApno(h.getApmaphPK().getApno());
-                        hm.setAppdate(h.getApdate());
-                        hm.setAppuser(h.getApusrno());
-                        //hm.setAppdept(h.getDepno());
-                        //修正人员部门不对应问题
-                        hm.setAppdept(usersBean.checkDeptno(h.getApusrno(), h.getDepno()));
-                        hm.setAptyp(h.getApmaphPK().getAptyp());
-                        hm.setVdrno(h.getVdrno());
-                        hm.setVdrna(h.getVdrna());
-                        vn.hanbell.erp.entity.Purvdr purvdr = VHBpurvdrBean.findByVdrno(h.getVdrno());
-                        if (null != purvdr) {
-                            hm.setTickdays(String.valueOf(purvdr.getTickdays()));
-                            hm.setBankName(purvdr.getTtbankna());
-                            hm.setBankAccount(purvdr.getTtname());
-                            hm.setVdrds(purvdr.getVdrds());
-                            hm.setTel1(purvdr.getTel1());
-                        } else {
-                            hm.setTickdays("0");
-                        }
-                        hm.setPyhyn(h.getPyhyn());
-                        hm.setPaytn(h.getPaytn());
-                        hm.setPaydate(BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
-                        // 票据到期日 n_pur_apmlib --> uf_getpurdate
-                        hm.setTerdate(BaseLib.formatDate("yyyy/MM/dd", h.getTerda()));
-                        hm.setApsta(h.getApsta());
-                        hm.setIndate(h.getIndate());
-                        hm.setInuser(h.getUserno());
-                        if (null == h.getHmark()) {
-                            hm.setHmark("");
-                        } else {
-                            hm.setHmark(h.getHmark());
-                        }
-                        // 设置默认立账参数
-                        hm.setPayda(h.getPayda());
-                        //hm.setRkd("MR01");
-                        //hm.setConfig(36);
-                        //hm.setAccno("1123");
-                        // 表单下方合计总金额栏位(取2位小数)
-                        hm.setCmp_sum_tax(sumtax.setScale(2, BigDecimal.ROUND_HALF_UP));
-                        hm.setTotalfs(sumapamtfs.add(sumtaxfs).subtract(sumbilnum8fs).setScale(2, BigDecimal.ROUND_HALF_UP));
-                        hm.setTotal(sumapamt.add(sumtax).subtract(sumbilnum8).setScale(2, BigDecimal.ROUND_HALF_UP));
-                        //大写金额
-                        hm.setAmountInWords(workFlowBean.number2CNMonetaryUnit(hm.getTotal()));
-                        // 构建表单实例
-                        String formInstance = workFlowBean.buildXmlForEFGP("VH_TV005", hm, details);
-                        String subject = "费用类请款申请：" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款金额：" + hm.getTotal();
-                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT,
-                                "PKG_VH_TV005", formInstance, subject);
-                        String[] rm = msg.split("\\$");
-                        if (rm != null) {
-                            log4j.info(Arrays.toString(rm));
-                        }
-                        if (rm != null && rm.length == 2 && rm[0].equals("200")) {
-                            // 更新ERP APM820状态
-                            h.setApsta("25");
-                            VHBapmaphBean.update(h);
-                            VHBapmaphBean.getEntityManager().flush();
-                        }
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            log4j.error(ex);
-        }
-        log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询结束");
-    }
-    
+//    @Schedule(minute = "*/5", hour = "7-23", persistent = false)
+//    public void createVHTV005ByVHBERPAPM820() {
+//        log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询开始");
+//        VHTV005Model hm;
+//        VHTV005DetailModel dm;
+//        String company = "V";
+//        List<VHTV005DetailModel> detailList = new ArrayList<>();
+//        LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
+//        details.put("Detail", detailList);
+//        try {
+//            VHBapmaphBean.setCompany(company);
+//            VHBpurvdrBean.setCompany(company);
+//            List<vn.hanbell.erp.entity.Apmaph> apmaphList = VHBapmaphBean.findNeedThrow("0");
+//            List<vn.hanbell.erp.entity.Apmapd> apmapdList;
+//            int i;
+//            BigDecimal sumapamtfs;
+//            BigDecimal sumapamt;
+//            BigDecimal sumtaxfs;
+//            BigDecimal sumtax;
+//            BigDecimal sumbilnum8fs;
+//            BigDecimal sumbilnum8;
+//            if (apmaphList != null && !apmaphList.isEmpty()) {
+//                for (vn.hanbell.erp.entity.Apmaph h : apmaphList) {
+//                    apmapdList = VHBapmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),
+//                            h.getApmaphPK().getAptyp());
+//                    if (apmapdList != null && !apmapdList.isEmpty()) {
+//                        detailList.clear();// 清除前面的资料
+//                        i = 0;
+//                        sumapamtfs = BigDecimal.ZERO;
+//                        sumapamt = BigDecimal.ZERO;
+//                        sumtaxfs = BigDecimal.ZERO;
+//                        sumtax = BigDecimal.ZERO;
+//                        sumbilnum8fs = BigDecimal.ZERO;
+//                        sumbilnum8 = BigDecimal.ZERO;
+//                        List<String> bilList = new ArrayList<>();
+//                        for (vn.hanbell.erp.entity.Apmapd d : apmapdList) {
+//                            i++;
+//                            dm = new VHTV005DetailModel();
+//                            dm.setSeq(String.valueOf(i));
+//                            if (d.getApdsc() == null || d.getApdsc().isEmpty() || d.getApdsc().length() == 0
+//                                    || d.getApdsc().equals("null")) {
+//                                dm.setApdsc("");
+//                            } else {
+//                                dm.setApdsc(d.getApdsc().replace('&', '/'));
+//                            }
+//                            dm.setBilno(d.getBilno() != null ? d.getBilno() : "");
+//                            dm.setCoin(d.getCoin());
+//                            dm.setRatio(d.getRatio().toString());
+//                            dm.setAcpamt(d.getAcpamt());
+//                            dm.setAcpamtfs(d.getAcpamtfs());
+//                            dm.setTemamt(d.getTemamt());
+//                            dm.setTemamtfs(d.getTemamtfs());
+//                            dm.setCom_apamtfs(d.getAcpamtfs().subtract(d.getTemamtfs()));
+//                            dm.setCom_apamt(d.getAcpamt().subtract(d.getTemamt()));
+//                            // 请款合计金额
+//                            sumapamtfs = sumapamtfs.add(d.getApamtfs());
+//                            sumapamt = sumapamt.add(d.getApamt());
+//                            if (d.getDmark() == null || d.getDmark().isEmpty() || d.getDmark().length() == 0
+//                                    || d.getDmark().equals("null")) {
+//                                dm.setDmark("");
+//                            } else {
+//                                dm.setDmark(d.getDmark());
+//                            }
+//                            dm.setCenterid(d.getCenterid() != null ? d.getCenterid() : "");
+//                            VHBmiscodeBean.setCompany(company);
+//                            vn.hanbell.erp.entity.Miscode miscode = VHBmiscodeBean.findByPK("9N", dm.getCenterid());
+//                            if (miscode == null) {
+//                                dm.setCmp_centerid("");
+//                            } else {
+//                                dm.setCmp_centerid(miscode.getCdesc());
+//                            }
+//                            dm.setBudgetacc(d.getBudgetacc() != null ? d.getBudgetacc() : "");
+//                            VHBbudgetaccBean.setCompany(company);
+//                            vn.hanbell.erp.entity.BudgetAcc budgetacc = VHBbudgetaccBean.findByAccno(dm.getBudgetacc());
+//                            if (budgetacc == null) {
+//                                dm.setCmp_budgetacc("");
+//                            } else {
+//                                dm.setCmp_budgetacc(budgetacc.getAccname());
+//                            }
+//                            dm.setPayqty(d.getPayqty());
+//                            if (!bilList.contains(d.getBilno())) {
+//                                // 计算海关代徵,税额
+//                                VHBapmtbilBean.setCompany(company);
+//                                vn.hanbell.erp.entity.Apmtbil apmtbil = VHBapmtbilBean.findByPK(company, d.getBilno());
+//                                if (null != apmtbil) {
+//                                    sumtaxfs = sumtaxfs.add(apmtbil.getBiltaxfs());
+//                                    sumtax = sumtax.add(apmtbil.getBiltax());
+//                                    if ('8' == apmtbil.getBilnum()) {
+//                                        sumbilnum8 = sumbilnum8.add(apmtbil.getBiltax());
+//                                        sumbilnum8fs = sumbilnum8fs.add(apmtbil.getBiltaxfs());
+//                                    }
+//                                }
+//                                bilList.add(d.getBilno());
+//                            }
+//                            detailList.add(dm);
+//                        }
+//                        workFlowBean.initUserInfo(h.getUserno());
+//                        hm = new VHTV005Model();
+//                        hm.setFacno(h.getApmaphPK().getFacno());
+//                        hm.setApno(h.getApmaphPK().getApno());
+//                        hm.setAppdate(h.getApdate());
+//                        hm.setAppuser(h.getApusrno());
+//                        //hm.setAppdept(h.getDepno());
+//                        //修正人员部门不对应问题
+//                        hm.setAppdept(usersBean.checkDeptno(h.getApusrno(), h.getDepno()));
+//                        hm.setHdnappDept(workFlowBean.getOrganizationUnit().getOrganizationUnitName());
+//                        hm.setAptyp(h.getApmaphPK().getAptyp());
+//                        hm.setVdrno(h.getVdrno());
+//                        hm.setVdrna(h.getVdrna());
+//                        vn.hanbell.erp.entity.Purvdr purvdr = VHBpurvdrBean.findByVdrno(h.getVdrno());
+//                        if (null != purvdr) {
+//                            hm.setTickdays(String.valueOf(purvdr.getTickdays()));
+//                            hm.setBankName(purvdr.getTtbankna());
+//                            hm.setBankAccount(purvdr.getTtname());
+//                            hm.setVdrds(purvdr.getVdrds());
+//                            hm.setTel1(purvdr.getTel1());
+//                        } else {
+//                            hm.setTickdays("0");
+//                        }
+//                        hm.setPyhyn(h.getPyhyn());
+//                        hm.setPaytn(h.getPaytn());
+//                        hm.setPaydate(BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
+//                        // 票据到期日 n_pur_apmlib --> uf_getpurdate
+//                        hm.setTerdate(BaseLib.formatDate("yyyy/MM/dd", h.getTerda()));
+//                        hm.setApsta(h.getApsta());
+//                        hm.setIndate(h.getIndate());
+//                        hm.setInuser(h.getUserno());
+//                        if (null == h.getHmark()) {
+//                            hm.setHmark("");
+//                        } else {
+//                            hm.setHmark(h.getHmark());
+//                        }
+//                        // 设置默认立账参数
+//                        hm.setPayda(h.getPayda());
+//                        //hm.setRkd("MR01");
+//                        //hm.setConfig(36);
+//                        //hm.setAccno("1123");
+//                        // 表单下方合计总金额栏位(取2位小数)
+//                        hm.setCmp_sum_tax(sumtax.setScale(2, BigDecimal.ROUND_HALF_UP));
+//                        hm.setTotalfs(sumapamtfs.add(sumtaxfs).subtract(sumbilnum8fs).setScale(2, BigDecimal.ROUND_HALF_UP));
+//                        hm.setTotal(sumapamt.add(sumtax).subtract(sumbilnum8).setScale(2, BigDecimal.ROUND_HALF_UP));
+//                        //大写金额
+//                        hm.setAmountInWords(workFlowBean.number2CNMonetaryUnit(hm.getTotal()));
+//                        // 构建表单实例
+//                        String formInstance = workFlowBean.buildXmlForEFGP("VH_TV005", hm, details);
+//                        String subject = "费用类请款申请：" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款金额：" + hm.getTotal();
+//                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT,
+//                                "PKG_VH_TV005", formInstance, subject);
+//                        String[] rm = msg.split("\\$");
+//                        if (rm != null) {
+//                            log4j.info(Arrays.toString(rm));
+//                        }
+//                        if (rm != null && rm.length == 2 && rm[0].equals("200")) {
+//                            // 更新ERP APM820状态
+//                            h.setApsta("25");
+//                            VHBapmaphBean.update(h);
+//                            VHBapmaphBean.getEntityManager().flush();
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (Exception ex) {
+//            log4j.error(ex);
+//        }
+//        log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询结束");
+//    }
+
     private void createOAHKYX009ByERPCDR220(String company) {
         HKYX009Model hm;
         HKYX009DetailModel dm;
@@ -1459,6 +1520,7 @@ public class TimerBean {
             List<Cdrqdta> cdrqdtaList;
             String facno;
             String quono;
+            String oilspecial = "";
             int i;
             if (cdrqhadList != null && !cdrqhadList.isEmpty()) {
                 for (Cdrqhad h : cdrqhadList) {
@@ -1512,6 +1574,10 @@ public class TimerBean {
                             } else {
                                 dm.setDiffitting("0");
                             }
+                            //服务部需求油品特殊流程
+                            if (d.getItnbr().startsWith("52001-")) {
+                                oilspecial = "Y";
+                            }
                             detailList.add(dm);
                         }
                         hm = new HKYX009Model();
@@ -1531,7 +1597,15 @@ public class TimerBean {
                         Cdrcus cdrcus = cdrcusBean.findByCusno(h.getCusno());
                         hm.setCusna(cdrcus.getCusna());
                         hm.setMancode(h.getMancode());
-                        
+                        //服务部需求带出定价群组Pricinguser
+                        hm.setPricgroup("");
+                        pricingUserBean.setCompany("C");
+                        PricingUser pu = pricingUserBean.findByPricingtypeAndUserid(h.getPricingtype(), h.getCusno());
+                        if (null != pu) {
+                            Miscode mis = miscodeBean.findByPK("1D", pu.getPricingUserPK().getGroupid());
+                            hm.setPricgroup(mis.getCdesc());
+                        }
+                        hm.setOilspecial(oilspecial);
                         Secuser secuser = secuserBean.findByUserno(h.getMancode());
                         hm.setMancodesc(secuser.getUsername());
                         // hm.setDepno(workFlowBean.getCurrentUser().getDeptno());
@@ -1541,6 +1615,7 @@ public class TimerBean {
                         hm.setApprresno(miscodeBean.findByPK("1O", h.getApprresno()).getCdesc());
                         // 加入付款条件叙述
                         hm.setPaycodedsc(h.getPaycodedsc());
+                        hm.setTotamts(h.getTotamts().doubleValue());
                         workFlowBean.initUserInfo(h.getUserno());
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);
@@ -1611,14 +1686,15 @@ public class TimerBean {
                         sumivomsfs = 0.00;
                         bilnoList = new ArrayList<>();
                         String isAttachment = "";
-                        String ls_mark = h.getHmark();     //备注栏位记录OA是否免签和
+                        String ls_mark = "";     //备注栏位记录OA是否免签和
+                        String ls_hmark = h.getHmark();
                         Date payda1 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
                         String vdrno = h.getVdrno();
                         Date apdate = h.getApdate();
                         Date payda2 = apmsysBean.getpurdate2(company, vdrno, apdate);
                         payda2 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", payda2));
                         //1.SCM抛转 2.未变更付款日期且无短溢沽，免签
-                        if (ls_mark != null && ls_mark.startsWith(company + "AP") && payda1.compareTo(payda2) == 0) {
+                        if (ls_hmark != null && ls_hmark.startsWith(company + "AP") && payda1.compareTo(payda2) == 0) {
                             ls_mark = "OA免签";
                         }
                         for (Apmapd d : apmapdList) {
@@ -1664,14 +1740,24 @@ public class TimerBean {
                                     || d.getApdsc().equals("null")) {
                                 dm.setApdsc("");
                             } else {
-                                dm.setApdsc(d.getApdsc());
+                                dm.setApdsc(d.getApdsc().replace('&', '/'));
                             }
                             //IsAttachment判断OA是否需要上传附件(短溢沽且非税率差)
                             if (d.getIvopsfs().compareTo(BigDecimal.ZERO) > 0 || d.getIvomsfs().compareTo(BigDecimal.ZERO) > 0) {
                                 if (!d.getApdsc().contains("税率差") && !d.getApdsc().contains("税差")) {
                                     isAttachment = "Y";
                                 }
-                                ls_mark = h.getHmark();
+                                ls_mark = ls_hmark;
+                            }
+                            //有加扣款的验收请款单
+                            apmpyhBean.setCompany(company);
+                            Apmpyh apmpyh = apmpyhBean.findByPK(company, d.getAcpno());
+                            if (null == apmpyh || apmpyh.getPsamt().compareTo(apmpyh.getMsamt()) != 0) {
+                                ls_mark = ls_hmark;
+                            }
+                            //9件号或者验收别7NK，51A
+                            if ("9".equals(d.getItnbr()) || "51A".equals(d.getOgdkid()) || "7NK".equals(d.getOgdkid())) {
+                                ls_mark = ls_hmark;
                             }
                             detailList.add(dm);
                             // 计算海关代徵,税额
@@ -1696,6 +1782,10 @@ public class TimerBean {
                         hm.setAppdept(h.getDepno());
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
+                        //集团内部厂商免签(STW00007/STW00045/KTW00001/ETW00001) 
+                        if ("STW00007".equals(h.getVdrno()) || "STW00045".equals(h.getVdrno()) || "KTW00001".equals(h.getVdrno()) || "ETW00001".equals(h.getVdrno())) {
+                            ls_mark = "OA免签";
+                        }
                         hm.setVdrna(h.getVdrna());
                         Purvdr purvdr = purvdrBean.findByVdrno(h.getVdrno());
                         if (null != purvdr) {
@@ -1751,7 +1841,9 @@ public class TimerBean {
                         if (rm != null && rm.length == 2 && rm[0].equals("200")) {
                             // 更新ERP APM811状态
                             h.setApsta("25");
-                            h.setHmark(ls_mark);
+                            if ("OA免签".equals(ls_mark)) {
+                                h.setHmark(ls_hmark + ls_mark);
+                            }
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }
@@ -1811,7 +1903,7 @@ public class TimerBean {
                                     || d.getApdsc().equals("null")) {
                                 dm.setApdsc("");
                             } else {
-                                dm.setApdsc(d.getApdsc());
+                                dm.setApdsc(d.getApdsc().replace('&', '/'));
                             }
                             dm.setBilno(d.getBilno() != null ? d.getBilno() : "");
                             dm.setCoin(d.getCoin());
@@ -1965,7 +2057,7 @@ public class TimerBean {
                                     || d.getApdsc().equals("null")) {
                                 dm.setApdsc("");
                             } else {
-                                dm.setApdsc(d.getApdsc());
+                                dm.setApdsc(d.getApdsc().replace('&', '/'));
                             }
                             dm.setCoin(d.getCoin());
                             dm.setRatio(d.getRatio().toString());
@@ -2051,587 +2143,586 @@ public class TimerBean {
     }
 
     // @Schedule(minute = "*/1", hour = "*", persistent = false)
-    public void createERPCDR225ByCRMREPPA() {
-        String pa001 = "";
-        String pa002 = "";
-        String facno;
-        String pricelevel;
-        String ls_levelp;
-        String ls_levelpo;
-        Character wi_s_cdrbomsubyn;
-        Character wi_s_acesoryyn;
-        Character ls_cdrbomsubyn;
-        Character ls_cdrothsfk;
-        String li_cdrbomsubitem;
-        Object[] prpl;
-        int li_ulevelp;
-        BigDecimal ldc_stdprice;
-        BigDecimal ldc_levelpri;
-        String ls_itnbr;
-        String ls_itemdesc;
-        String pricingtype;
-        Character decode;
-        List<REPPB> reppbList = null;
-        
-        List<REPPA> reppaList = reppaBean.findNeedThrow();
-        if (reppaList != null && !reppaList.isEmpty()) {
-            for (REPPA ra : reppaList) {
-                pa001 = ra.getREPPAPK().getPa001(); // CRM单别
-                pa002 = ra.getREPPAPK().getPa002(); // CRM估价单单号
-                reppbList = reppaBean.getDetailList(pa001, pa002);
-                // 记录抛转次数，超过3次不轮询
-                if (ra.getPa518() == null || "".equals(ra.getPa518())) {
-                    ra.setPa518("1");
-                } else {
-                    int i = Integer.valueOf(ra.getPa518()) + 1;
-                    ra.setPa518(String.valueOf(i));
-                }
-                syncCRMBean.syncUpdate(ra, null);
-            }
-        }
-        
-        try {
-            if (reppaList != null && !reppaList.isEmpty()) {
-                for (REPPA ra : reppaList) {
-                    List<Cdrqdta> addedDetail = new ArrayList();
-                    facno = ra.getPa500();
-                    if (facno.equals("")) {
-                        continue;
-                    }
-                    Date quodate = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
-                    pricingtype = ra.getPa509(); // 报价类别
-                    if (ra.getPa508().equals("")) {
-                        decode = '1';
-                    } else {
-                        decode = ra.getPa508().charAt(0); // 国内外码
-                    }
-                    cdrsysBean.setCompany(facno);
-                    cdrqsysBean.setCompany(facno);
-                    cdrcusBean.setCompany(facno);
-                    miscodeBean.setCompany(facno);
-                    cdrpaydscBean.setCompany(facno);
-                    cdrcusmanBean.setCompany(facno);
-                    cdrqhadBean.setCompany(facno);
-                    if (reppbList != null && !reppbList.isEmpty()) {
-                        // 表头资料
-                        Cdrqhad qh = new Cdrqhad();
-                        CdrqhadPK qhpk = new CdrqhadPK();
-                        qhpk.setFacno(facno);
-                        String lsquono = cdrqsysBean.getSerialno(facno, quodate, decode, false, "CDR225");
-                        wi_s_cdrbomsubyn = cdrsysBean.getByFacno(facno).getCdrbomsubyn();
-                        wi_s_acesoryyn = cdrsysBean.getByFacno(facno).getAcesoryyn();
-                        qh.setCusno(ra.getPa510());
-                        Cdrcus cs = cdrcusBean.findByCusno(qh.getCusno());
-                        if (cs == null) {
-                            throw new NullPointerException("找不到对应的客户资料！");
-                        }
-                        qh.setDepno(ra.getPa507());
-                        qh.setQuodate(quodate);
-                        String pa029 = ra.getPa029().substring(0, 4) + "/" + ra.getPa029().substring(4, 6) + "/"
-                                + ra.getPa029().substring(6);
-                        String pa030 = ra.getPa030().substring(0, 4) + "/" + ra.getPa030().substring(4, 6) + "/"
-                                + ra.getPa030().substring(6);
-                        qh.setFromdate(BaseLib.getDate("yyyy/MM/dd", pa029));
-                        qh.setEeffdate(BaseLib.getDate("yyyy/MM/dd", pa030));
-                        long tt = qh.getEeffdate().getTime() - qh.getFromdate().getTime();
-                        long tdays = (tt / 1000 / 60 / 60 / 24);
-                        qh.setEffdays((short) tdays); // 有效天数
-                        qh.setDecode(decode); // 国内国外
-                        if (ra.getPa517() == null || "".equals(ra.getPa517())) {
-                            qh.setShptrseq((short) 1);
-                        } else {
-                            qh.setShptrseq(Short.valueOf(ra.getPa517())); // 指配客户代号
-                        }
-                        qh.setIvotrseq(cs.getIvotrseq()); // 发票客户代号
-                        qh.setIsspecial(ra.getPa515()); // 是否特殊报价
-                        if (pa001.trim().equals("DD")) {
-                            qh.setQuotype('1');
-                            qh.setHquosta('N');
-                        } else {
-                            qh.setQuotype('2'); // 单对单/合约报价
-                            if ("Y".equals(qh.getIsspecial())) {
-                                qh.setHquosta('R');
-                            } else {
-                                qh.setHquosta('Y');
-                            }
-                        }
-                        
-                        qh.setTax(ra.getPa036().charAt(0)); // 税别
-                        qh.setTaxrate(ra.getPa028());
-                        qh.setCoin(ra.getPa010());
-                        qh.setRatio(ra.getPa018());
-                        qh.setSndcode(cs.getSndcode()); // 交货条件
-                        qh.setPaycode(ra.getPa012()); // 付款条件
-                        qh.setTermcode(cs.getTermcode()); // 交易条件
-                        if (qh.getDecode().equals('1')) {
-                            Miscode mis1 = miscodeBean.findByPK("GD", qh.getSndcode());
-                            if (mis1 != null) {
-                                qh.setSndcodedsc(mis1.getCdesc()); // 交货条件叙述
-                            }
-                            Miscode mis2 = miscodeBean.findByPK("GH", qh.getTermcode());
-                            if (mis2 != null) {
-                                qh.setTermcodedsc(mis2.getCdesc()); // 交易条件叙述
-                            }
-                            
-                        } else {
-                            Cdrpaydsc cdrpaydsc = cdrpaydscBean.findByPK('3', qh.getSndcode());
-                            if (cdrpaydsc != null) {
-                                qh.setSndcodedsc(cdrpaydsc.getAllcodedsc());
-                            }
-                            Cdrpaydsc cdrpaydsc2 = cdrpaydscBean.findByPK('2', qh.getTermcode());
-                            if (cdrpaydsc2 != null) {
-                                qh.setTermcodedsc(cdrpaydsc2.getAllcodedsc());
-                            }
-                        }
-                        qh.setPaycodedsc(cs.getSkfs()); // 付款条件叙述
-                        qh.setPaysepcode(cs.getPaysepcode()); // 付款内容区分
-                        qh.setSeldate1(cs.getSeldate1()); // 付款截止日（每月几号）
-                        qh.setSeldate2(cs.getSeldate2());
-                        qh.setSeldate3(cs.getSeldate3());
-                        qh.setSeldate4(cs.getSeldate4());
-                        qh.setHandays1(cs.getHandays1()); // 整账所需天数
-                        qh.setHandays2(cs.getHandays2());
-                        qh.setHandays3(cs.getHandays3());
-                        qh.setHandays4(cs.getHandays4());
-                        qh.setTickdays(cs.getTickdays());
-                        qh.setSacode(cs.getSacode());
-                        qh.setAreacode(cs.getAreacode());
-                        qh.setCuycode(cs.getCuycode());
-                        // 业务员取CRM
-                        if (ra.getPa005() != null) {
-                            qh.setMancode(ra.getPa005());
-                        } else {
-                            Cdrcusman cusman = cdrcusmanBean.findByPK(facno, qh.getCusno());
-                            if (cusman != null) {
-                                qh.setMancode(cusman.getMan());
-                            } else {
-                                log4j.error("CRM估计单抛转轮询时异常,找不到对应的业务员~!");
-                                continue;
-                            }
-                        }
-                        qh.setTramts(ra.getPa020());
-                        qh.setTaxamts(ra.getPa021());
-                        qh.setTotamts(ra.getPa019());
-                        // qh.setHmark1(""); 表头备注一
-                        // qh.setHmark2("");
-                        // qh.setHmark3("");
-                        qh.setHmark4(pa001 + pa002); // 记录CRM来源单号
-                        qh.setPrtcnt((short) 0);
-                        qh.setPiprtcnt((short) 0);
-                        qh.setBcdrno(""); // 抛转订单编号
-                        qh.setIndate(BaseLib.getDate());
-                        qh.setUserno(ra.getPa005());
-                        qh.setCfmuserno(ra.getPa025());
-                        String pa024 = ra.getPa024().substring(0, 4) + "/" + ra.getPa024().substring(4, 6) + "/"
-                                + ra.getPa024().substring(6);
-                        qh.setCfmdate(BaseLib.getDate("yyyy/MM/dd", pa024));
-                        // qh.setTrnuserno(""); //抛转订单人员
-                        // qh.setTrndate(""); //抛转订单日期
-                        qh.setPino("N"); // 列印PI否
-                        qh.setCopyquono(""); // 原报价单号（copy前）
-                        qh.setSelpricode('1');
-                        qh.setContactman(cs.getContactman());
-                        qh.setPricingtype(pricingtype);
-                        if (ra.getPa515() == null || "".equals(ra.getPa515())) {
-                            throw new NullPointerException("是否特殊报价资料错误！");
-                        }
-                        // qh.setSpcode();
-                        pricelevel = cdrqhadBean.getUserPricelevel(pricingtype, qh.getMancode());
-                        li_ulevelp = Integer.parseInt(pricelevel.substring(6)); // "price09"截取数字
-                        ls_levelpo = qh.getLevelp();
-
-                        // 表身资料
-                        int trseq = 0;
-                        List<REPPB> reppbasry = new ArrayList<>(); // 接收赠品
-                        for (REPPB rb : reppbList) {
-                            // 去除赠品，取赠品数量等于0
-                            if (rb.getPb010().compareTo(BigDecimal.ZERO) == 0) {
-                                trseq++;
-                                String itnbr = rb.getPb004();
-                                Cdrqdta qd = new Cdrqdta();
-                                CdrqdtaPK qdpk = new CdrqdtaPK();
-                                qdpk.setFacno("C");
-                                qdpk.setQuono(lsquono);
-                                qdpk.setTrseq((short) trseq);
-                                qd.setCdrqdtaPK(qdpk);
-                                qd.setItnbr(itnbr); // 品号
-                                qd.setItnbrcus(""); // 客户品号(零件无)
-                                qd.setProno("1"); // 默认第一生产地
-                                qd.setShptrseq(qh.getShptrseq()); // 指配代号
-                                qd.setQuaqy1(rb.getPb009());
-                                qd.setQuaqy2(BigDecimal.ZERO);
-                                qd.setArmqy(rb.getPb009()); // 应收数量
-                                qd.setUnpris(rb.getPb011());
-                                qd.setUnprisrccode('0'); // 单价来源
-                                qd.setTramts(rb.getPb013());
-                                qd.setCdrdate(BaseLib.getDate());
-                                qd.setDmark1(rb.getPb517()); // 表身备注1(冷媒机型)
-                                qd.setDmark2(""); // 表身备注2（齿数比）
-                                qd.setDmark3("");
-                                qd.setDmark4("");
-                                // qd.setTrnstatus();
-                                if (rb.getPb504() == null || rb.getPb504().equals("")) {
-                                    qd.setListunpri(BigDecimal.ZERO);
-                                } else {
-                                    qd.setListunpri(BigDecimal.valueOf(Double.parseDouble(rb.getPb504()))); // 定价
-                                }
-                                qd.setDiscnt((rb.getPb012().multiply(BigDecimal.valueOf(100))).shortValue()); // 折扣数
-                                // qd.setDiscnt(Short.valueOf(rb.getPb012().toString()));
-                                qd.setDispri0(BigDecimal.ZERO);
-                                qd.setDisqy1(BigDecimal.ZERO);
-                                qd.setDispri1(BigDecimal.ZERO);
-                                qd.setDisqy2(BigDecimal.ZERO);
-                                qd.setDispri2(BigDecimal.ZERO);
-                                qd.setDisqy3(BigDecimal.ZERO);
-                                qd.setDispri3(BigDecimal.ZERO);
-                                qd.setDisqy4(BigDecimal.ZERO);
-                                qd.setDispri4(BigDecimal.ZERO);
-                                qd.setDisqy5(BigDecimal.ZERO);
-                                qd.setDispri5(BigDecimal.ZERO);
-                                if (rb.getPb504() == null || rb.getPb505().equals("")) {
-                                    qd.setListunpri(BigDecimal.ZERO);
-                                } else {
-                                    qd.setListunpri(BigDecimal.valueOf(Double.parseDouble(rb.getPb505()))); // 旧价
-                                }
-                                qd.setMorderqy(BigDecimal.ZERO); // 最小包装数量, 最小订购量
-                                cdrqbomsubBean.setCompany(facno);
-                                Cdrqbomsub cbomsub
-                                        = cdrqbomsubBean.findByItnbrfAndCdrno(facno, qd.getItnbr(), qdpk.getQuono());
-                                if (cbomsub == null) {
-                                    qd.setSpcode('N');
-                                    li_cdrbomsubitem = "0";
-                                } else {
-                                    qd.setSpcode('Y');
-                                    li_cdrbomsubitem = "1";
-                                }
-                                
-                                BigDecimal ldc_salesprice = qd.getUnpris();
-                                String itemno = qd.getDmark1();
-                                if (ls_levelpo == null || ls_levelpo.equals("")) {
-                                    ls_levelpo = "A" + li_ulevelp;
-                                }
-                                if ("".equals(itemno)) {
-                                    prpl = cdrqhadBean.getByPricingPolicy(qd.getItnbr(), pricingtype, qh.getQuodate(),
-                                            qh.getCoin());
-                                } else {
-                                    prpl = cdrqhadBean.getByPricingPolicy(qd.getItnbr(), pricingtype, qh.getQuodate(),
-                                            qh.getCoin(), itemno);
-                                }
-                                if (prpl == null) {
-                                    prpl = cdrqhadBean.getByPricingPolicy(qd.getItnbr(), pricingtype, qh.getQuodate(),
-                                            "RMB");
-                                    ldc_salesprice = qd.getUnpris().multiply(qh.getRatio());
-                                }
-                                if (prpl == null) {
-                                    log4j.error(itnbr + " '未维护价格类别'" + pricingtype + "'对应的标准定价,请先维护!");
-                                    // dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
-                                    qd.setDqxjkind('D');
-                                    
-                                } else {
-                                    // 判断A9牌价
-                                    BigDecimal ldc_a9unpri
-                                            = BigDecimal.valueOf(Double.valueOf(prpl[10 + li_ulevelp].toString()));
-                                    if (ldc_a9unpri == null || ldc_a9unpri.compareTo(BigDecimal.ZERO) == 0) {
-                                        log4j.info("此件号" + itnbr + "还未维护A9牌价");
-                                    }
-                                    li_ulevelp = Integer.parseInt(pricelevel.substring(6)); // "price09"截取数字
-                                    ldc_stdprice = BigDecimal.valueOf(Double.valueOf(prpl[10 + li_ulevelp].toString())); // prpl标准定价数组的顺序（数量）不能修改
-                                    if (ldc_stdprice == null || ldc_stdprice.compareTo(BigDecimal.ZERO) < 1) {
-                                        log4j.error("错误'" + itnbr + "'的 '" + itemno + "'机型未维护价格类别'" + pricingtype
-                                                + "'对应的标准定价,请先维护!");
-                                        // dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
-                                        qd.setDqxjkind('D');
-                                    }
-                                    ls_itnbr = prpl[0].toString();
-                                    ls_itemdesc = prpl[2].toString();
-                                    if (ls_itemdesc == null || "".equals(ls_itemdesc)) {
-                                        invmasBean.setCompany(facno);
-                                        Invmas m = invmasBean.findByItnbr(ls_itnbr);
-                                        ls_itemdesc = m.getItdsc();
-                                    }
-                                    
-                                    if (ldc_stdprice.compareTo(ldc_salesprice) > 0) {
-                                        if (li_ulevelp > 1) {
-                                            for (int i = 1; i <= li_ulevelp; i++) {
-                                                ldc_levelpri
-                                                        = BigDecimal.valueOf(Double.valueOf(prpl[10 + i].toString())); // prpl标准定价数组的顺序（数量）不能修改
-                                                if (ldc_levelpri == null
-                                                        || ldc_levelpri.compareTo(BigDecimal.ZERO) < 1) {
-                                                    log4j.error("出错，第" + i + "笔件号'" + itnbr
-                                                            + "'当前售价不符合价格权限表管控范围,请走特殊报价或联系mis'");
-                                                    // dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10
-                                                    // 如果没有查找到价格,则记录
-                                                    continue;
-                                                }
-                                                if (ldc_levelpri.compareTo(ldc_salesprice) < 1) {
-                                                    if (li_ulevelp > i) {
-                                                        ls_levelpo = "A" + i;
-                                                        qh.setLevelp(ls_levelpo);
-                                                        qd.setLevelp(ls_levelpo);
-                                                        break;
-                                                    }
-                                                    
-                                                }
-                                                
-                                            }
-                                        }
-                                        
-                                    }
-                                }
-                                // qd.setLevelp(facno);
-                                // qd.setContunpri(BigDecimal.ZERO);
-                                // qd.setNorm("");
-                                // qd.setIslableprt(Character.MIN_VALUE);
-                                // qd.setHisorders("");
-                                // qd.setDiffprice(BigDecimal.ZERO);
-                                // qd.setContractno("");
-                                qd.setNcodeDA(rb.getPb513());
-                                qd.setNcodeCD(rb.getPb514());
-                                qd.setNcodeDC(rb.getPb515());
-                                qd.setNcodeDD(rb.getPb516());
-                                // qd.setQxb(facno);
-                                // qd.setDeflevprice(BigDecimal.ZERO);
-                                // qd.setCuslable("");
-                                // CDR225确认--关于订单规格表判定
-
-                                ls_cdrbomsubyn = 'N';
-                                ls_cdrothsfk = 'N';
-                                if ("J".equals(facno) || "N".equals(facno) || "G".equals(facno) || "C4".equals(facno)
-                                        || "K".equals(facno)) {
-                                    facno = "C";
-                                }
-                                Invmas invmas = invmasBean.findByItnbr(itnbr);
-                                ls_cdrbomsubyn = invmas.getInvcls().getCdrbomsubyn();
-                                if (ls_cdrbomsubyn == null) {
-                                    ls_cdrbomsubyn = 'N';
-                                }
-                                // ==> C0583 2014.9.11 订单规格不管控，但仍需维护身份卡之品号大类
-                                if (ls_cdrbomsubyn.equals('N')) {
-                                    if (cdrqhadBean.findByItcls(facno, invmas.getItcls()) != null) {
-                                        ls_cdrothsfk = 'Y';
-                                    }
-                                }
-                                // 维护身份卡信息 cb_sfkn 可见 ==< DDGA
-                                DDGA ddga = ddgaBean.findByREPPB(pa001, pa002, rb.getREPPBPK().getPb003());
-                                if (ddga != null) {
-                                    if (ls_cdrbomsubyn.equals('Y') || ls_cdrothsfk.equals('Y')) {
-                                        cdrhpopsfkBean.setCompany(facno);
-                                        Cdrhpopsfk sfkh = new Cdrhpopsfk();
-                                        CdrhpopsfkPK sfkhPK = new CdrhpopsfkPK();
-                                        if (ddga.getGa007() == null || "".equals(ddga.getGa007())) {
-                                            sfkhPK.setFacno(facno);
-                                        } else {
-                                            sfkhPK.setFacno(ddga.getGa007());
-                                        }
-                                        String lsno = cdrhpopsfkBean.gettrno(facno, quodate, "CDR220", true);
-                                        sfkhPK.setSfktrno(lsno);
-                                        sfkh.setCdrhpopsfkPK(sfkhPK);
-                                        sfkh.setCusno(ddga.getGa009());
-                                        sfkh.setItnbr(itnbr);
-                                        sfkh.setItnbrcus(ddga.getGa005());
-                                        sfkh.setSpcode(ddga.getGa008().charAt(0));
-                                        sfkh.setVersion(ddga.getGa011());
-                                        sfkh.setQuono(lsquono);
-                                        sfkh.setQtrseq(qdpk.getTrseq());
-                                        sfkh.setCdrno("");
-                                        // sfkh.setManno("");
-                                        sfkh.setCdrno("");
-                                        sfkh.setSpdesc(ddga.getGa010());
-                                        sfkh.setCrtprg("CDR220");
-                                        sfkh.setKeyindate(quodate);
-                                        sfkh.setVarnr("");
-                                        sfkh.setMatcode("");
-                                        // 身份卡表身
-                                        List<DDGB> ddgbList = ddgaBean.getDetailList(ddga.getDDGAPK().getGa004());
-                                        List<Cdrdpopsfk> sfkdList = new ArrayList();
-                                        if (ddgbList.size() > 0) {
-                                            for (DDGB ddgb : ddgbList) {
-                                                Cdrdpopsfk sfkd = new Cdrdpopsfk();
-                                                CdrdpopsfkPK sfkdpk = new CdrdpopsfkPK();
-                                                sfkdpk.setFacno(sfkh.getCdrhpopsfkPK().getFacno());
-                                                sfkdpk.setParts(ddgb.getGb003());
-                                                sfkdpk.setSfktrno(sfkhPK.getSfktrno());
-                                                sfkdpk.setSorts(ddgb.getGb004());
-                                                sfkd.setCdrdpopsfkPK(sfkdpk);
-                                                Cdrsfkpart sfkpart = cdrsfkpartBean.findByPK(facno, ddgb.getGb003());
-                                                if (sfkpart != null) {
-                                                    sfkd.setPartdesc(sfkpart.getPartsdesc());
-                                                    sfkd.setPapx(sfkpart.getPx());
-                                                }
-                                                Cdrsfksorts sfksort
-                                                        = cdrsfksortsBean.findByPK(facno, ddgb.getGb003(), ddgb.getGb004());
-                                                if (sfksort != null) {
-                                                    sfkd.setSortsdesc(sfksort.getSortsdesc());
-                                                }
-                                                sfkd.setSpecifit(ddgb.getGb005());
-                                                Cdrsfkspec sfkspec = cdrsfkspecBean.findByPK(facno, ddgb.getGb003(),
-                                                        ddgb.getGb004(), ddgb.getGb005());
-                                                if (sfkspec != null) {
-                                                    sfkd.setSpecifitesc(sfkspec.getSpecifitesc());
-                                                }
-                                                sfkdList.add(sfkd);
-                                            }
-                                        }
-                                        cdrhpopsfkBean.persist(sfkh);
-                                        cdrhpopsfkBean.persistDetailList(facno, sfkdList);
-                                    }
-                                }
-                                // 订单规格表维护
-                                if (wi_s_cdrbomsubyn.equals('Y')) {
-                                    if (ls_cdrbomsubyn.equals('Y') && li_cdrbomsubitem == "0") {
-                                        DDGC ddgc = ddgcBean.findByREPPB(pa001, pa002, rb.getREPPBPK().getPb003());
-                                        if (ddgc != null) {
-                                            cdrqbomsubBean.setCompany(facno);
-                                            Cdrqbomsub cqbomsub = new Cdrqbomsub();
-                                            CdrqbomsubPK cqbomsubpk = new CdrqbomsubPK();
-                                            cqbomsubpk.setFacno(facno);
-                                            cqbomsubpk.setCdrno(lsquono);
-                                            cqbomsubpk.setTrseq(qdpk.getTrseq());
-                                            cqbomsub.setCdrqbomsubPK(cqbomsubpk);
-                                            cqbomsub.setItnbrf(ddgc.getGc006());
-                                            cqbomsub.setSpcode(ddgc.getGc008().charAt(0));
-                                            cqbomsub.setSpdesc(ddgc.getGc009());
-                                            // cqbomsub.setSpdesc2(""); //规格说明2
-                                            // 规格明细
-                                            List<DDGD> ddgdList = ddgcBean.getDetailList(ddgc.getDDGCPK().getGc004());
-                                            if (ddgdList.size() > 0) {
-                                                for (int i = 0; i < ddgdList.size(); i++) {
-                                                    Method setMethod1 = cqbomsub.getClass()
-                                                            .getDeclaredMethod("set" + "Itdesc" + (i + 1), String.class);
-                                                    setMethod1.invoke(cqbomsub, ddgdList.get(i).getGd003());
-                                                    Method setMethod2 = cqbomsub.getClass()
-                                                            .getDeclaredMethod("set" + "Itnbr" + (i + 1), String.class);
-                                                    setMethod2.invoke(cqbomsub, ddgdList.get(i).getGd007());
-                                                    Method setMethod3 = cqbomsub.getClass()
-                                                            .getDeclaredMethod("set" + "Itscode" + (i + 1), String.class);
-                                                    String itscode = "";
-                                                    if (ddgdList.get(i).getGd003().equals(ddgdList.get(i).getGd005())) {
-                                                        itscode = "00"; // 标准
-                                                    } else {
-                                                        Bomsub bomsub = bomsubBean.findByPKItnbrs(ddgc.getGc006(),
-                                                                ddgdList.get(i).getGd007(), ddgdList.get(i).getGd005());
-                                                        if (null != bomsub) {
-                                                            if (bomsub.getSeqnr() < 10) {
-                                                                itscode = "0" + bomsub.getSeqnr();
-                                                            } else {
-                                                                itscode = String.valueOf(bomsub.getSeqnr());
-                                                            }
-                                                        } else {
-                                                            log4j.error("订单规格表查询异常!");
-                                                        }
-                                                    }
-                                                    setMethod3.invoke(cqbomsub, itscode);
-                                                    // setMethod3.invoke(cqbomsub, ddgdList.get(i).getGd004());
-                                                    Method setMethod4 = cqbomsub.getClass()
-                                                            .getDeclaredMethod("set" + "Itsdesc" + (i + 1), String.class);
-                                                    setMethod4.invoke(cqbomsub, ddgdList.get(i).getGd004());
-                                                    Method setMethod5 = cqbomsub.getClass()
-                                                            .getDeclaredMethod("set" + "Itnbrs" + (i + 1), String.class);
-                                                    setMethod4.invoke(cqbomsub, ddgdList.get(i).getGd005());
-                                                }
-                                                
-                                            }
-                                            cdrqbomsubBean.persist(cqbomsub);
-                                            // throw new RuntimeException("第" + qdpk.getTrseq() +
-                                            // 笔订单规格表尚未维护不可确认!");
-                                        }
-                                    }
-                                }
-                                addedDetail.add(qd);
-                            } else if (rb.getPb010().compareTo(BigDecimal.ZERO) > 0) {
-                                reppbasry.add(rb);
-                            }
-                        }
-                        // 维护订单配件
-                        List<Cdrqasry> cqasryadd = new ArrayList();
-                        if (wi_s_acesoryyn == 'Y') {
-                            // 获取CRM表身明细中的赠品配件，根据品号分组
-                            if (reppbasry.size() > 0) {
-                                for (Cdrqdta qdadd : addedDetail) {
-                                    int k = 0;
-                                    for (int j = 0; j < reppbasry.size(); j++) {
-                                        if (reppbasry.get(j).getPb519().equals(qdadd.getItnbr())) {
-                                            k++;
-                                            Cdrqasry cqasry = new Cdrqasry();
-                                            CdrqasryPK cqasrypk = new CdrqasryPK();
-                                            cqasrypk.setFacno(facno);
-                                            cqasrypk.setQuono(lsquono);
-                                            cqasrypk.setTrseq(qdadd.getCdrqdtaPK().getTrseq()); // 报价单身序号
-                                            cqasrypk.setSeq((short) k); // 配件表身序号
-                                            String ls_dmark = "";
-                                            if (qdadd.getDmark1() == null || "".equals(qdadd.getDmark1())) {
-                                                if (qdadd.getDmark2() == null || "".equals(qdadd.getDmark2())) {
-                                                } else {
-                                                    ls_dmark = qdadd.getDmark2();
-                                                }
-                                            } else {
-                                                ls_dmark = qdadd.getDmark1();
-                                            }
-                                            if (bomasryBean.findByItnbrfAndCmccode(qdadd.getItnbr(),
-                                                    ls_dmark) == null) {
-                                                ls_dmark = "9";
-                                            }
-                                            cqasrypk.setCmccode(ls_dmark);
-                                            cqasry.setCdrqasryPK(cqasrypk);
-                                            cqasry.setItnbr(reppbasry.get(j).getPb004());
-                                            cqasry.setItnbrf(qdadd.getItnbr());
-                                            cqasry.setProsscode("");
-                                            cqasry.setStdqty(reppbasry.get(j).getPb010());
-                                            cqasry.setStdpar((short) 1);
-                                            cqasry.setBadrat(BigDecimal.ZERO);
-                                            cqasryadd.add(cqasry);
-                                            // cdrqasryBean.persist(cqasry);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        // qh.setLevelp(facno);
-                        // qh.setOacfuser("");
-                        // qh.setCuspono();
-                        qh.setApprresno(ra.getPa520()); // 审批原因
-                        // qh.setWarranty(Short.MAX_VALUE);
-                        // qh.setNewcusna(facno);
-
-                        String quono = cdrqsysBean.getSerialno(facno, quodate, decode, true, "CDR225");
-                        if (!quono.equals(lsquono)) {
-                            throw new RuntimeException("报价单号产生错误，请确认");
-                        }
-                        qhpk.setQuono(quono); // 报价单号
-                        qh.setCdrqhadPK(qhpk);
-                        
-                        cdrqhadBean.setCompany(facno);
-                        cdrqhadBean.persist(qh);
-                        cdrqhadBean.persistDetailList(facno, addedDetail);
-                        if (cqasryadd.size() > 0) {
-                            for (Cdrqasry cqasry : cqasryadd) {
-                                cdrqasryBean.persist(cqasry);
-                            }
-                        }
-                        // 在报价单头显示备注
-                        Cdrqhdsc cqdsc = new Cdrqhdsc();
-                        CdrqhdscPK cqdscpk = new CdrqhdscPK();
-                        cqdscpk.setFacno(facno);
-                        cqdscpk.setQuono(quono);
-                        cqdsc.setCdrqhdscPK(cqdscpk);
-                        cqdsc.setMark1(pa001 + pa002);
-                        cdrqhdscBean.setCompany(facno);
-                        cdrqhdscBean.persist(cqdsc);
-                        ra.setPa027("Y");
-                        ra.setPa519(quono);
-                        reppaBean.update(ra);
-
-                        // 确认
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            log4j.error("CRM估计单抛转轮询时异常", ex);
-            throw new RuntimeException("资料库查询发生错误！--" + ex);
-        }
-        log4j.info("CRM估计单抛转轮询");
-    }
-    
+//    public void createERPCDR225ByCRMREPPA() {
+//        String pa001 = "";
+//        String pa002 = "";
+//        String facno;
+//        String pricelevel;
+//        String ls_levelp;
+//        String ls_levelpo;
+//        Character wi_s_cdrbomsubyn;
+//        Character wi_s_acesoryyn;
+//        Character ls_cdrbomsubyn;
+//        Character ls_cdrothsfk;
+//        String li_cdrbomsubitem;
+//        Object[] prpl;
+//        int li_ulevelp;
+//        BigDecimal ldc_stdprice;
+//        BigDecimal ldc_levelpri;
+//        String ls_itnbr;
+//        String ls_itemdesc;
+//        String pricingtype;
+//        Character decode;
+//        List<REPPB> reppbList = null;
+//
+//        List<REPPA> reppaList = reppaBean.findNeedThrow();
+//        if (reppaList != null && !reppaList.isEmpty()) {
+//            for (REPPA ra : reppaList) {
+//                pa001 = ra.getREPPAPK().getPa001(); // CRM单别
+//                pa002 = ra.getREPPAPK().getPa002(); // CRM估价单单号
+//                reppbList = reppaBean.getDetailList(pa001, pa002);
+//                // 记录抛转次数，超过3次不轮询
+//                if (ra.getPa518() == null || "".equals(ra.getPa518())) {
+//                    ra.setPa518("1");
+//                } else {
+//                    int i = Integer.valueOf(ra.getPa518()) + 1;
+//                    ra.setPa518(String.valueOf(i));
+//                }
+//                syncCRMBean.syncUpdate(ra, null);
+//            }
+//        }
+//
+//        try {
+//            if (reppaList != null && !reppaList.isEmpty()) {
+//                for (REPPA ra : reppaList) {
+//                    List<Cdrqdta> addedDetail = new ArrayList();
+//                    facno = ra.getPa500();
+//                    if (facno.equals("")) {
+//                        continue;
+//                    }
+//                    Date quodate = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
+//                    pricingtype = ra.getPa509(); // 报价类别
+//                    if (ra.getPa508().equals("")) {
+//                        decode = '1';
+//                    } else {
+//                        decode = ra.getPa508().charAt(0); // 国内外码
+//                    }
+//                    cdrsysBean.setCompany(facno);
+//                    cdrqsysBean.setCompany(facno);
+//                    cdrcusBean.setCompany(facno);
+//                    miscodeBean.setCompany(facno);
+//                    cdrpaydscBean.setCompany(facno);
+//                    cdrcusmanBean.setCompany(facno);
+//                    cdrqhadBean.setCompany(facno);
+//                    if (reppbList != null && !reppbList.isEmpty()) {
+//                        // 表头资料
+//                        Cdrqhad qh = new Cdrqhad();
+//                        CdrqhadPK qhpk = new CdrqhadPK();
+//                        qhpk.setFacno(facno);
+//                        String lsquono = cdrqsysBean.getSerialno(facno, quodate, decode, false, "CDR225");
+//                        wi_s_cdrbomsubyn = cdrsysBean.getByFacno(facno).getCdrbomsubyn();
+//                        wi_s_acesoryyn = cdrsysBean.getByFacno(facno).getAcesoryyn();
+//                        qh.setCusno(ra.getPa510());
+//                        Cdrcus cs = cdrcusBean.findByCusno(qh.getCusno());
+//                        if (cs == null) {
+//                            throw new NullPointerException("找不到对应的客户资料！");
+//                        }
+//                        qh.setDepno(ra.getPa507());
+//                        qh.setQuodate(quodate);
+//                        String pa029 = ra.getPa029().substring(0, 4) + "/" + ra.getPa029().substring(4, 6) + "/"
+//                                + ra.getPa029().substring(6);
+//                        String pa030 = ra.getPa030().substring(0, 4) + "/" + ra.getPa030().substring(4, 6) + "/"
+//                                + ra.getPa030().substring(6);
+//                        qh.setFromdate(BaseLib.getDate("yyyy/MM/dd", pa029));
+//                        qh.setEeffdate(BaseLib.getDate("yyyy/MM/dd", pa030));
+//                        long tt = qh.getEeffdate().getTime() - qh.getFromdate().getTime();
+//                        long tdays = (tt / 1000 / 60 / 60 / 24);
+//                        qh.setEffdays((short) tdays); // 有效天数
+//                        qh.setDecode(decode); // 国内国外
+//                        if (ra.getPa517() == null || "".equals(ra.getPa517())) {
+//                            qh.setShptrseq((short) 1);
+//                        } else {
+//                            qh.setShptrseq(Short.valueOf(ra.getPa517())); // 指配客户代号
+//                        }
+//                        qh.setIvotrseq(cs.getIvotrseq()); // 发票客户代号
+//                        qh.setIsspecial(ra.getPa515()); // 是否特殊报价
+//                        if (pa001.trim().equals("DD")) {
+//                            qh.setQuotype('1');
+//                            qh.setHquosta('N');
+//                        } else {
+//                            qh.setQuotype('2'); // 单对单/合约报价
+//                            if ("Y".equals(qh.getIsspecial())) {
+//                                qh.setHquosta('R');
+//                            } else {
+//                                qh.setHquosta('Y');
+//                            }
+//                        }
+//
+//                        qh.setTax(ra.getPa036().charAt(0)); // 税别
+//                        qh.setTaxrate(ra.getPa028());
+//                        qh.setCoin(ra.getPa010());
+//                        qh.setRatio(ra.getPa018());
+//                        qh.setSndcode(cs.getSndcode()); // 交货条件
+//                        qh.setPaycode(ra.getPa012()); // 付款条件
+//                        qh.setTermcode(cs.getTermcode()); // 交易条件
+//                        if (qh.getDecode().equals('1')) {
+//                            Miscode mis1 = miscodeBean.findByPK("GD", qh.getSndcode());
+//                            if (mis1 != null) {
+//                                qh.setSndcodedsc(mis1.getCdesc()); // 交货条件叙述
+//                            }
+//                            Miscode mis2 = miscodeBean.findByPK("GH", qh.getTermcode());
+//                            if (mis2 != null) {
+//                                qh.setTermcodedsc(mis2.getCdesc()); // 交易条件叙述
+//                            }
+//
+//                        } else {
+//                            Cdrpaydsc cdrpaydsc = cdrpaydscBean.findByPK('3', qh.getSndcode());
+//                            if (cdrpaydsc != null) {
+//                                qh.setSndcodedsc(cdrpaydsc.getAllcodedsc());
+//                            }
+//                            Cdrpaydsc cdrpaydsc2 = cdrpaydscBean.findByPK('2', qh.getTermcode());
+//                            if (cdrpaydsc2 != null) {
+//                                qh.setTermcodedsc(cdrpaydsc2.getAllcodedsc());
+//                            }
+//                        }
+//                        qh.setPaycodedsc(cs.getSkfs()); // 付款条件叙述
+//                        qh.setPaysepcode(cs.getPaysepcode()); // 付款内容区分
+//                        qh.setSeldate1(cs.getSeldate1()); // 付款截止日（每月几号）
+//                        qh.setSeldate2(cs.getSeldate2());
+//                        qh.setSeldate3(cs.getSeldate3());
+//                        qh.setSeldate4(cs.getSeldate4());
+//                        qh.setHandays1(cs.getHandays1()); // 整账所需天数
+//                        qh.setHandays2(cs.getHandays2());
+//                        qh.setHandays3(cs.getHandays3());
+//                        qh.setHandays4(cs.getHandays4());
+//                        qh.setTickdays(cs.getTickdays());
+//                        qh.setSacode(cs.getSacode());
+//                        qh.setAreacode(cs.getAreacode());
+//                        qh.setCuycode(cs.getCuycode());
+//                        // 业务员取CRM
+//                        if (ra.getPa005() != null) {
+//                            qh.setMancode(ra.getPa005());
+//                        } else {
+//                            Cdrcusman cusman = cdrcusmanBean.findByPK(facno, qh.getCusno());
+//                            if (cusman != null) {
+//                                qh.setMancode(cusman.getMan());
+//                            } else {
+//                                log4j.error("CRM估计单抛转轮询时异常,找不到对应的业务员~!");
+//                                continue;
+//                            }
+//                        }
+//                        qh.setTramts(ra.getPa020());
+//                        qh.setTaxamts(ra.getPa021());
+//                        qh.setTotamts(ra.getPa019());
+//                        // qh.setHmark1(""); 表头备注一
+//                        // qh.setHmark2("");
+//                        // qh.setHmark3("");
+//                        qh.setHmark4(pa001 + pa002); // 记录CRM来源单号
+//                        qh.setPrtcnt((short) 0);
+//                        qh.setPiprtcnt((short) 0);
+//                        qh.setBcdrno(""); // 抛转订单编号
+//                        qh.setIndate(BaseLib.getDate());
+//                        qh.setUserno(ra.getPa005());
+//                        qh.setCfmuserno(ra.getPa025());
+//                        String pa024 = ra.getPa024().substring(0, 4) + "/" + ra.getPa024().substring(4, 6) + "/"
+//                                + ra.getPa024().substring(6);
+//                        qh.setCfmdate(BaseLib.getDate("yyyy/MM/dd", pa024));
+//                        // qh.setTrnuserno(""); //抛转订单人员
+//                        // qh.setTrndate(""); //抛转订单日期
+//                        qh.setPino("N"); // 列印PI否
+//                        qh.setCopyquono(""); // 原报价单号（copy前）
+//                        qh.setSelpricode('1');
+//                        qh.setContactman(cs.getContactman());
+//                        qh.setPricingtype(pricingtype);
+//                        if (ra.getPa515() == null || "".equals(ra.getPa515())) {
+//                            throw new NullPointerException("是否特殊报价资料错误！");
+//                        }
+//                        // qh.setSpcode();
+//                        pricelevel = cdrqhadBean.getUserPricelevel(pricingtype, qh.getMancode());
+//                        li_ulevelp = Integer.parseInt(pricelevel.substring(6)); // "price09"截取数字
+//                        ls_levelpo = qh.getLevelp();
+//
+//                        // 表身资料
+//                        int trseq = 0;
+//                        List<REPPB> reppbasry = new ArrayList<>(); // 接收赠品
+//                        for (REPPB rb : reppbList) {
+//                            // 去除赠品，取赠品数量等于0
+//                            if (rb.getPb010().compareTo(BigDecimal.ZERO) == 0) {
+//                                trseq++;
+//                                String itnbr = rb.getPb004();
+//                                Cdrqdta qd = new Cdrqdta();
+//                                CdrqdtaPK qdpk = new CdrqdtaPK();
+//                                qdpk.setFacno("C");
+//                                qdpk.setQuono(lsquono);
+//                                qdpk.setTrseq((short) trseq);
+//                                qd.setCdrqdtaPK(qdpk);
+//                                qd.setItnbr(itnbr); // 品号
+//                                qd.setItnbrcus(""); // 客户品号(零件无)
+//                                qd.setProno("1"); // 默认第一生产地
+//                                qd.setShptrseq(qh.getShptrseq()); // 指配代号
+//                                qd.setQuaqy1(rb.getPb009());
+//                                qd.setQuaqy2(BigDecimal.ZERO);
+//                                qd.setArmqy(rb.getPb009()); // 应收数量
+//                                qd.setUnpris(rb.getPb011());
+//                                qd.setUnprisrccode('0'); // 单价来源
+//                                qd.setTramts(rb.getPb013());
+//                                qd.setCdrdate(BaseLib.getDate());
+//                                qd.setDmark1(rb.getPb517()); // 表身备注1(冷媒机型)
+//                                qd.setDmark2(""); // 表身备注2（齿数比）
+//                                qd.setDmark3("");
+//                                qd.setDmark4("");
+//                                // qd.setTrnstatus();
+//                                if (rb.getPb504() == null || rb.getPb504().equals("")) {
+//                                    qd.setListunpri(BigDecimal.ZERO);
+//                                } else {
+//                                    qd.setListunpri(BigDecimal.valueOf(Double.parseDouble(rb.getPb504()))); // 定价
+//                                }
+//                                qd.setDiscnt((rb.getPb012().multiply(BigDecimal.valueOf(100))).shortValue()); // 折扣数
+//                                // qd.setDiscnt(Short.valueOf(rb.getPb012().toString()));
+//                                qd.setDispri0(BigDecimal.ZERO);
+//                                qd.setDisqy1(BigDecimal.ZERO);
+//                                qd.setDispri1(BigDecimal.ZERO);
+//                                qd.setDisqy2(BigDecimal.ZERO);
+//                                qd.setDispri2(BigDecimal.ZERO);
+//                                qd.setDisqy3(BigDecimal.ZERO);
+//                                qd.setDispri3(BigDecimal.ZERO);
+//                                qd.setDisqy4(BigDecimal.ZERO);
+//                                qd.setDispri4(BigDecimal.ZERO);
+//                                qd.setDisqy5(BigDecimal.ZERO);
+//                                qd.setDispri5(BigDecimal.ZERO);
+//                                if (rb.getPb504() == null || rb.getPb505().equals("")) {
+//                                    qd.setListunpri(BigDecimal.ZERO);
+//                                } else {
+//                                    qd.setListunpri(BigDecimal.valueOf(Double.parseDouble(rb.getPb505()))); // 旧价
+//                                }
+//                                qd.setMorderqy(BigDecimal.ZERO); // 最小包装数量, 最小订购量
+//                                cdrqbomsubBean.setCompany(facno);
+//                                Cdrqbomsub cbomsub
+//                                        = cdrqbomsubBean.findByItnbrfAndCdrno(facno, qd.getItnbr(), qdpk.getQuono());
+//                                if (cbomsub == null) {
+//                                    qd.setSpcode('N');
+//                                    li_cdrbomsubitem = "0";
+//                                } else {
+//                                    qd.setSpcode('Y');
+//                                    li_cdrbomsubitem = "1";
+//                                }
+//
+//                                BigDecimal ldc_salesprice = qd.getUnpris();
+//                                String itemno = qd.getDmark1();
+//                                if (ls_levelpo == null || ls_levelpo.equals("")) {
+//                                    ls_levelpo = "A" + li_ulevelp;
+//                                }
+//                                if ("".equals(itemno)) {
+//                                    prpl = cdrqhadBean.getByPricingPolicy(qd.getItnbr(), pricingtype, qh.getQuodate(),
+//                                            qh.getCoin());
+//                                } else {
+//                                    prpl = cdrqhadBean.getByPricingPolicy(qd.getItnbr(), pricingtype, qh.getQuodate(),
+//                                            qh.getCoin(), itemno);
+//                                }
+//                                if (prpl == null) {
+//                                    prpl = cdrqhadBean.getByPricingPolicy(qd.getItnbr(), pricingtype, qh.getQuodate(),
+//                                            "RMB");
+//                                    ldc_salesprice = qd.getUnpris().multiply(qh.getRatio());
+//                                }
+//                                if (prpl == null) {
+//                                    log4j.error(itnbr + " '未维护价格类别'" + pricingtype + "'对应的标准定价,请先维护!");
+//                                    // dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
+//                                    qd.setDqxjkind('D');
+//
+//                                } else {
+//                                    // 判断A9牌价
+//                                    BigDecimal ldc_a9unpri
+//                                            = BigDecimal.valueOf(Double.valueOf(prpl[10 + li_ulevelp].toString()));
+//                                    if (ldc_a9unpri == null || ldc_a9unpri.compareTo(BigDecimal.ZERO) == 0) {
+//                                        log4j.info("此件号" + itnbr + "还未维护A9牌价");
+//                                    }
+//                                    li_ulevelp = Integer.parseInt(pricelevel.substring(6)); // "price09"截取数字
+//                                    ldc_stdprice = BigDecimal.valueOf(Double.valueOf(prpl[10 + li_ulevelp].toString())); // prpl标准定价数组的顺序（数量）不能修改
+//                                    if (ldc_stdprice == null || ldc_stdprice.compareTo(BigDecimal.ZERO) < 1) {
+//                                        log4j.error("错误'" + itnbr + "'的 '" + itemno + "'机型未维护价格类别'" + pricingtype
+//                                                + "'对应的标准定价,请先维护!");
+//                                        // dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10 如果没有查找到价格,则记录
+//                                        qd.setDqxjkind('D');
+//                                    }
+//                                    ls_itnbr = prpl[0].toString();
+//                                    ls_itemdesc = prpl[2].toString();
+//                                    if (ls_itemdesc == null || "".equals(ls_itemdesc)) {
+//                                        invmasBean.setCompany(facno);
+//                                        Invmas m = invmasBean.findByItnbr(ls_itnbr);
+//                                        ls_itemdesc = m.getItdsc();
+//                                    }
+//
+//                                    if (ldc_stdprice.compareTo(ldc_salesprice) > 0) {
+//                                        if (li_ulevelp > 1) {
+//                                            for (int i = 1; i <= li_ulevelp; i++) {
+//                                                ldc_levelpri
+//                                                        = BigDecimal.valueOf(Double.valueOf(prpl[10 + i].toString())); // prpl标准定价数组的顺序（数量）不能修改
+//                                                if (ldc_levelpri == null
+//                                                        || ldc_levelpri.compareTo(BigDecimal.ZERO) < 1) {
+//                                                    log4j.error("出错，第" + i + "笔件号'" + itnbr
+//                                                            + "'当前售价不符合价格权限表管控范围,请走特殊报价或联系mis'");
+//                                                    // dw_detail.setitem(row,'dqxjkind','D') // C0583 2016.5.10
+//                                                    // 如果没有查找到价格,则记录
+//                                                    continue;
+//                                                }
+//                                                if (ldc_levelpri.compareTo(ldc_salesprice) < 1) {
+//                                                    if (li_ulevelp > i) {
+//                                                        ls_levelpo = "A" + i;
+//                                                        qh.setLevelp(ls_levelpo);
+//                                                        qd.setLevelp(ls_levelpo);
+//                                                        break;
+//                                                    }
+//
+//                                                }
+//
+//                                            }
+//                                        }
+//
+//                                    }
+//                                }
+//                                // qd.setLevelp(facno);
+//                                // qd.setContunpri(BigDecimal.ZERO);
+//                                // qd.setNorm("");
+//                                // qd.setIslableprt(Character.MIN_VALUE);
+//                                // qd.setHisorders("");
+//                                // qd.setDiffprice(BigDecimal.ZERO);
+//                                // qd.setContractno("");
+//                                qd.setNcodeDA(rb.getPb513());
+//                                qd.setNcodeCD(rb.getPb514());
+//                                qd.setNcodeDC(rb.getPb515());
+//                                qd.setNcodeDD(rb.getPb516());
+//                                // qd.setQxb(facno);
+//                                // qd.setDeflevprice(BigDecimal.ZERO);
+//                                // qd.setCuslable("");
+//                                // CDR225确认--关于订单规格表判定
+//
+//                                ls_cdrbomsubyn = 'N';
+//                                ls_cdrothsfk = 'N';
+//                                if ("J".equals(facno) || "N".equals(facno) || "G".equals(facno) || "C4".equals(facno)
+//                                        || "K".equals(facno)) {
+//                                    facno = "C";
+//                                }
+//                                Invmas invmas = invmasBean.findByItnbr(itnbr);
+//                                ls_cdrbomsubyn = invmas.getInvcls().getCdrbomsubyn();
+//                                if (ls_cdrbomsubyn == null) {
+//                                    ls_cdrbomsubyn = 'N';
+//                                }
+//                                // ==> C0583 2014.9.11 订单规格不管控，但仍需维护身份卡之品号大类
+//                                if (ls_cdrbomsubyn.equals('N')) {
+//                                    if (cdrqhadBean.findByItcls(facno, invmas.getItcls()) != null) {
+//                                        ls_cdrothsfk = 'Y';
+//                                    }
+//                                }
+//                                // 维护身份卡信息 cb_sfkn 可见 ==< DDGA
+//                                DDGA ddga = ddgaBean.findByREPPB(pa001, pa002, rb.getREPPBPK().getPb003());
+//                                if (ddga != null) {
+//                                    if (ls_cdrbomsubyn.equals('Y') || ls_cdrothsfk.equals('Y')) {
+//                                        cdrhpopsfkBean.setCompany(facno);
+//                                        Cdrhpopsfk sfkh = new Cdrhpopsfk();
+//                                        CdrhpopsfkPK sfkhPK = new CdrhpopsfkPK();
+//                                        if (ddga.getGa007() == null || "".equals(ddga.getGa007())) {
+//                                            sfkhPK.setFacno(facno);
+//                                        } else {
+//                                            sfkhPK.setFacno(ddga.getGa007());
+//                                        }
+//                                        String lsno = cdrhpopsfkBean.gettrno(facno, quodate, "CDR220", true);
+//                                        sfkhPK.setSfktrno(lsno);
+//                                        sfkh.setCdrhpopsfkPK(sfkhPK);
+//                                        sfkh.setCusno(ddga.getGa009());
+//                                        sfkh.setItnbr(itnbr);
+//                                        sfkh.setItnbrcus(ddga.getGa005());
+//                                        sfkh.setSpcode(ddga.getGa008().charAt(0));
+//                                        sfkh.setVersion(ddga.getGa011());
+//                                        sfkh.setQuono(lsquono);
+//                                        sfkh.setQtrseq(qdpk.getTrseq());
+//                                        sfkh.setCdrno("");
+//                                        // sfkh.setManno("");
+//                                        sfkh.setCdrno("");
+//                                        sfkh.setSpdesc(ddga.getGa010());
+//                                        sfkh.setCrtprg("CDR220");
+//                                        sfkh.setKeyindate(quodate);
+//                                        sfkh.setVarnr("");
+//                                        sfkh.setMatcode("");
+//                                        // 身份卡表身
+//                                        List<DDGB> ddgbList = ddgaBean.getDetailList(ddga.getDDGAPK().getGa004());
+//                                        List<Cdrdpopsfk> sfkdList = new ArrayList();
+//                                        if (ddgbList.size() > 0) {
+//                                            for (DDGB ddgb : ddgbList) {
+//                                                Cdrdpopsfk sfkd = new Cdrdpopsfk();
+//                                                CdrdpopsfkPK sfkdpk = new CdrdpopsfkPK();
+//                                                sfkdpk.setFacno(sfkh.getCdrhpopsfkPK().getFacno());
+//                                                sfkdpk.setParts(ddgb.getGb003());
+//                                                sfkdpk.setSfktrno(sfkhPK.getSfktrno());
+//                                                sfkdpk.setSorts(ddgb.getGb004());
+//                                                sfkd.setCdrdpopsfkPK(sfkdpk);
+//                                                Cdrsfkpart sfkpart = cdrsfkpartBean.findByPK(facno, ddgb.getGb003());
+//                                                if (sfkpart != null) {
+//                                                    sfkd.setPartdesc(sfkpart.getPartsdesc());
+//                                                    sfkd.setPapx(sfkpart.getPx());
+//                                                }
+//                                                Cdrsfksorts sfksort
+//                                                        = cdrsfksortsBean.findByPK(facno, ddgb.getGb003(), ddgb.getGb004());
+//                                                if (sfksort != null) {
+//                                                    sfkd.setSortsdesc(sfksort.getSortsdesc());
+//                                                }
+//                                                sfkd.setSpecifit(ddgb.getGb005());
+//                                                Cdrsfkspec sfkspec = cdrsfkspecBean.findByPK(facno, ddgb.getGb003(),
+//                                                        ddgb.getGb004(), ddgb.getGb005());
+//                                                if (sfkspec != null) {
+//                                                    sfkd.setSpecifitesc(sfkspec.getSpecifitesc());
+//                                                }
+//                                                sfkdList.add(sfkd);
+//                                            }
+//                                        }
+//                                        cdrhpopsfkBean.persist(sfkh);
+//                                        cdrhpopsfkBean.persistDetailList(facno, sfkdList);
+//                                    }
+//                                }
+//                                // 订单规格表维护
+//                                if (wi_s_cdrbomsubyn.equals('Y')) {
+//                                    if (ls_cdrbomsubyn.equals('Y') && li_cdrbomsubitem == "0") {
+//                                        DDGC ddgc = ddgcBean.findByREPPB(pa001, pa002, rb.getREPPBPK().getPb003());
+//                                        if (ddgc != null) {
+//                                            cdrqbomsubBean.setCompany(facno);
+//                                            Cdrqbomsub cqbomsub = new Cdrqbomsub();
+//                                            CdrqbomsubPK cqbomsubpk = new CdrqbomsubPK();
+//                                            cqbomsubpk.setFacno(facno);
+//                                            cqbomsubpk.setCdrno(lsquono);
+//                                            cqbomsubpk.setTrseq(qdpk.getTrseq());
+//                                            cqbomsub.setCdrqbomsubPK(cqbomsubpk);
+//                                            cqbomsub.setItnbrf(ddgc.getGc006());
+//                                            cqbomsub.setSpcode(ddgc.getGc008().charAt(0));
+//                                            cqbomsub.setSpdesc(ddgc.getGc009());
+//                                            // cqbomsub.setSpdesc2(""); //规格说明2
+//                                            // 规格明细
+//                                            List<DDGD> ddgdList = ddgcBean.getDetailList(ddgc.getDDGCPK().getGc004());
+//                                            if (ddgdList.size() > 0) {
+//                                                for (int i = 0; i < ddgdList.size(); i++) {
+//                                                    Method setMethod1 = cqbomsub.getClass()
+//                                                            .getDeclaredMethod("set" + "Itdesc" + (i + 1), String.class);
+//                                                    setMethod1.invoke(cqbomsub, ddgdList.get(i).getGd003());
+//                                                    Method setMethod2 = cqbomsub.getClass()
+//                                                            .getDeclaredMethod("set" + "Itnbr" + (i + 1), String.class);
+//                                                    setMethod2.invoke(cqbomsub, ddgdList.get(i).getGd007());
+//                                                    Method setMethod3 = cqbomsub.getClass()
+//                                                            .getDeclaredMethod("set" + "Itscode" + (i + 1), String.class);
+//                                                    String itscode = "";
+//                                                    if (ddgdList.get(i).getGd003().equals(ddgdList.get(i).getGd005())) {
+//                                                        itscode = "00"; // 标准
+//                                                    } else {
+//                                                        Bomsub bomsub = bomsubBean.findByPKItnbrs(ddgc.getGc006(),
+//                                                                ddgdList.get(i).getGd007(), ddgdList.get(i).getGd005());
+//                                                        if (null != bomsub) {
+//                                                            if (bomsub.getSeqnr() < 10) {
+//                                                                itscode = "0" + bomsub.getSeqnr();
+//                                                            } else {
+//                                                                itscode = String.valueOf(bomsub.getSeqnr());
+//                                                            }
+//                                                        } else {
+//                                                            log4j.error("订单规格表查询异常!");
+//                                                        }
+//                                                    }
+//                                                    setMethod3.invoke(cqbomsub, itscode);
+//                                                    // setMethod3.invoke(cqbomsub, ddgdList.get(i).getGd004());
+//                                                    Method setMethod4 = cqbomsub.getClass()
+//                                                            .getDeclaredMethod("set" + "Itsdesc" + (i + 1), String.class);
+//                                                    setMethod4.invoke(cqbomsub, ddgdList.get(i).getGd004());
+//                                                    Method setMethod5 = cqbomsub.getClass()
+//                                                            .getDeclaredMethod("set" + "Itnbrs" + (i + 1), String.class);
+//                                                    setMethod4.invoke(cqbomsub, ddgdList.get(i).getGd005());
+//                                                }
+//
+//                                            }
+//                                            cdrqbomsubBean.persist(cqbomsub);
+//                                            // throw new RuntimeException("第" + qdpk.getTrseq() +
+//                                            // 笔订单规格表尚未维护不可确认!");
+//                                        }
+//                                    }
+//                                }
+//                                addedDetail.add(qd);
+//                            } else if (rb.getPb010().compareTo(BigDecimal.ZERO) > 0) {
+//                                reppbasry.add(rb);
+//                            }
+//                        }
+//                        // 维护订单配件
+//                        List<Cdrqasry> cqasryadd = new ArrayList();
+//                        if (wi_s_acesoryyn == 'Y') {
+//                            // 获取CRM表身明细中的赠品配件，根据品号分组
+//                            if (reppbasry.size() > 0) {
+//                                for (Cdrqdta qdadd : addedDetail) {
+//                                    int k = 0;
+//                                    for (int j = 0; j < reppbasry.size(); j++) {
+//                                        if (reppbasry.get(j).getPb519().equals(qdadd.getItnbr())) {
+//                                            k++;
+//                                            Cdrqasry cqasry = new Cdrqasry();
+//                                            CdrqasryPK cqasrypk = new CdrqasryPK();
+//                                            cqasrypk.setFacno(facno);
+//                                            cqasrypk.setQuono(lsquono);
+//                                            cqasrypk.setTrseq(qdadd.getCdrqdtaPK().getTrseq()); // 报价单身序号
+//                                            cqasrypk.setSeq((short) k); // 配件表身序号
+//                                            String ls_dmark = "";
+//                                            if (qdadd.getDmark1() == null || "".equals(qdadd.getDmark1())) {
+//                                                if (qdadd.getDmark2() == null || "".equals(qdadd.getDmark2())) {
+//                                                } else {
+//                                                    ls_dmark = qdadd.getDmark2();
+//                                                }
+//                                            } else {
+//                                                ls_dmark = qdadd.getDmark1();
+//                                            }
+//                                            if (bomasryBean.findByItnbrfAndCmccode(qdadd.getItnbr(),
+//                                                    ls_dmark) == null) {
+//                                                ls_dmark = "9";
+//                                            }
+//                                            cqasrypk.setCmccode(ls_dmark);
+//                                            cqasry.setCdrqasryPK(cqasrypk);
+//                                            cqasry.setItnbr(reppbasry.get(j).getPb004());
+//                                            cqasry.setItnbrf(qdadd.getItnbr());
+//                                            cqasry.setProsscode("");
+//                                            cqasry.setStdqty(reppbasry.get(j).getPb010());
+//                                            cqasry.setStdpar((short) 1);
+//                                            cqasry.setBadrat(BigDecimal.ZERO);
+//                                            cqasryadd.add(cqasry);
+//                                            // cdrqasryBean.persist(cqasry);
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        // qh.setLevelp(facno);
+//                        // qh.setOacfuser("");
+//                        // qh.setCuspono();
+//                        qh.setApprresno(ra.getPa520()); // 审批原因
+//                        // qh.setWarranty(Short.MAX_VALUE);
+//                        // qh.setNewcusna(facno);
+//
+//                        String quono = cdrqsysBean.getSerialno(facno, quodate, decode, true, "CDR225");
+//                        if (!quono.equals(lsquono)) {
+//                            throw new RuntimeException("报价单号产生错误，请确认");
+//                        }
+//                        qhpk.setQuono(quono); // 报价单号
+//                        qh.setCdrqhadPK(qhpk);
+//
+//                        cdrqhadBean.setCompany(facno);
+//                        cdrqhadBean.persist(qh);
+//                        cdrqhadBean.persistDetailList(facno, addedDetail);
+//                        if (cqasryadd.size() > 0) {
+//                            for (Cdrqasry cqasry : cqasryadd) {
+//                                cdrqasryBean.persist(cqasry);
+//                            }
+//                        }
+//                        // 在报价单头显示备注
+//                        Cdrqhdsc cqdsc = new Cdrqhdsc();
+//                        CdrqhdscPK cqdscpk = new CdrqhdscPK();
+//                        cqdscpk.setFacno(facno);
+//                        cqdscpk.setQuono(quono);
+//                        cqdsc.setCdrqhdscPK(cqdscpk);
+//                        cqdsc.setMark1(pa001 + pa002);
+//                        cdrqhdscBean.setCompany(facno);
+//                        cdrqhdscBean.persist(cqdsc);
+//                        ra.setPa027("Y");
+//                        ra.setPa519(quono);
+//                        reppaBean.update(ra);
+//
+//                        // 确认
+//                    }
+//                }
+//            }
+//        } catch (Exception ex) {
+//            log4j.error("CRM估计单抛转轮询时异常", ex);
+//            throw new RuntimeException("资料库查询发生错误！--" + ex);
+//        }
+//        log4j.info("CRM估计单抛转轮询");
+//    }
     @Schedule(minute = "*/11", hour = "7-23", persistent = false)
     public void syncInterCompanyTransactions() {
         log4j.info("ERP集团内部交易互转轮询开始");
@@ -2656,6 +2747,7 @@ public class TimerBean {
         this.createERPCDR310ByExchPUR415("C", "STW00003", "00", "A", "86005-1", "20200430");// THB->SHB Service
         this.createERPCDR310ByExchPUR415("K", "KTW00004", "00", "A", "86010 ", "20200408");// THB->Comer
         this.createERPCDR310ByExchPUR415("H", "HTW00001", "00", "A", "1139 ", "20200408");// THB->Hanson
+        this.createERPCDR310ByExchPUR415("E", "ETW00004", "00", "A", "86012 ", "20240513");// THB->ZJComer
 //        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00247", "C", "SZJ00065", "SSH01164", "20220201",
 //                false);// 卓准
 //        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HHB00007", "C", "SZJ00065", "SHB00016", "20220201",
@@ -3324,8 +3416,6 @@ public class TimerBean {
                         ch.setSacode(cdrcus.getSacode());
                         ch.setAreacode(cdrcus.getAreacode());
                         ch.setCuycode(cdrcus.getCuycode());
-                        // 设置负责业务
-                        ch.setMancode(cdrcusman.getMan());
                         // 计算表头金额税额
                         switch (ch.getTax()) {
                             case '1':
@@ -3346,6 +3436,10 @@ public class TimerBean {
                         }
                         ch.setIndate(indate);
                         ch.setUserno(contacter == null ? cdrcusman.getMan() : contacter.getUserno());
+                        // 设置负责业务
+                        //ch.setMancode(cdrcusman.getMan());
+                        //因同一个客户对应不同的产品及业务员，调整为采购单联系人
+                        ch.setMancode(ch.getUserno());
                         ch.setCuspono(ph.getPurhadPK().getPono());
                         // 设置订单编号
                         cdrno = cdrsysBean.getSerialNumber(cc, "", "A", recdate, ch.getDecode(), true, "CDR310");
@@ -3910,11 +4004,12 @@ public class TimerBean {
         if (s != null && !s.trim().equals("")) {
             String returnStr = s;
             try {
-                String regEx = "[\\s`!！@#￥$%^……&（()）\\+【\\[\\]】｛{}｝\\|、\\\\；;：:‘'“”\"，,《<。.》>、/？?]";
+                //String regEx = "[\\s`!！@#￥$%^……&（()）\\+【\\[\\]】｛{}｝\\|、\\\\；;：:‘'“”\"，,《<。.》>、/？?]";
+                String regEx = "[\\s`&²³\\t\\r\\n ]";
                 Pattern p = Pattern.compile(regEx);
                 Matcher m = p.matcher(returnStr);
                 returnStr = m.replaceAll(" ");
-                
+                //returnStr = removeNonAscii(returnStr);
             } catch (Exception ex) {
                 log4j.error(ex);
             }
@@ -3922,49 +4017,53 @@ public class TimerBean {
         }
         return s;
     }
+
+    //去除非ascii码字符
+    public String removeNonAscii(String str) {
+        return str.replaceAll("[^\\x00-\\x7F]", "");
+    }
     
     public boolean isTWEmployee(String employeeid) {
         Pattern pattern = Pattern.compile("^[0-9]$");
         return pattern.matcher(employeeid).matches();
     }
-    
-    @Schedule(minute = "30", hour = "7-20", persistent = false)
-    public void sendEqpRepairmentDelayNotice() {
-        log4j.info("EAM报修单待办企业微信推送轮询开始");
-        StringBuffer userIdStrTemp = new StringBuffer("");
-        StringBuffer msg = new StringBuffer("您有长时间未处理的报修单!<br/>详情请至微信小程序查看!");
-        Map<String, Object> filterFields = new HashMap<>();
-        Map<String, String> sortFields = new HashMap<>();
-        List<EquipmentRepair> eqpRepairListRes = new ArrayList<>();
-        List<String> userIdList = new ArrayList<>();
-        filterFields.put("RepairmentDelay", "RepairmentDelay");
-        sortFields.put("hitchtime", "DESC");
-        try {
-            eqpRepairListRes = equipmentRepairBean.getEquipmentRepairListByNativeQuery(filterFields, sortFields);
-            eqpRepairListRes.forEach(item -> {
-                if (item.getRstatus().compareTo("20") < 0) {
-                    userIdList.add(item.getServiceuser());
-                } else {
-                    userIdList.add(item.getRepairuser());
-                    userIdList.add(item.getServiceuser());
-                }
-            });
-            LinkedHashSet<String> userIdHashSet = new LinkedHashSet<>(userIdList);
-            userIdHashSet.forEach((item) -> {
-                userIdStrTemp.append(item).append("|");
-            });
-            if (!userIdStrTemp.equals("")) {
-                userIdStrTemp.deleteCharAt(userIdStrTemp.length() - 1);
-                wartaBean.sendMsgString(userIdStrTemp.toString(), msg.toString(), "ca80bf276a4948909ff4197095f1103a",
-                        "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
-                log4j.info("EAM报修单待办企业微信推送成功");
-            }
-        } catch (Exception ex) {
-            log4j.error(ex);
-        }
-        log4j.info("EAM报修单待办企业微信推送轮询结束");
-    }
-    
+
+//    @Schedule(minute = "30", hour = "7-20", persistent = false)
+//    public void sendEqpRepairmentDelayNotice() {
+//        log4j.info("EAM报修单待办企业微信推送轮询开始");
+//        StringBuffer userIdStrTemp = new StringBuffer("");
+//        StringBuffer msg = new StringBuffer("您有长时间未处理的报修单!<br/>详情请至微信小程序查看!");
+//        Map<String, Object> filterFields = new HashMap<>();
+//        Map<String, String> sortFields = new HashMap<>();
+//        List<EquipmentRepair> eqpRepairListRes = new ArrayList<>();
+//        List<String> userIdList = new ArrayList<>();
+//        filterFields.put("RepairmentDelay", "RepairmentDelay");
+//        sortFields.put("hitchtime", "DESC");
+//        try {
+//            eqpRepairListRes = equipmentRepairBean.getEquipmentRepairListByNativeQuery(filterFields, sortFields);
+//            eqpRepairListRes.forEach(item -> {
+//                if (item.getRstatus().compareTo("20") < 0) {
+//                    userIdList.add(item.getServiceuser());
+//                } else {
+//                    userIdList.add(item.getRepairuser());
+//                    userIdList.add(item.getServiceuser());
+//                }
+//            });
+//            LinkedHashSet<String> userIdHashSet = new LinkedHashSet<>(userIdList);
+//            userIdHashSet.forEach((item) -> {
+//                userIdStrTemp.append(item).append("|");
+//            });
+//            if (!userIdStrTemp.equals("")) {
+//                userIdStrTemp.deleteCharAt(userIdStrTemp.length() - 1);
+//                wartaBean.sendMsgString(userIdStrTemp.toString(), msg.toString(), "ca80bf276a4948909ff4197095f1103a",
+//                        "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
+//                log4j.info("EAM报修单待办企业微信推送成功");
+//            }
+//        } catch (Exception ex) {
+//            log4j.error(ex);
+//        }
+//        log4j.info("EAM报修单待办企业微信推送轮询结束");
+//    }
     @Schedule(minute = "00", hour = "8-20", persistent = false)
     public void createOAHZPB131ByERPMAN345() {
         try {

@@ -7,8 +7,8 @@ package cn.hanbell.erp.ejb;
 
 import cn.hanbell.crm.ejb.WARMBBean;
 import cn.hanbell.crm.entity.WARMB;
-import cn.hanbell.eap.comm.MailNotify;
-import cn.hanbell.eap.ejb.MailNotificationBean;
+import cn.hanbell.eap.comm.ErrorMailNotify;
+import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.entity.Invcls;
 import cn.hanbell.erp.entity.Invmas;
@@ -36,6 +36,7 @@ import cn.hanbell.oa.entity.HKCW003Detail;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -120,10 +121,10 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setItnbr(detail.getItnbr()); // 设置件号
                     m.setItcls(detail.getItcls()); // 设置品号大类
                     m.setItclscode(detail.getItclscode().charAt(0)); // 设置品号归类
-                    m.setItdsc(detail.getItdsc()); // 设置中文品名
-                    m.setSpdsc(detail.getSpdsc()); // 设置中文规格
-                    m.setEitdsc(detail.getEitdsc()); // 设置英文品名
-                    m.setEspdsc(detail.getEspdsc()); // 设置英文规格
+                    m.setItdsc(filterString(detail.getItdsc())); // 设置中文品名
+                    m.setSpdsc(filterString(detail.getSpdsc())); // 设置中文规格
+                    m.setEitdsc(filterString(detail.getEitdsc())); // 设置英文品名
+                    m.setEspdsc(filterString(detail.getEspdsc())); // 设置英文规格
                     m.setUnmsr1(detail.getUnmsr1()); // 设置单位一
                     m.setUnmsr2(detail.getUnmsr2()); // 设置单位二
                     m.setUnmsr1e(detail.getUnmsr1e()); // 设置数量单位一（英文）
@@ -193,7 +194,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     if (facno.equals("C") || facno.equals("K")) {
                         Scminvmas scm = new Scminvmas();
                         scm.setItnbr(detail.getItnbr());
-                        scm.setItdsc(detail.getItdsc());
+                        scm.setItdsc(filterString(detail.getItdsc()));
                         scm.setProducttype(detail.getProducttype());
                         scm.setLevel1(detail.getLevel1());
                         scm.setLevel2(detail.getLevel2());
@@ -244,13 +245,13 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
             return true;
         } catch (Exception ex) {
             //加入邮件通知
-            MailNotificationBean mailBean = new MailNotificationBean();
+            ErrorMailNotificationBean mailBean = new ErrorMailNotificationBean();
             mailBean.getTo().clear();
             mailBean.getTo().add("13120@hanbell.com.cn");
             mailBean.setMailSubject("OA件号申请单抛转ERP失败");
             mailBean.setMailContent(
                     "OA件号申请单号：" + psn + "抛转失败，异常：" + ex);
-            mailBean.notify(new MailNotify());
+            mailBean.notify(new ErrorMailNotify());
             ex.printStackTrace();
             log4j.error(ex);
             throw new RuntimeException(ex);
@@ -379,7 +380,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
 
                         syncCQBean.persist(m, null);
                         syncCQBean.getEntityManager().flush();
-                        
+
                         syncYCBean.persist(m, null);
                         syncYCBean.getEntityManager().flush();
                     }
@@ -491,7 +492,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         update(e);
                         this.getEntityManager().flush();
                     }
-                    
+
                     this.setCompany("C5");
                     if (this.findByItnbr(detail.getItnbr()) != null) {
                         Invmas e = this.findByItnbr(detail.getItnbr());
@@ -558,9 +559,11 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 HKJS001Detail d = details.get(i);
                 item = findByItnbr(d.getBjh());
                 if (item != null) {
-                    item.setItdsc("#" + item.getItdsc());
+                   item.setItdsc("#" + item.getItdsc());
                     item.setStopyn("AAAAAAAAAAAAA");
-                    item.setNStopyn("N");
+                   // item.setNStopyn("N");
+                    item.setModdate(new Date());
+                    item.setModman(h.getApplyuser());
                     item.setNEcnnewitnbr(d.getAjh());
                     item.setNEcnno(h.getBgbh());
                     invmasList.add(item);

@@ -57,7 +57,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
     public final String HOST_PORT = "8086";
     //文件存储的位置，允许读写的用户名密码，账号
     public final String OA_USERNO = "ECReader";
-    public final String OA_PASSWORD = "HanbellPass@word";
+    public final String OA_PASSWORD = "HanbellP@ssw0rd";
 
     @EJB
     private ParticipantActivityInstanceBean participantActivityInstanceBean;
@@ -210,15 +210,16 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             // 建立一个WebServices调用连接
             Call call = BaseLib.getAXISCall(host, port, "/NaNaWeb/services/WorkflowService?wsdl");
             // 接受一个工作项目
-            call.setOperationName(new QName("WorkflowService", "acceptWorkItem"));
-            params = new Object[]{workItemOID, userId};
-            call.invoke(params);
+//            call.setOperationName(new QName("WorkflowService", "acceptWorkItem"));
+//            params = new Object[]{workItemOID, userId};
+//            call.invoke(params);
             // 审批一个工作项目
             call.setOperationName(new QName("WorkflowService", "completeWorkItem"));
             params = new Object[]{workItemOID, userId, comment};
             call.invoke(params);
             return "200$success";
         } catch (ServiceException | RemoteException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -304,6 +305,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             serialNo = object.toString();
             return "200$" + serialNo;
         } catch (ServiceException | RemoteException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
             currentUser = null;

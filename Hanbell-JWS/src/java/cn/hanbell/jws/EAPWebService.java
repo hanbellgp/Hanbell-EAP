@@ -70,6 +70,7 @@ import cn.hanbell.ecpur.ejb.ECPurvdrBean;
 import cn.hanbell.erp.ejb.Apmanp585hBean;
 import cn.hanbell.erp.ejb.ApmaphBean;
 import cn.hanbell.erp.ejb.ApmbilBean;
+import cn.hanbell.erp.ejb.ApmchpBean;
 import cn.hanbell.erp.ejb.ApmpayBean;
 import cn.hanbell.erp.ejb.BomasryBean;
 import cn.hanbell.erp.ejb.BomsubBean;
@@ -487,13 +488,15 @@ public class EAPWebService {
     private CrmreppalogBean crmreppalogBean;
     @EJB
     private ECPurvdrBean ecpurvdrBean;
-
-    //EJBForVHBERP
     @EJB
-    private vn.hanbell.erp.ejb.ApmbilBean vhbapmbilBean;
-    @EJB
-    private vn.hanbell.erp.ejb.ApmaphBean vhbapmaphBean;
+    private ApmchpBean apmchpBean;
 
+//    //EJBForVHBERP
+//    @EJB
+//    private vn.hanbell.erp.ejb.ApmbilBean vhbapmbilBean;
+//    @EJB
+//    private vn.hanbell.erp.ejb.ApmaphBean vhbapmaphBean;
+//
     // EJBForPLM
     @EJB
     private cn.hanbell.plm.ejb.PLMProjectBean plmPLMProjectBean;
@@ -1089,6 +1092,10 @@ public class EAPWebService {
                     // EAM资产申请明细
                     int i = 0;
                     for (HKCW002Detail d : detailList) {
+                        //B006消耗品道具不产生
+                        if ("B006".equals(d.getCategory())) {
+                            continue;
+                        }
                         i++;
                         aad = new AssetApplyDetail();
                         aad.setSeq(i);
@@ -1710,22 +1717,21 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "createVHBERPAPM250ByOAVHBAPM820")
-    public String createVHBERPAPM250ByOAVHBAPM820(@WebParam(name = "psn") String psn) {
-        Boolean ret = false;
-        try {
-            ret = vhbapmbilBean.initByOAAPM820(psn);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "createVHBERPAPM250ByOAVHBAPM820", psn), ex);
-            throw new RuntimeException(ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
+//    @WebMethod(operationName = "createVHBERPAPM250ByOAVHBAPM820")
+//    public String createVHBERPAPM250ByOAVHBAPM820(@WebParam(name = "psn") String psn) {
+//        Boolean ret = false;
+//        try {
+//            ret = vhbapmbilBean.initByOAAPM820(psn);
+//        } catch (Exception ex) {
+//            log4j.error(String.format("执行%s:参数%s时异常", "createVHBERPAPM250ByOAVHBAPM820", psn), ex);
+//            throw new RuntimeException(ex);
+//        }
+//        if (ret) {
+//            return "200";
+//        } else {
+//            return "404";
+//        }
+//    }
     @WebMethod(operationName = "createERPAPM525ByOAAPM828")
     public String createERPAPM525ByOAAPM828(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -1774,22 +1780,21 @@ public class EAPWebService {
         }
     }
 
-    @WebMethod(operationName = "updateVHBERPAPM820ByOAVHTV005")
-    public String updateVHBERPAPM820ByOAVHTV005(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
-        Boolean ret = false;
-        try {
-            ret = vhbapmaphBean.updateVHBERPAPM820ByOAVHTV005(psn, status);
-        } catch (Exception ex) {
-            log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM820ByOAHKCW013", psn), ex);
-            throw new RuntimeException(ex);
-        }
-        if (ret) {
-            return "200";
-        } else {
-            return "404";
-        }
-    }
-
+//    @WebMethod(operationName = "updateVHBERPAPM820ByOAVHTV005")
+//    public String updateVHBERPAPM820ByOAVHTV005(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+//        Boolean ret = false;
+//        try {
+//            ret = vhbapmaphBean.updateVHBERPAPM820ByOAVHTV005(psn, status);
+//        } catch (Exception ex) {
+//            log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM820ByOAHKCW013", psn), ex);
+//            throw new RuntimeException(ex);
+//        }
+//        if (ret) {
+//            return "200";
+//        } else {
+//            return "404";
+//        }
+//    }
     @WebMethod(operationName = "createERPCDR645ByOAHKFW005")
     public String createERPCDR645ByOAHKFW005(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -2728,6 +2733,27 @@ public class EAPWebService {
         Boolean ret = false;
         try {
             ret = hkgl037Bean.initByHKGL055(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "createOAHKGL037ByOAHKGL055", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    /**
+     * 出差单结案自动申请派车
+     *
+     * @param psn
+     * @return
+     */
+    @WebMethod(operationName = "createOAHKGL037ByOAHZGL004")
+    public String createOAHKGL037ByOAHZGL004(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = hkgl037Bean.initByHZGL004(psn);
         } catch (Exception ex) {
             log4j.error(String.format("执行%s:参数%s时异常", "createOAHKGL037ByOAHKGL055", psn), ex);
         }
@@ -3976,6 +4002,22 @@ public class EAPWebService {
         }
     }
 
+    @WebMethod(operationName = "updateERPAPM540ByOAHKCW018")
+    public String updateERPAPM540ByOAHKCW018(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = apmchpBean.updateByOAHKCW018(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateByOAHKCW018", psn), ex);
+            throw ex;
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
     @WebMethod(operationName = "createCustomerComplaintByEAP")
     public String createCustomerComplaintByEAP(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -4225,9 +4267,23 @@ public class EAPWebService {
                 ret = true;
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             log4j.error(String.format("执行%s:参数%s时异常", "createCustomerComplaintByEAP", psn), ex);
-            mailBean.getTo().clear();
-            mailBean.getCc().clear();
+               List<String> emailTo
+                        = mailSettingBean.findRecipientTo("cn.hanbell.jws.EAPWebService.createCustomerComplaintByEAP");
+                List<String> emailCc
+                        = mailSettingBean.findRecipientCc("cn.hanbell.jws.EAPWebService.createCustomerComplaintByEAP");
+                List<String> emailBcc
+                        = mailSettingBean.findRecipientBcc("cn.hanbell.jws.EAPWebService.createCustomerComplaintByEAP");
+                      if (emailTo != null && !emailTo.isEmpty()) {
+                    mailBean.getTo().addAll(emailTo);
+                }
+                if (emailCc != null && !emailCc.isEmpty()) {
+                    mailBean.getCc().addAll(emailCc);
+                }
+                if (emailBcc != null && !emailBcc.isEmpty()) {
+                    mailBean.getBcc().addAll(emailBcc);
+                }
             mailBean.setMailSubject("客诉结案抛转详细失败");
             mailBean.setMailContent("流程号：" + psn + "————————异常" + ex.toString());
             mailBean.notify(new MailNotify());

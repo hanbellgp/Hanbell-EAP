@@ -5,7 +5,7 @@
  */
 package cn.hanbell.rpt.control;
 
-import cn.hanbell.crm.ejb.REPTCBean;
+//import cn.hanbell.crm.ejb.REPTCBean;
 import cn.hanbell.erp.ejb.FreeServiceAmtBean;
 import cn.hanbell.erp.entity.FreeServiceAmt;
 import cn.hanbell.rpt.lazy.FreeServiceAmtModel;
@@ -46,8 +46,8 @@ public class FreeServiceAmtManagedBean extends SuperQueryBean<FreeServiceAmt> {
 
     @EJB
     FreeServiceAmtBean freeServiceAmtBean;
-    @EJB
-    REPTCBean reptcBean;
+//    @EJB
+//    REPTCBean reptcBean;
     protected String casenumber;
     protected String repairnumber;
     protected String userna;
@@ -87,11 +87,11 @@ public class FreeServiceAmtManagedBean extends SuperQueryBean<FreeServiceAmt> {
         queryDateEnd = c.getTime();
         y = c.get(Calendar.YEAR);
         m = c.get(Calendar.MONTH) + 1;
-        List<Object> data = reptcBean.getItntypeList();
+//        List<Object> data = reptcBean.getItntypeList();
         //设置品号类别初始值
-        for (Object item : data) {
-            itntypes.put(item.toString(), item.toString());
-        }
+//        for (Object item : data) {
+//            itntypes.put(item.toString(), item.toString());
+//        }
         judges.put("汉钟责任", "HZZR");
         judges.put("汉钟客户责任", "HZKFZR");
         judges.put("柯茂客户责任", "KMKFZR");
@@ -124,7 +124,7 @@ public class FreeServiceAmtManagedBean extends SuperQueryBean<FreeServiceAmt> {
         c.setTime(queryDateBegin);
         y = c.get(Calendar.YEAR);
         m = c.get(Calendar.MONTH) + 1;
-        freeServiceAmtBean.updateFreeServiceAmt(y, m);
+       // freeServiceAmtBean.updateFreeServiceAmt(y, m);
     }
 
     @Override

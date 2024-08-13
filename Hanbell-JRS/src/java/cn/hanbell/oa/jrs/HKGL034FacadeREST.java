@@ -5,7 +5,7 @@
  */
 package cn.hanbell.oa.jrs;
 
-import cn.hanbell.crm.ejb.CMSMEBean;
+//import cn.hanbell.crm.ejb.CMSMEBean;
 import cn.hanbell.oa.app.OvertimeApplication;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
@@ -146,9 +146,9 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                             users.append(oad.getEmployeeName()).append(",");
                         }
                     }
-                    if (isSuccess) {
-                        return new ResponseMessage("500", "表单发起成功，" + users + "消息发送失败");
-                    }
+//                    if (isSuccess) {
+//                        return new ResponseMessage("500", "表单发起成功，" + users + "消息发送失败");
+//                    }
 
                     return new ResponseMessage(rm[0], rm[1]);
 

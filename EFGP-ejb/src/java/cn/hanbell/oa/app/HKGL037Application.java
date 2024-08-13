@@ -40,6 +40,7 @@ public class HKGL037Application implements Serializable {
     private String purposeDesc;
     private String hmark1;
     private String mksystem;
+    private String hdnDept;
     private List<HKGL037DetailApplication> detailList;
 
     public Long getId() {
@@ -193,6 +194,14 @@ public class HKGL037Application implements Serializable {
 
     public void setMksystem(String mksystem) {
         this.mksystem = mksystem;
+    }
+
+    public String getHdnDept() {
+        return hdnDept;
+    }
+
+    public void setHdnDept(String hdnDept) {
+        this.hdnDept = hdnDept;
     }
 
 }

@@ -100,5 +100,5 @@ public class PurhadPK implements Serializable {
     public String toString() {
         return "tw.hanbell.exch.entity.PurhadPK[ facno=" + facno + ", prono=" + prono + ", pono=" + pono + " ]";
     }
-    
+
 }

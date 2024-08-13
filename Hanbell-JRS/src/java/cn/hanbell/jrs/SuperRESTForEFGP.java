@@ -9,6 +9,8 @@ import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -177,6 +179,30 @@ public abstract class SuperRESTForEFGP<T> {
 
     protected boolean isAuthorized(String appid, String token) {
         return systemNameBean.isAuthorized(appid, token);
+    }
+
+    // 优化抛转时件号相关字符问题
+    public String filterString(String s) {
+        if (s != null && !s.trim().equals("")) {
+            String returnStr = s;
+            try {
+                //String regEx = "[\\s`!！@#￥$%^……&（()）\\+【\\[\\]】｛{}｝\\|、\\\\；;：:‘'“”\"，,《<。.》>、/？?]";
+                String regEx = "[\\s`&²³\\t\\r\\n ]";
+                Pattern p = Pattern.compile(regEx);
+                Matcher m = p.matcher(returnStr);
+                returnStr = m.replaceAll(" ");
+                //returnStr = removeNonAscii(returnStr);
+            } catch (Exception ex) {
+                log4j.error(ex);
+            }
+            return returnStr;
+        }
+        return s;
+    }
+
+    //去除非ascii码字符
+    public String removeNonAscii(String str) {
+        return str.replaceAll("[^\\x00-\\x7F]", "");
     }
 
 }

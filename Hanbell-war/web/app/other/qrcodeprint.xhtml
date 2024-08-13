@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">查询条件</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputLabel value="公司别" for="queryCompany" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:selectOneMenu id="queryCompany" value="#{qrcodePrintManagedBean.queryCompany}" style="width:100%;" title="公司别" >
+                            <f:selectItems value="#{qrcodePrintManagedBean.companyList}" var="c" itemLabel="#{c.name}" itemValue="#{c.company}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputLabel value="二维码代号" for="queryFormId" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="queryFormId" value="#{qrcodePrintManagedBean.queryFormId}" title="二维码代号" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputLabel value="二维码类型" for="queryType" /></p:column>
+                    <p:column> 
+                        <p:selectOneMenu id="queryType" value="#{qrcodePrintManagedBean.queryType}" style="width:100%;" title="二维码类型" >
+                            <f:selectItems value="#{qrcodePrintManagedBean.typeList}" var="c" itemLabel="#{c.typeName}" itemValue="#{c.typeId}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column><h:outputLabel value="状态" for="queryState" /></p:column>
+                    <p:column> 
+                        <p:selectOneMenu id="queryState" value="#{qrcodePrintManagedBean.queryState}" title="状态" >
+                            <f:selectItem itemLabel="全部" itemValue="ALL"/>
+                            <f:selectItem itemLabel="未打印" itemValue="N"/>
+                            <f:selectItem itemLabel="已打印" itemValue="V"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{qrcodePrintManagedBean.init()}"  icon="ui-icon-search"  update=":formList"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnPrint" value="打印" actionListener="#{qrcodePrintManagedBean.print()}" icon="ui-icon-print">
+                        <p:confirm header="系统提示" message="打印吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnImport" value="添加" icon="ui-icon-plus" 
+                                     update=":formList" oncomplete="PF('importDialog').show();"/>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{qrcodePrintManagedBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{qrcodePrintManagedBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable value="#{qrcodePrintManagedBean.model}"  var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="15,30,45"  lazy="true" 
+                         selectionMode="single" selection="#{qrcodePrintManagedBean.currentEntity}" rowKey="#{item.id}" >
+                <f:facet name="header">
+                    销货明细导入
+                </f:facet>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="编号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.formid}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="日期"/>
+                    </f:facet>
+                    <h:outputText value="#{item.formdate}">
+                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="部门编号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.deptno}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="部门名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.deptname}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="上传人员"/>
+                    </f:facet>
+                    <h:outputText value="#{item.username}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="类型"/>
+                    </f:facet>
+                    <h:outputText value="#{item.typename}"/>
+                </p:column>
+                  <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="状态"/>
+                    </f:facet>
+                    <h:outputText value="#{item.status}"/>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnQuery,btnImport">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+        <h:form id="formOne" enctype="multipart/form-data"  >
+            <p:growl id="grow2" showSummary="false" showDetail="true"/>
+            <p:dialog id="importDialog" widgetVar="importDialog" width="40%" style="border-color: #666666" >
+                <p:panelGrid id="importPanelGrid" styleClass="plgDetail Wid100">
+                    <f:facet name="header" >
+                        <p:row >
+                            <p:column colspan="2">上传</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2" style="height: 25px"></p:column>
+                    </p:row>
+                    <p:row >
+                        <p:column styleClass="Wid10"><h:outputLabel value="公司别"  for="type"/></p:column>
+                        <p:column styleClass="Wid20">
+                            <p:selectOneMenu id="type" value="#{qrcodePrintManagedBean.type}" style="width:100%;" >
+                                <f:selectItems value="#{qrcodePrintManagedBean.typeList}" var="c" itemLabel="#{c.typeName}" itemValue="#{c.typeId}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row >
+                        <p:column><h:outputLabel value="请选择文件" /></p:column>
+                        <p:column>
+                            <p:fileUpload id="fileUpload" fileUploadListener="#{qrcodePrintManagedBean.handleFileUploadWhenNew}"  styleClass="fileUpload"
+                                          allowTypes="/(\.|\/)(xlsx|xls)$/" sizeLimit="5000000" label="选择" uploadLabel="上传" cancelLabel="还原"
+                                          oncomplete="PF('importDialog').show();" update=":formList"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:toolbar id="toolbar" styleClass="topToolbar">
+                    <f:facet name="left">
+                    </f:facet>
+                    <f:facet name="right">
+                        <p:commandButton id="btnImport" value="保存" actionListener="#{qrcodePrintManagedBean.upload()}" styleClass="mt-3 ui-button-outlined block" 
+                                         update=":formList" oncomplete="PF('importDialog').hide();"/>
+                    </f:facet>
+                </p:toolbar>
+            </p:dialog>
+            <p:blockUI  block="formList" trigger="btnImport">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

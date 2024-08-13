@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PricingUser.findByGroupid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.groupid = :groupid"),
     @NamedQuery(name = "PricingUser.findByPricingtype", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.pricingtype = :pricingtype"),
     @NamedQuery(name = "PricingUser.findByUserid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.userid = :userid"),
+    @NamedQuery(name = "PricingUser.findByPricingtypeAndUserid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.pricingtype = :pricingtype AND p.pricingUserPK.userid = :userid"),
     @NamedQuery(name = "PricingUser.findByGroupidAndUserid", query = "SELECT p FROM PricingUser p WHERE p.pricingUserPK.groupid = :groupid AND p.pricingUserPK.userid = :userid")})
 public class PricingUser implements Serializable {
 

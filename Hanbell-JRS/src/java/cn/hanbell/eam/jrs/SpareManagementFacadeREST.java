@@ -120,7 +120,8 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                         filterFields.put(key, value);
                     }
                 }
-                spareStockList = equipmentSpareStockBean.getEquipmentSpareStockListByNativeQuery(filterFields.get("basicInfo").toString());
+                String company =filterFields.get("company").toString();
+                spareStockList = equipmentSpareStockBean.getEquipmentSpareStockListByNativeQuery(filterFields.get("basicInfo").toString(),company);
                 
                 System.out.print(spareStockList);
                 
@@ -274,7 +275,7 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                     throw new WebApplicationException(Response.Status.NOT_FOUND);
                 }
                 eqpSpareRecodeTemp = eqpSpareRecodes.get(0);
-                spareRecodeDtaList = getEqpSpareRecodeDtaResponses(eqpSpareRecodeTemp.getFormid());
+                spareRecodeDtaList = getEqpSpareRecodeDtaResponses(eqpSpareRecodeTemp.getFormid(),eqpSpareRecodeTemp.getCompany());
                 verifyAuthFlag = eqpSpareRecodeTemp.getStatus().equals("V") ? false : checkUserAuthority(currentUser.getId(), actionName);
                 
                 System.out.print(spareRecodeDtaList);
@@ -672,8 +673,13 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
         return new ResponseMessage("200", "退库核准完成!");
     }
     
-    private List<EquipmentSpareRecodeDtaResponse> getEqpSpareRecodeDtaResponses(String formid){
+    private List<EquipmentSpareRecodeDtaResponse> getEqpSpareRecodeDtaResponses(String formid,String company){
         List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.findByPId(formid);
+        for (EquipmentSpareRecodeDta esRecodeDta : eqpSpareRecodeDtas) {
+            if (equipmentSpareBean.findBySparenum(esRecodeDta.getSparenum().getSparenum(),company).size()>0) {
+                esRecodeDta.setSparenum(equipmentSpareBean.findBySparenum(esRecodeDta.getSparenum().getSparenum(),company).get(0));
+            }
+        }
         //List按照sparenum分组
         Map<EquipmentSpare,List<EquipmentSpareRecodeDta>> groupBySparenumMap = eqpSpareRecodeDtas.stream().collect(Collectors.groupingBy(EquipmentSpareRecodeDta::getSparenum));
         

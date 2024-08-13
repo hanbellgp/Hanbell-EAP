@@ -103,6 +103,33 @@ public class HZGL004 implements Serializable {
     @Column(name = "hdn_employee")
     private String hdnEmployee;
     @Size(max = 255)
+    @Column(name = "clxz")
+    private String clxz;
+    @Size(max = 255)
+    @Column(name = "employee")
+    private String employee;
+    @Size(max = 255)
+    @Column(name = "accommodation")
+    private String accommodation;
+    @Size(max = 255)
+    @Column(name = "cpno")
+    private String cpno;
+    @Size(max = 255)
+    @Column(name = "ycyy")
+    private String ycyy;
+    @Size(max = 255)
+    @Column(name = "departure")
+    private String departure;
+    @Size(max = 255)
+    @Column(name = "accommRegistration")
+    private String accommRegistration;
+    @Size(max = 255)
+    @Column(name = "lxfs")
+    private String lxfs;
+    @Size(max = 255)
+    @Column(name = "bzsm")
+    private String bzsm;
+    @Size(max = 255)
     @Column(name = "SerialNumber")
     private String serialNumber;
     @Size(max = 255)
@@ -111,6 +138,9 @@ public class HZGL004 implements Serializable {
     @Size(max = 255)
     @Column(name = "formSerialNumber")
     private String formSerialNumber;
+    @Size(max = 255)
+    @Column(name = "hkgl037")
+    private String hkgl037;
 
     public HZGL004() {
     }
@@ -342,6 +372,86 @@ public class HZGL004 implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.HZGL004[ oid=" + oid + " ]";
+    }
+
+    public String getClxz() {
+        return clxz;
+    }
+
+    public void setClxz(String clxz) {
+        this.clxz = clxz;
+    }
+
+    public String getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(String employee) {
+        this.employee = employee;
+    }
+
+    public String getAccommodation() {
+        return accommodation;
+    }
+
+    public void setAccommodation(String accommodation) {
+        this.accommodation = accommodation;
+    }
+
+    public String getCpno() {
+        return cpno;
+    }
+
+    public void setCpno(String cpno) {
+        this.cpno = cpno;
+    }
+
+    public String getYcyy() {
+        return ycyy;
+    }
+
+    public void setYcyy(String ycyy) {
+        this.ycyy = ycyy;
+    }
+
+    public String getDeparture() {
+        return departure;
+    }
+
+    public void setDeparture(String departure) {
+        this.departure = departure;
+    }
+
+    public String getAccommRegistration() {
+        return accommRegistration;
+    }
+
+    public void setAccommRegistration(String accommRegistration) {
+        this.accommRegistration = accommRegistration;
+    }
+
+    public String getLxfs() {
+        return lxfs;
+    }
+
+    public void setLxfs(String lxfs) {
+        this.lxfs = lxfs;
+    }
+
+    public String getBzsm() {
+        return bzsm;
+    }
+
+    public void setBzsm(String bzsm) {
+        this.bzsm = bzsm;
+    }
+
+    public String getHkgl037() {
+        return hkgl037;
+    }
+
+    public void setHkgl037(String hkgl037) {
+        this.hkgl037 = hkgl037;
     }
 
 }

@@ -5,6 +5,8 @@
  */
 package cn.hanbell.erp.ejb;
 
+import cn.hanbell.eap.comm.ErrorMailNotify;
+import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.edw.ejb.RdpmOrderOABean;
 import cn.hanbell.edw.entity.RdpmOrderOA;
 import cn.hanbell.edw.entity.RdpmOrderOAPK;
@@ -64,10 +66,24 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
     @EJB
     private PurdaskdscBean purdaskdscBean;
     @EJB
+    private PurcontractBean purcontractBean;
+    @EJB
     private RdpmOrderOABean rdpmOrderOABean;
+    @EJB
+    private ErrorMailNotificationBean mailBean;
 
     public PurhaskBean() {
         super(Purhask.class);
+    }
+
+    public void mailtest(String content) {
+
+        mailBean.getTo().clear();
+        mailBean.getTo().add("C2082@hanbell.com.cn");
+        mailBean.getTo().add("C1491@hanbell.com.cn");
+        mailBean.setMailSubject(content);
+        mailBean.setMailContent(content);
+        mailBean.notify(new ErrorMailNotify());
     }
 
     public Purhask findBySrcno(String srcno) {
@@ -99,16 +115,18 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                 return false;
             }
             List<HKCG007purDetail> details = hkcg007purDetailBean.findByFSN(q.getFormSerialNumber());
-            for (HKCG007purDetail detail : details) {
-                if (!"9".equals(detail.getItnbr())) {
-                    invmasBean.setCompany(q.getFacno());
-                    Invmas m = invmasBean.findByItnbr(detail.getItnbr());
-                    if (m == null) {
-                        throw new NullPointerException();
-                    }
-                }
-            }
             facno = q.getFacno();
+            invmasBean.setCompany(facno);
+            miscodeBean.setCompany(facno);
+            purvdrBean.setCompany(facno);
+//            for (HKCG007purDetail detail : details) {
+//                if (!"9".equals(detail.getItnbr())) {
+//                    Invmas m = invmasBean.findByItnbr(detail.getItnbr());
+//                    if (m == null) {
+//                        throw new NullPointerException();
+//                    }
+//                }
+//            }
             prono = q.getProno();
             date = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
             pursysBean.setCompany(facno);
@@ -138,6 +156,7 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
             } else {
                 p.setApplyno("Y");
             }
+            List<String> emailTo = new ArrayList<>();
             //表身明细
             for (int i = 0; i < details.size(); i++) {
                 HKCG007purDetail detail = details.get(i);
@@ -164,8 +183,10 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                 pd.setDmark2(detail.getDmark2());
                 pd.setDasksta("20");                                                        //请购单身状态码
                 if (!"9".equals(detail.getItnbr())) {
-                    invmasBean.setCompany(q.getFacno());
                     Invmas m = invmasBean.findByItnbr(detail.getItnbr());
+                    if (m == null) {
+                        throw new NullPointerException(detail.getItnbr() + "---件号ERP不存在");
+                    }
                     pd.setPurtrtype(m.getPurtrtype());                                       //品号验收类别
                     String purjudco = m.getJudco();
                     pd.setJudco(purjudco.substring(2, 3) + purjudco.substring(3, 4));
@@ -193,11 +214,9 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                 if (!"".equals(detail.getAskdateTxt())) {
                     pd.setAskdate(format.parse(detail.getAskdateTxt()));                         //设置预计交期
                 }
-                purvdrBean.setCompany(facno);
                 if (!detail.getVdrno().isEmpty()) {
                     Purvdr pv = purvdrBean.findByVdrno(detail.getVdrno());
                     pd.setTermcode(pv.getTermcode());
-                    miscodeBean.setCompany(facno);
                     Miscode m1 = miscodeBean.findByPK("GH", pd.getTermcode());
                     pd.setTermcodedsc(m1.getCdesc());
                     pd.setSndcode(pv.getSndcode());
@@ -220,12 +239,24 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                     pd.setTickdays(pv.getTickdays());
                     pd.setDecode(pv.getDecode());
                     pd.setPosrccode(detail.getPosrccode().charAt(0)); //单价来源码
+                    //检查合约价
+                    if (detail.getPosrccode().equals("1") && !"9".equals(detail.getItnbr())) {
+                        BigDecimal pcunpris = purcontractBean.getUnprisByItnbrAndVdr(facno, prono, detail.getItnbr(), detail.getVdrno(), pd.getRqtdate(), pd.getApmqy());
+                        if (0 != pcunpris.compareTo(pd.getUnpris())) {
+                            //加入邮件通知
+                            if (!"".equals(pd.getBuyer()) && !emailTo.contains(pd.getBuyer())) {
+                                //mailBean.getTo().add(pd.getBuyer() + "@hanbell.com.cn");
+                                emailTo.add(pd.getBuyer());
+                            }
 
+                            pd.setUnpris(BigDecimal.ZERO);
+                        }
+                    }
                     //20230609生成研发请购明细(厂商为浙江汉声，采购备注是3D开头的请购单明细)
                     if ((detail.getVdrno().equals("SZJ00065") || detail.getVdrno().equals("KZJ00053") || detail.getVdrno().equals("EZJ00053")) && detail.getPurdaskdescs().startsWith("3D")) {
                         RdpmOrderOA r = new RdpmOrderOA();
                         String formId = detail.getFormSerialNumber();
-                        int formTrseq = i+1;
+                        int formTrseq = i + 1;
                         String RequestItnbr = detail.getItnbr();
                         RdpmOrderOAPK rpk = new RdpmOrderOAPK(formId, formTrseq, RequestItnbr);
                         r.setRdpmOrderOAPK(rpk);
@@ -241,8 +272,14 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
                         r.setBuyerno(detail.getBuyer());
                         r.setSourcePrNo(detail.getDmark1());
                         r.setSourcePrName(detail.getDmark1name());
+                        r.setPrno(prno);
+                        r.setTrseq(i + 1);
                         r.setHmark(detail.getPurdaskdescs());
-                        r.setFlag("Y");
+                        if (RequestItnbr.startsWith("1") || RequestItnbr.startsWith("2") || RequestItnbr.startsWith("3")) {
+                            r.setFlag("N");
+                        } else {
+                            r.setFlag("X");
+                        }
                         r.setUpdateTime(BaseLib.getDate());
                         rdpmOrderOAs.add(r);
                     }
@@ -314,6 +351,15 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
             rdpmOrderOAs.forEach((rdpmOrderOA) -> {
                 rdpmOrderOABean.persist(rdpmOrderOA);
             });
+            if (!emailTo.isEmpty()) {
+                for (String e : emailTo) {
+                    mailBean.getTo().add(e + "@hanbell.com.cn");
+                }
+                mailBean.getCc().add("C1491@hanbell.com.cn");
+                mailBean.setMailSubject("OA请购单合约价异常");
+                mailBean.setMailContent("OA请购单单身有合约价异常，流程序号: " + psn + ",ERP请购单号： " + prno + "请在ERP--PUR250追踪处理");
+                mailBean.notify(new ErrorMailNotify());
+            }
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

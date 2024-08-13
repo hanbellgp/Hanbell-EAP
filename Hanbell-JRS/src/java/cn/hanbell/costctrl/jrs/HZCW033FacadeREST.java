@@ -27,8 +27,10 @@ import cn.hanbell.crm.entity.REPTC;
 import cn.hanbell.crm.entity.SALFI;
 import cn.hanbell.crm.entity.SALFT;
 import cn.hanbell.crm.entity.SALFTPK;
+import cn.hanbell.eap.comm.ErrorMailNotify;
 import cn.hanbell.eap.ejb.CompanyBean;
 import cn.hanbell.eap.ejb.CrmUserGroupBean;
+import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.eap.ejb.McbudgetBean;
 import cn.hanbell.eap.entity.Mcbudget;
 import cn.hanbell.erp.ejb.BudgetCenterBean;
@@ -56,7 +58,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.transaction.UserTransaction;
@@ -88,6 +89,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
     private McbudgetBean mcbudgetBean;
     @EJB
     private CrmUserGroupBean crmUserGroupBean;
+    @EJB
+    private ErrorMailNotificationBean mailBean;
     @EJB
     private MiscodeBean miscodeBean;
     @EJB
@@ -315,6 +318,15 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 //pormzBean.getEntityManager().getTransaction().rollback();
                 //salftBean.rollback();
                 //pormyBean.rollback();
+                //加入邮件通知
+                if (!"".equals(entity.getAppUser())) {
+                    mailBean.getTo().add(entity.getAppUser() + "@hanbell.com.cn");
+                }
+                mailBean.getTo().add("13120@hanbell.cn");
+                mailBean.setMailSubject("每刻费用报销单抛转OA失败");
+                mailBean.setMailContent(
+                        "每刻归还费用申请单抛转异常，申请人: " + entity.getAppUser() + ", 每刻单号 ：" + entity.getSrcno() + " 出现异常：" + e.toString());
+                mailBean.notify(new ErrorMailNotify());
                 tran.rollback();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -570,36 +582,49 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                         return new MCResponseData(code, msg);
                     }
                 }
-                for (MCHZCW033tDetail t : travels) {
-                    CheckData ch = new CheckData();
-                    if (!ch.valiDateFormat(t.getTrafficDate())) {
-                        code = 107;
-                        msg = "差旅日期格式错误";
-                        return new MCResponseData(code, msg);
+                if (travels != null && travels.size() > 0) {
+                    double tdssum2 = 0.00;
+                    for (MCHZCW033tDetail t : travels) {
+                        CheckData ch = new CheckData();
+                        if (!ch.valiDateFormat(t.getTrafficDate())) {
+                            code = 107;
+                            msg = "差旅日期格式错误";
+                            return new MCResponseData(code, msg);
+                        }
+                        if (!String.valueOf(t.getTaxi()).matches(regex2)) {
+                            code = 107;
+                            msg = "出租车费格式错误";
+                            return new MCResponseData(code, msg);
+                        }
+                        if (!String.valueOf(t.getTrafficfee()).matches(regex2)) {
+                            code = 107;
+                            msg = "交通费费格式错误";
+                            return new MCResponseData(code, msg);
+                        }
+                        if (!String.valueOf(t.getAccommodation()).matches(regex2)) {
+                            code = 107;
+                            msg = "住宿费格式错误";
+                            return new MCResponseData(code, msg);
+                        }
+                        if (!String.valueOf(t.getAllowance()).matches(regex2)) {
+                            code = 107;
+                            msg = "出差补贴费格式错误";
+                            return new MCResponseData(code, msg);
+                        }
+                        if (!String.valueOf(t.getSubtotal()).matches(regex) || t.getSubtotal() == 0.00) {
+                            code = 107;
+                            msg = "差旅金额小计格式错误";
+                            return new MCResponseData(code, msg);
+                        }
+                        //tdssum2 += t.getSubtotal();
+                        //差旅小计只算明细4个费用加起来
+                        tdssum2 = tdssum2 + t.getTaxi() + t.getTrafficfee() + t.getAccommodation() + t.getAllowance();
                     }
-                    if (!String.valueOf(t.getTaxi()).matches(regex2)) {
+                    BigDecimal bdsum = new BigDecimal(tdssum).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal bdsum2 = new BigDecimal(tdssum2).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    if (bdsum.compareTo(bdsum2) != 0) {
                         code = 107;
-                        msg = "出租车费格式错误";
-                        return new MCResponseData(code, msg);
-                    }
-                    if (!String.valueOf(t.getTrafficfee()).matches(regex2)) {
-                        code = 107;
-                        msg = "交通费费格式错误";
-                        return new MCResponseData(code, msg);
-                    }
-                    if (!String.valueOf(t.getAccommodation()).matches(regex2)) {
-                        code = 107;
-                        msg = "住宿费格式错误";
-                        return new MCResponseData(code, msg);
-                    }
-                    if (!String.valueOf(t.getAllowance()).matches(regex2)) {
-                        code = 107;
-                        msg = "出差补贴费格式错误";
-                        return new MCResponseData(code, msg);
-                    }
-                    if (!String.valueOf(t.getSubtotal()).matches(regex) || t.getSubtotal() == 0.00) {
-                        code = 107;
-                        msg = "差旅金额小计格式错误";
+                        msg = "差旅金额小计：" + bdsum2 + "与差旅费科目金额:" + bdsum + "不一致";
                         return new MCResponseData(code, msg);
                     }
                 }

@@ -10,6 +10,8 @@ import cn.hanbell.costctrl.app.MessageEnum;
 import cn.hanbell.costctrl.app.MCHZGL004;
 import cn.hanbell.costctrl.app.MCHZGL004BizDetail;
 import cn.hanbell.costctrl.app.MCResponseData;
+import cn.hanbell.eap.comm.ErrorMailNotify;
+import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.jrs.SuperRESTForEFGP;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HZGL004Bean;
@@ -30,8 +32,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 
 /**
  *
@@ -45,6 +45,8 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
     private HZGL004Bean hzgl004Bean;
     @EJB
     private UsersBean usersBean;
+    @EJB
+    private ErrorMailNotificationBean mailBean;
 
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
@@ -114,7 +116,11 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             m.setDay1(BaseLib.getDate("yyyy/MM/dd", entity.getStartDate()));
             m.setDay2(BaseLib.getDate("yyyy/MM/dd", entity.getEndDate()));
             m.setDays(entity.getDays());
-            m.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
+            if (null == workFlowBean.getUserTitle()) {
+                throw new RuntimeException("获取申请人职等失败");
+            } else {
+                m.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
+            }
             m.setHdn_employee(workFlowBean.getCurrentUser().getId());
             m.setHdn_days(m.getDays());
             m.setSrcno(entity.getSrcno());
@@ -130,7 +136,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 d.setBizTime2_txt(mcd.getBizTime2());
                 d.setBizObject(mcd.getBizObject());
                 d.setBizAddress(mcd.getBizAddress());
-                Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+                Pattern p = Pattern.compile("\\s`&²³\\t\\r\\n");
                 Matcher matcher = p.matcher(mcd.getBizContent());
                 String finishedReplaceStr = matcher.replaceAll("");
                 d.setBizContent(finishedReplaceStr);
@@ -148,6 +154,15 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 return new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
             }
         } catch (Exception ex) {
+            mailBean.clearReceivers();
+            if (!"".equals(entity.getApplyUser())) {
+                mailBean.getTo().add(entity.getApplyUser() + "@hanbell.com.cn");
+            }
+            mailBean.getTo().add("13120@hanbell.cn");
+            mailBean.setMailSubject("每刻出差申请单抛转OA失败");
+            mailBean.setMailContent(
+                    "每刻出差申请单抛转异常，申请人 ：" + entity.getApplyUser() + "每刻单号: " + entity.getSrcno() + ",  出现异常：" + ex.toString());
+            mailBean.notify(new ErrorMailNotify());
             ex.printStackTrace();
             return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
         }

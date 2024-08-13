@@ -737,6 +737,8 @@ currentRow = 0;]]></method>
         dataSetRow["packstyle"] = "无包装";
     } else if (master.getPackstyle() == "5") {
         dataSetRow["packstyle"] = "出口全木箱";
+    } else if (master.getPackstyle() == "6") {
+        dataSetRow["packstyle"] = "普通木箱（镂空）";
     } else {
         dataSetRow["packstyle"] = master.getPackstyle();
     }
@@ -866,7 +868,9 @@ currentRow = 0;]]></method>
             dataSetRow["packstyle"] = "无包装";
         } else if (master.getPackstyle() == "5") {
             dataSetRow["packstyle"] = "出口全木箱";
-        } else {
+        } else if (master.getPackstyle() == "6") {
+        dataSetRow["packstyle"] = "普通木箱（镂空）";
+    	} else {
             dataSetRow["packstyle"] = master.getPackstyle();
         }
 

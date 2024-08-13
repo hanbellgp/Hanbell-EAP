@@ -47,8 +47,9 @@ public class HKGL037FacadeREST extends SuperRESTForEFGP<KV> {
             try {
                 List<KV> dataList = new ArrayList<>();
                 dataList.add(new KV("1", "公务车"));
-                dataList.add(new KV("2", "私车公用"));
+                dataList.add(new KV("2", "私车公用(燃油车)"));
                 dataList.add(new KV("3", "外叫车"));
+                dataList.add(new KV("4", "私车公用(电车)"));
                 return dataList;
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -133,12 +134,7 @@ public class HKGL037FacadeREST extends SuperRESTForEFGP<KV> {
                 m.setSgls(0);
                 m.setZgls(0);
                 m.setTotal(0);
-                //hdnDept C/K流程签核栏位，部门主管
-                if ("1T100".equals(m.getDept())) {
-                    m.setHdnDept(m.getDept());
-                } else {
-                    m.setHdnDept(m.getDept().substring(0, 2) + "000");
-                }
+                m.setHdnDept(entity.getHdnDept());
                 //设置隐藏栏位
                 m.setHdn_emply(entity.getEmployeeId() + "-" + entity.getEmployeeName());
                 m.setHdn_dept(entity.getDeptName());

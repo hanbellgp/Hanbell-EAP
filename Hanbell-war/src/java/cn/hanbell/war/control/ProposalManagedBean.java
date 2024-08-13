@@ -170,7 +170,7 @@ public class ProposalManagedBean extends SuperMultiBean<Proposal, ProposalAttach
             path = java.net.URLDecoder.decode(path, "utf-8");
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext()
                     .getResponse();
-            response.setCharacterEncoding("GBK");
+         // response.setCharacterEncoding("GBK");
             if (newDetail == null) {
                 this.createDetail();
                 this.currentDetail.setResource(fileName);

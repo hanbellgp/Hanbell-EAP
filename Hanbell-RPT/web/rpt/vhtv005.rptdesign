@@ -1,0 +1,1491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.6.0.v201606072122</property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <data-sources>
+        <script-data-source name="scriptDS" id="225"/>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="dataDetail" id="226">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">vdrno</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">vdrna</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">appdate</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">apno</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">paydate</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">vdrds</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">bankAccount</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">hmark</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">paytn</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">check1</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">apdsc</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">bilno</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">acpamtfs</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">temamtfs</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">budgetacc</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">totalfs</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">total</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">amountInWords</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">seq</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">bankName</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">appdept</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">coin</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">23</property>
+                    <property name="name">cmpSumTax</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">vdrno</property>
+                </structure>
+                <structure>
+                    <property name="columnName">vdrna</property>
+                </structure>
+                <structure>
+                    <property name="columnName">appdate</property>
+                </structure>
+                <structure>
+                    <property name="columnName">apno</property>
+                </structure>
+                <structure>
+                    <property name="columnName">paydate</property>
+                </structure>
+                <structure>
+                    <property name="columnName">vdrds</property>
+                </structure>
+                <structure>
+                    <property name="columnName">bankAccount</property>
+                </structure>
+                <structure>
+                    <property name="columnName">hmark</property>
+                </structure>
+                <structure>
+                    <property name="columnName">paytn</property>
+                </structure>
+                <structure>
+                    <property name="columnName">check1</property>
+                </structure>
+                <structure>
+                    <property name="columnName">apdsc</property>
+                </structure>
+                <structure>
+                    <property name="columnName">bilno</property>
+                </structure>
+                <structure>
+                    <property name="columnName">acpamtfs</property>
+                </structure>
+                <structure>
+                    <property name="columnName">temamtfs</property>
+                </structure>
+                <structure>
+                    <property name="columnName">budgetacc</property>
+                </structure>
+                <structure>
+                    <property name="columnName">totalfs</property>
+                </structure>
+                <structure>
+                    <property name="columnName">total</property>
+                </structure>
+                <structure>
+                    <property name="columnName">amountInWords</property>
+                </structure>
+                <structure>
+                    <property name="columnName">seq</property>
+                </structure>
+                <structure>
+                    <property name="columnName">bankName</property>
+                </structure>
+                <structure>
+                    <property name="columnName">appdept</property>
+                </structure>
+                <structure>
+                    <property name="columnName">coin</property>
+                </structure>
+                <structure>
+                    <property name="columnName">cmpSumTax</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">vdrno</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">vdrna</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">appdate</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">apno</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">paydate</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">vdrds</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">bankAccount</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">hmark</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">paytn</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">check1</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">apdsc</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">bilno</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">acpamtfs</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">temamtfs</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">budgetacc</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">totalfs</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">total</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">amountInWords</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">seq</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">bankName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">appdept</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">coin</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">cmpSumTax</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">scriptDS</property>
+            <method name="open"><![CDATA[importPackage(Packages.cn.hanbell.efgp.rpt);
+importPackage(Packages.java.lang);
+ejbClient = new VHTV005Report();
+ejbClient.setEJB(params["JNDIName"]);
+master = ejbClient.getEntity(params["formid"]);
+if(master!=null){
+
+	detail = ejbClient.getDetail(master.getFormSerialNumber()); 
+}
+
+currentRow = 0;]]></method>
+            <method name="fetch"><![CDATA[importPackage(Packages.java.lang);
+if(detail==undefined || detail==null){
+	return false;
+}
+System.out.println("22222=="+detail.size());
+if(detail.size() <=4){
+if (currentRow<4){
+	if(currentRow < detail.size()){
+		dataSetRow["appdept"] = master.getHdnappDept();
+		dataSetRow["appdate"] = master.getAppdate();		
+		dataSetRow["apno"] = master.getApno();	
+		dataSetRow["vdrno"] = master.getVdrno();
+		dataSetRow["vdrds"] = master.getVdrds();	
+		dataSetRow["paydate"] = master.getPaydate();
+		dataSetRow["bankName"] = master.getBankName();
+		dataSetRow["bankAccount"] =master.getBankAccount();
+		dataSetRow["hmark"] =master.getHmark();
+		dataSetRow["paytn"] =master.getPaytn();
+		dataSetRow["check1"] =master.getCheck1();
+		
+		dataSetRow["totalfs"] =master.getTotalfs();
+		dataSetRow["cmpSumTax"] = master.getCmpSumTax();
+		dataSetRow["total"] = master.getTotal();
+		dataSetRow["amountInWords"] = master.getAmountInWords();
+		
+		
+		dataSetRow["seq"] =currentRow+1;	
+		dataSetRow["apdsc"] = detail.get(currentRow).getApdsc();	
+		dataSetRow["bilno"] = detail.get(currentRow).getBilno();	
+		dataSetRow["acpamtfs"] = detail.get(currentRow).getAcpamtfs();	
+		dataSetRow["temamtfs"] = detail.get(currentRow).getTemamtfs();	
+		dataSetRow["budgetacc"] = detail.get(currentRow).getCmpBudgetacc();	
+		dataSetRow["coin"] = detail.get(currentRow).getCoin();	
+		
+		currentRow++;
+		return true;
+	}
+	    dataSetRow["appdept"] = master.getHdnappDept();
+		dataSetRow["appdate"] = master.getAppdate();		
+		dataSetRow["apno"] = master.getApno();	
+		dataSetRow["vdrno"] = master.getVdrno();
+		dataSetRow["vdrds"] = master.getVdrds();	
+		dataSetRow["paydate"] = master.getPaydate();
+		dataSetRow["bankName"] = master.getBankName();
+		dataSetRow["bankAccount"] =master.getBankAccount();
+		dataSetRow["hmark"] =master.getHmark();
+		dataSetRow["paytn"] =master.getPaytn();
+		dataSetRow["check1"] =master.getCheck1();
+		
+		dataSetRow["totalfs"] =master.getTotalfs();
+		dataSetRow["cmpSumTax"] = master.getCmpSumTax();
+		dataSetRow["total"] = master.getTotal();
+		dataSetRow["amountInWords"] = master.getAmountInWords();
+	currentRow++;
+	return true;	
+	}
+}else if(detail.size() >4){
+   if(currentRow < detail.size()){
+  		dataSetRow["appdept"] = master.getHdnappDept();
+		dataSetRow["appdate"] = master.getAppdate();		
+		dataSetRow["apno"] = master.getApno();	
+		dataSetRow["vdrno"] = master.getVdrno();
+		dataSetRow["vdrds"] = master.getVdrds();	
+		dataSetRow["paydate"] = master.getPaydate();
+		dataSetRow["bankName"] = master.getBankName();
+		dataSetRow["bankAccount"] =master.getBankAccount();
+		dataSetRow["hmark"] =master.getHmark();
+		dataSetRow["paytn"] =master.getPaytn();
+		dataSetRow["check1"] =master.getCheck1();
+		
+		dataSetRow["totalfs"] =master.getTotalfs();
+		dataSetRow["cmpSumTax"] = master.getCmpSumTax();
+		dataSetRow["total"] = master.getTotal();
+		dataSetRow["amountInWords"] = master.getAmountInWords();
+		
+		
+		dataSetRow["seq"] =currentRow+1;	
+		dataSetRow["apdsc"] = detail.get(currentRow).getApdsc();	
+		dataSetRow["bilno"] = detail.get(currentRow).getBilno();	
+		dataSetRow["acpamtfs"] = detail.get(currentRow).getAcpamtfs();	
+		dataSetRow["temamtfs"] = detail.get(currentRow).getTemamtfs();	
+		dataSetRow["budgetacc"] = detail.get(currentRow).getCmpBudgetacc();	
+		dataSetRow["coin"] = detail.get(currentRow).getCoin();	
+		currentRow++;
+		return true;
+	}
+}
+
+return false;]]></method>
+            <method name="close"><![CDATA[ejbClient = null;]]></method>
+        </script-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">custom</property>
+            <property name="height">148mm</property>
+            <property name="width">210mm</property>
+            <property name="headerHeight">0in</property>
+            <property name="footerHeight">0.2in</property>
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="910">
+            <property name="verticalAlign">middle</property>
+            <property name="dataSet">dataDetail</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">color1</property>
+                    <expression name="expression" type="javascript">dataSetRow["paytn"]=="1"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color2</property>
+                    <expression name="expression" type="javascript">dataSetRow["paytn"]=="2"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color3</property>
+                    <expression name="expression" type="javascript">dataSetRow["paytn"]=="3"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color4</property>
+                    <expression name="expression" type="javascript">dataSetRow["paytn"]=="4"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color5</property>
+                    <expression name="expression" type="javascript">dataSetRow["check1"]=="1"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color6</property>
+                    <expression name="expression" type="javascript">dataSetRow["check1"]=="0"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">appdate</property>
+                    <text-property name="displayName">appdate</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["appdate"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+            </list-property>
+            <column id="911">
+                <property name="width">2cm</property>
+            </column>
+            <column id="912">
+                <property name="width">2.5cm</property>
+            </column>
+            <column id="913">
+                <property name="width">2.5cm</property>
+            </column>
+            <column id="914">
+                <property name="width">5.2cm</property>
+            </column>
+            <column id="915">
+                <property name="width">3.5cm</property>
+            </column>
+            <column id="916"/>
+            <row id="917">
+                <property name="height">0.97cm</property>
+                <cell id="918">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="952">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[越南汉钟
+HABELL VIETNAM]]></text-property>
+                    </text>
+                </cell>
+                <cell id="920">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="959">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[页次1/1
+Trang 1/1]]></text-property>
+                    </text>
+                </cell>
+                <cell id="921">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">2</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="963">
+                        <property name="fontSize">12pt</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[费用请款单
+Đơn Thanh Toán Chi Phí]]></text-property>
+                    </text>
+                </cell>
+                <cell id="922">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="964">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[申请日期 
+Ngày xin]]></text-property>
+                    </text>
+                </cell>
+                <cell id="923">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1206">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">appdate</property>
+                                <text-property name="displayName">appdate</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["appdate"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">appdate</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="924">
+                <property name="height">0.97cm</property>
+                <cell id="925">
+                    <property name="colSpan">2</property>
+                    <property name="rowSpan">1</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="954">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[申请部门
+Bộ phận xin]]></text-property>
+                    </text>
+                </cell>
+                <cell id="927">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1221">
+                        <property name="fontSize">9pt</property>
+                        <property name="resultSetColumn">appdate</property>
+                    </data>
+                </cell>
+                <cell id="929">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="965">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[申请单号 
+Mã đơn]]></text-property>
+                    </text>
+                </cell>
+                <cell id="930">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1207">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">apno</property>
+                                <text-property name="displayName">apno</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["apno"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">apno</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="931">
+                <property name="height">0.97cm</property>
+                <cell id="932">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="956">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[厂商代号 
+Mã NCC]]></text-property>
+                    </text>
+                </cell>
+                <cell id="933">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1199">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">vdrno</property>
+                                <text-property name="displayName">vdrno</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["vdrno"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">vdrno</property>
+                    </data>
+                </cell>
+                <cell id="934">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="960">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[厂商全称 
+Tên NCC]]></text-property>
+                    </text>
+                </cell>
+                <cell id="935">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1208">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">vdrds</property>
+                                <text-property name="displayName">vdrds</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["vdrds"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">vdrds</property>
+                    </data>
+                </cell>
+                <cell id="936">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="966">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[付款日 
+Ngày thanh toán]]></text-property>
+                    </text>
+                </cell>
+                <cell id="937">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1201">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">paydate</property>
+                                <text-property name="displayName">paydate</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["paydate"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">paydate</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="938">
+                <property name="height">0.97cm</property>
+                <cell id="939">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="957">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[币别 
+Loại tiền]]></text-property>
+                    </text>
+                </cell>
+                <cell id="940">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="1202">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[VND]]></text-property>
+                    </text>
+                </cell>
+                <cell id="941">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="961">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[付款银行名称
+Tên NH]]></text-property>
+                    </text>
+                </cell>
+                <cell id="942">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1203">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">bankName</property>
+                                <text-property name="displayName">bankName</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["bankName"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">bankName</property>
+                    </data>
+                </cell>
+                <cell id="943">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="967">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[付款帐号
+Số tài khoản]]></text-property>
+                    </text>
+                </cell>
+                <cell id="944">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1204">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">bankAccount</property>
+                                <text-property name="displayName">bankAccount</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["bankAccount"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">bankAccount</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="945">
+                <property name="height">0.97cm</property>
+                <cell id="946">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="958">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[备注 
+Ghi chú]]></text-property>
+                    </text>
+                </cell>
+                <cell id="947">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1205">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">hmark</property>
+                                <text-property name="displayName">hmark</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["hmark"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">hmark</property>
+                    </data>
+                </cell>
+                <cell id="948">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="962">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[付款方式
+P. thức]]></text-property>
+                    </text>
+                </cell>
+                <cell id="949">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="270">
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color1"]</VALUE-OF>'> □</span> £现金Tiền mặt
+<span style='background-color:<VALUE-OF>row["color2"]</VALUE-OF>'> □</span> T/T
+<span style='background-color:<VALUE-OF>row["color3"]</VALUE-OF>'> □</span> L/C
+<span style='background-color:<VALUE-OF>row["color4"]</VALUE-OF>'> □</span> 支票 Séc
+]]></text-property>
+                    </text>
+                </cell>
+                <cell id="950">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="968">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[是否属请采验 
+Xin mua, nghiệm thu]]></text-property>
+                    </text>
+                </cell>
+                <cell id="951">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="969">
+                        <property name="contentType">html</property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color5"]</VALUE-OF>'> □</span> 是 Có
+<span style='background-color:<VALUE-OF>row["color6"]</VALUE-OF>'> □</span> 否 Không 
+]]></text-property>
+                    </text>
+                </cell>
+            </row>
+        </grid>
+        <table id="1125">
+            <property name="dataSet">dataDetail</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">apdsc</property>
+                    <text-property name="displayName">apdsc</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["apdsc"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">bilno</property>
+                    <text-property name="displayName">bilno</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["bilno"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">acpamtfs</property>
+                    <text-property name="displayName">acpamtfs</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["acpamtfs"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">temamtfs</property>
+                    <text-property name="displayName">temamtfs</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["temamtfs"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">budgetacc</property>
+                    <text-property name="displayName">budgetacc</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["budgetacc"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">seq</property>
+                    <text-property name="displayName">seq</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["seq"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">totalfs</property>
+                    <text-property name="displayName">totalfs</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["totalfs"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cmpSumTax</property>
+                    <text-property name="displayName">cmpSumTax</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["cmpSumTax"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">coin</property>
+                    <text-property name="displayName">coin</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["coin"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="1178">
+                <property name="width">2cm</property>
+            </column>
+            <column id="1159">
+                <property name="width">2.5cm</property>
+            </column>
+            <column id="1160">
+                <property name="width">2.5cm</property>
+            </column>
+            <column id="1161">
+                <property name="width">3cm</property>
+            </column>
+            <column id="1172">
+                <property name="width">2.2cm</property>
+            </column>
+            <column id="1162">
+                <property name="width">3.5cm</property>
+            </column>
+            <column id="1163"/>
+            <header>
+                <row id="1126">
+                    <cell id="1175">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="1179">
+                            <property name="fontSize">9pt</property>
+                            <text-property name="text">序号&#13;
+STT</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1127">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="1128">
+                            <property name="fontSize">9pt</property>
+                            <text-property name="text">申请内容 &#13;
+TT Nội dung</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1129">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="1132">
+                            <property name="fontSize">9pt</property>
+                            <text-property name="text">费用金额原币 &#13;
+Số tiền nguyên tệ</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1131">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="1130">
+                            <property name="fontSize">9pt</property>
+                            <text-property name="text">发票编号 &#13;
+Số HĐ</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1169">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <text id="1181">
+                            <property name="fontSize">9pt</property>
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[币别 
+Loại tiền]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="1133">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="1134">
+                            <property name="fontSize">9pt</property>
+                            <text-property name="text">对应暂付款金额&#13;
+Tạm ứng tương ứng</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1135">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="1136">
+                            <property name="fontSize">9pt</property>
+                            <text-property name="text">预算科目名 &#13;
+TK dự toán</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="1139">
+                    <cell id="1176">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1180">
+                            <property name="fontSize">9pt</property>
+                            <property name="resultSetColumn">seq</property>
+                        </data>
+                    </cell>
+                    <cell id="1140">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1141">
+                            <property name="fontSize">9pt</property>
+                            <property name="resultSetColumn">apdsc</property>
+                        </data>
+                    </cell>
+                    <cell id="1142">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1145">
+                            <property name="fontSize">9pt</property>
+                            <property name="resultSetColumn">acpamtfs</property>
+                        </data>
+                    </cell>
+                    <cell id="1144">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1143">
+                            <property name="fontSize">9pt</property>
+                            <property name="resultSetColumn">bilno</property>
+                        </data>
+                    </cell>
+                    <cell id="1170">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1222">
+                            <property name="fontSize">9pt</property>
+                            <property name="resultSetColumn">coin</property>
+                        </data>
+                    </cell>
+                    <cell id="1146">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1147">
+                            <property name="fontSize">9pt</property>
+                            <property name="resultSetColumn">temamtfs</property>
+                        </data>
+                    </cell>
+                    <cell id="1148">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="1149">
+                            <property name="fontSize">9pt</property>
+                            <property name="resultSetColumn">budgetacc</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+        <grid id="1185">
+            <column id="1186">
+                <property name="width">4.5cm</property>
+            </column>
+            <column id="1187">
+                <property name="width">2.5cm</property>
+            </column>
+            <column id="1188">
+                <property name="width">3cm</property>
+            </column>
+            <column id="1189"/>
+            <column id="1224">
+                <property name="width">0.9cm</property>
+            </column>
+            <column id="1216"/>
+            <column id="1218"/>
+            <column id="1226">
+                <property name="width">0.9cm</property>
+            </column>
+            <row id="1190">
+                <cell id="1191">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="1212">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[申请总原币 
+Tổng nguyên tệ]]></text-property>
+                    </text>
+                </cell>
+                <cell id="1192">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1230">
+                        <property name="fontSize">9pt</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">totalfs</property>
+                                <text-property name="displayName">totalfs</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["totalfs"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">totalfs</property>
+                    </data>
+                </cell>
+                <cell id="1193">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="1214">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[税金本币 
+Thuế nội tệ]]></text-property>
+                    </text>
+                </cell>
+                <cell id="1194">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1231">
+                        <property name="fontSize">9pt</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">cmpSumTax</property>
+                                <text-property name="displayName">cmpSumTax</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["cmpSumTax"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">cmpSumTax</property>
+                    </data>
+                </cell>
+                <cell id="1223">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="1228">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[VND]]></text-property>
+                    </text>
+                </cell>
+                <cell id="1215">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="1219">
+                        <property name="fontSize">9pt</property>
+                        <property name="textAlign">center</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[申请总本币 
+Tổng tiền nội tệ]]></text-property>
+                    </text>
+                </cell>
+                <cell id="1217">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1220">
+                        <property name="fontSize">9pt</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">total</property>
+                                <text-property name="displayName">total</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["total"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">total</property>
+                    </data>
+                </cell>
+                <cell id="1225">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <text id="1229">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[VND]]></text-property>
+                    </text>
+                </cell>
+            </row>
+        </grid>
+    </body>
+</report>

@@ -25,6 +25,7 @@ public class VHTV005Model implements Serializable {
     private String paytn;
     private String appuser;
     private String appdept;
+    private String hdnappDept;
     private String tickdays;
     private String paydate;
     private String pyhyn;
@@ -319,6 +320,14 @@ public class VHTV005Model implements Serializable {
 
     public void setCmp_sum_tax(BigDecimal cmp_sum_tax) {
         this.cmp_sum_tax = cmp_sum_tax;
+    }
+
+    public String getHdnappDept() {
+        return hdnappDept;
+    }
+
+    public void setHdnappDept(String hdnappDept) {
+        this.hdnappDept = hdnappDept;
     }
 
 }

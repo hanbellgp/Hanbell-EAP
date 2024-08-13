@@ -177,7 +177,9 @@ public class VHTV005 implements Serializable {
     @Size(max = 255)
     @Column(name = "ratio")
     private String ratio;
-
+    @Size(max = 255)
+    @Column(name = "hdnappDept")
+    private String hdnappDept;
     public VHTV005() {
     }
 
@@ -559,6 +561,14 @@ public class VHTV005 implements Serializable {
 
     public void setRatio(String ratio) {
         this.ratio = ratio;
+    }
+
+    public String getHdnappDept() {
+        return hdnappDept;
+    }
+
+    public void setHdnappDept(String hdnappDept) {
+        this.hdnappDept = hdnappDept;
     }
 
     @Override

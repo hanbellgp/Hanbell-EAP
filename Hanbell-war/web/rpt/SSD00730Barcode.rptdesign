@@ -212,10 +212,10 @@ if(currentRow < detail.size()){
     dataSetRow["fixnr"] = detail.get(currentRow).getFixnr();
     dataSetRow["varnr"] = detail.get(currentRow).getVarnr();
     dataSetRow["shpdate"] = detail.get(currentRow).getShpdate();
-    dataSetRow["varnrbarcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/" + detail.get(currentRow).getVarnr()+ ".png";
-    dataSetRow["varnrqrcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + detail.get(currentRow).getVarnr()+ ".png";
-    System.out.println("====currentRow2=====>" +"http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png"); 
-    dataSetRow["shpqrcode"] = "http://127.0.0.1:8480/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png";
+    dataSetRow["varnrbarcode"] = "http://127.0.0.1/Hanbell-war/resources/app/res/" + detail.get(currentRow).getVarnr()+ ".png";
+    dataSetRow["varnrqrcode"] = "http://127.0.0.1/Hanbell-war/resources/app/res/QR" + detail.get(currentRow).getVarnr()+ ".png";
+    System.out.println("====currentRow2=====>" +"http://127.0.0.1/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png"); 
+    dataSetRow["shpqrcode"] = "http://127.0.0.1/Hanbell-war/resources/app/res/QR" + master.getCustomerno() + detail.get(currentRow).getVarnr() + ".png";
     currentRow++;
     return true;
 }
@@ -352,7 +352,7 @@ return false;
                         <property name="height">0.22916666666666666in</property>
                         <cell id="174">
                             <property name="colSpan">1</property>
-                            <property name="rowSpan">2</property>
+                            <property name="rowSpan">3</property>
                             <property name="paddingTop">0pt</property>
                             <property name="paddingBottom">0pt</property>
                             <property name="textAlign">center</property>
@@ -364,6 +364,15 @@ return false;
                             </image>
                         </cell>
                         <cell id="186">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <data id="217">
+                                <property name="resultSetColumn">customeritem</property>
+                            </data>
+                        </cell>
+                    </row>
+                    <row id="214">
+                        <cell id="216">
                             <property name="paddingTop">0pt</property>
                             <property name="paddingBottom">0pt</property>
                             <data id="183">

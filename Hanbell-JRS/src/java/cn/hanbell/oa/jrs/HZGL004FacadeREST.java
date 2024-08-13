@@ -9,11 +9,13 @@ import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
 import cn.hanbell.oa.app.MCHZGL004;
 import cn.hanbell.oa.app.MCHZGL004BizDetail;
+import cn.hanbell.oa.app.MCHZGL004CarDetail;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HZGL004Bean;
 import cn.hanbell.oa.entity.HZGL004;
 import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.oa.model.HZGL004BizDetailModel;
+import cn.hanbell.oa.model.HZGL004CarDetailModel;
 import cn.hanbell.oa.model.HZGL004Model;
 import cn.hanbell.util.BaseLib;
 import cn.hanbell.wco.ejb.Agent1000002Bean;
@@ -66,9 +68,12 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
         }
         HZGL004Model m;
         HZGL004BizDetailModel d;
+        HZGL004CarDetailModel cd;
         List<HZGL004BizDetailModel> detailList = new ArrayList<>();
+        List<HZGL004CarDetailModel> cardetailList = new ArrayList<>();
         LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
         details.put("bizDetail", detailList);
+        details.put("carDetail", cardetailList);
         try {
             //初始化发起人
             workFlowBean.initUserInfo(entity.getApplyUser());
@@ -87,9 +92,9 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             m.setHdn_applyDept(ou.getOrganizationUnitName());
             m.setFormType(entity.getFormType());
             m.setCountry(entity.getCountry());
-            if(entity.getSafeplace()){
-                 m.setSafeplace("Y");
-            }else{
+            if (entity.getSafeplace()) {
+                m.setSafeplace("Y");
+            } else {
                 m.setSafeplace("N");
             }
             if ("5".equals(entity.getFormType())) {
@@ -114,7 +119,44 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             m.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
             m.setHdn_employee(workFlowBean.getCurrentUser().getId());
             m.setHdn_days(m.getDays());
+
             int seq = 0;
+            //派车
+            m.setUseCar(entity.getUseCar());
+            if (m.getUseCar().equals("Y")) {
+                m.setEmployee(entity.getPrivatedriverno());
+                m.setClxz(entity.getClxz());
+                m.setCpno(entity.getPrivatecarno());
+                m.setYcyy(entity.getPurpose());
+                m.setAccommodation(entity.getStaykey());
+                m.setDeparture(entity.getDeparturekey());
+                m.setAccommRegistration(entity.getRegistrationkey());
+                m.setLxfs(entity.getTelcontact());
+                m.setBzsm(entity.getHmark1());
+                for (MCHZGL004CarDetail mcd : entity.getCardetailList()) {
+                    seq++;
+                    cd = new HZGL004CarDetailModel();
+                    cd.setSeq(String.valueOf(seq));
+                    cd.setGhuser_txt(mcd.getEmployeeId());
+                    cd.setGhuser_lbl(mcd.getEmployeeName());
+                    cd.setBmdept_txt(mcd.getDeptId());
+                    cd.setBmdept_lbl(mcd.getDeptName());
+                    cd.setKr(mcd.getKr());
+                    cd.setKrlxfs(mcd.getContact());
+                    cd.setYcrq_txt(mcd.getYcrq());
+                    cd.setCfsf(mcd.getCfsf());
+                    cd.setCfcs(mcd.getCfcs());
+                    cd.setAddress1(mcd.getAddress1());
+                    cd.setMdsf(mcd.getMdsf());
+                    cd.setMdcs(mcd.getMdcs());
+                    cd.setAddress2(mcd.getAddress2());
+                    cd.setSy(mcd.getSy());
+                    cd.setGsmc(mcd.getCompany());
+                    cardetailList.add(cd);
+                }
+            }
+
+            seq = 0;
             for (MCHZGL004BizDetail mcd : entity.getDetailList()) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(new Date());
@@ -127,7 +169,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 if (zero.getTime() >= date1.getTime()) {
                     return new ResponseMessage("500", "填单日期晚于实际出差日期不可以申请！");
                 }
-                if(date1.getTime()<m.getDay1().getTime()||date1.getTime()>m.getDay2().getTime()){
+                if (date1.getTime() < m.getDay1().getTime() || date1.getTime() > m.getDay2().getTime()) {
                     return new ResponseMessage("500", "出差日期不在出差起止日期内！");
                 }
                 seq++;
@@ -147,6 +189,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 d.setUserTitle(m.getUserTitle());
                 detailList.add(d);
             }
+
             //发起流程
             String formInstance = workFlowBean.buildXmlForEFGP("HZ_GL004", m, details);
             String subject = m.getHdn_applyUser() + entity.getStartDate() + "开始出差" + entity.getDays() + "天";
@@ -162,9 +205,6 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                         isSuccess = false;
                         users.append(mcd.getBizEmployeeName()).append(",");
                     }
-                }
-                if (isSuccess) {
-                    return new ResponseMessage("500", "表单发起成功，" + users + "消息发送失败");
                 }
                 return new ResponseMessage(rm[0], rm[1]);
             } else {

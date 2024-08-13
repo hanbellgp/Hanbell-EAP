@@ -212,7 +212,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         miscodeBean.setCompany(facno);
         m = miscodeBean.findByCkindAndCdesc("NB", oa.getTtbankna());
         if (m == null) {
-            m = new Miscode("NB", miscodeBean.getFormId("NB", "B", 4));
+            m = new Miscode("NB", miscodeBean.getFormId("NB", "B", 5));
             m.setCdesc(oa.getTtbankna());
             m.setStatus('Y');
             m.setMascreyn('N');
@@ -530,7 +530,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             miscodeBean.setCompany(facno);
             m = miscodeBean.findByCkindAndCdesc("NB", oa.getTtbankna());
             if (m == null) {
-                m = new Miscode("NB", miscodeBean.getFormId("NB", "B", 4));
+                m = new Miscode("NB", miscodeBean.getFormId("NB", "B", 5));
                 m.setCdesc(oa.getTtbankna());
                 m.setStatus('Y');
                 m.setMascreyn('N');
@@ -566,6 +566,9 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         }
         if (oa.getCheckbox17().equals("1")) {
             erp.setFax1(oa.getFax1());
+        }
+        if (oa.getCheckbox19().equals("1")&& oa.getVdrsta() != null && !oa.getVdrsta().equals("")) {
+            erp.setVdrsta(oa.getVdrsta().charAt(0));
         }
         if (oa.getCbtickdays().equals("1")) {
             erp.setTickdays(oa.getTickdays());
@@ -619,6 +622,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             }
             return true;
         } catch (Exception ex) {
+            ex.printStackTrace();
             log4j.error(ex);
             return false;
         } finally {

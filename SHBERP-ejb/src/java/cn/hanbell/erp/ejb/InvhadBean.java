@@ -1153,21 +1153,23 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         List<SHBERPINV310Detail> details = shberpinv310Bean.getDetailByFSN(fsn);
         //判断明细是否存在
         if (details == null || details.isEmpty()) {
-            throw new NullPointerException("OA表单中不存在手工领料单明细");
+            throw new NullPointerException("OA表单中不存在领料单明细");
         }
         String facno;
         String prono;
         String trno;
+        String trtype;
         Date trdate;
         BigDecimal trnqy;
         Date indate = BaseLib.getDate();
 
         facno = e.getFacno();
+        trtype = e.getTrtype();
         prono = "1";
         //获取ERP库存交易类别
         invdouBean.setCompany(facno);
-        Invdou IAB = invdouBean.findByTrtype("IAB");
-        if (IAB == null) {
+        Invdou invdou = invdouBean.findByTrtype(trtype);
+        if (invdou == null) {
             throw new NullPointerException("库存交易单据类别错误，ERP不存在" + "IAB");
         }
         //手工领料单
@@ -1216,7 +1218,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 trseq++;
                 //调拨出去
                 invdta = new Invdta(d.getItnbr(), facno, prono, "", trseq);
-                invdta.setTrtype(IAB.getTrtype());
+                invdta.setTrtype(invdou.getTrtype());
                 invdta.setItcls(invmas.getItcls());
                 invdta.setItclscode(invmas.getItclscode());
                 invdta.setTrnqy1(BigDecimal.valueOf(Double.parseDouble(d.getQty())));
@@ -1226,12 +1228,12 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 invdta.setWareh(d.getWareh());
                 invdta.setFixnr("");
                 invdta.setVarnr("");
-                invdta.setIocode(IAB.getIocode());
+                invdta.setIocode(invdou.getIocode());
                 addedIAB.add(invdta);
             }
-            trno = invsernoBean.getTrno(facno, "", IAB.getTrtype(), trdate, true);
+            trno = invsernoBean.getTrno(facno, "", invdou.getTrtype(), trdate, true);
             invhad = new Invhad(facno, prono, trno);
-            invhad.setTrtype(IAB.getTrtype());
+            invhad.setTrtype(invdou.getTrtype());
             invhad.setTrdate(trdate);
             //1ERP作业部门 2.费用归属部门-->作业部门
 //            switch (e.getErpDept()) {
@@ -1252,7 +1254,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 throw new RuntimeException(e.getUseDept() + "作业部门ERP中不存在");
             }
             invhad.setDepno(e.getUseDept());
-            invhad.setIocode(IAB.getIocode());
+            invhad.setIocode(invdou.getIocode());
             invhad.setResno(e.getCode().equals("") ? "K01" : e.getCode());
             invhad.setSourceno(e.getProcessSerialNumber().substring(8));
             invhad.setStatus('N');
@@ -1260,8 +1262,15 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             invhad.setIndate(indate);
             invhad.setPrtcnt((short) 0);
             invhad.setAsrsQty(BigDecimal.ZERO);
-            invhad.setHmark2(e.getChangeCode());
-            invhad.setHmark1("00");  //申报项目
+            switch (invdou.getTrtype()) {
+                case "IAB":
+                    invhad.setHmark2(e.getChangeCode());
+                    invhad.setHmark1("00");  //申报项目
+                    break;
+                case "INX":
+                    invhad.setHmark1(e.getDmark1());  //研发专案
+                    break;
+            }
             //明细列表交易单号赋值
             for (Invdta d : addedIAB) {
                 d.getInvdtaPK().setTrno(trno);

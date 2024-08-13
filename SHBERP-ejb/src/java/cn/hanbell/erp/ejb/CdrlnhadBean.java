@@ -84,25 +84,25 @@ public class CdrlnhadBean extends SuperEJBForERP<Cdrlnhad> {
         String prono = "1";
         String trno = "";
         String trtype = "AOG";
-        Date trdate = BaseLib.getDate();
-        short trseq = 0;
-        //获取ERP库存交易类别
-        invdouBean.setCompany(facno);
-        Invdou invdou = invdouBean.findByTrtype(trtype);
-        if (invdou == null) {
-            throw new NullPointerException("单据类别错误，ERP需要AOG");
-        }
-        cdrcusBean.setCompany(facno);
-        Cdrcus cdrcus = cdrcusBean.findByCusno(e.getDemander());
-        if (cdrcus == null) {
-            throw new NullPointerException(e.getDemander() + "ERP中不存在");
-        }
-        //ERP借出明细
-        List<Cdrlndta> addedDetail = new ArrayList();
-
-        invmasBean.setCompany(facno);
-        this.setCompany(facno);
         try {
+            Date trdate = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
+            short trseq = 0;
+            //获取ERP库存交易类别
+            invdouBean.setCompany(facno);
+            Invdou invdou = invdouBean.findByTrtype(trtype);
+            if (invdou == null) {
+                throw new NullPointerException("单据类别错误，ERP需要AOG");
+            }
+            cdrcusBean.setCompany(facno);
+            Cdrcus cdrcus = cdrcusBean.findByCusno(e.getDemander());
+            if (cdrcus == null) {
+                throw new NullPointerException(e.getDemander() + "ERP中不存在");
+            }
+            //ERP借出明细
+            List<Cdrlndta> addedDetail = new ArrayList();
+
+            invmasBean.setCompany(facno);
+            this.setCompany(facno);
             for (HKJH007Detail d : hkjh007DetailList) {
                 trseq++;
                 Cdrlndta cdrlndta = new Cdrlndta();
@@ -208,44 +208,42 @@ public class CdrlnhadBean extends SuperEJBForERP<Cdrlnhad> {
     }
 
     public Boolean initByOAWARI05(String psn) {
-
-        WARMI05 e = warmi05Bean.findByPSN(psn);
-        if (e == null) {
-            throw new NullPointerException();
-        }
-        if (e.getTa028() != null && !"".equals(e.getTa028())) {
-            return true;
-        }
-
-        warmi05Bean.setDetail(e.getFormSerialNumber());
-        if (warmi05Bean.getDetailList().isEmpty()) {
-            throw new NullPointerException();
-        }
-        String trtype = null;
-        if (e.getTa001().equals("JCDF") || e.getTa001().equals("JCDX")) {
-            trtype = "AOG";
-        }
-        if (trtype == null) {
-            throw new NullPointerException("单据类别错误，OA需要JCDF或JCDX");
-        }
-        String facno = e.getTa014();
-        String prono = "1";
-        String trno = "";
-        Date trdate = BaseLib.getDate();
-        short trseq = 0;
-        //获取ERP库存交易类别
-        invdouBean.setCompany(facno);
-        Invdou invdou = invdouBean.findByTrtype(trtype);
-        if (invdou == null) {
-            throw new NullPointerException("单据类别错误，ERP需要AOG");
-        }
-
-        List<Cdrlndta> addedDetail = new ArrayList();
-        //EclipseLink无法完成外键关联同时更新
-        //HashMap<SuperEJBForERP, List<?>> detailAdded = new HashMap<>();
-        //detailAdded.put(cdrlndtaBean, addedDetail);
-        this.setCompany(facno);
         try {
+            WARMI05 e = warmi05Bean.findByPSN(psn);
+            if (e == null) {
+                throw new NullPointerException();
+            }
+            if (e.getTa028() != null && !"".equals(e.getTa028())) {
+                return true;
+            }
+
+            warmi05Bean.setDetail(e.getFormSerialNumber());
+            if (warmi05Bean.getDetailList().isEmpty()) {
+                throw new NullPointerException();
+            }
+            String trtype = null;
+            if (e.getTa001().equals("JCDF") || e.getTa001().equals("JCDX")) {
+                trtype = "AOG";
+            }
+            if (trtype == null) {
+                throw new NullPointerException("单据类别错误，OA需要JCDF或JCDX");
+            }
+            String facno = e.getTa014();
+            String prono = "1";
+            String trno = "";
+            Date trdate = BaseLib.getDate("yyyy/MM/dd", BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
+            short trseq = 0;
+            //获取ERP库存交易类别
+            invdouBean.setCompany(facno);
+            Invdou invdou = invdouBean.findByTrtype(trtype);
+            if (invdou == null) {
+                throw new NullPointerException("单据类别错误，ERP需要AOG");
+            }
+            List<Cdrlndta> addedDetail = new ArrayList();
+            //EclipseLink无法完成外键关联同时更新
+            //HashMap<SuperEJBForERP, List<?>> detailAdded = new HashMap<>();
+            //detailAdded.put(cdrlndtaBean, addedDetail);
+            this.setCompany(facno);
             for (WARMI05Detail d : warmi05Bean.getDetailList()) {
                 trseq++;
                 Cdrlndta cdrlndta = new Cdrlndta();
@@ -350,6 +348,7 @@ public class CdrlnhadBean extends SuperEJBForERP<Cdrlnhad> {
 
             return true;
         } catch (Exception ex) {
+            ex.printStackTrace();
             log4j.error(ex);
             return false;
         }

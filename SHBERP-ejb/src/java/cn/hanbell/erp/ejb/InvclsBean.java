@@ -29,6 +29,8 @@ public class InvclsBean extends SuperEJBForERP<Invcls> {
     @EJB
     private SyncCQBean syncCQBean;
     @EJB
+    private SyncYCBean syncYCBean;
+    @EJB
     private SyncComerBean syncComerBean;
     @EJB
     private SyncHKBean syncHKBean;
@@ -148,6 +150,9 @@ public class InvclsBean extends SuperEJBForERP<Invcls> {
                 // 重庆
                 syncCQBean.persist(invcls, null);
                 syncCQBean.getEntityManager().flush();
+                // 银川
+                syncYCBean.persist(invcls, null);
+                syncYCBean.getEntityManager().flush();
                 // 柯茂
                 syncComerBean.persist(invcls, null);
                 syncComerBean.getEntityManager().flush();
