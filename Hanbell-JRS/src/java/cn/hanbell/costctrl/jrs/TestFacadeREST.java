@@ -959,6 +959,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         hm.setApprresno(miscodeBean.findByPK("1O", h.getApprresno()).getCdesc());
                         // 加入付款条件叙述
                         hm.setPaycodedsc(h.getPaycodedsc());
+                        hm.setTotamts(h.getTotamts().doubleValue());
                         workFlowBean.initUserInfo(h.getUserno());
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);

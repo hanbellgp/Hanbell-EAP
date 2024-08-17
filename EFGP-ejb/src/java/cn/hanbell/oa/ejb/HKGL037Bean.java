@@ -189,6 +189,7 @@ public class HKGL037Bean extends SuperEJBForEFGP<HKGL037> {
             m.setSgls(0);
             m.setZgls(0);
             m.setTotal(0);
+            m.setDeparture(aa.getDeparture());
             m.setHzgl004(psn);
             //hdnDept C/K流程签核栏位，部门主管
             if ("1T100".equals(m.getDept())) {
