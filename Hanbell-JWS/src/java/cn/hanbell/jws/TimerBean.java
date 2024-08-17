@@ -1340,7 +1340,7 @@ public class TimerBean {
         }
         log4j.info("ERP-APM820费用类立账申请抛转EFGP签核轮询结束");
     }
-    
+
 //    @Schedule(minute = "*/5", hour = "7-23", persistent = false)
 //    public void createVHTV005ByVHBERPAPM820() {
 //        log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询开始");
@@ -1507,7 +1507,6 @@ public class TimerBean {
 //        }
 //        log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询结束");
 //    }
-
     private void createOAHKYX009ByERPCDR220(String company) {
         HKYX009Model hm;
         HKYX009DetailModel dm;
@@ -2014,6 +2013,7 @@ public class TimerBean {
                         if (rm != null && rm.length == 2 && rm[0].equals("200")) {
                             // 更新ERP APM820状态
                             h.setApsta("25");
+                            h.setOano(rm[1]);
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }
@@ -2131,6 +2131,7 @@ public class TimerBean {
                         if (rm != null && rm.length == 2 && rm[0].equals("200")) {
                             // 更新ERP APM828状态
                             h.setApsta("25");
+                            h.setOano(rm[1]);
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }
