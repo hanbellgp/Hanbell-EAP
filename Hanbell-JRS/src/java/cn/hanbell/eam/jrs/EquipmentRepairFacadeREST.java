@@ -1709,15 +1709,23 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     throw new WebApplicationException(Response.Status.NOT_FOUND);
                 }
 
-                String deptno = sysCodeBean.findBySyskindAndCode(companyCodeStr, "RD", "repairDeptno").getCvalue();
+//                String deptno = sysCodeBean.findBySyskindAndCode(companyCodeStr, "RD", "repairDeptno").getCvalue();
                 repairReasonListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "faultType");
                 hitchUrgencyListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "hitchurgency");
                 repairAreaListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairarea");
                 String key, value = "";
-                filterFields.put("deptno", deptno);
-                filterFields.put("status", "N");
+//                filterFields.put("deptno", deptno);
+//                filterFields.put("status", "N");
                 //assetCardListRes = superEJB.findByFilters(filterFields, offset, pageSize, sortFields);
-                repairUserListRes = systemUserBean.findByFilters(filterFields);
+                List<SysCode> sysCodes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairDeptno");
+//                repairUserListRes = systemUserBean.findByFilters(filterFields);
+                for (SysCode sc : sysCodes) {
+                    filterFields.clear();
+                    filterFields.put("deptno", sc.getCvalue());
+                    filterFields.put("status", "N");
+                     List<SystemUser> repairUserList = systemUserBean.findByFilters(filterFields);
+                    repairUserListRes.addAll(repairUserList);
+                }
 
                 System.out.print(repairUserListRes);
 
