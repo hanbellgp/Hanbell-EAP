@@ -37,6 +37,7 @@ import cn.hanbell.erp.ejb.PricingUserBean;
 import cn.hanbell.erp.ejb.PurachBean;
 import cn.hanbell.erp.ejb.PurhaskBean;
 import cn.hanbell.erp.ejb.PurvdrBean;
+import cn.hanbell.erp.ejb.SecgprgBean;
 import cn.hanbell.erp.ejb.SecmembBean;
 import cn.hanbell.erp.ejb.SecuserBean;
 import cn.hanbell.erp.entity.Apmapd;
@@ -139,6 +140,8 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
     private CdrcusBean cdrcusBean;
     @EJB
     private PricingUserBean pricingUserBean;
+    @EJB
+    private SecgprgBean secgprgBean;
 
     @EJB
     private HKCW002Bean hkcw002Bean;
@@ -261,6 +264,9 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
             HashMap<SuperEJB, List<?>> hkcw002DetailEdited = new HashMap<>();
             hkcw002DetailEdited.put(hkcw002Bean, editedHKCW002Detail);
             for (HKCW002 e : hkcw002List) {
+//                if (!e.getFacno().equals("C5")) {
+//                    continue;
+//                }
                 purhaskBean.setCompany(e.getFacno());
                 purachBean.setCompany(e.getFacno());
                 // HKCG007抛转PUR210时截取了流程序号,省略了PKG_
@@ -281,7 +287,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         // EFGP相关对象
                         hkcw002Bean.setDetail(e.getFormSerialNumber());
                         hkcw002Details = hkcw002Bean.getDetailList();
-
+                        
                         if (hkcw002Details != null && !hkcw002Details.isEmpty()) {
                             for (HKCW002Detail d : hkcw002Details) {
                                 if (d.getPurqty() == null || "".equals(d.getPurqty())) {
@@ -293,6 +299,9 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                                         continue;
                                     }
                                 }
+//                                if (d.getItemno().equals("BS226-03-0012")) {
+//                                    System.out.println(d.getFormSerialNumber() + prh.getPurhaskPK().getPrno());
+//                                }
                                 // 得到验收单号数组
                                 acceptno = purachBean.findByPrnoAndItnbr(prh.getPurhaskPK().getPrno(), d.getItemno());
                                 if (acceptno != null) {
@@ -625,11 +634,6 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         hm.setIndate(h.getIndate());
                         hm.setInuser(h.getUserno());
                         hm.setIsretmoney(h.getIsretmoney().toString());
-                        if (null == ls_mark) {
-                            hm.setHmark("");
-                        } else {
-                            hm.setHmark(ls_mark);
-                        }
                         // 表单下方合计栏位(取2位小数)
                         hm.setSum_apamtfs(sumapamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
                         hm.setSum_apamt(sumapamtfs.multiply(ratio).setScale(2, BigDecimal.ROUND_HALF_UP));
@@ -647,8 +651,17 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         hm.setCompute_1(sumqty);
                         hm.setSumivomsfs((double) Math.round(sumivomsfs * 100) / 100);
                         hm.setSumivopsfs((double) Math.round(sumivopsfs * 100) / 100);
+                        //请款金额为0的OA免签
+                        if (hm.getTotalfs().compareTo(BigDecimal.ZERO) <= 0) {
+                            ls_mark = "OA免签";
+                        }
                         //设定OA是否需要传附件
                         hm.setIsAttachment(isAttachment);
+                        if (null == ls_mark) {
+                            hm.setHmark("");
+                        } else {
+                            hm.setHmark(ls_mark);
+                        }
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("SHB_ERP_APM811", hm, details);
                         String subject = "进货请款申请单：" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款天数（"
@@ -697,6 +710,11 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
             apmaphBean.setCompany(company);
             purvdrBean.setCompany(company);
             List<Apmaph> apmaphList = apmaphBean.findNeedThrow("0");
+            //加入APM826
+            List<Apmaph> apmaph826List = apmaphBean.findNeedThrow("5");
+            for (Apmaph apmh826 : apmaph826List) {
+                apmaphList.add(apmh826);
+            }
             List<Apmapd> apmapdList;
             int i;
             BigDecimal sumapamtfs;
@@ -838,6 +856,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         if (rm != null && rm.length == 2 && rm[0].equals("200")) {
                             // 更新ERP APM820状态
                             h.setApsta("25");
+                            h.setOano(rm[1]);
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }
@@ -1573,4 +1592,12 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
         Pattern pattern = Pattern.compile("^[0-9]$");
         return pattern.matcher(employeeid).matches();
     }
+
+    @GET
+    @Path("erp/mis226")
+    @Consumes({"application/json"})
+    public void CopySecuprg(@QueryParam("facno") String facno, @QueryParam("userno1") String userno1, @QueryParam("userno2") String userno2) {
+        secgprgBean.updateSecuprg(facno, userno1, userno2);
+    }
+
 }

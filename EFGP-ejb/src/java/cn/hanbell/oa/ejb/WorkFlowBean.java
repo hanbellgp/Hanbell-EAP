@@ -155,8 +155,11 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                         builder.append("<").append(f.getName()).append("  id=\"").append(f.getName()).append("\" list_hidden=\"\" dataType=\"").append(f.getType().getName()).append("\" />");
                     }
                 } else {
-                    builder.append("<").append(f.getName()).append("  id=\"").append(f.getName()).append("\"  dataType=\"").append(f.getType().getName()).append("\" perDataProId=\"\">");
-                    builder.append(f.get(master)==null?"":f.get(master)).append("</").append(f.getName()).append(">");
+//                    builder.append("<").append(f.getName()).append("  id=\"").append(f.getName()).append("\"  dataType=\"").append(f.getType().getName()).append("\" perDataProId=\"\">");
+//                    builder.append(f.get(master)==null?"":f.get(master)).append("</").append(f.getName()).append(">");
+                      builder.append("<").append(f.getName()).append(" id=\"").append(f.getName()).append("\"").append(" txt=\"").append(f.get(master)).append("\" hdn=\"\" ")
+                              .append(" dataType=\"").append(f.getType().getName()).append("\" perDataProId=\"\">");
+                      builder.append(f.get(master)).append("</").append(f.getName()).append(">");
                 }
             } catch (IllegalArgumentException | IllegalAccessException ex) {
                 log4j.error(ex);

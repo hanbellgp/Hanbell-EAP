@@ -15,6 +15,7 @@ import cn.hanbell.erp.entity.Secgsys;
 import cn.hanbell.erp.entity.Secguser;
 import cn.hanbell.erp.entity.Secmemb;
 import cn.hanbell.erp.entity.Secuprg;
+import cn.hanbell.erp.entity.SecuprgPK;
 import cn.hanbell.erp.entity.Secuser;
 import cn.hanbell.erp.entity.Secusys;
 import cn.hanbell.oa.ejb.HKGL066Bean;
@@ -720,6 +721,79 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
             secusysAdded = null;
             secuprgAdded = null;
             detailAdded = null;
+        }
+
+    }
+
+    //复制一个员工权限
+    public Boolean updateSecuprg(String facno, String userno1, String userno2) {
+        List<Secguser> secguerList = new ArrayList<>();
+//        List<Secgsys> secgsysAdded = new ArrayList<>();
+//        List<Secgprg> secgprgAdded = new ArrayList<>();
+//        List<Secusys> secusysAdded = new ArrayList<>();
+//        List<Secuprg> secuprgAdded = new ArrayList<>();
+        try {
+            secguserBean.setCompany(facno);
+            secguerList = secguserBean.findByUserno(userno1);
+            for (Secguser secguser : secguerList) {
+                if (null == secguserBean.findByPK(secguser.getSecguserPK().getGroupno(), "G", userno2)) {
+                    // 加入岗位群组
+                    //secguser.getSecguserPK().setUserno(userno2);
+                    //secguserBean.persist(secguser);
+                    secguserBean.persist(new Secguser(secguser.getSecguserPK().getGroupno(), secguser.getSecguserPK().getGtype(), userno2));
+                }
+            }
+            // 产生群组权限
+            secgsysBean.setCompany(facno);
+            List<Secgsys> secgsysList = secgsysBean.findByGroupno(userno1);
+            for (Secgsys secgsys : secgsysList) {
+                if (null == secgsysBean.findByPK(secgsys.getSecgsysPK().getSysno(), userno2, secgsys.getSecgsysPK().getGtype())) {
+                    //secgsys.getSecgsysPK().setGroupno(userno2);
+                    //secgsysBean.persist(secgsys);
+                    //secgsysAdded.add(secgsys);
+                    secgsysBean.persist(new Secgsys(secgsys.getSecgsysPK().getSysno(), userno2, secgsys.getSecgsysPK().getGtype()));
+                }
+            }
+            this.setCompany(facno);
+            List<Secgprg> secgprgList = this.findByGroupno(userno1);
+            for (Secgprg g : secgprgList) {
+                if (null == this.findByPK(g.getSecgprgPK().getPrgno(), g.getSecgprgPK().getSysno(), userno2, g.getSecgprgPK().getGtype())) {
+                    Secgprg secgprg = (Secgprg) BeanUtils.cloneBean(g);
+                    secgprg.setSecgprgPK(new SecgprgPK(g.getSecgprgPK().getPrgno(), g.getSecgprgPK().getSysno(), userno2, g.getSecgprgPK().getGtype()));
+                    this.persist(secgprg);
+                    //secgprgAdded.add(secgprg);
+                }
+            }
+            //产生个人权限
+            secusysBean.setCompany(facno);
+            List<Secusys> secusysList = secusysBean.findByUserno(userno1);
+            for (Secusys secusys : secusysList) {
+                if (null == secusysBean.findByPK(secusys.getSecusysPK().getSysno(), userno2)) {
+                    //secusysAdded.add(new Secusys(secusys.getSecusysPK().getSysno(), userno2));
+                    secusysBean.persist(new Secusys(secusys.getSecusysPK().getSysno(), userno2));
+                }
+            }
+            secuprgBean.setCompany(facno);
+            List<Secuprg> secuprgList = secuprgBean.findByUserno(userno1);
+            for (Secuprg s : secuprgList) {
+                if (null == secuprgBean.findByPK(s.getSecuprgPK().getPrgno(), userno2)) {
+                    Secuprg secuprg = (Secuprg) BeanUtils.cloneBean(s);
+                    secuprg.setSecuprgPK(new SecuprgPK(s.getSecuprgPK().getPrgno(), userno2));
+                    secuprgBean.persist(secuprg);
+                    //secuprgAdded.add(secuprg);
+                }
+            }
+            return true;
+        } catch (Exception ex) {
+            log4j.error(ex);
+            throw new RuntimeException(ex);
+        } finally {
+//            secgprgAdded.clear();
+//            secusysAdded.clear();
+//            secuprgAdded.clear();
+//            secgprgAdded = null;
+//            secusysAdded = null;
+//            secuprgAdded = null;
         }
 
     }
