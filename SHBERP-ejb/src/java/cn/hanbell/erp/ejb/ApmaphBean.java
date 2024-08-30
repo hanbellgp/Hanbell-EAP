@@ -141,7 +141,7 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
     }
 
     /**
-     * 只更新ERP 费用类立账申请APM820表头状态
+     * 只更新ERP 费用类立账申请APM820/APM826表头状态
      *
      * @param psn 流程序号
      */
@@ -152,7 +152,7 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
         }
         String facno = oah.getFacno();
         String apno = oah.getApno();
-        String aptyp = "0";     //费用类立账申请
+        String aptyp = oah.getAptyp();     //费用类立账申请
         this.setCompany(facno);
         Apmaph aph = findByPK(facno, apno, aptyp);
         if (aph == null || !aph.getApsta().equals("25")) {
@@ -161,16 +161,18 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
         //"3"流程完成, "1"流程撤销
         if ("3".equals(status)) {
             aph.setApsta("20");
-            // 更新apusrno,cfmusrno为OA审核人
             aph.setOano(oah.getProcessSerialNumber().substring(4));
-            List<ProcessCheck> processList;
-            processList = processCheckBean.findByPSN(psn);
-            for (ProcessCheck pc : processList) {
-                if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
-                    aph.setApusrno(pc.getUserID());
-                }
-                if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
-                    aph.setCfmusrno(pc.getUserID());
+            if ("5".equals(aptyp)) {  //来源APM826
+                // 更新apusrno,cfmusrno为OA审核人
+                List<ProcessCheck> processList;
+                processList = processCheckBean.findByPSN(psn);
+                for (ProcessCheck pc : processList) {
+                    if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
+                        aph.setApusrno(pc.getUserID());
+                    }
+                    if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
+                        aph.setCfmusrno(pc.getUserID());
+                    }
                 }
             }
         } else if ("1".equals(status)) {

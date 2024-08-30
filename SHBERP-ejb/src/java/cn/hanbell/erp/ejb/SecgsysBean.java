@@ -47,5 +47,14 @@ public class SecgsysBean extends SuperEJBForERP<Secgsys> {
             return null;
         }
     }
-
+    
+    public List<Secgsys> findByGroupno(String groupno) {
+        Query query = getEntityManager().createNamedQuery("Secgsys.findByGroupno");
+        query.setParameter("groupno", groupno);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 }

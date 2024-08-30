@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Secgsys.findAll", query = "SELECT s FROM Secgsys s"),
     @NamedQuery(name = "Secgsys.findByPK", query = "SELECT s FROM Secgsys s WHERE s.secgsysPK.sysno = :sysno AND s.secgsysPK.groupno = :groupno AND s.secgsysPK.gtype = :gtype"),
     @NamedQuery(name = "Secgsys.findBySysno", query = "SELECT s FROM Secgsys s WHERE s.secgsysPK.sysno = :sysno"),
+    @NamedQuery(name = "Secgsys.findByGroupno", query = "SELECT s FROM Secgsys s WHERE s.secgsysPK.groupno = :groupno "),
     @NamedQuery(name = "Secgsys.findByGroupnoAndGtype", query = "SELECT s FROM Secgsys s WHERE s.secgsysPK.groupno = :groupno AND s.secgsysPK.gtype = :gtype")})
 public class Secgsys implements Serializable {
 

@@ -202,9 +202,12 @@ public class HKCW013 implements Serializable {
     @Column(name = "ratio")
     private String ratio;
     @Size(max = 255)
+    @Column(name = "aptyp")
+    private String aptyp;
+    @Size(max = 255)
     @Column(name = "cmp_sum_tax")
     private String cmpSumTax;
-     
+
     public HKCW013() {
     }
 
@@ -475,7 +478,7 @@ public class HKCW013 implements Serializable {
     public void setCheck1(String check1) {
         this.check1 = check1;
     }
-    
+
     public String getSerialNumber() {
         return serialNumber;
     }
@@ -584,5 +587,13 @@ public class HKCW013 implements Serializable {
     public String getCompanyName() {
         WorkFlowBean WorkFlowBean = new WorkFlowBean();
         return WorkFlowBean.getCompanyName(this.facno);
+    }
+
+    public String getAptyp() {
+        return aptyp;
+    }
+
+    public void setAptyp(String aptyp) {
+        this.aptyp = aptyp;
     }
 }

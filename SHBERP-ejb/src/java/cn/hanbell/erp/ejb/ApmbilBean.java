@@ -430,7 +430,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
             //加入邮件通知
             ErrorMailNotificationBean mailBean = new ErrorMailNotificationBean();
             mailBean.getTo().clear();
-            mailBean.getTo().add("13120@hanbell.com.cn");
+            mailBean.getTo().add("C1491@hanbell.com.cn");
             mailBean.setMailSubject("OA进货验收类冲暂估立账申请单抛转ERP失败");
             mailBean.setMailContent(
                     "OA进货验收类冲暂估立账申请单单号：" + psn + "抛转失败，异常：" + ex);
@@ -591,18 +591,18 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
             //抛转单号为OA表单代号
             aph.setOano(oah.getFormSerialNumber());
             aph.setApsta("30");
-            // 更新apusrno,cfmusrno为OA审核人
             aph.setOano(oah.getProcessSerialNumber().substring(4));
-            List<ProcessCheck> processList;
-            processList = processCheckBean.findByPSN(psn);
-            for (ProcessCheck pc : processList) {
-                if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
-                    aph.setApusrno(pc.getUserID());
-                }
-                if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
-                    aph.setCfmusrno(pc.getUserID());
-                }
-            }
+            // 更新apusrno,cfmusrno为OA审核人
+//            List<ProcessCheck> processList;
+//            processList = processCheckBean.findByPSN(psn);
+//            for (ProcessCheck pc : processList) {
+//                if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
+//                    aph.setApusrno(pc.getUserID());
+//                }
+//                if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
+//                    aph.setCfmusrno(pc.getUserID());
+//                }
+//            }
             apmaphBean.setCompany(facno);
             apmaphBean.update(aph);
             return true;
