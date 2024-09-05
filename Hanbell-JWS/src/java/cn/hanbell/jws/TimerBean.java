@@ -1847,6 +1847,7 @@ public class TimerBean {
                             if ("OA免签".equals(ls_mark)) {
                                 h.setHmark(ls_hmark + ls_mark);
                             }
+                            apmaphBean.setCompany(company);
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }
@@ -2018,6 +2019,7 @@ public class TimerBean {
                             // 更新ERP APM820状态
                             h.setApsta("25");
                             h.setOano(rm[1]);
+                            apmaphBean.setCompany(company);
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }
@@ -2136,6 +2138,7 @@ public class TimerBean {
                             // 更新ERP APM828状态
                             h.setApsta("25");
                             h.setOano(rm[1]);
+                            apmaphBean.setCompany(company);
                             apmaphBean.update(h);
                             apmaphBean.getEntityManager().flush();
                         }

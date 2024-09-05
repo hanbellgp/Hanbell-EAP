@@ -301,6 +301,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                                 if (apmpyh.getAivoamt().compareTo(BigDecimal.ZERO) < 0) {
                                     throw new RuntimeException("目前申请立账金额小于0！请查看！");
                                 }
+                                apmpyhBean.setCompany(facno);
                                 apmpyhBean.update(apmpyh);
                             }
 
@@ -339,6 +340,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                             apmpur.setProno("");
                             apmpur.setTrtype(ls_ogdkid_r);
                             apmpur.setApmqty(erpd.getPayqty());
+                            apmpurBean.setCompany(facno);
                             apmpurBean.persist(apmpur);
                         }
 
@@ -408,6 +410,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                     a.setOpbanknum(atb.getOpbanknum());
                     persist(a);
                     atb.setBilstat('2');
+                    apmtbilBean.setCompany(facno);
                     apmtbilBean.update(atb);
                 }
                 //抛转单号为OA表单代号
