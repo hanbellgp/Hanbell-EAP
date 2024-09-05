@@ -456,13 +456,12 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
     @Path("1491/mail")
     @Consumes({"application/json"})
     @Produces({MediaType.APPLICATION_JSON})
-    public MCResponseData checkMailSent() {
+    public MCResponseData checkMailSent(@QueryParam("userno") String userno) {
         MailNotificationBean mailBean = new MailNotificationBean();
         mailBean.getTo().clear();
         mailBean.getTo().add("C1491@hanbell.cn");
         mailBean.setMailSubject("测试发送");
-        mailBean.setMailContent(
-                "测试发送邮件------ 发送：");
+        mailBean.setMailContent("测试发送邮件------ 发送："+userno);
         mailBean.notify(new MailNotify());
         return null;
     }

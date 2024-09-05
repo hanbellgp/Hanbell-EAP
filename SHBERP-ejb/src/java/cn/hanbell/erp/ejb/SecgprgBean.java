@@ -822,7 +822,10 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
         Query query = getEntityManager().createNamedQuery("Secgprg.findByGroupnoAndGtype");
         query.setParameter("groupno", value);
         query.setParameter("gtype", t);
-        return query.getResultList();
+        List<Secgprg> list = query.getResultList();
+        //去除权限中未设定程式档
+        list.removeIf(o -> o.getSecprg() == null);
+        return list;
     }
 
     public List<Secgprg> findByGroupnoGtypeAndSysno(String groupno, String gtype, String sysno) {

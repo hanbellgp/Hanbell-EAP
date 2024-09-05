@@ -70,7 +70,12 @@ public class MiscodeBean extends SuperEJBForERP<Miscode> {
             if (query.getSingleResult() != null) {
                 maxid = query.getSingleResult().toString();
                 int m = maxid.length();
-                id = Integer.parseInt(maxid.substring(m - len, m)) + 1;
+                //处理一些ERP中maxid为5码与6码过渡的问题
+                if (m == 5 && "NB".equals(ckind) && "B".equals(code)) {
+                    id = Integer.parseInt(maxid.substring(m - len + 1, m)) + 1;
+                } else {
+                    id = Integer.parseInt(maxid.substring(m - len, m)) + 1;
+                }
                 newid = code + d + String.format("%0" + len + "d", id);
             } else {
                 newid = code + d + String.format("%0" + len + "d", 1);
