@@ -1717,21 +1717,22 @@ public class EAPWebService {
         }
     }
 
-//    @WebMethod(operationName = "createVHBERPAPM250ByOAVHBAPM820")
-//    public String createVHBERPAPM250ByOAVHBAPM820(@WebParam(name = "psn") String psn) {
-//        Boolean ret = false;
-//        try {
-//            ret = vhbapmbilBean.initByOAAPM820(psn);
-//        } catch (Exception ex) {
-//            log4j.error(String.format("执行%s:参数%s时异常", "createVHBERPAPM250ByOAVHBAPM820", psn), ex);
-//            throw new RuntimeException(ex);
-//        }
-//        if (ret) {
-//            return "200";
-//        } else {
-//            return "404";
-//        }
-//    }
+    @WebMethod(operationName = "createVHBERPAPM250ByOAVHBAPM820")
+    public String createVHBERPAPM250ByOAVHBAPM820(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = vhbapmbilBean.initByOAAPM820(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "createVHBERPAPM250ByOAVHBAPM820", psn), ex);
+            throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+    
     @WebMethod(operationName = "createERPAPM525ByOAAPM828")
     public String createERPAPM525ByOAAPM828(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -1780,21 +1781,22 @@ public class EAPWebService {
         }
     }
 
-//    @WebMethod(operationName = "updateVHBERPAPM820ByOAVHTV005")
-//    public String updateVHBERPAPM820ByOAVHTV005(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
-//        Boolean ret = false;
-//        try {
-//            ret = vhbapmaphBean.updateVHBERPAPM820ByOAVHTV005(psn, status);
-//        } catch (Exception ex) {
-//            log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM820ByOAHKCW013", psn), ex);
-//            throw new RuntimeException(ex);
-//        }
-//        if (ret) {
-//            return "200";
-//        } else {
-//            return "404";
-//        }
-//    }
+    @WebMethod(operationName = "updateVHBERPAPM820ByOAVHTV005")
+    public String updateVHBERPAPM820ByOAVHTV005(@WebParam(name = "psn") String psn, @WebParam(name = "status") String status) {
+        Boolean ret = false;
+        try {
+            ret = vhbapmaphBean.updateVHBERPAPM820ByOAVHTV005(psn, status);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateERPAPM820ByOAHKCW013", psn), ex);
+            throw new RuntimeException(ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+    
     @WebMethod(operationName = "createERPCDR645ByOAHKFW005")
     public String createERPCDR645ByOAHKFW005(@WebParam(name = "psn") String psn) {
         Boolean ret = false;

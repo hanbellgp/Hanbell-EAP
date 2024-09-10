@@ -83,18 +83,18 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
         //"3"流程完成, "1"流程撤销
         if ("3".equals(status)) {
             aph.setApsta("20");
-            // 更新apusrno,cfmusrno为OA审核人
             aph.setOano(oah.getProcessSerialNumber().substring(4));
-            List<ProcessCheck> processList;
-            processList = processCheckBean.findByPSN(psn);
-            for (ProcessCheck pc : processList) {
-                if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
-                    aph.setApusrno(pc.getUserID());
-                }
-                if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
-                    aph.setCfmusrno(pc.getUserID());
-                }
-            }
+              // 更新apusrno,cfmusrno为OA审核人
+//            List<ProcessCheck> processList;
+//            processList = processCheckBean.findByPSN(psn);
+//            for (ProcessCheck pc : processList) {
+//                if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
+//                    aph.setApusrno(pc.getUserID());
+//                }
+//                if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
+//                    aph.setCfmusrno(pc.getUserID());
+//                }
+//            }
         } else if ("1".equals(status)) {
             aph.setOano("");
             aph.setApsta("20");
