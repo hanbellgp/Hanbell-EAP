@@ -201,6 +201,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                     a.setOpbanknum(atb.getOpbanknum());
                     persist(a);
                     atb.setBilstat('2');
+                    vhbapmtbilBean.setCompany(facno);
                     vhbapmtbilBean.update(atb);
                 }
                 bilList.add(ls_bilno);
