@@ -9,8 +9,10 @@ import javax.ejb.Stateless;
 import javax.ws.rs.Path;
 import cn.hanbell.eam.entity.AssetCard;
 import cn.hanbell.eam.ejb.AssetCardBean;
+import cn.hanbell.eam.ejb.AssetCardSpecialBean;
 import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.ejb.SysCodeBean;
+import cn.hanbell.eam.entity.AssetCardSpecial;
 import cn.hanbell.eam.entity.AssetItem;
 import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eam.entity.SysCode;
@@ -42,24 +44,26 @@ import javax.ws.rs.core.Response;
 @Stateless
 @Path("shbeam/assetcardtest")
 public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
+
     @EJB
     private AssetCardBean assetCardBean;
     @EJB
+    private AssetCardSpecialBean assetCardSpecialBean;
+    @EJB
     private EquipmentRepairBean equipmentrepairBean;
-     @EJB
+    @EJB
     private SysCodeBean sysCodeBean;
     protected SuperEJB superEJB;
-    
+
     @Override
     protected SuperEJB getSuperEJB() {
         return assetCardBean;
     }
-    
 
     public AssetcardFacadeREST() {
         super(AssetCard.class);
     }
-    
+
     @GET
     @Path("getAssetCardModel/{filters}")
     @Consumes({"application/json"})
@@ -80,18 +84,21 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
                         filterFields.put(key, value);
                     }
                 }
-                assetCardRes = assetCardBean.findByAssetno(filterFields.get("formid").toString());
+                String formid=filterFields.get("formid").toString();
+                assetCardRes = assetCardBean.findByAssetno(formid);
+                if (assetCardRes==null) {
+                    assetCardRes=assetCardSpecialBean.transitionAssetCardSpecial(assetCardSpecialBean.findByAssetno(formid));
+                }
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
 //            return assetCardListRes;
-                return assetCardRes;
+            return assetCardRes;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
-    
+
     @GET
     @Path("getAssetCardList/{filters}/{sorts}/{offset}/{pageSize}")
     @Consumes({"application/json"})
@@ -107,13 +114,12 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
                 Map<String, Object> filterFields = new HashMap<>();
                 Map<String, String> sortFields = new LinkedHashMap<>();
                 String key = "", value = "";
-                String companyCode = "C",deptNo = "";
-                if(deptCheckCode != null){
-                    if(deptCheckCode.split("_").length >= 2){
+                String companyCode = "C", deptNo = "";
+                if (deptCheckCode != null) {
+                    if (deptCheckCode.split("_").length >= 2) {
                         companyCode = deptCheckCode.split("_")[0];
                         deptNo = deptCheckCode.split("_")[1];
-                    }
-                    else{
+                    } else {
                         throw new Exception("Invalid DeptCheckCode");
                     }
                 }
@@ -121,7 +127,7 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
-                        filterFields.put(key,value);
+                        filterFields.put(key, value);
                     }
                 }
                 if (sortsMM != null) {
@@ -132,15 +138,31 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
                     }
                 }
                 assetCardListRes = assetCardBean.getAssetCardList(companyCode, searchInfo, deptNo, filterFields);
+                String deptnoTemp = "";
+                if (deptNo.contains("000")) {
+                    deptnoTemp = deptNo.substring(0, 2);
+                } else if (deptNo.length() > 2) {
+                    deptnoTemp = deptNo.substring(0, 3);
+                }
+                filterFields.put("company", companyCode);
+                filterFields.put("deptno", deptnoTemp);
+                filterFields.put("assetDesc", searchInfo);
+                List<AssetCardSpecial> list = assetCardSpecialBean.findByFilters(filterFields);
+                for (AssetCardSpecial aSpecial : list) {
+                    AssetCard as =new AssetCard();
+                    as=assetCardSpecialBean.transitionAssetCardSpecial(aSpecial);
+                    assetCardListRes.add(as);
+                }
+               
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
-                return assetCardListRes;
+            return assetCardListRes;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     @POST
     @Path("createEqpRepairHad")
     @Consumes({"application/json"})
@@ -156,15 +178,14 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
                 AssetItem assetItemTemp = new AssetItem();
                 assetItemTemp.setItemno(itemno);
                 assetCardTemp.setAssetItem(assetItemTemp);
-                
-                
+
                 String formid = equipmentrepairBean.getFormId(new Date(), "AP", "YYYYMMdd", 4);
-                
+
                 equipInvenTemp.setCompany(entity.getCompany());
                 equipInvenTemp.setAssetno(entity.getAssetno());
                 equipInvenTemp.setRepairuser(entity.getRepairuser());
                 equipInvenTemp.setFormid(formid);
-                equipInvenTemp.setCredate(new Date()); 
+                equipInvenTemp.setCredate(new Date());
                 equipmentrepairBean.persist(equipInvenTemp);
                 return new ResponseMessage("200", "Code=200");
             } catch (Exception ex) {
@@ -176,7 +197,6 @@ public class AssetcardFacadeREST extends SuperRESTForEAM<AssetCard> {
     }
 
 }
-
 
 class AssetcardResponseResult {
 

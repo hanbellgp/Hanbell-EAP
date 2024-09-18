@@ -48,14 +48,25 @@ public class SecguserBean extends SuperEJBForERP<Secguser> {
         }
     }
 
-        /**
+    //根据员工工号获取群组
+    public List<Secguser> findByUserno(String userno) {
+        Query query = getEntityManager().createNamedQuery("Secguser.findByUserno");
+        query.setParameter("userno", userno);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    /**
      * 获取员工剩余年休假天数
      *
      * @param employeeid 工号
      * @return
      * @throws java.lang.Exception
      */
-    public BigDecimal getLeftYearDays(String employeeid)throws Exception {
+    public BigDecimal getLeftYearDays(String employeeid) throws Exception {
         StringBuffer sql = new StringBuffer();
         sql.append("select leftyeardays from test.dbo.nianjia where employeeid='").append(employeeid).append("'");
         Query query = getEntityManager().createNativeQuery(sql.toString());

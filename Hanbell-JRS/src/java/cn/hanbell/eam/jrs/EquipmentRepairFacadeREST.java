@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.ws.rs.Path;
 import cn.hanbell.eam.entity.AssetCard;
 import cn.hanbell.eam.ejb.AssetCardBean;
+import cn.hanbell.eam.ejb.AssetCardSpecialBean;
 import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.ejb.EquipmentRepairFileBean;
 import cn.hanbell.eam.ejb.EquipmentRepairHelpersBean;
@@ -123,12 +124,15 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     @EJB
     private AssetCardBean assetCardBeam;
 
+    @EJB
+    private AssetCardSpecialBean assetCardSpecialBean;
+
     protected SuperEJB superEJB;
 
     //生产环境
-     private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //测试环境
-  //  private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    //  private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -153,6 +157,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 EquipmentRepair equipInvenTemp = new EquipmentRepair();
                 AssetCard assetCardTemp = new AssetCard();
                 assetCardTemp = assetCardBeam.findById(Integer.parseInt(assetCardId));
+                if (entity.getItemno().equals("AS000")) {//非盘点资产查询
+                    assetCardTemp = assetCardSpecialBean.transitionAssetCardSpecial(assetCardSpecialBean.findById(Integer.parseInt(assetCardId)));
+                }
                 //String formid = equipmentrepairBean.getFormId(new Date(), "AP", "YYYYMMdd", 4);
                 String formid = equipmentrepairBean.getFormId(new Date(), "PR", "YYMM", 4);
                 String companyCodeStr = entity.getCompany();
@@ -1394,6 +1401,12 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 
                 //assetCardListRes = superEJB.findByFilters(filterFields, offset, pageSize, sortFields);
                 eqpRepairListRes = equipmentrepairBean.getEquipmentRepairList(filterFields, sortFields);
+                for (EquipmentRepair eRepair : eqpRepairListRes) {
+                    if (eRepair.getItemno().equals("AS000")) {
+                        String formid = equipmentrepairBean.getAssetno(eRepair.getFormid());
+                        eRepair.setAssetno(assetCardSpecialBean.transitionAssetCardSpecial(assetCardSpecialBean.findByAssetno(formid)));
+                    }
+                }
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
@@ -1431,10 +1444,14 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 String key, value = "";
                 String userCheckTemp = "";
                 String companyCodeStr = "";
+                String formidText = "";
                 if (filtersMM != null) {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
+                        if (key.equals("formid")) {
+                            formidText = value;
+                        }
                         if (key.equals("userId")) {
                             userCheckTemp = value;
                         } else if (key.equals("company")) {
@@ -1469,6 +1486,13 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 
                 //assetCardListRes = superEJB.findByFilters(filterFields, offset, pageSize, sortFields);
                 eqpRepairListRes = equipmentrepairBean.getEquipmentRepairList(filterFields, sortFields);
+                for (EquipmentRepair eRepair : eqpRepairListRes) {
+                    if (eRepair.getItemno().equals("AS000")) {
+                        String formid = equipmentrepairBean.getAssetno(formidText);
+                        eRepair.setAssetno(assetCardSpecialBean.transitionAssetCardSpecial(assetCardSpecialBean.findByAssetno(formid)));
+                    }
+                }
+
                 EquipmentRepair repairResTemp = new EquipmentRepair();
 
                 if (eqpRepairListRes.size() > 0) {
@@ -1685,15 +1709,23 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     throw new WebApplicationException(Response.Status.NOT_FOUND);
                 }
 
-                String deptno = sysCodeBean.findBySyskindAndCode(companyCodeStr, "RD", "repairDeptno").getCvalue();
+//                String deptno = sysCodeBean.findBySyskindAndCode(companyCodeStr, "RD", "repairDeptno").getCvalue();
                 repairReasonListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "faultType");
                 hitchUrgencyListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "hitchurgency");
                 repairAreaListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairarea");
                 String key, value = "";
-                filterFields.put("deptno", deptno);
-                filterFields.put("status", "N");
+//                filterFields.put("deptno", deptno);
+//                filterFields.put("status", "N");
                 //assetCardListRes = superEJB.findByFilters(filterFields, offset, pageSize, sortFields);
-                repairUserListRes = systemUserBean.findByFilters(filterFields);
+                List<SysCode> sysCodes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairDeptno");
+//                repairUserListRes = systemUserBean.findByFilters(filterFields);
+                for (SysCode sc : sysCodes) {
+                    filterFields.clear();
+                    filterFields.put("deptno", sc.getCvalue());
+                    filterFields.put("status", "N");
+                     List<SystemUser> repairUserList = systemUserBean.findByFilters(filterFields);
+                    repairUserListRes.addAll(repairUserList);
+                }
 
                 System.out.print(repairUserListRes);
 

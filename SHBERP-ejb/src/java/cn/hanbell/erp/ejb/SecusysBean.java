@@ -37,4 +37,14 @@ public class SecusysBean extends SuperEJBForERP<Secusys> {
             return null;
         }
     }
+
+    public List<Secusys> findByUserno(String userno) {
+        Query query = getEntityManager().createNamedQuery("Secusys.findByUserno");
+        query.setParameter("userno", userno);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 }
