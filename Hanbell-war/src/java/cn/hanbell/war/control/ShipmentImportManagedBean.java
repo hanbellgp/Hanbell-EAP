@@ -237,6 +237,7 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
                                 //南京天加
                                 case "SJS00309":
                                     content.append(sd.getCustomerItem()).append("| 1100000429| ").append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(new DecimalFormat("00").format(sd.getLotseq()));
+                                     content.append("|").append(sd.getVarnr()).append("|").append(sd.getItemModel());
                                     break;
                                 case "SSD01036":
                                     // 海达源专属二维码
