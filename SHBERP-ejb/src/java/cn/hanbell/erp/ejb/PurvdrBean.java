@@ -278,6 +278,8 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         erp.setFkfs(oa.getFktype());
         erp.setPaysepcode('1');
         erp.setHandays1((short) 30);
+        erp.setTtbankadd(oa.getTtbankadd());
+        erp.setSwiftcode(oa.getSwiftcode());
 
         // 生成厂商编号
         newvdrno = getFormId(BaseLib.getDate(), code + erp.getCuycode(), null, 5, "purvdr", "vdrno");
