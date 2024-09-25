@@ -56,4 +56,10 @@ public class DepartmentBean extends SuperEJBForEAP<Department> {
         return query.getResultList();
     }
 
+    public Department findByConpanyAndPid(String conpany, int pid) {
+        Query query = getEntityManager().createNamedQuery("Department.findByCompanyAndPid");
+        query.setParameter("company", conpany);
+        query.setParameter("pid", pid);
+        return (Department) query.getSingleResult();
+    }
 }

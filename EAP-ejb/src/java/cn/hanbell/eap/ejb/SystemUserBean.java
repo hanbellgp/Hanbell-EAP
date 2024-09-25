@@ -262,6 +262,8 @@ public class SystemUserBean extends SuperEJBForEAP<SystemUser> {
                 return true;
             case "经理":
                 return true;
+            case "协理":
+                return true;
             case "副总经理":
                 return true;
             case "执行副总经理":
