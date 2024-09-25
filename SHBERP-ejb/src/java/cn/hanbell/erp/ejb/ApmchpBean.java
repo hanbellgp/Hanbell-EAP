@@ -128,7 +128,7 @@ public class ApmchpBean extends SuperEJBForERP<Apmchp> {
                     }
                     if (!"".equals(oad.getPayDate3txt()) && !oad.getPayDate3txt().equals(oad.getPayDate1txt()) && !oad.getPayDate3txt().equals(oad.getPayDate2txt())) {
                         Apmchp apmchp3 = new Apmchp();
-                        ApmchpPK apmhadPK3 = new ApmchpPK(facno, trno, vdrno, accno, detno, (short) 2);
+                        ApmchpPK apmhadPK3 = new ApmchpPK(facno, trno, vdrno, accno, detno, (short) 3);
                         apmchp3.setApmchpPK(apmhadPK3);
                         apmchp3.setConfig(config);
                         apmchp3.setPayda(sdf.parse(oad.getPayDate3txt()));

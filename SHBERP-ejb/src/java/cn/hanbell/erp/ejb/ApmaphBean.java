@@ -167,7 +167,7 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
                 List<ProcessCheck> processList;
                 processList = processCheckBean.findByPSN(psn);
                 for (ProcessCheck pc : processList) {
-                    if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
+                    if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")|| pc.getWorkItemName().contains("课级")) {
                         aph.setApusrno(pc.getUserID());
                     }
                     if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {

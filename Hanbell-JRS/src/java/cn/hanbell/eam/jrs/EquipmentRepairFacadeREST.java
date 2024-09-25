@@ -173,8 +173,11 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipInvenTemp.setRepairusername(entity.getRepairusername());
                 equipInvenTemp.setFormdate(new Date());
                 equipInvenTemp.setHitchtime(entity.getHitchtime());
-                if (equipInvenTemp.getHitchurgency() == null && entity.getHitchurgency().equals("03")) {//第一次创单时，停机记录停机时间点
-                    equipInvenTemp.setDowninitiatetime(new Date());
+                if (entity.getDowninitiatetime() != null&& entity.getHitchurgency().equals("03")) {//补单的情况停机按补单输入的时间并且是选的停机才记录
+                    equipInvenTemp.setDowninitiatetime(entity.getDowninitiatetime());
+                }
+                if (equipInvenTemp.getDowninitiatetime() == null && equipInvenTemp.getHitchurgency() == null && entity.getHitchurgency().equals("03")) {//第一次创单时，停机记录停机时间点
+                    equipInvenTemp.setDowninitiatetime(entity.getHitchtime());
                 }
                 equipInvenTemp.setHitchurgency(entity.getHitchurgency());
                 equipInvenTemp.setItemno(entity.getItemno());
@@ -1723,7 +1726,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     filterFields.clear();
                     filterFields.put("deptno", sc.getCvalue());
                     filterFields.put("status", "N");
-                     List<SystemUser> repairUserList = systemUserBean.findByFilters(filterFields);
+                    List<SystemUser> repairUserList = systemUserBean.findByFilters(filterFields);
                     repairUserListRes.addAll(repairUserList);
                 }
 
