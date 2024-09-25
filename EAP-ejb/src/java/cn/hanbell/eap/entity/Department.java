@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Department.findByLeader", query = "SELECT d FROM Department d WHERE d.leader = :leader"),
     @NamedQuery(name = "Department.findByPId", query = "SELECT d FROM Department d WHERE d.parentDept.id = :pid ORDER BY d.deptno"),
     @NamedQuery(name = "Department.findByStatus", query = "SELECT d FROM Department d WHERE d.status = :status"),
-    @NamedQuery(name = "Department.findRoot", query = "SELECT d FROM Department d WHERE d.parentDept is NULL")})
+    @NamedQuery(name = "Department.findRoot", query = "SELECT d FROM Department d WHERE d.parentDept is NULL"),
+  @NamedQuery(name = "Department.findByCompanyAndPid", query = "SELECT d FROM Department d WHERE d.company=:company and d.parentDept.id = :pid ORDER BY d.deptno")})
 public class Department extends SuperEntity {
 
     @Basic(optional = false)

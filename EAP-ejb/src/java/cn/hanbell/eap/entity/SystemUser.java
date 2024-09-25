@@ -56,7 +56,7 @@ public class SystemUser extends SuperEntity {
     private String userid;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 16)
+    @Size(min = 1, max = 500)
     @Column(name = "username")
     private String username;
     @Basic(optional = false)
@@ -93,6 +93,9 @@ public class SystemUser extends SuperEntity {
     @Size(max = 45)
     @Column(name = "decisionLevel")
     private String decisionLevel;
+        @Size(max = 45)
+    @Column(name = "decisionLevelName")
+    private String decisionLevelName;
     @Size(max = 20)
     @Column(name = "deptno")
     private String deptno;
@@ -261,6 +264,14 @@ public class SystemUser extends SuperEntity {
 
     public void setDecisionLevel(String decisionLevel) {
         this.decisionLevel = decisionLevel;
+    }
+
+    public String getDecisionLevelName() {
+        return decisionLevelName;
+    }
+
+    public void setDecisionLevelName(String decisionLevelName) {
+        this.decisionLevelName = decisionLevelName;
     }
 
     /**
