@@ -39,11 +39,9 @@ import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEAM;
 import com.lightshell.comm.SuperEJB;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.security.KeyManagementException;
@@ -173,7 +171,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipInvenTemp.setRepairusername(entity.getRepairusername());
                 equipInvenTemp.setFormdate(new Date());
                 equipInvenTemp.setHitchtime(entity.getHitchtime());
-                if (entity.getDowninitiatetime() != null&& entity.getHitchurgency().equals("03")) {//补单的情况停机按补单输入的时间并且是选的停机才记录
+                if (entity.getDowninitiatetime() != null && entity.getHitchurgency().equals("03")) {//补单的情况停机按补单输入的时间并且是选的停机才记录
                     equipInvenTemp.setDowninitiatetime(entity.getDowninitiatetime());
                 }
                 if (equipInvenTemp.getDowninitiatetime() == null && equipInvenTemp.getHitchurgency() == null && entity.getHitchurgency().equals("03")) {//第一次创单时，停机记录停机时间点
@@ -1062,6 +1060,36 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 eqpRepairTemp.setCredate(new Date());
 
                 equipmentRepairHisBean.persist(eqpRepairTemp);
+                StringBuffer msg = new StringBuffer(" 维修暂停通知:<br/>");
+                msg.append("报修单号:").append(equipInvenList.get(0).getFormid()).append("<br/>");
+                msg.append("资产编号:").append(equipInvenList.get(0).getAssetno().getFormid()).append("<br/>");
+                msg.append("设备名称:").append(equipInvenList.get(0).getAssetno().getAssetDesc()).append("<br/>");
+                msg.append("设备位置:").append(equipInvenList.get(0).getAssetno().getPosition1().getName()).append(equipInvenList.get(0).getAssetno().getPosition2().getName());
+                if (equipInvenList.get(0).getAssetno().getPosition3() != null) {
+                    msg.append(equipInvenList.get(0).getAssetno().getPosition3().getName()).append("<br/>");
+                } else {
+                    msg.append("<br/>");
+                }
+                msg.append("暂停原因:").append(entity.getNote()).append("<br/>");
+                msg.append("报修人:").append(equipInvenList.get(0).getRepairuser()).append("-").append(equipInvenList.get(0).getRepairusername()).append("<br/>");
+                msg.append("维修人:").append(equipInvenList.get(0).getServiceuser()).append("-").append(equipInvenList.get(0).getServiceusername()).append("<br/>");
+                msg.append("详情请至微信小程序查看!");
+
+                List<String> userList = new ArrayList<String>();
+                userList.add(equipInvenList.get(0).getRepairuser());
+                List<SysCode> code = sysCodeBean.getTroubleNameList(equipInvenList.get(0).getCompany(), "RD", "repairleaders");//获取维修的课长
+                for (SysCode sysCode : code) {
+                    userList.add(sysCode.getCvalue());//添加维修课长
+                }
+                code = sysCodeBean.getTroubleNameList(equipInvenList.get(0).getCompany(), "RD", "repairHeadmanId");//获取维修的组长
+                for (SysCode sysCode : code) {
+                    userList.add(sysCode.getCvalue());//获取维修的组长
+                }
+                userList = userList.stream().distinct().collect(Collectors.toList());//去除重复项
+                for (String string : userList) {
+                    sendMsgString(string, msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
+                }
+//                String errmsg = sendMsgString("C2079", msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
                 return new ResponseMessage("200", "状态更新成功");
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误Insert失败");
@@ -1135,8 +1163,17 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 eqpRepairTemp.setNote(entity.getNote());
                 eqpRepairTemp.setStatus("N");
                 eqpRepairTemp.setCredate(new Date());
-
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 equipmentRepairHisBean.persist(eqpRepairTemp);
+                StringBuffer msg = new StringBuffer(" 维修开始通知:<br/>");
+                msg.append("报修单号:").append(equipInvenList.get(0).getFormid()).append("<br/>");
+                msg.append("资产编号:").append(equipInvenList.get(0).getAssetno().getFormid()).append("<br/>");
+                msg.append("设备名称:").append(equipInvenList.get(0).getAssetno().getAssetDesc()).append("<br/>");
+                msg.append("维修人:").append(equipInvenList.get(0).getServiceuser()).append("-").append(equipInvenList.get(0).getServiceusername()).append("<br/>");
+                msg.append("已于:").append(sdf.format(new Date())).append("开始维修，请知悉!!!").append("<br/>");;
+                msg.append("详情请至微信小程序查看!");
+                sendMsgString(equipInvenList.get(0).getRepairuser(), msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
+
                 return new ResponseMessage("200", "状态更新成功");
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误Insert失败");
