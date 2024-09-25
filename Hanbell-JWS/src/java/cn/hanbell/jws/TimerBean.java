@@ -12,7 +12,7 @@ import cn.hanbell.crm.ejb.CMSMVBean;
 //import cn.hanbell.crm.ejb.DDGCBean;
 //import cn.hanbell.crm.ejb.REPPABean;
 //import cn.hanbell.crm.ejb.SyncCRMBean;
-//import cn.hanbell.crm.ejb.WARTABean;
+import cn.hanbell.crm.ejb.WARTABean;
 //import cn.hanbell.crm.entity.DDGA;
 //import cn.hanbell.crm.entity.DDGB;
 //import cn.hanbell.crm.entity.DDGC;
@@ -237,8 +237,8 @@ public class TimerBean {
 //    private DDGCBean ddgcBean;
 //    @EJB
 //    private SyncCRMBean syncCRMBean;
-//    @EJB
-//    private WARTABean wartaBean;
+    @EJB
+    private WARTABean wartaBean;
 
     // EJBForEAM
     @EJB
@@ -2154,7 +2154,7 @@ public class TimerBean {
         }
     }
 
-    // @Schedule(minute = "*/1", hour = "*", persistent = false)
+// @Schedule(minute = "*/1", hour = "*", persistent = false)
 //    public void createERPCDR225ByCRMREPPA() {
 //        String pa001 = "";
 //        String pa002 = "";
@@ -3652,6 +3652,7 @@ public class TimerBean {
                             cd.setTramts(pd.getTramts());
                             cd.setDrecsta("10");
                             cd.setUnprisrccode('1');
+                            cd.setNcodeCD("WXVN");
                             addedCdrdmas.add(cd);
                             // 计算合计金额
                             tramts = tramts.add(pd.getTramts());
@@ -4290,42 +4291,43 @@ public class TimerBean {
         return pattern.matcher(employeeid).matches();
     }
 
-//    @Schedule(minute = "30", hour = "7-20", persistent = false)
-//    public void sendEqpRepairmentDelayNotice() {
-//        log4j.info("EAM报修单待办企业微信推送轮询开始");
-//        StringBuffer userIdStrTemp = new StringBuffer("");
-//        StringBuffer msg = new StringBuffer("您有长时间未处理的报修单!<br/>详情请至微信小程序查看!");
-//        Map<String, Object> filterFields = new HashMap<>();
-//        Map<String, String> sortFields = new HashMap<>();
-//        List<EquipmentRepair> eqpRepairListRes = new ArrayList<>();
-//        List<String> userIdList = new ArrayList<>();
-//        filterFields.put("RepairmentDelay", "RepairmentDelay");
-//        sortFields.put("hitchtime", "DESC");
-//        try {
-//            eqpRepairListRes = equipmentRepairBean.getEquipmentRepairListByNativeQuery(filterFields, sortFields);
-//            eqpRepairListRes.forEach(item -> {
-//                if (item.getRstatus().compareTo("20") < 0) {
-//                    userIdList.add(item.getServiceuser());
-//                } else {
-//                    userIdList.add(item.getRepairuser());
-//                    userIdList.add(item.getServiceuser());
-//                }
-//            });
-//            LinkedHashSet<String> userIdHashSet = new LinkedHashSet<>(userIdList);
-//            userIdHashSet.forEach((item) -> {
-//                userIdStrTemp.append(item).append("|");
-//            });
-//            if (!userIdStrTemp.equals("")) {
-//                userIdStrTemp.deleteCharAt(userIdStrTemp.length() - 1);
-//                wartaBean.sendMsgString(userIdStrTemp.toString(), msg.toString(), "ca80bf276a4948909ff4197095f1103a",
-//                        "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
-//                log4j.info("EAM报修单待办企业微信推送成功");
-//            }
-//        } catch (Exception ex) {
-//            log4j.error(ex);
-//        }
-//        log4j.info("EAM报修单待办企业微信推送轮询结束");
-//    }
+    @Schedule(minute = "30", hour = "7-20", persistent = false)
+    public void sendEqpRepairmentDelayNotice() {
+        log4j.info("EAM报修单待办企业微信推送轮询开始");
+        StringBuffer userIdStrTemp = new StringBuffer("");
+        StringBuffer msg = new StringBuffer("您有长时间未处理的报修单!<br/>详情请至微信小程序查看!");
+        Map<String, Object> filterFields = new HashMap<>();
+        Map<String, String> sortFields = new HashMap<>();
+        List<EquipmentRepair> eqpRepairListRes = new ArrayList<>();
+        List<String> userIdList = new ArrayList<>();
+        filterFields.put("RepairmentDelay", "RepairmentDelay");
+        sortFields.put("hitchtime", "DESC");
+        try {
+            eqpRepairListRes = equipmentRepairBean.getEquipmentRepairListByNativeQuery(filterFields, sortFields);
+            eqpRepairListRes.forEach(item -> {
+                if (item.getRstatus().compareTo("20") < 0) {
+                    userIdList.add(item.getServiceuser());
+                } else {
+                    userIdList.add(item.getRepairuser());
+                    userIdList.add(item.getServiceuser());
+                }
+            });
+            LinkedHashSet<String> userIdHashSet = new LinkedHashSet<>(userIdList);
+            userIdHashSet.forEach((item) -> {
+                userIdStrTemp.append(item).append("|");
+            });
+            if (!userIdStrTemp.equals("")) {
+                userIdStrTemp.deleteCharAt(userIdStrTemp.length() - 1);
+                wartaBean.sendMsgString(userIdStrTemp.toString(), msg.toString(), "ca80bf276a4948909ff4197095f1103a",
+                        "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
+                log4j.info("EAM报修单待办企业微信推送成功");
+            }
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
+        log4j.info("EAM报修单待办企业微信推送轮询结束");
+    }
+
     @Schedule(minute = "00", hour = "8-20", persistent = false)
     public void createOAHZPB131ByERPMAN345() {
         try {
