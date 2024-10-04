@@ -32,4 +32,5 @@ public class CRMHKFW006Bean extends SuperEJBForMES<CRMHKFW006> {
             return null;
         }
     }
+
 }

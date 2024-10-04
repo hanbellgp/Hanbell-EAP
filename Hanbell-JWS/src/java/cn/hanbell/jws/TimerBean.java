@@ -1881,6 +1881,11 @@ public class TimerBean {
             apmaphBean.setCompany(company);
             purvdrBean.setCompany(company);
             List<Apmaph> apmaphList = apmaphBean.findNeedThrow("0");
+            //加入APM826
+            List<Apmaph> apmaph826List = apmaphBean.findNeedThrow("5");
+            for (Apmaph apmh826 : apmaph826List) {
+                apmaphList.add(apmh826);
+            }
             List<Apmapd> apmapdList;
             int i;
             BigDecimal sumapamtfs;
@@ -3675,6 +3680,15 @@ public class TimerBean {
                         List<Cdrcusrel> cusrelList = cdrcusrelBean.findByCusno(cusno);
                         if (cusrelList != null && !cusrelList.isEmpty()) {
                             for (Cdrcusrel r : cusrelList) {
+                                if (r.getEmail() != null && !"".equals(r.getEmail().trim())) {
+                                    eapMailBean.addTo(r.getEmail());
+                                }
+                            }
+                        }
+                        purvdrrelBean.setCompany(pc);
+                        List<Purvdrrel> vdrrelList = purvdrrelBean.findByVdrno(vdrno);
+                        if (vdrrelList != null && !vdrrelList.isEmpty()) {
+                            for (Purvdrrel r : vdrrelList) {
                                 if (r.getEmail() != null && !"".equals(r.getEmail().trim())) {
                                     eapMailBean.addTo(r.getEmail());
                                 }
