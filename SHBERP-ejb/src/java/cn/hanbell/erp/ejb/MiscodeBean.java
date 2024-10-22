@@ -73,6 +73,8 @@ public class MiscodeBean extends SuperEJBForERP<Miscode> {
                 //处理一些ERP中maxid为5码与6码过渡的问题
                 if (m == 5 && "NB".equals(ckind) && "B".equals(code)) {
                     id = Integer.parseInt(maxid.substring(m - len + 1, m)) + 1;
+                    Query updatQuery = getEntityManager().createNativeQuery("update miscode set code = substring(code,1,1)+'0'+substring(code,2,5)  where ckind= 'NB' AND code LIKE 'B%' and len(code)= 5");
+                    updatQuery.executeUpdate();
                 } else {
                     id = Integer.parseInt(maxid.substring(m - len, m)) + 1;
                 }

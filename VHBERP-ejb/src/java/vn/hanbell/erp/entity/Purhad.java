@@ -45,7 +45,7 @@ public class Purhad implements Serializable {
     @EmbeddedId
     protected PurhadPK purhadPK;
     @Basic(optional = false)
-    
+
     @NotNull
     @Size(min = 1, max = 8)
     @Column(name = "vdrno")
@@ -212,6 +212,9 @@ public class Purhad implements Serializable {
     @Size(max = 8)
     @Column(name = "fromcusno")
     private String fromcusno;
+    @Size(max = 8)
+    @Column(name = "contacter")
+    private String contacter;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "purhad")
     private List<Purdta> purdtaList;
 
@@ -699,6 +702,14 @@ public class Purhad implements Serializable {
 
     public void setVdrno(String vdrno) {
         this.vdrno = vdrno;
+    }
+
+    public String getContacter() {
+        return contacter;
+    }
+
+    public void setContacter(String contacter) {
+        this.contacter = contacter;
     }
 
 }

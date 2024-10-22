@@ -116,6 +116,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import vn.hanbell.erp.entity.Purvdrrel;
 
 /**
  *
@@ -197,7 +198,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
     @EJB
     private InvmasmarkBean imBean;
     @EJB
-    private ErrorMailNotificationBean eapMailBean;
+    private MailNotificationBean eapMailBean;
     @EJB
     private cn.hanbell.eap.ejb.SystemUserBean eapSystemUserBean;
     @EJB
@@ -217,6 +218,8 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
 
     @EJB
     private vn.hanbell.erp.ejb.PurhadBean VHBpurhadBean;
+    @EJB
+    private vn.hanbell.erp.ejb.PurvdrrelBean VHBpurvdrrelBean;
 
     @Resource
     private UserTransaction tran;
@@ -259,10 +262,10 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                     for (Apmapd d : apmapdList) {
                         //(�����е������޶����)
                         if (d.getIvopsfs().compareTo(BigDecimal.ZERO) > 0 || d.getIvomsfs().compareTo(BigDecimal.ZERO) > 0) {
-                            return new MCResponseData(MessageEnum.SUCCESS.getCode(), "�ж����");
+                            return new MCResponseData(MessageEnum.SUCCESS.getCode(), "*****");
                         }
                     }
-                    ls_mark = "��ǩ";
+                    ls_mark = "mark";
                 }
             }
 
@@ -1760,6 +1763,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                             cd.setTramts(pd.getTramts());
                             cd.setDrecsta("10");
                             cd.setUnprisrccode('1');
+                            cd.setNcodeCD("WXVN");
                             addedCdrdmas.add(cd);
                             // 计算合计金额
                             tramts = tramts.add(pd.getTramts());
@@ -1767,9 +1771,9 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         }
                     }
                     if (!addedCdrdmas.isEmpty()) {
-//                        if (ph.getNContacter() != null && !"".equals(ph.getNContacter())) {
-//                            contacter = secuserBean.findByUserno(ph.getNContacter());
-//                        }
+                        if (ph.getContacter() != null && !"".equals(ph.getContacter())) {
+                            contacter = secuserBean.findByUserno(ph.getContacter());
+                        }
                         // 设置邮件收件人
                         if (contacter != null && contacter.getEmail() != null
                                 && !"".equals(contacter.getEmail().trim())) {
@@ -1782,6 +1786,15 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         List<Cdrcusrel> cusrelList = cdrcusrelBean.findByCusno(cusno);
                         if (cusrelList != null && !cusrelList.isEmpty()) {
                             for (Cdrcusrel r : cusrelList) {
+                                if (r.getEmail() != null && !"".equals(r.getEmail().trim())) {
+                                    eapMailBean.addTo(r.getEmail());
+                                }
+                            }
+                        }
+                        VHBpurvdrrelBean.setCompany(pc);
+                        List<vn.hanbell.erp.entity.Purvdrrel> vdrrelList = VHBpurvdrrelBean.findByVdrno(vdrno);
+                        if (vdrrelList != null && !vdrrelList.isEmpty()) {
+                            for (Purvdrrel r : vdrrelList) {
                                 if (r.getEmail() != null && !"".equals(r.getEmail().trim())) {
                                     eapMailBean.addTo(r.getEmail());
                                 }
@@ -1888,10 +1901,10 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                 throw new RuntimeException(errorBuilder.toString());
             } finally {
                 if (!eapMailBean.getTo().isEmpty() || !eapMailBean.getCc().isEmpty()) {
-                    eapMailBean.setMailSubject("ERP系统新订单" + cdrno);
+                    eapMailBean.setMailSubject("香港ERP系统新订单" + cdrno);
                     msgBuilder.append("<div>").append(errorBuilder.toString()).append("</div>");
                     eapMailBean.setHTMLMailContent(msgBuilder.toString());
-                    //eapMailBean.notify(new cn.hanbell.eap.comm.MailNotify());
+                    eapMailBean.notify(new MailNotify());
                 }
             }
         }

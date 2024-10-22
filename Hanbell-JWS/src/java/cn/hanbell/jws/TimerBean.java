@@ -393,6 +393,8 @@ public class TimerBean {
     private vn.hanbell.erp.ejb.ApmtbilBean VHBapmtbilBean;
     @EJB
     private vn.hanbell.erp.ejb.PurhadBean VHBpurhadBean;
+    @EJB
+    private vn.hanbell.erp.ejb.PurvdrrelBean VHBpurvdrrelBean;
 
     // EJBForHRM
     @EJB
@@ -2775,6 +2777,9 @@ public class TimerBean {
         this.syncERPPUR410ToExchange("C", "SXG00007", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("C", "STW00045", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("K", "KTW00001", "20200408");// Comer->Exch
+        //越南采购转香港订单
+        this.createHKERPCDR310ByVHBPUR415("X", "SDC00001", "00", "V", "HA001 ", "20241014");
+        
         log4j.info("ERP集团内部交易互转轮询结束");
     }
 
@@ -3542,7 +3547,7 @@ public class TimerBean {
         }
     }
 
-    private void createERPCDR310ByVHBPUR415(String cc, String cusno, String pricingtype, String pc, String vdrno, String beginDate) {
+    private void createHKERPCDR310ByVHBPUR415(String cc, String cusno, String pricingtype, String pc, String vdrno, String beginDate) {
         Date d;
         try {
             d = com.lightshell.comm.BaseLib.getDate("yyyyMMdd", beginDate);
@@ -3576,21 +3581,21 @@ public class TimerBean {
                 secuserBean.setCompany(cc);
                 Cdrcus cdrcus = cdrcusBean.findByCusno(cusno);
                 if (cdrcus == null) {
-                    temp = "createERPCDR310ByVHBERPPUR415遇到错误：" + cc + "公司ERP中" + cusno + "客户不存在";
+                    temp = "createHKERPCDR310ByVHBPUR415遇到错误：" + cc + "公司ERP中" + cusno + "客户不存在";
                     log4j.error(temp);
                     errorBuilder.append(temp);
                     throw new RuntimeException(cc + "公司ERP中" + cusno + "客户不存在");
                 }
                 Cdrcusman cdrcusman = cdrcusmanBean.findByPK(cc, cusno);
                 if (cdrcusman == null) {
-                    temp = "createERPCDR310ByVHBERPPUR415遇到错误：" + cc + "公司ERP中客户对应业务员资料不存在";
+                    temp = "createHKERPCDR310ByVHBPUR415遇到错误：" + cc + "公司ERP中客户对应业务员资料不存在";
                     log4j.error(temp);
                     errorBuilder.append(temp);
                     throw new RuntimeException(cc + "公司ERP中客户对应业务员资料不存在");
                 }
                 Secuser secuser = secuserBean.findByUserno(cdrcusman.getMan());
                 if (secuser == null || secuser.getPdepno() == null || "".equals(secuser.getPdepno())) {
-                    temp = "createERPCDR310ByVHBERPPUR415遇到错误：" + cc + "公司ERP中业务员对应员工资料不存在或不完整";
+                    temp = "createHKERPCDR310ByVHBPUR415遇到错误：" + cc + "公司ERP中业务员对应员工资料不存在或不完整";
                     log4j.error(temp);
                     errorBuilder.append(temp);
                     throw new RuntimeException(cc + "公司ERP中业务员对应员工资料不存在或不完整");
@@ -3630,7 +3635,7 @@ public class TimerBean {
                                     k = pd.getItnbr().substring(0, 2) + "3" + pd.getItnbr().substring(2);
                                     item = invmasBean.findByItnbr(k);
                                     if (item == null) {
-                                        errorBuilder.append("<div>createERPCDR310ByExchPUR415遇到错误：").append(cc)
+                                        errorBuilder.append("<div>createHKERPCDR310ByVHBPUR415遇到错误：").append(cc)
                                                 .append("公司ERP中").append(pd.getItnbr()).append("品号不存在").append("</div>");
                                     }
                                 }
@@ -3665,9 +3670,9 @@ public class TimerBean {
                         }
                     }
                     if (!addedCdrdmas.isEmpty()) {
-//                        if (ph.getNContacter() != null && !"".equals(ph.getNContacter())) {
-//                            contacter = secuserBean.findByUserno(ph.getNContacter());
-//                        }
+                        if (ph.getContacter()!= null && !"".equals(ph.getContacter())) {
+                            contacter = secuserBean.findByUserno(ph.getContacter());
+                        }
                         // 设置邮件收件人
                         if (contacter != null && contacter.getEmail() != null
                                 && !"".equals(contacter.getEmail().trim())) {
@@ -3685,10 +3690,10 @@ public class TimerBean {
                                 }
                             }
                         }
-                        purvdrrelBean.setCompany(pc);
-                        List<Purvdrrel> vdrrelList = purvdrrelBean.findByVdrno(vdrno);
+                      VHBpurvdrrelBean.setCompany(pc);
+                        List<vn.hanbell.erp.entity.Purvdrrel> vdrrelList = VHBpurvdrrelBean.findByVdrno(vdrno);
                         if (vdrrelList != null && !vdrrelList.isEmpty()) {
-                            for (Purvdrrel r : vdrrelList) {
+                            for (vn.hanbell.erp.entity.Purvdrrel r : vdrrelList) {
                                 if (r.getEmail() != null && !"".equals(r.getEmail().trim())) {
                                     eapMailBean.addTo(r.getEmail());
                                 }
@@ -3773,7 +3778,7 @@ public class TimerBean {
                         ph.setFromcdrno(cdrno);
                         VHBpurhadBean.update(ph);
                         msgBuilder.append(String.format("<div>执行%s成功：%s公司采购单%s抛转成%s公司订单%s",
-                                "createERPCDR310ByVHBERPPUR415", pc, pono, cc, cdrno)).append("</div>");
+                                "createHKERPCDR310ByVHBPUR415", pc, pono, cc, cdrno)).append("</div>");
                         msgBuilder.append("<div>来源采购单").append(vhbPurdtaList.size()).append("笔明细").append("产生新订单")
                                 .append(seq).append("笔明细").append("</div>");
                     } else {
@@ -3788,12 +3793,12 @@ public class TimerBean {
                 log4j.info(msgBuilder.toString());
             } catch (Exception ex) {
                 errorBuilder.append(ex.toString());
-                log4j.error("createERPCDR310ByVHBERPPUR415遇到错误", ex);
+                log4j.error("createHKERPCDR310ByVHBPUR415遇到错误", ex);
                 ex.printStackTrace();
                 throw new RuntimeException(errorBuilder.toString());
             } finally {
                 if (!eapMailBean.getTo().isEmpty() || !eapMailBean.getCc().isEmpty()) {
-                    eapMailBean.setMailSubject("ERP系统新订单" + cdrno);
+                    eapMailBean.setMailSubject("香港ERP系统新订单" + cdrno);
                     msgBuilder.append("<div>").append(errorBuilder.toString()).append("</div>");
                     eapMailBean.setHTMLMailContent(msgBuilder.toString());
                     eapMailBean.notify(new cn.hanbell.eap.comm.MailNotify());
