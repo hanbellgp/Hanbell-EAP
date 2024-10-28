@@ -270,6 +270,12 @@ public class Purvdr implements Serializable {
     @Size(max = 800)
     @Column(name = "fkfs")
     private String fkfs;
+    @Size(max = 120)
+    @Column(name = "ttbankadd")
+    private String ttbankadd;
+    @Size(max = 20)
+    @Column(name = "swiftcode")
+    private String swiftcode;
 
     public Purvdr() {
         this.shr = "mis";
@@ -726,6 +732,22 @@ public class Purvdr implements Serializable {
 
     public void setFkfs(String fkfs) {
         this.fkfs = fkfs;
+    }
+
+    public String getTtbankadd() {
+        return ttbankadd;
+    }
+
+    public void setTtbankadd(String ttbankadd) {
+        this.ttbankadd = ttbankadd;
+    }
+
+    public String getSwiftcode() {
+        return swiftcode;
+    }
+
+    public void setSwiftcode(String swiftcode) {
+        this.swiftcode = swiftcode;
     }
 
     @Override

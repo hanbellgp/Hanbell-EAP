@@ -218,8 +218,11 @@ public class QrcodePrintManagedBean extends FormMultiBean<Qrcode, QrcodeDetail> 
                 Cell cell;
                 int column=0,row=0;
                 while(true){//获取行数
-                    cell = sheet.getRow(row).getCell(0);
-                    if( getValue(cell)==null ||  "".equals(getValue(cell))){
+                   
+                    if(row==26){
+                         System.out.print(row);
+                    }
+                    if( sheet.getRow(row)==null || getValue(sheet.getRow(row).getCell(0))==null ||  "".equals(getValue(sheet.getRow(row).getCell(0)))){
                         break;
                     }
                     row++;
@@ -235,11 +238,10 @@ public class QrcodePrintManagedBean extends FormMultiBean<Qrcode, QrcodeDetail> 
                 for (int i = 1; i <= row; i++) {
                     QrcodeDetail detail = new QrcodeDetail();
                     detail.setSeq(i);
-                    cell = sheet.getRow(i).getCell(0);
-                    detail.setContent(1, getValue(cell));
-                    if (detail.getContent1() == null || "".equals(detail.getContent1())) {
+                    if (sheet.getRow(i)==null || getValue(sheet.getRow(i).getCell(0)) == null || "".equals(getValue(sheet.getRow(i).getCell(0)))) {
                         break;
                     }
+                     detail.setContent(1, getValue(cell));
                     for (int j = 0; j < column; j++) {
                         cell = sheet.getRow(i).getCell(j);
                         

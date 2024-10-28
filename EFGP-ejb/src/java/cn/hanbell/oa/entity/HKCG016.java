@@ -243,6 +243,12 @@ public class HKCG016 implements Serializable {
     @Size(max = 255)
     @Column(name = "BackUrl")
     private String BackUrl;
+    @Size(max = 255)
+    @Column(name = "ttbankadd")
+    private String ttbankadd;
+    @Size(max = 255)
+    @Column(name = "swiftcode")
+    private String swiftcode;
 
     public HKCG016() {
     }
@@ -698,6 +704,22 @@ public class HKCG016 implements Serializable {
 
     public void setBackUrl(String BackUrl) {
         this.BackUrl = BackUrl;
+    }
+
+    public String getTtbankadd() {
+        return ttbankadd;
+    }
+
+    public void setTtbankadd(String ttbankadd) {
+        this.ttbankadd = ttbankadd;
+    }
+
+    public String getSwiftcode() {
+        return swiftcode;
+    }
+
+    public void setSwiftcode(String swiftcode) {
+        this.swiftcode = swiftcode;
     }
 
 }
