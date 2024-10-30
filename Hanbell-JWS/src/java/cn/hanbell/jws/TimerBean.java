@@ -3219,6 +3219,8 @@ public class TimerBean {
                         // 设置订单编号
                         cdrno = cdrsysBean.getSerialNumber(cc, "", "A", recdate, ph.getDecode(), true, "CDR310");
                         ch.getCdrhmasPK().setCdrno(cdrno);
+                        cdrhmasBean.setCompany(cc);
+                        cdrdmasBean.setCompany(cc);
                         cdrhmasBean.persist(ch);
                         cdrhmasBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
@@ -3226,6 +3228,7 @@ public class TimerBean {
                             cdrdmasBean.persist(e);
                         }
                         ph.setFromcdrno(cdrno);
+                        purhadBean.setCompany(pc);
                         purhadBean.update(ph);
                         msgBuilder.append(String.format("<div>执行%s成功：%s公司采购单%s抛转成%s公司订单%s",
                                 "createERPCDR310ByERPPUR410", pc, pono, cc, cdrno)).append("</div>");

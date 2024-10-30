@@ -188,7 +188,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setGenre2(detail.getGenre2());
                     m.setGenre3(detail.getGenre3());
                     m.setModelDsc1(detail.getModelDsc1());
-                    m.setModelDsc2(detail.getModelDsc2());
+                    m.setModelDsc2(detail.getModelDsc2().trim());
                     persist(m);
                     this.getEntityManager().flush();
 
