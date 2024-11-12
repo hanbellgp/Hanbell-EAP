@@ -425,6 +425,10 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                     erph.setCfmusrno(pc1.getUserID());
                     erph.setApusrno(pc2.getUserID());
                 }
+                //修正签核人员经理级空白
+                if (erph.getCfmusrno().equals(erph.getUserno()) && !erph.getCfmusrno().equals(erph.getApusrno())) {
+                    erph.setCfmusrno(erph.getApusrno());
+                }
                 apmaphBean.setCompany(facno);
                 apmaphBean.update(erph);
             }
@@ -596,16 +600,20 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
             aph.setApsta("30");
             aph.setOano(oah.getProcessSerialNumber().substring(4));
             // 更新apusrno,cfmusrno为OA审核人
-//            List<ProcessCheck> processList;
-//            processList = processCheckBean.findByPSN(psn);
-//            for (ProcessCheck pc : processList) {
-//                if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长")) {
-//                    aph.setApusrno(pc.getUserID());
-//                }
-//                if (pc.getWorkItemName().contains("经理级") && !pc.getWorkItemName().contains("总经理级")) {
-//                    aph.setCfmusrno(pc.getUserID());
-//                }
-//            }
+            List<ProcessCheck> processList;
+            processList = processCheckBean.findByPSN(psn);
+            for (ProcessCheck pc : processList) {
+                if (pc.getWorkItemName().contains("直属主管") || pc.getWorkItemName().contains("课长") || pc.getWorkItemName().contains("课级")) {
+                    aph.setApusrno(pc.getUserID());
+                }
+                if (pc.getWorkItemName().contains("经理") && !pc.getWorkItemName().contains("总经理")) {
+                    aph.setCfmusrno(pc.getUserID());
+                }
+            }
+            //修正签核人员经理级空白
+            if (aph.getCfmusrno().equals(aph.getUserno()) && !aph.getCfmusrno().equals(aph.getApusrno())) {
+                aph.setCfmusrno(aph.getApusrno());
+            }
             apmaphBean.setCompany(facno);
             apmaphBean.update(aph);
             return true;

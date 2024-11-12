@@ -38,14 +38,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Purhad.findByProno", query = "SELECT p FROM Purhad p WHERE p.purhadPK.prono = :prono"),
     @NamedQuery(name = "Purhad.findByPono", query = "SELECT p FROM Purhad p WHERE p.purhadPK.pono = :pono"),
     @NamedQuery(name = "Purhad.findByDecode", query = "SELECT p FROM Purhad p WHERE p.decode = :decode"),
-    @NamedQuery(name = "Purhad.findNeedThrowByVdrno", query = "SELECT p FROM Purhad p WHERE p.vdrno = :vdrno AND p.podate>= :podate  AND p.hposta='Y' AND (p.fromcdrno IS NULL OR p.fromcdrno='') ORDER BY p.purhadPK.pono")})
+    @NamedQuery(name = "Purhad.findNeedThrowByVdrno", query = "SELECT p FROM Purhad p WHERE p.vdrno = :vdrno AND p.podate>= :podate  AND p.hposta='Y' AND (p.fromcdrno IS NULL OR p.fromcdrno='') "
+            + " AND (p.contacter is not null and p.contacter <> '') ORDER BY p.purhadPK.pono")})
 public class Purhad implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PurhadPK purhadPK;
     @Basic(optional = false)
-    
+
     @NotNull
     @Size(min = 1, max = 8)
     @Column(name = "vdrno")
@@ -212,6 +213,9 @@ public class Purhad implements Serializable {
     @Size(max = 8)
     @Column(name = "fromcusno")
     private String fromcusno;
+    @Size(max = 8)
+    @Column(name = "contacter")
+    private String contacter;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "purhad")
     private List<Purdta> purdtaList;
 
@@ -699,6 +703,14 @@ public class Purhad implements Serializable {
 
     public void setVdrno(String vdrno) {
         this.vdrno = vdrno;
+    }
+
+    public String getContacter() {
+        return contacter;
+    }
+
+    public void setContacter(String contacter) {
+        this.contacter = contacter;
     }
 
 }
