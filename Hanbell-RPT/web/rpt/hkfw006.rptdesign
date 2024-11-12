@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 4.5.0.v201506092134 Build &lt;@BUILD@></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.6.0.v201606072122</property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">fixed layout</property>
@@ -532,6 +532,7 @@ currentRow = 0;]]></method>
     dataSetRow["yf"] = master.getYf();
 
     dataSetRow["dzf"] = master.getDzf();
+    currentRow++;
     return true;
 } else {
 
@@ -606,6 +607,7 @@ currentRow = 0;]]></method>
     return false;
 }
 
+return false;
 ]]></method>
             <method name="close"><![CDATA[ejbClient = null;]]></method>
         </script-data-set>
@@ -3097,7 +3099,7 @@ currentRow = 0;]]></method>
                 otfwljO+fG0hnH2fyxs+36P04DBll8/uObT4s2D5GN8tKPj/fRnZ4qH7Pi/cerVerVfr1Xr9513/K7qw
                 Uuifzf6rFcz30+qtV+vVerVerdd/7nWYsgs6DQR5HapUDvLb/4uuf6boSmuBWq/W69/tYhZc69V6tV7/
                 uuswZffPWNxL+fD+Ha5Sv+33rbtovVqv1qv1ar3+M67/Bk9TJceqXEMPAAAAAElFTkSuQmCC
-            </property>
+</property>
         </structure>
     </list-property>
 </report>
