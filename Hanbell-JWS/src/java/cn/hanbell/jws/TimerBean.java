@@ -440,45 +440,45 @@ public class TimerBean {
                 departmentList.forEach((hd) -> {
                     try {
                         // EAP
-                        cn.hanbell.eap.entity.Department ep = null;
+//                        cn.hanbell.eap.entity.Department ep = null;
                         cn.hanbell.hrm.entity.Department hp = hrmDepartmentBean.findByDepartmentId(hd.getParentId());
-                        if (hp != null) {
-                            ep = eapDepartmentBean.findByDeptno(hp.getCode());
-                        }
-                        cn.hanbell.eap.entity.Department ed = eapDepartmentBean.findByDeptno(hd.getCode());
-                        if (ed == null) {
-                            ed = new cn.hanbell.eap.entity.Department();
-                            ed.setCompany(workFlowBean.getCompanyByDeptId(hd.getCode()));
-                            ed.setDeptno(hd.getCode());
-                            ed.setDept(hd.getName());
-                            if (ep != null) {
-                                ed.setParentDept(ep);
-                            }
-                            if (hd.getFlag()) {
-                                ed.setStatus("N");
-                            } else {
-                                ed.setStatus("X");
-                            }
-                            ed.setCreatorToSystem();
-                            ed.setCredateToNow();
-                            eapDepartmentBean.persist(ed);
-                        } else {
-                            if (!ed.getDept().equals(hd.getName()) || !Objects.equals(ed.getParentDept(), ep)
-                                    || (ed.getOptdate() != null && ed.getOptdate().before(hd.getLastModifiedDate()))) {
-                                ed.setDept(hd.getName());
-                                if (ep != null) {
-                                    ed.setParentDept(ep);
-                                }
-                                if (!hd.getFlag()) {
-                                    ed.setStatus("X");
-                                } else {
-                                    ed.setStatus("N");
-                                }
-                                ed.setOptuserToSystem();
-                                ed.setOptdate(hd.getLastModifiedDate());
-                                eapDepartmentBean.update(ed);
-                            }
-                        }
+//                        if (hp != null) {
+//                            ep = eapDepartmentBean.findByDeptno(hp.getCode());
+//                        }
+//                        cn.hanbell.eap.entity.Department ed = eapDepartmentBean.findByDeptno(hd.getCode());
+//                        if (ed == null) {
+//                            ed = new cn.hanbell.eap.entity.Department();
+//                            ed.setCompany(workFlowBean.getCompanyByDeptId(hd.getCode()));
+//                            ed.setDeptno(hd.getCode());
+//                            ed.setDept(hd.getName());
+//                            if (ep != null) {
+//                                ed.setParentDept(ep);
+//                            }
+//                            if (hd.getFlag()) {
+//                                ed.setStatus("N");
+//                            } else {
+//                                ed.setStatus("X");
+//                            }
+//                            ed.setCreatorToSystem();
+//                            ed.setCredateToNow();
+//                            eapDepartmentBean.persist(ed);
+//                        } else {
+//                            if (!ed.getDept().equals(hd.getName()) || !Objects.equals(ed.getParentDept(), ep)
+//                                    || (ed.getOptdate() != null && ed.getOptdate().before(hd.getLastModifiedDate()))) {
+//                                ed.setDept(hd.getName());
+//                                if (ep != null) {
+//                                    ed.setParentDept(ep);
+//                                }
+//                                if (!hd.getFlag()) {
+//                                    ed.setStatus("X");
+//                                } else {
+//                                    ed.setStatus("N");
+//                                }
+//                                ed.setOptuserToSystem();
+//                                ed.setOptdate(hd.getLastModifiedDate());
+//                                eapDepartmentBean.update(ed);
+//                            }
+//                        }
                         String d = hd.getCode().substring(0, 1);
                         // CRM
                         if (d.equals("1") || d.equals("5")) {
@@ -553,104 +553,104 @@ public class TimerBean {
                         if ("C".equals(company) || "K".equals(company) || "E".equals(company) || "H".equals(company)
                                 || "Y".equals(company) || "Q".equals(company) || "V".equals(company) || isTWEmployee(company)) {
                             // EAP
-                            cn.hanbell.eap.entity.SystemUser eu = eapSystemUserBean.findByUserId(e.getCode());
-                            if (eu == null) {
-                                eu = new cn.hanbell.eap.entity.SystemUser();
-                                eu.setUserid(e.getCode());
-                                eu.setUsername(e.getCnName());
-                                if (e.getJob() != null) {
-                                    eu.setJobCode(e.getJob().getCode());
-                                    eu.setJob(e.getJob().getName());
-                                }
-                                if (e.getPosition() != null) {
-                                    eu.setPositionCode(e.getPosition().getCode());
-                                    eu.setPosition(e.getPosition().getName());
-                                }
-                                if (e.getEmployeeType() != null) {
-                                    eu.setType(e.getEmployeeType().getScName());
-                                }
-                                eu.setLevelId(e.getLevelId());
-                                if (e.getDecisionlevelInfo() != null) {
-                                    eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
-                                }
-                                eu.setDeptno(e.getDepartment().getCode());
-                                if (manager != null) {
-                                    eu.setManagerId(manager.getCode());
-                                }
-                                if (e.getTelephone() != null) {
-                                    eu.setTel(e.getTelephone());
-                                }
-                                eu.setPhone(e.getMobilePhone());
-                                eu.setEmail(e.getEmail());
-                                eu.setCreatorToSystem();
-                                eu.setCredateToNow();
-                                eu.setOptdate(eu.getCredate());
-                                eu.setBirthdayDate(e.getBirthDate());
-                                eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
-                                // HR中已离职
-                                if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
-                                    eu.setSyncWeChatStatus("X");
-                                    eu.setSyncWeChatDate(e.getLastModifiedDate());
-                                    eu.setStatus("X");
-                                    eu.setTel("");
-                                    eu.setOptuserToSystem();
-                                    eu.setOptdate(e.getLastModifiedDate());
-                                    eu.setBirthdayDate(null);
-                                    eu.setWorkingAgeBeginDate(null);
-                                }
-                                eapSystemUserBean.persist(eu);
-                            } else {
-                                if (eu.getOptdate() != null && eu.getOptdate().before(e.getLastModifiedDate())) {
-                                    eu.setUsername(e.getCnName());
-                                    if (e.getJob() != null) {
-                                        eu.setJobCode(e.getJob().getCode());
-                                        eu.setJob(e.getJob().getName());
-                                    }
-                                    if (e.getPosition() != null) {
-                                        eu.setPositionCode(e.getPosition().getCode());
-                                        eu.setPosition(e.getPosition().getName());
-                                    }
-                                    if (e.getEmployeeType() != null) {
-                                        eu.setType(e.getEmployeeType().getScName());
-                                    }
-                                    eu.setLevelId(e.getLevelId());
-                                    if (e.getDecisionlevelInfo() != null) {
-                                        eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
-                                    }
-                                    if (e.getTelephone() != null) {
-                                        eu.setTel(e.getTelephone());
-                                    }
-                                    eu.setDeptno(e.getDepartment().getCode());
-                                    if (manager != null) {
-                                        eu.setManagerId(manager.getCode());
-                                    }
-                                    //复职的情况下需要把eap数据库中人员状态从X变成N,为了后续企业微信的更新，设置更新企业微信的状态。
-                                    if (eu.getStatus().equals("X") && e.getLastModifiedDate().before(e.getLastWorkDate())) {
-                                        eu.setStatus("N");
-                                        eu.setOptuserToSystem();
-                                        eu.setSyncWeChatDate(null);
-                                        eu.setSyncWeChatStatus("");
-                                    }
-                                    eu.setBirthdayDate(e.getBirthDate());
-                                    eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
-                                    eu.setPhone(e.getMobilePhone());
-                                    eu.setEmail(e.getEmail());
-                                    eu.setOptuserToSystem();
-                                    eu.setOptdate(e.getLastModifiedDate());
-                                    flag = true;
-                                }
-                                if (!eu.getStatus().equals("X") && e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
-                                    eu.setStatus("X");
-                                    eu.setOptuserToSystem();
-                                    eu.setOptdate(e.getLastModifiedDate());
-                                    eu.setBirthdayDate(null);
-                                    eu.setWorkingAgeBeginDate(null);
-                                    flag = true;
-                                }
-                                if (flag) {
-                                    eapSystemUserBean.update(eu);
-                                }
-                            }
+//                            cn.hanbell.eap.entity.SystemUser eu = eapSystemUserBean.findByUserId(e.getCode());
+//                            if (eu == null) {
+//                                eu = new cn.hanbell.eap.entity.SystemUser();
+//                                eu.setUserid(e.getCode());
+//                                eu.setUsername(e.getCnName());
+//                                if (e.getJob() != null) {
+//                                    eu.setJobCode(e.getJob().getCode());
+//                                    eu.setJob(e.getJob().getName());
+//                                }
+//                                if (e.getPosition() != null) {
+//                                    eu.setPositionCode(e.getPosition().getCode());
+//                                    eu.setPosition(e.getPosition().getName());
+//                                }
+//                                if (e.getEmployeeType() != null) {
+//                                    eu.setType(e.getEmployeeType().getScName());
+//                                }
+//                                eu.setLevelId(e.getLevelId());
+//                                if (e.getDecisionlevelInfo() != null) {
+//                                    eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
+//                                }
+//                                eu.setDeptno(e.getDepartment().getCode());
+//                                if (manager != null) {
+//                                    eu.setManagerId(manager.getCode());
+//                                }
+//                                if (e.getTelephone() != null) {
+//                                    eu.setTel(e.getTelephone());
+//                                }
+//                                eu.setPhone(e.getMobilePhone());
+//                                eu.setEmail(e.getEmail());
+//                                eu.setCreatorToSystem();
+//                                eu.setCredateToNow();
+//                                eu.setOptdate(eu.getCredate());
+//                                eu.setBirthdayDate(e.getBirthDate());
+//                                eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
+//                                // HR中已离职
+//                                if (e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
+//                                    eu.setSyncWeChatStatus("X");
+//                                    eu.setSyncWeChatDate(e.getLastModifiedDate());
+//                                    eu.setStatus("X");
+//                                    eu.setTel("");
+//                                    eu.setOptuserToSystem();
+//                                    eu.setOptdate(e.getLastModifiedDate());
+//                                    eu.setBirthdayDate(null);
+//                                    eu.setWorkingAgeBeginDate(null);
+//                                }
+//                                eapSystemUserBean.persist(eu);
+//                            } else {
+//                                if (eu.getOptdate() != null && eu.getOptdate().before(e.getLastModifiedDate())) {
+//                                    eu.setUsername(e.getCnName());
+//                                    if (e.getJob() != null) {
+//                                        eu.setJobCode(e.getJob().getCode());
+//                                        eu.setJob(e.getJob().getName());
+//                                    }
+//                                    if (e.getPosition() != null) {
+//                                        eu.setPositionCode(e.getPosition().getCode());
+//                                        eu.setPosition(e.getPosition().getName());
+//                                    }
+//                                    if (e.getEmployeeType() != null) {
+//                                        eu.setType(e.getEmployeeType().getScName());
+//                                    }
+//                                    eu.setLevelId(e.getLevelId());
+//                                    if (e.getDecisionlevelInfo() != null) {
+//                                        eu.setDecisionLevel(e.getDecisionlevelInfo().getInfoCode());
+//                                    }
+//                                    if (e.getTelephone() != null) {
+//                                        eu.setTel(e.getTelephone());
+//                                    }
+//                                    eu.setDeptno(e.getDepartment().getCode());
+//                                    if (manager != null) {
+//                                        eu.setManagerId(manager.getCode());
+//                                    }
+//                                    //复职的情况下需要把eap数据库中人员状态从X变成N,为了后续企业微信的更新，设置更新企业微信的状态。
+//                                    if (eu.getStatus().equals("X") && e.getLastModifiedDate().before(e.getLastWorkDate())) {
+//                                        eu.setStatus("N");
+//                                        eu.setOptuserToSystem();
+//                                        eu.setSyncWeChatDate(null);
+//                                        eu.setSyncWeChatStatus("");
+//                                    }
+//                                    eu.setBirthdayDate(e.getBirthDate());
+//                                    eu.setWorkingAgeBeginDate(e.getWorkingAgeBeginDate());
+//                                    eu.setPhone(e.getMobilePhone());
+//                                    eu.setEmail(e.getEmail());
+//                                    eu.setOptuserToSystem();
+//                                    eu.setOptdate(e.getLastModifiedDate());
+//                                    flag = true;
+//                                }
+//                                if (!eu.getStatus().equals("X") && e.getLastModifiedDate().compareTo(e.getLastWorkDate()) != -1) {
+//                                    eu.setStatus("X");
+//                                    eu.setOptuserToSystem();
+//                                    eu.setOptdate(e.getLastModifiedDate());
+//                                    eu.setBirthdayDate(null);
+//                                    eu.setWorkingAgeBeginDate(null);
+//                                    flag = true;
+//                                }
+//                                if (flag) {
+//                                    eapSystemUserBean.update(eu);
+//                                }
+//                            }
                             // 台湾人员,越南不更新ERP
                             if (isTWEmployee(company) == false && !company.startsWith("V")) {
                                 // ERP
@@ -1692,7 +1692,7 @@ public class TimerBean {
                         bilnoList = new ArrayList<>();
                         String isAttachment = "";
                         String ls_mark = "";     //备注栏位记录OA是否免签和
-                        String ls_hmark = h.getHmark();
+                        String ls_hmark = h.getHmark() == null ? "" : h.getHmark();
                         Date payda1 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
                         String vdrno = h.getVdrno();
                         Date apdate = h.getApdate();
@@ -2779,7 +2779,7 @@ public class TimerBean {
         this.syncERPPUR410ToExchange("K", "KTW00001", "20200408");// Comer->Exch
         //越南采购转香港订单
         this.createHKERPCDR310ByVHBPUR415("X", "SDC00001", "00", "V", "HA001 ", "20241014");
-        
+
         log4j.info("ERP集团内部交易互转轮询结束");
     }
 
@@ -3673,7 +3673,7 @@ public class TimerBean {
                         }
                     }
                     if (!addedCdrdmas.isEmpty()) {
-                        if (ph.getContacter()!= null && !"".equals(ph.getContacter())) {
+                        if (ph.getContacter() != null && !"".equals(ph.getContacter())) {
                             contacter = secuserBean.findByUserno(ph.getContacter());
                         }
                         // 设置邮件收件人
@@ -3693,7 +3693,7 @@ public class TimerBean {
                                 }
                             }
                         }
-                      VHBpurvdrrelBean.setCompany(pc);
+                        VHBpurvdrrelBean.setCompany(pc);
                         List<vn.hanbell.erp.entity.Purvdrrel> vdrrelList = VHBpurvdrrelBean.findByVdrno(vdrno);
                         if (vdrrelList != null && !vdrrelList.isEmpty()) {
                             for (vn.hanbell.erp.entity.Purvdrrel r : vdrrelList) {
