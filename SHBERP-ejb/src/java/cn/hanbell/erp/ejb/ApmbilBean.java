@@ -425,6 +425,10 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                     erph.setCfmusrno(pc1.getUserID());
                     erph.setApusrno(pc2.getUserID());
                 }
+                //修正签核人员经理级空白
+                if (erph.getCfmusrno().equals(erph.getUserno()) && !erph.getCfmusrno().equals(erph.getApusrno())) {
+                    erph.setCfmusrno(erph.getApusrno());
+                }
                 apmaphBean.setCompany(facno);
                 apmaphBean.update(erph);
             }
