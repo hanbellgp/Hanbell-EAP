@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Purhad.findByProno", query = "SELECT p FROM Purhad p WHERE p.purhadPK.prono = :prono"),
     @NamedQuery(name = "Purhad.findByPono", query = "SELECT p FROM Purhad p WHERE p.purhadPK.pono = :pono"),
     @NamedQuery(name = "Purhad.findByDecode", query = "SELECT p FROM Purhad p WHERE p.decode = :decode"),
-    @NamedQuery(name = "Purhad.findNeedThrowByVdrno", query = "SELECT p FROM Purhad p WHERE p.vdrno = :vdrno AND p.podate>= :podate  AND p.hposta='Y' AND (p.fromcdrno IS NULL OR p.fromcdrno='') ORDER BY p.purhadPK.pono")})
+    @NamedQuery(name = "Purhad.findNeedThrowByVdrno", query = "SELECT p FROM Purhad p WHERE p.vdrno = :vdrno AND p.podate>= :podate  AND p.hposta='Y' AND (p.fromcdrno IS NULL OR p.fromcdrno='') "
+            + " AND (p.contacter is not null and p.contacter <> '') ORDER BY p.purhadPK.pono")})
 public class Purhad implements Serializable {
 
     private static final long serialVersionUID = 1L;
