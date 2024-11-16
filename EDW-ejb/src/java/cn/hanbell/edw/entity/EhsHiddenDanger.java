@@ -142,6 +142,9 @@ public class EhsHiddenDanger implements Serializable {
     @Size(max = 200)
     @Column(name = "RectificationReasons")
     private String rectificationReasons;
+    @Size(max = 30)
+    @Column(name = "Area")
+    private String area;
 
     public EhsHiddenDanger() {
     }
@@ -371,6 +374,14 @@ public class EhsHiddenDanger implements Serializable {
 
     public void setRectificationReasons(String rectificationReasons) {
         this.rectificationReasons = rectificationReasons;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     @Override
