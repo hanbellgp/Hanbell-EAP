@@ -1062,7 +1062,8 @@ Xin mua, nghiệm thu]]></text-property>
                     <property name="name">acpamtfs</property>
                     <text-property name="displayName">acpamtfs</text-property>
                     <expression name="expression" type="javascript">dataSetRow["acpamtfs"]</expression>
-                    <property name="dataType">string</property>
+                    <property name="dataType">float</property>
+                    <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">temamtfs</property>
@@ -1271,6 +1272,10 @@ TK dự toán</text-property>
                         <property name="borderTopWidth">thin</property>
                         <data id="1145">
                             <property name="fontSize">9pt</property>
+                            <structure name="numberFormat">
+                                <property name="category">Custom</property>
+                                <property name="pattern">###,##0.00</property>
+                            </structure>
                             <property name="resultSetColumn">acpamtfs</property>
                         </data>
                     </cell>
@@ -1415,13 +1420,21 @@ Thuế nội tệ]]></text-property>
                     <property name="verticalAlign">middle</property>
                     <data id="1231">
                         <property name="fontSize">9pt</property>
+                        <structure name="numberFormat">
+                            <property name="category">Custom</property>
+                            <property name="pattern">###,##0.00</property>
+                        </structure>
+                        <structure name="stringFormat">
+                            <property name="category">Custom</property>
+                        </structure>
                         <property name="dataSet">dataDetail</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">cmpSumTax</property>
                                 <text-property name="displayName">cmpSumTax</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["cmpSumTax"]</expression>
-                                <property name="dataType">string</property>
+                                <property name="dataType">float</property>
+                                <property name="allowExport">true</property>
                             </structure>
                         </list-property>
                         <property name="resultSetColumn">cmpSumTax</property>
@@ -1484,6 +1497,67 @@ Tổng tiền nội tệ]]></text-property>
                         <property name="contentType">auto</property>
                         <text-property name="content"><![CDATA[VND]]></text-property>
                     </text>
+                </cell>
+            </row>
+        </grid>
+        <grid id="1232">
+            <property name="height">0.4166666666666667in</property>
+            <property name="width">7.71875in</property>
+            <column id="1233">
+                <property name="width">1.78125in</property>
+            </column>
+            <column id="1234">
+                <property name="width">1.8958333333333333in</property>
+            </column>
+            <column id="1235">
+                <property name="width">1.53125in</property>
+            </column>
+            <column id="1236">
+                <property name="width">2.4375in</property>
+            </column>
+            <row id="1237">
+                <property name="height">0.4166666666666667in</property>
+                <cell id="1238">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <text id="1243">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[会计核准
+Kệ toán duyệt]]></text-property>
+                    </text>
+                </cell>
+                <cell id="1239">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                </cell>
+                <cell id="1240">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <text id="1244">
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[会计审核
+Kể toán kiểm tra]]></text-property>
+                    </text>
+                </cell>
+                <cell id="1241">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
                 </cell>
             </row>
         </grid>
