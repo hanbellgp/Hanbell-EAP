@@ -1389,7 +1389,7 @@ public class TimerBean {
                                     || d.getApdsc().equals("null")) {
                                 dm.setApdsc("");
                             } else {
-                                dm.setApdsc(d.getApdsc().replace('&', '/'));
+                                dm.setApdsc(d.getApdsc().replace('&', '/').replace('<', ' ').replace('>', ' '));
                             }
                             dm.setBilno(d.getBilno() != null ? d.getBilno() : "");
                             dm.setCoin(d.getCoin());
@@ -1458,10 +1458,10 @@ public class TimerBean {
                         vn.hanbell.erp.entity.Purvdr purvdr = VHBpurvdrBean.findByVdrno(h.getVdrno());
                         if (null != purvdr) {
                             hm.setTickdays(String.valueOf(purvdr.getTickdays()));
-                            hm.setBankName(purvdr.getTtbankna());
-                            hm.setBankAccount(purvdr.getTtname());
+                            hm.setBankName(purvdr.getTtbankna() == null ? "" : purvdr.getTtbankna());
+                            hm.setBankAccount(purvdr.getTtname() == null ? "" : purvdr.getTtname());
                             hm.setVdrds(purvdr.getVdrds());
-                            hm.setTel1(purvdr.getTel1());
+                            hm.setTel1(purvdr.getTel1() == null ? "" : purvdr.getTel1());
                         } else {
                             hm.setTickdays("0");
                         }
@@ -1853,9 +1853,13 @@ public class TimerBean {
                             if ("OA免签".equals(ls_mark)) {
                                 h.setHmark(ls_hmark + ls_mark);
                             }
-                            apmaphBean.setCompany(company);
-                            apmaphBean.update(h);
-                            apmaphBean.getEntityManager().flush();
+                            try {
+                                apmaphBean.setCompany(company);
+                                apmaphBean.update(h);
+                                apmaphBean.getEntityManager().flush();
+                            } catch (Exception e) {
+                                throw new Exception(e);
+                            }
                         }
                     }
                 }
@@ -1865,7 +1869,7 @@ public class TimerBean {
             log4j.error(ex);
             //加入邮件通知
             eapMailBean.getTo().clear();
-            eapMailBean.getTo().add("13120@hanbell.com.cn");
+            eapMailBean.getTo().add("1491@hanbell.com.cn");
             eapMailBean.setMailSubject("ERP-APM811抛转OA审批失败");
             eapMailBean.setMailContent(
                     company + "公司别 ERP-APM811抛转OA审批申请单" + "抛转失败，异常：" + ex);
@@ -1881,7 +1885,6 @@ public class TimerBean {
         details.put("Detail", detailList);
         try {
             apmaphBean.setCompany(company);
-            purvdrBean.setCompany(company);
             List<Apmaph> apmaphList = apmaphBean.findNeedThrow("0");
             //加入APM826
             List<Apmaph> apmaph826List = apmaphBean.findNeedThrow("5");
@@ -1918,7 +1921,7 @@ public class TimerBean {
                                     || d.getApdsc().equals("null")) {
                                 dm.setApdsc("");
                             } else {
-                                dm.setApdsc(d.getApdsc().replace('&', '/'));
+                                dm.setApdsc(d.getApdsc().replace('&', '/').replace('<', ' ').replace('>', ' '));
                             }
                             dm.setBilno(d.getBilno() != null ? d.getBilno() : "");
                             dm.setCoin(d.getCoin());
@@ -1983,13 +1986,14 @@ public class TimerBean {
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
+                        purvdrBean.setCompany(company);
                         Purvdr purvdr = purvdrBean.findByVdrno(h.getVdrno());
                         if (null != purvdr) {
                             hm.setTickdays(String.valueOf(purvdr.getTickdays()));
-                            hm.setBankName(purvdr.getTtbankna());
-                            hm.setBankAccount(purvdr.getTtname());
+                            hm.setBankName(purvdr.getTtbankna() == null ? "" : purvdr.getTtbankna());
+                            hm.setBankAccount(purvdr.getTtname() == null ? "" : purvdr.getTtname());
                             hm.setVdrds(purvdr.getVdrds());
-                            hm.setTel1(purvdr.getTel1());
+                            hm.setTel1(purvdr.getTel1() == null ? "" : purvdr.getTel1());
                         } else {
                             hm.setTickdays("0");
                         }

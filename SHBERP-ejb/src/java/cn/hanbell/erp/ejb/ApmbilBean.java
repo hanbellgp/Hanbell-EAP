@@ -276,6 +276,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                             }
 
                             //请款冲验收暂估
+                            apmpyhBean.setCompany(facno);
                             Apmpyh apmpyh = apmpyhBean.findByPK(facno, ls_acpno);
                             if (apmpyh == null) {
                                 throw new RuntimeException("错误,Update APMPYH error!");

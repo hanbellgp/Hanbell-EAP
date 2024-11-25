@@ -556,7 +556,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
                         bilnoList = new ArrayList<>();
                         String isAttachment = "";
                         String ls_mark = "";     //备注栏位记录OA是否免签和
-                        String ls_hmark = h.getHmark();
+                        String ls_hmark = h.getHmark() == null ? "" : h.getHmark();
                         Date payda1 = cn.hanbell.util.BaseLib.getDate("yyyy/MM/dd", cn.hanbell.util.BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
                         String vdrno = h.getVdrno();
                         Date apdate = h.getApdate();
