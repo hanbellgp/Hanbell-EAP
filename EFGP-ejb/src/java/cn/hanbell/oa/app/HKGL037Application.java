@@ -38,6 +38,8 @@ public class HKGL037Application implements Serializable {
     private String privatecarno;
     private String purpose;
     private String purposeDesc;
+    private String departure;
+    private String departureDesc;
     private String hmark1;
     private String mksystem;
     private String hdnDept;
@@ -202,6 +204,22 @@ public class HKGL037Application implements Serializable {
 
     public void setHdnDept(String hdnDept) {
         this.hdnDept = hdnDept;
+    }
+
+    public String getDeparture() {
+        return departure;
+    }
+
+    public void setDeparture(String departure) {
+        this.departure = departure;
+    }
+
+    public String getDepartureDesc() {
+        return departureDesc;
+    }
+
+    public void setDepartureDesc(String departureDesc) {
+        this.departureDesc = departureDesc;
     }
 
 }
