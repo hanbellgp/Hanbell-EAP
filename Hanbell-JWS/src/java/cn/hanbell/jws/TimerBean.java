@@ -3270,7 +3270,6 @@ public class TimerBean {
         } catch (Exception ex) {
             d = BaseLib.getDate();
         }
-        eapMailBean.clearReceivers();
         List<tw.hanbell.exch.entity.Purhad> exchPurhadList = exchPurhadBean.findNeedThrowByVdrno(vdrno, d);
         if (exchPurhadList != null && !exchPurhadList.isEmpty()) {
             StringBuilder msgBuilder = new StringBuilder();
@@ -3383,6 +3382,7 @@ public class TimerBean {
                             totamts = totamts.add(pd.getTramts());
                         }
                     }
+                    eapMailBean.clearReceivers();
                     if (!addedCdrdmas.isEmpty()) {
                         if (ph.getNContacter() != null && !"".equals(ph.getNContacter())) {
                             contacter = secuserBean.findByUserno(ph.getNContacter());
@@ -3418,7 +3418,7 @@ public class TimerBean {
                         ch.setHrecsta('N');
                         ch.setTax(ph.getTax().charAt(0));
                         ch.setTaxrate(ph.getTaxrate());
-                        ch.setCoin(ph.getCoin());
+                        ch.setCoin(ph.getCoin() == null ? "RMB" : ph.getCoin());
                         if (ch.getCoin().equals("RMB") || ch.getCoin().equals("CNY")) {
                             ch.setRatio(BigDecimal.ONE);
                         } else {

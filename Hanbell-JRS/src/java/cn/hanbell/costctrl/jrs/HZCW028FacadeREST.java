@@ -625,6 +625,11 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             //检验部门期间余额
             if (status == 0) {
                 BudgetCenter budgetCenter = budgetCenterBean.findByDeptid(mc.getAppDept());
+                if (null == budgetCenter) {
+                    code = 110;
+                    msg = "未找到请款部门：" + mc.getAppDept() + "对应的责任中心";
+                    return new MCResponseData(code, msg);
+                }
                 double depp = budgetDetailBean.getBudgetBalanceForDeptPeriod(facno, date, budgetCenter.getBudgetCenterPK().getCenterid());
                 if (depp < mc.getTotaltaxInclusive()) {
                     code = 110;
