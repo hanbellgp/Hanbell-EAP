@@ -117,12 +117,12 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
             Map<String, String> sortFields = new LinkedHashMap<>();
             String key, value = "";
             String userId = filtersMM.getFirst("userid");
-            String company = filtersMM.getFirst("company");
+//            String company = filtersMM.getFirst("company");
             List<EhsSecure> checkList = new ArrayList<EhsSecure>();
             Map<String, Object> filterSecure = new HashMap<>();
             filterSecure.put("position", "月安全课长");
-            filterSecure.put("remark", new Date().getMonth() + 1 + "");
-            filterSecure.put("company", company);
+            filterSecure.put("remark =", new Date().getMonth() + 1 + "");
+
             checkList = ehsSecureBean.findByFilters(filterSecure);
 
             try {
@@ -130,13 +130,15 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
+                        if (!key.equals("company")) {
 
-                        if (key.equals("formdateBegin") || key.equals("formdateEnd")) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                            Date dateFormatParse = sdf.parse(value);
-                            filterFields.put(key, dateFormatParse);
-                        } else {
-                            filterFields.put(key, value);
+                            if (key.equals("formdateBegin") || key.equals("formdateEnd")) {
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                Date dateFormatParse = sdf.parse(value);
+                                filterFields.put(key, dateFormatParse);
+                            } else {
+                                filterFields.put(key, value);
+                            }
                         }
                     }
                 }
@@ -442,14 +444,15 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 Map<String, String> sortFields = new LinkedHashMap<>();
                 String key, value = "";
                 if (filtersMM != null) {
-                    companyCodeStr = filtersMM.getFirst("company");
                     deptno = filtersMM.getFirst("deptno");
                     docType = filtersMM.getFirst("docType");
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
-                        if (!"deptno".equals(key) && !"docType".equals(key)) {
-                            filterFields.put(key, value);
+                        if (!key.equals("company")) {
+                            if (!"deptno".equals(key) && !"docType".equals(key)) {
+                                filterFields.put(key, value);
+                            }
                         }
 
                     }
@@ -487,7 +490,6 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 rectifierList = ehsSecureBean.findByFilters(filterSecure);
                 //获取课长信息
                 filterSecure.clear();
-                filterSecure.put("company", companyCodeStr);
                 filterSecure.put("position", "单位课长");
                 acceptList = ehsSecureBean.findByFilters(filterSecure);
                 //获取月安全课长
