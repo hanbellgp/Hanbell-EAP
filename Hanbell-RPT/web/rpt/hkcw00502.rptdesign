@@ -172,8 +172,11 @@ return false;]]></method>
     </data-sets>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">custom</property>
             <property name="leftMargin">0.396in</property>
             <property name="rightMargin">0.302in</property>
+            <property name="height">148mm</property>
+            <property name="width">210mm</property>
         </simple-master-page>
     </page-setup>
     <body>
