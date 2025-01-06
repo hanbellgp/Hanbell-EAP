@@ -134,7 +134,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
                 d.setBizDate_txt(mcd.getBizDate());
                 d.setBizTime1_txt(mcd.getBizTime1());
                 d.setBizTime2_txt(mcd.getBizTime2());
-                d.setBizObject(mcd.getBizObject());
+                d.setBizObject(mcd.getBizObject().replace('&', '/'));
                 d.setBizAddress(mcd.getBizAddress());
                 Pattern p = Pattern.compile("\\s`&²³\\t\\r\\n");
                 Matcher matcher = p.matcher(mcd.getBizContent());
