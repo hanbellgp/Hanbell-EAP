@@ -2977,7 +2977,7 @@ public class TimerBean {
                         cdrhmasBean.setCompany(cc);
                         cdrdmasBean.setCompany(cc);
                         cdrhmasBean.persist(ch);
-                        //cdrhmasBean.getEntityManager().flush();
+                        cdrhmasBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
                             e.getCdrdmasPK().setCdrno(cdrno);
                             cdrdmasBean.persist(e);
@@ -3228,7 +3228,7 @@ public class TimerBean {
                         cdrhmasBean.setCompany(cc);
                         cdrdmasBean.setCompany(cc);
                         cdrhmasBean.persist(ch);
-                        //cdrhmasBean.getEntityManager().flush();
+                        cdrhmasBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
                             e.getCdrdmasPK().setCdrno(cdrno);
                             cdrdmasBean.persist(e);
@@ -3478,7 +3478,7 @@ public class TimerBean {
                         cdrhmasBean.setCompany(cc);
                         cdrdmasBean.setCompany(cc);
                         cdrhmasBean.persist(ch);
-                        //cdrhmasBean.getEntityManager().flush();
+                        cdrhmasBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
                             e.getCdrdmasPK().setCdrno(cdrno);
                             cdrdmasBean.persist(e);
@@ -3782,7 +3782,7 @@ public class TimerBean {
                         cdrhmasBean.setCompany(cc);
                         cdrdmasBean.setCompany(cc);
                         cdrhmasBean.persist(ch);
-                        //cdrhmasBean.getEntityManager().flush();
+                        cdrhmasBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
                             e.getCdrdmasPK().setCdrno(cdrno);
                             cdrdmasBean.persist(e);
@@ -4066,7 +4066,7 @@ public class TimerBean {
                         cdrno = cdrsysBean.getSerialNumber(tofacno, "", "A", recdate, ph.getDecode(), true, "CDR310");
                         ch.getCdrhmasPK().setCdrno(cdrno);
                         cdrhmasBean.persist(ch);
-                        //cdrhmasBean.getEntityManager().flush();
+                        cdrhmasBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
                             e.getCdrdmasPK().setCdrno(cdrno);
                             cdrdmasBean.persist(e);

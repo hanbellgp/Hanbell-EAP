@@ -107,6 +107,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.persistence.EntityTransaction;
 import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 import javax.ws.rs.Consumes;
@@ -1922,11 +1923,17 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
 //        String pc = "A";
 //        String vdrno = "86005";
 //        String beginDate = "20200408";
-        String cc = "H";
-        String cusno = "HTW00001";
+//        String cc = "H";
+//        String cusno = "HTW00001";
+//        String pricingtype = "00";
+//        String pc = "A";
+//        String vdrno = "1139";
+//        String beginDate = "20200408";
+        String cc = "K";
+        String cusno = "KTW00004";
         String pricingtype = "00";
         String pc = "A";
-        String vdrno = "1139";
+        String vdrno = "86010";
         String beginDate = "20200408";
         Date d;
         try {
