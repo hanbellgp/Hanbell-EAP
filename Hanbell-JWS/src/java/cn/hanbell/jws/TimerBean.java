@@ -1476,7 +1476,7 @@ public class TimerBean {
                         if (null == h.getHmark()) {
                             hm.setHmark("");
                         } else {
-                            hm.setHmark(h.getHmark());
+                            hm.setHmark(h.getHmark().replace('&', '/').replace('<', ' ').replace('>', ' '));
                         }
                         // 设置默认立账参数
                         hm.setPayda(h.getPayda());
@@ -2974,8 +2974,10 @@ public class TimerBean {
                         // 设置订单编号
                         cdrno = cdrsysBean.getSerialNumber(cc, "", "A", recdate, ph.getDecode(), true, "CDR310");
                         ch.getCdrhmasPK().setCdrno(cdrno);
+                        cdrhmasBean.setCompany(cc);
+                        cdrdmasBean.setCompany(cc);
                         cdrhmasBean.persist(ch);
-                        cdrhmasBean.getEntityManager().flush();
+                        //cdrhmasBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
                             e.getCdrdmasPK().setCdrno(cdrno);
                             cdrdmasBean.persist(e);
@@ -3226,7 +3228,7 @@ public class TimerBean {
                         cdrhmasBean.setCompany(cc);
                         cdrdmasBean.setCompany(cc);
                         cdrhmasBean.persist(ch);
-                        cdrhmasBean.getEntityManager().flush();
+                        //cdrhmasBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
                             e.getCdrdmasPK().setCdrno(cdrno);
                             cdrdmasBean.persist(e);
@@ -3418,7 +3420,7 @@ public class TimerBean {
                         ch.setHrecsta('N');
                         ch.setTax(ph.getTax().charAt(0));
                         ch.setTaxrate(ph.getTaxrate());
-                        ch.setCoin(ph.getCoin() == null ? "RMB" : ph.getCoin());
+                        ch.setCoin((ph.getCoin() == null || "".equals(ph.getCoin())) ? "RMB" : ph.getCoin());
                         if (ch.getCoin().equals("RMB") || ch.getCoin().equals("CNY")) {
                             ch.setRatio(BigDecimal.ONE);
                         } else {
@@ -3473,8 +3475,10 @@ public class TimerBean {
                         // 设置订单编号
                         cdrno = cdrsysBean.getSerialNumber(cc, "", "A", recdate, ch.getDecode(), true, "CDR310");
                         ch.getCdrhmasPK().setCdrno(cdrno);
+                        cdrhmasBean.setCompany(cc);
+                        cdrdmasBean.setCompany(cc);
                         cdrhmasBean.persist(ch);
-                        cdrhmasBean.getEntityManager().flush();
+                        //cdrhmasBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
                             e.getCdrdmasPK().setCdrno(cdrno);
                             cdrdmasBean.persist(e);
@@ -3776,8 +3780,9 @@ public class TimerBean {
                         cdrno = cdrsysBean.getSerialNumber(cc, "", "A", recdate, ch.getDecode(), true, "CDR310");
                         ch.getCdrhmasPK().setCdrno(cdrno);
                         cdrhmasBean.setCompany(cc);
+                        cdrdmasBean.setCompany(cc);
                         cdrhmasBean.persist(ch);
-                        cdrhmasBean.getEntityManager().flush();
+                        //cdrhmasBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
                             e.getCdrdmasPK().setCdrno(cdrno);
                             cdrdmasBean.persist(e);
@@ -4061,7 +4066,7 @@ public class TimerBean {
                         cdrno = cdrsysBean.getSerialNumber(tofacno, "", "A", recdate, ph.getDecode(), true, "CDR310");
                         ch.getCdrhmasPK().setCdrno(cdrno);
                         cdrhmasBean.persist(ch);
-                        cdrhmasBean.getEntityManager().flush();
+                        //cdrhmasBean.getEntityManager().flush();
                         for (Cdrdmas e : addedCdrdmas) {
                             e.getCdrdmasPK().setCdrno(cdrno);
                             cdrdmasBean.persist(e);

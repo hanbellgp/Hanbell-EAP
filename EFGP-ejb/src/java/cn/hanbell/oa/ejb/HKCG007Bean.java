@@ -15,6 +15,7 @@ import cn.hanbell.oa.entity.HKCW002PpurDetail;
 import cn.hanbell.oa.model.HKCG007DetailModel;
 import cn.hanbell.oa.model.HKCG007Model;
 import cn.hanbell.util.BaseLib;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -130,8 +131,8 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     m.setCtotaly(0.00);
                     m.setCtotalyRMB(0.00);
                     m.setIstechnique("N");
-                    m.setDeptPeriod(pm.getDeptperbal());
-                    m.setDeptYear(pm.getDeptyearbal());
+                    m.setDeptPeriod(BigDecimal.valueOf(pm.getDeptperbal()).toString());
+                    m.setDeptYear(BigDecimal.valueOf(pm.getDeptyearbal()).toString());
                     
                     m.setIsNine(pm.getProtype());
                     m.setYfPrice("N");
@@ -299,8 +300,8 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     m.setQtotaly(aa.getTotalamts());
                     m.setQtotalyRMB(aa.getTotalamt());
                     m.setFormid(psn);
-                    m.setDeptPeriod(aa.getDeptperbal());
-                    m.setDeptYear(aa.getDeptyearbal());
+                    m.setDeptPeriod(BigDecimal.valueOf(aa.getDeptperbal()).toString());
+                    m.setDeptYear(BigDecimal.valueOf(aa.getDeptyearbal()).toString());
                     
                     m.setMastbuyer("");
                     m.setMastbuyername("");
