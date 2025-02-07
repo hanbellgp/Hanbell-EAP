@@ -356,14 +356,17 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     }
                 } else if (hiddenTemp.getRstatus().equals("60")) {
                     StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
-                    StringBuffer userStrTemp = new StringBuffer(entity.getPresentingId().toUpperCase());
+                    String userStrTemp = entity.getPresentingId().toUpperCase();
+                      if (hiddenTemp.getHiddenSource().equals("安全专员巡查")) {//如果是安全专员巡查的单子验收完提醒当月安全课长审核否则提醒发起人结案
+                           userStrTemp = checkList.get(0).getSecureId();
+                      } 
                     msg.append(hiddenTemp.getId()).append("<br/>");
                     msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
                     msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
                     msg.append("排查人:").append(entity.getPresentingId()).append("-").append(entity.getPresentingName()).append("<br/>");
                     msg.append("整改人:").append(entity.getRectifierName()).append("<br/>");
                     msg.append("详情请至微信小程序查看!");
-                    String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
+                    String errmsg = sendMsgString(userStrTemp, msg.toString(), sessionKey, openId);
                     // 发送失败，抛异常，使事务回滚
                     if (!"200".equals(errmsg)) {
                         //throw new RuntimeException("发送失败,请联系管理员");
@@ -371,14 +374,14 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     }
                 } else if (hiddenTemp.getRstatus().equals("75")) {
                     StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
-                    StringBuffer userStrTemp = new StringBuffer(checkList.get(0).getSecureId());
+                     String userStrTemp = entity.getPresentingId().toUpperCase();
                     msg.append(hiddenTemp.getId()).append("<br/>");
                     msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
                     msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
                     msg.append("排查人:").append(entity.getPresentingId()).append("-").append(entity.getPresentingName()).append("<br/>");
                     msg.append("整改人:").append(entity.getRectifierName()).append("<br/>");
                     msg.append("详情请至微信小程序查看!");
-                    String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
+                    String errmsg = sendMsgString(userStrTemp, msg.toString(), sessionKey, openId);
                     // 发送失败，抛异常，使事务回滚
                     if (!"200".equals(errmsg)) {
                         //throw new RuntimeException("发送失败,请联系管理员");
@@ -430,6 +433,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
             String docType = "";
             this.superEJB = ehsHiddenDangerFileBean;
             List<Object> list = new ArrayList<>();
+                         
             List<EhsHiddenDangerFile> hiddenImageListRes = new ArrayList<>();
             List<EhsHiddenDangerParameter> hiddenTypeList = new ArrayList<EhsHiddenDangerParameter>();
             List<EhsHiddenDangerParameter> areaTypeList = new ArrayList<EhsHiddenDangerParameter>();
@@ -442,6 +446,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
                 Map<String, Object> filterFields = new HashMap<>();
                 Map<String, String> sortFields = new LinkedHashMap<>();
+                companyCodeStr = filtersMM.getFirst("company");
                 String key, value = "";
                 if (filtersMM != null) {
                     deptno = filtersMM.getFirst("deptno");
