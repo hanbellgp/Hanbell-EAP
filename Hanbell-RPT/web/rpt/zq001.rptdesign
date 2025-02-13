@@ -1,0 +1,1512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.6.0.v201606072122</property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">fixed layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">72</property>
+    <parameters>
+        <scalar-parameter name="JNDIName" id="455">
+            <property name="hidden">true</property>
+            <text-property name="promptText">JNDI</text-property>
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="formid" id="570">
+            <property name="hidden">true</property>
+            <text-property name="promptText">单号</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant"></value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <script-data-source name="scriptDS" id="225"/>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="dataDetail" id="226">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">facno</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">fileno</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">researchTime</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">address1</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">researchMethod</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">otherMethod</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">receptionStaff</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">institution</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">remark</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">applyUser</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">applyDept</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">establishmentUser</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">applyDate</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">fsn</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">seq</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">facno</property>
+                </structure>
+                <structure>
+                    <property name="columnName">fileno</property>
+                </structure>
+                <structure>
+                    <property name="columnName">researchTime</property>
+                </structure>
+                <structure>
+                    <property name="columnName">address1</property>
+                </structure>
+                <structure>
+                    <property name="columnName">researchMethod</property>
+                </structure>
+                <structure>
+                    <property name="columnName">otherMethod</property>
+                </structure>
+                <structure>
+                    <property name="columnName">receptionStaff</property>
+                </structure>
+                <structure>
+                    <property name="columnName">institution</property>
+                </structure>
+                <structure>
+                    <property name="columnName">remark</property>
+                </structure>
+                <structure>
+                    <property name="columnName">applyUser</property>
+                </structure>
+                <structure>
+                    <property name="columnName">applyDept</property>
+                </structure>
+                <structure>
+                    <property name="columnName">establishmentUser</property>
+                </structure>
+                <structure>
+                    <property name="columnName">applyDate</property>
+                </structure>
+                <structure>
+                    <property name="columnName">fsn</property>
+                </structure>
+                <structure>
+                    <property name="columnName">seq</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">facno</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">fileno</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">researchTime</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">address1</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">researchMethod</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">otherMethod</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">receptionStaff</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">institution</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">remark</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">applyUser</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">applyDept</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">establishmentUser</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">applyDate</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">fsn</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">seq</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">scriptDS</property>
+            <method name="open"><![CDATA[
+importPackage(Packages.cn.hanbell.efgp.rpt);
+importPackage(Packages.java.lang);
+ejbClient = new ZQ001Report();
+ejbClient.setEJB(params["JNDIName"]);
+master = ejbClient.getEntity(params["formid"]);
+if(master!=null){
+	detail = ejbClient.getDetail(master.getFormSerialNumber());
+	   
+}
+
+currentRow = 0;
+]]></method>
+            <method name="fetch"><![CDATA[if (currentRow == 0 &amp;&amp; detail.size() == 0) {
+
+		dataSetRow["facno"] = master.getCompanyName();
+		dataSetRow["applyUser"] = master.getUser2().getUserName();
+		dataSetRow["applyDept"] = master.getDept().getOrganizationUnitName();
+		dataSetRow["applyDate"] = master.getApplyDate();
+		dataSetRow["establishmentUser"] = master.getUser2().getUserName();
+		dataSetRow["fsn"] = master.getFormSerialNumber();
+		   dataSetRow["seq"] ="明细"+(currentRow+1);
+    currentRow++;
+    return true;
+} else {
+
+		dataSetRow["facno"] = master.getCompanyName();
+		dataSetRow["applyUser"] = master.getUser2().getUserName();
+		dataSetRow["applyDept"] = master.getDept().getOrganizationUnitName();
+		dataSetRow["applyDate"] = master.getApplyDate();
+		dataSetRow["establishmentUser"] = master.getUser2().getUserName();
+		dataSetRow["fsn"] = master.getFormSerialNumber();
+		    dataSetRow["seq"] ="明细"+(currentRow+1);
+    if (currentRow < detail.size()) {
+		dataSetRow["facno"] = master.getCompanyName();
+		dataSetRow["applyUser"] = master.getUser2().getUserName();
+		dataSetRow["applyDept"] = master.getDept().getOrganizationUnitName();
+		dataSetRow["applyDate"] = master.getApplyDate();
+		dataSetRow["establishmentUser"] = master.getUser2().getUserName();
+	    dataSetRow["fileno"] =detail.get(currentRow).getFileno();
+	    dataSetRow["researchTime"] =detail.get(currentRow).getResearchTime();
+	    dataSetRow["address1"] =detail.get(currentRow).getAddress1();
+	    dataSetRow["researchMethod"] =detail.get(currentRow).getResearchMethod();
+	    dataSetRow["otherMethod"] =detail.get(currentRow).getOtherMethod();
+	    dataSetRow["receptionStaff"] =detail.get(currentRow).getReceptionStaff();
+	    dataSetRow["institution"] =detail.get(currentRow).getInstitution();
+	    dataSetRow["remark"] =detail.get(currentRow).getRemark();
+	    dataSetRow["fsn"] = master.getFormSerialNumber();
+	    dataSetRow["seq"] ="明细"+(currentRow+1);
+        currentRow++;
+        return true;
+    }
+
+    return false;
+}
+]]></method>
+            <method name="close"><![CDATA[ejbClient = null;]]></method>
+        </script-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">a4</property>
+            <property name="leftMargin">0.3958333333333333in</property>
+            <property name="rightMargin">0.3020833333333333in</property>
+            <property name="height">148mm</property>
+            <property name="width">210mm</property>
+            <property name="headerHeight">0in</property>
+            <page-footer>
+                <grid id="544">
+                    <property name="width">7.583333333333333in</property>
+                    <column id="545">
+                        <property name="width">2.5277777777777777in</property>
+                    </column>
+                    <column id="546">
+                        <property name="width">3.3472222222222223in</property>
+                    </column>
+                    <column id="547">
+                        <property name="width">1.7083333333333333in</property>
+                    </column>
+                    <row id="548">
+                        <cell id="549"/>
+                        <cell id="550"/>
+                        <cell id="551">
+                            <grid id="552">
+                                <property name="width">1.625in</property>
+                                <column id="564">
+                                    <property name="width">0.3333333333333333in</property>
+                                </column>
+                                <column id="553">
+                                    <property name="width">0.2361111111111111in</property>
+                                </column>
+                                <column id="554">
+                                    <property name="width">0.4in</property>
+                                </column>
+                                <column id="555">
+                                    <property name="width">0.2361111111111111in</property>
+                                </column>
+                                <column id="568">
+                                    <property name="width">0.3194444444444444in</property>
+                                </column>
+                                <row id="556">
+                                    <cell id="563">
+                                        <label id="565">
+                                            <property name="textAlign">right</property>
+                                            <text-property name="text">第</text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="557">
+                                        <auto-text id="558">
+                                            <property name="textAlign">center</property>
+                                            <property name="type">page-number</property>
+                                        </auto-text>
+                                    </cell>
+                                    <cell id="559">
+                                        <text id="560">
+                                            <property name="textAlign">center</property>
+                                            <property name="contentType">plain</property>
+                                            <text-property name="content"><![CDATA[页/共]]></text-property>
+                                        </text>
+                                    </cell>
+                                    <cell id="561">
+                                        <auto-text id="562">
+                                            <property name="textAlign">center</property>
+                                            <property name="type">total-page</property>
+                                        </auto-text>
+                                    </cell>
+                                    <cell id="567">
+                                        <label id="569">
+                                            <text-property name="text">页</text-property>
+                                        </label>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                    </row>
+                </grid>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="1578">
+            <property name="height">0.4583333333333333in</property>
+            <column id="1591">
+                <property name="width">5cm</property>
+            </column>
+            <column id="1579"/>
+            <column id="1580">
+                <property name="width">5cm</property>
+            </column>
+            <row id="1581">
+                <cell id="1589">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">2</property>
+                    <property name="verticalAlign">middle</property>
+                    <image id="612">
+                        <property name="height">0.23958333333333334in</property>
+                        <property name="width">1.71875in</property>
+                        <property name="source">embed</property>
+                        <property name="imageName">login-da658703.png</property>
+                    </image>
+                </cell>
+                <cell id="1582">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">2</property>
+                    <label id="1238">
+                        <property name="fontFamily">"宋体"</property>
+                        <property name="fontSize">16pt</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="marginTop">6pt</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">汉钟精机调研纪要审批表</text-property>
+                    </label>
+                </cell>
+                <cell id="1583">
+                    <label id="1587">
+                        <property name="textAlign">left</property>
+                        <text-property name="text">表单单号</text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="1584">
+                <cell id="1586">
+                    <data id="1705">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">fsn</property>
+                                <text-property name="displayName">fsn</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["fsn"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">fsn</property>
+                    </data>
+                </cell>
+            </row>
+        </grid>
+        <label id="1588">
+            <property name="backgroundColor">#FFFFFF</property>
+            <property name="fontSize">11pt</property>
+            <property name="fontWeight">bold</property>
+            <text-property name="text">调研纪要审批表主档</text-property>
+        </label>
+        <grid id="1593">
+            <column id="1594"/>
+            <column id="1722">
+                <property name="width">0.7cm</property>
+            </column>
+            <column id="1595"/>
+            <column id="1727">
+                <property name="width">0.7cm</property>
+            </column>
+            <column id="1596"/>
+            <column id="1753">
+                <property name="width">0.7cm</property>
+            </column>
+            <row id="1597">
+                <cell id="1598">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <label id="1613">
+                        <text-property name="text">公司别</text-property>
+                    </label>
+                </cell>
+                <cell id="1718">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+                <cell id="1599">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <label id="1614">
+                        <text-property name="text">申请人</text-property>
+                    </label>
+                </cell>
+                <cell id="1723">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+                <cell id="1600">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <label id="1615">
+                        <text-property name="text">申请部门</text-property>
+                    </label>
+                </cell>
+                <cell id="1749">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+            </row>
+            <row id="1601">
+                <cell id="1602">
+                    <property name="borderBottomColor">#E4E6E8</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftColor">#E4E6E8</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightColor">#E4E6E8</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopColor">#E4E6E8</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">top</property>
+                    <data id="1619">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="marginTop">1pt</property>
+                        <property name="marginLeft">1pt</property>
+                        <property name="marginBottom">1pt</property>
+                        <property name="marginRight">1pt</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">facno</property>
+                                <text-property name="displayName">facno</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["facno"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">facno</property>
+                    </data>
+                </cell>
+                <cell id="1719">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">top</property>
+                </cell>
+                <cell id="1603">
+                    <property name="borderBottomColor">#E4E6E8</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftColor">#E4E6E8</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightColor">#E4E6E8</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopColor">#E4E6E8</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1762">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">applyUser</property>
+                                <text-property name="displayName">applyUser</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["applyUser"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">applyUser</property>
+                    </data>
+                </cell>
+                <cell id="1724">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+                <cell id="1604">
+                    <property name="borderBottomColor">#E4E6E8</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftColor">#E4E6E8</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightColor">#E4E6E8</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopColor">#E4E6E8</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1621">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="marginTop">1pt</property>
+                        <property name="marginLeft">1pt</property>
+                        <property name="marginBottom">1pt</property>
+                        <property name="marginRight">1pt</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">applyDept</property>
+                                <text-property name="displayName">applyDept</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["applyDept"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">applyDept</property>
+                    </data>
+                </cell>
+                <cell id="1750">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+            </row>
+            <row id="1605">
+                <cell id="1606">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <label id="1616">
+                        <text-property name="text">申请日期</text-property>
+                    </label>
+                </cell>
+                <cell id="1720">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+                <cell id="1607">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <label id="1617">
+                        <text-property name="text">编制人员</text-property>
+                    </label>
+                </cell>
+                <cell id="1725">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+                <cell id="1608">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1620">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="marginTop">1pt</property>
+                        <property name="marginLeft">1pt</property>
+                        <property name="marginBottom">1pt</property>
+                        <property name="marginRight">1pt</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">applyUser</property>
+                                <text-property name="displayName">applyUser</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["applyUser"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">applyUser</property>
+                    </data>
+                </cell>
+                <cell id="1751">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+            </row>
+            <row id="1609">
+                <cell id="1610">
+                    <property name="borderBottomColor">#E4E6E8</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftColor">#E4E6E8</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightColor">#E4E6E8</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopColor">#E4E6E8</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">top</property>
+                    <data id="1622">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="marginTop">1pt</property>
+                        <property name="marginLeft">1pt</property>
+                        <property name="marginBottom">1pt</property>
+                        <property name="marginRight">1pt</property>
+                        <structure name="dateTimeFormat">
+                            <property name="category">Custom</property>
+                            <property name="pattern">yyyy/MM/dd</property>
+                        </structure>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">applyDate</property>
+                                <text-property name="displayName">applyDate</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["applyDate"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">applyDate</property>
+                    </data>
+                </cell>
+                <cell id="1721">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">top</property>
+                </cell>
+                <cell id="1611">
+                    <property name="borderBottomColor">#E4E6E8</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftColor">#E4E6E8</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightColor">#E4E6E8</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopColor">#E4E6E8</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <data id="1679">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="marginTop">1pt</property>
+                        <property name="marginLeft">1pt</property>
+                        <property name="marginBottom">1pt</property>
+                        <property name="marginRight">1pt</property>
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">establishmentUser</property>
+                                <text-property name="displayName">establishmentUser</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["establishmentUser"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">establishmentUser</property>
+                    </data>
+                </cell>
+                <cell id="1726">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+                <cell id="1612">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+                <cell id="1752">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="verticalAlign">middle</property>
+                </cell>
+            </row>
+        </grid>
+        <label id="1704">
+            <property name="backgroundColor">#FFFFFF</property>
+            <property name="fontSize">11pt</property>
+            <property name="fontWeight">bold</property>
+            <text-property name="text">调研纪要审批表明细</text-property>
+        </label>
+        <table id="1624">
+            <property name="dataSet">dataDetail</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">fileno</property>
+                    <text-property name="displayName">fileno</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["fileno"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">researchTime</property>
+                    <text-property name="displayName">researchTime</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["researchTime"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">address1</property>
+                    <text-property name="displayName">address1</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["address1"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">researchMethod</property>
+                    <text-property name="displayName">researchMethod</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["researchMethod"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">otherMethod</property>
+                    <text-property name="displayName">otherMethod</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["otherMethod"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">facno</property>
+                    <text-property name="displayName">facno</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["facno"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">receptionStaff</property>
+                    <text-property name="displayName">receptionStaff</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["receptionStaff"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">institution</property>
+                    <text-property name="displayName">institution</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["institution"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">remark</property>
+                    <text-property name="displayName">remark</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["remark"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">applyUser</property>
+                    <text-property name="displayName">applyUser</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["applyUser"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">applyDept</property>
+                    <text-property name="displayName">applyDept</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["applyDept"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">establishmentUser</property>
+                    <text-property name="displayName">establishmentUser</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["establishmentUser"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">applyDate</property>
+                    <text-property name="displayName">applyDate</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["applyDate"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">seq</property>
+                    <text-property name="displayName">seq</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["seq"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="1631"/>
+            <detail>
+                <row id="1627">
+                    <cell id="1628">
+                        <grid id="1652">
+                            <column id="1653"/>
+                            <column id="1732">
+                                <property name="width">0.7cm</property>
+                            </column>
+                            <column id="1654"/>
+                            <column id="1737">
+                                <property name="width">0.7cm</property>
+                            </column>
+                            <column id="1655"/>
+                            <column id="1748">
+                                <property name="width">0.7cm</property>
+                            </column>
+                            <row id="1656">
+                                <cell id="1657">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                    <label id="1672">
+                                        <text-property name="text">文件编号</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="1728">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                                <cell id="1658">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                    <label id="1673">
+                                        <text-property name="text">调研时间</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="1733">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                                <cell id="1659">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                    <label id="1674">
+                                        <text-property name="text">地点</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="1744">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                            </row>
+                            <row id="1660">
+                                <cell id="1661">
+                                    <property name="borderBottomColor">#E4E6E8</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#E4E6E8</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#E4E6E8</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#E4E6E8</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="1677">
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="marginTop">1pt</property>
+                                        <property name="marginLeft">1pt</property>
+                                        <property name="marginBottom">1pt</property>
+                                        <property name="marginRight">1pt</property>
+                                        <property name="resultSetColumn">fileno</property>
+                                    </data>
+                                </cell>
+                                <cell id="1729">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                                <cell id="1662">
+                                    <property name="borderBottomColor">#E4E6E8</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#E4E6E8</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#E4E6E8</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#E4E6E8</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="1678">
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="marginTop">1pt</property>
+                                        <property name="marginLeft">1pt</property>
+                                        <property name="marginBottom">1pt</property>
+                                        <property name="marginRight">1pt</property>
+                                        <property name="resultSetColumn">researchTime</property>
+                                    </data>
+                                </cell>
+                                <cell id="1734">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                                <cell id="1663">
+                                    <property name="borderBottomColor">#E4E6E8</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#E4E6E8</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#E4E6E8</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#E4E6E8</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="1680">
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="marginTop">1pt</property>
+                                        <property name="marginLeft">1pt</property>
+                                        <property name="marginBottom">1pt</property>
+                                        <property name="marginRight">1pt</property>
+                                        <property name="resultSetColumn">address1</property>
+                                    </data>
+                                </cell>
+                                <cell id="1745">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                            </row>
+                            <row id="1664">
+                                <cell id="1665">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                    <label id="1675">
+                                        <text-property name="text">调研方式</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="1730">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                                <cell id="1666">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                    <label id="1676">
+                                        <text-property name="text">其他方式</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="1735">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                                <cell id="1667">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                                <cell id="1746">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                            </row>
+                            <row id="1668">
+                                <cell id="1669">
+                                    <property name="borderBottomColor">#E4E6E8</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#E4E6E8</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#E4E6E8</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#E4E6E8</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="1681">
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="marginTop">1pt</property>
+                                        <property name="marginLeft">1pt</property>
+                                        <property name="marginBottom">1pt</property>
+                                        <property name="marginRight">1pt</property>
+                                        <property name="resultSetColumn">researchMethod</property>
+                                    </data>
+                                </cell>
+                                <cell id="1731">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                                <cell id="1670">
+                                    <property name="borderBottomColor">#E4E6E8</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#E4E6E8</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#E4E6E8</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#E4E6E8</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="1682">
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="marginTop">1pt</property>
+                                        <property name="marginLeft">1pt</property>
+                                        <property name="marginBottom">1pt</property>
+                                        <property name="marginRight">1pt</property>
+                                        <property name="resultSetColumn">otherMethod</property>
+                                    </data>
+                                </cell>
+                                <cell id="1736">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                                <cell id="1671">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                                <cell id="1747">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                            </row>
+                        </grid>
+                        <grid id="1754">
+                            <column id="1755">
+                                <property name="width">2.2cm</property>
+                            </column>
+                            <column id="1756"/>
+                            <column id="1761">
+                                <property name="width">0.7cm</property>
+                            </column>
+                            <row id="1757">
+                                <cell id="1758">
+                                    <label id="1692">
+                                        <text-property name="text">接待人员</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="1759">
+                                    <property name="borderBottomColor">#E4E6E8</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#E4E6E8</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#E4E6E8</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#E4E6E8</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="1701">
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="marginTop">1pt</property>
+                                        <property name="marginLeft">1pt</property>
+                                        <property name="marginBottom">1pt</property>
+                                        <property name="marginRight">1pt</property>
+                                        <property name="resultSetColumn">receptionStaff</property>
+                                    </data>
+                                </cell>
+                                <cell id="1760"/>
+                            </row>
+                        </grid>
+                        <grid id="1763">
+                            <column id="1764">
+                                <property name="width">2.2cm</property>
+                            </column>
+                            <column id="1765"/>
+                            <column id="1766">
+                                <property name="width">0.7cm</property>
+                            </column>
+                            <row id="1767">
+                                <cell id="1768">
+                                    <label id="1769">
+                                        <text-property name="text">参与机构</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="1770">
+                                    <property name="borderBottomColor">#E4E6E8</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#E4E6E8</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#E4E6E8</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#E4E6E8</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="1771">
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="marginTop">1pt</property>
+                                        <property name="marginLeft">1pt</property>
+                                        <property name="marginBottom">1pt</property>
+                                        <property name="marginRight">1pt</property>
+                                        <property name="lineHeight">15px</property>
+                                        <property name="resultSetColumn">institution</property>
+                                    </data>
+                                </cell>
+                                <cell id="1772"/>
+                            </row>
+                        </grid>
+                        <grid id="1694">
+                            <column id="1695"/>
+                            <column id="1743">
+                                <property name="width">0.7cm</property>
+                            </column>
+                            <row id="1696">
+                                <cell id="1697">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                    <label id="1700">
+                                        <text-property name="text">调研内容</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="1741">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                            </row>
+                            <row id="1698">
+                                <cell id="1699">
+                                    <property name="borderBottomColor">#E4E6E8</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#E4E6E8</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#E4E6E8</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#E4E6E8</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="1703">
+                                        <property name="borderBottomStyle">none</property>
+                                        <property name="borderLeftStyle">none</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <property name="borderTopStyle">none</property>
+                                        <property name="marginTop">1pt</property>
+                                        <property name="marginLeft">1pt</property>
+                                        <property name="marginBottom">1pt</property>
+                                        <property name="marginRight">1pt</property>
+                                        <property name="lineHeight">15px</property>
+                                        <property name="resultSetColumn">remark</property>
+                                    </data>
+                                </cell>
+                                <cell id="1742">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderLeftStyle">none</property>
+                                    <property name="borderRightStyle">none</property>
+                                    <property name="borderTopStyle">none</property>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+    </body>
+    <list-property name="images">
+        <structure>
+            <property name="name">login-da658703.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAAwkAAABpCAYAAABxh29LAAAACXBIWXMAABcSAAAXEgFnn9JSAAAKTWlD
+                Q1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVN3WJP3Fj7f92UPVkLY8LGXbIEAIiOsCMgQWaIQkgBh
+                hBASQMWFiApWFBURnEhVxILVCkidiOKgKLhnQYqIWotVXDjuH9yntX167+3t+9f7vOec5/zOec8PgBES
+                JpHmomoAOVKFPDrYH49PSMTJvYACFUjgBCAQ5svCZwXFAADwA3l4fnSwP/wBr28AAgBw1S4kEsfh/4O6
+                UCZXACCRAOAiEucLAZBSAMguVMgUAMgYALBTs2QKAJQAAGx5fEIiAKoNAOz0ST4FANipk9wXANiiHKkI
+                AI0BAJkoRyQCQLsAYFWBUiwCwMIAoKxAIi4EwK4BgFm2MkcCgL0FAHaOWJAPQGAAgJlCLMwAIDgCAEMe
+                E80DIEwDoDDSv+CpX3CFuEgBAMDLlc2XS9IzFLiV0Bp38vDg4iHiwmyxQmEXKRBmCeQinJebIxNI5wNM
+                zgwAABr50cH+OD+Q5+bk4eZm52zv9MWi/mvwbyI+IfHf/ryMAgQAEE7P79pf5eXWA3DHAbB1v2upWwDa
+                VgBo3/ldM9sJoFoK0Hr5i3k4/EAenqFQyDwdHAoLC+0lYqG9MOOLPv8z4W/gi372/EAe/tt68ABxmkCZ
+                rcCjg/1xYW52rlKO58sEQjFu9+cj/seFf/2OKdHiNLFcLBWK8ViJuFAiTcd5uVKRRCHJleIS6X8y8R+W
+                /QmTdw0ArIZPwE62B7XLbMB+7gECiw5Y0nYAQH7zLYwaC5EAEGc0Mnn3AACTv/mPQCsBAM2XpOMAALzo
+                GFyolBdMxggAAESggSqwQQcMwRSswA6cwR28wBcCYQZEQAwkwDwQQgbkgBwKoRiWQRlUwDrYBLWwAxqg
+                EZrhELTBMTgN5+ASXIHrcBcGYBiewhi8hgkEQcgIE2EhOogRYo7YIs4IF5mOBCJhSDSSgKQg6YgUUSLF
+                yHKkAqlCapFdSCPyLXIUOY1cQPqQ28ggMor8irxHMZSBslED1AJ1QLmoHxqKxqBz0XQ0D12AlqJr0Rq0
+                Hj2AtqKn0UvodXQAfYqOY4DRMQ5mjNlhXIyHRWCJWBomxxZj5Vg1Vo81Yx1YN3YVG8CeYe8IJAKLgBPs
+                CF6EEMJsgpCQR1hMWEOoJewjtBK6CFcJg4Qxwicik6hPtCV6EvnEeGI6sZBYRqwm7iEeIZ4lXicOE1+T
+                SCQOyZLkTgohJZAySQtJa0jbSC2kU6Q+0hBpnEwm65Btyd7kCLKArCCXkbeQD5BPkvvJw+S3FDrFiOJM
+                CaIkUqSUEko1ZT/lBKWfMkKZoKpRzame1AiqiDqfWkltoHZQL1OHqRM0dZolzZsWQ8ukLaPV0JppZ2n3
+                aC/pdLoJ3YMeRZfQl9Jr6Afp5+mD9HcMDYYNg8dIYigZaxl7GacYtxkvmUymBdOXmchUMNcyG5lnmA+Y
+                b1VYKvYqfBWRyhKVOpVWlX6V56pUVXNVP9V5qgtUq1UPq15WfaZGVbNQ46kJ1Bar1akdVbupNq7OUndS
+                j1DPUV+jvl/9gvpjDbKGhUaghkijVGO3xhmNIRbGMmXxWELWclYD6yxrmE1iW7L57Ex2Bfsbdi97TFND
+                c6pmrGaRZp3mcc0BDsax4PA52ZxKziHODc57LQMtPy2x1mqtZq1+rTfaetq+2mLtcu0W7eva73VwnUCd
+                LJ31Om0693UJuja6UbqFutt1z+o+02PreekJ9cr1Dund0Uf1bfSj9Rfq79bv0R83MDQINpAZbDE4Y/DM
+                kGPoa5hpuNHwhOGoEctoupHEaKPRSaMnuCbuh2fjNXgXPmasbxxirDTeZdxrPGFiaTLbpMSkxeS+Kc2U
+                a5pmutG003TMzMgs3KzYrMnsjjnVnGueYb7ZvNv8jYWlRZzFSos2i8eW2pZ8ywWWTZb3rJhWPlZ5VvVW
+                16xJ1lzrLOtt1ldsUBtXmwybOpvLtqitm63Edptt3xTiFI8p0in1U27aMez87ArsmuwG7Tn2YfYl9m32
+                zx3MHBId1jt0O3xydHXMdmxwvOuk4TTDqcSpw+lXZxtnoXOd8zUXpkuQyxKXdpcXU22niqdun3rLleUa
+                7rrStdP1o5u7m9yt2W3U3cw9xX2r+00umxvJXcM970H08PdY4nHM452nm6fC85DnL152Xlle+70eT7Oc
+                Jp7WMG3I28Rb4L3Le2A6Pj1l+s7pAz7GPgKfep+Hvqa+It89viN+1n6Zfgf8nvs7+sv9j/i/4XnyFvFO
+                BWABwQHlAb2BGoGzA2sDHwSZBKUHNQWNBbsGLww+FUIMCQ1ZH3KTb8AX8hv5YzPcZyya0RXKCJ0VWhv6
+                MMwmTB7WEY6GzwjfEH5vpvlM6cy2CIjgR2yIuB9pGZkX+X0UKSoyqi7qUbRTdHF09yzWrORZ+2e9jvGP
+                qYy5O9tqtnJ2Z6xqbFJsY+ybuIC4qriBeIf4RfGXEnQTJAntieTE2MQ9ieNzAudsmjOc5JpUlnRjruXc
+                orkX5unOy553PFk1WZB8OIWYEpeyP+WDIEJQLxhP5aduTR0T8oSbhU9FvqKNolGxt7hKPJLmnVaV9jjd
+                O31D+miGT0Z1xjMJT1IreZEZkrkj801WRNberM/ZcdktOZSclJyjUg1plrQr1zC3KLdPZisrkw3keeZt
+                yhuTh8r35CP5c/PbFWyFTNGjtFKuUA4WTC+oK3hbGFt4uEi9SFrUM99m/ur5IwuCFny9kLBQuLCz2Lh4
+                WfHgIr9FuxYji1MXdy4xXVK6ZHhp8NJ9y2jLspb9UOJYUlXyannc8o5Sg9KlpUMrglc0lamUycturvRa
+                uWMVYZVkVe9ql9VbVn8qF5VfrHCsqK74sEa45uJXTl/VfPV5bdra3kq3yu3rSOuk626s91m/r0q9akHV
+                0IbwDa0b8Y3lG19tSt50oXpq9Y7NtM3KzQM1YTXtW8y2rNvyoTaj9nqdf13LVv2tq7e+2Sba1r/dd3vz
+                DoMdFTve75TsvLUreFdrvUV99W7S7oLdjxpiG7q/5n7duEd3T8Wej3ulewf2Re/ranRvbNyvv7+yCW1S
+                No0eSDpw5ZuAb9qb7Zp3tXBaKg7CQeXBJ9+mfHvjUOihzsPcw83fmX+39QjrSHkr0jq/dawto22gPaG9
+                7+iMo50dXh1Hvrf/fu8x42N1xzWPV56gnSg98fnkgpPjp2Snnp1OPz3Umdx590z8mWtdUV29Z0PPnj8X
+                dO5Mt1/3yfPe549d8Lxw9CL3Ytslt0utPa49R35w/eFIr1tv62X3y+1XPK509E3rO9Hv03/6asDVc9f4
+                1y5dn3m978bsG7duJt0cuCW69fh29u0XdwruTNxdeo94r/y+2v3qB/oP6n+0/rFlwG3g+GDAYM/DWQ/v
+                DgmHnv6U/9OH4dJHzEfVI0YjjY+dHx8bDRq98mTOk+GnsqcTz8p+Vv9563Or59/94vtLz1j82PAL+YvP
+                v655qfNy76uprzrHI8cfvM55PfGm/K3O233vuO+638e9H5ko/ED+UPPR+mPHp9BP9z7nfP78L/eE8/sl
+                0p8zAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAABw5SURBVHja7J27
+                jxzXlca/6eHwYYrTRcoOHJBTm5OY2pgCpjo0HUw5k6JpJi0CuwCbiQisAzaDFWAl7AUkwOhkmpCCzVTD
+                YB12DbCO1QPtH9CzAryRgW5ZxtoW1NxgarzUcHq6qvo+zr31/QAFhjlddU+de+757uPctT/g1msQ8jbP
+                f/76jz2agRBCCCGkfjRoAkIIIYQQQghFAiGEEEIIIYQigRBCCCGEEEKRQAghhBBCCKFIIIQQQgghhFAk
+                EEIIIYQQQigSCCGEEEIIIRQJhBBCCCGEEIoEQgghhBBCCEUCIYQQQgghxDqXXH3x9a3buJo8wEZ0D+vh
+                nVJ/+/34a3z75NeF/u3G9l1s9j8u/X5/zf4Tf03/A98f/Re9zJTibQ1CAKHNd5iPOpmGdsW2baujXWQl
+                nwgARCX+5Lx/n85HnbGFd4/y96EPEyd8RzpVfFvCuJIzmY86Ew9800t7OicS1rdu40bvKa61PzDyvLWg
+                icvx/dJ/dzm+jxu9p/hh8t/4tvsv+MvB7xjJ9NMF8Nji849Vi5Q8GRxZtqvydhlIoDMA2wX++fP5qNNz
+                0NfbAF6s2l8arUFsQSgMC34b5eFckX9lAHY8j6VHABKBydtXHObeYlZWOOUTaiMh7/8rAE6LBCHj9CkP
+                8xirpm0ufYhre+/jp+NDYwJBiagJ7+Bm+gVufvk51pqbDGd6SSw/P/OwTbrapZN+iSQ0rLGvNwFk+eys
+                ycHUhkA4UPhbvgsE5N9obNI3CvhOAnIeaYW/iQW9f+bBN0h8taczIuH64w8RDD9DI2g66UFXkwd4N3tF
+                oaBvAAkBbDkYrF0I5qlDftAGsFfiT1wVCaoSVdNCwdZgminyrzolqsZFpEOJrSQyh/rhWY7mo87Ug28Q
+                C7LnpHYi4dre+5XOBUhjI7qHd7NXDGn+KvmM7bIqECKcrCLYSLZNtlO1T5hMBm0Npqnj70+hIGu21nWR
+                IMWPU0++QeywL7gtEta3bnshEN4UCu88+4hhzb9OqnxGJB+Ym761S1PiHOBkH2azwt+G9HVjyaCNfnqs
+                cHatbiLh1De+ylfpbPXvEPZXiiVSeuZYyLjijUjI7SnFN+snEm70njq7xWgR17uPuO3IP5GQetgml4J4
+                H9X3ursmEhKNyaA2oWBxMM0UvX8IO+cppLBvUSjEIKp8OxHy7jMb1dV89s35qKN8vBYtEtaam04dUi5s
+                9KCJn3jYLotKPob9mREdybSEYJ468P3bKHcO4SyRQ74eak60dQqF2HEfZqJqTygkNL0y35Ziy8yTbyDF
+                ngc6flS0SLiaPPC2Z1+jSPCpkyqfEcm3z+z41i4NSXOE8ucQzhI65OsmElVdQsFWP80csr0rQqHvod87
+                R9n7ESxWF9Mp3m0j5VybFtElWiRcid/ztnNvRPcY4fwZQDIP2yQ+iK9yDuEMkUO+birR1iEUbAymhwrP
+                1CQgpzxutAZDQ/08hpw99JKoMnMsSWxlrn8AYdXO6icSyt6k7JxQ2L7LMKcmUbQ9M6IjmZYQzKUH8b6i
+                b++SSDD5rsqEgsXBVIkPCzvsKYU9Q0IhpqmV+baUpPbYh1uWBfnmsa5V/wb7mT3WAo45CpAQ9DK2y7g4
+                7GK1cwhnk2GX/H3moFCwNZiqEvBMVBcLhSyfrPE5xkskddiPU0++gRR7ahurKRIIO+nqCn6iOAEOYb+k
+                2pHUmZ48YX2h+DedSALz2aLYQaFgI9FTeaaGiepidnTFYWF76CVxXLH0qbelOi2MQ6Eg36RIIESoSEg9
+                bJPYIJ4nDTpsHrri8K4JBYuiV6WfOHfpnifxguJMnb1jKS+vo1RnDXMP3XkIRQJxXslHsD8zomNwlDAw
+                Sg3iQ03fPHTJ9x0TCrHLfVPY4USJ6LxwMaZ5lcVnKbY89OQbJDXofxQJhEp+xWQt9bBds7Kl9QyJwi6A
+                XSYjPxIKpgeqKkLB1mCa1dU3PJpQoO3V+fZuDfylVvmHCXteYl8jVPKVUT4jIqTcn0SBEEHxOYQzBC52
+                gPmokzVag4cA9i0Ihbjgnn8btlV5psZUMnCMk5Uy1YmM7q1SqcY+b3ul+CWAibBuPyk7c1yHUp0WxqNm
+                HexJkUBcxvY+YR2DYyzArqKCuMZzCG/i7OHI+agzbLQGECwUktyntl3zYcOHE4fzUaenoe+MNSbbOi9c
+                lBALuzq3chgkFvIex9Iv6CyIFNGlfdWf242Iq0peQifV0TkltCsV9rmHMDCjqOGGYWXv1WgN2suEAoCH
+                hl+t0NajPMmKARw56MOxy/0ut33b0VhhOxYeeSIQJImEzBN7JnWxJ0UCYdCrhvIZESHl/kRdcqP5HMJZ
+                QsG+vl8gGadQ+P/nZQptbwJtM/K5LV46mKTYXin2IqGtS6lOg/YMBNkz1d5e5pqESl5MsEsE2DWt8XeO
+                hPt65olQOND8PgcO+p/u5Clw6b2FrBSn8INY0LuktKdboosigbio5EP4WfpUQvDJauxaUkXCTslkXLRQ
+                mI86CfTNbCvzYcOHE3UnTzpii84LF23HQpEV3oQL3SL+MqU9lWFk1Z8igVDJyxnUrbfLk0tuqhIIFMRJ
+                xWRcrFDI36+tUSio8mGTyUCm0YdiTWJHZxJtOxHzRSBIGS9NCGHakyKBEBEDiPIZESHl/g5r7lcSb9WN
+                qybjNRUKxw6WPj3SPCOoK15qSVKErBR7kdDWqVSnQXtu1cmeFAmESl7GABILsGtad8fKExQXBDGFgsaB
+                Mz+caEo06h7stcQWjdtxJMRC5xNazQKxLL5s34qlvIipVX+KBOJaEhfDz8vGJATzjB4mp8JRgRlVCgV9
+                Qjf2od9prGyj8/C57VgoqsKbJyLBl7FFikgwtupfS5FwKbqLteZmoX97vfuIaRM76ZvomhGxvdXFl0tu
+                fBkEir6LdKHw1bI7HhQLhcw1P9A8I6irHZnHfTCFB9StVKchdutmz1qKhEbQxM/Gh7i29z4u79xf+N/N
+                Lz/H1eQB0yZZJJafr3xw9PhiOBcJHPR1yUIBOLnjoahQeLLCcw4VnhUy1Sd1l4PVlXBrSVI8XimWOslA
+                m7o1Thu356W6ZgLr4R0Ew8+YErnVSQPYnxnRMThKCOYpPQyArDKoZfziVCjEF60IzUedYaM1AIB9C0Lh
+                VKhcJBT6jdZgWvH9lAychg/O6h7sdSQ2xx6XPvWpwpuUpNaX7VuxIHuOjeVdzAkIg571Qd3XdlEkVE9U
+                Y5SfUfVlRaHq+6lK7mIf+p3GyjY6Y4XtWOhThTcpSW1Ke7o7VlMkEHbScgp+onggD2G/pJovl9yooJmv
+                WLnq63UVCjOFs2umElXdM4Jdl5I+j1eKbUwyRKhZqU7N9gwh53wHRQIhQkVC6mGbvBkYFRIJeIdVEtUm
+                gOEyseOZUMgc7JNaBvtGaxA0WoMhgD3HkpREQL9zPqEVNK6c9uOU9nR3vKZIIK4o+Qj2Z0Z0DCASBkaK
+                BEEiQdGM6jZOVhSKCIUnFpqpWiikimwfwdzB2VSD70R5nNIlEA41rjraTsR8qvAmJan1ZftWIuQ9jK/6
+                iz64fCm6y3SFiAl6mmZEbLdrxtKnbxF4MiCdCoX4ooElPywcaUwsLxIKRQ4zFzlsnQmz/UqTDvmZlLKE
+                APqaRU6m8bdtx8IM/lC7Up01EV3G7Sl6JaERNOEzGxRBLil55TMiQsr9pXQtcQOCyucXXVFoQ+3Nx2WE
+                QruAQB8CaAGYnfN/Hyk8K2Tq2y+ckc9LLY4q/LevOZ48n486PS1jvYyVYi9iYV1LdWq0ZyRgnLZmT7Er
+                Cetbt73PRNY8F0GKsX3ZGBqtwUUDZIDy21RCBnGR2P4uqhPVoisK7XzGXuqKQpYL6+zMoJ0p6t+BwTiT
+                CRapb4kwAG3NK44S2uxLLJTiP75s35IiunRd5OqoSAjveJ+JXInfw3fPP2FKtnzwltBJdyQIFV8GxkZr
+                kELOkvhZtiz6eqTp+b4IhfE5QkGVD5tMrlJHRIK21QNhiZhPFd6k+I8voiupsz3Fbje6HN/3PvldD/1f
+                LfEs6PnGkY1LbnLRtyvZMBX3hEv3dV+2Ho1zO83y/506FmcWngMSVGrxEMA/GhIIgP0JmBQeUOdSnZrs
+                GQiypxUfFbuSsBHdq4FIuIO15iZez75luuqGkvcN40E8D7pDB2wTeOrrvq0odB2MM6kAobJQwADozUed
+                vuFJA9tMLU4MLGJSYRJHUht8EF6S7GlFdAkWCfU41Hslvo+/HPyO6eriASSEnEthfMNGEO9BziGwi4gs
+                2mdEoVBMKABoOxhnMgFC5TwOcXL2YGL4uRISsRcCY9BDlJ9QSYS8uy/bt6TY89jGqj8gdLvR+tbtWpxJ
+                AIDL8XtMVd1R8j5h/BBUPlP32BH7RDYemn8TExecebH1yNE4kwmNdxHsrKAxxpf3E+m2zDz5BlLsmdp6
+                sEiRYOo8wvfjr/G37PcL/5tPZ960lUqeCAjiQ4fsE9p6sMGbkCkUzMeZheeABJRabAL4qtEadA1OHISQ
+                s+dbEqXPiwkr1Zm6/gGElOW1LrpEbje6mvxS+zOm7X/C/7789wv/zfrWbbybvdK6qrER3eO5BDeUPEXC
+                agG3B7e2jVlNXPILxALo3waxnftCtEwoSN565FCcyQQIlWW8yBOkroEtI4zv6uKzFP+xUqrTZ9/UdJFr
+                sbFb4pfRPbv+/fjrpQIBAH44/gZ/6v3GgCh6wJB4fmIZw4396y6SGvyOIYBnDvpfZHlg6MPMDP52ozUY
+                FnifNjxcUTA8A5s6kOSdisHMQB9IQFTFZylJbebJN5Biz0ObDxcnEq7u/kL7Tcuvp8Vn7X+YfGNAJPwS
+                RLaS9wzTh6CGjtopsP0CBhPzvRoLhcTg98wWCJUA8rbdnG5H02kfxvgSfnKB0A0g5x4fX0SClDLdqc2H
+                yxMJNUyYryYPsNbcZGS0OHjXDGNBJ9/f7OoldCISGAoF7ULBVJw5cDBZbgL4stEa9DXEhghcKS7rJy74
+                T+r6BxBWDteq6BIlEtaam7hS06033HL0VicNwANtTged/Bv2HLZTKOhdugCOKBTUCgXDcSYTIFSq8rjR
+                Giw95C5UnNUhPkuxpbVSnY5OHBSx55gi4Y1EWfdWI6lc7z5iaOQAYgSDh6CGcHumMBT0zaY4mS2kUDgR
+                Cqq+TWzwvVMh71GVHQAqE0DG+PJ+It1/Uk++gRR7ZrZfQJRIqHOivBHdw8b2XRCnBk0XMXIIKl+u3XXc
+                VjuGbNUuckCUQuHvzBTOVppKVI+XlD51pfLXWJHPB+BKcSk/ucCWIViqU2U8DgX5pnV7iimBennnPjai
+                e7WODte7jzB9+M8MkzJEwqGGDhrD/v781ECQDbD8sPK/AZiW/Om26cGw0RoEBspAdgGEjdYgWpYgzEed
+                aX6QdAz9qzR7efnR9jKhYLg8aqq4T9oe7G3HOuMiAZwEUpkUJo6/P3MPi+O1MyLhJ+0Pah8drrU/wJ96
+                v8EPx9/U2g5CZtb6qrflNFoDCQHUxDv0Cny/tEIFj9iCX0Q6bXZmRjVttAbxMlEyH3UmuS0yYUIhgpkZ
+                uEyR7UOD/pR6kjCr6gsJiKqkUIr/HBqYUKmTSDiSYE8RImF96zauUST8XSh89/yTupvBeifVIBAC2F9F
+                0H4IKk8UH2tMUEzbUKtIOOPrpyUniwiFsTShkLclMyAUXExUL3pnl7blZRr83koshNrzFVAUm6rYl6U6
+                1ZJ41tfcFwk3ek+pDnKudx/hz/3f1v0GZtudVMe+fQmzEyaCzrDgvwsq/PbEgs1Cw75eVigkAEYG7LBU
+                KORboXQLhSOF5xFM9ckLZ1jno87aCqK8r1GUn2f7qaKJBNsrxT0Dt3hrh6U6ldszgpxiGyJEl/WDy1xF
+                OPNBgiYrHfm5b19CMNcadPI7EYomh5EjIiHS/Pvn+cV2UbGVb9l6aMgWSw8zGzhcnTnYJ3UmTz0AM8fa
+                ISEWOp/QLphksMXMdqlOD+0pwketi4TN/sdUBme40XuK9a3b9RRJem/3tDmA+Nqu0+8WQvOdCJaCZqTR
+                ZhEWz6juFqkulNtlaFgodC0KhVSR7WOYmzFMNfaJKU4O9LvUDtsi4ciTWv5SBJdWH6+pPcWIWKsi4fLO
+                fV4idoFQqCm2O6nyfftCStTpPgQ1LJl0BRWfMzNst6ZFX98rKRSeGLLJi2UXmukSCgqFoqk4o32GNT8/
+                dWCgHapsb3sPvRcJLUt1KrdnAPu7GCgS3mSz/69UAwu41v4Al3fu17HpiYedU8LshLaBMV/9KRtco4qP
+                G5s2nMZ9v0V+dy/fd14kWezD3J0F+xaEgspEOHG93ykS3UbjopCVYi9EAliqk/b0WSRcf/xh7e9FoIh6
+                awAJYX/GXYdI8HZgLHgngkrGFmwXavrdojOqj5cl5G8k5m2PhUKm0GdNzcBmuh9gaAZUVfywnYgde7J3
+                XlJSe+RJ6dNEyHscS9oOZ0UkrG/dxjusaLSUjege3nn2UZ2aLCHopR62S+eWhx6qbcmpmnjbGIyUi4QK
+                M6r7FApOHpzNDDwjdqgdtmNhBn+QktT6YlMpoiuVZBQrIiEYfoZG0ARZzo3eU2xs361Lc20HPeUzIoYP
+                SBoNOnnbqpZfrLpiZGNAioX8ZmGhgJNbnI8M2ceEUFA5A2wqzpg6IJu40A4he+hFJWAr2DICS3WqtGcI
+                +7sYRIou4yLh+uMPcTmu5V77yjSHn2KtuVmHptpW8qmHbdIZdIYW2jKx8MxAkF/s5wkCNCfl0oRC5mCf
+                NDXYx460w3osVH1JpkUSIe8hplSnJ/ast0jY2L7LkqdV7Bbd877akZCZER2dU0LwSTV8rx5WnHnJZ2/K
+                DvI2RMK2YtuFK/5mVkOhkCq0/Zar/c5Se1S1w3YsPIA/xELeI6M9lXIo7XyHMZGw1tzEzfRzZvwVud59
+                hGt77/vcRNsDiPIZEcMHJBehYwtVBOCZgp8KK/7doWkjFknKDQ5IzZJCIYG50rG6hIKqvmkszhiaYdXd
+                npmDZWe9TmhZqlMLu0LeIxXnb6YedCv9AuvhHWb7K7DZ/9jn8wm2RYKOYCdhdkJHu/qW2zS18MxQmK+f
+                CoWgQLI6yX3RVaGgUuia6pOmZq11t0dJ/BCyUiwuAXN4XPHGphpLXHshuoyIhGD/U55DUPGxgiZuZa+8
+                u41ZyIy7js6ZCDBvqvhbdaFuFiuq+HdjC3aMFP6WqkGpjFAYOywUUoG2lzLY654BVWV727HQp1uWEyHv
+                ceyJTaXYcyaxPK92kRDsf4pr7Q+Y4SsUCjfTz307yCxByacetkvpFqo8Ge2pDA91EwkaZlS3SwoFkwOi
+                KqGQKrJ9DHOz2anuBxi6mExV/LCdiGXwh1jIe2S0p1sxQ5xIeOfZRxQIGtiI7uHd7JVPQsH2AKJ8RsTT
+                i+GGkFF2b2rhmYFgXy8jFDIADw3arb/s7MQSoTBzsPSpqRlW3cmNqtKnAeyvFA99GCiFlepMPbHntpDX
+                ESm6tImEYP9T7yvyUCh4o+R1BLtEgF2VtSuftVS9tSGq8keWSu7tCPeLbRQ8KzIfdYYGhUKhQ9ZvCIVj
+                jQNn7Fq/u6A/tlH9jhLTSYvt+D7z6JblRNC7ZB7YMxb0LiJFlxaRwC1G5oTCz8aHTh9mzpMH32bcpQSf
+                TNE3CqDnsHKwwt8eW/DVUIEddc5a7TVag2EJofBEoFBI8ONzE6lCH952qd9d0JY+gH2Hkhbbia3I5Mvx
+                pFZcqU7H7Xkk1Z5KRcJacxM//SqjQDDIengHt7JXuLr7C3ZSWYO67ZJqKrc89CBnifuUiYVnhg74ehmh
+                0AfwUphQGOPHB6xV9U2TiaoWkdBoDYJGa5BC/woC4FfpU59EgpRSnZkn9kxoz4u5pOqHNrbv4lb2Co2g
+                CWJY6QVN3Ey/wJ/7v8W3T35NkVCOQw33CEgQPqmitkQak5JoxaC6Y8FXVwnmpgakvUZrMJmPOr0CQqHd
+                aA0AYM+gUIgv2v4xH3XGeR/qKxS6se14kq9mrOLzfTi2GiJkpVhamUsAmJbdAiWsDVOBNj1lXGRMF1KW
+                95SJVHsqEQnrW7cpEARwvfsI8+kM3z3/xKXXtj0zkmr4TQmzE6pmJoaak8bKg5QFmwYOCeJnuVBY+v2k
+                CgXF9jJl+4viSQ9mVgEkxUUJic+XAu37HOWrtCWC3v+FYN+9SXsqFNgqfuRG7ykFgiCh4MphZkMl/Ewl
+                06IGxvmokyr4Pj3IqfxwlrGFZ0Yr2DKE+RnVpSVI36CLcjcgqxAKkYmHGZ7NzoQnzKbjokttlm5f2nI5
+                Zfb2054F7KlEJFxJHtCUUhLvoImr7nwP251UedULIeX+DhS0I8wTR90JXFUfcEokwN6sVSGhUPIGZNeE
+                gqk4szCeCCu1WCTRmij6rV2Q8/yklEhwzH9skpYYp3doruViVolI4CqCLNbDOxQJCgOKI8ngjzq2gt8Y
+                Qs5+zUVJ7czwY5tF7iIQ6OvtEjb1USiYsn0qONaZjh9SVop9sW9Msykd02nPgvZs0AbEBkJmRjINvykh
+                +GQrfpsEbsyyjC08s2pCu+uCPywoQ+q6UNgVYGcXkpIZTvbK9zyKhS4nsrRlSf8tsTOAArbYeJBRJBBb
+                SAh6qYbftB18jlfZQpXPlA8d8YOJCyJBQNWKUn6ebzWJfRAKhm2fOpyUvAQQzkednsJqb0xsVxTtTGq1
+                2ZW+uZwDQOONy4QID3pHGkqfRrC/RSdb8e/7ELzNSIBICBzz9Uqi8Zz7CkwJhdDROHN0QenTSHCfOgDw
+                D/NRp60yHnIP/YX9cVLSlpL9RxJpCd/cormK5RIUCcQWsYQO4FmbCgfKBcEzhpkymJK/oY5vHLtoo1wo
+                mBQ4TQDpCuc+bNo+EyoSF3EIoDUfdRKFh5SlxUJnE1kH/Mfl8YD2LOGrFAnEOEJmRlINvykh+KySOA8d
+                E4tTC+8blvT1EHZnVFfy87wKy0OD77utKsE0XGksdSRhPgbwq/moEyu8UZmJmN74TMG1nDIVuWjPAnHi
+                1J4UCcQGtgeQmaYB0vZh38q3R+d3Iji1BKu6fG1BytootmyjVMFvDA0LBVV901ScWRhPBJVanAF4Mh91
+                QhU+wUTMTH9kqU4tMYO+WcKeFAmkjiJBuUBw+WK4fGXnmaV3Dlb8+yPTL1zyMKzNAelA1Q/lQuGJgXc+
+                cvDgbCY4ITmtWBTOR52+of4RgXvoVfVHJrQKx748dtM3l5NSJBArCLlsLNPwm7Gkjl2SvsV3XtUXJsKF
+                TeKgPywSCn2cVMFx5Z0liASb3/8lgEhxxSLpPu98IktbVopNKe2px1cvqfi1/1l711tL/e3w9163zwIu
+                J9OS21Xp9uj8Nl4by9kzqLnnYAzzdxBERXxIwIyqcj+fjzrtRmswzf19W+o757bfEmBnG3HhEEBb04Fk
+                JmJmRUJMsy3lgPZUyo9Wcy/RHsQwYwAty7MOOgbPrmW7TivaYgg7B5ZVfcse1F3+pJqJTV/XNXs8H3W0
+                +HqjNYgUnjMxZvsl8aR95t9m8J8uyHl+UsW327Rcob5O39Rkz7U/4NZr2oScw/Ofv/5jj2YghBBCCKkf
+                PJNACCGEEEIIoUgghBBCCCGEUCQQQgghhBBCKBIIIYQQQgghFAmEEEIIIYQQigRCCCGEEEIIRQIhhBBC
+                CCGEIoEQQgghhBBiiv8bAASmfL8Wm9gYAAAAAElFTkSuQmCC
+</property>
+        </structure>
+    </list-property>
+</report>
