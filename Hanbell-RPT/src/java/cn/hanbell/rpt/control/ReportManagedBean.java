@@ -12,6 +12,7 @@ import cn.hanbell.oa.ejb.HZCW028Bean;
 import cn.hanbell.oa.ejb.HZCW030Bean;
 import cn.hanbell.oa.ejb.HZCW033Bean;
 import cn.hanbell.oa.ejb.ProcessInstanceBean;
+import cn.hanbell.oa.ejb.ZQ001Bean;
 import cn.hanbell.oa.entity.HKCW005;
 import cn.hanbell.oa.entity.ProcessInstance;
 import cn.hanbell.util.BaseLib;
@@ -31,6 +32,17 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.eclipse.birt.core.exception.BirtException;
+import org.eclipse.birt.core.framework.Platform;
+import org.eclipse.birt.report.engine.api.DocxRenderOption;
+import org.eclipse.birt.report.engine.api.EXCELRenderOption;
+import org.eclipse.birt.report.engine.api.HTMLRenderOption;
+import org.eclipse.birt.report.engine.api.IRenderOption;
+import org.eclipse.birt.report.engine.api.IReportEngineFactory;
+import org.eclipse.birt.report.engine.api.IReportRunnable;
+import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
+import org.eclipse.birt.report.engine.api.PDFRenderOption;
+import org.eclipse.birt.report.engine.api.RenderOption;
 
 /**
  *
@@ -52,6 +64,9 @@ public class ReportManagedBean extends SuperReportManagedBean {
     private HZCW030Bean hzcw030Bean;
     @EJB
     private HKCW005Bean hkcw005Bean;
+    
+        @EJB
+    private ZQ001Bean zq001Bean;
     private String msg;
     private Map<String, String[]> paramMap;
 
@@ -215,7 +230,7 @@ public class ReportManagedBean extends SuperReportManagedBean {
                             break;
                     }
                 }
-               
+                
                 // 生成签核流程
                 this.setReportClass(Class.forName("cn.hanbell.efgp.rpt.ProcessCheckReport").getClassLoader());// 设置成流程报表
                 reportParams.remove("JNDIName");
@@ -247,6 +262,54 @@ public class ReportManagedBean extends SuperReportManagedBean {
             this.preview();
         } catch (Exception ex) {
             throw ex;
+        }
+    }
+    
+    @Override
+    protected void reportRunAndOutput(String reportName, HashMap params, String outputName, String outputFormat, OutputStream os) throws Exception {
+        if ((outputName != null || os != null) && outputFormat != null) {
+            try {
+                Platform.startup(this.reportEngineConfig);
+                IReportEngineFactory factory = (IReportEngineFactory)Platform.createFactoryObject("org.eclipse.birt.report.engine.ReportEngineFactory");
+                this.reportEngine = factory.createReportEngine(this.reportEngineConfig);
+                IReportRunnable design = this.reportEngine.openReportDesign(reportName);
+                IRunAndRenderTask task = this.reportEngine.createRunAndRenderTask(design);
+                Object options;
+                switch (outputFormat) {
+                    case "pdf":
+                        options = new PDFRenderOption();
+                        break;
+                    case "html":
+                        options = new HTMLRenderOption();
+                        break;
+                    case "word":
+                        options = new DocxRenderOption();
+                        break;
+                    case "xls":
+                        options = new EXCELRenderOption();
+                        break;
+                    default:
+                        options = new PDFRenderOption();
+                        outputFormat = "pdf";
+                }
+
+                ((RenderOption)options).setOutputFormat(outputFormat);
+                if (os != null) {
+                    ((RenderOption)options).setOutputStream(os);
+                } else {
+                    ((RenderOption)options).setOutputFileName(outputName);
+                }
+
+                task.setRenderOption((IRenderOption)options);
+                task.setParameterValues(params);
+                task.validateParameters();
+                task.run();
+                task.close();
+            } catch (BirtException var15) {
+                throw var15;
+            } finally {
+                Platform.shutdown();
+            }
         }
     }
 
