@@ -623,7 +623,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             hkpb054Bean.update(e);
             return true;
         } catch (Exception ex) {
-            log4j.error("initByOAHKPB054", ex.toString());
+           
             throw ex;
         }
     }
