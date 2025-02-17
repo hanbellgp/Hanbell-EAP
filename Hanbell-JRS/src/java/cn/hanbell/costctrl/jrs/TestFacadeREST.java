@@ -1916,7 +1916,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
     @GET
     @Path("thbpur415/cdr310")
     @Consumes({"application/json"})
-    public void createERPCDR310ByExchPUR415() {
+    public void createERPCDR310ByExchPUR415(@QueryParam("cc") String cc, @QueryParam("cusno") String cusno, @QueryParam("vdrno") String vdrno) {
 //        String cc = "C";
 //        String cusno = "STW00003";
 //        String pricingtype = "00";
@@ -1929,11 +1929,11 @@ public class TestFacadeREST extends SuperRESTForEFGP<HKCW002> {
 //        String pc = "A";
 //        String vdrno = "1139";
 //        String beginDate = "20200408";
-        String cc = "K";
-        String cusno = "KTW00004";
+//        String cc = "K";
+//        String cusno = "KTW00004";
         String pricingtype = "00";
         String pc = "A";
-        String vdrno = "86010";
+//        String vdrno = "86010";
         String beginDate = "20200408";
         Date d;
         try {

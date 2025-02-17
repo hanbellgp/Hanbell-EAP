@@ -5,6 +5,8 @@
  */
 package cn.hanbell.oa.ejb;
 
+import cn.hanbell.eap.comm.ErrorMailNotify;
+import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.FormInstance;
 import cn.hanbell.oa.entity.HKCG007;
@@ -32,7 +34,7 @@ import javax.ejb.LocalBean;
 @Stateless
 @LocalBean
 public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
-    
+
     @EJB
     private FormInstanceBean formInstanceBean;
     @EJB
@@ -43,11 +45,11 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
     private HKCW002PpurDetailBean hkcw002ppurdetalBean;
     @EJB
     private HKCW002Bean hkcw002Bean;
-    
+
     public HKCG007Bean() {
         super(HKCG007.class);
     }
-    
+
     public Boolean initByHKCW002P(String psn) {
         try {
             HKCG007Model m;
@@ -55,7 +57,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
             List<HKCG007DetailModel> detailList = new ArrayList<>();
             LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
             details.put("purDetail", detailList);
-            
+
             List<HKCW002PpurDetail> purDetailList;
             HKCW002P pm = hkcw002pBean.findByPSN(psn);
 
@@ -105,7 +107,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                         d.setQtotamts("0.00");
                         detailList.add(d);
                     }
-                    
+
                 }
                 if (detailList.size() > 0) {
                     //先用需求人员初始化，获得部门主管cfmuserno
@@ -125,7 +127,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     m.setQtotaly(pm.getQtotaly());
                     m.setQtotalyRMB(pm.getQtotalrmb());
                     m.setFormid(psn);
-                    
+
                     m.setMastbuyer("");
                     m.setMastbuyername("");
                     m.setCtotaly(0.00);
@@ -133,7 +135,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     m.setIstechnique("N");
                     m.setDeptPeriod(BigDecimal.valueOf(pm.getDeptperbal()).toString());
                     m.setDeptYear(BigDecimal.valueOf(pm.getDeptyearbal()).toString());
-                    
+
                     m.setIsNine(pm.getProtype());
                     m.setYfPrice("N");
                     m.setBudgetcode(workFlowBean.getOrganizationUnit().getId());
@@ -201,14 +203,14 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
             return false;
         }
     }
-    
+
     public Boolean initByHKCW002(String psn) {
         HKCG007Model m;
         HKCG007DetailModel d;
         List<HKCG007DetailModel> detailList = new ArrayList<>();
         LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
         details.put("purDetail", detailList);
-        
+
         String attachment = null;
         try {
             List<HKCW002Detail> purDetailList;
@@ -232,7 +234,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                 attachment = fi.getFieldValues().substring(s, e + 13);
                 attachment = attachment.replaceAll("\r|\n", "");
             }
-            
+
             hkcw002Bean.setDetail(aa.getFormSerialNumber());
             purDetailList = hkcw002Bean.getDetailList();
             if (purDetailList != null && !purDetailList.isEmpty()) {
@@ -261,7 +263,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                         d.setQtotamts(aad.getAmts());
                         d.setMonavg("");
                         d.setPrqyYear("");
-                        
+
                         d.setPurdaskdescs("");
                         d.setPurdaskdescs2("");
                         d.setVdrno("");
@@ -302,13 +304,13 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     m.setFormid(psn);
                     m.setDeptPeriod(BigDecimal.valueOf(aa.getDeptperbal()).toString());
                     m.setDeptYear(BigDecimal.valueOf(aa.getDeptyearbal()).toString());
-                    
+
                     m.setMastbuyer("");
                     m.setMastbuyername("");
                     m.setCtotaly(0.00);
                     m.setCtotalyRMB(0.00);
                     m.setIstechnique("N");
-                    
+
                     m.setIsNine(aa.getProtype());
                     m.setYfPrice("N");
                     m.setBudgetcode(workFlowBean.getOrganizationUnit().getId());
@@ -366,7 +368,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     if (attachment != null) {
                         formInstance = formInstance.replaceFirst("<HK_CG007>", "<HK_CG007>" + attachment);
                     }
-                    
+
                     String subject = "资产申请单_" + aa.getProcessSerialNumber();
                     String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_CG007", formInstance, subject);
                     String[] rm = msg.split("\\$");
@@ -380,9 +382,18 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
             }
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-            return false;
+            //加入邮件通知
+            ErrorMailNotificationBean mailBean = new ErrorMailNotificationBean();
+            mailBean.getTo().clear();
+            mailBean.getTo().add("C1491@hanbell.com.cn");
+            mailBean.setMailSubject("OA资产申请单抛转请购单异常");
+            mailBean.setMailContent(
+                    "OA资产申请单抛转单单号：" + psn + "抛转失败，异常：" + ex);
+            mailBean.notify(new ErrorMailNotify());
+            ex.printStackTrace();
+            log4j.error(ex);
+            throw new RuntimeException(ex);
         }
     }
-    
+
 }

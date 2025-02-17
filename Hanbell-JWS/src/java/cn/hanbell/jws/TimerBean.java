@@ -1339,6 +1339,7 @@ public class TimerBean {
                 }
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             log4j.error(ex);
         } finally {
             companyList = null;
@@ -1346,12 +1347,18 @@ public class TimerBean {
         log4j.info("ERP-APM820费用类立账申请抛转EFGP签核轮询结束");
     }
 
-    @Schedule(minute = "*/5", hour = "7-23", persistent = false)
-    public void createVHTV005ByVHBERPAPM820() {
+    @Schedule(minute = "*/11", hour = "7-23", persistent = false)
+    public void createOAProcessByVHBERPApmaph() {
         log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询开始");
+        //越南采购转香港订单
+        createVHTV005ByVHBERPAPM820("V");
+        createVHTV005ByVHBERPAPM820("VB");
+        log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询结束");
+    }
+
+    public void createVHTV005ByVHBERPAPM820(String company) {
         VHTV005Model hm;
         VHTV005DetailModel dm;
-        String company = "V";
         List<VHTV005DetailModel> detailList = new ArrayList<>();
         LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
         details.put("Detail", detailList);
@@ -1447,10 +1454,10 @@ public class TimerBean {
                         hm.setFacno(h.getApmaphPK().getFacno());
                         hm.setApno(h.getApmaphPK().getApno());
                         hm.setAppdate(h.getApdate());
-                        hm.setAppuser(h.getApusrno());
+                        hm.setAppuser(h.getUserno());
                         //hm.setAppdept(h.getDepno());
                         //修正人员部门不对应问题
-                        hm.setAppdept(usersBean.checkDeptno(h.getApusrno(), h.getDepno()));
+                        hm.setAppdept(usersBean.checkDeptno(h.getUserno(), h.getDepno()));
                         hm.setHdnappDept(workFlowBean.getOrganizationUnit().getOrganizationUnitName());
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
@@ -1508,9 +1515,9 @@ public class TimerBean {
                 }
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             log4j.error(ex);
         }
-        log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询结束");
     }
 
     private void createOAHKYX009ByERPCDR220(String company) {
@@ -1783,7 +1790,7 @@ public class TimerBean {
                         hm = new SHBERPAPM811Model();
                         hm.setFacno(h.getApmaphPK().getFacno());
                         hm.setAppdate(h.getApdate());
-                        hm.setAppuser(h.getApusrno());
+                        hm.setAppuser(h.getUserno());
                         hm.setAppdept(h.getDepno());
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
@@ -1979,10 +1986,10 @@ public class TimerBean {
                         hm.setFacno(h.getApmaphPK().getFacno());
                         hm.setApno(h.getApmaphPK().getApno());
                         hm.setAppdate(h.getApdate());
-                        hm.setAppuser(h.getApusrno());
+                        hm.setAppuser(h.getUserno());
                         //hm.setAppdept(h.getDepno());
                         //修正人员部门不对应问题
-                        hm.setAppdept(usersBean.checkDeptno(h.getApusrno(), h.getDepno()));
+                        hm.setAppdept(usersBean.checkDeptno(h.getUserno(), h.getDepno()));
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
@@ -2100,9 +2107,9 @@ public class TimerBean {
                         hm.setFacno(h.getApmaphPK().getFacno());
                         hm.setApno(h.getApmaphPK().getApno());
                         hm.setAppdate(h.getApdate());
-                        hm.setAppuser(h.getApusrno());
+                        hm.setAppuser(h.getUserno());
                         //hm.setAppdept(h.getDepno());
-                        hm.setAppdept(usersBean.checkDeptno(h.getApusrno(), h.getDepno()));
+                        hm.setAppdept(usersBean.checkDeptno(h.getUserno(), h.getDepno()));
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
@@ -2781,8 +2788,6 @@ public class TimerBean {
         this.syncERPPUR410ToExchange("C", "SXG00007", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("C", "STW00045", "20200408");// SHB->Exch
         this.syncERPPUR410ToExchange("K", "KTW00001", "20200408");// Comer->Exch
-        //越南采购转香港订单
-        this.createHKERPCDR310ByVHBPUR415("X", "SDC00001", "00", "V", "HA001 ", "20241014");
 
         log4j.info("ERP集团内部交易互转轮询结束");
     }
@@ -3556,6 +3561,14 @@ public class TimerBean {
                 }
             }
         }
+    }
+
+    @Schedule(minute = "*/11", hour = "7-23", persistent = false)
+    public void VHBCompanyTransactions() {
+        log4j.info("越南ERP交易互转轮询开始");
+        //越南采购转香港订单
+        this.createHKERPCDR310ByVHBPUR415("X", "SDC00001", "00", "V", "HA001 ", "20241014");
+        log4j.info("越南ERP交易互转轮询开始结束");
     }
 
     private void createHKERPCDR310ByVHBPUR415(String cc, String cusno, String pricingtype, String pc, String vdrno, String beginDate) {
