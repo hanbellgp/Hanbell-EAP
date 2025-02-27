@@ -170,6 +170,8 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setExclcode('0');
                     m.setUserno(h.getEmpl()); // 设置申请人
                     m.setIndate(BaseLib.getDate());
+                    m.setModman(h.getEmpl());  //设置初始修改人
+                    m.setModdate(BaseLib.getDate()); //设置初始修改时间
                     m.setLowlevelcst((short) 0); // 设置低阶码
                     m.setJityn(detail.getJityn().charAt(0)); // 即时到货管制
                     //汉声汉扬不使用此产品别分类
@@ -186,7 +188,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     m.setGenre2(detail.getGenre2());
                     m.setGenre3(detail.getGenre3());
                     m.setModelDsc1(detail.getModelDsc1());
-                    m.setModelDsc2(detail.getModelDsc2());
+                    m.setModelDsc2(detail.getModelDsc2().trim());
                     persist(m);
                     this.getEntityManager().flush();
 
@@ -321,6 +323,8 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 m.setSpdsc2(detail.getSpdsc2());
                 m.setIndate(BaseLib.getDate());
                 m.setUserno(h.getApplyuser());
+                m.setModman(h.getApplyuser());  //设置初始修改人
+                m.setModdate(BaseLib.getDate()); //设置初始修改时间
                 this.getEntityManager().detach(m);
                 invclsBean.setCompany(h.getFacno2());
                 Invcls c = invclsBean.findByItcls(detail.getItcls());
@@ -559,9 +563,9 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 HKJS001Detail d = details.get(i);
                 item = findByItnbr(d.getBjh());
                 if (item != null) {
-                   item.setItdsc("#" + item.getItdsc());
+                    item.setItdsc("#" + item.getItdsc());
                     item.setStopyn("AAAAAAAAAAAAA");
-                   // item.setNStopyn("N");
+                    // item.setNStopyn("N");
                     item.setModdate(new Date());
                     item.setModman(h.getApplyuser());
                     item.setNEcnnewitnbr(d.getAjh());

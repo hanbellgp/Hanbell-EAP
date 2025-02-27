@@ -531,8 +531,8 @@ return false ;
                     <text id="1506">
                         <property name="textAlign">center</property>
                         <property name="contentType">auto</property>
-                        <text-property name="content"><![CDATA[報銷憑單
-Chứng từ hoàn ứng]]></text-property>
+                        <text-property name="content"><![CDATA[費用報銷單
+ĐƠN THANH TOÁN CHI PHÍ]]></text-property>
                     </text>
                 </cell>
                 <cell id="1490">

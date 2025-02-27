@@ -5,14 +5,14 @@
  */
 package cn.hanbell.edw.jrs;
 
+
+import cn.hanbell.costctrl.app.BaiWangBil;
 import cn.hanbell.costctrl.app.Edw640Qrcode;
-import cn.hanbell.costctrl.app.Edw640QrcodeDetail;
 import cn.hanbell.edw.ejb.EhsHiddenDangerBean;
 import cn.hanbell.edw.entity.EhsHiddenDanger;
 import cn.hanbell.edw.rpt.Edw640QrcodePrint;
 import cn.hanbell.jrs.ResponseInfo;
 import cn.hanbell.jrs.ResponseMessage;
-import cn.hanbell.jrs.ResponseObject;
 import cn.hanbell.jrs.SuperRESTForEDW;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -31,24 +31,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URL;
 import java.nio.file.FileSystems;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.Platform;
 import org.eclipse.birt.report.engine.api.DocxRenderOption;
@@ -71,7 +64,6 @@ import org.eclipse.birt.report.engine.api.RenderOption;
 @Path("shbedw/qrcode")
 public class QrcodeFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
 
-
     @EJB
     private EhsHiddenDangerBean ehsHiddenDangerBean;
 
@@ -83,7 +75,7 @@ public class QrcodeFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
     protected SuperEJB getSuperEJB() {
         return ehsHiddenDangerBean;
     }
-    
+
     @POST
     @Path("edw640qrcode")
     @Consumes({"application/json"})
@@ -92,11 +84,11 @@ public class QrcodeFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
         String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 
         String url = path.substring(1, path.indexOf("WEB-INF"));
-        //ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         String appResPath = url + "resources/app/res/";
         String reportPath = url + "rpt//";
         String reportOutputPath = url + "rpt//output//";
         String reportName = "", outputName, reportFormat;
+       
         String fileName = "EDW640" + BaseLib.formatDate("yyyyMMddHHmmss", new Date()) + ".pdf";
         outputName = reportOutputPath + fileName;
         reportName = reportPath + "Edw640QrCode.rptdesign";
@@ -132,12 +124,64 @@ public class QrcodeFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
             }
             byte[] imageBytes = bos.toByteArray();
             String base64 = Base64.getEncoder().encodeToString(imageBytes);
-           
-            ResponseInfo msg=new ResponseInfo("200","success");
+
+            ResponseInfo msg = new ResponseInfo("200", "success");
             msg.setData(base64);
             return msg;
+        }
     }
+    
+    
+    @POST
+    @Path("eavbilno")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ResponseMessage eavbilno(BaiWangBil bil) throws FileNotFoundException, Exception {
+        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        String url = path.substring(1, path.indexOf("WEB-INF"));
+        String appResPath = url + "resources/app/res/";
+        String reportPath = url + "rpt//";
+        String reportOutputPath = url + "rpt//output//";
+        String reportName = "", outputName, reportFormat;
+        String fileName = "eavbilno" + BaseLib.formatDate("yyyyMMddHHmmss", new Date()) + ".pdf";
+        outputName = reportOutputPath + fileName;
+        reportName = reportPath + "eavbilno.rptdesign";
+        OutputStream os = new FileOutputStream(outputName);
+        PdfCopyFields pdfCopy = new PdfCopyFields(os);
+        HashMap<String, Object> reportParams = new HashMap<>();
+        ByteArrayOutputStream baos;
+        // 设置报表参数
+        baos = new ByteArrayOutputStream();
+        reportParams.put("data",bil);
+        try {
+            // 初始配置
+            // 生成报表
+            this.reportRunAndOutput(reportName, reportParams, null, "pdf", baos);
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            reportParams.clear();
+        }
+
+        pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+        pdfCopy.close();
+        File file = new File(outputName);
+        try (FileInputStream fis = new FileInputStream(file);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+            }
+            byte[] imageBytes = bos.toByteArray();
+            String base64 = Base64.getEncoder().encodeToString(imageBytes);
+
+            ResponseInfo msg = new ResponseInfo("200", "success");
+            msg.setData(base64);
+            return msg;
+        }
     }
+
     public void generateQRCode(String content, int width, int height, String filePath, String fileName) {
         try {
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();

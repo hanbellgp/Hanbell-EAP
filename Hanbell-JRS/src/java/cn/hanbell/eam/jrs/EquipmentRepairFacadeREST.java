@@ -1085,6 +1085,10 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 for (SysCode sysCode : code) {
                     userList.add(sysCode.getCvalue());//获取维修的组长
                 }
+                 SystemUser user = systemUserBean.findByUserId(equipInvenList.get(0).getRepairuser());
+                 if (user!=null&&user.getManagerId()!=null) {
+                     userList.add(user.getManagerId());//添加发送报修人上一级
+                }
                 userList = userList.stream().distinct().collect(Collectors.toList());//去除重复项
                 for (String string : userList) {
                     sendMsgString(string, msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");

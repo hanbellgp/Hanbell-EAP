@@ -83,6 +83,9 @@ public class EhsSecure implements Serializable {
     @Column(name = "UpdateTime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
+    @Size(max = 30)
+    @Column(name = "Area")
+    private String area;
 
     public EhsSecure() {
     }
@@ -187,6 +190,14 @@ public class EhsSecure implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -211,5 +222,5 @@ public class EhsSecure implements Serializable {
     public String toString() {
         return "cn.hanbell.edw.entity.EhsSecure[ id=" + id + " ]";
     }
-    
+
 }

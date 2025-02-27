@@ -163,8 +163,6 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                 mcb.setStatus(1);
                 mcbudgetBean.update(mcb);
             }
-            //初始化发起人
-            workFlowBean.initUserInfo(entity.getAppUser());
             //实例化对象
             HZCW033Model m = new HZCW033Model();
             List<MCHZCW033reDetail> reds = entity.getItems();
@@ -299,6 +297,8 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
             m.setSrcno(entity.getSrcno());
             m.setDeptqx("");
             m.setTotalRefund(totalRefund);
+            //初始化发起人
+            workFlowBean.initUserInfo(entity.getAppUser());
             m.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
             //发起流程
             String formInstance = workFlowBean.buildXmlForEFGP("HZ_CW033", m, details);

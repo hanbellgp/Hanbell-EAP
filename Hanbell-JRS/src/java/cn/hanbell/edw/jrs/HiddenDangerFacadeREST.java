@@ -117,10 +117,12 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
             Map<String, String> sortFields = new LinkedHashMap<>();
             String key, value = "";
             String userId = filtersMM.getFirst("userid");
+//            String company = filtersMM.getFirst("company");
             List<EhsSecure> checkList = new ArrayList<EhsSecure>();
             Map<String, Object> filterSecure = new HashMap<>();
             filterSecure.put("position", "月安全课长");
-            filterSecure.put("remark", new Date().getMonth() + 1 + "");
+            filterSecure.put("remark =", new Date().getMonth() + 1 + "");
+
             checkList = ehsSecureBean.findByFilters(filterSecure);
 
             try {
@@ -128,13 +130,15 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
+                        if (!key.equals("company")) {
 
-                        if (key.equals("formdateBegin") || key.equals("formdateEnd")) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                            Date dateFormatParse = sdf.parse(value);
-                            filterFields.put(key, dateFormatParse);
-                        } else {
-                            filterFields.put(key, value);
+                            if (key.equals("formdateBegin") || key.equals("formdateEnd")) {
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                Date dateFormatParse = sdf.parse(value);
+                                filterFields.put(key, dateFormatParse);
+                            } else {
+                                filterFields.put(key, value);
+                            }
                         }
                     }
                 }
@@ -148,8 +152,11 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 sortFields.put("createTime", "DESC");
                 //assetCardRes = assetCardBean.findByAssetno(filterFields.get("formid").toString());
                 //assetCardListRes = superEJB.findByFilters(filterFields, offset, pageSize, sortFields);
-                if (checkList.get(0).getSecureId().equals(userId)) {
-                    filterFields.put("月安全课长", "安全专员巡查");
+                for (EhsSecure ehsSecure : checkList) {
+                    if (ehsSecure.getSecureId().equals(userId)) {
+                        filterFields.put("月安全课长", "安全专员巡查");
+                        filterFields.put("area", ehsSecure.getArea());
+                    }
                 }
                 ehsHiddenDangerListRes = ehsHiddenDangerBean.getEHSHiddenDangerList(filterFields, sortFields);
             } catch (Exception ex) {
@@ -214,17 +221,17 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 filterFields.put("id", docPid);
                 List<EhsHazardInspectionDta> eDta = ehsHazardInspectionDtaBean.findByFilters(filterFields);
                 Map<String, Object> hiddenFields = new HashMap<>();
-                String id="";
-                id=entity.getId();
-                if (id==null) {
-                    id="测试";
+                String id = "";
+                id = entity.getId();
+                if (id == null) {
+                    id = "测试";
                 }
-                 hiddenFields.put("id",id );
-                List<EhsHiddenDanger> ehsList=ehsHiddenDangerBean.findByFilters(hiddenFields);
-                if (ehsList.size()>0) {
-                    hiddenTemp=ehsList.get(0);
+                hiddenFields.put("id", id);
+                List<EhsHiddenDanger> ehsList = ehsHiddenDangerBean.findByFilters(hiddenFields);
+                if (ehsList.size() > 0) {
+                    hiddenTemp = ehsList.get(0);
                 }
-                
+
                 hiddenTemp.setCompany(entity.getCompany());
                 hiddenTemp.setId(entity.getId());
                 hiddenTemp.setHiddenType(entity.getHiddenType());
@@ -243,6 +250,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 hiddenTemp.setRectifierId(entity.getRectifierId());
                 hiddenTemp.setRectifierName(entity.getRectifierName());
                 hiddenTemp.setAcceptedId(entity.getAcceptedId());
+                hiddenTemp.setArea(entity.getArea());
                 hiddenTemp.setRectificationReasons(entity.getRectificationReasons());
                 hiddenTemp.setAcceptedName(entity.getAcceptedName());
                 hiddenTemp.setCheckOpinions(entity.getCheckOpinions());
@@ -313,6 +321,8 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 Map<String, Object> filterSecure = new HashMap<>();
                 filterSecure.put("position", "月安全课长");
                 filterSecure.put("remark", new Date().getMonth() + 1 + "");
+                filterSecure.put("company", entity.getCompany());
+                filterSecure.put("area", entity.getArea());//发送给对应厂区的月安全科长
                 checkList = ehsSecureBean.findByFilters(filterSecure);
                 if (hiddenTemp.getRstatus().equals("10")) {
                     StringBuffer msg = new StringBuffer("收到新的隐患单:");
@@ -329,7 +339,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                         //throw new RuntimeException("发送失败,请联系管理员");
                         return new ResponseMessage("203", formid);
                     }
-                } else if (hiddenTemp.getRstatus().equals("45") ) {
+                } else if (hiddenTemp.getRstatus().equals("45")) {
                     StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
                     StringBuffer userStrTemp = new StringBuffer(entity.getAcceptedId().toUpperCase());
                     msg.append(hiddenTemp.getId()).append("<br/>");
@@ -344,31 +354,34 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                         //throw new RuntimeException("发送失败,请联系管理员");
                         return new ResponseMessage("203", formid);
                     }
-                }  else if (hiddenTemp.getRstatus().equals("60")) {
+                } else if (hiddenTemp.getRstatus().equals("60")) {
                     StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
-                    StringBuffer userStrTemp = new StringBuffer(entity.getPresentingId().toUpperCase());
+                    String userStrTemp = entity.getPresentingId().toUpperCase();
+                      if (hiddenTemp.getHiddenSource().equals("安全专员巡查")) {//如果是安全专员巡查的单子验收完提醒当月安全课长审核否则提醒发起人结案
+                           userStrTemp = checkList.get(0).getSecureId();
+                      } 
                     msg.append(hiddenTemp.getId()).append("<br/>");
                     msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
                     msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
                     msg.append("排查人:").append(entity.getPresentingId()).append("-").append(entity.getPresentingName()).append("<br/>");
                     msg.append("整改人:").append(entity.getRectifierName()).append("<br/>");
                     msg.append("详情请至微信小程序查看!");
-                    String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
+                    String errmsg = sendMsgString(userStrTemp, msg.toString(), sessionKey, openId);
                     // 发送失败，抛异常，使事务回滚
                     if (!"200".equals(errmsg)) {
                         //throw new RuntimeException("发送失败,请联系管理员");
                         return new ResponseMessage("203", formid);
                     }
-                }else if (hiddenTemp.getRstatus().equals("75")) {
+                } else if (hiddenTemp.getRstatus().equals("75")) {
                     StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
-                    StringBuffer userStrTemp = new StringBuffer(checkList.get(0).getSecureId());
+                     String userStrTemp = entity.getPresentingId().toUpperCase();
                     msg.append(hiddenTemp.getId()).append("<br/>");
                     msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
                     msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
                     msg.append("排查人:").append(entity.getPresentingId()).append("-").append(entity.getPresentingName()).append("<br/>");
                     msg.append("整改人:").append(entity.getRectifierName()).append("<br/>");
                     msg.append("详情请至微信小程序查看!");
-                    String errmsg = sendMsgString(userStrTemp.toString(), msg.toString(), sessionKey, openId);
+                    String errmsg = sendMsgString(userStrTemp, msg.toString(), sessionKey, openId);
                     // 发送失败，抛异常，使事务回滚
                     if (!"200".equals(errmsg)) {
                         //throw new RuntimeException("发送失败,请联系管理员");
@@ -420,8 +433,10 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
             String docType = "";
             this.superEJB = ehsHiddenDangerFileBean;
             List<Object> list = new ArrayList<>();
+                         
             List<EhsHiddenDangerFile> hiddenImageListRes = new ArrayList<>();
             List<EhsHiddenDangerParameter> hiddenTypeList = new ArrayList<EhsHiddenDangerParameter>();
+            List<EhsHiddenDangerParameter> areaTypeList = new ArrayList<EhsHiddenDangerParameter>();
             List<EhsHiddenDangerParameter> rectificationTypeList = new ArrayList<EhsHiddenDangerParameter>();
             List<EhsSecure> rectifierList = new ArrayList<EhsSecure>();
             List<EhsSecure> acceptList = new ArrayList<EhsSecure>();
@@ -431,16 +446,18 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
                 Map<String, Object> filterFields = new HashMap<>();
                 Map<String, String> sortFields = new LinkedHashMap<>();
+                companyCodeStr = filtersMM.getFirst("company");
                 String key, value = "";
                 if (filtersMM != null) {
-                    companyCodeStr = filtersMM.getFirst("company");
                     deptno = filtersMM.getFirst("deptno");
                     docType = filtersMM.getFirst("docType");
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
-                        if (!"deptno".equals(key) && !"docType".equals(key)) {
-                            filterFields.put(key, value);
+                        if (!key.equals("company")) {
+                            if (!"deptno".equals(key) && !"docType".equals(key)) {
+                                filterFields.put(key, value);
+                            }
                         }
 
                     }
@@ -453,19 +470,20 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     }
                 }
                 hiddenImageListRes = ehsHiddenDangerFileBean.findByFilters(filterFields);
-                 List<Object> hiddenImageListResObj = new ArrayList<>();
-                  for (EhsHiddenDangerFile eh : hiddenImageListRes) {
+                List<Object> hiddenImageListResObj = new ArrayList<>();
+                for (EhsHiddenDangerFile eh : hiddenImageListRes) {
                     // 将字节数组转换为Base64编码
-                    Object [] obj =new Object[2];
+                    Object[] obj = new Object[2];
                     java.io.File imageFile = new java.io.File(filePathTemp + eh.getFileName());
                     byte[] imageBytes = null;
                     imageBytes = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(imageFile.getPath()));
                     String base64String = java.util.Base64.getEncoder().encodeToString(imageBytes);
-                    obj[0]="data:image/png;base64," + base64String;
-                    obj[1]=eh.getFileType();
+                    obj[0] = "data:image/png;base64," + base64String;
+                    obj[1] = eh.getFileType();
                     hiddenImageListResObj.add(obj);
                 }
                 hiddenTypeList = ehsHiddenDangerParameterBean.getTroubleNameList(companyCodeStr, "YH", "HiddenType");
+                areaTypeList = ehsHiddenDangerParameterBean.getTroubleNameList(companyCodeStr, "YH", "AreaType");
                 rectificationTypeList = ehsHiddenDangerParameterBean.getTroubleNameList(companyCodeStr, "YH", "RectificationType");
                 Map<String, Object> filterSecure = new HashMap<>();
                 //获取所有整改人，部分只搜索自己部门的整改人
@@ -477,7 +495,6 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 rectifierList = ehsSecureBean.findByFilters(filterSecure);
                 //获取课长信息
                 filterSecure.clear();
-                filterSecure.put("company", companyCodeStr);
                 filterSecure.put("position", "单位课长");
                 acceptList = ehsSecureBean.findByFilters(filterSecure);
                 //获取月安全课长
@@ -492,6 +509,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 list.add(rectifierList);
                 list.add(acceptList);
                 list.add(checkList);
+                list.add(areaTypeList);
 
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);

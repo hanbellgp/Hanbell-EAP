@@ -135,7 +135,7 @@ public class HKGL037Bean extends SuperEJBForEFGP<HKGL037> {
             return false;
         }
     }
-    
+
     /**
      * 出差申请单结案自动申请派车申请
      *
@@ -174,7 +174,7 @@ public class HKGL037Bean extends SuperEJBForEFGP<HKGL037> {
             m.setLxfs(aa.getLxfs());
             m.setClxz(aa.getClxz());
             m.setCpno(aa.getCpno());
-            m.setYcyy(aa.getYcyy()); 
+            m.setYcyy(aa.getYcyy());
             m.setBzsm(aa.getBzsm());
             m.setAccommodation(aa.getAccommodation());
             m.setAccommRegistration(aa.getAccommRegistration());
@@ -217,7 +217,7 @@ public class HKGL037Bean extends SuperEJBForEFGP<HKGL037> {
                 d.setMdsf(car.getMdsf());
                 d.setMdcs(car.getMdcs());
                 d.setAddress2(car.getAddress2());
-                d.setSy(car.getSy());
+                d.setSy(car.getSy() == null ? "" : car.getSy().replace('&', '/').replace('<', ' ').replace('>', ' '));
                 d.setGsmc(car.getGsmc());
                 detailList.add(d);
             }
