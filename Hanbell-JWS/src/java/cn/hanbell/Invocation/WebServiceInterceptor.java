@@ -51,15 +51,15 @@ public class WebServiceInterceptor {
 //                System.out.print("value==" + map.get(a).toString());
 //            }
 //        }
-
+        Object result = null;
         //完整网页路径
         String requestUrl = (String) ctx.getContextData().get("com.sun.xml.ws.transport.http.servlet.requestURL");
         requestUrl = requestUrl.substring(requestUrl.indexOf("://") + 3);
         String url = requestUrl.substring(requestUrl.indexOf("/"));
         List<String> oAWebServiceTokens = o.get("oawebservicetoken");
         Object[] params = ctx.getParameters();
-        List<String> paramvalues=new ArrayList<String>();
-        for(Object a : params){
+        List<String> paramvalues = new ArrayList<String>();
+        for (Object a : params) {
             paramvalues.add(a.toString());
         }
         Method method = ctx.getMethod();
@@ -84,7 +84,7 @@ public class WebServiceInterceptor {
             } else {
                 amt.setDsc(webServiceDescriptAnnotation.value());
             }
-           
+
             List<String> paramnames = new ArrayList<String>();
             for (Parameter param : method.getParameters()) {
                 WebParam WebParam = param.getAnnotation(WebParam.class);
@@ -96,7 +96,7 @@ public class WebServiceInterceptor {
             amt.setRType("1");
             edwatmBean.persist(amt);
             try {
-                Object result = ctx.proceed(); // 调用实际方法
+                result = ctx.proceed(); // 调用实际方法
                 if ("200".equals(result.toString())) {
                     amt.setCTime(new Date());
                     amt.setRTime(new Date());
@@ -105,7 +105,7 @@ public class WebServiceInterceptor {
                     amt.setMsg("SUCCESS");
                     amt.setHttpCode(200);
                     amt.setHttpDesc("OK");
-                     amt.setError("");
+                    amt.setError("");
                     amt.setResContent(getWebServiceResopneContent(result.toString()).toString().replaceAll("@mothodname", method.getName()));
                 } else {
                     amt.setCTime(new Date());
@@ -115,7 +115,7 @@ public class WebServiceInterceptor {
                     amt.setMsg("Fail");
                     amt.setHttpCode(500);
                     amt.setHttpDesc("Fail");
-                     amt.setError("");
+                    amt.setError("");
                     amt.setResContent(getWebServiceResopneContent(result.toString()).toString().replaceAll("@mothodname", method.getName()));
                 }
             } catch (Exception e) {
@@ -141,7 +141,7 @@ public class WebServiceInterceptor {
                 return "404";
             }
             try {
-                Object result = ctx.proceed(); // 调用实际方法
+                result = ctx.proceed(); // 调用实际方法
 
                 if ("200".equals(result.toString())) {
                     amt.setCTime(new Date());
@@ -179,7 +179,7 @@ public class WebServiceInterceptor {
             }
             edwatmBean.update(amt);
         }
-        return "200";
+        return result == null ? "404" : (String) result;
     }
 
     public StringBuilder getWebServiceRequestContent(List<String> paramnames, List<String> paramsvalue) {
