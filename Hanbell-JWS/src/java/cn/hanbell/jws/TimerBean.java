@@ -1091,7 +1091,7 @@ public class TimerBean {
                         }
 
                     } catch (RuntimeException | ParseException ex) {
-                        log4j.error("createERPINV310ByEAMAssetDistribute时异常", ex);
+                        log4j.error("createERPINV310ByEAMAssetDistribute时异常", ex.getCause().getMessage());
                     }
                 }
             }
@@ -1266,10 +1266,10 @@ public class TimerBean {
             }
             eapMailBean.setMailSubject("PLM件号中间表新增OA失败");
             eapMailBean.setMailContent(
-                    "PLM件号中间表新增OA失败，异常：" + ex);
+                    "PLM件号中间表新增OA失败，异常：" + ex.getCause().getMessage());
             eapMailBean.notify(new MailNotify());
             ex.printStackTrace();
-            log4j.error("PLM件号抛转轮询时异常", ex);
+            log4j.error("PLM件号抛转轮询时异常", ex.getCause().getMessage());
         }
         log4j.info("PLM件号抛转轮询");
     }
@@ -1526,7 +1526,7 @@ public class TimerBean {
             eapMailBean.getTo().add("1491@hanbell.com.cn");
             eapMailBean.setMailSubject("越南" + company + "ERP-APM820抛转OA审批失败");
             eapMailBean.setMailContent(
-                    company + "公司别 ERP-APM820抛转OA审批申请单" + "抛转失败，异常：" + ex);
+                    company + "公司别 ERP-APM820抛转OA审批申请单" + "抛转失败，异常：" + ex.getCause().getMessage());
             eapMailBean.notify(new MailNotify());
         }
     }
@@ -1662,7 +1662,7 @@ public class TimerBean {
                 }
             }
         } catch (Exception ex) {
-            log4j.error(ex);
+            log4j.error(ex.getCause().getMessage());
         }
     }
 
@@ -1890,7 +1890,7 @@ public class TimerBean {
             eapMailBean.getTo().add("1491@hanbell.com.cn");
             eapMailBean.setMailSubject("ERP-APM811抛转OA审批失败");
             eapMailBean.setMailContent(
-                    company + "公司别 ERP-APM811抛转OA审批申请单" + "抛转失败，异常：" + ex);
+                    company + "公司别 ERP-APM811抛转OA审批申请单" + "抛转失败，异常：" + ex.getCause().getMessage());
             eapMailBean.notify(new MailNotify());
         }
     }
@@ -2060,7 +2060,7 @@ public class TimerBean {
                 }
             }
         } catch (Exception ex) {
-            log4j.error(ex);
+            log4j.error(ex.getCause().getMessage());
         }
     }
 
@@ -2179,7 +2179,7 @@ public class TimerBean {
                 }
             }
         } catch (Exception ex) {
-            log4j.error(ex);
+            log4j.error(ex.getCause().getMessage());
         }
     }
 
@@ -3579,6 +3579,7 @@ public class TimerBean {
         log4j.info("越南ERP交易互转轮询开始");
         //越南采购转香港订单
         this.createHKERPCDR310ByVHBPUR415("X", "SDC00001", "00", "V", "HA001 ", "20241014");
+        //this.createHKERPCDR310ByVHBPUR415("X", "XDC00001", "00", "VB", "HA009 ", "20251014");
         log4j.info("越南ERP交易互转轮询开始结束");
     }
 

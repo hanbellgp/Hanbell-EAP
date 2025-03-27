@@ -396,7 +396,11 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         cdrcus.setShzt("Y");
         cdrcus.setSCCode(oa.getSccode());
 
-        newcusno = getFormId(cdrcus.getIndate(), code + cdrcus.getCuycode(), null, 5, "cdrcus", "cusno");
+        if (facno.length() == 2) {
+            newcusno = getFormId(cdrcus.getIndate(), code + cdrcus.getCuycode(), null, 4, "cdrcus", "cusno");
+        } else {
+            newcusno = getFormId(cdrcus.getIndate(), code + cdrcus.getCuycode(), null, 5, "cdrcus", "cusno");
+        }
         cdrcus.setCusno(newcusno);
         if (oa.getCusgroup() == null || "".equals(oa.getCusgroup())) {
             cdrcus.setCusgroup(newcusno);// 集团代号

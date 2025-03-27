@@ -244,7 +244,9 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     tm.setServiceno2("");
                     tm.setCustomerSno2("");
                     tm.setIsFree("");
-                    tm.setOtherFee(td.getOtherFee());
+                    tm.setEsgaccommdays(td.getEsgaccommdays());
+                    tm.setEsgmileages(td.getEsgmileages());
+                    tm.setEsgvehicle(td.getEsgvehicle()!=null ? td.getEsgvehicle():"6");
                     tms.add(tm);
                 }
             }

@@ -251,7 +251,9 @@ public class HZCW033FacadeREST extends SuperRESTForEFGP<HZCW033> {
                     tm.setStartMileage("");
                     tm.setEndMileage("");
                     tm.setTotalMileage("");
-                    tm.setOtherFee(td.getOtherFee());
+                    tm.setEsgaccommdays(td.getEsgaccommdays());
+                    tm.setEsgmileages(td.getEsgmileages());
+                    tm.setEsgvehicle(td.getEsgvehicle() != null ? td.getEsgvehicle() : "6");
                     tms.add(tm);
                 }
             }

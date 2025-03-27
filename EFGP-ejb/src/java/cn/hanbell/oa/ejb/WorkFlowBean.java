@@ -71,7 +71,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
         super(FormInstance.class);
     }
 
-    public String buildXmlForEFGP(String formName, Object master, LinkedHashMap<String, List<?>> details, List<JSONObject> files,String userOid) {
+    public String buildXmlForEFGP(String formName, Object master, LinkedHashMap<String, List<?>> details, List<JSONObject> files, String userOid) {
         StringBuilder xmlBuilder = new StringBuilder();
         if (files == null || files.isEmpty()) {
             xmlBuilder.append("<").append(formName).append(">");
@@ -83,9 +83,9 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             }
             xmlBuilder.append("</").append(formName).append(">");
             return xmlBuilder.toString();
-        }else{
-             xmlBuilder.append("<").append(formName).append(">");
-            buildXmlForEFGPFile(xmlBuilder,files,userOid);
+        } else {
+            xmlBuilder.append("<").append(formName).append(">");
+            buildXmlForEFGPFile(xmlBuilder, files, userOid);
             buildXmlForEFGPMaster(xmlBuilder, formName, master);
             if (details != null && !details.isEmpty()) {
                 for (Map.Entry<String, List<?>> e : details.entrySet()) {
@@ -94,9 +94,9 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             }
             xmlBuilder.append("</").append(formName).append(">");
             return xmlBuilder.toString();
-      //  return null;
+            //  return null;
         }
-  
+
     }
 
     public String buildXmlForEFGP(String formName, Object master, LinkedHashMap<String, List<?>> details) {
@@ -157,9 +157,9 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 } else {
 //                    builder.append("<").append(f.getName()).append("  id=\"").append(f.getName()).append("\"  dataType=\"").append(f.getType().getName()).append("\" perDataProId=\"\">");
 //                    builder.append(f.get(master)==null?"":f.get(master)).append("</").append(f.getName()).append(">");
-                      builder.append("<").append(f.getName()).append(" id=\"").append(f.getName()).append("\"").append(" txt=\"").append(f.get(master)).append("\" hdn=\"\" ")
-                              .append(" dataType=\"").append(f.getType().getName()).append("\" perDataProId=\"\">");
-                      builder.append(f.get(master)).append("</").append(f.getName()).append(">");
+                    builder.append("<").append(f.getName()).append(" id=\"").append(f.getName()).append("\"").append(" txt=\"").append(f.get(master)).append("\" hdn=\"\" ")
+                            .append(" dataType=\"").append(f.getType().getName()).append("\" perDataProId=\"\">");
+                    builder.append(f.get(master)).append("</").append(f.getName()).append(">");
                 }
             } catch (IllegalArgumentException | IllegalAccessException ex) {
                 log4j.error(ex);
@@ -202,9 +202,8 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
         }
         builder.append("</record>");
     }
-    
-    
-      protected void buildXmlForEFGPFile( StringBuilder builder,List<JSONObject> files, String userOID) throws RuntimeException {
+
+    protected void buildXmlForEFGPFile(StringBuilder builder, List<JSONObject> files, String userOID) throws RuntimeException {
 
         if (files != null && !files.isEmpty()) {
             builder.append("<Attachment id=\"Attachment\">");
@@ -213,7 +212,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
                 System.out.println(j.toString());
                 builder.append("<attachment");
                 builder.append(" OID=\"").append(j.getJSONArray("OID").getString(0)).append("\"");
-               
+
                 builder.append(" fileSize=\"").append(j.getJSONArray("fileSize").getLong(0)).append("\"");
                 builder.append(" id=\"").append(j.getJSONArray("id").getString(0)).append("\"");
                 builder.append(" fileType=\"").append(j.getJSONArray("fileType").getString(0)).append("\"");
@@ -329,7 +328,12 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             log4j.error("用户或部门不存在");
             return "401$用户或部门不存在";
         }
-        return invokeProcess(host, port, processId, getCurrentUser().getId(), getUserFunction().getOrganizationUnit().getId(), formFieldValue, subject);
+        try {
+            return invokeProcess(host, port, processId, getCurrentUser().getId(), getUserFunction().getOrganizationUnit().getId(), formFieldValue, subject);
+        } catch (Exception e) {
+            throw new RuntimeException(subject);
+        }
+
     }
 
     public String invokeProcess(String host, String port, String processId, String userId, String orgUnitId, String formFieldValue, String subject) throws Exception {

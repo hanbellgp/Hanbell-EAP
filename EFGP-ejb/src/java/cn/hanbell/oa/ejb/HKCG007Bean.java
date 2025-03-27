@@ -330,7 +330,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     m.setAttribute(aa.getAttribute());
                     m.setVendor(aa.getVendor());
                     m.setSource(aa.getSource());
-                    m.setRemark(aa.getRemark());
+                    m.setRemark(aa.getRemark().replace('&', '/').replace('<', ' ').replace('>', ' '));
                     m.setFactor01(aa.getFactor01());
                     m.setFactor02(aa.getFactor02());
                     m.setFactor03(aa.getFactor03());

@@ -569,16 +569,22 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         if (oa.getCheckbox17().equals("1")) {
             erp.setFax1(oa.getFax1());
         }
-        if (oa.getCheckbox19().equals("1")&& oa.getVdrsta() != null && !oa.getVdrsta().equals("")) {
+        if (oa.getCheckbox19().equals("1") && oa.getVdrsta() != null && !oa.getVdrsta().equals("")) {
             erp.setVdrsta(oa.getVdrsta().charAt(0));
         }
         if (oa.getCbtickdays().equals("1")) {
             erp.setTickdays(oa.getTickdays());
         }
+        if (oa.getChecktax().equals("1")) {
+            erp.setTax(oa.getTax());
+        }
+        if (oa.getChecktaxrate().equals("1")) {
+            erp.setTaxrate(BigDecimal.valueOf(Double.valueOf(oa.getTaxrate())));
+        }
         if (oa.getChkpaycode().equals("1") && oa.getPaycode() != null && !"0".equals(oa.getPaycode())) {
             erp.setPaycode(oa.getPaycode().charAt(0));
         }
-
+        
         try {
             update(erp);
             getEntityManager().flush();
