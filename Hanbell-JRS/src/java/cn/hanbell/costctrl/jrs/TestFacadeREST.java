@@ -710,26 +710,26 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
                         }
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("SHB_ERP_APM811", hm, details);
-                        String subject = "进货请款申请单：" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款天数（"
+                        String subject = "进货请款申请单：" +hm.getFacno()+"--"+ hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款天数（"
                                 + hm.getTickdays() + ")," + "请款金额：" + hm.getTotal();
-                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT,
-                                "PKG_SHB_ERP_APM811", formInstance, subject);
-                        String[] rm = msg.split("\\$");
-                        if (rm != null) {
-                            log4j.info(Arrays.toString(rm));
-                        }
-                        if (rm != null && rm.length == 2 && rm[0].equals("200")) {
-                            // 更新ERP APM811状态
-                            h.setApsta("25");
-                            if ("OA免签".equals(ls_mark)) {
-                                h.setHmark(ls_hmark + ls_mark);
+                            String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT,
+                                    "PKG_SHB_ERP_APM811", formInstance, subject);
+                            String[] rm = msg.split("\\$");
+                            if (rm != null) {
+                                log4j.info(Arrays.toString(rm));
                             }
-                            apmaphBean.update(h);
-                            // apmaphBean.getEntityManager().flush();
+                            if (rm != null && rm.length == 2 && rm[0].equals("200")) {
+                                // 更新ERP APM811状态
+                                h.setApsta("25");
+                                if ("OA免签".equals(ls_mark)) {
+                                    h.setHmark(ls_hmark + ls_mark);
+                                }
+                                apmaphBean.update(h);
+                                // apmaphBean.getEntityManager().flush();
+                            }
                         }
                     }
                 }
-            }
         } catch (Exception ex) {
             ex.printStackTrace();
             log4j.error(ex);
@@ -738,8 +738,8 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
             eapMailBean.getTo().add("C1491@hanbell.com.cn");
             eapMailBean.setMailSubject("ERP-APM811抛转OA审批失败");
             eapMailBean.setMailContent(
-                    company + "公司别 ERP-APM811抛转OA审批申请单" + "抛转失败，异常：" + ex);
-            //eapMailBean.notify(new ErrorMailNotify());
+                    company + "公司别 ERP-APM811抛转OA审批申请单" + "抛转失败，异常：" + ex.getCause().getMessage());
+            eapMailBean.notify(new MailNotify());
         }
     }
 
