@@ -281,7 +281,7 @@ userid =params["user"];]]></method>
 			dataSetRow["buyDate"] = detail.get(currentRow).getBuyDatetxt();
 			dataSetRow["amts"] = detail.get(currentRow).getAmts();
 			dataSetRow["surplusValue"] = detail.get(currentRow).getSurplusValue();
-			if(userid == "C2060" || userid == "C1845"){
+			if(userid == "C2060" || userid == "C1845" || userid == "C1534"){
 			dataSetRow["scrapReason"] = detail.get(currentRow).getScrapReason1();
 			dataSetRow["takeKind"] = detail.get(currentRow).getTakeKind1();
 			}else{
