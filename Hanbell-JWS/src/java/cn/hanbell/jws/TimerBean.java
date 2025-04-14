@@ -1471,7 +1471,7 @@ public class TimerBean {
                             hm.setTickdays(String.valueOf(purvdr.getTickdays()));
                             hm.setBankName(purvdr.getTtbankna() == null ? "" : purvdr.getTtbankna());
                             hm.setBankAccount(purvdr.getTtname() == null ? "" : purvdr.getTtname());
-                            hm.setVdrds(purvdr.getVdrds());
+                            hm.setVdrds(purvdr.getVdrds().replace('&', '/').replace('<', ' ').replace('>', ' '));
                             hm.setTel1(purvdr.getTel1() == null ? "" : purvdr.getTel1());
                         } else {
                             hm.setTickdays("0");
@@ -3579,7 +3579,7 @@ public class TimerBean {
         log4j.info("越南ERP交易互转轮询开始");
         //越南采购转香港订单
         this.createHKERPCDR310ByVHBPUR415("X", "SDC00001", "00", "V", "HA001 ", "20241014");
-        //this.createHKERPCDR310ByVHBPUR415("X", "XDC00001", "00", "VB", "HA009 ", "20251014");
+        //this.createHKERPCDR310ByVHBPUR415("X", "XDC00001", "00", "VB", "HA001 ", "20251014");
         log4j.info("越南ERP交易互转轮询开始结束");
     }
 

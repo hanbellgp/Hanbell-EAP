@@ -205,9 +205,9 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
                 return "重庆分公司";
             case "C5":
                 return "银川分公司";
-           case "CH":
-                return "珀罗普斯柯茂";
            case "XB":
+                return "珀罗普斯柯茂";
+           case "CH":
                 return "上海汉钟活塞";
             case "H":
                 return "浙江汉声";

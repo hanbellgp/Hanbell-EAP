@@ -373,7 +373,7 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                     chad.setOwareh(transwah.getWareh()); //海关仓
                     chad.setReplenish('N');
                     //chad.setIssevhad('Y');
-                    if (chad.getCusno().equals("SCQ00146") || chad.getCusno().equals("SJS00254") || chad.getCusno().equals("SSD00107") || chad.getCusno().equals("SGD00088")) {
+                    if (chad.getCusno().equals("SCQ00146") || chad.getCusno().equals("SJS00254") || chad.getCusno().equals("SSD00107") || chad.getCusno().equals("SGD00088")|| chad.getCusno().equals("SNX00040")) {
                         chad.setIssevhad('N');
                     } else {
                         chad.setIssevhad('Y');

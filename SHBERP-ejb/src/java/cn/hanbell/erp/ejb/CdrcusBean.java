@@ -295,7 +295,8 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         // if (crmgg == null) {
         // throw new NullPointerException();
         // }
-        switch (oa.getFacno()) {
+        facno = oa.getFacno();
+        switch (facno) {
             // SHB和分公司统一到SHB下
             case "C":
             case "G":
@@ -306,6 +307,9 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             case "L":
                 facno = "C";
                 code = "S";
+                break;
+            case "CH":
+                code = "U";
                 break;
             default:
                 facno = oa.getFacno();

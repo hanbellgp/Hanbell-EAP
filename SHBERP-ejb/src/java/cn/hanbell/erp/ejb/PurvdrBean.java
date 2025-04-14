@@ -282,7 +282,11 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         erp.setSwiftcode(oa.getSwiftcode());
 
         // 生成厂商编号
-        newvdrno = getFormId(BaseLib.getDate(), code + erp.getCuycode(), null, 5, "purvdr", "vdrno");
+        if (facno.length() == 2) {
+            newvdrno = getFormId(BaseLib.getDate(), code + erp.getCuycode(), null, 4, "purvdr", "vdrno");
+        } else {
+            newvdrno = getFormId(BaseLib.getDate(), code + erp.getCuycode(), null, 5, "purvdr", "vdrno");
+        }
         erp.setVdrno(newvdrno);
 
         // 生成采购员
@@ -409,6 +413,10 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             case "L":
                 facno = "C";
                 code = "S";
+                break;
+            //上海活塞
+            case "CH":
+                code = "U";
                 break;
             default:
                 facno = oa.getFacno();
@@ -584,7 +592,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         if (oa.getChkpaycode().equals("1") && oa.getPaycode() != null && !"0".equals(oa.getPaycode())) {
             erp.setPaycode(oa.getPaycode().charAt(0));
         }
-        
+
         try {
             update(erp);
             getEntityManager().flush();

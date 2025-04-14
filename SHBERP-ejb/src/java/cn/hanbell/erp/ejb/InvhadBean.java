@@ -123,7 +123,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         if (h == null) {
             throw new NullPointerException();
         }
-        if (h.getPzno() != null && h.getPzno().length()>5) {
+        if (h.getPzno() != null && h.getPzno().length() > 5) {
             throw new NullPointerException("抛转单号已生成，请确认是否已抛转");
         }
         try {
@@ -623,7 +623,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             hkpb054Bean.update(e);
             return true;
         } catch (Exception ex) {
-           
+
             throw ex;
         }
     }
@@ -645,6 +645,7 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
         String prono;
         String trno;
         Date trdate;
+        boolean flag = false;
         Date indate = BaseLib.getDate();
         String trtype;
         String mark = "";
@@ -704,8 +705,46 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 invdta.setTrnqy3(BigDecimal.ZERO);
                 invdta.setUnmsr1(m.getUnmsr1());
                 invdta.setWareh(d.getDfromwareh());
-                invdta.setFixnr("");
-                invdta.setVarnr("");
+                String lsfixnr = d.getFixnr();
+                String lsvarnr = d.getVarnr();
+                //按ERP逻辑重新设置批号
+                switch (m.getInvcls().getNrcode()) {
+                    case '0':
+                        lsfixnr = "";
+                        lsvarnr = "";
+                        break;
+                    case '1':
+                        lsvarnr = "";
+                        break;
+                    case '2':
+                        lsfixnr = "";
+                        break;
+                    default:
+                        break;
+                }
+                if (invdou.getIocode() == '2') {
+                    //库存可利用量检查
+                    invbalBean.setCompany(facno);
+                    flag = invbalBean.isGreatThenInvbal(facno, prono, invdta.getInvdtaPK().getItnbr(), invdta.getWareh(), invdta.getTrnqy1());
+                    if (flag) {
+                        lsfixnr = "";
+                        lsvarnr = "";
+                        //throw new RuntimeException(d.getItnbr() + "库存可利用量不足(invbal)");
+                    }
+                    //批号可利用量检查
+                    if (m.getInvcls().getNrcode() != '0') {
+                        invdta.setDefaultValue();
+                        invbatBean.setCompany(facno);
+                        flag = invbatBean.isGreatThenInvbat(facno, prono, invdta.getInvdtaPK().getItnbr(), invdta.getWareh(), invdta.getFixnr(), invdta.getVarnr(), invdta.getTrnqy1());
+                        if (flag) {
+                            lsfixnr = "";
+                            lsvarnr = "";
+                            //throw new RuntimeException(d.getItnbr() + "库存可利用量不足(invbat)");
+                        }
+                    }
+                }
+                invdta.setFixnr(lsfixnr);
+                invdta.setVarnr(lsvarnr);
                 invdta.setIocode('2');
                 invdta.setDmark2("EFGP");
                 addedDetail.add(invdta);
@@ -720,8 +759,8 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
                 invdta.setTrnqy3(BigDecimal.ZERO);
                 invdta.setUnmsr1(m.getUnmsr1());
                 invdta.setWareh(d.getDtowareh());
-                invdta.setFixnr("");
-                invdta.setVarnr("");
+                invdta.setFixnr(lsfixnr);
+                invdta.setVarnr(lsvarnr);
                 invdta.setIocode('1');
                 invdta.setDmark2("EFGP");
                 addedDetail.add(invdta);
