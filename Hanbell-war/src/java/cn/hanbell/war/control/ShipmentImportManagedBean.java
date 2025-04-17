@@ -123,6 +123,54 @@ public class ShipmentImportManagedBean extends ShipmentPrintManagedBean {
         this.preview();
     }
 
+    public void printShpno() throws Exception {
+        if (currentPrgGrant == null || cdrhadSelected == null || cdrhadSelected.isEmpty()) {
+            return;
+        }
+        String reportName, outputName, reportFormat, f;
+        // 设置报表名称
+        reportName = reportPath + "cdrhadShpnoBarcode.rptdesign";
+        // 设置导出文件名称
+        fileName = "CdrhadBarcode" + BaseLib.formatDate("yyyyMMddHHmmss", getDate()) + ".pdf";
+        outputName = reportOutputPath + fileName;
+        OutputStream os = new FileOutputStream(outputName);
+        if (this.currentPrgGrant != null && this.currentPrgGrant.getSysprg().getRptclazz() != null) {
+            reportClassLoader = Class.forName(this.currentPrgGrant.getSysprg().getRptclazz()).getClassLoader();
+        }
+        PdfCopyFields pdfCopy = new PdfCopyFields(os);
+        HashMap<String, Object> reportParams = new HashMap<>();
+        ByteArrayOutputStream baos;
+        for (Cdrhad c : cdrhadSelected) {
+            f = this.getAppResPath() + c.getCdrhadPK().getShpno() + ".png";
+            this.generateCode128(c.getCdrhadPK().getShpno(), 1.5f, 8d, f);
+            this.generateQRCode(c.getCdrhadPK().getShpno(), 300, 300, this.getAppResPath(),
+                    "QR" + c.getCdrhadPK().getShpno() + ".png");
+            // 设置报表参数
+            baos = new ByteArrayOutputStream();
+            reportParams.put("company", userManagedBean.getCurrentCompany().getCompany());
+            reportParams.put("companyFullName", userManagedBean.getCurrentCompany().getFullname());
+            reportParams.put("tel", userManagedBean.getCurrentCompany().getTel());
+            reportParams.put("fax", userManagedBean.getCurrentCompany().getFax());
+            reportParams.put("id", c.getCdrhadPK().getShpno());
+            reportParams.put("formid", c.getCdrhadPK().getShpno());
+            reportParams.put("JNDIName", currentPrgGrant.getSysprg().getRptjndi());
+            try {
+                // 初始配置
+                this.reportInitAndConfig();
+                // 生成报表
+                this.reportRunAndOutput(reportName, reportParams, null, "pdf", baos);
+            } catch (Exception ex) {
+                throw ex;
+            } finally {
+                reportParams.clear();
+            }
+            pdfCopy.addDocument(new PdfReader(baos.toByteArray()));
+        }
+        pdfCopy.close();
+        this.reportViewPath = reportViewContext + fileName;
+        this.preview();
+    }
+    
     @Override
     public void query() {
         cdrhadList.clear();
