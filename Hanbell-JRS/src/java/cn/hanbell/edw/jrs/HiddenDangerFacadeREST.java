@@ -86,12 +86,12 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
     private EhsSecureBean ehsSecureBean;
     protected SuperEJB superEJB;
     //生产环境
-    private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //测试环境
 //   private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //本地环境
-    // private final String filePathTemp = "F:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    //private final String filePathTemp = "E:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -117,12 +117,11 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
             Map<String, String> sortFields = new LinkedHashMap<>();
             String key, value = "";
             String userId = filtersMM.getFirst("userid");
-//            String company = filtersMM.getFirst("company");
+            String company = filtersMM.getFirst("company");
             List<EhsSecure> checkList = new ArrayList<EhsSecure>();
             Map<String, Object> filterSecure = new HashMap<>();
             filterSecure.put("position", "月安全课长");
             filterSecure.put("remark =", new Date().getMonth() + 1 + "");
-
             checkList = ehsSecureBean.findByFilters(filterSecure);
 
             try {
@@ -357,9 +356,6 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 } else if (hiddenTemp.getRstatus().equals("60")) {
                     StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
                     String userStrTemp = entity.getPresentingId().toUpperCase();
-                      if (hiddenTemp.getHiddenSource().equals("安全专员巡查")) {//如果是安全专员巡查的单子验收完提醒当月安全课长审核否则提醒发起人结案
-                           userStrTemp = checkList.get(0).getSecureId();
-                      } 
                     msg.append(hiddenTemp.getId()).append("<br/>");
                     msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
                     msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
@@ -374,7 +370,10 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     }
                 } else if (hiddenTemp.getRstatus().equals("75")) {
                     StringBuffer msg = new StringBuffer("你有一张隐患单待处理:");
-                     String userStrTemp = entity.getPresentingId().toUpperCase();
+                    String userStrTemp = entity.getPresentingId().toUpperCase();
+                    if (hiddenTemp.getHiddenSource().equals("安全专员巡查")) {//如果是安全专员巡查的单子验收完提醒当月安全课长审核否则提醒发起人结案
+                        userStrTemp = checkList.get(0).getSecureId();
+                    }
                     msg.append(hiddenTemp.getId()).append("<br/>");
                     msg.append("隐患来源:").append(entity.getHiddenSource()).append("<br/>");
                     msg.append("隐患地点:").append(entity.getHiddenLocation()).append("<br/>");
@@ -433,7 +432,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
             String docType = "";
             this.superEJB = ehsHiddenDangerFileBean;
             List<Object> list = new ArrayList<>();
-                         
+
             List<EhsHiddenDangerFile> hiddenImageListRes = new ArrayList<>();
             List<EhsHiddenDangerParameter> hiddenTypeList = new ArrayList<EhsHiddenDangerParameter>();
             List<EhsHiddenDangerParameter> areaTypeList = new ArrayList<EhsHiddenDangerParameter>();
