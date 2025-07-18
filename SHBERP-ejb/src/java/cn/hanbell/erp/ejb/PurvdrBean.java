@@ -183,7 +183,8 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         Purvdr erp = new Purvdr();
 
         String facno, code, newvdrno;
-        switch (oa.getFacno()) {
+        facno = oa.getFacno();
+        switch (facno) {
             // SHB和分公司统一到SHB下
             case "C":
             case "G":
@@ -195,8 +196,10 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                 facno = "C";
                 code = "S";
                 break;
+            case "CH":
+                code = "U";
+                break;
             default:
-                facno = oa.getFacno();
                 code = facno;
         }
         // 增加检查避免重复抛转

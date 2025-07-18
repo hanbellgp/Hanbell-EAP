@@ -171,6 +171,7 @@ public class HZJS034DetailModel implements Serializable {
     private String ModelDsc2;
     private String genre2;
     private String genre3;
+    private String genre4;
 
     public String getAHclass() {
         return AHclass;
@@ -247,6 +248,7 @@ public class HZJS034DetailModel implements Serializable {
         this.AHclass = "";
         this.genre2 = "";
         this.genre3 = "";
+        this.genre4 = "";
         this.ModelDsc1 = "";
         this.ModelDsc2 = "";
     }
@@ -883,6 +885,14 @@ public class HZJS034DetailModel implements Serializable {
      */
     public void setRate2(String rate2) {
         this.rate2 = rate2;
+    }
+
+    public String getGenre4() {
+        return genre4;
+    }
+
+    public void setGenre4(String genre4) {
+        this.genre4 = genre4;
     }
 
 }

@@ -90,6 +90,8 @@ import cn.hanbell.oa.model.HZJS034DetailModel;
 import cn.hanbell.oa.model.HZJS034Model;
 import cn.hanbell.oa.model.SHBERPAPM811DetailModel;
 import cn.hanbell.oa.model.SHBERPAPM811Model;
+import cn.hanbell.oa.model.VHTV006DetailModel;
+import cn.hanbell.oa.model.VHTV006Model;
 import cn.hanbell.plm.ejb.PLMItnbrDetailTempBean;
 import cn.hanbell.plm.ejb.PLMItnbrMasterTempBean;
 import cn.hanbell.plm.entity.PLMItnbrDetailTemp;
@@ -220,6 +222,16 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
 
     @EJB
     private vn.hanbell.erp.ejb.PurhadBean VHBpurhadBean;
+    @EJB
+    private vn.hanbell.erp.ejb.CdrqhadBean VHBcdrqhadBean;
+    @EJB
+    private vn.hanbell.erp.ejb.MiscodeBean VHBmiscodeBean;
+    @EJB
+    private vn.hanbell.erp.ejb.InvmasBean VHBinvmasBean;
+    @EJB
+    private vn.hanbell.erp.ejb.CdrcusBean VHBcdrcusBean;
+    @EJB
+    private vn.hanbell.erp.ejb.SecuserBean VHBsecuserBean;
     @EJB
     private vn.hanbell.erp.ejb.PurvdrrelBean VHBpurvdrrelBean;
     @EJB
@@ -710,26 +722,26 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
                         }
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("SHB_ERP_APM811", hm, details);
-                        String subject = "进货请款申请单：" +hm.getFacno()+"--"+ hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款天数（"
+                        String subject = "进货请款申请单：" + hm.getFacno() + "--" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款天数（"
                                 + hm.getTickdays() + ")," + "请款金额：" + hm.getTotal();
-                            String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT,
-                                    "PKG_SHB_ERP_APM811", formInstance, subject);
-                            String[] rm = msg.split("\\$");
-                            if (rm != null) {
-                                log4j.info(Arrays.toString(rm));
+                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT,
+                                "PKG_SHB_ERP_APM811", formInstance, subject);
+                        String[] rm = msg.split("\\$");
+                        if (rm != null) {
+                            log4j.info(Arrays.toString(rm));
+                        }
+                        if (rm != null && rm.length == 2 && rm[0].equals("200")) {
+                            // 更新ERP APM811状态
+                            h.setApsta("25");
+                            if ("OA免签".equals(ls_mark)) {
+                                h.setHmark(ls_hmark + ls_mark);
                             }
-                            if (rm != null && rm.length == 2 && rm[0].equals("200")) {
-                                // 更新ERP APM811状态
-                                h.setApsta("25");
-                                if ("OA免签".equals(ls_mark)) {
-                                    h.setHmark(ls_hmark + ls_mark);
-                                }
-                                apmaphBean.update(h);
-                                // apmaphBean.getEntityManager().flush();
-                            }
+                            apmaphBean.update(h);
+                            // apmaphBean.getEntityManager().flush();
                         }
                     }
                 }
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             log4j.error(ex);
@@ -2457,6 +2469,146 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
                     //eapMailBean.notify(new cn.hanbell.eap.comm.MailNotify());
                 }
             }
+        }
+    }
+
+    @GET
+    @Path("vhtv006/oa")
+    @Consumes({"application/json"})
+    public void createOAVHTV006ByVHBERPCDR220(@QueryParam("company") String company) {
+        VHTV006Model hm;
+        VHTV006DetailModel dm;
+        List<VHTV006DetailModel> detailList = new ArrayList<>();
+        LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
+        details.put("Detail", detailList);
+        try {
+            VHBcdrqhadBean.setCompany(company);
+            List<vn.hanbell.erp.entity.Cdrqhad> cdrqhadList = VHBcdrqhadBean.findNeedThrow();
+            List<vn.hanbell.erp.entity.Cdrqdta> cdrqdtaList;
+            String facno;
+            String quono;
+            String oilspecial = "";
+            int i;
+            if (cdrqhadList != null && !cdrqhadList.isEmpty()) {
+                for (vn.hanbell.erp.entity.Cdrqhad h : cdrqhadList) {
+                    facno = h.getCdrqhadPK().getFacno();
+                    quono = h.getCdrqhadPK().getQuono();
+                    cdrqdtaList = VHBcdrqhadBean.findNeedThrowDetail(facno, quono);
+
+                    if (cdrqdtaList != null && !cdrqdtaList.isEmpty()) {
+                        detailList.clear();// 清除前面的资料
+                        i = 0;
+                        for (vn.hanbell.erp.entity.Cdrqdta d : cdrqdtaList) {
+                            i++;
+                            dm = new VHTV006DetailModel();
+                            dm.setSeq(String.valueOf(i));
+                            dm.setTrseq(String.valueOf(d.getCdrqdtaPK().getTrseq()));
+                            dm.setItnbr(d.getItnbr());
+                            dm.setItnbrcus(d.getItnbrcus());
+                            VHBinvmasBean.setCompany(facno);
+                            vn.hanbell.erp.entity.Invmas invmas = VHBinvmasBean.findByItnbr(d.getItnbr());
+                            dm.setItdsc(filterString(invmas.getItdsc()));
+                            dm.setSpdsc(filterString(invmas.getSpdsc()));
+                            dm.setQuaqy1(d.getQuaqy1().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            dm.setUnpris(d.getUnpris().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            if (d.getListunpri() != null) {
+                                dm.setLastunpri(d.getListunpri().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            } else {
+                                dm.setLastunpri("0");
+                            }
+//                            if (d.getHisorders() != null) {
+//                                dm.setOrderqty(d.getHisorders().toString());
+//                            } else {
+//                                dm.setOrderqty("0");
+//                            }
+                            dm.setTramts(d.getTramts().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            if (d.getCdrdate() != null) {
+                                dm.setCdrdate(BaseLib.formatDate("yyyy/MM/dd", d.getCdrdate()));
+                            } else {
+                                dm.setCdrdate(BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate()));
+                            }
+                            if (null == d.getQxb()) {
+                                dm.setPeratio("");
+                            } else {
+                                dm.setPeratio(d.getQxb());
+                            }
+                            dm.setRefmodel("");
+                            dm.setRefratio("");
+                            if (d.getDiffprice() != null) {
+                                dm.setDiffitting(d.getDiffprice().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            } else {
+                                dm.setDiffitting("0");
+                            }
+                            //服务部需求油品特殊流程
+                            if (d.getItnbr().startsWith("52001-")) {
+                                oilspecial = "Y";
+                            }
+                            detailList.add(dm);
+                        }
+                        hm = new VHTV006Model();
+                        hm.setFacno(facno);
+                        hm.setQuono(quono);
+                        hm.setQuodate(h.getQuodate());
+                        hm.setCfmdate(h.getCfmdate());
+                        hm.setIsspecial(h.getIsspecial());
+                        hm.setPricingtype(h.getPricingtype());
+                        hm.setQuotype(h.getQuotype().toString());
+                        VHBmiscodeBean.setCompany(facno);
+                        vn.hanbell.erp.entity.Miscode miscode = VHBmiscodeBean.findByPK("1C", h.getPricingtype());
+                        hm.setPricingtypedsc(miscode.getCdesc());
+                        hm.setCoin(h.getCoin());
+                        hm.setRatio(h.getRatio().doubleValue());
+                        hm.setLevelp(h.getLevelp());
+                        hm.setCusno(h.getCusno());
+                        VHBcdrcusBean.setCompany(facno);
+                        vn.hanbell.erp.entity.Cdrcus cdrcus = VHBcdrcusBean.findByCusno(h.getCusno());
+                        hm.setCusna(cdrcus.getCusna());
+                        hm.setMancode(h.getMancode());
+                        //服务部需求带出定价群组Pricinguser
+                        hm.setPricgroup("");
+//                        pricingUserBean.setCompany(facno);
+//                        PricingUser pu = pricingUserBean.findByPricingtypeAndUserid(h.getPricingtype(), h.getCusno());
+//                        if (null != pu) {
+//                             vn.hanbell.erp.entity.Miscode  mis = VHBmiscodeBean.findByPK("1D", pu.getPricingUserPK().getGroupid());
+//                            hm.setPricgroup(mis.getCdesc());
+//                        }
+                        hm.setOilspecial(oilspecial);
+                        VHBsecuserBean.setCompany(facno);
+                        vn.hanbell.erp.entity.Secuser secuser = VHBsecuserBean.findByUserno(h.getMancode());
+                        hm.setMancodesc(secuser.getUsername());
+                        workFlowBean.initUserInfo(h.getMancode());
+                        hm.setDepno(workFlowBean.getCurrentUser().getDeptno());
+                        //hm.setDepno(h.getDepno()); // 报价部门
+                        hm.setCfmuser(h.getCfmuserno());
+                        // 设置审批原因
+                        hm.setApprresno(VHBmiscodeBean.findByPK("1O", h.getApprresno()).getCusds());
+                        // 加入付款条件叙述
+                        hm.setPaycodedsc(h.getPaycodedsc());
+                        hm.setTotamts(h.getTotamts().doubleValue());
+                        workFlowBean.initUserInfo(h.getUserno());
+                        // 构建表单实例
+                        String formInstance = workFlowBean.buildXmlForEFGP("VH_TV006", hm, details);
+                        String subject = "客户:" + hm.getCusna() + "申请原因： " + hm.getApprresno() + ".  业务员:"
+                                + hm.getMancode() + hm.getMancodesc();
+                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT,
+                                "PKG_VH_TV006", formInstance, subject);
+                        String[] rm = msg.split("\\$");
+                        if (rm != null) {
+                            log4j.info(h.getCdrqhadPK().getQuono());
+                            log4j.info(Arrays.toString(rm));
+                        }
+                        if (rm != null && rm.length == 2 && rm[0].equals("200")) {
+                            // 更新ERP CDR220状态
+                            h.setHquosta('O');
+                            VHBcdrqhadBean.setCompany(facno);
+                            VHBcdrqhadBean.update(h);
+                            //VHBcdrqhadBean.getEntityManager().flush();
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            log4j.error(ex.getCause().getMessage());
         }
     }
 }

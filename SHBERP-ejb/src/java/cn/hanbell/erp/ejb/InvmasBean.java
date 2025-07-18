@@ -187,13 +187,14 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     //20221213 加入分类2分类3及机型说明
                     m.setGenre2(detail.getGenre2());
                     m.setGenre3(detail.getGenre3());
+                    m.setGenre4(detail.getGenre4());
                     m.setModelDsc1(detail.getModelDsc1());
                     m.setModelDsc2(detail.getModelDsc2().trim());
                     persist(m);
                     this.getEntityManager().flush();
 
                     // 同步MES资料
-                    if (facno.equals("C") || facno.equals("K")) {
+                    if (facno.equals("C") || facno.equals("K") || facno.equals("E") || facno.equals("CH")) {
                         Scminvmas scm = new Scminvmas();
                         scm.setItnbr(detail.getItnbr());
                         scm.setItdsc(filterString(detail.getItdsc()));
