@@ -63,6 +63,9 @@
                     <p:commandButton id="btnPrint" value="打印" actionListener="#{shipmentImportManagedBean.print()}" icon="ui-icon-print">
                         <p:confirm header="系统提示" message="打印吗?" icon="ui-icon-alert" />
                     </p:commandButton>
+                          <p:commandButton id="btnPrint2" value="出货单打印" actionListener="#{shipmentImportManagedBean.printShpno()}" icon="ui-icon-print">
+                        <p:confirm header="系统提示" message="打印吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
                     <p:commandButton id="btnImport" value="导入" actionListener="#{shipmentImportManagedBean.verify()}" icon="ui-icon-save"
                                      update=":formList">
                         <p:confirm header="系统提示" message="导入吗?" icon="ui-icon-alert" />

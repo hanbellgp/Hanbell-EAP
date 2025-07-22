@@ -712,7 +712,10 @@ currentRow = 0;]]></method>
         dataSetRow["ysstyle"] = "自提";
     } else if (master.getYsstyle() == "5") {
         dataSetRow["ysstyle"] = "专车";
-    } else {
+    }else if (master.getYsstyle() == "7") {
+        dataSetRow["ysstyle"] = "短驳车";
+    }
+     else {
         dataSetRow["ysstyle"] = master.getYsstyle();
     }
 
@@ -722,6 +725,12 @@ currentRow = 0;]]></method>
         dataSetRow["yfjs"] = "到付";
     } else if (master.getYfjs() == "3") {
         dataSetRow["yfjs"] = "自提";
+    } else if (master.getYfjs() == "4") {
+        dataSetRow["yfjs"] = "现付";
+    } else if (master.getYfjs() == "5") {
+        dataSetRow["yfjs"] = "柯茂付款";
+    } else if (master.getYfjs() == "6") {
+        dataSetRow["yfjs"] = "无运费";
     } else {
         dataSetRow["yfjs"] = master.getYfjs();
     }
@@ -843,7 +852,9 @@ currentRow = 0;]]></method>
             dataSetRow["ysstyle"] = "自提";
         } else if (master.getYsstyle() == "5") {
             dataSetRow["ysstyle"] = "专车";
-        } else {
+        }else if (master.getYsstyle() == "7") {
+       		dataSetRow["ysstyle"] = "短驳车";
+    	}	 else {
             dataSetRow["ysstyle"] = master.getYsstyle();
         }
 
@@ -853,9 +864,15 @@ currentRow = 0;]]></method>
             dataSetRow["yfjs"] = "到付";
         } else if (master.getYfjs() == "3") {
             dataSetRow["yfjs"] = "自提";
-        } else {
-            dataSetRow["yfjs"] = master.getYfjs();
-        }
+        } else if (master.getYfjs() == "4") {
+        dataSetRow["yfjs"] = "现付";
+    } else if (master.getYfjs() == "5") {
+        dataSetRow["yfjs"] = "柯茂付款";
+    } else if (master.getYfjs() == "6") {
+        dataSetRow["yfjs"] = "无运费";
+    } else {
+        dataSetRow["yfjs"] = master.getYfjs();
+    }
 
 
         if (master.getPackstyle() == "1") {

@@ -72,14 +72,15 @@ public class EhsHiddenDangerBean extends SuperEJBForEDW<EhsHiddenDanger> {
                     sb.append(filters.get("userid")).append("')");
                     //获取复核人的待处理单据
                     if (filters.containsKey("月安全课长")) {
-                        sb.append("  OR (e.rstatus =75 ) ");
+                        sb.append("  OR (e.rstatus =75  ");
+                           sb.append("  AND  e.area = '");
+                        sb.append(filters.get("area")).append("')");
                     }
-                }
-                if (Integer.parseInt(value.toString()) == 30) {
+                } else if (Integer.parseInt(value.toString()) == 30) {
                     sb.append("  AND (e.rstatus =10    ");
                     sb.append("  AND e.acceptedId = '");
                     sb.append(filters.get("userid")).append("')");
-                    
+
                     //获取排查人的待处理单据
                     sb.append("  OR (e.rstatus =10");
                     sb.append("  AND e.presentingId = '");
@@ -88,7 +89,7 @@ public class EhsHiddenDangerBean extends SuperEJBForEDW<EhsHiddenDanger> {
                     sb.append("  OR (e.rstatus =30 ");
                     sb.append("  AND e.acceptedId = '");
                     sb.append(filters.get("userid")).append("')");
-                     //获取整改人的待处理单据
+                    //获取整改人的待处理单据
                     sb.append("  OR (e.rstatus =30 ");
                     sb.append("  AND e.presentingId = '");
                     sb.append(filters.get("userid")).append("')");
@@ -96,38 +97,39 @@ public class EhsHiddenDangerBean extends SuperEJBForEDW<EhsHiddenDanger> {
                     sb.append("  OR (e.rstatus =45");
                     sb.append("  AND e.rectifierId = '");
                     sb.append(filters.get("userid")).append("')");
-                       //获取整改人的待处理单据
+                    //获取整改人的待处理单据
                     sb.append("  OR (e.rstatus =45");
                     sb.append("  AND e.presentingId = '");
                     sb.append(filters.get("userid")).append("')");
-              //获取整改人的待处理单据
+                    //获取整改人的待处理单据
                     sb.append("  OR (e.rstatus =60");
                     sb.append("  AND e.acceptedId = '");
                     sb.append(filters.get("userid")).append("')");
-                    
-                      sb.append("  OR (e.rstatus =60");
+
+                    sb.append("  OR (e.rstatus =60");
                     sb.append("  AND e.rectifierId = '");
                     sb.append(filters.get("userid")).append("')");
-                     //获取排查人的待处理单据
+                    //获取排查人的待处理单据
                     sb.append("  OR (e.rstatus =75");
                     sb.append("  AND e.presentingId = '");
                     sb.append(filters.get("userid")).append("')");
-                    
-                        //获取排查人的待处理单据
+
+                    //获取排查人的待处理单据
                     sb.append("  OR (e.rstatus =75");
                     sb.append("  AND e.acceptedId = '");
                     sb.append(filters.get("userid")).append("')");
-                    
-                        //获取排查人的待处理单据
+
+                    //获取排查人的待处理单据
                     sb.append("  OR (e.rstatus =75");
                     sb.append("  AND e.rectifierId = '");
                     sb.append(filters.get("userid")).append("')");
                     //获取复核人的待处理单据
                     if (filters.containsKey("月安全课长")) {
-                        sb.append("  OR (e.rstatus !=75 AND e.rstatus !=95 ) ");
+                        sb.append("  OR (e.rstatus !=75 AND e.rstatus !=95 and e.hiddenSource = '安全专员巡查'  ");
+                        sb.append("  AND  e.area = '");
+                        sb.append(filters.get("area")).append("')");
                     }
-                }
-                if (Integer.parseInt(value.toString()) == 95) {
+                } else if (Integer.parseInt(value.toString()) == 95) {
                     if (!filters.containsKey("月安全课长")) {//当点进来的是月安全课长不筛选对应的人员
                         sb.append("  AND (e.presentingId = '");
                         sb.append(filters.get("userid")).append("'");
@@ -135,8 +137,12 @@ public class EhsHiddenDangerBean extends SuperEJBForEDW<EhsHiddenDanger> {
                         sb.append(filters.get("userid")).append("'");
                         sb.append("  OR e.rectifierId = '");
                         sb.append(filters.get("userid")).append("')");
+                    } else {
+                        sb.append("  AND ( e.rstatus=95   and e.hiddenSource = '安全专员巡查' ");
+                             sb.append("  AND  e.area = '");
+                        sb.append(filters.get("area")).append("')");
                     }
-                    strMap.put(key, value);
+
                 }
             } else if ("formdateBegin".equals(key)) {
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
@@ -147,7 +153,9 @@ public class EhsHiddenDangerBean extends SuperEJBForEDW<EhsHiddenDanger> {
                 String formdateEndStr = fmt.format(new Date(value.toString()));
                 sb.append("  AND (e.createTime <='" + formdateEndStr + " ') ");
             } else if ("月安全课长".equals(key)) {
-                sb.append("  AND (e.hiddenSource ='安全专员巡查')");
+          
+            } else if ("area".equals(key)) {//厂区只有月安全课长会赛选所以不在条件内
+
             } else {
                 strMap.put(key, value);
             }
