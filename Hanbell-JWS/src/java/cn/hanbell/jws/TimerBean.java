@@ -1214,6 +1214,13 @@ public class TimerBean {
                             workFlowBean.initUserInfo(pm.getCApplicant()); //上海厂开单人
                             m.setFacno(pm.getCProno());
                         }
+                        if (workFlowBean.getCurrentUser().getLeaveDate() != null) {
+                            // 离职人员不能发起OA
+                            pm.setCTriggerYn('Y');
+                            plmItnbrMasterTempBean.update(pm);
+                            plmItnbrMasterTempBean.getEntityManager().flush();
+                            return;
+                        }
                         m.setEmpl(workFlowBean.getCurrentUser().getId());
                         m.setDept(workFlowBean.getUserFunction().getOrganizationUnit().getId());
                         m.setIndate(BaseLib.getDate());
@@ -2001,7 +2008,7 @@ public class TimerBean {
                                 bilList.add(d.getBilno());
                             }
                             detailList.add(dm);
-                        }                       
+                        }
                         hm = new HKCW013Model();
                         hm.setFacno(h.getApmaphPK().getFacno());
                         hm.setApno(h.getApmaphPK().getApno());
@@ -2799,6 +2806,7 @@ public class TimerBean {
         this.createERPCDR310ByExchPUR415("K", "KTW00004", "00", "A", "86010 ", "20200408");// THB->Comer
         this.createERPCDR310ByExchPUR415("H", "HTW00001", "00", "A", "1139 ", "20200408");// THB->Hanson
         this.createERPCDR310ByExchPUR415("E", "ETW00004", "00", "A", "86012 ", "20240513");// THB->ZJComer
+        this.createERPCDR310ByExchPUR415("E", "ETW00004", "00", "A", "86012A", "20250728");// THB->ZJComerUSD
 //        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HSH00247", "C", "SZJ00065", "SSH01164", "20220201",
 //                false);// 卓准
 //        this.syncThirdPartyTradingByERPPUR410("H", "HSH00003", "HHB00007", "C", "SZJ00065", "SHB00016", "20220201",
