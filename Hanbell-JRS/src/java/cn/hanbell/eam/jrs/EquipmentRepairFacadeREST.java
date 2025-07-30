@@ -842,6 +842,17 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 EquipmentRepairHis eqpRepairTemp = new EquipmentRepairHis();
                 List<EquipmentRepair> equipInvenList = new ArrayList<EquipmentRepair>();
                 equipInvenList = equipmentrepairBean.findByFormid(entity.getPid());
+                eqpRepairList = equipmentRepairHisBean.findByPId(entity.getPid());
+                int maxIndex = 0;
+                Boolean bol = true;
+                for (int i = 0; i < eqpRepairList.size(); i++) {
+                    if (eqpRepairList.get(i).getContenct().equals("暂维修完成")) {//有暂维修完成的数据进行
+                        bol = false;
+                    }
+                    if (eqpRepairList.get(i).getSeq() > i) {
+                        maxIndex = eqpRepairList.get(i).getSeq();
+                    }
+                }
                 if (equipInvenList.size() > 0) {
                     if (!entity.getContenct().equals("合格")) {
                         equipInvenList.get(0).setRstatus("40");
@@ -855,11 +866,16 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         totalCost = totalCost.add(laborCosts).add(repairCost).add(spareCost);
                         equipInvenList.get(0).setRepaircost(repairCost);
                         equipInvenList.get(0).setRepairarchive(needArchiveFlag);
-                        if (totalCost.compareTo(new BigDecimal("5000")) >= 0 || needArchiveFlag.equals("Y")) {
-                            equipInvenList.get(0).setRstatus("70");
+                        if (bol) {
+                            if (totalCost.compareTo(new BigDecimal("5000")) >= 0 || needArchiveFlag.equals("Y")) {
+                                equipInvenList.get(0).setRstatus("70");
+                            } else {
+                                equipInvenList.get(0).setRstatus("95");
+                            }
                         } else {
-                            equipInvenList.get(0).setRstatus("95");
+                            equipInvenList.get(0).setRstatus("97");//暂完成代号97
                         }
+
                     }
                     equipInvenList.get(0).setRemark(entity.getRemark());
                     equipInvenList.get(0).setStatus("N");
@@ -868,13 +884,6 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                     return new ResponseMessage("301", "数据库异常");
                 }
 
-                eqpRepairList = equipmentRepairHisBean.findByPId(entity.getPid());
-                int maxIndex = 0;
-                for (int i = 0; i < eqpRepairList.size(); i++) {
-                    if (eqpRepairList.get(i).getSeq() > i) {
-                        maxIndex = eqpRepairList.get(i).getSeq();
-                    }
-                }
                 maxIndex++;
 
                 eqpRepairTemp.setPid(entity.getPid());
@@ -1085,9 +1094,106 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 for (SysCode sysCode : code) {
                     userList.add(sysCode.getCvalue());//获取维修的组长
                 }
-                 SystemUser user = systemUserBean.findByUserId(equipInvenList.get(0).getRepairuser());
-                 if (user!=null&&user.getManagerId()!=null) {
-                     userList.add(user.getManagerId());//添加发送报修人上一级
+                SystemUser user = systemUserBean.findByUserId(equipInvenList.get(0).getRepairuser());
+                if (user != null && user.getManagerId() != null) {
+                    userList.add(user.getManagerId());//添加发送报修人上一级
+                }
+                userList = userList.stream().distinct().collect(Collectors.toList());//去除重复项
+                for (String string : userList) {
+                    sendMsgString(string, msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
+                }
+//                String errmsg = sendMsgString("C2079", msg.toString(), "ca80bf276a4948909ff4197095f1103a", "oJJhp5GvX45x3nZgoX9Ae9DyWak4");
+                return new ResponseMessage("200", "状态更新成功");
+            } catch (Exception ex) {
+                return new ResponseMessage("500", "系统错误Insert失败");
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    //暂完成提交
+    @POST
+    @Path("stopCompleted")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ResponseMessage updateEqpRepairHad_stopCompleted(EquipmentRepairHis entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            if (entity == null) {
+                throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            }
+
+            try {
+                List<EquipmentRepairHis> eqpRepairList = new ArrayList<EquipmentRepairHis>();
+                EquipmentRepairHis eqpRepairTemp = new EquipmentRepairHis();
+                List<EquipmentRepair> equipInvenList = new ArrayList<EquipmentRepair>();
+                equipInvenList = equipmentrepairBean.findByFormid(entity.getPid());
+                String rStatus = equipInvenList.get(0).getRstatus();
+                String currentStatus = "";
+                if (rStatus.compareTo("20") >= 0 && rStatus.compareTo("30") < 0 && (!rStatus.equals("28"))) {
+                    currentStatus = "暂维修完成";
+                    equipInvenList.get(0).setRstatus("60");
+                    equipInvenList.get(0).setStatus("N");
+                    equipmentrepairBean.persist(equipInvenList.get(0));
+                } else {
+                    return new ResponseMessage("301", "数据库异常");
+                }
+                equipInvenList.get(0).setCompletetime(new Date());
+                Long time2 = equipInvenList.get(0).getHitchtime().getTime();
+                Long time = equipInvenList.get(0).getCompletetime().getTime();
+                int min = (int) ((time - time2) / (60 * 1000));//获取开始到完成的时间分钟数
+                //当状态为停线时停机时间为维修开始时间到维修完成时间
+                if (equipInvenList.get(0).getHitchurgency().equals("03")) {
+                    equipInvenList.get(0).setStopworktime(min);
+                }
+                eqpRepairList = equipmentRepairHisBean.findByPId(entity.getPid());
+                int maxIndex = 0;
+                for (int i = 0; i < eqpRepairList.size(); i++) {
+                    if (eqpRepairList.get(i).getSeq() > i) {
+                        maxIndex = eqpRepairList.get(i).getSeq();
+                    }
+                }
+                maxIndex++;
+
+                eqpRepairTemp.setCompany(entity.getCompany());
+                eqpRepairTemp.setPid(entity.getPid());
+                eqpRepairTemp.setSeq(maxIndex);
+                eqpRepairTemp.setUserno(entity.getUserno());
+                eqpRepairTemp.setCurnode(currentStatus);
+                eqpRepairTemp.setContenct("暂维修完成");
+                eqpRepairTemp.setNote(entity.getNote());
+                eqpRepairTemp.setStatus("N");
+                eqpRepairTemp.setCredate(new Date());
+
+                equipmentRepairHisBean.persist(eqpRepairTemp);
+                StringBuffer msg = new StringBuffer(" 维修暂完成通知:<br/>");
+                msg.append("报修单号:").append(equipInvenList.get(0).getFormid()).append("<br/>");
+                msg.append("资产编号:").append(equipInvenList.get(0).getAssetno().getFormid()).append("<br/>");
+                msg.append("设备名称:").append(equipInvenList.get(0).getAssetno().getAssetDesc()).append("<br/>");
+                msg.append("设备位置:").append(equipInvenList.get(0).getAssetno().getPosition1().getName()).append(equipInvenList.get(0).getAssetno().getPosition2().getName());
+                if (equipInvenList.get(0).getAssetno().getPosition3() != null) {
+                    msg.append(equipInvenList.get(0).getAssetno().getPosition3().getName()).append("<br/>");
+                } else {
+                    msg.append("<br/>");
+                }
+                msg.append("暂完成原因:").append(entity.getNote()).append("<br/>");
+                msg.append("报修人:").append(equipInvenList.get(0).getRepairuser()).append("-").append(equipInvenList.get(0).getRepairusername()).append("<br/>");
+                msg.append("维修人:").append(equipInvenList.get(0).getServiceuser()).append("-").append(equipInvenList.get(0).getServiceusername()).append("<br/>");
+                msg.append("详情请至微信小程序查看!");
+
+                List<String> userList = new ArrayList<String>();
+                userList.add(equipInvenList.get(0).getRepairuser());
+                List<SysCode> code = sysCodeBean.getTroubleNameList(equipInvenList.get(0).getCompany(), "RD", "repairleaders");//获取维修的课长
+                for (SysCode sysCode : code) {
+                    userList.add(sysCode.getCvalue());//添加维修课长
+                }
+                code = sysCodeBean.getTroubleNameList(equipInvenList.get(0).getCompany(), "RD", "repairHeadmanId");//获取维修的组长
+                for (SysCode sysCode : code) {
+                    userList.add(sysCode.getCvalue());//获取维修的组长
+                }
+                SystemUser user = systemUserBean.findByUserId(equipInvenList.get(0).getRepairuser());
+                if (user != null && user.getManagerId() != null) {
+                    userList.add(user.getManagerId());//添加发送报修人上一级
                 }
                 userList = userList.stream().distinct().collect(Collectors.toList());//去除重复项
                 for (String string : userList) {
@@ -1895,7 +2001,10 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipmentRepairRes = equipmentrepairBean.findById(Integer.parseInt(filterFields.get("docId").toString()));
                 eqpRepairTemp = equipmentRepairRes;
                 filterFields_eqpTrouble.put("troubleid", equipmentRepairRes.getHitchsort1());
-                equipmentTroubleListRes = equipmentTroubleBean.findByFilters(filterFields_eqpTrouble);
+                if (equipmentRepairRes.getHitchsort1()!=null) {
+                      equipmentTroubleListRes = equipmentTroubleBean.findByFilters(filterFields_eqpTrouble);
+                }
+              
                 if (equipmentTroubleListRes.size() > 0) {
                     eqpRepairTemp.setHitchsort1(equipmentTroubleListRes.get(0).getTroublename());
                     equipmentrepairBean.getEntityManager().clear();
@@ -1903,7 +2012,10 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 
                 filterFields_eqpHitchType.put("code", "hitchurgency");
                 filterFields_eqpHitchType.put("cvalue", eqpRepairTemp.getHitchtype());
-                eqpSysCodeListRes = sysCodeBean.findByFilters(filterFields_eqpHitchType);
+                 if (equipmentRepairRes.getHitchtype()!=null) {
+                       eqpSysCodeListRes = sysCodeBean.findByFilters(filterFields_eqpHitchType);
+                }
+             
 
                 if (eqpSysCodeListRes.size() > 0) {
                     eqpRepairTemp.setHitchtype(eqpSysCodeListRes.get(0).getCdesc());

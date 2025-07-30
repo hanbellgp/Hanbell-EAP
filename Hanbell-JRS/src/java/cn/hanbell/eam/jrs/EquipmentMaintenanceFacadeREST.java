@@ -56,9 +56,9 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
 
     protected SuperEJB superEJB;
     //生产环境
-    private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
-
-//    private final String filePathTemp = "D:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    //private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
+//F:\C2079\EAM\Hanbell-EAM\web\resources\app\res
+    private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -111,6 +111,20 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                     filterFields_detail.put("pid", autoMaintainInfo.getFormid());
                     sortFields_detail.put("seq", "ASC");
                     autoMaintainDetailList = equipmentAnalyResultDtaBean.findByFilters(filterFields_detail, sortFields_detail);
+                    for (EquipmentAnalyResultDta eq : autoMaintainDetailList) {
+                        if (eq.getFilename() != null && eq.getFilename() != "") {
+                            // 将字节数组转换为Base64编码
+                            java.io.File imageFile = new java.io.File(filePathTemp + eq.getFilename());
+                             if (!imageFile.exists()) {
+                                 continue;
+                             }
+                            byte[] imageBytes = null;
+                            imageBytes = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(imageFile.getPath()));
+                            String base64String = java.util.Base64.getEncoder().encodeToString(imageBytes);
+                            eq.setImageBase("data:image/png;base64," + base64String);
+
+                        }
+                    }
                     initDtaRes.add(autoMaintainInfo);
                     initDtaRes.add(autoMaintainDetailList);
                 }
@@ -152,7 +166,6 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
         }
     }
 
-
     @POST
     @Path("autonomous-maintain-start")
     @Consumes({"application/json"})
@@ -192,14 +205,19 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                     autoMaintainDetail.setProblemsolve(jsonObject.getString("problemSolve"));
 
                     String filepath = jsonObject.getString("filePath");
-                    if (filepath != null && !"".equals(filepath)&&!filepath.substring(0,2).equals("..")) {//存在上传图片时进行图片上传
-                        String fileNameTemp = autoMaintainDetail.getPid() + "_" + autoMaintainDetail.getSeq() + "_" + System.currentTimeMillis() + ".jpg";
-                        String relativePath = "../../resources/app/res/" + fileNameTemp;
-                        //保存至服务器本地
-                         GenerateImage(filepath, filePathTemp + fileNameTemp);
-                        //download(filepath, filePathTemp + fileNameTemp);
-                        autoMaintainDetail.setFilepath(relativePath);
+                    if (jsonObject.has("imageBase")) {
+                        String imageBase = jsonObject.getString("imageBase");
+                        if (filepath != null && imageBase != null && imageBase != "") {//存在上传图片时进行图片上传
+                            String fileNameTemp = autoMaintainDetail.getPid() + "_" + autoMaintainDetail.getSeq() + "_" + System.currentTimeMillis() + ".jpg";
+                            String relativePath = "../../resources/app/res/" + fileNameTemp;
+                            //保存至服务器本地
+                            GenerateImage(imageBase, filePathTemp + fileNameTemp);
+                            //download(filepath, filePathTemp + fileNameTemp);
+                            autoMaintainDetail.setFilepath(relativePath);
+                            autoMaintainDetail.setFilename(fileNameTemp);
+                        }
                     }
+
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd  HH:mm");
                     dateStrTemp = jsonObject.getString("sDate");
                     if (dateStrTemp != null && !dateStrTemp.isEmpty()) {
