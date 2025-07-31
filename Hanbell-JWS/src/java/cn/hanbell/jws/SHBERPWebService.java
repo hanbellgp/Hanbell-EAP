@@ -457,7 +457,7 @@ public class SHBERPWebService {
     }
 
     @WebMethod(operationName = "isLessThenInvbal")
-    @WebServiceDescriptAnnotation(value = "质量扣款申请单抛转INV310")
+    @WebServiceDescriptAnnotation(value = "检查库存数量是否>领退料数量")
     public String isLessThenInvbal(@WebParam(name = "facno") String facno, @WebParam(name = "prono") String prono,
             @WebParam(name = "itnbr") String itnbr, @WebParam(name = "wareh") String wareh,
             @WebParam(name = "qty") String qty) {

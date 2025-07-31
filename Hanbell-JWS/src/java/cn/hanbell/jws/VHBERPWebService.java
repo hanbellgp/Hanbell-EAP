@@ -14,12 +14,13 @@ import javax.jws.soap.SOAPBinding;
 import org.apache.logging.log4j.LogManager;
 import vn.hanbell.erp.ejb.ApmpayBean;
 import vn.hanbell.erp.ejb.BudgetDetailBean;
+import vn.hanbell.erp.ejb.CdrqhadBean;
 import vn.hanbell.erp.ejb.InvmasBean;
 import vn.hanbell.erp.ejb.PurhaskBean;
 
 /**
  *
- * @author C0160
+ * @author C1491
  */
 @WebService(serviceName = "VHBERP")
 @Stateless()
@@ -34,6 +35,8 @@ public class VHBERPWebService {
     private ApmpayBean apmpayBean;
     @EJB
     private PurhaskBean purhaskBean;
+    @EJB
+    private CdrqhadBean cdrqhadBean;
 
     private final org.apache.logging.log4j.Logger log4j = LogManager.getLogger();
 
@@ -214,6 +217,39 @@ public class VHBERPWebService {
             }
         } catch (Exception ex) {
             log4j.error("subtractBudgetPlanByOAVHTV002时异常", ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    /**
+     * 越南OA报价单审批完成更新ERP
+     */
+    @WebMethod(operationName = "updateERPCDR220ByOAVHTV006")
+    public String updateERPCDR220ByOAVHTV006(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = cdrqhadBean.updateByOAVHTV006(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateERPCDR220ByOAHKYX009", psn), ex);
+        }
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+    }
+
+    @WebMethod(operationName = "rollbackERPCDR220ByOAVHTV006")
+    public String rollbackERPCDR220ByOAVHTV006(@WebParam(name = "psn") String psn) {
+        Boolean ret = false;
+        try {
+            ret = cdrqhadBean.rollbackByOAHKVHTV006(psn);
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:参数%s时异常", "updateERPCDR220ByOAHKYX009", psn), ex);
         }
         if (ret) {
             return "200";

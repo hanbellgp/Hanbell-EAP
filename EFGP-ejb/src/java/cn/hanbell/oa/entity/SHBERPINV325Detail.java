@@ -69,6 +69,12 @@ public class SHBERPINV325Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "dtowarehName")
     private String dtowarehName;
+    @Size(max = 255)
+    @Column(name = "fixnr")
+    private String fixnr;
+    @Size(max = 255)
+    @Column(name = "varnr")
+    private String varnr;
 
     public SHBERPINV325Detail() {
     }
@@ -196,6 +202,22 @@ public class SHBERPINV325Detail implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.SHBERPINV325Detail[ oid=" + oid + " ]";
+    }
+
+    public String getFixnr() {
+        return fixnr;
+    }
+
+    public void setFixnr(String fixnr) {
+        this.fixnr = fixnr;
+    }
+
+    public String getVarnr() {
+        return varnr;
+    }
+
+    public void setVarnr(String varnr) {
+        this.varnr = varnr;
     }
 
 }

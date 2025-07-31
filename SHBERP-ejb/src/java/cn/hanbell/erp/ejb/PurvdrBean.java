@@ -183,7 +183,8 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         Purvdr erp = new Purvdr();
 
         String facno, code, newvdrno;
-        switch (oa.getFacno()) {
+        facno = oa.getFacno();
+        switch (facno) {
             // SHB和分公司统一到SHB下
             case "C":
             case "G":
@@ -195,8 +196,10 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
                 facno = "C";
                 code = "S";
                 break;
+            case "CH":
+                code = "U";
+                break;
             default:
-                facno = oa.getFacno();
                 code = facno;
         }
         // 增加检查避免重复抛转
@@ -282,7 +285,11 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         erp.setSwiftcode(oa.getSwiftcode());
 
         // 生成厂商编号
-        newvdrno = getFormId(BaseLib.getDate(), code + erp.getCuycode(), null, 5, "purvdr", "vdrno");
+        if (facno.length() == 2) {
+            newvdrno = getFormId(BaseLib.getDate(), code + erp.getCuycode(), null, 4, "purvdr", "vdrno");
+        } else {
+            newvdrno = getFormId(BaseLib.getDate(), code + erp.getCuycode(), null, 5, "purvdr", "vdrno");
+        }
         erp.setVdrno(newvdrno);
 
         // 生成采购员
@@ -409,6 +416,10 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
             case "L":
                 facno = "C";
                 code = "S";
+                break;
+            //上海活塞
+            case "CH":
+                code = "U";
                 break;
             default:
                 facno = oa.getFacno();
@@ -569,11 +580,17 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         if (oa.getCheckbox17().equals("1")) {
             erp.setFax1(oa.getFax1());
         }
-        if (oa.getCheckbox19().equals("1")&& oa.getVdrsta() != null && !oa.getVdrsta().equals("")) {
+        if (oa.getCheckbox19().equals("1") && oa.getVdrsta() != null && !oa.getVdrsta().equals("")) {
             erp.setVdrsta(oa.getVdrsta().charAt(0));
         }
         if (oa.getCbtickdays().equals("1")) {
             erp.setTickdays(oa.getTickdays());
+        }
+        if (oa.getChecktax().equals("1")) {
+            erp.setTax(oa.getTax());
+        }
+        if (oa.getChecktaxrate().equals("1")) {
+            erp.setTaxrate(BigDecimal.valueOf(Double.valueOf(oa.getTaxrate())));
         }
         if (oa.getChkpaycode().equals("1") && oa.getPaycode() != null && !"0".equals(oa.getPaycode())) {
             erp.setPaycode(oa.getPaycode().charAt(0));

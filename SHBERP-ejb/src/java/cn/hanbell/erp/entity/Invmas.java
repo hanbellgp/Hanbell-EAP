@@ -361,6 +361,9 @@ public class Invmas implements Serializable {
     @Size(max = 50)
     @Column(name = "ModelDsc2")
     private String ModelDsc2;
+    @Size(max = 40)
+    @Column(name = "genre4")
+    private String genre4;
 
     public Invmas() {
     }
@@ -1078,6 +1081,14 @@ public class Invmas implements Serializable {
 
     public void setModelDsc2(String ModelDsc2) {
         this.ModelDsc2 = ModelDsc2;
+    }
+
+    public String getGenre4() {
+        return genre4;
+    }
+
+    public void setGenre4(String genre4) {
+        this.genre4 = genre4;
     }
 
 }

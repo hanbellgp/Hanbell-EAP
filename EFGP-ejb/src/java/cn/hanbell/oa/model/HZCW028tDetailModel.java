@@ -41,10 +41,12 @@ public class HZCW028tDetailModel {
     private String serviceno2;
     private String customerSno2;
     private String isFree;
-    private double otherFee;
+    private int esgaccommdays;  //住宿天数
+    private double esgmileages; //碳排查公里数
+    private String esgvehicle; //交通方式
 
     public HZCW028tDetailModel() {
-        
+
     }
 
     public String getTrafficPlace() {
@@ -262,13 +264,29 @@ public class HZCW028tDetailModel {
     public void setIsFree(String isFree) {
         this.isFree = isFree;
     }
-
-    public double getOtherFee() {
-        return otherFee;
+    
+    public int getEsgaccommdays() {
+        return esgaccommdays;
     }
 
-    public void setOtherFee(double otherFee) {
-        this.otherFee = otherFee;
+    public void setEsgaccommdays(int esgaccommdays) {
+        this.esgaccommdays = esgaccommdays;
+    }
+
+    public double getEsgmileages() {
+        return esgmileages;
+    }
+
+    public void setEsgmileages(double esgmileages) {
+        this.esgmileages = esgmileages;
+    }
+
+    public String getEsgvehicle() {
+        return esgvehicle;
+    }
+
+    public void setEsgvehicle(String esgvehicle) {
+        this.esgvehicle = esgvehicle;
     }
 
 }

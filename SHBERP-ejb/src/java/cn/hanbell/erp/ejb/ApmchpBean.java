@@ -234,10 +234,10 @@ public class ApmchpBean extends SuperEJBForERP<Apmchp> {
             }
             return true;
         } catch (Exception ex) {
-//            mailBean.getTo().add("13120@hanbell.cn");
-//            mailBean.setMailSubject("OA厂商变更付款信息失败");
-//            mailBean.setMailContent("OA厂商变更付款信息抛转异常，OA单号: " + psn + ",  出现异常：" + ex.toString());
-//            mailBean.notify(new ErrorMailNotify());
+            mailBean.getTo().add("13120@hanbell.cn");
+            mailBean.setMailSubject("OA厂商变更付款信息失败");
+            mailBean.setMailContent("OA厂商变更付款信息抛转异常，OA单号: " + psn + ",  出现异常：" + ex.toString());
+            mailBean.notify(new ErrorMailNotify());
             ex.printStackTrace();
             log4j.error(ex);
             throw new RuntimeException(ex);

@@ -295,7 +295,8 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         // if (crmgg == null) {
         // throw new NullPointerException();
         // }
-        switch (oa.getFacno()) {
+        facno = oa.getFacno();
+        switch (facno) {
             // SHB和分公司统一到SHB下
             case "C":
             case "G":
@@ -306,6 +307,9 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
             case "L":
                 facno = "C";
                 code = "S";
+                break;
+            case "CH":
+                code = "U";
                 break;
             default:
                 facno = oa.getFacno();
@@ -396,7 +400,11 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         cdrcus.setShzt("Y");
         cdrcus.setSCCode(oa.getSccode());
 
-        newcusno = getFormId(cdrcus.getIndate(), code + cdrcus.getCuycode(), null, 5, "cdrcus", "cusno");
+        if (facno.length() == 2) {
+            newcusno = getFormId(cdrcus.getIndate(), code + cdrcus.getCuycode(), null, 4, "cdrcus", "cusno");
+        } else {
+            newcusno = getFormId(cdrcus.getIndate(), code + cdrcus.getCuycode(), null, 5, "cdrcus", "cusno");
+        }
         cdrcus.setCusno(newcusno);
         if (oa.getCusgroup() == null || "".equals(oa.getCusgroup())) {
             cdrcus.setCusgroup(newcusno);// 集团代号
