@@ -38,6 +38,10 @@ public class LeaveApplication implements Serializable {
     private String date2;
     private String time2;
 
+    private String sameDate;
+
+    private double sameDays;
+
     private double leaveDay;
     private double leaveHour;
     private double leaveMinute;
@@ -207,6 +211,23 @@ public class LeaveApplication implements Serializable {
         this.time2 = time2;
     }
 
+    public String getSameDate() {
+        return sameDate;
+    }
+
+    public void setSameDate(String sameDate) {
+        this.sameDate = sameDate;
+    }
+
+    public double getSameDays() {
+        return sameDays;
+    }
+
+    public void setSameDays(double sameDays) {
+        this.sameDays = sameDays;
+    }
+
+    
     /**
      * @return the leaveDay
      */
