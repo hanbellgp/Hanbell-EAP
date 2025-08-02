@@ -141,6 +141,7 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                 la.setLeaday1(entity.getLeaveDay());
                 la.setLeaday2(entity.getLeaveHour());
                 la.setLeaday3(entity.getLeaveMinute());
+                la.setSamefirst(BaseLib.getDate("yyyy-MM-dd", entity.getSameDate()));
                 la.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
                 Pattern p = Pattern.compile("\\s*|\t|\r|\n");
                 Matcher m = p.matcher(entity.getReason());
