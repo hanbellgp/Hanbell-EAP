@@ -1366,16 +1366,9 @@ return false;]]></method>
             <column id="1417">
                 <property name="width">2.7cm</property>
             </column>
-            <column id="1418">
-                <property name="width">3cm</property>
-            </column>
-            <column id="1419">
-                <property name="width">3cm</property>
-            </column>
-            <column id="1420">
-                <property name="width">3cm</property>
-            </column>
-            <column id="1421"/>
+            <column id="1418"/>
+            <column id="1419"/>
+            <column id="1420"/>
             <row id="1422">
                 <property name="height">1cm</property>
                 <cell id="1423">
@@ -1511,21 +1504,6 @@ return false;]]></method>
                         <text-property name="text">会计审核</text-property>
                     </label>
                 </cell>
-                <cell id="1430">
-                    <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">thin</property>
-                    <property name="borderLeftStyle">solid</property>
-                    <property name="borderLeftWidth">thin</property>
-                    <property name="borderRightStyle">solid</property>
-                    <property name="borderRightWidth">thin</property>
-                    <property name="borderTopStyle">solid</property>
-                    <property name="borderTopWidth">thin</property>
-                    <property name="verticalAlign">middle</property>
-                    <label id="1446">
-                        <property name="textAlign">center</property>
-                        <text-property name="text">申请</text-property>
-                    </label>
-                </cell>
             </row>
             <row id="1431">
                 <property name="height">1cm</property>
@@ -1550,16 +1528,6 @@ return false;]]></method>
                     <property name="borderTopWidth">thin</property>
                 </cell>
                 <cell id="1438">
-                    <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">thin</property>
-                    <property name="borderLeftStyle">solid</property>
-                    <property name="borderLeftWidth">thin</property>
-                    <property name="borderRightStyle">solid</property>
-                    <property name="borderRightWidth">thin</property>
-                    <property name="borderTopStyle">solid</property>
-                    <property name="borderTopWidth">thin</property>
-                </cell>
-                <cell id="1439">
                     <property name="borderBottomStyle">solid</property>
                     <property name="borderBottomWidth">thin</property>
                     <property name="borderLeftStyle">solid</property>
