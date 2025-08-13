@@ -70,6 +70,9 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
                 Date date = formatter.parse(rDate);
                 rdpmSubjectUserReportsListRes = rdpmSubjectUserReportsBean.getRdpmSubjectUserReportsList(userId, rDate);
                 if (rdpmSubjectUserReportsListRes.size() > 0) {
+                    for (RdpmSubjectUserReports rE : rdpmSubjectUserReportsListRes) {
+                        rE.setSubjectWorkPercent(rE.getSubjectWorkPercent()*100);//因为存的是百分比小数，填的是整数所以转换一下
+                    }
                     return rdpmSubjectUserReportsListRes;
                 }
                 list = rdpmSubjectUserReportsBean.getRdpmSubjectUserReportsList(userId);
@@ -133,7 +136,7 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
                     org.json.JSONObject jsonObj = (org.json.JSONObject) dataArray.get(i);
                     RdpmSubjectUserReports uR = new RdpmSubjectUserReports();
                     uR.setId(jsonObj.getString("id"));
-                    uR.setSubjectWorkPercent(jsonObj.getInt("subjectWorkPercent"));
+                    uR.setSubjectWorkPercent(jsonObj.getInt("subjectWorkPercent")/100);//存的是百分比转换一下
                     uR.setSubjectName(jsonObj.getString("subjectName"));
                     uR.setSubjectNo(jsonObj.getString("subjectNo"));
                     uR.setuType(jsonObj.getString("uType"));
