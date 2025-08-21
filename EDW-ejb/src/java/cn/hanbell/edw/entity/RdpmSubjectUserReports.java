@@ -56,12 +56,17 @@ public class RdpmSubjectUserReports implements Serializable {
     private String subjectUserName;
     @Size(max = 155)
     @Column(name = "SubjectWorkPercent")
-    private int subjectWorkPercent;
+    private double subjectWorkPercent;
     @Basic(optional = false)
     @NotNull
     @Column(name = "SubjectWorkDateTime")
     @Temporal(value = TemporalType.DATE)
     private Date subjectWorkDateTime;
+    @Column(name = "SubjectSeq")
+    private int subjectSeq;
+    @Size(max = 155)
+    @Column(name = "SubjectSeqName")
+    private String subjectSeqName;
 
     public RdpmSubjectUserReports() {
     }
@@ -126,12 +131,28 @@ public class RdpmSubjectUserReports implements Serializable {
         this.subjectWorkDateTime = subjectWorkDateTime;
     }
 
-    public int getSubjectWorkPercent() {
+    public double getSubjectWorkPercent() {
         return subjectWorkPercent;
     }
 
-    public void setSubjectWorkPercent(int subjectWorkPercent) {
+    public void setSubjectWorkPercent(double subjectWorkPercent) {
         this.subjectWorkPercent = subjectWorkPercent;
+    }
+
+    public int getSubjectSeq() {
+        return subjectSeq;
+    }
+
+    public void setSubjectSeq(int subjectSeq) {
+        this.subjectSeq = subjectSeq;
+    }
+
+    public String getSubjectSeqName() {
+        return subjectSeqName;
+    }
+
+    public void setSubjectSeqName(String subjectSeqName) {
+        this.subjectSeqName = subjectSeqName;
     }
 
     @Override
