@@ -70,9 +70,6 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
                 Date date = formatter.parse(rDate);
                 rdpmSubjectUserReportsListRes = rdpmSubjectUserReportsBean.getRdpmSubjectUserReportsList(userId, rDate);
                 if (rdpmSubjectUserReportsListRes.size() > 0) {
-                    for (RdpmSubjectUserReports rE : rdpmSubjectUserReportsListRes) {
-                        rE.setSubjectWorkPercent(rE.getSubjectWorkPercent()*100);//因为存的是百分比小数，填的是整数所以转换一下
-                    }
                     return rdpmSubjectUserReportsListRes;
                 }
                 list = rdpmSubjectUserReportsBean.getRdpmSubjectUserReportsList(userId);
@@ -89,6 +86,8 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
                     uR.setSubjectUserName(rE[4].toString());
                     uR.setSubjectWorkPercent(0);
                     uR.setSubjectWorkDateTime(date);
+                    uR.setSubjectSeq(Integer.parseInt(rE[5].toString()));
+                    uR.setSubjectSeqName(rE[6].toString());
                     rdpmSubjectUserReportsListRes.add(uR);
                     uR.setId(id.toString());
 
@@ -100,7 +99,9 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
                         noUR.setuType(rE[2].toString());
                         noUR.setSubjectUserNo(rE[3].toString());
                         noUR.setSubjectUserName(rE[4].toString());
-                        noUR.setSubjectWorkPercent(100);
+                        noUR.setSubjectWorkPercent(1);
+                        noUR.setSubjectSeq(1);
+                        noUR.setSubjectSeqName("非研发工作");
                         noUR.setId(idNo.toString());
                         rdpmSubjectUserReportsListRes.add(noUR);
                     }
@@ -119,10 +120,10 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
     @Path("saveReport")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public ResponseMessage saveReport(JSONObject jsonObj1,@QueryParam("reportingDate")  String reportingDate, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseMessage saveReport(JSONObject jsonObj1, @QueryParam("reportingDate") String reportingDate, @QueryParam("appid") String appid, @QueryParam("token") String token) {
         if (isAuthorized(appid, token)) {
             try {
-                       SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = formatter.parse(reportingDate);
                 // 2. 提取 jsonObj1 的字符串值
                 String jsonArrayStr = jsonObj1.getString("jsonObj1");
@@ -135,14 +136,17 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
                 for (int i = 0; i < dataArray.length(); i++) {
                     org.json.JSONObject jsonObj = (org.json.JSONObject) dataArray.get(i);
                     RdpmSubjectUserReports uR = new RdpmSubjectUserReports();
+                 
                     uR.setId(jsonObj.getString("id"));
-                    uR.setSubjectWorkPercent(jsonObj.getInt("subjectWorkPercent")/100);//存的是百分比转换一下
+                    uR.setSubjectWorkPercent(jsonObj.getDouble("subjectWorkPercent")/100);//存的是百分比转换一下
                     uR.setSubjectName(jsonObj.getString("subjectName"));
                     uR.setSubjectNo(jsonObj.getString("subjectNo"));
                     uR.setuType(jsonObj.getString("uType"));
                     uR.setSubjectUserNo(jsonObj.getString("subjectUserNo"));
                     uR.setSubjectWorkDateTime(date);
                     uR.setSubjectUserName(jsonObj.getString("subjectUserName"));
+                    uR.setSubjectSeq(jsonObj.getInt("subjectSeq"));
+                    uR.setSubjectSeqName(jsonObj.getString("subjectSeqName"));
                     list.add(uR);
                 }
                 rdpmSubjectUserReportsBean.update(list);
