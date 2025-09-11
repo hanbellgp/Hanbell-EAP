@@ -819,176 +819,182 @@ public class TimerBean {
                 purhaskBean.setCompany(e.getFacno());
                 purachBean.setCompany(e.getFacno());
                 // HKCG007抛转PUR210时截取了流程序号,省略了PKG_
-                Purhask prh = purhaskBean.findBySrcno(e.getHkcg007().substring(4));
-                if (prh != null) {
+                // Purhask prh = purhaskBean.findBySrcno(e.getHkcg007().substring(4));
+                //抛转固买单据生成请购单号有多笔用;分割
+                String[] split = e.getHkcg007().split(";");
+                for (String s : split) {
+                    // HKCG007抛转PUR210时截取了流程序号,省略了PKG_
+                    Purhask prh = purhaskBean.findBySrcno(s.substring(4));
+                    if (prh != null) {
 
-                    try {
-                        flag = true;
-                        int i;
-                        BigDecimal qty;
-                        // EAM相关对象
-                        AssetItem ai;
-                        List<AssetAcceptanceDetail> addedDetail = new ArrayList();
-                        // ERP相关对象
-                        Purach purach;
-                        List<Puracd> puracdList;
-                        // EFGP相关对象
-                        hkcw002Bean.setDetail(e.getFormSerialNumber());
-                        hkcw002Details = hkcw002Bean.getDetailList();
+                        try {
+                            flag = true;
+                            int i;
+                            BigDecimal qty;
+                            // EAM相关对象
+                            AssetItem ai;
+                            List<AssetAcceptanceDetail> addedDetail = new ArrayList();
+                            // ERP相关对象
+                            Purach purach;
+                            List<Puracd> puracdList;
+                            // EFGP相关对象
+                            hkcw002Bean.setDetail(e.getFormSerialNumber());
+                            hkcw002Details = hkcw002Bean.getDetailList();
 
-                        if (hkcw002Details != null && !hkcw002Details.isEmpty()) {
-                            for (HKCW002Detail d : hkcw002Details) {
-                                if (d.getPurqty() == null || "".equals(d.getPurqty())) {
-                                    continue;
-                                }
-                                if (d.getRelqty() != null && !"".equals(d.getRelqty())) {
-                                    qty = BigDecimal.valueOf(Double.parseDouble(d.getRelqty()));
-                                    if (qty.compareTo(BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) >= 0) {
-                                        continue;
-                                    }
-                                }
-                                // 得到验收单号数组
-                                acceptno = purachBean.findByPrnoAndItnbr(prh.getPurhaskPK().getPrno(), d.getItemno());
-                                if (acceptno != null) {
-                                    qty = BigDecimal.ZERO;
-                                    for (String n : acceptno) {
-                                        purach = purachBean.findByAcceptno(n);
-                                        puracdList = purachBean.findByAcceptnoAndItnbr(n, d.getItemno());
-                                        // 删除与此笔申请明细无关的同品号验收明细，解决同品号不同采购单合并验收问题
-                                        if (puracdList != null && !puracdList.isEmpty() && puracdList.size() > 1) {
-                                            for (int x = 0; x < puracdList.size(); x++) {
-                                                Puracd acd = puracdList.get(x);
-                                                if (!purachBean.isRelationAcceptance(prh.getPurhaskPK().getPrno(),
-                                                        acd.getPono(), acd.getPonotrseq())) {
-                                                    puracdList.remove(acd);
-                                                    x--;
-                                                }
-                                            }
-                                        }
-                                        if (puracdList != null && !puracdList.isEmpty()) {
-                                            // ERP每一笔验收产生一笔EAM资产入库
-                                            i = 0;
-                                            addedDetail.clear();// 清空之前列表
-                                            // 计算累计验收数量
-                                            for (Puracd acd : puracdList) {
-                                                if (acd.getOkqy1().compareTo(
-                                                        BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) >= 0) {
-                                                    // 多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
-                                                    qty
-                                                            = qty.add(BigDecimal.valueOf(Double.parseDouble(d.getPurqty())));
-                                                } else {
-                                                    qty = qty.add(acd.getOkqy1());
-                                                }
-                                            }
-                                            for (Puracd acd : puracdList) {
-                                                ai = assetItemBean.findByItemno(acd.getItnbr());
-                                                if (ai == null) {
-                                                    log4j.error("执行createEAMAssetAcceptanceByERPPUR530时异常,找不到件号"
-                                                            + acd.getItnbr() + ",流程序号" + e.getProcessSerialNumber());
-                                                    continue;
-                                                }
-                                                // 判断验收记录，处理多次验收逻辑
-                                                if (d.getRelno() == null) {
-                                                    d.setRelno("");
-                                                }
-                                                if (d.getRelno().compareTo(n) < 0) {
-                                                    // 新的验收记录，产生EAM入库
-                                                    i++;
-                                                    AssetAcceptanceDetail aad = new AssetAcceptanceDetail();
-                                                    // aad.setPid("");
-                                                    aad.setSeq(i);
-                                                    aad.setAcceptdate(acd.getAcceptdate());
-                                                    aad.setAcceptDeptno(acd.getDepno());
-                                                    aad.setAcceptUserno(acd.getUserno());
-                                                    aad.setAssetItem(ai);
-                                                    // aad.setQty(acd.getAccqy1());
-                                                    if (acd.getAccqy1().compareTo(
-                                                            BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) >= 0) {
-                                                        // 多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
-                                                        aad.setQty(
-                                                                BigDecimal.valueOf(Double.parseDouble(d.getPurqty())));
-                                                    } else {
-                                                        aad.setQty(acd.getAccqy1());
-                                                    }
-                                                    aad.setUnit(ai.getUnit());
-                                                    aad.setQcpass(false);
-                                                    // aad.setQcqty(acd.getOkqy1());
-                                                    if (acd.getOkqy1().compareTo(
-                                                            BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) >= 0) {
-                                                        // 多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
-                                                        aad.setQcqty(
-                                                                BigDecimal.valueOf(Double.parseDouble(d.getPurqty())));
-                                                    } else {
-                                                        aad.setQcqty(acd.getOkqy1());
-                                                    }
-                                                    aad.setAddqty(BigDecimal.ZERO);
-                                                    aad.setWarehouse(ai.getCategory().getWarehouse());
-                                                    aad.setCurrency(acd.getCoin());
-                                                    aad.setExchange(acd.getRatio());
-                                                    aad.setTaxrate(acd.getTaxrate());
-                                                    aad.setPrice(acd.getUnpris());
-                                                    aad.setAmts(acd.getTramts());
-                                                    aad.setExtax(acd.getTotamts().subtract(acd.getTaxamts()));
-                                                    aad.setTaxes(acd.getTaxamts());
-                                                    aad.setSrcapi("ERP");
-                                                    aad.setSrcformid(n);
-                                                    aad.setSrcseq(Integer.valueOf(acd.getPuracdPK().getTrseq()));
-                                                    aad.setStatus("40");
-
-                                                    addedDetail.add(aad);
-
-                                                    // 更新资产申请明细关联单号
-                                                    d.setRelno(n);
-                                                    d.setRelseq(String.valueOf(acd.getPuracdPK().getTrseq()));
-                                                    d.setRelqty(String.valueOf(qty));
-
-                                                    editedHKCW002Detail.add(d);
-                                                }
-                                            }
-                                            if (addedDetail.size() > 0) {
-                                                AssetAcceptance aa = new AssetAcceptance();
-                                                aa.setCompany(purach.getPurachPK().getFacno());
-                                                aa.setFormid("");
-                                                aa.setFormdate(purach.getAcceptdate());
-                                                aa.setVendorno(purach.getVdrno());
-                                                aa.setDeptno(purach.getDepno());
-                                                aa.setRemark(e.getProcessSerialNumber() + "_"
-                                                        + purach.getPurachPK().getAcceptno());
-                                                aa.setStatus("N");
-                                                // 产生EAM资产入库
-                                                assetAcceptanceBean.initAssetAcceptance(aa, addedDetail);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (editedHKCW002Detail.size() > 0) {
-                                // 判断整张资产申请是否全部验收
+                            if (hkcw002Details != null && !hkcw002Details.isEmpty()) {
                                 for (HKCW002Detail d : hkcw002Details) {
                                     if (d.getPurqty() == null || "".equals(d.getPurqty())) {
                                         continue;
                                     }
                                     if (d.getRelqty() != null && !"".equals(d.getRelqty())) {
                                         qty = BigDecimal.valueOf(Double.parseDouble(d.getRelqty()));
-                                        if (qty.compareTo(BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) < 0) {
-                                            flag = false;
+                                        if (qty.compareTo(BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) >= 0) {
+                                            continue;
                                         }
-                                    } else {
-                                        flag = false;
+                                    }
+                                    // 得到验收单号数组
+                                    acceptno = purachBean.findByPrnoAndItnbr(prh.getPurhaskPK().getPrno(), d.getItemno());
+                                    if (acceptno != null) {
+                                        qty = BigDecimal.ZERO;
+                                        for (String n : acceptno) {
+                                            purach = purachBean.findByAcceptno(n);
+                                            puracdList = purachBean.findByAcceptnoAndItnbr(n, d.getItemno());
+                                            // 删除与此笔申请明细无关的同品号验收明细，解决同品号不同采购单合并验收问题
+                                            if (puracdList != null && !puracdList.isEmpty() && puracdList.size() > 1) {
+                                                for (int x = 0; x < puracdList.size(); x++) {
+                                                    Puracd acd = puracdList.get(x);
+                                                    if (!purachBean.isRelationAcceptance(prh.getPurhaskPK().getPrno(),
+                                                            acd.getPono(), acd.getPonotrseq())) {
+                                                        puracdList.remove(acd);
+                                                        x--;
+                                                    }
+                                                }
+                                            }
+                                            if (puracdList != null && !puracdList.isEmpty()) {
+                                                // ERP每一笔验收产生一笔EAM资产入库
+                                                i = 0;
+                                                addedDetail.clear();// 清空之前列表
+                                                // 计算累计验收数量
+                                                for (Puracd acd : puracdList) {
+                                                    if (acd.getOkqy1().compareTo(
+                                                            BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) >= 0) {
+                                                        // 多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
+                                                        qty
+                                                                = qty.add(BigDecimal.valueOf(Double.parseDouble(d.getPurqty())));
+                                                    } else {
+                                                        qty = qty.add(acd.getOkqy1());
+                                                    }
+                                                }
+                                                for (Puracd acd : puracdList) {
+                                                    ai = assetItemBean.findByItemno(acd.getItnbr());
+                                                    if (ai == null) {
+                                                        log4j.error("执行createEAMAssetAcceptanceByERPPUR530时异常,找不到件号"
+                                                                + acd.getItnbr() + ",流程序号" + e.getProcessSerialNumber());
+                                                        continue;
+                                                    }
+                                                    // 判断验收记录，处理多次验收逻辑
+                                                    if (d.getRelno() == null) {
+                                                        d.setRelno("");
+                                                    }
+                                                    if (d.getRelno().compareTo(n) < 0) {
+                                                        // 新的验收记录，产生EAM入库
+                                                        i++;
+                                                        AssetAcceptanceDetail aad = new AssetAcceptanceDetail();
+                                                        // aad.setPid("");
+                                                        aad.setSeq(i);
+                                                        aad.setAcceptdate(acd.getAcceptdate());
+                                                        aad.setAcceptDeptno(acd.getDepno());
+                                                        aad.setAcceptUserno(acd.getUserno());
+                                                        aad.setAssetItem(ai);
+                                                        // aad.setQty(acd.getAccqy1());
+                                                        if (acd.getAccqy1().compareTo(
+                                                                BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) >= 0) {
+                                                            // 多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
+                                                            aad.setQty(
+                                                                    BigDecimal.valueOf(Double.parseDouble(d.getPurqty())));
+                                                        } else {
+                                                            aad.setQty(acd.getAccqy1());
+                                                        }
+                                                        aad.setUnit(ai.getUnit());
+                                                        aad.setQcpass(false);
+                                                        // aad.setQcqty(acd.getOkqy1());
+                                                        if (acd.getOkqy1().compareTo(
+                                                                BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) >= 0) {
+                                                            // 多笔请购合并采购验收，验收数量大于申请数量，按申请数量入库
+                                                            aad.setQcqty(
+                                                                    BigDecimal.valueOf(Double.parseDouble(d.getPurqty())));
+                                                        } else {
+                                                            aad.setQcqty(acd.getOkqy1());
+                                                        }
+                                                        aad.setAddqty(BigDecimal.ZERO);
+                                                        aad.setWarehouse(ai.getCategory().getWarehouse());
+                                                        aad.setCurrency(acd.getCoin());
+                                                        aad.setExchange(acd.getRatio());
+                                                        aad.setTaxrate(acd.getTaxrate());
+                                                        aad.setPrice(acd.getUnpris());
+                                                        aad.setAmts(acd.getTramts());
+                                                        aad.setExtax(acd.getTotamts().subtract(acd.getTaxamts()));
+                                                        aad.setTaxes(acd.getTaxamts());
+                                                        aad.setSrcapi("ERP");
+                                                        aad.setSrcformid(n);
+                                                        aad.setSrcseq(Integer.valueOf(acd.getPuracdPK().getTrseq()));
+                                                        aad.setStatus("40");
+
+                                                        addedDetail.add(aad);
+
+                                                        // 更新资产申请明细关联单号
+                                                        d.setRelno(n);
+                                                        d.setRelseq(String.valueOf(acd.getPuracdPK().getTrseq()));
+                                                        d.setRelqty(String.valueOf(qty));
+
+                                                        editedHKCW002Detail.add(d);
+                                                    }
+                                                }
+                                                if (addedDetail.size() > 0) {
+                                                    AssetAcceptance aa = new AssetAcceptance();
+                                                    aa.setCompany(purach.getPurachPK().getFacno());
+                                                    aa.setFormid("");
+                                                    aa.setFormdate(purach.getAcceptdate());
+                                                    aa.setVendorno(purach.getVdrno());
+                                                    aa.setDeptno(purach.getDepno());
+                                                    aa.setRemark(e.getProcessSerialNumber() + "_"
+                                                            + purach.getPurachPK().getAcceptno());
+                                                    aa.setStatus("N");
+                                                    // 产生EAM资产入库
+                                                    assetAcceptanceBean.initAssetAcceptance(aa, addedDetail);
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-                                if (flag) {
-                                    // 全部验收完成
-                                    acceptno = purachBean.findByPrno(prh.getPurhaskPK().getPrno());
-                                    e.setRelformid(Arrays.toString(acceptno));
+                                if (editedHKCW002Detail.size() > 0) {
+                                    // 判断整张资产申请是否全部验收
+                                    for (HKCW002Detail d : hkcw002Details) {
+                                        if (d.getPurqty() == null || "".equals(d.getPurqty())) {
+                                            continue;
+                                        }
+                                        if (d.getRelqty() != null && !"".equals(d.getRelqty())) {
+                                            qty = BigDecimal.valueOf(Double.parseDouble(d.getRelqty()));
+                                            if (qty.compareTo(BigDecimal.valueOf(Double.parseDouble(d.getPurqty()))) < 0) {
+                                                flag = false;
+                                            }
+                                        } else {
+                                            flag = false;
+                                        }
+                                    }
+                                    if (flag) {
+                                        // 全部验收完成
+                                        acceptno = purachBean.findByPrno(prh.getPurhaskPK().getPrno());
+                                        e.setRelformid(Arrays.toString(acceptno));
+                                    }
+                                    hkcw002Bean.update(e, null, hkcw002DetailEdited, null);
                                 }
-                                hkcw002Bean.update(e, null, hkcw002DetailEdited, null);
                             }
+                        } catch (NumberFormatException ex) {
+                            log4j.error("执行createEAMAssetAcceptanceByERPPUR530时异常", ex);
                         }
-                    } catch (NumberFormatException ex) {
-                        log4j.error("执行createEAMAssetAcceptanceByERPPUR530时异常", ex);
-                    }
 
+                    }
                 }
             }
         }
@@ -1648,8 +1654,10 @@ public class TimerBean {
                         hm.setOilspecial(oilspecial);
                         Secuser secuser = secuserBean.findByUserno(h.getMancode());
                         hm.setMancodesc(secuser.getUsername());
-                        // hm.setDepno(workFlowBean.getCurrentUser().getDeptno());
-                        hm.setDepno(h.getDepno()); // 报价部门
+                        //workFlowBean.initUserInfo(h.getMancode());
+                        //hm.setDepno(workFlowBean.getCurrentUser().getDeptno());
+                        hm.setDepno(usersBean.checkDeptno(h.getMancode(), h.getDepno()));
+                        //hm.setDepno(h.getDepno()); // 报价部门
                         hm.setCfmuser(h.getCfmuserno());
                         // 设置审批原因
                         hm.setApprresno(miscodeBean.findByPK("1O", h.getApprresno()).getCdesc());
@@ -1709,6 +1717,11 @@ public class TimerBean {
             double sumivomsfs;
             if (apmaphList != null && !apmaphList.isEmpty()) {
                 for (Apmaph h : apmaphList) {
+                    if (workFlowBean.findOrgUnitByDeptno(h.getDepno()) == null) {
+                        h.setOano("OA无部门");
+                        apmaphBean.update(h);
+                        return;
+                    };
                     apmapdList = apmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),
                             h.getApmaphPK().getAptyp());
                     if (apmapdList != null && !apmapdList.isEmpty()) {
@@ -1936,6 +1949,11 @@ public class TimerBean {
             BigDecimal sumbilnum8;
             if (apmaphList != null && !apmaphList.isEmpty()) {
                 for (Apmaph h : apmaphList) {
+                    if (workFlowBean.findOrgUnitByDeptno(h.getDepno()) == null) {
+                        h.setOano("OA无部门");
+                        apmaphBean.update(h);
+                        return;
+                    };
                     apmapdList = apmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),
                             h.getApmaphPK().getAptyp());
                     if (apmapdList != null && !apmapdList.isEmpty()) {

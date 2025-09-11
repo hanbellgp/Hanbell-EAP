@@ -388,7 +388,7 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
             mailBean.getTo().add("C1491@hanbell.com.cn");
             mailBean.setMailSubject("OA资产申请单抛转请购单异常");
             mailBean.setMailContent(
-                    "OA资产申请单抛转单单号：" + psn + "抛转失败，异常：" + ex);
+                    "OA资产申请单抛转单单号：" + psn + "抛转失败，异常：" + ex.getCause());
             mailBean.notify(new ErrorMailNotify());
             ex.printStackTrace();
             log4j.error(ex);
