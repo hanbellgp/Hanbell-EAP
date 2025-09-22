@@ -32,6 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mcbudget.findById", query = "SELECT m FROM Mcbudget m WHERE m.id = :id"),
     @NamedQuery(name = "Mcbudget.findByProperties", query = "SELECT m FROM Mcbudget m WHERE m.type = :type AND m.srcno = :srcno AND m.facno = :facno "
             + " AND m.period = :period AND m.centerid = :centerid AND  m.budgetacc = :budgetacc"),
+    @NamedQuery(name = "Mcbudget.findByProperties2", query = "SELECT m FROM Mcbudget m WHERE m.type = :type AND m.srcno = :srcno AND m.facno = :facno "
+            + " AND m.centerid = :centerid AND  m.budgetacc = :budgetacc"),
     @NamedQuery(name = "Mcbudget.findBySrcno", query = "SELECT m FROM Mcbudget m WHERE m.srcno = :srcno"),
     @NamedQuery(name = "Mcbudget.findByCrmno", query = "SELECT m FROM Mcbudget m WHERE m.crmno = :crmno"),
     @NamedQuery(name = "Mcbudget.findByFacno", query = "SELECT m FROM Mcbudget m WHERE m.facno = :facno"),
