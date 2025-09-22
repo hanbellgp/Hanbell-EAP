@@ -39,7 +39,7 @@ public class RdpmSubjectUserReportsBean extends SuperEJBForEDW<RdpmSubjectUserRe
 
     public List<Object[]> getRdpmSubjectUserReportsList(String userNo) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT A.SubJectNo,A.SubjectName,B.UType,B.SubjectUserNo,B.SubjectUserName,A.SubjectSeq,A.SubjectSeqName FROM RdpmSubjects A  LEFT JOIN   RdpmSubjectUser B   ON  A.SubJectNo=B.SubjectNo");
+        sb.append(" SELECT A.SubJectNo,A.SubjectName,B.UType,B.SubjectUserNo,B.SubjectUserName,A.SubjectSeq,A.SubjectSeqName FROM RdpmSubjects A  LEFT JOIN   RdpmSubjectUser B   ON  A.SubJectNo=B.SubjectNo    And  A.SubjectSeq=B.SubjectSeq");
         sb.append(" where  B.SubjectUserNo='").append(userNo).append("'  and UType='研发人员'   order by  A.SubjectNo desc");
         //生成SQL
         Query query = getEntityManager().createNativeQuery(sb.toString());
