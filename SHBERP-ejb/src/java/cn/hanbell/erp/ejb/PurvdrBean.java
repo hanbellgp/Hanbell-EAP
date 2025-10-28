@@ -285,7 +285,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         erp.setSwiftcode(oa.getSwiftcode());
 
         // 生成厂商编号
-        if (facno.length() == 2) {
+        if (code.length() == 2) {
             newvdrno = getFormId(BaseLib.getDate(), code + erp.getCuycode(), null, 4, "purvdr", "vdrno");
         } else {
             newvdrno = getFormId(BaseLib.getDate(), code + erp.getCuycode(), null, 5, "purvdr", "vdrno");
