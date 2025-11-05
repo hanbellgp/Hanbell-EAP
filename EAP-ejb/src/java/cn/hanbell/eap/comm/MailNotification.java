@@ -46,6 +46,10 @@ public abstract class MailNotification {
         this.attachments = new ArrayList();
     }
 
+    public void clearAttachments() {
+        this.attachments.clear();
+    }
+
     public void addAttachments(File f) {
         this.attachments.add(f);
     }
