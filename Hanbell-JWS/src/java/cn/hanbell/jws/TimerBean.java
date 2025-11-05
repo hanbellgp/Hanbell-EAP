@@ -3615,7 +3615,7 @@ public class TimerBean {
         log4j.info("越南ERP交易互转轮询开始");
         //越南采购转香港订单
         this.createHKERPCDR310ByVHBPUR415("X", "SDC00001", "00", "V", "HA001 ", "20241014");
-        //this.createHKERPCDR310ByVHBPUR415("X", "XDC00001", "00", "VB", "HA001 ", "20251014");
+        this.createHKERPCDR310ByVHBPUR415("X", "XDC00001", "00", "VB", "HA001 ", "20251104");
         log4j.info("越南ERP交易互转轮询开始结束");
     }
 
