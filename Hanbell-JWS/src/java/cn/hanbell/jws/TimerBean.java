@@ -1377,7 +1377,6 @@ public class TimerBean {
     @Schedule(minute = "*/11", hour = "7-23", persistent = false)
     public void createOAProcessByVHBERPApmaph() {
         log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询开始");
-        //越南采购转香港订单
         createVHTV005ByVHBERPAPM820("V");
         createVHTV005ByVHBERPAPM820("VB");
         log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询结束");
