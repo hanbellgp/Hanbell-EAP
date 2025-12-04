@@ -31,6 +31,7 @@ public class HKGL034Model implements Serializable {
     private String isWechat;
     private String type;
     private String hdn_type;
+    private String overdue;
 
     public HKGL034Model() {
     }
@@ -119,6 +120,14 @@ public class HKGL034Model implements Serializable {
 
     public void setIsWechat(String isWechat) {
         this.isWechat = isWechat;
+    }
+
+    public String getOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(String overdue) {
+        this.overdue = overdue;
     }
     
 

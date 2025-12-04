@@ -100,11 +100,12 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                     files.add(attachment);
                 }
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(new Date());
-                calendar.set(Calendar.HOUR_OF_DAY, 0);
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 59);
-                calendar.add(calendar.MINUTE, -1);
+                calendar.setTime(BaseLib.getDate());
+                if ("Y".equals(entity.getOverdue())) {
+                    calendar.add(Calendar.DATE, -7);
+                } else {
+                    calendar.add(Calendar.DATE, -1);
+                }
                 Date zero = calendar.getTime();
                 Date date1 = BaseLib.getDate("yyyy-MM-dd", entity.getDate1());
                 Date date2 = BaseLib.getDate("yyyy-MM-dd", entity.getDate2());
@@ -122,6 +123,7 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                 la.setApplyDept(workFlowBean.getUserFunction().getOrganizationUnit().getId());
                 la.setHdn_applyDept(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
                 la.setIsWechat("Y");
+                la.setOverdue(entity.getOverdue());
                 //根据部门编号代出公司编号
                 la.setFacno(workFlowBean.getCompanyByDeptId(la.getApplyDept()));
                 la.setHdn_facno(la.getFacno());
