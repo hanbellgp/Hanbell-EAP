@@ -53,6 +53,9 @@ public class HKGL004Model implements Serializable {
     private Double samedays;
     private String isWechat;
 
+    private String overdue;
+
+
     public HKGL004Model() {
     }
 
@@ -436,6 +439,14 @@ public class HKGL004Model implements Serializable {
 
     public void setIsWechat(String isWechat) {
         this.isWechat = isWechat;
+    }
+
+    public String getOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(String overdue) {
+        this.overdue = overdue;
     }
 
     public Date getSamefirst() {
