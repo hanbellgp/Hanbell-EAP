@@ -33,6 +33,7 @@ public class MCHZGL004 {
     private Double days;
     private String userTitle;
     private boolean safeplace;
+    private String overdue;
 
     //派车单栏位
     private String useCar;
@@ -284,6 +285,15 @@ public class MCHZGL004 {
     public void setUserTitle(String userTitle) {
         this.userTitle = userTitle;
     }
+
+    public String getOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(String overdue) {
+        this.overdue = overdue;
+    }
+
 
     /**
      * @return the detailList

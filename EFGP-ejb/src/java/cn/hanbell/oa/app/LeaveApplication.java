@@ -32,6 +32,7 @@ public class LeaveApplication implements Serializable {
     private String formKindDesc;
     private String workType;
     private String workTypeDesc;
+    private String overdue;
 
     private String date1;
     private String time1;
@@ -154,6 +155,16 @@ public class LeaveApplication implements Serializable {
     public void setWorkTypeDesc(String workTypeDesc) {
         this.workTypeDesc = workTypeDesc;
     }
+
+    public String getOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(String overdue) {
+        this.overdue = overdue;
+    }
+    
+    
 
     /**
      * @return the date1

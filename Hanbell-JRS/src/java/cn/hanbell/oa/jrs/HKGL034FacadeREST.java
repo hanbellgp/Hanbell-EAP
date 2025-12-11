@@ -86,15 +86,17 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                 //根据部门设置公司
                 m.setFacno(workFlowBean.getCompanyByDeptId(m.getApplyDept()));
                 m.setHdn_facno(m.getFacno());
+                m.setOverdue(entity.getOverdue());
                 for (OvertimeApplicationDetail oad : entity.getDetailList()) {
                     //前一天凌晨
                     Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(new Date());
-                    calendar.set(Calendar.HOUR_OF_DAY, 0);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.SECOND, 59);
-                    calendar.add(calendar.MINUTE, -1);
-                    calendar.add(Calendar.DATE, -1);
+                    calendar.setTime(BaseLib.getDate());
+                    if ("Y".equals(entity.getOverdue())) {
+                        calendar.add(Calendar.DATE, -7);
+                    } else {
+                        calendar.add(Calendar.DATE, -1);
+                    }
+
                     Date zero = calendar.getTime();
                     Date date1 = BaseLib.getDate("yyyy-MM-dd", oad.getDate1());
                     if (zero.getTime() >= date1.getTime()) {
