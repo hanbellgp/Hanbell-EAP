@@ -68,6 +68,20 @@ public class RdpmSubjectUserReports implements Serializable {
     @Column(name = "SubjectSeqName")
     private String subjectSeqName;
 
+    @Size(max = 5)
+    @Column(name = "Facno")
+    private String facno;
+    @Size(max = 50)
+    @Column(name = "SubjectDept")
+    private String subjectDept;
+
+    @Size(max = 155)
+    @Column(name = "SubjectDeptName")
+    private String subjectDeptName;
+    @Size(max = 155)
+    @Column(name = "RelationUserNo")
+    private String relationUserNo;
+
     public RdpmSubjectUserReports() {
     }
 
@@ -153,6 +167,38 @@ public class RdpmSubjectUserReports implements Serializable {
 
     public void setSubjectSeqName(String subjectSeqName) {
         this.subjectSeqName = subjectSeqName;
+    }
+
+    public String getFacno() {
+        return facno;
+    }
+
+    public void setFacno(String facno) {
+        this.facno = facno;
+    }
+
+    public String getSubjectDept() {
+        return subjectDept;
+    }
+
+    public void setSubjectDept(String subjectDept) {
+        this.subjectDept = subjectDept;
+    }
+
+    public String getSubjectDeptName() {
+        return subjectDeptName;
+    }
+
+    public void setSubjectDeptName(String subjectDeptName) {
+        this.subjectDeptName = subjectDeptName;
+    }
+
+    public String getRelationUserNo() {
+        return relationUserNo;
+    }
+
+    public void setRelationUserNo(String relationUserNo) {
+        this.relationUserNo = relationUserNo;
     }
 
     @Override
