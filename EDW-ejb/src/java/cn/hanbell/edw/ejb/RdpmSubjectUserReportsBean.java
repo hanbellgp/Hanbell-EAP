@@ -37,10 +37,22 @@ public class RdpmSubjectUserReportsBean extends SuperEJBForEDW<RdpmSubjectUserRe
         }
     }
 
-    public List<Object[]> getRdpmSubjectUserReportsList(String userNo) {
+    public List<Object[]> getInitRdpmSubjectUserReportsList(String userNo,String rDate) {
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT A.SubJectNo,A.SubjectName,B.UType,B.SubjectUserNo,B.SubjectUserName,A.SubjectSeq,A.SubjectSeqName FROM RdpmSubjects A  LEFT JOIN   RdpmSubjectUser B   ON  A.SubJectNo=B.SubjectNo    And  A.SubjectSeq=B.SubjectSeq");
-        sb.append(" where  B.SubjectUserNo='").append(userNo).append("'  and UType='研发人员'   order by  A.SubjectNo desc");
+        sb.append(" where  B.SubjectUserNo='").append(userNo).append("'  and UType='研发人员'  and  SubjectEndTime >='"+rDate+"'  AND SubjectStartTime<='"+rDate+"'  order by  A.SubjectNo desc");
+        //生成SQL
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+
+        List<Object[]> results = query.getResultList();
+        return results;
+
+    }
+    
+    //获取除研发人员的其他间接人员
+      public List<Object[]> getRdpmSubjectUserList(String subjectNo) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT SubjectUserNo,SubjectUserName,UType FROM RdpmSubjectUser  WHERE  SubjectNo='"+subjectNo+"'  AND UType!='研发人员'");
         //生成SQL
         Query query = getEntityManager().createNativeQuery(sb.toString());
 

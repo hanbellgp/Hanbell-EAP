@@ -5,6 +5,8 @@
 package cn.hanbell.edw.jrs;
 
 import cn.hanbell.crm.jrs.model.JSONObject;
+import cn.hanbell.eap.ejb.SystemUserBean;
+import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.edw.ejb.RdpmSubjectUserReportsBean;
 import cn.hanbell.edw.entity.RdpmSubjectUserReports;
 import cn.hanbell.jrs.ResponseMessage;
@@ -44,6 +46,8 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
     @EJB
     private RdpmSubjectUserReportsBean rdpmSubjectUserReportsBean;
     protected SuperEJB superEJB;
+    @EJB
+    private SystemUserBean systemUserBean;
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -59,7 +63,7 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
     @Path("getRdpmSubjectUserReportsModel/{filters}/{sorts}/{offset}/{pageSize}")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public List<RdpmSubjectUserReports> getRdpmSubjectUserReportsModel(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token, @QueryParam("rDate") String rDate, @QueryParam("userId") String userId) {
+    public List<RdpmSubjectUserReports> getRdpmSubjectUserRepogetRdpmSubjectUserReportsModelrtsModel(@PathParam("filters") PathSegment filters, @PathParam("sorts") PathSegment sorts, @PathParam("offset") Integer offset, @PathParam("pageSize") Integer pageSize, @QueryParam("appid") String appid, @QueryParam("token") String token, @QueryParam("rDate") String rDate, @QueryParam("userId") String userId) {
         if (isAuthorized(appid, token)) {
             this.superEJB = rdpmSubjectUserReportsBean;
             List<RdpmSubjectUserReports> rdpmSubjectUserReportsListRes = new ArrayList<>();
@@ -72,7 +76,7 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
                 if (rdpmSubjectUserReportsListRes.size() > 0) {
                     return rdpmSubjectUserReportsListRes;
                 }
-                list = rdpmSubjectUserReportsBean.getRdpmSubjectUserReportsList(userId);
+                list = rdpmSubjectUserReportsBean.getInitRdpmSubjectUserReportsList(userId, rDate);
 
                 int item = 1;
 
@@ -136,9 +140,9 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
                 for (int i = 0; i < dataArray.length(); i++) {
                     org.json.JSONObject jsonObj = (org.json.JSONObject) dataArray.get(i);
                     RdpmSubjectUserReports uR = new RdpmSubjectUserReports();
-                 
+
                     uR.setId(jsonObj.getString("id"));
-                    uR.setSubjectWorkPercent(jsonObj.getDouble("subjectWorkPercent")/100);//存的是百分比转换一下
+                    uR.setSubjectWorkPercent(jsonObj.getDouble("subjectWorkPercent") / 100);//存的是百分比转换一下
                     uR.setSubjectName(jsonObj.getString("subjectName"));
                     uR.setSubjectNo(jsonObj.getString("subjectNo"));
                     uR.setuType(jsonObj.getString("uType"));
@@ -147,6 +151,26 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
                     uR.setSubjectUserName(jsonObj.getString("subjectUserName"));
                     uR.setSubjectSeq(jsonObj.getInt("subjectSeq"));
                     uR.setSubjectSeqName(jsonObj.getString("subjectSeqName"));
+                    if (uR.getFacno() == null) {
+                        String userno = jsonObj.getString("subjectUserNo");
+                        SystemUser sUser = systemUserBean.findByUserId(jsonObj.getString("subjectUserNo"));
+                        uR.setFacno(sUser.getDept().getCompany());
+                        uR.setSubjectDept(sUser.getDeptno());
+                        uR.setSubjectDeptName(sUser.getDept().getDept());
+                    }
+                    
+                    if (uR.getRelationUserNo() == null&&!uR.getSubjectNo().equals("01")) {
+                        String relationUserNo = "[";
+                        List<Object[]> rdpmSubjectUserList = rdpmSubjectUserReportsBean.getRdpmSubjectUserList(jsonObj.getString("subjectNo"));
+                        for (Object[] rE : rdpmSubjectUserList) {
+                            relationUserNo += " {\"UserNo\":\"" + rE[0] + "\",\"UserName\":\"" + rE[1] + "\",\"UType\":\"" + rE[2] + "\"},";
+                        }
+                        if (relationUserNo != null && relationUserNo != "[") {
+                            relationUserNo = relationUserNo.substring(0, relationUserNo.length() - 1);
+                            relationUserNo += "]";
+                            uR.setRelationUserNo(relationUserNo);
+                        }
+                    }
                     list.add(uR);
                 }
                 rdpmSubjectUserReportsBean.update(list);
