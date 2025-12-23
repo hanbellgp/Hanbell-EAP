@@ -94,7 +94,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                     if ("Y".equals(entity.getOverdue())) {
                         calendar.add(Calendar.DATE, -7);
                     } else {
-                        calendar.add(Calendar.DATE, -1);
+                        calendar.add(Calendar.DATE, -2);
                     }
 
                     Date zero = calendar.getTime();
