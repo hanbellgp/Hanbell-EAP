@@ -161,7 +161,7 @@ public class RdpmSubjectUserReportsREST extends SuperRESTForEDW<RdpmSubjectUserR
                     
                     if (uR.getRelationUserNo() == null&&!uR.getSubjectNo().equals("01")) {
                         String relationUserNo = "[";
-                        List<Object[]> rdpmSubjectUserList = rdpmSubjectUserReportsBean.getRdpmSubjectUserList(jsonObj.getString("subjectNo"));
+                        List<Object[]> rdpmSubjectUserList = rdpmSubjectUserReportsBean.getRdpmSubjectUserList(jsonObj.getString("subjectUserNo"));
                         for (Object[] rE : rdpmSubjectUserList) {
                             relationUserNo += " {\"UserNo\":\"" + rE[0] + "\",\"UserName\":\"" + rE[1] + "\",\"UType\":\"" + rE[2] + "\"},";
                         }
