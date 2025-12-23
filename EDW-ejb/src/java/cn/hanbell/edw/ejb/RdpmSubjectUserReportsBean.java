@@ -52,7 +52,7 @@ public class RdpmSubjectUserReportsBean extends SuperEJBForEDW<RdpmSubjectUserRe
     //获取除研发人员的其他间接人员
       public List<Object[]> getRdpmSubjectUserList(String subjectNo) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT SubjectUserNo,SubjectUserName,UType FROM RdpmSubjectUser  WHERE  SubjectNo='"+subjectNo+"'  AND UType!='研发人员'");
+        sb.append(" SELECT SubjectRelationUserNo,SubjectRelationUserName,RelationUType FROM  RdpmSubjectUserRelation  WHERE   SubjectUserNo='"+subjectNo+"'");
         //生成SQL
         Query query = getEntityManager().createNativeQuery(sb.toString());
 
