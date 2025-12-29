@@ -34,6 +34,16 @@ public class UsersBean extends SuperEJBForEFGP<Users> {
         }
     }
 
+    public Users findById(String id) {
+        Query query = getEntityManager().createNamedQuery("Users.findById");
+        query.setParameter("id", id);
+        try {
+            return (Users) query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     /**
      *
      * @param flag：人员是否在职

@@ -161,6 +161,7 @@ import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.oa.entity.HKCW002;
 import cn.hanbell.oa.entity.HKCW002Detail;
 import cn.hanbell.oa.entity.Invmasmark;
+import cn.hanbell.oa.entity.Users;
 import cn.hanbell.oa.model.HKCW013DetailModel;
 import cn.hanbell.oa.model.HKCW013Model;
 import cn.hanbell.oa.model.HKYX009DetailModel;
@@ -1576,6 +1577,14 @@ public class TimerBean {
                     invmasBean.setCompany(facno);
                     miscodeBean.setCompany(facno);
                     secuserBean.setCompany(facno);
+                    Users u = usersBean.findById(h.getMancode());
+                    if (u == null || u.getLeaveDate() != null) {
+                        //业务员已离职直接不抛
+                        h.setHquosta('N');
+                        cdrqhadBean.update(h);
+                        cdrqhadBean.getEntityManager().flush();
+                        return;
+                    }
                     if (cdrqdtaList != null && !cdrqdtaList.isEmpty()) {
                         detailList.clear();// 清除前面的资料
                         i = 0;
