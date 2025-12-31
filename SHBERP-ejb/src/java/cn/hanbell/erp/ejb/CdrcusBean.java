@@ -400,7 +400,7 @@ public class CdrcusBean extends SuperEJBForERP<Cdrcus> {
         cdrcus.setShzt("Y");
         cdrcus.setSCCode(oa.getSccode());
 
-        if (facno.length() == 2) {
+        if (code.length() == 2) {
             newcusno = getFormId(cdrcus.getIndate(), code + cdrcus.getCuycode(), null, 4, "cdrcus", "cusno");
         } else {
             newcusno = getFormId(cdrcus.getIndate(), code + cdrcus.getCuycode(), null, 5, "cdrcus", "cusno");

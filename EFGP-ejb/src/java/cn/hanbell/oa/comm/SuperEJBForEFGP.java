@@ -205,9 +205,9 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
                 return "重庆分公司";
             case "C5":
                 return "银川分公司";
-           case "XB":
+            case "XB":
                 return "珀罗普斯柯茂";
-           case "CH":
+            case "CH":
                 return "上海汉钟活塞";
             case "H":
                 return "浙江汉声";
@@ -244,11 +244,13 @@ public abstract class SuperEJBForEFGP<T> extends SuperEJB<T> {
     public void initUserInfo(String userid) {
         this.currentUser = usersBean.findById(userid);
         this.userFunction = functionsBean.findByUserOIDAndIsMain(currentUser.getOid());
-        this.organizationUnit = userFunction.getOrganizationUnit();
-        this.userTitle = titleBean.findByOUOIDAndUserOID(organizationUnit.getOid(), getCurrentUser().getOid());
+        if (userFunction != null) {
+            this.organizationUnit = userFunction.getOrganizationUnit();
+        }
         if (organizationUnit != null) {
             this.currentUser.setDeptno(organizationUnit.getId());
             this.currentUser.setDeptname(organizationUnit.getOrganizationUnitName());
+            this.userTitle = titleBean.findByOUOIDAndUserOID(organizationUnit.getOid(), getCurrentUser().getOid());
         }
         if (userTitle != null) {
             this.currentUser.setTitle(userTitle);
