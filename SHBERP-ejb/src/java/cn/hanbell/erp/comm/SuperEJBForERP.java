@@ -49,11 +49,12 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
     @PersistenceContext(unitName = "PU_cqerp")
     private EntityManager em_cqerp;
 
-    @PersistenceContext(unitName = "PU_comererp")
+      @PersistenceContext(unitName = "PU_comererp")
     private EntityManager em_comererp;
 
-    @PersistenceContext(unitName = "PU_zjcomererp")
+   @PersistenceContext(unitName = "PU_zjcomererp")
     private EntityManager em_zjcomererp;
+
 
     @PersistenceContext(unitName = "PU_plpserp")
     private EntityManager em_plpserp;
@@ -62,27 +63,30 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
     private EntityManager em_huosaierp;
 
     @PersistenceContext(unitName = "PU_hansonerp")
+
+    //  @PersistenceContext(unitName = "PU_hansonerp")
+
     private EntityManager em_hansonerp;
 
-    @PersistenceContext(unitName = "PU_hanyoungerp")
+    //   @PersistenceContext(unitName = "PU_hanyoungerp")
     private EntityManager em_hanyoungerp;
 
-    @PersistenceContext(unitName = "PU_qtcerp")
+    //  @PersistenceContext(unitName = "PU_qtcerp")
     private EntityManager em_qtcerp;
 
     //@PersistenceContext(unitName = "PU_sderp")
     private EntityManager em_sderp;
 
-    @PersistenceContext(unitName = "PU_hkerp")
+//    @PersistenceContext(unitName = "PU_hkerp")
     private EntityManager em_hkerp;
 
-    @PersistenceContext(unitName = "PU_zkerp")
+//    @PersistenceContext(unitName = "PU_zkerp")
     private EntityManager em_zkerp;
 
-    @PersistenceContext(unitName = "PU_chuxiongerp")
+    ////  @PersistenceContext(unitName = "PU_chuxiongerp")
     private EntityManager em_chuxiongerp;
 
-    @PersistenceContext(unitName = "PU_yinchuanerp")
+    //   @PersistenceContext(unitName = "PU_yinchuanerp")
     private EntityManager em_yinchuanerp;
 
     //@PersistenceContext(unitName = "PU_thberp")
