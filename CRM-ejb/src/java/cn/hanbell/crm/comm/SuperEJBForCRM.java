@@ -27,9 +27,9 @@ import org.json.JSONObject;
 public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
 
     // 生产环境
-    //private final String URL = "http://jrs.hanbell.com.cn/Hanbell-WCO/api/sendmsg/send";
+    private final String URL = "http://jrs.hanbell.com.cn/Hanbell-WCO/api/sendmsg/send";
     // 测试环境
-    private final String URL = "http://i2.hanbell.com.cn:8480/Hanbell-WCO/api/sendmsg/send";
+    //private final String URL = "http://i2.hanbell.com.cn:8480/Hanbell-WCO/api/sendmsg/send";
 
     protected String company = "C";
 

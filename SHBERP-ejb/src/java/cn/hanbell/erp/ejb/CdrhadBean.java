@@ -280,7 +280,8 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                             cdta.setArmqy(cdta.getShpqy1());   //应收账款数量（单单位）
                             cdta.setUnpris(cdmas.getUnpris());
                             cdta.setUnprisrccode(cdmas.getUnprisrccode());
-                            cdta.setShpamts(cdta.getUnpris().multiply(cdta.getShpqy1()));
+                            BigDecimal ldshpamts =cdta.getUnpris().multiply(cdta.getShpqy1());
+                            cdta.setShpamts(ldshpamts.setScale(2, RoundingMode.HALF_UP));
                             cdta.setIvoamts(BigDecimal.ZERO);
                             cdta.setDmark1(cdmas.getDmark1());
                             cdta.setDmark2(cdmas.getDmark2());
@@ -357,6 +358,7 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                     chad.setMancode(chmas.getMancode());
                     chad.setInvoiceyn(chmas.getInvoiceyn());
                     chad.setHmark2(chmas.getHmark1());//订单产品别写入出货单
+                    chad.setHmark4("OA服务单");
                     chad.setIndate(shpdate);
                     if (f.getCdruserno() == null || f.getCdruserno().isEmpty()) {
                         chad.setUserno(chmas.getUserno());

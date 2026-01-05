@@ -276,12 +276,12 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             miscodeBean.setCompany(facno);
             accspedBean.setCompany(facno);
             apmpadBean.setCompany(facno);
-            pk.setPayno(apmsysBean.getFormId("V", "APM525", date, Boolean.TRUE));
+            pk.setPayno(apmsysBean.getFormId(facno, "APM525", date, Boolean.TRUE));
 
             h.setApmpayPK(pk);
             h.setPayda(date);
 
-            h.setVouno(accrnoBean.getFormId("V", date, Boolean.TRUE));        //设置初稿传票编号
+            h.setVouno(accrnoBean.getFormId(facno, date, Boolean.TRUE));        //设置初稿传票编号
 
             h.setDepno(j.getLoanDept());                                        //取得OA预算部门
             h.setRkd("MR01");

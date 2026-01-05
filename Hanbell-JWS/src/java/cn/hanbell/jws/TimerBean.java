@@ -161,6 +161,7 @@ import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.oa.entity.HKCW002;
 import cn.hanbell.oa.entity.HKCW002Detail;
 import cn.hanbell.oa.entity.Invmasmark;
+import cn.hanbell.oa.entity.Users;
 import cn.hanbell.oa.model.HKCW013DetailModel;
 import cn.hanbell.oa.model.HKCW013Model;
 import cn.hanbell.oa.model.HKYX009DetailModel;
@@ -1377,7 +1378,6 @@ public class TimerBean {
     @Schedule(minute = "*/11", hour = "7-23", persistent = false)
     public void createOAProcessByVHBERPApmaph() {
         log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询开始");
-        //越南采购转香港订单
         createVHTV005ByVHBERPAPM820("V");
         createVHTV005ByVHBERPAPM820("VB");
         log4j.info("越南ERP-APM820费用类立账申请抛转EFGP签核轮询结束");
@@ -1577,6 +1577,14 @@ public class TimerBean {
                     invmasBean.setCompany(facno);
                     miscodeBean.setCompany(facno);
                     secuserBean.setCompany(facno);
+                    Users u = usersBean.findById(h.getMancode());
+                    if (u == null || u.getLeaveDate() != null) {
+                        //业务员已离职直接不抛
+                        h.setHquosta('N');
+                        cdrqhadBean.update(h);
+                        cdrqhadBean.getEntityManager().flush();
+                        return;
+                    }
                     if (cdrqdtaList != null && !cdrqdtaList.isEmpty()) {
                         detailList.clear();// 清除前面的资料
                         i = 0;
@@ -3615,7 +3623,7 @@ public class TimerBean {
         log4j.info("越南ERP交易互转轮询开始");
         //越南采购转香港订单
         this.createHKERPCDR310ByVHBPUR415("X", "SDC00001", "00", "V", "HA001 ", "20241014");
-        //this.createHKERPCDR310ByVHBPUR415("X", "XDC00001", "00", "VB", "HA001 ", "20251014");
+        this.createHKERPCDR310ByVHBPUR415("X", "XDC00001", "00", "VB", "HA001 ", "20251104");
         log4j.info("越南ERP交易互转轮询开始结束");
     }
 
