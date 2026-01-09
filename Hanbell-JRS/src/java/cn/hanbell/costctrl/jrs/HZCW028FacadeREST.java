@@ -519,7 +519,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                 }
                 //检验科目期间余额,费控发起前检核
                 if (status == 0) {
-                    String accnoValue = "5117;5309;6617;6717;5137;6637;6737;6631;6731;5118;6618;6718;5136;6636;6736";
+                    String accnoValue = "5117;5309;6617;6717;5137;6637;6737;6631;6731;5136;6636;6736";
                     if (accnoValue.contains(budgetAcc) && !facno.equals("Q")) {
                         double accp = budgetDetailBean.getBudgetBalanceForAccPeriod(facno, date, centerid, budgetAcc);
                         if (accp - notaxes < 0.00) {

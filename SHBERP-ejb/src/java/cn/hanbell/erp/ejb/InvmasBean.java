@@ -33,6 +33,10 @@ import cn.hanbell.oa.entity.SHBERPINV146;
 import cn.hanbell.oa.entity.SHBERPINV146Detail;
 import cn.hanbell.oa.entity.HKCW003;
 import cn.hanbell.oa.entity.HKCW003Detail;
+import cn.hanbell.plm.ejb.PLMItnbrDetailTempBean;
+import cn.hanbell.plm.ejb.PartBean;
+import cn.hanbell.plm.entity.PLMItnbrDetailTemp;
+import cn.hanbell.plm.entity.Part;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -46,7 +50,7 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class InvmasBean extends SuperEJBForERP<Invmas> {
-
+    
     @EJB
     private HKJS001Bean hkjs001Bean;
     @EJB
@@ -65,7 +69,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
     private SHBINV146Bean shbinv146Bean;
     @EJB
     private SHBINV146DetailBean shbinv146DetailBean;
-
+    
     @EJB
     private InvclsBean invclsBean;
     @EJB
@@ -82,17 +86,21 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
     private SyncCQBean syncCQBean;
     @EJB
     private SyncYCBean syncYCBean;
-
     @EJB
     private SyncHYBean syncHYBean;
-
+    
     @EJB
     private WARMBBean warmbBean;
-
+    
+    @EJB
+    private PartBean partBean;
+    @EJB
+    private PLMItnbrDetailTempBean plmdetailTempBean;
+    
     public InvmasBean() {
         super(Invmas.class);
     }
-
+    
     public Invmas findByItnbr(String itnbr) {
         Query query = getEntityManager().createNamedQuery("Invmas.findByItnbr");
         query.setParameter("itnbr", itnbr);
@@ -102,9 +110,9 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
             return null;
         }
     }
-
+    
     public Boolean initByOAJHSQD(String psn) {
-
+        
         HZJS034 h = hzjs034Bean.findByPSN(psn);
         if (h == null) {
             throw new NullPointerException();
@@ -187,7 +195,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     //20221213 加入分类2分类3及机型说明
                     m.setGenre2(detail.getGenre2());
                     m.setGenre3(detail.getGenre3());
-                    m.setGenre4(detail.getGenre4());
+                    m.setGenre4(m.getGenre1());
                     m.setModelDsc1(detail.getModelDsc1());
                     m.setModelDsc2(detail.getModelDsc2().trim());
                     persist(m);
@@ -226,16 +234,16 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         }
                         syncNJBean.persist(m, null);
                         syncNJBean.getEntityManager().flush();
-
+                        
                         syncGZBean.persist(m, null);
                         syncGZBean.getEntityManager().flush();
-
+                        
                         syncJNBean.persist(m, null);
                         syncJNBean.getEntityManager().flush();
-
+                        
                         syncCQBean.persist(m, null);
                         syncCQBean.getEntityManager().flush();
-
+                        
                         syncYCBean.persist(m, null);
                         syncYCBean.getEntityManager().flush();
                     } else if (facno.equals("H")) {
@@ -376,16 +384,16 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         }
                         syncNJBean.persist(m, null);
                         syncNJBean.getEntityManager().flush();
-
+                        
                         syncGZBean.persist(m, null);
                         syncGZBean.getEntityManager().flush();
-
+                        
                         syncJNBean.persist(m, null);
                         syncJNBean.getEntityManager().flush();
-
+                        
                         syncCQBean.persist(m, null);
                         syncCQBean.getEntityManager().flush();
-
+                        
                         syncYCBean.persist(m, null);
                         syncYCBean.getEntityManager().flush();
                     }
@@ -397,7 +405,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
             throw new RuntimeException(ex);
         }
     }
-
+    
     public void persistIfNotExist(Invmas invmas) {
         Invmas i = this.findByItnbr(invmas.getItnbr());
         if (i == null) {
@@ -407,17 +415,17 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
 
     // 件号名称规格修改单
     public Boolean updateByOASHBINV146(String psn) {
-
+        
         SHBERPINV146 h = shbinv146Bean.findByPSN(psn);
         List<SHBERPINV146Detail> details = shbinv146DetailBean.findByFSN(h.getFormSerialNumber());
-
+        
         try {
 
             // 表身循环
             for (int i = 0; i < details.size(); i++) {
-
+                
                 SHBERPINV146Detail detail = details.get(i);
-
+                
                 this.setCompany(h.getFacno());
                 Invmas m = findByItnbr(detail.getItnbr());
                 // m.setItcls(detail.getItcls()); //设置品号大类
@@ -432,7 +440,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                 m.setModman(h.getApplyuser());
                 update(m);
                 this.getEntityManager().flush();
-
+                
                 if (h.getFacno().equals("C")) {
                     this.setCompany("G");
                     if (this.findByItnbr(detail.getItnbr()) != null) {
@@ -449,7 +457,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         update(gm);
                         this.getEntityManager().flush();
                     }
-
+                    
                     this.setCompany("J");
                     if (this.findByItnbr(detail.getItnbr()) != null) {
                         Invmas jm = this.findByItnbr(detail.getItnbr());
@@ -465,7 +473,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         update(jm);
                         this.getEntityManager().flush();
                     }
-
+                    
                     this.setCompany("N");
                     if (this.findByItnbr(detail.getItnbr()) != null) {
                         Invmas nm = this.findByItnbr(detail.getItnbr());
@@ -481,7 +489,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         update(nm);
                         this.getEntityManager().flush();
                     }
-
+                    
                     this.setCompany("C4");
                     if (this.findByItnbr(detail.getItnbr()) != null) {
                         Invmas e = this.findByItnbr(detail.getItnbr());
@@ -497,7 +505,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         update(e);
                         this.getEntityManager().flush();
                     }
-
+                    
                     this.setCompany("C5");
                     if (this.findByItnbr(detail.getItnbr()) != null) {
                         Invmas e = this.findByItnbr(detail.getItnbr());
@@ -533,8 +541,30 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         scminvmas.setTransflag("N");
                         scminvmasBean.update(scminvmas);
                     }
-
+                    
                 }
+                //更新PLM及PLM中间表20260106
+                List<PLMItnbrDetailTemp> itnbrs = plmdetailTempBean.findByCitnbr(detail.getItnbr());
+                for (PLMItnbrDetailTemp item : itnbrs) {
+                    item.setCItdsc(detail.getItdsc());
+                    item.setCSpdsc(detail.getSpdsc());
+                    item.setCEitdsc(detail.getEitdsc());
+                    item.setCEspdsc(detail.getEspdsc());
+                    item.setAItdsc(detail.getItdsc());
+                    item.setASpdsc(detail.getSpdsc());
+                    plmdetailTempBean.update(item);
+                }
+                Part p = partBean.findByKeyedName(detail.getItnbr());
+                if (null != p) {
+                    p.setCnNameCn(detail.getItdsc());
+                    p.setCnSpecCn(detail.getSpdsc());
+                    p.setCnNameEn(detail.getEitdsc());
+                    p.setCnSpecEn(detail.getEspdsc());
+                    p.setName(detail.getItdsc());
+                    p.setCnSpecZt(detail.getSpdsc());
+                    partBean.update(p);
+                }
+                
             }
             return true;
         } catch (Exception ex) {
@@ -545,7 +575,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
 
     // 工程变更通知单
     public Boolean updateByOAHKJS001(String psn) {
-
+        
         HKJS001 h = hkjs001Bean.findByPSN(psn);
         if (h == null) {
             return false;
@@ -600,7 +630,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
             log4j.error(ex);
             return false;
         }
-
+        
     }
 
     // 标准成本价格金额
@@ -609,14 +639,14 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
         if (h == null) {
             throw new NullPointerException();
         }
-
+        
         try {
             List<HKCW003Detail> details = hkcw003Bean.getDetailList(h.getFormSerialNumber());
             // 表身循环
             for (int i = 0; i < details.size(); i++) {
-
+                
                 HKCW003Detail detail = details.get(i);
-
+                
                 this.setCompany(h.getFacno());
                 Invmas m = findByItnbr(detail.getItnbr());
                 if (m == null) {
@@ -636,7 +666,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
             return false;
         }
     }
-
+    
     public String getPurtrtype(String facno, Character itclscode) {
         String purtrtype = "";
         StringBuilder sb = new StringBuilder();
@@ -651,5 +681,5 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
         }
         return purtrtype;
     }
-
+    
 }

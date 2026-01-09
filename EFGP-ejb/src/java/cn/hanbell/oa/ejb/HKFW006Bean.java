@@ -162,10 +162,10 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
         if (hkfw006 == null) {
             throw new NullPointerException();
         }
-        repmiBean.setCompany(hkfw006.getFacno());
         try {
             HKFW006Cdrn30 h = hkfw006CDRN30Bean.findByPSN(psn);
             if (h != null) {
+                repmiBean.setCompany(h.getFacno());
                 if (h.getPzcdrn30().equals("1")) {
                     List<HKFW006Cdrn30Detail> details = hkfw006CDRN30Bean.getDetailList(h.getFormSerialNumber());
                     if (details != null && details.size() > 0) {
@@ -175,6 +175,26 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                                 String mi002 = detail.getDmark2();
                                 REPMI repmi = repmiBean.findByMI002(mi002);
                                 if (repmi == null) {
+                                    //20260106制造号码写入
+                                    if (mi002 != null && !mi002.equals("")) {
+                                        REPMI r = new REPMI();
+                                        REPMIPK repmipk = new REPMIPK();
+                                        repmipk.setMi001(detail.getItnbr());
+                                        repmipk.setMi002(mi002);
+                                        r.setREPMIPK(repmipk);
+                                        String mi003 = "OA反写 " + BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate());
+                                        r.setMi003(mi003);
+                                        r.setMi004("Y");
+                                        r.setMi006(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                        r.setMi007(java.time.LocalDate.now().plusYears(1).format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")));
+                                        r.setMi008(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                        r.setMi009(java.time.LocalDate.now().plusYears(1).format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")));
+                                        r.setMi500(h.getCusno());
+                                        r.setMi501(h.getCusname());
+                                        r.setMi502(detail.getBrowno());
+                                        repmiBean.persist(r);
+                                    }
+
                                 } else if (!repmi.getREPMIPK().getMi001().equals(detail.getItnbr())) {
                                     String company = repmi.getCompany();
                                     String creator = repmi.getCreator();
@@ -282,6 +302,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
 
             HKFW006Inv310 hinv310 = hKFW006Inv310Bean.findByPSN(psn);
             if (hinv310 != null) {
+                 repmiBean.setCompany(hinv310.getFacno());
                 if (hinv310.getPzinv310().equals("1") && hkfw006.getRettype().equals("2")) {
                     List<HKFW006Inv310Detail> detailsinv310 = hKFW006Inv310Bean.getDetailList(hinv310.getFormSerialNumber());
                     if (detailsinv310 != null && detailsinv310.size() > 0) {
@@ -291,6 +312,25 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                                 String mi002 = detail.getVarnr();
                                 REPMI repmi = repmiBean.findByMI002(mi002);
                                 if (repmi == null) {
+                                    //20260106制造号码写入
+                                    if (mi002 != null && !mi002.equals("")) {
+                                        REPMI r = new REPMI();
+                                        REPMIPK repmipk = new REPMIPK();
+                                        repmipk.setMi001(detail.getItnbr());
+                                        repmipk.setMi002(mi002);
+                                        r.setREPMIPK(repmipk);
+                                        String mi003 = "OA反写 " + BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate());
+                                        r.setMi003(mi003);
+                                        r.setMi004("Y");
+                                        r.setMi006(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                        r.setMi007(java.time.LocalDate.now().plusYears(1).format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")));
+                                        r.setMi008(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
+                                        r.setMi009(java.time.LocalDate.now().plusYears(1).format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")));
+                                        r.setMi500(hinv310.getDepno());
+                                        r.setMi501(hinv310.getDepname());
+                                        repmiBean.persist(r);
+                                    }
+
                                 } else if (!repmi.getREPMIPK().getMi001().equals(detail.getItnbr())) {
                                     String company = repmi.getCompany();
                                     String creator = repmi.getCreator();
