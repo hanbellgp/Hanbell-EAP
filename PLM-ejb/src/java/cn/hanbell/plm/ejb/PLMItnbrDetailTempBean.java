@@ -30,4 +30,9 @@ public class PLMItnbrDetailTempBean extends SuperEJBForPLM<PLMItnbrDetailTemp> {
         return query.getResultList();
     }
 
+    public List<PLMItnbrDetailTemp> findByCitnbr(String citnbr) {
+        Query query = this.getEntityManager().createNamedQuery("PLMItnbrDetailTemp.findByCitnbr");
+        query.setParameter("citnbr", citnbr);
+        return query.getResultList();
+    }
 }
