@@ -5,29 +5,20 @@
 package cn.hanbell.oa.entity;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author S31106868hb
  */
-
 public class HKCW026 implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Size(max = 255)
     @Column(name = "formid")
     private String formid;
-  
+
     @Size(max = 255)
     @Column(name = "facno")
     private String facno;
@@ -46,6 +37,7 @@ public class HKCW026 implements Serializable {
     @Size(max = 255)
     @Column(name = "position4Name")
     private String position4Name;
+
     @Size(max = 255)
     @Column(name = "assetno")
     private String assetno;
@@ -82,7 +74,7 @@ public class HKCW026 implements Serializable {
     private String creator;
     @Size(max = 255)
     @Column(name = "cfmuser")
-    private String  cfmuser;
+    private String cfmuser;
     @Size(max = 255)
     @Column(name = "status")
     private String status;
@@ -93,7 +85,6 @@ public class HKCW026 implements Serializable {
 
     public HKCW026() {
     }
-
 
     public String getTransferUser() {
         return TransferUser;

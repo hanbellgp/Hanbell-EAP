@@ -99,7 +99,9 @@ public class HKCW027Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "assetid")
     private String assetid;
-
+  @Size(max = 255)
+    @Column(name = "serialNo")
+    private String serialNo;
     @Size(max = 255)
     @Column(name = "position1")
     private String position1;
@@ -133,6 +135,14 @@ public class HKCW027Detail implements Serializable {
 
     public String getSeq() {
         return seq;
+    }
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
     public void setSeq(String seq) {
