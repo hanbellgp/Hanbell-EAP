@@ -121,7 +121,9 @@ public class HKCW026Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "userno")
     private String userno;
-
+    @Size(max = 255)
+    @Column(name = "serialNo")
+    private String serialNo;
 
     public HKCW026Detail() {
     }
@@ -156,6 +158,14 @@ public class HKCW026Detail implements Serializable {
 
     public void setSeq(String seq) {
         this.seq = seq;
+    }
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
     public String getAssetid() {
@@ -213,7 +223,6 @@ public class HKCW026Detail implements Serializable {
     public void setPosition6(String position6) {
         this.position6 = position6;
     }
-
 
     public String getDeptno2() {
         return deptno2;
@@ -302,8 +311,6 @@ public class HKCW026Detail implements Serializable {
     public void setDeptname(String deptname) {
         this.deptname = deptname;
     }
-
-  
 
     public String getPosition3Name() {
         return position3Name;

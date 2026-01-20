@@ -16,8 +16,10 @@ import cn.hanbell.jrs.SuperRESTForEFGP;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HKCW025Bean;
 import cn.hanbell.oa.entity.HKCW025;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -47,7 +49,7 @@ public class HKCW025FacadeREST extends SuperRESTForEFGP<HKCW025> {
     }
 
     //OA审核领用单时抛转EAM进行扣账及状态更新
-    @POST
+    @GET
     @Path("oa025ThrowDebitEam")
     @Consumes({"application/json"})
     @Produces({"application/json"})
@@ -55,13 +57,13 @@ public class HKCW025FacadeREST extends SuperRESTForEFGP<HKCW025> {
         Boolean ret = false;
         try {
             System.out.println("oa025ThrowEam抛转EAM审核" + psn);
-            HKCW025 hkcw025 = hKCW025Bean.getOaPsn(psn);
+            String hkcw025 = hKCW025Bean.getOaPsn(psn);
             AssetDistribute assetDistribute = assetDistributeBean.findByOaformid(psn);
-            if (assetDistribute == null) {
+            if (assetDistribute == null || hkcw025 == null) {
                 throw new NullPointerException(psn + "不存在");
             }
 
-            if (hkcw025.getIsERP().equals("Y")) {
+            if (hkcw025.equals("Y")) {
                 assetDistribute.setStatus("V");
             } else {
                 assetDistribute.setStatus("T");
@@ -82,7 +84,7 @@ public class HKCW025FacadeREST extends SuperRESTForEFGP<HKCW025> {
     }
 
     //OA审核调拨单时抛转EAM进行扣账及状态更新
-    @POST
+    @GET
     @Path("oa026ThrowDebitEam")
     @Consumes({"application/json"})
     @Produces({"application/json"})
@@ -110,7 +112,7 @@ public class HKCW025FacadeREST extends SuperRESTForEFGP<HKCW025> {
     }
 
     //OA审核转移单时抛转EAM进行扣账及状态更新
-    @POST
+    @GET
     @Path("oa027ThrowDebitEam")
     @Consumes({"application/json"})
     @Produces({"application/json"})
@@ -138,48 +140,78 @@ public class HKCW025FacadeREST extends SuperRESTForEFGP<HKCW025> {
     }
 
     //OA领用单撤销时抛转EAM状态还原可以在进行OA抛转
-    @POST
+    @GET
     @Path("oa025RevocationThrowEam")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public ResponseMessage oa025RevocationThrowEam(@QueryParam("psn") String psn) {
+    public String oa025RevocationThrowEam(@QueryParam("psn") String psn) {
         System.out.println("OA抛转EAM撤销" + psn);
-        AssetDistribute assetDistribute = assetDistributeBean.findByOaformid(psn);
-        if (assetDistribute != null) {
-            assetDistribute.setOaformid(psn + "OA已撤单");//将状态更新为撤单状态
-            assetDistributeBean.update(assetDistribute);
+        Boolean ret = false;
+        try {
+            AssetDistribute assetDistribute = assetDistributeBean.findByOaformid(psn);
+            if (assetDistribute != null) {
+                assetDistribute.setOaformid(psn + "OA已撤单");//将状态更新为撤单状态
+                assetDistributeBean.update(assetDistribute);
+            }
+        } catch (Exception ex) {
+            log4j.error("oa025RevocationThrowEam", ex);
         }
-        return null;
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+
     }
 
     //OA撤销调拨时抛转EAM状态还原可以在进行OA抛转
-    @POST
+    @GET
     @Path("oa026RevocationThrowEam")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public ResponseMessage oa026RevocationThrowEam(@QueryParam("psn") String psn) {
+    public String oa026RevocationThrowEam(@QueryParam("psn") String psn) {
         System.out.println("OA抛转EAM撤销" + psn);
-        AssetAdjust assetAdjust = assetAdjustBean.findByOaformid(psn);
-        if (assetAdjust != null) {
-            assetAdjust.setOaformid(psn + "OA已撤单");//将状态更新为撤单状态
-            assetAdjustBean.update(assetAdjust);
+        Boolean ret = false;
+        try {
+            AssetAdjust assetAdjust = assetAdjustBean.findByOaformid(psn);
+            if (assetAdjust != null) {
+                assetAdjust.setOaformid(psn + "OA已撤单");//将状态更新为撤单状态
+                assetAdjustBean.update(assetAdjust);
+                ret = true;
+            }
+        } catch (Exception ex) {
+            log4j.error("oa026RevocationThrowEam", ex);
         }
-        return null;
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
     }
 
     //OA撤销转移时抛转EAM状态还原可以在进行OA抛转
-    @POST
+    @GET
     @Path("oa027RevocationThrowEam")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public ResponseMessage oa027RevocationThrowEam(@QueryParam("psn") String psn) {
+    public String oa027RevocationThrowEam(@QueryParam("psn") String psn) {
         System.out.println("OA抛转EAM撤销" + psn);
-        AssetTransfer assetTransfer = assetTransferBean.findByOaformid(psn);
-        if (assetTransfer != null) {
-            assetTransfer.setOaformid(psn + "OA已撤单");//将状态更新为撤单状态
-            assetTransferBean.update(assetTransfer);
+        Boolean ret = false;
+        try {
+            AssetTransfer assetTransfer = assetTransferBean.findByOaformid(psn);
+            if (assetTransfer != null) {
+                assetTransfer.setOaformid(psn + "OA已撤单");//将状态更新为撤单状态
+                assetTransferBean.update(assetTransfer);
+            }
+        } catch (Exception ex) {
+            log4j.error("oa027RevocationThrowEam", ex);
         }
-        return null;
+        if (ret) {
+            return "200";
+        } else {
+            return "404";
+        }
+
     }
 
     @Override

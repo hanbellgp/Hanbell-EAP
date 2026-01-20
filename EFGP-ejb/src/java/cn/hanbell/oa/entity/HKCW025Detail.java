@@ -48,13 +48,17 @@ public class HKCW025Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "deptname1")
     private String deptname1;
- 
+
     @Size(max = 255)
     @Column(name = "position3Name")
     private String position3Name;
     @Size(max = 255)
     @Column(name = "seq")
     private String seq;
+
+    @Size(max = 255)
+    @Column(name = "serialNo")
+    private String serialNo;
     @Size(max = 255)
     @Column(name = "position1Name")
     private String position1Name;
@@ -108,8 +112,6 @@ public class HKCW025Detail implements Serializable {
     public HKCW025Detail() {
     }
 
-
-
     public String getDeptno1() {
         return deptno1;
     }
@@ -132,6 +134,14 @@ public class HKCW025Detail implements Serializable {
 
     public void setAssetname(String assetname) {
         this.assetname = assetname;
+    }
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
     public String getPid() {
@@ -197,8 +207,6 @@ public class HKCW025Detail implements Serializable {
     public void setDeptname1(String deptname1) {
         this.deptname1 = deptname1;
     }
-
-
 
     public String getPosition3Name() {
         return position3Name;
@@ -279,8 +287,6 @@ public class HKCW025Detail implements Serializable {
     public void setPosition4(String position4) {
         this.position4 = position4;
     }
-
-  
 
     public String getPosition5() {
         return position5;
@@ -366,5 +372,5 @@ public class HKCW025Detail implements Serializable {
     public String toString() {
         return "cn.hanbell.oa.entity.HKCW025Detail";
     }
-    
+
 }

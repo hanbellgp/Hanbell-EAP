@@ -35,13 +35,10 @@ public class HKCW025Bean extends SuperEJBForEFGP<HKCW025> {
     }
 
     //根据fromid查是否有OA单子
-    public HKCW025 getOaPsn(String psn) {
-        Query query = getEntityManager().createNativeQuery("Select * from HK_CW025 where processSerialNumber='" + psn + "'");
-
-        Object o = query.getSingleResult();
-
-        return (HKCW025) o;
-
+    public String getOaPsn(String psn) {
+        Query query = getEntityManager().createNativeQuery("Select max(isERP) from HK_CW025 where processSerialNumber='" + psn + "'");
+        String maxid = query.getSingleResult().toString();
+        return  maxid;
     }
 
 }
