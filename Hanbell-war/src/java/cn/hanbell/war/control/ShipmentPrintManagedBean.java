@@ -207,6 +207,20 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
                                         .append(ShipmentPrintManagedBean.SSD00730Month.valueOf("MONTH" + Integer.valueOf(BaseLib.formatDate("MM", sd.getShpdate()))).getValue())
                                         .append(ShipmentPrintManagedBean.SSD00730Day.valueOf("DAY" + Integer.valueOf(BaseLib.formatDate("dd", sd.getShpdate()))).getValue()).append("200753").append(sd.getVarnr().substring(sd.getVarnr().length() - 4));
                                 break;
+                                
+                            case "SHI00172":
+                                // 湖南海信日立
+                                content.append(sd.getCustomerItem().trim());
+                                if (sd.getCustomerItem().trim().length() != 8) {
+                                    for (int m = 1; m <= 8 - sd.getCustomerItem().trim().length(); m++) {
+                                        content.append("0");
+                                    }
+                                }
+                                content.append(ShipmentPrintManagedBean.SSD00730Year.valueOf("YEAR" + BaseLib.formatDate("yyyy", sd.getShpdate())).getValue())
+                                        .append(ShipmentPrintManagedBean.SSD00730Month.valueOf("MONTH" + Integer.valueOf(BaseLib.formatDate("MM", sd.getShpdate()))).getValue())
+                                        .append(ShipmentPrintManagedBean.SSD00730Day.valueOf("DAY" + Integer.valueOf(BaseLib.formatDate("dd", sd.getShpdate()))).getValue()).append("200753").append(sd.getVarnr().substring(sd.getVarnr().length() - 4));
+                                break;
+                                
                             case "SHB00221":
                                 //三河同飞
                                 content.append(sd.getCustomerItem()).append("0200020").append(BaseLib.formatDate("yyMMdd", sd.getShpdate())).append("000").append(String.format("%04d", i));

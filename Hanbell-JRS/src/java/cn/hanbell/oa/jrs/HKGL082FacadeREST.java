@@ -8,11 +8,13 @@ package cn.hanbell.oa.jrs;
 import cn.hanbell.hrm.ejb.EmployeeBean;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
+import cn.hanbell.oa.app.HKGL082FilesApplication;
 import cn.hanbell.oa.app.IssueApplication;
 import cn.hanbell.oa.app.KV;
 import cn.hanbell.oa.app.ResignApplication;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HKGL082Bean;
+import cn.hanbell.oa.ejb.HKPB033WorkFlowBean;
 import cn.hanbell.oa.entity.HKGL016;
 import cn.hanbell.oa.entity.HKGL082;
 import cn.hanbell.oa.model.HKGL016Model;
@@ -32,6 +34,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.json.JSONObject;
+import org.json.XML;
 
 /**
  *
@@ -46,6 +50,9 @@ public class HKGL082FacadeREST extends SuperRESTForEFGP<HKGL082> {
 
     @EJB
     private EmployeeBean employeeBean;
+    
+    @EJB
+    private HKPB033WorkFlowBean hkpb033WorkFlowBean;
 
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
@@ -100,6 +107,29 @@ public class HKGL082FacadeREST extends SuperRESTForEFGP<HKGL082> {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
             try {
+                List<JSONObject> files = new ArrayList<>();
+                for (HKGL082FilesApplication e : entity.getHkgl082Files()) {
+                    String fileName = String.valueOf(BaseLib.getDate().getTime()).concat(".").concat(e.getImageType());
+                    String fileInfo = workFlowBean.reserveNoCmDocument(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, fileName);
+                    JSONObject requestedJSON = XML.toJSONObject(fileInfo);
+                    //路径
+                    StringBuffer url = new StringBuffer("");
+                    url.append(workFlowBean.FILE_URL);
+                    url.append(requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").getString("filePathToSave")).append("/");
+                    StringBuffer fileName1 = new StringBuffer("");
+                    fileName1.append(requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").getString("physicalName"));
+                    fileName1.append(".").append(e.getImageType());
+                    workFlowBean.getShareFileContent(workFlowBean.OA_USERNO, workFlowBean.OA_PASSWORD, url.toString().replace("\\", "/") + fileName1, e.getData());
+                    JSONObject attachment = new JSONObject();
+                    attachment.append("OID", requestedJSON.getJSONObject("com.dsc.nana.services.webservice.ReserveNoCmDocInfo").get("OID"));
+                    attachment.append("id", fileName1.toString());
+                    attachment.append("fileSize", workFlowBean.getFileSize(workFlowBean.OA_USERNO, workFlowBean.OA_PASSWORD, url.toString().replace("\\", "/")));
+                    attachment.append("fileType", e.getImageType());
+                    attachment.append("name", fileName1.toString());
+                    attachment.append("originalFileName", fileName1.toString());
+                    attachment.append("uploadTime", new Date().getTime());
+                    files.add(attachment);
+                }
                 workFlowBean.initUserInfo(entity.getEmployeeNo());
                 HKGL082Model item = new HKGL082Model();
                 item.setFacno(entity.getFacno());
@@ -114,10 +144,11 @@ public class HKGL082FacadeREST extends SuperRESTForEFGP<HKGL082> {
                 item.setLoanAmount(entity.getMoney());
                 item.setExplain(entity.getSumrry());
 
-                String formInstance = workFlowBean.buildXmlForEFGP("HK_GL082", item, null);
-                 String subject = entity.getEmployeeName()+entity.getProofDesc()+"申请";
+//                String formInstance = workFlowBean.buildXmlForEFGP("HK_GL082", item, null);
+                String formInstance = hkpb033WorkFlowBean.buildXmlForEFGP("HK_GL082", item, files, null);
+                String subject = entity.getEmployeeName() + entity.getProofDesc() + "申请";
                 String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL082", formInstance, subject);
-               //String msg = "123\\PKG_HK_GL082202601200003";
+                //String msg = "123\\PKG_HK_GL082202601200003";
                 String[] rm = msg.split("\\$");
                 if (rm.length == 2) {
                     return new ResponseMessage("200", rm[1]);
