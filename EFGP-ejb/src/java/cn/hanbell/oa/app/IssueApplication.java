@@ -7,6 +7,7 @@ package cn.hanbell.oa.app;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -42,6 +43,7 @@ public class IssueApplication implements Serializable {
 
     private String sumrry;
 
+    private List<HKGL082FilesApplication> hkgl082Files;
     public Long getId() {
         return id;
     }
@@ -185,5 +187,16 @@ public class IssueApplication implements Serializable {
     public void setSumrry(String sumrry) {
         this.sumrry = sumrry;
     }
+
+    public List<HKGL082FilesApplication> getHkgl082Files() {
+        return hkgl082Files;
+    }
+
+    public void setHkgl082Files(List<HKGL082FilesApplication> hkgl082Files) {
+        this.hkgl082Files = hkgl082Files;
+    }
+
+
+
     
 }
