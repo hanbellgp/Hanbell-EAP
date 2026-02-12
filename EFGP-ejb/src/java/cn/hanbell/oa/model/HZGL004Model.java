@@ -40,6 +40,7 @@ public class HZGL004Model {
     private String isWechat;
     private String safeplace;
     private String srcno;
+    private String overdue;
     
     //派车单栏位
     private String useCar;
@@ -382,6 +383,16 @@ public class HZGL004Model {
     public void setSrcno(String srcno) {
         this.srcno = srcno;
     }
+
+    public String getOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(String overdue) {
+        this.overdue = overdue;
+    }
+    
+    
 
     public String getClxz() {
         return clxz;

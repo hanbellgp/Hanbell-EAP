@@ -226,6 +226,9 @@ public class HZJS034Detail implements Serializable {
     @Column(name = "genre3")
     private String genre3;
     @Size(max = 255)
+    @Column(name = "genre4")
+    private String genre4;
+    @Size(max = 255)
     @Column(name = "ModelDsc1")
     private String ModelDsc1;
     @Size(max = 255)
@@ -710,6 +713,14 @@ public class HZJS034Detail implements Serializable {
 
     public void setModelDsc2(String ModelDsc2) {
         this.ModelDsc2 = ModelDsc2;
+    }
+
+    public String getGenre4() {
+        return genre4;
+    }
+
+    public void setGenre4(String genre4) {
+        this.genre4 = genre4;
     }
 
 }

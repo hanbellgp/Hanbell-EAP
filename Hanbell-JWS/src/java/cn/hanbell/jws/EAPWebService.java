@@ -1732,7 +1732,7 @@ public class EAPWebService {
             return "404";
         }
     }
-    
+
     @WebMethod(operationName = "createERPAPM525ByOAAPM828")
     public String createERPAPM525ByOAAPM828(@WebParam(name = "psn") String psn) {
         Boolean ret = false;
@@ -1796,7 +1796,7 @@ public class EAPWebService {
             return "404";
         }
     }
-    
+
     @WebMethod(operationName = "createERPCDR645ByOAHKFW005")
     public String createERPCDR645ByOAHKFW005(@WebParam(name = "psn") String psn) {
         Boolean ret = false;

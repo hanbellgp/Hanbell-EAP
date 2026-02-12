@@ -6,6 +6,7 @@
 package cn.hanbell.oa.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -23,7 +24,7 @@ public class HKCG007Model implements Serializable {
     private String isNine;
     private Double ctotaly;
     private String prono;
-    private Double deptYear;
+    private String deptYear;
     private String cfmuserno;
     private Double qtotaly;
     private String prkind;
@@ -38,7 +39,7 @@ public class HKCG007Model implements Serializable {
     private Double ctotalyRMB;
     private String hmark1;
     private Date appDate;
-    private Double deptPeriod;
+    private String deptPeriod;
     private String formid;
     private String depno;
     private String istechnique;
@@ -229,14 +230,6 @@ public class HKCG007Model implements Serializable {
 
     public void setProno(String prono) {
         this.prono = prono;
-    }
-
-    public Double getDeptYear() {
-        return deptYear;
-    }
-
-    public void setDeptYear(Double deptYear) {
-        this.deptYear = deptYear;
     }
 
     public String getNewqty2() {
@@ -511,14 +504,6 @@ public class HKCG007Model implements Serializable {
         this.used = used;
     }
 
-    public Double getDeptPeriod() {
-        return deptPeriod;
-    }
-
-    public void setDeptPeriod(Double deptPeriod) {
-        this.deptPeriod = deptPeriod;
-    }
-
     public String getEquipmentName() {
         return equipmentName;
     }
@@ -650,6 +635,22 @@ public class HKCG007Model implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.HKCG007";
+    }
+
+    public String getDeptYear() {
+        return deptYear;
+    }
+
+    public void setDeptYear(String deptYear) {
+        this.deptYear = deptYear;
+    }
+
+    public String getDeptPeriod() {
+        return deptPeriod;
+    }
+
+    public void setDeptPeriod(String deptPeriod) {
+        this.deptPeriod = deptPeriod;
     }
 
 }

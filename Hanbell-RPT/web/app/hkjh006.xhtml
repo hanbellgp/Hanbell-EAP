@@ -35,6 +35,7 @@
                     <p:column><h:outputLabel value="流程状态" for="queryCurrentState" /></p:column>
                     <p:column>
                         <p:selectOneMenu id="queryCurrentState" value="#{hkjh006ManagedBean.queryCurrentState}"  >
+                            <f:selectItem itemLabel="全部" itemValue=""/>
                             <f:selectItem itemLabel="未开始" itemValue="0"/>
                             <f:selectItem itemLabel="进行中" itemValue="1"/>
                             <f:selectItem itemLabel="已暂停" itemValue="2"/>

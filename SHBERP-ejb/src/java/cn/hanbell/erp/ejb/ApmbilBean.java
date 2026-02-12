@@ -450,7 +450,7 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
     }
 
     //OAAPM820抛转
-    public Boolean initByOAAPM820(String psn) {
+    public Boolean initByOAAPM820(String psn) throws Exception {
         try {
             HKCW013 oah = hkcw013Bean.findByPSN(psn);
             if (oah == null) {

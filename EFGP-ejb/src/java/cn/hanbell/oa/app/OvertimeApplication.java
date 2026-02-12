@@ -31,6 +31,7 @@ public class OvertimeApplication implements Serializable {
     private String formTypeDesc;
     private String dept;
     private String hdnDept;
+    private String overdue;
 
     private List<OvertimeApplicationDetail> detailList;
 
@@ -120,6 +121,14 @@ public class OvertimeApplication implements Serializable {
      */
     public void setDetailList(List<OvertimeApplicationDetail> detailList) {
         this.detailList = detailList;
+    }
+
+    public String getOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(String overdue) {
+        this.overdue = overdue;
     }
 
 }

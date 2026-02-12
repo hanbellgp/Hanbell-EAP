@@ -27,9 +27,9 @@ import org.json.JSONObject;
 public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
 
     // 生产环境
-    //private final String URL = "http://jrs.hanbell.com.cn/Hanbell-WCO/api/sendmsg/send";
+    private final String URL = "http://jrs.hanbell.com.cn/Hanbell-WCO/api/sendmsg/send";
     // 测试环境
-    private final String URL = "http://i2.hanbell.com.cn:8480/Hanbell-WCO/api/sendmsg/send";
+    //private final String URL = "http://i2.hanbell.com.cn:8480/Hanbell-WCO/api/sendmsg/send";
 
     protected String company = "C";
 
@@ -38,6 +38,9 @@ public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
 
     @PersistenceContext(unitName = "CRM-PUCX")
     private EntityManager em_cxcrm;
+
+    @PersistenceContext(unitName = "CRM-PUHS")
+    private EntityManager em_hscrm;
 
     @PersistenceContext(unitName = "CRM-PUTHB")
     private EntityManager em_thbcrm;
@@ -83,6 +86,8 @@ public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
                 return em_shbcrm;
             case "F":
                 return em_cxcrm;
+            case "H":
+                return em_hscrm;
             default:
                 return em_shbcrm;
         }

@@ -26,6 +26,9 @@ public class MCHZCW028tDetail {
     private double subtotal;
     private String travelReport;
     private double otherFee;
+    private int esgaccommdays;  //住宿天数
+    private double  esgmileages; //碳排查公里数
+    private String esgvehicle; //交通方式
 
     public MCHZCW028tDetail() {
 
@@ -130,6 +133,30 @@ public class MCHZCW028tDetail {
     @Override
     public String toString() {
         return "MCHZCW028tDetail{" + "no=" + no + ", trafficDate=" + trafficDate + ", trafficPlace=" + trafficPlace + ", trafficSummary=" + trafficSummary + ", bill_num=" + bill_num + ", taxi=" + taxi + ", trafficfee=" + trafficfee + ", accommodation=" + accommodation + ", allowance=" + allowance + ", subtotal=" + subtotal + ", travelReport=" + travelReport + ", otherFee=" + otherFee + '}';
+    }
+
+    public int getEsgaccommdays() {
+        return esgaccommdays;
+    }
+
+    public void setEsgaccommdays(int esgaccommdays) {
+        this.esgaccommdays = esgaccommdays;
+    }
+
+    public double getEsgmileages() {
+        return esgmileages;
+    }
+
+    public void setEsgmileages(double esgmileages) {
+        this.esgmileages = esgmileages;
+    }
+
+    public String getEsgvehicle() {
+        return esgvehicle;
+    }
+
+    public void setEsgvehicle(String esgvehicle) {
+        this.esgvehicle = esgvehicle;
     }
 
 }

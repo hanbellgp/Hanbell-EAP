@@ -153,7 +153,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             m.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
             m.setHdn_employee(workFlowBean.getCurrentUser().getId());
             m.setHdn_days(m.getDays());
-
+            m.setOverdue(entity.getOverdue());
             int seq = 0;
             //派车
             m.setUseCar(entity.getUseCar());
@@ -192,14 +192,15 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
 
             seq = 0;
             for (MCHZGL004BizDetail mcd : entity.getDetailList()) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(new Date());
-                calendar.set(Calendar.HOUR_OF_DAY, 0);
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 59);
-                calendar.add(calendar.MINUTE, -1);
-                Date zero = calendar.getTime();
                 Date date1 = BaseLib.getDate("yyyy-MM-dd", mcd.getBizDate());
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(BaseLib.getDate());
+                if ("Y".equals(entity.getOverdue())) {
+                    calendar.add(Calendar.DATE, -7);
+                } else {
+                    calendar.add(Calendar.DATE, -1);
+                }
+                Date zero = calendar.getTime();
                 if (zero.getTime() >= date1.getTime()) {
                     return new ResponseMessage("500", "填单日期晚于实际出差日期不可以申请！");
                 }

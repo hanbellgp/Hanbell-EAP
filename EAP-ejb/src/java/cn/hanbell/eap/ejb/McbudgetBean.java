@@ -49,7 +49,7 @@ public class McbudgetBean extends SuperEJBForEAP<Mcbudget> {
                 return null;
             }
             return (Mcbudget) resultList.get(0);
-              //存在多笔中间表明细科目+金额一样情况，在总金额再核对
+            //存在多笔中间表明细科目+金额一样情况，在总金额再核对
 //            Mcbudget m = (Mcbudget) query.getSingleResult();
 //            if (null == m) {
 //                return null;
@@ -65,12 +65,35 @@ public class McbudgetBean extends SuperEJBForEAP<Mcbudget> {
         }
     }
 
+    /*
+    *每刻单据传入的period 为当前日期非请款日期，修正跨月问题
+     */
+    public Mcbudget findByProperties2(String type, String srcno, String facno, String centerid, String budgetacc) {
+        Query query = getEntityManager().createNamedQuery("Mcbudget.findByProperties2");
+        query.setParameter("type", type);
+        query.setParameter("srcno", srcno);
+        query.setParameter("facno", facno);
+        query.setParameter("centerid", centerid);
+        query.setParameter("budgetacc", budgetacc);
+        try {
+            List resultList = query.getResultList();
+            if (null == resultList || resultList.isEmpty()) {
+                return null;
+            }
+            return (Mcbudget) resultList.get(0);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 检查报销单明细与费控中间表预扣是否一致
      */
     public boolean checkMcbudget(String type, String srcno, String facno, String period, String centerid, String budgetacc, BigDecimal preamts) {
         //List<Mcbudget> bcList = mcbudgetBean.findBySrcno(srcno);
-        Mcbudget m = findByProperties(type, srcno, facno, period, centerid, budgetacc, preamts);
+        //Mcbudget m = findByProperties(type, srcno, facno, period, centerid, budgetacc, preamts);
+        Mcbudget m = findByProperties2(type, srcno, facno, centerid, budgetacc);
         if (null == m) {
             return false;
         }

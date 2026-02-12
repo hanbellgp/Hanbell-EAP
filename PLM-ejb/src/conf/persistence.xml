@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="PLM-ejbPU" transaction-type="JTA">
-    <jta-data-source>jdbc/plm</jta-data-source>
-    <class>cn.hanbell.plm.entity.PLMItnbrDetailTemp</class>
-    <class>cn.hanbell.plm.entity.PLMItnbrMasterTemp</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
-    <shared-cache-mode>NONE</shared-cache-mode>
-    <validation-mode>NONE</validation-mode>
-    <properties/>
-  </persistence-unit>
-  <persistence-unit name="PLM-projPU" transaction-type="JTA">
-    <jta-data-source>jdbc/plmproj</jta-data-source>
-    <class>cn.hanbell.plm.entity.PLMProject</class>
-    <class>cn.hanbell.plm.entity.PLMTeam</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
-    <shared-cache-mode>NONE</shared-cache-mode>
-    <validation-mode>NONE</validation-mode>
-    <properties/>
-  </persistence-unit>
+    <persistence-unit name="PLM-ejbPU" transaction-type="JTA">
+        <jta-data-source>jdbc/plm</jta-data-source>
+        <class>cn.hanbell.plm.entity.PLMItnbrDetailTemp</class>
+        <class>cn.hanbell.plm.entity.PLMItnbrMasterTemp</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+        <validation-mode>NONE</validation-mode>
+        <properties/>
+    </persistence-unit>
+    <persistence-unit name="PLM-projPU" transaction-type="JTA">
+        <jta-data-source>jdbc/plmproj</jta-data-source>
+        <class>cn.hanbell.plm.entity.PLMProject</class>
+        <class>cn.hanbell.plm.entity.PLMTeam</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+        <validation-mode>NONE</validation-mode>
+        <properties/>
+    </persistence-unit>
+    <persistence-unit name="PLM-hbofficialPU" transaction-type="JTA">
+        <jta-data-source>jdbc/plmofficial</jta-data-source>
+        <class>cn.hanbell.plm.entity.Part</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+        <validation-mode>NONE</validation-mode>
+        <properties/>
+    </persistence-unit>  
 </persistence>

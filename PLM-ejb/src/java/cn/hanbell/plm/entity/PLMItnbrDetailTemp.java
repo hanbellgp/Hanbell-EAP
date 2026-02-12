@@ -31,8 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PLMItnbrDetailTemp.findAll", query = "SELECT p FROM PLMItnbrDetailTemp p"),
     @NamedQuery(name = "PLMItnbrDetailTemp.findByItemNumber", query = "SELECT p FROM PLMItnbrDetailTemp p WHERE p.itemNumber = :itemnumber"),
     @NamedQuery(name = "PLMItnbrDetailTemp.findById", query = "SELECT p FROM PLMItnbrDetailTemp p WHERE p.id = :id"),
-    @NamedQuery(name = "PLMItnbrDetailTemp.findByUnmsr", query = "SELECT p FROM PLMItnbrDetailTemp p WHERE p.unmsr = :unmsr"),
-    @NamedQuery(name = "PLMItnbrDetailTemp.findByUnmsre", query = "SELECT p FROM PLMItnbrDetailTemp p WHERE p.unmsre = :unmsre")})
+    @NamedQuery(name = "PLMItnbrDetailTemp.findByCitnbr", query = "SELECT p FROM PLMItnbrDetailTemp p WHERE p.cItnbr = :citnbr")})
 public class PLMItnbrDetailTemp implements Serializable {
 
     private static final long serialVersionUID = 1L;

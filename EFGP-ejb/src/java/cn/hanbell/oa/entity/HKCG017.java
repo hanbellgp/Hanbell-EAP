@@ -245,6 +245,18 @@ public class HKCG017 implements Serializable {
     @Size(max = 10)
     @Column(name = "paycode")
     private String paycode;
+    @Size(max = 255)
+    @Column(name = "CheckTax")
+    private String checktax;
+    @Size(max = 10)
+    @Column(name = "tax")
+    private String tax;
+    @Size(max = 255)
+    @Column(name = "CheckTaxrate")
+    private String checktaxrate;
+    @Size(max = 10)
+    @Column(name = "taxrate")
+    private String taxrate;
 
     public HKCG017() {
     }
@@ -716,6 +728,38 @@ public class HKCG017 implements Serializable {
 
     public void setVdrsta(String vdrsta) {
         this.vdrsta = vdrsta;
+    }
+
+    public String getChecktax() {
+        return checktax;
+    }
+
+    public void setChecktax(String checktax) {
+        this.checktax = checktax;
+    }
+
+    public String getTax() {
+        return tax;
+    }
+
+    public void setTax(String tax) {
+        this.tax = tax;
+    }
+
+    public String getChecktaxrate() {
+        return checktaxrate;
+    }
+
+    public void setChecktaxrate(String checktaxrate) {
+        this.checktaxrate = checktaxrate;
+    }
+
+    public String getTaxrate() {
+        return taxrate;
+    }
+
+    public void setTaxrate(String taxrate) {
+        this.taxrate = taxrate;
     }
 
 }
