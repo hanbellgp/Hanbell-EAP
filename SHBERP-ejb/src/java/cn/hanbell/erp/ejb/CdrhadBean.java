@@ -5,6 +5,7 @@
  */
 package cn.hanbell.erp.ejb;
 
+import cn.hanbell.erp.entity.Cdrshdsc;
 import cn.hanbell.eap.comm.MailNotify;
 import cn.hanbell.eap.ejb.MailNotificationBean;
 import cn.hanbell.eap.ejb.MailSettingBean;
@@ -57,6 +58,8 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
     private CdrdmasBean cdrdmasBean;
     @EJB
     private InvmasBean invmasBean;
+    @EJB
+    private CdrshdscBean cdrshdscBean;
     @EJB
     private TranswahBean transwahBean;
     @EJB
@@ -280,7 +283,7 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                             cdta.setArmqy(cdta.getShpqy1());   //应收账款数量（单单位）
                             cdta.setUnpris(cdmas.getUnpris());
                             cdta.setUnprisrccode(cdmas.getUnprisrccode());
-                            BigDecimal ldshpamts =cdta.getUnpris().multiply(cdta.getShpqy1());
+                            BigDecimal ldshpamts = cdta.getUnpris().multiply(cdta.getShpqy1());
                             cdta.setShpamts(ldshpamts.setScale(2, RoundingMode.HALF_UP));
                             cdta.setIvoamts(BigDecimal.ZERO);
                             cdta.setDmark1(cdmas.getDmark1());
@@ -375,7 +378,7 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                     chad.setOwareh(transwah.getWareh()); //海关仓
                     chad.setReplenish('N');
                     //chad.setIssevhad('Y');
-                    if (chad.getCusno().equals("SCQ00146") || chad.getCusno().equals("SJS00254") || chad.getCusno().equals("SSD00107") || chad.getCusno().equals("SGD00088")|| chad.getCusno().equals("SNX00040")) {
+                    if (chad.getCusno().equals("SCQ00146") || chad.getCusno().equals("SJS00254") || chad.getCusno().equals("SSD00107") || chad.getCusno().equals("SGD00088") || chad.getCusno().equals("SNX00040")) {
                         chad.setIssevhad('N');
                     } else {
                         chad.setIssevhad('Y');
@@ -392,6 +395,14 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                     //更新订单单身状态
                     for (Cdrdmas dmas : cdmasList) {
                         cdrdmasBean.update(dmas);
+                    }
+                    //插入备注档
+                    if (f.getOrdertype().equals("1") && f.getFilialeShpno() != null && !f.getFilialeShpno().equals("")) {
+                        Cdrshdsc shdsc = new Cdrshdsc(facno, ls_shpno);
+                        shdsc.setMark1("");
+                        shdsc.setBrantrno(f.getFilialeShpno());
+                        cdrshdscBean.setCompany(facno);
+                        cdrshdscBean.persist(shdsc);
                     }
                 }
 
