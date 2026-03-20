@@ -42,6 +42,9 @@ public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
     @PersistenceContext(unitName = "CRM-PUHS")
     private EntityManager em_hscrm;
 
+    @PersistenceContext(unitName = "CRM-PUVHB")
+    private EntityManager em_vhbcrm;
+
     @PersistenceContext(unitName = "CRM-PUTHB")
     private EntityManager em_thbcrm;
 
@@ -87,7 +90,11 @@ public abstract class SuperEJBForCRM<T> extends SuperEJB<T> {
             case "F":
                 return em_cxcrm;
             case "H":
+            case "Y":
                 return em_hscrm;
+            case "V":
+            case "VB":
+                return em_vhbcrm;
             default:
                 return em_shbcrm;
         }
