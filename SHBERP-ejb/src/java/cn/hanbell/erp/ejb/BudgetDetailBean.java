@@ -167,6 +167,9 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
         String period;
         Date date;
         HZCW028 b = hzcw028Bean.findByPSN(psn);
+        if (null == b) {
+            return true;
+        }
         String facno = b.getFacno();
         List<BudgetDetail> budgetDetails = new ArrayList<>();
         List<HZCW028reDetail> details = null;
@@ -369,10 +372,10 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
         try {
             budgetDetails = q.getResultList();
             for (BudgetDetail b : budgetDetails) {
-                BudgetAcc ba=budgetAccBean.findByAccno(b.getBudgetDetailPK().getBudgetacc());
-                if(ba != null && !ba.getAccclass().equals("00")){
-                      deptPeriod = deptPeriod.add(b.getAmts().add(b.getAddamts()).subtract(b.getDecramts()).subtract(b.getPreamts()));
-                }   
+                BudgetAcc ba = budgetAccBean.findByAccno(b.getBudgetDetailPK().getBudgetacc());
+                if (ba != null && !ba.getAccclass().equals("00")) {
+                    deptPeriod = deptPeriod.add(b.getAmts().add(b.getAddamts()).subtract(b.getDecramts()).subtract(b.getPreamts()));
+                }
             }
             deptBalance = deptPeriod.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         } catch (Exception ex) {
@@ -477,5 +480,5 @@ public class BudgetDetailBean extends SuperEJBForERP<BudgetDetail> {
         period2 = sp[0] + "12";
         return this.getBudgetBalanceForAccPeriod(facno, period1, period2, centerid, accno);
     }
-    
+
 }
