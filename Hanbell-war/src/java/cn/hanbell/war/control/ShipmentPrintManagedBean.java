@@ -195,6 +195,11 @@ public class ShipmentPrintManagedBean extends FormMultiBean<Shipment, ShipmentDe
                                 content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
                                         .append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(".").append(sd.getCustomerItemDesc());
                                 break;
+                            case "SSD01330":
+                                // 青岛海达源专属二维码
+                                content.append(sd.getCustomerItem()).append(".").append(sd.getVarnr()).append(".").append(sd.getItemModel()).append(".")
+                                        .append(BaseLib.formatDate("yyyyMMdd", sd.getShpdate())).append(".").append(sd.getCustomerItemDesc());
+                                break;
                             case "SSD00730":
                                 // 青岛海信日立
                                 content.append(sd.getCustomerItem().trim());
