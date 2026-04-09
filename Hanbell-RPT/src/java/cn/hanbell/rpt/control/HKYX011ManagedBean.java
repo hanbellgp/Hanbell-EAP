@@ -143,6 +143,7 @@ public class HKYX011ManagedBean extends SuperQueryBean<HKYX011> {
                     Cell cell9 = row.createCell(9);
                     Cell cell10 = row.createCell(10);
                     Cell cell11 = row.createCell(11);
+                       Cell cell12 = row.createCell(12);
                     cell.setCellStyle(cellStyle);
                     cell1.setCellStyle(cellStyle);
                     cell2.setCellStyle(cellStyle);
@@ -155,6 +156,7 @@ public class HKYX011ManagedBean extends SuperQueryBean<HKYX011> {
                     cell9.setCellStyle(cellStyle);
                     cell10.setCellStyle(cellStyle);
                     cell11.setCellStyle(cellStyle);
+                    cell12.setCellStyle(cellStyle);
                     cell1.setCellValue(o[0] != null ? BaseLib.formatDate("yyyy/MM/dd", (Date) o[0]) : "");
                     cell2.setCellValue(o[1] != null ? (String) o[1] : "");
                     cell3.setCellValue(o[2] != null ? (String) o[2] : "");
@@ -166,6 +168,7 @@ public class HKYX011ManagedBean extends SuperQueryBean<HKYX011> {
                     cell9.setCellValue(o[8] != null ? (Double) o[8] : 0.0);
                     cell10.setCellValue(o[9] != null ? (String) o[9] : "");
                     cell11.setCellValue(o[10] != null ? (String) o[10] : "");
+                    cell12.setCellValue(o[10] != null ? (String) o[11] : "");
                     count1 = count1 + (Double) o[5];
                     count2 = count2 + (Double) o[6];
                     count3 = count3 + (Double) o[7];
@@ -185,6 +188,7 @@ public class HKYX011ManagedBean extends SuperQueryBean<HKYX011> {
                     Cell cell9 = row.createCell(9);
                     Cell cell10 = row.createCell(10);
                     Cell cell11 = row.createCell(11);
+                    Cell cell12 = row.createCell(12);
                     cell.setCellStyle(cellStyle);
                     cell1.setCellStyle(cellStyle);
                     cell2.setCellStyle(cellStyle);
@@ -197,6 +201,7 @@ public class HKYX011ManagedBean extends SuperQueryBean<HKYX011> {
                     cell9.setCellStyle(cellStyle);
                     cell10.setCellStyle(cellStyle);
                     cell11.setCellStyle(cellStyle);
+                    cell12.setCellStyle(cellStyle);
                     if (m == i + 1) {
                         cell.setCellValue("合计");
                         CellRangeAddress region = new CellRangeAddress(m, m, 0, 5);
@@ -224,6 +229,7 @@ public class HKYX011ManagedBean extends SuperQueryBean<HKYX011> {
                         cell9.setCellStyle(style);
                         cell10.setCellStyle(style);
                         cell11.setCellStyle(style);
+                        cell12.setCellStyle(style);
                         cell6.setCellValue(count1);
                         cell7.setCellValue(count2);
                         cell8.setCellValue(count3);
@@ -331,13 +337,13 @@ public class HKYX011ManagedBean extends SuperQueryBean<HKYX011> {
                 Object[] o = {entity.getApplyDate(), entity.getCustomerno(),
                     entity.getCustomername(), org.getId(),
                     org.getOrganizationUnitName(), entity.getDiscountTotal(),
-                    entity.getNumbertotal(), entity.getSaleamountTotal(), entity.getRatetotal(), entity.getRemark(), entity.getPeriod()};
+                    entity.getNumbertotal(), entity.getSaleamountTotal(), entity.getRatetotal(), entity.getRemark(), entity.getPeriod(),entity.getContractno()};
                 list.add(o);
             } else {
                 Object[] o = {entity.getApplyDate(), entity.getCustomerno(),
                     entity.getCustomername(), "",
                     "", entity.getDiscountTotal(),
-                    entity.getNumbertotal(), entity.getSaleamountTotal(), entity.getRatetotal(), entity.getRemark(), entity.getPeriod()};
+                    entity.getNumbertotal(), entity.getSaleamountTotal(), entity.getRatetotal(), entity.getRemark(), entity.getPeriod(),entity.getContractno()};
                 list.add(o);
             }
         }
