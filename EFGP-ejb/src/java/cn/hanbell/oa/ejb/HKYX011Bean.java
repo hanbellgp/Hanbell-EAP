@@ -77,7 +77,6 @@ public class HKYX011Bean extends SuperEJBForEFGP<HKYX011> {
         String formatDate = cn.hanbell.util.BaseLib.formatDate("yyyy", applyDate);
         
         HKJH001serial hs = hkjh001serialBean.findByKind("SZ");
-
         String no = "";
         int serialno = hs.getSerialno();
         if (serialno < 10) {
