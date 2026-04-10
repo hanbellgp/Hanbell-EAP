@@ -21,12 +21,6 @@ import cn.hanbell.crm.ejb.WARTABean;
 //import cn.hanbell.crm.entity.REPPB;
 import cn.hanbell.crm.entity.CMSME;
 import cn.hanbell.crm.entity.CMSMV;
-import cn.hanbell.crm.entity.DDGA;
-import cn.hanbell.crm.entity.DDGB;
-import cn.hanbell.crm.entity.DDGC;
-import cn.hanbell.crm.entity.DDGD;
-import cn.hanbell.crm.entity.REPPA;
-import cn.hanbell.crm.entity.REPPB;
 import cn.hanbell.crmsys.ejb.DSCMABean;
 import cn.hanbell.crmsys.entity.DSCMA;
 import cn.hanbell.eam.ejb.AssetAcceptanceBean;
@@ -99,32 +93,15 @@ import cn.hanbell.erp.entity.Apmapd;
 import cn.hanbell.erp.entity.Apmaph;
 import cn.hanbell.erp.entity.Apmpyh;
 import cn.hanbell.erp.entity.Apmtbil;
-import cn.hanbell.erp.entity.Bomsub;
 import cn.hanbell.erp.entity.BudgetAcc;
 import cn.hanbell.erp.entity.Cdrcitnbr;
 import cn.hanbell.erp.entity.Cdrcus;
 import cn.hanbell.erp.entity.Cdrcusman;
 import cn.hanbell.erp.entity.Cdrcusrel;
 import cn.hanbell.erp.entity.Cdrdmas;
-import cn.hanbell.erp.entity.Cdrdpopsfk;
-import cn.hanbell.erp.entity.CdrdpopsfkPK;
 import cn.hanbell.erp.entity.Cdrhmas;
-import cn.hanbell.erp.entity.Cdrhpopsfk;
-import cn.hanbell.erp.entity.CdrhpopsfkPK;
-import cn.hanbell.erp.entity.Cdrpaydsc;
-import cn.hanbell.erp.entity.Cdrqasry;
-import cn.hanbell.erp.entity.CdrqasryPK;
-import cn.hanbell.erp.entity.Cdrqbomsub;
-import cn.hanbell.erp.entity.CdrqbomsubPK;
 import cn.hanbell.erp.entity.Cdrqdta;
-import cn.hanbell.erp.entity.CdrqdtaPK;
 import cn.hanbell.erp.entity.Cdrqhad;
-import cn.hanbell.erp.entity.CdrqhadPK;
-import cn.hanbell.erp.entity.Cdrqhdsc;
-import cn.hanbell.erp.entity.CdrqhdscPK;
-import cn.hanbell.erp.entity.Cdrsfkpart;
-import cn.hanbell.erp.entity.Cdrsfksorts;
-import cn.hanbell.erp.entity.Cdrsfkspec;
 import cn.hanbell.erp.entity.Invbal;
 import cn.hanbell.erp.entity.Invdta;
 import cn.hanbell.erp.entity.Invhad;
@@ -155,6 +132,7 @@ import cn.hanbell.erp.entity.Secuser;
 import cn.hanbell.exch.ejb.ExchangeSHBBean;
 import cn.hanbell.mes.entity.MuserRole;
 import cn.hanbell.oa.ejb.HKCW002Bean;
+import cn.hanbell.oa.ejb.HKYX009Bean;
 import cn.hanbell.oa.ejb.InvmasmarkBean;
 import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
@@ -185,7 +163,6 @@ import cn.hanbell.plm.entity.PLMItnbrMasterTemp;
 import cn.hanbell.wco.ejb.Agent1000002Bean;
 import com.lightshell.comm.BaseLib;
 import com.lightshell.comm.SuperEJB;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
@@ -270,6 +247,8 @@ public class TimerBean {
     // EJBForEFGP
     @EJB
     private HKCW002Bean hkcw002Bean;
+    @EJB
+    private HKYX009Bean hkyx009Bean;
     @EJB
     private WorkFlowBean workFlowBean;
     @EJB
@@ -1173,6 +1152,8 @@ public class TimerBean {
                             d.setIsDUnit("N");
                             d.setYt("");
                             d.setRemark("");
+                            d.setModelDsc1("");
+                            d.setModelDsc2("");
                             d.setGenre2("");
                             d.setGenre3("");
                             d.setGenre4("");
@@ -1184,8 +1165,12 @@ public class TimerBean {
                                     continue;
                                 }
                             }
-                            d.setModelDsc1("");
-                            d.setModelDsc2("");
+                            d.setPartMaterial("");
+                            d.setOtherMaterial("");
+                            d.setMaterialDensity("");
+                            d.setPartMaterial01("");
+                            d.setOtherMaterial01("");
+                            d.setMaterialDensity01("");
                             detailList.add(d);
 
                             //加入工程变更通知单作废变更前件号逻辑
@@ -1221,7 +1206,7 @@ public class TimerBean {
                             workFlowBean.initUserInfo(pm.getCApplicant()); //上海厂开单人
                             m.setFacno(pm.getCProno());
                         }
-                        if (workFlowBean.getCurrentUser().getLeaveDate() != null) {
+                        if (workFlowBean.getCurrentUser() == null || workFlowBean.getCurrentUser().getLeaveDate() != null) {
                             // 离职人员不能发起OA
                             pm.setCTriggerYn('Y');
                             plmItnbrMasterTempBean.update(pm);
@@ -1572,6 +1557,13 @@ public class TimerBean {
                 for (Cdrqhad h : cdrqhadList) {
                     facno = h.getCdrqhadPK().getFacno();
                     quono = h.getCdrqhadPK().getQuono();
+                    //检查OA是否已经存在
+                    if (hkyx009Bean.findBySrcno(facno, quono) > 0 && h.getHquosta().equals("R")) {
+                        h.setHquosta('O');
+                        cdrqhadBean.update(h);
+                        cdrqhadBean.getEntityManager().flush();
+                        return;
+                    }
                     cdrqdtaList = cdrqhadBean.findNeedThrowDetail(facno, quono);
                     cdrcusBean.setCompany(facno);
                     invmasBean.setCompany(facno);
@@ -1593,7 +1585,7 @@ public class TimerBean {
                             dm = new HKYX009DetailModel();
                             dm.setSeq(String.valueOf(i));
                             dm.setTrseq(String.valueOf(d.getCdrqdtaPK().getTrseq()));
-                            dm.setItnbr(d.getItnbr());
+                            dm.setItnbr(d.getItnbr() == null ? "" : d.getItnbrcus());
                             dm.setItnbrcus(d.getItnbrcus());
                             Invmas invmas = invmasBean.findByItnbr(d.getItnbr());
                             dm.setItdsc(filterString(invmas.getItdsc()));
@@ -4778,10 +4770,10 @@ public class TimerBean {
             String returnStr = s;
             try {
                 //String regEx = "[\\s`!！@#￥$%^……&（()）\\+【\\[\\]】｛{}｝\\|、\\\\；;：:‘'“”\"，,《<。.》>、/？?]";
-                String regEx = "[\\s`&²³\\t\\r\\n ]";
+                String regEx = "[\\s`&²³\\t\\r\\n <>]";
                 Pattern p = Pattern.compile(regEx);
                 Matcher m = p.matcher(returnStr);
-                returnStr = m.replaceAll(" ");
+                returnStr = m.replaceAll("");
                 //returnStr = removeNonAscii(returnStr);
             } catch (Exception ex) {
                 log4j.error(ex);

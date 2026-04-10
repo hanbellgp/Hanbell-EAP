@@ -2,7 +2,6 @@
  * To change this license header, choose License Headers in Project Properties. To change this template file, choose
  * Tools | Templates and open the template in the editor.
  */
-
 package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
@@ -12,6 +11,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.persistence.Query;
 
 /**
  *
@@ -30,6 +30,32 @@ public class SHBERPAPM828Bean extends SuperEJBForEFGP<SHBERPAPM828> {
 
     public List<SHBERPAPM828Detail> getDetailList(String fsn) {
         return shberpapm828DetailBean.findByFSN(fsn);
+    }
+
+    /**
+     * C1491 根据请款单号，查询OA流程返回状态
+     *
+     * @param facno
+     * @param apno
+     * @param aptyp
+     * @return 1进行中，3已结案，0未找到有效记录
+     */
+    public int findBySrcno(String facno, String apno, String aptyp) {
+        String jpql = "SELECT e.currentState FROM SHBERPAPM828 h "
+                + "JOIN ProcessInstance e ON e.serialNumber = h.processSerialNumber "
+                + "WHERE h.facno = :facno AND h.apno = :apno  AND h.aptyp = :aptyp";
+        Query query = this.getEntityManager().createQuery(jpql);
+        query.setParameter("facno", facno);
+        query.setParameter("apno", apno);
+        query.setParameter("aptyp", aptyp);
+        List<Integer> stateList = query.getResultList();
+        if (stateList.contains(1)) {
+            return 1;
+        } else if (stateList.contains(3)) {
+            return 3;
+        } else {
+            return 0;
+        }
     }
 
 }

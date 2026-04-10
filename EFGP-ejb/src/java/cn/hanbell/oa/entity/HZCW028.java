@@ -32,68 +32,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HZCW028.findBySummary", query = "SELECT h FROM HZCW028 h WHERE h.summary = :summary"),
     @NamedQuery(name = "HZCW028.findByAppDept", query = "SELECT h FROM HZCW028 h WHERE h.appDept = :appDept"),
     @NamedQuery(name = "HZCW028.findByCenterid", query = "SELECT h FROM HZCW028 h WHERE h.centerid = :centerid"),
-    @NamedQuery(name = "HZCW028.findByAllowance", query = "SELECT h FROM HZCW028 h WHERE h.allowance = :allowance"),
-    @NamedQuery(name = "HZCW028.findByRemark", query = "SELECT h FROM HZCW028 h WHERE h.remark = :remark"),
-    @NamedQuery(name = "HZCW028.findByTrafficSummary", query = "SELECT h FROM HZCW028 h WHERE h.trafficSummary = :trafficSummary"),
-    @NamedQuery(name = "HZCW028.findByBh3", query = "SELECT h FROM HZCW028 h WHERE h.bh3 = :bh3"),
-    @NamedQuery(name = "HZCW028.findByBh2", query = "SELECT h FROM HZCW028 h WHERE h.bh2 = :bh2"),
-    @NamedQuery(name = "HZCW028.findByReceipt", query = "SELECT h FROM HZCW028 h WHERE h.receipt = :receipt"),
-    @NamedQuery(name = "HZCW028.findByCarUse", query = "SELECT h FROM HZCW028 h WHERE h.carUse = :carUse"),
-    @NamedQuery(name = "HZCW028.findByStartMileage", query = "SELECT h FROM HZCW028 h WHERE h.startMileage = :startMileage"),
-    @NamedQuery(name = "HZCW028.findByDeptqx", query = "SELECT h FROM HZCW028 h WHERE h.deptqx = :deptqx"),
-    @NamedQuery(name = "HZCW028.findByBh1", query = "SELECT h FROM HZCW028 h WHERE h.bh1 = :bh1"),
-    @NamedQuery(name = "HZCW028.findByAmount", query = "SELECT h FROM HZCW028 h WHERE h.amount = :amount"),
-    @NamedQuery(name = "HZCW028.findByTravelReport", query = "SELECT h FROM HZCW028 h WHERE h.travelReport = :travelReport"),
-    @NamedQuery(name = "HZCW028.findByJc2", query = "SELECT h FROM HZCW028 h WHERE h.jc2 = :jc2"),
-    @NamedQuery(name = "HZCW028.findByJc1", query = "SELECT h FROM HZCW028 h WHERE h.jc1 = :jc1"),
-    @NamedQuery(name = "HZCW028.findByJc3", query = "SELECT h FROM HZCW028 h WHERE h.jc3 = :jc3"),
-    @NamedQuery(name = "HZCW028.findByTotalMileage", query = "SELECT h FROM HZCW028 h WHERE h.totalMileage = :totalMileage"),
-    @NamedQuery(name = "HZCW028.findByDeptYear", query = "SELECT h FROM HZCW028 h WHERE h.deptYear = :deptYear"),
-    @NamedQuery(name = "HZCW028.findBySubtotal", query = "SELECT h FROM HZCW028 h WHERE h.subtotal = :subtotal"),
-    @NamedQuery(name = "HZCW028.findByCost", query = "SELECT h FROM HZCW028 h WHERE h.cost = :cost"),
-    @NamedQuery(name = "HZCW028.findByEntertainObj", query = "SELECT h FROM HZCW028 h WHERE h.entertainObj = :entertainObj"),
-    @NamedQuery(name = "HZCW028.findByRatio", query = "SELECT h FROM HZCW028 h WHERE h.ratio = :ratio"),
-    @NamedQuery(name = "HZCW028.findByAccName", query = "SELECT h FROM HZCW028 h WHERE h.accName = :accName"),
+    @NamedQuery(name = "HZCW028.findBySrcno", query = "SELECT h FROM HZCW028 h WHERE h.srcno = :srcno"),
     @NamedQuery(name = "HZCW028.findByOid", query = "SELECT h FROM HZCW028 h WHERE h.oid = :oid"),
-    @NamedQuery(name = "HZCW028.findByEndMileage", query = "SELECT h FROM HZCW028 h WHERE h.endMileage = :endMileage"),
-    @NamedQuery(name = "HZCW028.findByTaxi", query = "SELECT h FROM HZCW028 h WHERE h.taxi = :taxi"),
-    @NamedQuery(name = "HZCW028.findByNotaxes", query = "SELECT h FROM HZCW028 h WHERE h.notaxes = :notaxes"),
-    @NamedQuery(name = "HZCW028.findByTotaltaxInclusiveRMB", query = "SELECT h FROM HZCW028 h WHERE h.totaltaxInclusiveRMB = :totaltaxInclusiveRMB"),
-    @NamedQuery(name = "HZCW028.findByTaxInclusive", query = "SELECT h FROM HZCW028 h WHERE h.taxInclusive = :taxInclusive"),
-    @NamedQuery(name = "HZCW028.findByAccno", query = "SELECT h FROM HZCW028 h WHERE h.accno = :accno"),
-    @NamedQuery(name = "HZCW028.findByEntertainReason", query = "SELECT h FROM HZCW028 h WHERE h.entertainReason = :entertainReason"),
-    @NamedQuery(name = "HZCW028.findByTotaltaxesRMB", query = "SELECT h FROM HZCW028 h WHERE h.totaltaxesRMB = :totaltaxesRMB"),
     @NamedQuery(name = "HZCW028.findByFacno", query = "SELECT h FROM HZCW028 h WHERE h.facno = :facno"),
-    @NamedQuery(name = "HZCW028.findByTrafficfee", query = "SELECT h FROM HZCW028 h WHERE h.trafficfee = :trafficfee"),
     @NamedQuery(name = "HZCW028.findByCreator", query = "SELECT h FROM HZCW028 h WHERE h.creator = :creator"),
-    @NamedQuery(name = "HZCW028.findByAccPeriod", query = "SELECT h FROM HZCW028 h WHERE h.accPeriod = :accPeriod"),
     @NamedQuery(name = "HZCW028.findByCrmno", query = "SELECT h FROM HZCW028 h WHERE h.crmno = :crmno"),
-    @NamedQuery(name = "HZCW028.findByAccYear", query = "SELECT h FROM HZCW028 h WHERE h.accYear = :accYear"),
-    @NamedQuery(name = "HZCW028.findByCustomerSno", query = "SELECT h FROM HZCW028 h WHERE h.customerSno = :customerSno"),
-    @NamedQuery(name = "HZCW028.findByEntertainDate", query = "SELECT h FROM HZCW028 h WHERE h.entertainDate = :entertainDate"),
-    @NamedQuery(name = "HZCW028.findByTotaltaxInclusive", query = "SELECT h FROM HZCW028 h WHERE h.totaltaxInclusive = :totaltaxInclusive"),
     @NamedQuery(name = "HZCW028.findByPSN", query = "SELECT h FROM HZCW028 h WHERE h.processSerialNumber = :psn"),
-    @NamedQuery(name = "HZCW028.findByTrafficPlace", query = "SELECT h FROM HZCW028 h WHERE h.trafficPlace = :trafficPlace"),
     @NamedQuery(name = "HZCW028.findByAppDate", query = "SELECT h FROM HZCW028 h WHERE h.appDate = :appDate"),
-    @NamedQuery(name = "HZCW028.findByDeptPeriod", query = "SELECT h FROM HZCW028 h WHERE h.deptPeriod = :deptPeriod"),
-    @NamedQuery(name = "HZCW028.findByTrafficDate", query = "SELECT h FROM HZCW028 h WHERE h.trafficDate = :trafficDate"),
     @NamedQuery(name = "HZCW028.findByBudgetDept", query = "SELECT h FROM HZCW028 h WHERE h.budgetDept = :budgetDept"),
-    @NamedQuery(name = "HZCW028.findByCoin", query = "SELECT h FROM HZCW028 h WHERE h.coin = :coin"),
-    @NamedQuery(name = "HZCW028.findByTotalnotaxesRMB", query = "SELECT h FROM HZCW028 h WHERE h.totalnotaxesRMB = :totalnotaxesRMB"),
-    @NamedQuery(name = "HZCW028.findByReimbursement", query = "SELECT h FROM HZCW028 h WHERE h.reimbursement = :reimbursement"),
-    @NamedQuery(name = "HZCW028.findByBudgetAcc", query = "SELECT h FROM HZCW028 h WHERE h.budgetAcc = :budgetAcc"),
-    @NamedQuery(name = "HZCW028.findByResearch", query = "SELECT h FROM HZCW028 h WHERE h.research = :research"),
-    @NamedQuery(name = "HZCW028.findByEntertainPeople", query = "SELECT h FROM HZCW028 h WHERE h.entertainPeople = :entertainPeople"),
-    @NamedQuery(name = "HZCW028.findBySort3", query = "SELECT h FROM HZCW028 h WHERE h.sort3 = :sort3"),
-    @NamedQuery(name = "HZCW028.findByProduct", query = "SELECT h FROM HZCW028 h WHERE h.product = :product"),
-    @NamedQuery(name = "HZCW028.findBySort2", query = "SELECT h FROM HZCW028 h WHERE h.sort2 = :sort2"),
-    @NamedQuery(name = "HZCW028.findByServiceno", query = "SELECT h FROM HZCW028 h WHERE h.serviceno = :serviceno"),
     @NamedQuery(name = "HZCW028.findByAppUser", query = "SELECT h FROM HZCW028 h WHERE h.appUser = :appUser"),
-    @NamedQuery(name = "HZCW028.findByDays", query = "SELECT h FROM HZCW028 h WHERE h.days = :days"),
-    @NamedQuery(name = "HZCW028.findByAccommodation", query = "SELECT h FROM HZCW028 h WHERE h.accommodation = :accommodation"),
-    @NamedQuery(name = "HZCW028.findBySort1", query = "SELECT h FROM HZCW028 h WHERE h.sort1 = :sort1"),
-    @NamedQuery(name = "HZCW028.findByBudgetAccname", query = "SELECT h FROM HZCW028 h WHERE h.budgetAccname = :budgetAccname"),
-    @NamedQuery(name = "HZCW028.findByTaxes", query = "SELECT h FROM HZCW028 h WHERE h.taxes = :taxes"),
     @NamedQuery(name = "HZCW028.findByFSN", query = "SELECT h FROM HZCW028 h WHERE h.formSerialNumber = :fsn")})
 public class HZCW028 implements Serializable {
 
@@ -287,6 +234,9 @@ public class HZCW028 implements Serializable {
     @Size(max = 255)
     @Column(name = "hdtrafficAmount")
     private String hdtrafficAmount;
+    @Size(max = 255)
+    @Column(name = "srcno")
+    private String srcno;
 
     public HZCW028() {
     }
@@ -870,6 +820,14 @@ public class HZCW028 implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.HZCW028[ oid=" + oid + " ]";
+    }
+
+    public String getSrcno() {
+        return srcno;
+    }
+
+    public void setSrcno(String srcno) {
+        this.srcno = srcno;
     }
 
 }

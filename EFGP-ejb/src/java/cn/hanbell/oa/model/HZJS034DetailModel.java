@@ -172,6 +172,12 @@ public class HZJS034DetailModel implements Serializable {
     private String genre2;
     private String genre3;
     private String genre4;
+    private String PartMaterial;
+    private String otherMaterial;
+    private String materialDensity;
+    private String PartMaterial01;
+    private String otherMaterial01;
+    private String materialDensity01;
 
     public String getAHclass() {
         return AHclass;
@@ -251,6 +257,10 @@ public class HZJS034DetailModel implements Serializable {
         this.genre4 = "";
         this.ModelDsc1 = "";
         this.ModelDsc2 = "";
+        this.otherMaterial = "";
+        this.otherMaterial01 = "";
+        this.materialDensity = "";
+        this.materialDensity01 = "";
     }
 
     public String getRemark() {
@@ -893,6 +903,54 @@ public class HZJS034DetailModel implements Serializable {
 
     public void setGenre4(String genre4) {
         this.genre4 = genre4;
+    }
+
+    public String getOtherMaterial() {
+        return otherMaterial;
+    }
+
+    public void setOtherMaterial(String otherMaterial) {
+        this.otherMaterial = otherMaterial;
+    }
+
+    public String getOtherMaterial01() {
+        return otherMaterial01;
+    }
+
+    public void setOtherMaterial01(String otherMaterial01) {
+        this.otherMaterial01 = otherMaterial01;
+    }
+
+    public String getMaterialDensity() {
+        return materialDensity;
+    }
+
+    public void setMaterialDensity(String materialDensity) {
+        this.materialDensity = materialDensity;
+    }
+
+    public String getMaterialDensity01() {
+        return materialDensity01;
+    }
+
+    public void setMaterialDensity01(String materialDensity01) {
+        this.materialDensity01 = materialDensity01;
+    }
+
+    public String getPartMaterial() {
+        return PartMaterial;
+    }
+
+    public void setPartMaterial(String PartMaterial) {
+        this.PartMaterial = PartMaterial;
+    }
+
+    public String getPartMaterial01() {
+        return PartMaterial01;
+    }
+
+    public void setPartMaterial01(String PartMaterial01) {
+        this.PartMaterial01 = PartMaterial01;
     }
 
 }

@@ -51,7 +51,9 @@ public class REPTD implements Serializable {
     @Size(max = 255)
     @Column(name = "TD502")
     private String td502;
-
+    @Size(max = 255)
+    @Column(name = "TD503")
+    private String td503;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected REPTDPK reptdPK;
@@ -999,6 +1001,14 @@ public class REPTD implements Serializable {
 
     public void setTd502(String td502) {
         this.td502 = td502;
+    }
+
+    public String getTd503() {
+        return td503;
+    }
+
+    public void setTd503(String td503) {
+        this.td503 = td503;
     }
 
 }
