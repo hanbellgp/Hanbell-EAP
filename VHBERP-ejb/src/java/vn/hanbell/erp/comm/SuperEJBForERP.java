@@ -7,7 +7,12 @@ package vn.hanbell.erp.comm;
 
 import vn.hanbell.erp.ejb.MiscodeBean;
 import cn.hanbell.util.SuperEJB;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.apache.logging.log4j.LogManager;
@@ -49,6 +54,58 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
                 return em_VBHBERP;
             default:
                 return em_VHBERP;
+        }
+    }
+
+    //新增一笔资料,一个表头多个明细
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void persist(T entity, HashMap<SuperEJBForERP, List<?>> detailAdded) {
+        try {
+            getEntityManager().persist(entity);
+            if (detailAdded != null && !detailAdded.isEmpty()) {
+                for (Map.Entry<SuperEJBForERP, List<?>> entry : detailAdded.entrySet()) {
+                    entry.getKey().setCompany(company);
+                    for (Object o : entry.getValue()) {
+                        entry.getKey().persist(o);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //更新一笔资料,一个表头多个明细
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void updateForERP(T entity, HashMap<SuperEJBForERP, List<?>> detailAdded, HashMap<SuperEJBForERP, List<?>> detailEdited, HashMap<SuperEJBForERP, List<?>> detailDeleted) {
+        try {
+            getEntityManager().persist(entity);
+            if (detailEdited != null && !detailEdited.isEmpty()) {
+                for (Map.Entry<SuperEJBForERP, List<?>> entry : detailEdited.entrySet()) {
+                    entry.getKey().setCompany(company);
+                    for (Object o : entry.getValue()) {
+                        entry.getKey().update(o);
+                    }
+                }
+            }
+            if (detailDeleted != null && !detailDeleted.isEmpty()) {
+                for (Map.Entry<SuperEJBForERP, List<?>> entry : detailDeleted.entrySet()) {
+                    entry.getKey().setCompany(company);
+                    for (Object o : entry.getValue()) {
+                        entry.getKey().delete(o);
+                    }
+                }
+            }
+            if (detailAdded != null && !detailAdded.isEmpty()) {
+                for (Map.Entry<SuperEJBForERP, List<?>> entry : detailAdded.entrySet()) {
+                    entry.getKey().setCompany(company);
+                    for (Object o : entry.getValue()) {
+                        entry.getKey().persist(o);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

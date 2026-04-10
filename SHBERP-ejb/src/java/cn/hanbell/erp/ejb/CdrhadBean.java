@@ -396,16 +396,48 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                     for (Cdrdmas dmas : cdmasList) {
                         cdrdmasBean.update(dmas);
                     }
-                    //插入备注档
-                    if (f.getOrdertype().equals("1") && f.getFilialeShpno() != null && !f.getFilialeShpno().equals("")) {
+                    // 有备注或有分公司单号，都需要插入备注档
+                    boolean hasMark = f.getMark() != null && !f.getMark().trim().isEmpty();
+                    boolean hasFilialeShpno = f.getOrdertype().equals("1")
+                            && f.getFilialeShpno() != null
+                            && !f.getFilialeShpno().trim().isEmpty();
+
+                    if (hasMark || hasFilialeShpno) {
                         Cdrshdsc shdsc = new Cdrshdsc(facno, ls_shpno);
-                        shdsc.setMark1("");
-                        shdsc.setBrantrno(f.getFilialeShpno());
+                        if (hasMark) {
+                            String mark = f.getMark().trim();
+                            shdsc.setMark1(mark.length() > 60 ? mark.substring(0, 60) : mark);
+                            if (mark.length() > 60) {
+                                shdsc.setMark2(mark.length() > 120 ? mark.substring(60, 120) : mark.substring(60));
+                            } else {
+                                shdsc.setMark2("");
+                            }
+                            if (mark.length() > 120) {
+                                shdsc.setMark3(mark.length() > 180 ? mark.substring(120, 180) : mark.substring(120));
+                            } else {
+                                shdsc.setMark3("");
+                            }
+                            if (mark.length() > 180) {
+                                shdsc.setMark4(mark.length() > 240 ? mark.substring(180, 240) : mark.substring(180));
+                            } else {
+                                shdsc.setMark4("");
+                            }
+                        } else {
+                            shdsc.setMark1("");
+                            shdsc.setMark2("");
+                            shdsc.setMark3("");
+                            shdsc.setMark4("");
+                        }
+                        // 处理分公司单号 brantrno
+                        if (hasFilialeShpno) {
+                            shdsc.setBrantrno(f.getFilialeShpno());
+                        } else {
+                            shdsc.setBrantrno("");
+                        }
                         cdrshdscBean.setCompany(facno);
                         cdrshdscBean.persist(shdsc);
                     }
                 }
-
                 //出货单号回写OA
                 f.setShpno(retshpno);
                 hkfw005Bean.update(f);

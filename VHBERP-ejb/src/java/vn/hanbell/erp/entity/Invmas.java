@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Invmas.findByEitdsc", query = "SELECT i FROM Invmas i WHERE i.eitdsc = :eitdsc")})
 public class Invmas implements Serializable {
 
+    @JoinColumn(name = "itcls", referencedColumnName = "itcls", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Invcls invcls;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -759,6 +763,14 @@ public class Invmas implements Serializable {
 
     public void setItcls(String itcls) {
         this.itcls = itcls;
+    }
+
+    public Invcls getInvcls() {
+        return invcls;
+    }
+
+    public void setInvcls(Invcls invcls) {
+        this.invcls = invcls;
     }
 
 }

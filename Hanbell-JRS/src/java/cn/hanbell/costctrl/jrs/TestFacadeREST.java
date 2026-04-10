@@ -19,9 +19,7 @@ import cn.hanbell.eam.ejb.AssetItemBean;
 import cn.hanbell.eam.entity.AssetAcceptance;
 import cn.hanbell.eam.entity.AssetAcceptanceDetail;
 import cn.hanbell.eam.entity.AssetItem;
-import cn.hanbell.eap.comm.ErrorMailNotify;
 import cn.hanbell.eap.comm.MailNotify;
-import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.eap.ejb.MailNotificationBean;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.ApmaphBean;
@@ -78,6 +76,7 @@ import cn.hanbell.mes.entity.MuserRole;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HKCW002Bean;
 import cn.hanbell.oa.ejb.InvmasmarkBean;
+import cn.hanbell.oa.ejb.SHBERPAPM828Bean;
 import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.entity.HKCW002;
 import cn.hanbell.oa.entity.HKCW002Detail;
@@ -91,6 +90,8 @@ import cn.hanbell.oa.model.HZJS034DetailModel;
 import cn.hanbell.oa.model.HZJS034Model;
 import cn.hanbell.oa.model.SHBERPAPM811DetailModel;
 import cn.hanbell.oa.model.SHBERPAPM811Model;
+import cn.hanbell.oa.model.SHBERPAPM828DetailModel;
+import cn.hanbell.oa.model.SHBERPAPM828Model;
 import cn.hanbell.oa.model.VHTV005DetailModel;
 import cn.hanbell.oa.model.VHTV005Model;
 import cn.hanbell.oa.model.VHTV006DetailModel;
@@ -111,11 +112,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.persistence.EntityTransaction;
-import javax.transaction.Transactional;
-import javax.transaction.UserTransaction;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -186,6 +183,8 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
     private HKCW002Bean hkcw002Bean;
     @EJB
     private UsersBean usersBean;
+    @EJB
+    private SHBERPAPM828Bean shb828Bean;
 
     @EJB
     private DSCMABean dscmaBean;
@@ -319,7 +318,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
     @GET
     @Path("pur530/eam")
     @Produces({MediaType.APPLICATION_JSON})
-    public MCResponseData check530() {
+    public MCResponseData check530(@QueryParam("facno") String facno) {
         System.out.println("aaaaaa");
 
         // 将ERP资产验收同步到EAM资产入库
@@ -334,7 +333,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
             HashMap<SuperEJB, List<?>> hkcw002DetailEdited = new HashMap<>();
             hkcw002DetailEdited.put(hkcw002Bean, editedHKCW002Detail);
             for (HKCW002 e : hkcw002List) {
-                if (!e.getFacno().equals("C")) {
+                if (!e.getFacno().equals(facno)) {
                     continue;
                 }
                 purhaskBean.setCompany(e.getFacno());
@@ -372,7 +371,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
                                             continue;
                                         }
                                     }
-                                    if (d.getFormSerialNumber().equals("HK_CW002202406070001")) {
+                                    if (d.getFormSerialNumber().equals("HK_CW002202506030003")) {
                                         System.out.println(d.getFormSerialNumber() + prh.getPurhaskPK().getPrno());
                                     }
                                     // 得到验收单号数组
@@ -949,6 +948,137 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
     }
 
     @GET
+    @Path("apm828/oa")
+    @Consumes({"application/json"})
+    public void createOASHBERPAPM828ByERPAPM828(@QueryParam("company") String company) {
+        SHBERPAPM828Model hm;
+        SHBERPAPM828DetailModel dm;
+        List<SHBERPAPM828DetailModel> detailList = new ArrayList<>();
+        LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
+        details.put("detail", detailList);
+        try {
+            apmaphBean.setCompany(company);
+            purvdrBean.setCompany(company);
+            String aptyp = "3";
+            List<Apmaph> apmaphList = apmaphBean.findNeedThrow(aptyp);
+            List<Apmapd> apmapdList;
+            int i;
+            BigDecimal sumapamtfs;
+            BigDecimal sumapamt;
+            if (apmaphList != null && !apmaphList.isEmpty()) {
+                for (Apmaph h : apmaphList) {
+                    String facno = h.getApmaphPK().getFacno();
+                    String apno = h.getApmaphPK().getApno();
+                    //检查OA是否已经存在
+                    if ((shb828Bean.findBySrcno(facno, apno, aptyp)) == 1 && h.getApsta().equals("20")) {
+                        h.setApsta("25");
+                        apmaphBean.update(h);
+                        apmaphBean.getEntityManager().flush();
+                        return;
+                    }
+                    apmapdList = apmaphBean.findNeedThrowDetail(facno, apno, aptyp);
+                    if (apmapdList != null && !apmapdList.isEmpty()) {
+                        detailList.clear();// 清除前面的资料
+                        i = 0;
+                        sumapamtfs = BigDecimal.ZERO;
+                        sumapamt = BigDecimal.ZERO;
+
+                        for (Apmapd d : apmapdList) {
+                            i++;
+                            dm = new SHBERPAPM828DetailModel();
+                            dm.setSeq(String.valueOf(i));
+                            if (d.getApdsc() == null || d.getApdsc().isEmpty() || d.getApdsc().length() == 0
+                                    || d.getApdsc().equals("null")) {
+                                dm.setApdsc("");
+                            } else {
+                                dm.setApdsc(d.getApdsc().replace('&', '/'));
+                            }
+                            dm.setCoin(d.getCoin());
+                            dm.setRatio(d.getRatio().toString());
+                            dm.setApamtfs(d.getApamtfs());
+                            dm.setApamt(d.getApamt());
+                            // 请款合计金额
+                            sumapamtfs = sumapamtfs.add(d.getApamtfs());
+                            sumapamt = sumapamt.add(d.getApamt());
+                            if (d.getDmark() == null || d.getDmark().isEmpty() || d.getDmark().length() == 0
+                                    || d.getDmark().equals("null")) {
+                                dm.setDmark("");
+                            } else {
+                                dm.setDmark(d.getDmark());
+                            }
+                            dm.setBudgetacc(d.getBudgetacc() != null ? d.getBudgetacc() : "");
+                            detailList.add(dm);
+                        }
+                        hm = new SHBERPAPM828Model();
+                        hm.setFacno(facno);
+                        hm.setApno(apno);
+                        hm.setAppdate(h.getApdate());
+                        hm.setAppuser(h.getUserno());
+                        //hm.setAppdept(h.getDepno());
+                        hm.setAppdept(usersBean.checkDeptno(h.getUserno(), h.getDepno()));
+                        hm.setAptyp(h.getApmaphPK().getAptyp());
+                        hm.setVdrno(h.getVdrno());
+                        hm.setVdrna(h.getVdrna());
+                        Purvdr purvdr = purvdrBean.findByVdrno(h.getVdrno());
+                        if (null != purvdr) {
+                            hm.setTickdays(String.valueOf(purvdr.getTickdays()));
+                            hm.setBankName(purvdr.getTtbankna());
+                            hm.setBankAccount(purvdr.getTtname());
+                            hm.setVdrds(purvdr.getVdrds());
+                            hm.setTel1(purvdr.getTel1());
+                        } else {
+                            hm.setTickdays("0");
+                        }
+                        hm.setPyhyn(h.getPyhyn());
+                        hm.setPaytn(h.getPaytn());
+                        hm.setPaydate(BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
+                        // 票据到期日 n_pur_apmlib --> uf_getpurdate
+                        hm.setTerdate(BaseLib.formatDate("yyyy/MM/dd", h.getTerda()));
+                        hm.setApsta(h.getApsta());
+                        hm.setIndate(h.getIndate());
+                        hm.setInuser(h.getUserno());
+                        if (null == h.getHmark()) {
+                            hm.setHmark("");
+                        } else {
+                            hm.setHmark(h.getHmark());
+                        }
+                        // 设置默认立账参数
+                        hm.setPayda(h.getPayda());
+                        hm.setRkd("MR01");
+                        hm.setConfig(36);
+                        hm.setAccno("1123");
+                        // 表单下方合计栏位(取2位小数)
+                        hm.setTotalfs(sumapamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setTotal(sumapamt.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        //大写金额
+                        hm.setAmountInWords(workFlowBean.number2CNMonetaryUnit(hm.getTotal()));
+                        workFlowBean.initUserInfo(h.getUserno());
+                        // 构建表单实例
+                        String formInstance = workFlowBean.buildXmlForEFGP("SHB_ERP_APM828", hm, details);
+                        String subject = "预付款申请：" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款金额：" + hm.getTotal();
+                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT,
+                                "PKG_SHB_ERP_APM828", formInstance, subject);
+                        String[] rm = msg.split("\\$");
+                        if (rm != null) {
+                            log4j.info(Arrays.toString(rm));
+                        }
+                        if (rm != null && rm.length == 2 && rm[0].equals("200")) {
+                            // 更新ERP APM828状态
+                            h.setApsta("25");
+                            h.setOano(rm[1]);
+                            apmaphBean.setCompany(company);
+                            apmaphBean.update(h);
+                            apmaphBean.getEntityManager().flush();
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            log4j.error(ex.getCause().getMessage());
+        }
+    }
+
+    @GET
     @Path("cdrqhad/oa")
     @Consumes({"application/json"})
     public void createOAHKYX009ByERPCDR220(@QueryParam("company") String company) {
@@ -1163,6 +1293,12 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
                             }
                             d.setModelDsc1("");
                             d.setModelDsc2("");
+                            d.setPartMaterial("");
+                            d.setOtherMaterial("");
+                            d.setMaterialDensity("");
+                            d.setPartMaterial01("");
+                            d.setOtherMaterial01("");
+                            d.setMaterialDensity01("");
                             detailList.add(d);
 
                             //加入工程变更通知单作废变更前件号逻辑

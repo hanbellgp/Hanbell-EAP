@@ -234,6 +234,9 @@ public class HKFW005 implements Serializable {
     @Size(max = 255)
     @Column(name = "cdruserno")
     private String cdruserno;
+    @Size(max = 255)
+    @Column(name = "filialeShpno")
+    private String filialeShpno;
     @Transient
     private Boolean isHighYellow;
 
@@ -801,7 +804,16 @@ public class HKFW005 implements Serializable {
 
     public void setIsHighYellow(Boolean isHighYellow) {
         this.isHighYellow = isHighYellow;
+    }    
+    
+    public String getFilialeShpno() {
+        return filialeShpno;
     }
+
+    public void setFilialeShpno(String filialeShpno) {
+        this.filialeShpno = filialeShpno;
+    }
+
 
     /**
      * 获取物流公司

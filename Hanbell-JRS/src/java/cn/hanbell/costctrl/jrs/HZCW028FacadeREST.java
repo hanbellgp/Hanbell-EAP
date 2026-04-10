@@ -141,6 +141,10 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
     @Produces({MediaType.APPLICATION_JSON})
     public MCResponseData CreateOAHZCWO28(MCHZCW028 entity) {
         log4j.info(entity.getSrcno() + "每刻发起报销单检查：" + entity.toString());
+        List<HZCW028> hzcw028s = hzcw028Bean.findBySrcno(entity.getSrcno());
+        if (hzcw028s != null && hzcw028s.size() > 0) {
+            return new MCResponseData(MessageEnum.Failue_109.getCode(), "OA费用报销单已存在每刻单号：" + entity.getSrcno());
+        }
         try {
             MCResponseData rs = new MCResponseData();
             rs = checkBeforeSend(1, entity);
@@ -246,7 +250,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
                     tm.setIsFree("");
                     tm.setEsgaccommdays(td.getEsgaccommdays());
                     tm.setEsgmileages(td.getEsgmileages());
-                    tm.setEsgvehicle(td.getEsgvehicle()!=null ? td.getEsgvehicle():"6");
+                    tm.setEsgvehicle(td.getEsgvehicle() != null ? td.getEsgvehicle() : "6");
                     tms.add(tm);
                 }
             }

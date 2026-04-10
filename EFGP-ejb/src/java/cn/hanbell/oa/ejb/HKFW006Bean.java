@@ -95,6 +95,10 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                     td.setTd047("Y");
                 } else if ("3".equals(status)) {
                     td.setTd501(h.getPzno());
+                    if (h.getLcreateno() != null && h.getTcreateno() != null
+                            && !h.getLcreateno().equals(h.getTcreateno())) {
+                        td.setTd503(h.getTcreateno());
+                    }
                 } else if ("4".equals(status)) {
                     //加入OA发起主管审核后撤销，刷回CRM状态
                     td.setTd500(BigDecimal.ZERO);
@@ -134,6 +138,15 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                     } else if ("3".equals(status)) {
                         //OA流程结案抛转ERP后，写入CRM中ERP单号
                         td.setTd501(h.getPzno() + ";" + td.getTd501());
+                        if (!detail.getRecitnbr().equals(detail.getRetitnbr())) {
+                            String retitnbr = detail.getRetitnbr();
+                            String existingTd503 = td.getTd503();
+                            if (existingTd503 == null || existingTd503.isEmpty()) {
+                                td.setTd503(retitnbr);
+                            } else if (!existingTd503.contains(retitnbr)) {
+                                td.setTd503(existingTd503 + ";" + retitnbr);
+                            }
+                        }
                     } else if ("4".equals(status)) {
                         //加入OA发起主管审核后撤销，刷回CRM状态
                         if (td.getTd502() != null) {
@@ -302,7 +315,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
 
             HKFW006Inv310 hinv310 = hKFW006Inv310Bean.findByPSN(psn);
             if (hinv310 != null) {
-                 repmiBean.setCompany(hinv310.getFacno());
+                repmiBean.setCompany(hinv310.getFacno());
                 if (hinv310.getPzinv310().equals("1") && hkfw006.getRettype().equals("2")) {
                     List<HKFW006Inv310Detail> detailsinv310 = hKFW006Inv310Bean.getDetailList(hinv310.getFormSerialNumber());
                     if (detailsinv310 != null && detailsinv310.size() > 0) {
