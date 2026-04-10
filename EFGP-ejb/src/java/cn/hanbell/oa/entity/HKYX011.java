@@ -206,6 +206,11 @@ public class HKYX011 implements Serializable {
     @ManyToOne(optional = true)
     private Users user;
     
+    @Size(max = 255)
+    @Column(name = "contractno")
+    private String contractno;
+
+        
     //流程号
     @JoinColumn(name = "processSerialNumber", referencedColumnName = "serialNumber", insertable = false, updatable = false)
     @OneToOne(optional = true)
@@ -630,6 +635,14 @@ public class HKYX011 implements Serializable {
 
     public void setActualDiscountNo(String actualDiscountNo) {
         this.actualDiscountNo = actualDiscountNo;
+    }
+
+    public String getContractno() {
+        return contractno;
+    }
+
+    public void setContractno(String contractno) {
+        this.contractno = contractno;
     }
     
 
