@@ -1067,7 +1067,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 eqpRepairTemp.setNote(entity.getNote());
                 eqpRepairTemp.setStatus("N");
                 eqpRepairTemp.setCredate(new Date());
-
+                eqpRepairTemp.setPause(entity.getPause());
                 equipmentRepairHisBean.persist(eqpRepairTemp);
                 StringBuffer msg = new StringBuffer(" 维修暂停通知:<br/>");
                 msg.append("报修单号:").append(equipInvenList.get(0).getFormid()).append("<br/>");
@@ -1242,6 +1242,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 if (eqpRepairList.size() > 0) {
                     eqpStopRepairHis = eqpRepairList.get(eqpRepairList.size() - 1);
                     stopDate = eqpStopRepairHis.getCredate();
+                  
                     long dateDiff = 0;
                     if (stopDate != null) {
                         dateDiff = startDate.getTime() - stopDate.getTime();
@@ -1273,6 +1274,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 eqpRepairTemp.setNote(entity.getNote());
                 eqpRepairTemp.setStatus("N");
                 eqpRepairTemp.setCredate(new Date());
+                eqpRepairTemp.setPause(eqpStopRepairHis.getPause());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 equipmentRepairHisBean.persist(eqpRepairTemp);
                 StringBuffer msg = new StringBuffer(" 维修开始通知:<br/>");
