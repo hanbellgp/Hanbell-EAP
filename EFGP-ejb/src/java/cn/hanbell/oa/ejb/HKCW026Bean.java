@@ -6,8 +6,11 @@
 package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
+import cn.hanbell.oa.entity.HKCW025Detail;
 import cn.hanbell.oa.entity.HKCW026;
+import cn.hanbell.oa.entity.HKCW026Detail;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -20,10 +23,23 @@ import javax.persistence.Query;
 @LocalBean
 public class HKCW026Bean extends SuperEJBForEFGP<HKCW026> {
 
+    @EJB
+    private HKCW026DetailBean hkcw026Detail;
+
     public HKCW026Bean() {
         super(HKCW026.class);
     }
-//根据fromid查是否有OA单子
+    private List<HKCW026Detail> detailList;
+
+    @Override
+    public void setDetail(Object value) {
+        this.detailList = hkcw026Detail.findByFSN(value);
+    }
+
+    public List<HKCW026Detail> getDetailList(Object value) {
+        return hkcw026Detail.findByFSN(value);
+    }
+
 
     public List<HKCW026> getOaFormid(String formid) {
 
