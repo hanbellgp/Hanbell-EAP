@@ -85,6 +85,7 @@ import cn.hanbell.erp.ejb.BudgetAccBean;
 import cn.hanbell.erp.ejb.InvhdscBean;
 import cn.hanbell.erp.ejb.InvsafqyBean;
 import cn.hanbell.erp.ejb.InvsysBean;
+import cn.hanbell.erp.ejb.InvunitBean;
 import cn.hanbell.erp.ejb.ManmotBean;
 import cn.hanbell.erp.ejb.ManpihBean;
 import cn.hanbell.erp.ejb.PricingUserBean;
@@ -109,6 +110,7 @@ import cn.hanbell.erp.entity.Invhdsc;
 import cn.hanbell.erp.entity.Invmas;
 import cn.hanbell.erp.entity.Invsafqy;
 import cn.hanbell.erp.entity.Invsys;
+import cn.hanbell.erp.entity.Invunit;
 import cn.hanbell.erp.entity.Manmot;
 import cn.hanbell.erp.entity.Miscode;
 import cn.hanbell.erp.entity.Misdept;
@@ -132,8 +134,10 @@ import cn.hanbell.erp.entity.Secuser;
 import cn.hanbell.exch.ejb.ExchangeSHBBean;
 import cn.hanbell.mes.entity.MuserRole;
 import cn.hanbell.oa.ejb.HKCW002Bean;
+import cn.hanbell.oa.ejb.HKCW013Bean;
 import cn.hanbell.oa.ejb.HKYX009Bean;
 import cn.hanbell.oa.ejb.InvmasmarkBean;
+import cn.hanbell.oa.ejb.SHBERPAPM811Bean;
 import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.ejb.WorkFlowBean;
 import cn.hanbell.oa.entity.HKCW002;
@@ -177,11 +181,15 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import javax.ejb.AccessTimeout;
 import javax.ejb.EJB;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -198,6 +206,8 @@ import org.apache.logging.log4j.Logger;
  */
 @Singleton
 @Startup
+@Lock(LockType.READ)
+@AccessTimeout(value = 20, unit = TimeUnit.MINUTES)
 public class TimerBean {
 
     private final Logger log4j = LogManager.getLogger("cn.hanbell.eap");
@@ -249,6 +259,10 @@ public class TimerBean {
     private HKCW002Bean hkcw002Bean;
     @EJB
     private HKYX009Bean hkyx009Bean;
+    @EJB
+    private SHBERPAPM811Bean shb811Bean;
+    @EJB
+    private HKCW013Bean hkcw013Bean;
     @EJB
     private WorkFlowBean workFlowBean;
     @EJB
@@ -347,6 +361,8 @@ public class TimerBean {
     private InvhdscBean invhdscBean;
     @EJB
     private InvsysBean invsysBean;
+    @EJB
+    private InvunitBean invunitBean;
     @EJB
     private ManmotBean manmotBean;
     @EJB
@@ -1147,7 +1163,14 @@ public class TimerBean {
                             d.setKind("1");
                             d.setMorpcode("P");
                             d.setUnmsr1(pd.getC_unmsr());
-                            d.setUnmsr1e(pd.getUnmsre());
+                            //英文单位调整
+                            invunitBean.setCompany(pm.getCProno());
+                            Invunit invunit = invunitBean.findByUnitcodsc(pd.getC_unmsr());
+                            if (null == invunit) {
+                                d.setUnmsr1e(pd.getUnmsre());
+                            } else {
+                                d.setUnmsr1e(invunit.getUnitcodsce());
+                            }
                             d.setUnmsr2("");
                             d.setIsDUnit("N");
                             d.setYt("");
@@ -1206,7 +1229,7 @@ public class TimerBean {
                             workFlowBean.initUserInfo(pm.getCApplicant()); //上海厂开单人
                             m.setFacno(pm.getCProno());
                         }
-                        if (workFlowBean.getCurrentUser() == null || workFlowBean.getCurrentUser().getLeaveDate() != null) {
+                        if (null == workFlowBean.getCurrentUser() || workFlowBean.getCurrentUser().getLeaveDate() != null) {
                             // 离职人员不能发起OA
                             pm.setCTriggerYn('Y');
                             plmItnbrMasterTempBean.update(pm);
@@ -1461,7 +1484,6 @@ public class TimerBean {
                             }
                             detailList.add(dm);
                         }
-                        workFlowBean.initUserInfo(h.getUserno());
                         hm = new VHTV005Model();
                         hm.setFacno(h.getApmaphPK().getFacno());
                         hm.setApno(h.getApmaphPK().getApno());
@@ -1470,7 +1492,6 @@ public class TimerBean {
                         //hm.setAppdept(h.getDepno());
                         //修正人员部门不对应问题
                         hm.setAppdept(usersBean.checkDeptno(h.getUserno(), h.getDepno()));
-                        hm.setHdnappDept(workFlowBean.getOrganizationUnit().getOrganizationUnitName());
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
@@ -1508,6 +1529,15 @@ public class TimerBean {
                         hm.setTotal(sumapamt.add(sumtax).subtract(sumbilnum8).setScale(2, BigDecimal.ROUND_HALF_UP));
                         //大写金额
                         hm.setAmountInWords(workFlowBean.number2CNMonetaryUnit(hm.getTotal()));
+                        workFlowBean.initUserInfo(h.getUserno());
+                        if (null == workFlowBean.getCurrentUser() || workFlowBean.getCurrentUser().getLeaveDate() != null) {
+                            // 离职人员不能发起OA
+                            h.setApsta("25");
+                            VHBapmaphBean.update(h);
+                            VHBapmaphBean.getEntityManager().flush();
+                            return;
+                        }
+                        hm.setHdnappDept(workFlowBean.getOrganizationUnit().getOrganizationUnitName());
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("VH_TV005", hm, details);
                         String subject = "费用类请款申请：" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款金额：" + hm.getTotal();
@@ -1585,8 +1615,8 @@ public class TimerBean {
                             dm = new HKYX009DetailModel();
                             dm.setSeq(String.valueOf(i));
                             dm.setTrseq(String.valueOf(d.getCdrqdtaPK().getTrseq()));
-                            dm.setItnbr(d.getItnbr() == null ? "" : d.getItnbrcus());
-                            dm.setItnbrcus(d.getItnbrcus());
+                            dm.setItnbr(d.getItnbr());
+                            dm.setItnbrcus(d.getItnbrcus() == null ? "" : d.getItnbrcus());
                             Invmas invmas = invmasBean.findByItnbr(d.getItnbr());
                             dm.setItdsc(filterString(invmas.getItdsc()));
                             dm.setSpdsc(filterString(invmas.getSpdsc()));
@@ -1701,7 +1731,8 @@ public class TimerBean {
             apmaphBean.setCompany(company);
             purvdrBean.setCompany(company);
             apmtbilBean.setCompany(company);
-            List<Apmaph> apmaphList = apmaphBean.findNeedThrow("6");
+            String aptyp = "6";
+            List<Apmaph> apmaphList = apmaphBean.findNeedThrow(aptyp);
             List<Apmapd> apmapdList;
             List<String> bilnoList;
             int i;
@@ -1717,13 +1748,21 @@ public class TimerBean {
             double sumivomsfs;
             if (apmaphList != null && !apmaphList.isEmpty()) {
                 for (Apmaph h : apmaphList) {
+                    String facno = h.getApmaphPK().getFacno();
+                    String apno = h.getApmaphPK().getApno();
                     if (workFlowBean.findOrgUnitByDeptno(h.getDepno()) == null) {
                         h.setOano("OA无部门");
                         apmaphBean.update(h);
                         return;
                     };
-                    apmapdList = apmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),
-                            h.getApmaphPK().getAptyp());
+                    //检查OA是否已经存在
+                    if ((shb811Bean.findBySrcno(facno, apno, aptyp)) == 1 && h.getApsta().equals("20")) {
+                        h.setApsta("25");
+                        apmaphBean.update(h);
+                        apmaphBean.getEntityManager().flush();
+                        return;
+                    }
+                    apmapdList = apmaphBean.findNeedThrowDetail(facno, apno, aptyp);
                     if (apmapdList != null && !apmapdList.isEmpty()) {
                         detailList.clear();// 清除前面的资料
                         i = 0;
@@ -1829,11 +1868,11 @@ public class TimerBean {
                         }
                         workFlowBean.initUserInfo(h.getUserno());
                         hm = new SHBERPAPM811Model();
-                        hm.setFacno(h.getApmaphPK().getFacno());
+                        hm.setFacno(facno);
                         hm.setAppdate(h.getApdate());
                         hm.setAppuser(h.getUserno());
                         hm.setAppdept(h.getDepno());
-                        hm.setAptyp(h.getApmaphPK().getAptyp());
+                        hm.setAptyp(aptyp);
                         hm.setVdrno(h.getVdrno());
                         //集团内部厂商免签(STW00007/STW00045/KTW00001/ETW00001) 
                         if ("STW00007".equals(h.getVdrno()) || "STW00045".equals(h.getVdrno()) || "KTW00001".equals(h.getVdrno()) || "ETW00001".equals(h.getVdrno())) {
@@ -1848,7 +1887,7 @@ public class TimerBean {
                         }
 
                         hm.setPyhyn(h.getPyhyn());
-                        hm.setApno(h.getApmaphPK().getApno());
+                        hm.setApno(apno);
                         hm.setPaytn(h.getPaytn());
                         hm.setPaydate(BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
                         // 票据到期日 n_pur_apmlib --> uf_getpurdate
@@ -1949,13 +1988,22 @@ public class TimerBean {
             BigDecimal sumbilnum8;
             if (apmaphList != null && !apmaphList.isEmpty()) {
                 for (Apmaph h : apmaphList) {
+                    String facno = h.getApmaphPK().getFacno();
+                    String apno = h.getApmaphPK().getApno();
+                    String aptyp = h.getApmaphPK().getAptyp();
                     if (workFlowBean.findOrgUnitByDeptno(h.getDepno()) == null) {
                         h.setOano("OA无部门");
                         apmaphBean.update(h);
                         return;
                     };
-                    apmapdList = apmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),
-                            h.getApmaphPK().getAptyp());
+                    //检查OA是否已经存在
+                    if ((hkcw013Bean.findBySrcno(facno, apno, aptyp)) == 1 && h.getApsta().equals("20")) {
+                        h.setApsta("25");
+                        apmaphBean.update(h);
+                        apmaphBean.getEntityManager().flush();
+                        return;
+                    }
+                    apmapdList = apmaphBean.findNeedThrowDetail(facno, apno, aptyp);
                     if (apmapdList != null && !apmapdList.isEmpty()) {
                         detailList.clear();// 清除前面的资料
                         i = 0;
@@ -2028,14 +2076,14 @@ public class TimerBean {
                             detailList.add(dm);
                         }
                         hm = new HKCW013Model();
-                        hm.setFacno(h.getApmaphPK().getFacno());
-                        hm.setApno(h.getApmaphPK().getApno());
+                        hm.setFacno(facno);
+                        hm.setApno(apno);
                         hm.setAppdate(h.getApdate());
                         hm.setAppuser(h.getUserno());
                         //hm.setAppdept(h.getDepno());
                         //修正人员部门不对应问题
                         hm.setAppdept(usersBean.checkDeptno(h.getUserno(), h.getDepno()));
-                        hm.setAptyp(h.getApmaphPK().getAptyp());
+                        hm.setAptyp(aptyp);
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
                         purvdrBean.setCompany(company);

@@ -258,7 +258,11 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                             cdrdmasBean.setCompany(facno);
                             Cdrdmas cdmas = cdrdmasBean.findByFacnoAndCdrnoAndItnbrAndTrseq(facno, pzcdrno, d.getItnbr(), Integer.parseInt(d.getTrseq()));
                             if (cdmas == null) {
-                                throw new RuntimeException("抛转订单单身资料异常！");
+                                throw new RuntimeException(psn + "抛转订单单身资料异常！");
+                            }
+                            String drecsta = cdmas.getDrecsta();
+                            if (drecsta == null || drecsta.compareTo("20") < 0 || drecsta.compareTo("90") > 0) {
+                                throw new RuntimeException(psn + "抛转订单单身资料状态异常！状态值：" + drecsta + "，件号：" + d.getItnbr());
                             }
                             Cdrdta cdta = new Cdrdta(facno, ls_shpno, seq);
                             cdta.setCdrno(pzcdrno);
