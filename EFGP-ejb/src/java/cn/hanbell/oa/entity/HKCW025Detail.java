@@ -1,17 +1,63 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package cn.hanbell.oa.entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author S31106868hb
+ * @author C2082
  */
+@Entity
+@Table(name = "HK_CW025_Detail")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "HKCW025Detail.findAll", query = "SELECT h FROM HKCW025Detail h"),
+    @NamedQuery(name = "HKCW025Detail.findByDeptno1", query = "SELECT h FROM HKCW025Detail h WHERE h.deptno1 = :deptno1"),
+    @NamedQuery(name = "HKCW025Detail.findByWarehouseno2", query = "SELECT h FROM HKCW025Detail h WHERE h.warehouseno2 = :warehouseno2"),
+    @NamedQuery(name = "HKCW025Detail.findByAssetname", query = "SELECT h FROM HKCW025Detail h WHERE h.assetname = :assetname"),
+    @NamedQuery(name = "HKCW025Detail.findByPid", query = "SELECT h FROM HKCW025Detail h WHERE h.pid = :pid"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition4Name", query = "SELECT h FROM HKCW025Detail h WHERE h.position4Name = :position4Name"),
+    @NamedQuery(name = "HKCW025Detail.findByAssetno", query = "SELECT h FROM HKCW025Detail h WHERE h.assetno = :assetno"),
+    @NamedQuery(name = "HKCW025Detail.findByWarehouseno", query = "SELECT h FROM HKCW025Detail h WHERE h.warehouseno = :warehouseno"),
+    @NamedQuery(name = "HKCW025Detail.findByItdsc", query = "SELECT h FROM HKCW025Detail h WHERE h.itdsc = :itdsc"),
+    @NamedQuery(name = "HKCW025Detail.findByWarehousena2", query = "SELECT h FROM HKCW025Detail h WHERE h.warehousena2 = :warehousena2"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition2Name", query = "SELECT h FROM HKCW025Detail h WHERE h.position2Name = :position2Name"),
+    @NamedQuery(name = "HKCW025Detail.findByDeptname1", query = "SELECT h FROM HKCW025Detail h WHERE h.deptname1 = :deptname1"),
+    @NamedQuery(name = "HKCW025Detail.findByFSN", query = "SELECT h FROM HKCW025Detail h WHERE h.formSerialNumber = :fsn"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition3Name", query = "SELECT h FROM HKCW025Detail h WHERE h.position3Name = :position3Name"),
+    @NamedQuery(name = "HKCW025Detail.findBySeq", query = "SELECT h FROM HKCW025Detail h WHERE h.seq = :seq"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition1Name", query = "SELECT h FROM HKCW025Detail h WHERE h.position1Name = :position1Name"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition6Name", query = "SELECT h FROM HKCW025Detail h WHERE h.position6Name = :position6Name"),
+    @NamedQuery(name = "HKCW025Detail.findByUserno", query = "SELECT h FROM HKCW025Detail h WHERE h.userno = :userno"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition1", query = "SELECT h FROM HKCW025Detail h WHERE h.position1 = :position1"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition2", query = "SELECT h FROM HKCW025Detail h WHERE h.position2 = :position2"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition3", query = "SELECT h FROM HKCW025Detail h WHERE h.position3 = :position3"),
+    @NamedQuery(name = "HKCW025Detail.findByItemno", query = "SELECT h FROM HKCW025Detail h WHERE h.itemno = :itemno"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition4", query = "SELECT h FROM HKCW025Detail h WHERE h.position4 = :position4"),
+    @NamedQuery(name = "HKCW025Detail.findByOid", query = "SELECT h FROM HKCW025Detail h WHERE h.oid = :oid"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition5", query = "SELECT h FROM HKCW025Detail h WHERE h.position5 = :position5"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition6", query = "SELECT h FROM HKCW025Detail h WHERE h.position6 = :position6"),
+    @NamedQuery(name = "HKCW025Detail.findBySerialNo", query = "SELECT h FROM HKCW025Detail h WHERE h.serialNo = :serialNo"),
+    @NamedQuery(name = "HKCW025Detail.findByUnit", query = "SELECT h FROM HKCW025Detail h WHERE h.unit = :unit"),
+    @NamedQuery(name = "HKCW025Detail.findByAssetid", query = "SELECT h FROM HKCW025Detail h WHERE h.assetid = :assetid"),
+    @NamedQuery(name = "HKCW025Detail.findByQty", query = "SELECT h FROM HKCW025Detail h WHERE h.qty = :qty"),
+    @NamedQuery(name = "HKCW025Detail.findByPosition5Name", query = "SELECT h FROM HKCW025Detail h WHERE h.position5Name = :position5Name"),
+    @NamedQuery(name = "HKCW025Detail.findByWarehousena", query = "SELECT h FROM HKCW025Detail h WHERE h.warehousena = :warehousena"),
+    @NamedQuery(name = "HKCW025Detail.findByUsername", query = "SELECT h FROM HKCW025Detail h WHERE h.username = :username")})
 public class HKCW025Detail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,17 +94,15 @@ public class HKCW025Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "deptname1")
     private String deptname1;
-
+    @Size(max = 255)
+    @Column(name = "formSerialNumber")
+    private String formSerialNumber;
     @Size(max = 255)
     @Column(name = "position3Name")
     private String position3Name;
     @Size(max = 255)
     @Column(name = "seq")
     private String seq;
-
-    @Size(max = 255)
-    @Column(name = "serialNo")
-    private String serialNo;
     @Size(max = 255)
     @Column(name = "position1Name")
     private String position1Name;
@@ -83,13 +127,21 @@ public class HKCW025Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "position4")
     private String position4;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "OID")
+    private String oid;
     @Size(max = 255)
     @Column(name = "position5")
     private String position5;
     @Size(max = 255)
     @Column(name = "position6")
     private String position6;
-
+    @Size(max = 255)
+    @Column(name = "serialNo")
+    private String serialNo;
     @Size(max = 255)
     @Column(name = "unit")
     private String unit;
@@ -110,6 +162,10 @@ public class HKCW025Detail implements Serializable {
     private String username;
 
     public HKCW025Detail() {
+    }
+
+    public HKCW025Detail(String oid) {
+        this.oid = oid;
     }
 
     public String getDeptno1() {
@@ -134,14 +190,6 @@ public class HKCW025Detail implements Serializable {
 
     public void setAssetname(String assetname) {
         this.assetname = assetname;
-    }
-
-    public String getSerialNo() {
-        return serialNo;
-    }
-
-    public void setSerialNo(String serialNo) {
-        this.serialNo = serialNo;
     }
 
     public String getPid() {
@@ -206,6 +254,14 @@ public class HKCW025Detail implements Serializable {
 
     public void setDeptname1(String deptname1) {
         this.deptname1 = deptname1;
+    }
+
+    public String getFormSerialNumber() {
+        return formSerialNumber;
+    }
+
+    public void setFormSerialNumber(String formSerialNumber) {
+        this.formSerialNumber = formSerialNumber;
     }
 
     public String getPosition3Name() {
@@ -288,6 +344,14 @@ public class HKCW025Detail implements Serializable {
         this.position4 = position4;
     }
 
+    public String getOid() {
+        return oid;
+    }
+
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
     public String getPosition5() {
         return position5;
     }
@@ -302,6 +366,14 @@ public class HKCW025Detail implements Serializable {
 
     public void setPosition6(String position6) {
         this.position6 = position6;
+    }
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
     public String getUnit() {
@@ -355,6 +427,7 @@ public class HKCW025Detail implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
+        hash += (oid != null ? oid.hashCode() : 0);
         return hash;
     }
 
@@ -365,12 +438,15 @@ public class HKCW025Detail implements Serializable {
             return false;
         }
         HKCW025Detail other = (HKCW025Detail) object;
+        if ((this.oid == null && other.oid != null) || (this.oid != null && !this.oid.equals(other.oid))) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "cn.hanbell.oa.entity.HKCW025Detail";
+        return "cn.hanbell.oa.entity.HKCW025Detail[ oid=" + oid + " ]";
     }
-
+    
 }
