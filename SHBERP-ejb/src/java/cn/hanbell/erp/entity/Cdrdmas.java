@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cdrdmas.findByCdrdate", query = "SELECT c FROM Cdrdmas c WHERE c.cdrdate = :cdrdate"),
     @NamedQuery(name = "Cdrdmas.findByDrecsta", query = "SELECT c FROM Cdrdmas c WHERE c.drecsta = :drecsta"),
     @NamedQuery(name = "Cdrdmas.findByCuspono", query = "SELECT c FROM Cdrdmas c WHERE c.cuspono = :cuspono"),
-    @NamedQuery(name = "Cdrdmas.findByFacnoAndCdrnoAndItnbrAndTrseq", query = "SELECT c FROM Cdrdmas c WHERE c.cdrdmasPK.facno = :facno AND c.cdrdmasPK.cdrno = :cdrno AND c.itnbr = :itnbr AND c.cdrdmasPK.trseq = :trseq")})
+    @NamedQuery(name = "Cdrdmas.findByFacnoAndCdrnoAndItnbrAndTrseq", query = "SELECT c FROM Cdrdmas c WHERE c.cdrdmasPK.facno = :facno AND c.cdrdmasPK.cdrno = :cdrno AND c.itnbr = :itnbr AND c.cdrdmasPK.trseq = :trseq AND c.drecsta = '20' ")})
 public class Cdrdmas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -613,7 +613,7 @@ public class Cdrdmas implements Serializable {
     public void setNcodeDD(String ncodeDD) {
         this.ncodeDD = ncodeDD;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -626,11 +626,11 @@ public class Cdrdmas implements Serializable {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Cdrdmas)) {
             return false;
-    }
+        }
         Cdrdmas other = (Cdrdmas) object;
         if ((this.cdrdmasPK == null && other.cdrdmasPK != null) || (this.cdrdmasPK != null && !this.cdrdmasPK.equals(other.cdrdmasPK))) {
             return false;
-    }
+        }
         return true;
     }
 
@@ -639,4 +639,4 @@ public class Cdrdmas implements Serializable {
         return "shberp.entity.Cdrdmas[ cdrdmasPK=" + cdrdmasPK + " ]";
     }
 
-    }
+}
