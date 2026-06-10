@@ -5,15 +5,7 @@
  */
 package vn.hanbell.erp.ejb;
 
-import cn.hanbell.oa.ejb.HKFW006Bean;
-import cn.hanbell.oa.ejb.HKFW006Inv310Bean;
-import cn.hanbell.oa.ejb.HKFW006Inv310DetailBean;
-import cn.hanbell.oa.ejb.SHBERPINV310Bean;
-import cn.hanbell.oa.ejb.SHBERPINV325Bean;
 import cn.hanbell.oa.ejb.VHFW004Bean;
-import cn.hanbell.oa.entity.HKFW006;
-import cn.hanbell.oa.entity.HKFW006Inv310;
-import cn.hanbell.oa.entity.HKFW006Inv310Detail;
 import cn.hanbell.oa.entity.VHFW004;
 import cn.hanbell.oa.entity.VHFW004Detail;
 import cn.hanbell.util.BaseLib;
@@ -36,7 +28,6 @@ import vn.hanbell.erp.entity.Invdou;
 import vn.hanbell.erp.entity.Invdta;
 import vn.hanbell.erp.entity.InvdtaPK;
 import vn.hanbell.erp.entity.Invhad;
-import vn.hanbell.erp.entity.InvhadPK;
 import vn.hanbell.erp.entity.Invmas;
 import vn.hanbell.erp.entity.Invsys;
 import vn.hanbell.erp.entity.Invtrn;
@@ -52,10 +43,6 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
     //EJBForEFGP
     @EJB
     private VHFW004Bean vhfw004Bean;
-
-    @EJB
-    private SHBERPINV310Bean shberpinv310Bean;
-
     //EJBForERP
     @EJB
     private InvclsBean invclsBean;
