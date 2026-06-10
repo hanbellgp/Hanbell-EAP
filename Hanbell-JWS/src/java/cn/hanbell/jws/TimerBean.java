@@ -103,6 +103,7 @@ import cn.hanbell.erp.entity.Cdrdmas;
 import cn.hanbell.erp.entity.Cdrhmas;
 import cn.hanbell.erp.entity.Cdrqdta;
 import cn.hanbell.erp.entity.Cdrqhad;
+import cn.hanbell.erp.entity.Cdrqhdsc;
 import cn.hanbell.erp.entity.Invbal;
 import cn.hanbell.erp.entity.Invdta;
 import cn.hanbell.erp.entity.Invhad;
@@ -1694,6 +1695,14 @@ public class TimerBean {
                         // 加入付款条件叙述
                         hm.setPaycodedsc(h.getPaycodedsc());
                         hm.setTotamts(h.getTotamts().doubleValue());
+                        //加入备注说明4
+                        cdrqhdscBean.setCompany(facno);
+                        Cdrqhdsc cdrqhdsc = cdrqhdscBean.findByQuono(quono);
+                        if (null != cdrqhdsc && null != cdrqhdsc.getMark4()) {
+                            hm.setHmark4(cdrqhdsc.getMark4());
+                        } else {
+                            hm.setHmark4("");
+                        }
                         workFlowBean.initUserInfo(h.getUserno());
                         // 构建表单实例
                         String formInstance = workFlowBean.buildXmlForEFGP("HK_YX009", hm, details);
@@ -1729,7 +1738,6 @@ public class TimerBean {
         details.put("Detail", detailList);
         try {
             apmaphBean.setCompany(company);
-            purvdrBean.setCompany(company);
             apmtbilBean.setCompany(company);
             String aptyp = "6";
             List<Apmaph> apmaphList = apmaphBean.findNeedThrow(aptyp);
@@ -1879,6 +1887,7 @@ public class TimerBean {
                             ls_mark = "OA免签";
                         }
                         hm.setVdrna(h.getVdrna());
+                        purvdrBean.setCompany(company);
                         Purvdr purvdr = purvdrBean.findByVdrno(h.getVdrno());
                         if (null != purvdr) {
                             hm.setTickdays(purvdr.getTickdays().toString());
@@ -2155,7 +2164,6 @@ public class TimerBean {
         details.put("detail", detailList);
         try {
             apmaphBean.setCompany(company);
-            purvdrBean.setCompany(company);
             List<Apmaph> apmaphList = apmaphBean.findNeedThrow("3");
             List<Apmapd> apmapdList;
             int i;
@@ -2207,6 +2215,7 @@ public class TimerBean {
                         hm.setAptyp(h.getApmaphPK().getAptyp());
                         hm.setVdrno(h.getVdrno());
                         hm.setVdrna(h.getVdrna());
+                        purvdrBean.setCompany(company);
                         Purvdr purvdr = purvdrBean.findByVdrno(h.getVdrno());
                         if (null != purvdr) {
                             hm.setTickdays(String.valueOf(purvdr.getTickdays()));

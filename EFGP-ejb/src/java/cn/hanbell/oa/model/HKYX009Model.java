@@ -38,6 +38,7 @@ public class HKYX009Model implements Serializable {
     private String pricgroup;
     private String oilspecial;
     private Double totamts;
+    private String hmark4;
 
     public HKYX009Model() {
 
@@ -228,6 +229,14 @@ public class HKYX009Model implements Serializable {
 
     public void setTotamts(Double totamts) {
         this.totamts = totamts;
+    }
+
+    public String getHmark4() {
+        return hmark4;
+    }
+
+    public void setHmark4(String hmark4) {
+        this.hmark4 = hmark4;
     }
 
 }
