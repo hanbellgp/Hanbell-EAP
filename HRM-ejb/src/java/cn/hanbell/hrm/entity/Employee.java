@@ -64,6 +64,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Employee.findByCode", query = "SELECT e FROM Employee e WHERE e.code = :code"),
     @NamedQuery(name = "Employee.findByITCode", query = "SELECT e FROM Employee e WHERE e.iTCode = :iTCode"),
     @NamedQuery(name = "Employee.findByAssignReason", query = "SELECT e FROM Employee e WHERE e.assignReason = :assignReason"),
+    @NamedQuery(name = "Employee.findByDepartmentCodeAndIsFlag", query = "SELECT e FROM Employee e WHERE e.department.code = :code and CAST(e.lastWorkDate AS DATE)> :lastWorkDate"),
     @NamedQuery(name = "Employee.findByOwnerId", query = "SELECT e FROM Employee e WHERE e.ownerId = :ownerId")})
 public class Employee implements Serializable {
 

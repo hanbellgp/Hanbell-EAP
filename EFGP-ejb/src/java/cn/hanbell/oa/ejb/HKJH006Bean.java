@@ -33,7 +33,7 @@ public class HKJH006Bean extends SuperEJBForEFGP<HKJH006> {
 
     public List<Object[]> findByCustomerAndApplyDate(String queryDateBegin, String queryDateEnd, String customerid, String customername, String currentState, String facno) {
         try {
-            StringBuffer sql = new StringBuffer("SELECT a.applyDate,a.customerno,a.customername,d.id,d.organizationUnitName,a.discountrate,a.period,a.number,a.amount,explanation,e.currentState,facno,sealfacno,contractno");
+            StringBuffer sql = new StringBuffer("SELECT facno,sealfacno,a.applyDate,formSerialNumber,a.customerno,a.customername,d.id,d.organizationUnitName,a.discountrate,a.period,a.periodDate1,a.periodDate2,a.number,a.amount,explanation,e.currentState,contractno");
             sql.append(" FROM HK_JH006 a");
             sql.append(" left join Users b on a.principal = b.id");
             sql.append(" left join Functions c on b.OID=c.occupantOID");

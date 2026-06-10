@@ -115,6 +115,9 @@ public class HKJH006ManagedBean extends SuperQueryBean<HKJH006> {
                     Cell cell13 = row.createCell(13);
                     Cell cell14 = row.createCell(14);
                     Cell cell15 = row.createCell(15);
+                    Cell cell16 = row.createCell(16);
+                    Cell cell17 = row.createCell(17);
+                    Cell cell18 = row.createCell(18);
                     cell0.setCellStyle(cellStyle);
                     cell1.setCellStyle(cellStyle);
                     cell2.setCellStyle(cellStyle);
@@ -130,26 +133,32 @@ public class HKJH006ManagedBean extends SuperQueryBean<HKJH006> {
                     cell12.setCellStyle(cellStyle);
                     cell13.setCellStyle(cellStyle);
                     cell14.setCellStyle(cellStyle);
-                       cell15.setCellStyle(cellStyle);
+                    cell15.setCellStyle(cellStyle);
+                    cell16.setCellStyle(cellStyle);
+                    cell17.setCellStyle(cellStyle);
+                    cell18.setCellStyle(cellStyle);
 
-                    cell0.setCellValue(o[11] != null ? (String) o[11] : "");
-                    cell1.setCellValue(o[12] != null ? (String) o[12] : "");
-                    cell2.setCellValue(o[0] != null ? BaseLib.formatDate("yyyy/MM/dd", (Date) o[0]) : "");
-                    cell3.setCellValue(o[1] != null ? (String) o[1] : "");
-                    cell4.setCellValue(o[2] != null ? (String) o[2] : "");
-                    cell5.setCellValue(o[3] != null ? (String) o[3] : "");
-                    cell6.setCellValue(o[4] != null ? (String) o[4] : "");
-                    cell7.setCellValue(o[5] != null ? (String) o[5] : "");
-                    cell8.setCellValue("开具红字发票，冲销货款");
-                    cell9.setCellValue(o[6] != null ? (String) o[6] : "");
-                    cell10.setCellValue(o[7] != null ? (String) o[7] : "");
-                    cell11.setCellValue(o[8] != null ? Double.valueOf(o[8].toString()) : 0.0);
-                    
-                    cell13.setCellValue(o[9] != null ? (String) o[9] : "");
-                    Integer status = (Integer) o[10];
-                    cell14.setCellValue(getCurrentStateValue(String.valueOf(status)));
+                    cell0.setCellValue(o[0] != null ? (String) o[0] : "");
+                    cell1.setCellValue(o[1] != null ? (String) o[1] : "");
+                    cell2.setCellValue(o[2] != null ? BaseLib.formatDate("yyyy/MM/dd", (Date) o[2]) : "");
+                    cell3.setCellValue(o[3] != null ? (String) o[3] : "");
+                    cell4.setCellValue(o[4] != null ? (String) o[4] : "");
+                    cell5.setCellValue(o[5] != null ? (String) o[5] : "");
+                    cell6.setCellValue(o[6] != null ? (String) o[6] : "");
+                    cell7.setCellValue(o[7] != null ? (String) o[7] : "");
+                    cell8.setCellValue(o[8] != null ? (String) o[8] : "");
+                    cell9.setCellValue("开具红字发票，冲销货款");
+                    cell10.setCellValue(o[9] != null ? (String) o[9] : "");
+                    cell11.setCellValue(o[10] != null ? BaseLib.formatDate("yyyy/MM/dd", (Date) o[10]) : "");
+                    cell12.setCellValue(o[11] != null ? BaseLib.formatDate("yyyy/MM/dd", (Date) o[11]) : "");
+                    cell13.setCellValue(o[12] != null ? (String) o[12] : "");
+                    cell14.setCellValue(o[13] != null ? String.valueOf(o[13]): "");
+                    cell15.setCellValue("");
+                    cell16.setCellValue(o[14] != null ? (String) o[14] : "");
+                    Integer status = (Integer) o[15];
+                    cell17.setCellValue(getCurrentStateValue(String.valueOf(status)));
 
-                    cell15.setCellValue(o[13] != null ? (String) o[13] : "");
+                    cell18.setCellValue(o[16] != null ? (String) o[16] : "");
                     i++;
                 }
                 FileOutputStream os = null;
