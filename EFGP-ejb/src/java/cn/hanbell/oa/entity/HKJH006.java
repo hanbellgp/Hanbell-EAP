@@ -157,6 +157,14 @@ public class HKJH006 implements Serializable {
     @Size(max = 255)
     @Column(name = "sealfacno")
     private String sealfacno;
+    
+    @Column(name = "periodDate1")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date periodDate1;
+    
+    @Column(name = "periodDate2")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date periodDate2;
 
     public HKJH006() {
     }
@@ -411,6 +419,22 @@ public class HKJH006 implements Serializable {
 
     public void setSealfacno(String sealfacno) {
         this.sealfacno = sealfacno;
+    }
+
+    public Date getPeriodDate1() {
+        return periodDate1;
+    }
+
+    public void setPeriodDate1(Date periodDate1) {
+        this.periodDate1 = periodDate1;
+    }
+
+    public Date getPeriodDate2() {
+        return periodDate2;
+    }
+
+    public void setPeriodDate2(Date periodDate2) {
+        this.periodDate2 = periodDate2;
     }
 
     @Override

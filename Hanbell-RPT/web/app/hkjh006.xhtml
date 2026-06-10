@@ -85,16 +85,9 @@
                 </f:facet>
                 <p:column styleClass="Wid20">
                     <f:facet name="header">
-                        <h:outputText value="公司别"/>
-                    </f:facet>
-                    <h:outputText value="汉钟"/>
-                </p:column>
-
-                <p:column styleClass="Wid20">
-                    <f:facet name="header">
                         <h:outputText value="申请日期"/>
                     </f:facet>
-                    <h:outputText value="#{item[0]}">
+                    <h:outputText value="#{item[2]}">
                         <f:convertDateTime pattern="yyyy/MM/dd"/>
                     </h:outputText>
                 </p:column>
@@ -103,60 +96,48 @@
                     <f:facet name="header">
                         <h:outputText value="客户代号"/>
                     </f:facet>
-                    <h:outputText value="#{item[1]}"/>
+                    <h:outputText value="#{item[4]}"/>
                 </p:column>
 
                 <p:column styleClass="Wid20">
                     <f:facet name="header">
                         <h:outputText value="客户名称"/>
                     </f:facet>
-                    <h:outputText value="#{item[2]}"/>
+                    <h:outputText value="#{item[5]}"/>
                 </p:column>
 
                 <p:column styleClass="Wid20">
                     <f:facet name="header">
                         <h:outputText value="申请负责人事业部代号"/>
                     </f:facet>
-                    <h:outputText value="#{item[3]}"/>
+                    <h:outputText value="#{item[6]}"/>
                 </p:column>
 
                 <p:column styleClass="Wid20">
                     <f:facet name="header">
                         <h:outputText value="申请负责人事业部名称"/>
                     </f:facet>
-                    <h:outputText value="#{item[4]}"/>
-                </p:column>
-
-                <p:column styleClass="Wid20">
-                    <f:facet name="header">
-                        <h:outputText value="约定折让率"/>
-                    </f:facet>
-                    <h:outputText value="#{item[5]}"/>
+                    <h:outputText value="#{item[7]}"/>
                 </p:column>
 
                 <p:column styleClass="Wid20">
                     <f:facet name="header">
                         <h:outputText value="申请折让所属期"/>
                     </f:facet>
-                    <h:outputText value="#{item[6]}"/>
+                    <h:outputText value="#{item[10]}"/>
                 </p:column>
+                
                 <p:column styleClass="Wid20">
                     <f:facet name="header">
-                        <h:outputText value="预估当年度销售台数"/>
+                        <h:outputText value="申请折让所属期"/>
                     </f:facet>
-                    <h:outputText value="#{item[7]}"/>
+                    <h:outputText value="#{item[11]}"/>
                 </p:column>
                 <p:column styleClass="Wid20">
                     <f:facet name="header">
                         <h:outputText value="预估当年度销货总金额"/>
                     </f:facet>
-                    <h:outputText value="#{item[8]}"/>
-                </p:column>
-                 <p:column styleClass="Wid20">
-                    <f:facet name="header">
-                        <h:outputText value="预估当年度销货总金额"/>
-                    </f:facet>
-                    <h:outputText value="#{hkjh006ManagedBean.getCurrentStateValue(item[10])}"/>
+                    <h:outputText value="#{item[23]}"/>
                 </p:column>
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
