@@ -1191,6 +1191,9 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
                         PricingUser pu = pricingUserBean.findByPricingtypeAndUserid(h.getPricingtype(), h.getCusno());
                         if (null != pu) {
                             Miscode mis = miscodeBean.findByPK("1D", pu.getPricingUserPK().getGroupid());
+                            if (null == mis) {
+                                throw new NullPointerException("客户定价类别不存在： " + pu.getPricingUserPK().getGroupid());
+                            }
                             hm.setPricgroup(mis.getCdesc());
                         }
                         hm.setOilspecial(oilspecial);

@@ -585,8 +585,12 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     item.setCSpdsc(detail.getSpdsc());
                     item.setCEitdsc(detail.getEitdsc());
                     item.setCEspdsc(detail.getEspdsc());
-                    item.setAItdsc(detail.getItdsc());
-                    item.setASpdsc(detail.getSpdsc());
+                    if (hasText(detail.getAitdsc())) {
+                        item.setAItdsc(detail.getAitdsc());
+                    }
+                    if (hasText(detail.getAspdsc())) {
+                        item.setASpdsc(detail.getAspdsc());
+                    }
                     plmdetailTempBean.update(item);
                 }
                 Part p = partBean.findByKeyedName(detail.getItnbr());
@@ -595,7 +599,9 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     p.setCnSpecCn(detail.getSpdsc());
                     p.setCnNameEn(detail.getEitdsc());
                     p.setCnSpecEn(detail.getEspdsc());
-                    p.setName(detail.getItdsc());
+                    if (hasText(detail.getAitdsc())) {
+                        p.setName(detail.getAitdsc());
+                    }
                     p.setCnSpecZt(detail.getSpdsc());
                     partBean.update(p);
                 }
@@ -715,6 +721,10 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
             purtrtype = row[0].toString();
         }
         return purtrtype;
+    }
+
+    private boolean hasText(String str) {
+        return str != null && !str.isEmpty();
     }
 
 }

@@ -112,6 +112,12 @@ public class SHBERPINV146Detail implements Serializable {
     @Size(max = 255)
     @Column(name = "clsdsc")
     private String clsdsc;
+    @Size(max = 255)
+    @Column(name = "aitdsc")
+    private String aitdsc;
+    @Size(max = 255)
+    @Column(name = "aspdsc")
+    private String aspdsc;
 
     public SHBERPINV146Detail() {
     }
@@ -303,6 +309,22 @@ public class SHBERPINV146Detail implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.oa.entity.SHBERPINV146Detail[ oid=" + oid + " ]";
+    }
+
+    public String getAitdsc() {
+        return aitdsc;
+    }
+
+    public void setAitdsc(String aitdsc) {
+        this.aitdsc = aitdsc;
+    }
+
+    public String getAspdsc() {
+        return aspdsc;
+    }
+
+    public void setAspdsc(String aspdsc) {
+        this.aspdsc = aspdsc;
     }
 
 }
