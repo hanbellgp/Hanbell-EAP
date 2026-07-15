@@ -1038,12 +1038,36 @@ return false;]]></method>
                     <property name="dataType">string</property>
                     <property name="allowExport">true</property>
                 </structure>
+                <structure>
+                    <property name="name">color5</property>
+                    <expression name="expression" type="javascript">dataSetRow["paytn"]=="5"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color6</property>
+                    <expression name="expression" type="javascript">dataSetRow["paytn"]=="6"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color7</property>
+                    <expression name="expression" type="javascript">dataSetRow["paytn"]=="7"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">color8</property>
+                    <expression name="expression" type="javascript">dataSetRow["paytn"]=="8"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
             <column id="88">
                 <property name="width">3cm</property>
             </column>
             <column id="89">
-                <property name="width">4.5cm</property>
+                <property name="width">2cm</property>
             </column>
             <column id="90">
                 <property name="width">2.8cm</property>
@@ -1113,11 +1137,16 @@ return false;]]></method>
                     <property name="textAlign">left</property>
                     <property name="verticalAlign">middle</property>
                     <text id="293">
+                        <property name="fontSize">8pt</property>
                         <property name="contentType">html</property>
-                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color1"]</VALUE-OF>'> □</span> 现金  
-<span style='background-color:<VALUE-OF>row["color2"]</VALUE-OF>'> □</span> 支票
-<span style='background-color:<VALUE-OF>row["color3"]</VALUE-OF>'> □</span> 国内T/T
-<span style='background-color:<VALUE-OF>row["color4"]</VALUE-OF>'> □</span> 国内L/C]]></text-property>
+                        <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color1"]</VALUE-OF>'> □</span> T/T 
+<span style='background-color:<VALUE-OF>row["color2"]</VALUE-OF>'> □</span> 汇票
+<span style='background-color:<VALUE-OF>row["color3"]</VALUE-OF>'> □</span> T/T或汇票(比例有变动)
+<span style='background-color:<VALUE-OF>row["color4"]</VALUE-OF>'> □</span> 国~外T/T
+<span style='background-color:<VALUE-OF>row["color5"]</VALUE-OF>'> □</span> 国内L/C
+<span style='background-color:<VALUE-OF>row["color6"]</VALUE-OF>'> □</span> 国~外L/C
+<span style='background-color:<VALUE-OF>row["color7"]</VALUE-OF>'> □</span> D/A
+<span style='background-color:<VALUE-OF>row["color8"]</VALUE-OF>'> □</span> D/P]]></text-property>
                     </text>
                 </cell>
             </row>

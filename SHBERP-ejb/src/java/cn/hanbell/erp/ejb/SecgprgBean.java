@@ -481,6 +481,7 @@ public class SecgprgBean extends SuperEJBForERP<Secgprg> {
                         erpuser.setDuedate(BaseLib.getDate());
                         erpuser.setGtype(gtype);
                         erpuser.setStatuspass("0132");
+                        erpuser.setEmail(oauser.getId()+"@hanbell.com.cn");
                         // 预设空密码登录时修改
                         secuserBean.persist(erpuser);
 

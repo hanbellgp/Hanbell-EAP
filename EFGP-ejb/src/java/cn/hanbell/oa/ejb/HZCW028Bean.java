@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.persistence.Query;
 
 @Stateless
 @LocalBean
@@ -160,6 +161,12 @@ public class HZCW028Bean extends SuperEJBForEFGP<HZCW028> {
 
     public List<HZCW028tDetail> getTrafficDetail(Object value) {
         return hzcw028tDetailBean.findByFSN(value);
+    }
+
+    public List<HZCW028> findBySrcno(String srcno) {
+        Query query = this.getEntityManager().createNamedQuery("HZCW028.findBySrcno");
+        query.setParameter("srcno", srcno);
+        return query.getResultList();
     }
 
 }

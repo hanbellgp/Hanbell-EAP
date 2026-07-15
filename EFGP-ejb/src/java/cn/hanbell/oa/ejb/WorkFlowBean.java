@@ -110,7 +110,7 @@ public class WorkFlowBean extends SuperEJBForEFGP<FormInstance> implements Seria
             }
         }
         xmlBuilder.append("</").append(formName).append(">");
-        return xmlBuilder.toString();
+        return xmlBuilder.toString().replace("&", "|");
 
     }
 

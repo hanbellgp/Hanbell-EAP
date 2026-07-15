@@ -20,6 +20,16 @@
             <property name="eclipselink.canonicalmodel.subpackage" value="cx"/>
         </properties>
     </persistence-unit>
+    <persistence-unit name="CRM-PUHS" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/hscrm</jta-data-source>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+        <validation-mode>NONE</validation-mode>
+        <properties>
+            <property name="eclipselink.canonicalmodel.subpackage" value="hs"/>
+        </properties>
+    </persistence-unit>
     <persistence-unit name="CRM-PUTHB" transaction-type="JTA">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <jta-data-source>jdbc/thbcrm</jta-data-source>

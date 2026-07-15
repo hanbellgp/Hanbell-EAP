@@ -19,9 +19,7 @@ import cn.hanbell.eam.ejb.AssetItemBean;
 import cn.hanbell.eam.entity.AssetAcceptance;
 import cn.hanbell.eam.entity.AssetAcceptanceDetail;
 import cn.hanbell.eam.entity.AssetItem;
-import cn.hanbell.eap.comm.ErrorMailNotify;
 import cn.hanbell.eap.comm.MailNotify;
-import cn.hanbell.eap.ejb.ErrorMailNotificationBean;
 import cn.hanbell.eap.ejb.MailNotificationBean;
 import cn.hanbell.erp.comm.SuperEJBForERP;
 import cn.hanbell.erp.ejb.ApmaphBean;
@@ -43,8 +41,10 @@ import cn.hanbell.erp.ejb.MisdeptBean;
 import cn.hanbell.erp.ejb.MisrateBean;
 import cn.hanbell.erp.ejb.PricingUserBean;
 import cn.hanbell.erp.ejb.PurachBean;
+import cn.hanbell.erp.ejb.PurhadBean;
 import cn.hanbell.erp.ejb.PurhaskBean;
 import cn.hanbell.erp.ejb.PurvdrBean;
+import cn.hanbell.erp.ejb.PurvdrrelBean;
 import cn.hanbell.erp.ejb.SecgprgBean;
 import cn.hanbell.erp.ejb.SecmembBean;
 import cn.hanbell.erp.ejb.SecuserBean;
@@ -68,6 +68,8 @@ import cn.hanbell.erp.entity.Misrate;
 import cn.hanbell.erp.entity.PricingUser;
 import cn.hanbell.erp.entity.Puracd;
 import cn.hanbell.erp.entity.Purach;
+import cn.hanbell.erp.entity.Purdta;
+import cn.hanbell.erp.entity.Purhad;
 import cn.hanbell.erp.entity.Purhask;
 import cn.hanbell.erp.entity.Purvdr;
 import cn.hanbell.erp.entity.Secmemb;
@@ -78,10 +80,12 @@ import cn.hanbell.mes.entity.MuserRole;
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.ejb.HKCW002Bean;
 import cn.hanbell.oa.ejb.InvmasmarkBean;
+import cn.hanbell.oa.ejb.SHBERPAPM828Bean;
 import cn.hanbell.oa.ejb.UsersBean;
 import cn.hanbell.oa.entity.HKCW002;
 import cn.hanbell.oa.entity.HKCW002Detail;
 import cn.hanbell.oa.entity.Invmasmark;
+import cn.hanbell.oa.entity.Users;
 import cn.hanbell.oa.model.HKCW013DetailModel;
 import cn.hanbell.oa.model.HKCW013Model;
 import cn.hanbell.oa.model.HKYX009DetailModel;
@@ -90,6 +94,10 @@ import cn.hanbell.oa.model.HZJS034DetailModel;
 import cn.hanbell.oa.model.HZJS034Model;
 import cn.hanbell.oa.model.SHBERPAPM811DetailModel;
 import cn.hanbell.oa.model.SHBERPAPM811Model;
+import cn.hanbell.oa.model.SHBERPAPM828DetailModel;
+import cn.hanbell.oa.model.SHBERPAPM828Model;
+import cn.hanbell.oa.model.VHTV005DetailModel;
+import cn.hanbell.oa.model.VHTV005Model;
 import cn.hanbell.oa.model.VHTV006DetailModel;
 import cn.hanbell.oa.model.VHTV006Model;
 import cn.hanbell.plm.ejb.PLMItnbrDetailTempBean;
@@ -100,6 +108,7 @@ import cn.hanbell.util.BaseLib;
 import com.lightshell.comm.SuperEJB;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -108,11 +117,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.persistence.EntityTransaction;
-import javax.transaction.Transactional;
-import javax.transaction.UserTransaction;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -140,6 +145,10 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
     private PurachBean purachBean;
     @EJB
     private PurvdrBean purvdrBean;
+    @EJB
+    private PurvdrrelBean purvdrrelBean;
+    @EJB
+    private PurhadBean purhadBean;
     @EJB
     private ApmtbilBean apmtbilBean;
     @EJB
@@ -183,6 +192,8 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
     private HKCW002Bean hkcw002Bean;
     @EJB
     private UsersBean usersBean;
+    @EJB
+    private SHBERPAPM828Bean shb828Bean;
 
     @EJB
     private DSCMABean dscmaBean;
@@ -240,6 +251,14 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
     private kr.hanbell.erp.ejb.PurvdrrelBean KRpurvdrrelBean;
     @EJB
     private tw.hanbell.exch.ejb.PurhadBean exchPurhadBean;
+    @EJB
+    private vn.hanbell.erp.ejb.ApmaphBean VHBapmaphBean;
+    @EJB
+    private vn.hanbell.erp.ejb.PurvdrBean VHBpurvdrBean;
+    @EJB
+    private vn.hanbell.erp.ejb.BudgetAccBean VHBbudgetaccBean;
+    @EJB
+    private vn.hanbell.erp.ejb.ApmtbilBean VHBapmtbilBean;
 
 //    @Resource
 //    private UserTransaction tran;
@@ -308,9 +327,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
     @GET
     @Path("pur530/eam")
     @Produces({MediaType.APPLICATION_JSON})
-    public MCResponseData check530() {
-        System.out.println("aaaaaa");
-
+    public MCResponseData check530(@QueryParam("facno") String facno) {
         // 将ERP资产验收同步到EAM资产入库
         List<HKCW002Detail> hkcw002Details;
         List<HKCW002> hkcw002List = hkcw002Bean.findNotAcceptance();
@@ -323,7 +340,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
             HashMap<SuperEJB, List<?>> hkcw002DetailEdited = new HashMap<>();
             hkcw002DetailEdited.put(hkcw002Bean, editedHKCW002Detail);
             for (HKCW002 e : hkcw002List) {
-                if (!e.getFacno().equals("C")) {
+                if (!e.getFacno().equals(facno)) {
                     continue;
                 }
                 purhaskBean.setCompany(e.getFacno());
@@ -361,7 +378,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
                                             continue;
                                         }
                                     }
-                                    if (d.getFormSerialNumber().equals("HK_CW002202406070001")) {
+                                    if (d.getFormSerialNumber().equals("HK_CW002202506030003")) {
                                         System.out.println(d.getFormSerialNumber() + prh.getPurhaskPK().getPrno());
                                     }
                                     // 得到验收单号数组
@@ -938,6 +955,137 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
     }
 
     @GET
+    @Path("apm828/oa")
+    @Consumes({"application/json"})
+    public void createOASHBERPAPM828ByERPAPM828(@QueryParam("company") String company) {
+        SHBERPAPM828Model hm;
+        SHBERPAPM828DetailModel dm;
+        List<SHBERPAPM828DetailModel> detailList = new ArrayList<>();
+        LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
+        details.put("detail", detailList);
+        try {
+            apmaphBean.setCompany(company);
+            purvdrBean.setCompany(company);
+            String aptyp = "3";
+            List<Apmaph> apmaphList = apmaphBean.findNeedThrow(aptyp);
+            List<Apmapd> apmapdList;
+            int i;
+            BigDecimal sumapamtfs;
+            BigDecimal sumapamt;
+            if (apmaphList != null && !apmaphList.isEmpty()) {
+                for (Apmaph h : apmaphList) {
+                    String facno = h.getApmaphPK().getFacno();
+                    String apno = h.getApmaphPK().getApno();
+                    //检查OA是否已经存在
+                    if ((shb828Bean.findBySrcno(facno, apno, aptyp)) == 1 && h.getApsta().equals("20")) {
+                        h.setApsta("25");
+                        apmaphBean.update(h);
+                        apmaphBean.getEntityManager().flush();
+                        return;
+                    }
+                    apmapdList = apmaphBean.findNeedThrowDetail(facno, apno, aptyp);
+                    if (apmapdList != null && !apmapdList.isEmpty()) {
+                        detailList.clear();// 清除前面的资料
+                        i = 0;
+                        sumapamtfs = BigDecimal.ZERO;
+                        sumapamt = BigDecimal.ZERO;
+
+                        for (Apmapd d : apmapdList) {
+                            i++;
+                            dm = new SHBERPAPM828DetailModel();
+                            dm.setSeq(String.valueOf(i));
+                            if (d.getApdsc() == null || d.getApdsc().isEmpty() || d.getApdsc().length() == 0
+                                    || d.getApdsc().equals("null")) {
+                                dm.setApdsc("");
+                            } else {
+                                dm.setApdsc(d.getApdsc().replace('&', '/'));
+                            }
+                            dm.setCoin(d.getCoin());
+                            dm.setRatio(d.getRatio().toString());
+                            dm.setApamtfs(d.getApamtfs());
+                            dm.setApamt(d.getApamt());
+                            // 请款合计金额
+                            sumapamtfs = sumapamtfs.add(d.getApamtfs());
+                            sumapamt = sumapamt.add(d.getApamt());
+                            if (d.getDmark() == null || d.getDmark().isEmpty() || d.getDmark().length() == 0
+                                    || d.getDmark().equals("null")) {
+                                dm.setDmark("");
+                            } else {
+                                dm.setDmark(d.getDmark());
+                            }
+                            dm.setBudgetacc(d.getBudgetacc() != null ? d.getBudgetacc() : "");
+                            detailList.add(dm);
+                        }
+                        hm = new SHBERPAPM828Model();
+                        hm.setFacno(facno);
+                        hm.setApno(apno);
+                        hm.setAppdate(h.getApdate());
+                        hm.setAppuser(h.getUserno());
+                        //hm.setAppdept(h.getDepno());
+                        hm.setAppdept(usersBean.checkDeptno(h.getUserno(), h.getDepno()));
+                        hm.setAptyp(h.getApmaphPK().getAptyp());
+                        hm.setVdrno(h.getVdrno());
+                        hm.setVdrna(h.getVdrna());
+                        Purvdr purvdr = purvdrBean.findByVdrno(h.getVdrno());
+                        if (null != purvdr) {
+                            hm.setTickdays(String.valueOf(purvdr.getTickdays()));
+                            hm.setBankName(purvdr.getTtbankna());
+                            hm.setBankAccount(purvdr.getTtname());
+                            hm.setVdrds(purvdr.getVdrds());
+                            hm.setTel1(purvdr.getTel1());
+                        } else {
+                            hm.setTickdays("0");
+                        }
+                        hm.setPyhyn(h.getPyhyn());
+                        hm.setPaytn(h.getPaytn());
+                        hm.setPaydate(BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
+                        // 票据到期日 n_pur_apmlib --> uf_getpurdate
+                        hm.setTerdate(BaseLib.formatDate("yyyy/MM/dd", h.getTerda()));
+                        hm.setApsta(h.getApsta());
+                        hm.setIndate(h.getIndate());
+                        hm.setInuser(h.getUserno());
+                        if (null == h.getHmark()) {
+                            hm.setHmark("");
+                        } else {
+                            hm.setHmark(h.getHmark());
+                        }
+                        // 设置默认立账参数
+                        hm.setPayda(h.getPayda());
+                        hm.setRkd("MR01");
+                        hm.setConfig(36);
+                        hm.setAccno("1123");
+                        // 表单下方合计栏位(取2位小数)
+                        hm.setTotalfs(sumapamtfs.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setTotal(sumapamt.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        //大写金额
+                        hm.setAmountInWords(workFlowBean.number2CNMonetaryUnit(hm.getTotal()));
+                        workFlowBean.initUserInfo(h.getUserno());
+                        // 构建表单实例
+                        String formInstance = workFlowBean.buildXmlForEFGP("SHB_ERP_APM828", hm, details);
+                        String subject = "预付款申请：" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款金额：" + hm.getTotal();
+                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT,
+                                "PKG_SHB_ERP_APM828", formInstance, subject);
+                        String[] rm = msg.split("\\$");
+                        if (rm != null) {
+                            log4j.info(Arrays.toString(rm));
+                        }
+                        if (rm != null && rm.length == 2 && rm[0].equals("200")) {
+                            // 更新ERP APM828状态
+                            h.setApsta("25");
+                            h.setOano(rm[1]);
+                            apmaphBean.setCompany(company);
+                            apmaphBean.update(h);
+                            apmaphBean.getEntityManager().flush();
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            log4j.error(ex.getCause().getMessage());
+        }
+    }
+
+    @GET
     @Path("cdrqhad/oa")
     @Consumes({"application/json"})
     public void createOAHKYX009ByERPCDR220(@QueryParam("company") String company) {
@@ -963,6 +1111,14 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
                     invmasBean.setCompany(facno);
                     miscodeBean.setCompany(facno);
                     secuserBean.setCompany(facno);
+                    Users u = usersBean.findById(h.getMancode());
+                    if (u == null || u.getLeaveDate() != null) {
+                        //业务员已离职直接不抛
+                        h.setHquosta('N');
+                        cdrqhadBean.update(h);
+                        cdrqhadBean.getEntityManager().flush();
+                        return;
+                    }
                     if (cdrqdtaList != null && !cdrqdtaList.isEmpty()) {
                         detailList.clear();// 清除前面的资料
                         i = 0;
@@ -972,7 +1128,7 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
                             dm.setSeq(String.valueOf(i));
                             dm.setTrseq(String.valueOf(d.getCdrqdtaPK().getTrseq()));
                             dm.setItnbr(d.getItnbr());
-                            dm.setItnbrcus(d.getItnbrcus());
+                            dm.setItnbrcus(d.getItnbrcus() == null ? "" : d.getItnbrcus());
                             Invmas invmas = invmasBean.findByItnbr(d.getItnbr());
                             dm.setItdsc(filterString(invmas.getItdsc()));
                             dm.setSpdsc(filterString(invmas.getSpdsc()));
@@ -1041,7 +1197,8 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
                         Secuser secuser = secuserBean.findByUserno(h.getMancode());
                         hm.setMancodesc(secuser.getUsername());
                         // hm.setDepno(workFlowBean.getCurrentUser().getDeptno());
-                        hm.setDepno(h.getDepno()); // 报价部门
+                        //hm.setDepno(h.getDepno()); // 报价部门                        
+                        hm.setDepno(usersBean.checkDeptno(h.getMancode(), h.getDepno()));
                         hm.setCfmuser(h.getCfmuserno());
                         // 设置审批原因
                         hm.setApprresno(miscodeBean.findByPK("1O", h.getApprresno()).getCdesc());
@@ -1143,6 +1300,12 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
                             }
                             d.setModelDsc1("");
                             d.setModelDsc2("");
+                            d.setPartMaterial("");
+                            d.setOtherMaterial("");
+                            d.setMaterialDensity("");
+                            d.setPartMaterial01("");
+                            d.setOtherMaterial01("");
+                            d.setMaterialDensity01("");
                             detailList.add(d);
 
                             //加入工程变更通知单作废变更前件号逻辑
@@ -1670,14 +1833,501 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
     }
 
     @GET
+    @Path("pur410/cdr310")
+    @Consumes({"application/json"})
+    public void createERPCDR310ByERPPUR410(@QueryParam("cc") String cc, @QueryParam("cusno") String cusno, @QueryParam("cusman") String cusman,
+            @QueryParam("userno") String userno, @QueryParam("pc") String pc, @QueryParam("vdrno") String vdrno, @QueryParam("type") String type, @QueryParam("isTaxChange") String isTaxChange) {
+        Date d;
+        String pricingtype = "00";
+        String beginDate = "20260425";
+        try {
+            d = com.lightshell.comm.BaseLib.getDate("yyyyMMdd", beginDate);
+        } catch (Exception ex) {
+            d = com.lightshell.comm.BaseLib.getDate();
+        }
+        eapMailBean.clearReceivers();
+        purvdrBean.setCompany(pc);
+        purvdrrelBean.setCompany(pc);
+        purhadBean.setCompany(pc);
+        Purvdr purvdr = purvdrBean.findByVdrno(vdrno);
+        if (purvdr == null) {
+            return;
+        }
+        List<Purhad> purhadList = purhadBean.findNeedThrowByVdrnoAndHmark1(vdrno, d, type);
+        if (purhadList != null && !purhadList.isEmpty()) {
+            StringBuilder msgBuilder = new StringBuilder();
+            StringBuilder errorBuilder = new StringBuilder();
+            String temp;
+            Date indate;
+            Date recdate;
+            String cdrno = "";
+            msgBuilder.append("<div>各位好</div>");
+            try {
+                indate = com.lightshell.comm.BaseLib.getDate();
+                recdate = com.lightshell.comm.BaseLib.getDate("yyyy-MM-dd", com.lightshell.comm.BaseLib.formatDate("yyyy-MM-dd", indate));
+                cdrsysBean.setCompany(cc);
+                cdrcusBean.setCompany(cc);
+                cdrcusmanBean.setCompany(cc);
+                cdrhmasBean.setCompany(cc);
+                cdrdmasBean.setCompany(cc);
+                invmasBean.setCompany(cc);
+                miscodeBean.setCompany(cc);
+                secuserBean.setCompany(cc);
+                Cdrcus cdrcus = cdrcusBean.findByCusno(cusno);
+                if (cdrcus == null) {
+                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中" + cusno + "客户不存在";
+                    log4j.error(temp);
+                    errorBuilder.append(temp);
+                    throw new RuntimeException(cc + "公司ERP中" + cusno + "客户不存在");
+                }
+                Cdrcusman cdrcusman = cdrcusmanBean.findByPK(cc, cusno);
+                if (cdrcusman == null) {
+                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中客户对应业务员资料不存在";
+                    log4j.error(temp);
+                    errorBuilder.append(temp);
+                    throw new RuntimeException(cc + "公司ERP中客户对应业务员资料不存在");
+                }
+                Secuser secuser = secuserBean.findByUserno(cusman);
+                if (secuser == null || secuser.getPdepno() == null || "".equals(secuser.getPdepno())) {
+                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中业务员对应员工资料不存在或不完整";
+                    log4j.error(temp);
+                    errorBuilder.append(temp);
+                    throw new RuntimeException(cc + "公司ERP中业务员对应员工资料不存在或不完整");
+                }
+                Secuser contacter = secuserBean.findByUserno(userno);
+                if (contacter == null || contacter.getPdepno() == null || "".equals(contacter.getPdepno())) {
+                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中输入人员对应员工资料不存在或不完整";
+                    log4j.error(temp);
+                    errorBuilder.append(temp);
+                    throw new RuntimeException(cc + "公司ERP中输入人员对应员工资料不存在或不完整");
+                }
+                String pono = "", judco;
+                Character lc_tax;
+                BigDecimal tramts = BigDecimal.ZERO;
+                BigDecimal taxamts = BigDecimal.ZERO;
+                BigDecimal totamts = BigDecimal.ZERO;
+                Cdrhmas ch;
+                Cdrdmas cd;
+                Invmas item;
+                List<Cdrdmas> addedCdrdmas = new ArrayList<>();
+                HashMap<SuperEJBForERP, List<?>> detailAdded = new LinkedHashMap<>();
+                detailAdded.put(cdrdmasBean, addedCdrdmas);
+                short seq;
+                for (Purhad ph : purhadList) {
+                    pono = ph.getPurhadPK().getPono();
+                    seq = 0;
+                    lc_tax = ph.getTax();
+                    List<Purdta> purdtaList = purhadBean.getDetailList(ph.getPurhadPK().getPono());
+                    if (purdtaList == null || purdtaList.isEmpty()) {
+                        continue;
+                    }
+                    addedCdrdmas.clear();
+                    for (Purdta pd : purdtaList) {
+                        if (pd.getDposta().equals("20") || pd.getDposta().equals("30")) {
+                            item = invmasBean.findByItnbr(pd.getItnbr());
+                            if (item == null) {
+                                errorBuilder.append("<div>createERPCDR310ByERPPUR410遇到错误：").append(cc).append("公司ERP中")
+                                        .append(pd.getItnbr()).append("品号不存在").append("</div>");
+                                // continue;
+                                // 没有品号还是抛转，避免自动产生出货信息序号对应错位 C0160 2021/6/17
+                            } else {
+                                judco = item.getJudco().substring(1, 2) + item.getJudco().substring(4);
+                                if (!judco.equals(pd.getJudco())) {
+                                    errorBuilder.append("createERPCDR310ByERPPUR410遇到错误：").append(pd.getItnbr())
+                                            .append("品号单位设置不一致").append("<br/>");
+                                    continue;
+                                }
+                            }
+                            seq++;
+                            cd = new Cdrdmas(cc, "", seq);
+                            cd.setItnbr(pd.getItnbr());
+                            cd.setItnbrcus("");
+                            cd.setProno("1");
+                            cd.setShptrseq(cdrcus.getShptrseq());
+                            cd.setIvotrseq(cdrcus.getIvotrseq());
+                            cd.setCdrqy1(pd.getPoqy1());// 需要处理单位换算问题
+                            cd.setCdrqy2(pd.getPoqy2());
+                            cd.setArmqy(pd.getApmqy());
+                            // 解决集团内部采购-订单税别问题
+                            if (lc_tax == '1' && isTaxChange != null && isTaxChange.equals("Y")) {
+                                cd.setUnpris(pd.getUnpris().multiply(BigDecimal.ONE.add(ph.getTaxrate())));
+                                cd.setUnpris(cd.getUnpris().setScale(2, BigDecimal.ROUND_HALF_UP));
+                                cd.setTramts(cd.getCdrqy1().multiply(cd.getUnpris()));
+                                cd.setTramts(cd.getTramts().setScale(2, BigDecimal.ROUND_HALF_UP));
+                            } else {
+                                cd.setUnpris(pd.getUnpris());
+                                cd.setTramts(pd.getTramts());
+                            }
+                            cd.setOutdate(pd.getAskdate());
+                            cd.setCdrdate(pd.getAskdate());
+                            cd.setDrecsta("10");
+                            cd.setUnprisrccode('1');
+                            addedCdrdmas.add(cd);
+                            // 计算合计金额
+                            tramts = tramts.add(pd.getTramts());
+                            totamts = totamts.add(pd.getTramts());
+                        }
+                    }
+                    if (!addedCdrdmas.isEmpty() || errorBuilder.length() > 0) {
+                        // 设置邮件收件人
+                        if (secuser.getEmail() != null && !"".equals(secuser.getEmail().trim())) {
+                            eapMailBean.addTo(secuser.getEmail());
+                        }
+                        // 设置邮件收件人
+                        if (contacter.getEmail() != null && !"".equals(contacter.getEmail().trim())) {
+                            eapMailBean.addTo(contacter.getEmail());
+                        }
+                        List<cn.hanbell.erp.entity.Purvdrrel> vdrrelList = purvdrrelBean.findByVdrno(vdrno);
+                        if (vdrrelList != null && !vdrrelList.isEmpty()) {
+                            for (cn.hanbell.erp.entity.Purvdrrel r : vdrrelList) {
+                                if (r.getEmail() != null && !"".equals(r.getEmail().trim())) {
+                                    eapMailBean.addTo(r.getEmail());
+                                }
+                            }
+                        }
+                    }
+                    if (!addedCdrdmas.isEmpty()) {
+                        ch = new Cdrhmas(cc, "");
+                        ch.setCusno(cusno);
+                        ch.setCdrcode('A');
+                        ch.setDepno(secuser.getPdepno());
+                        ch.setRecdate(recdate);
+                        ch.setDecode(ph.getDecode());
+                        ch.setShptrseq(cdrcus.getShptrseq());
+                        ch.setIvotrseq(cdrcus.getIvotrseq());
+                        ch.setPricingtype(pricingtype);
+                        ch.setHrecsta('N');
+                        ch.setTax(ph.getTax());
+                        ch.setTaxrate(ph.getTaxrate());
+                        ch.setCoin(ph.getCoin());
+                        ch.setRatio(ph.getRatio());
+                        ch.setSndcode(cdrcus.getSndcode());
+                        ch.setPaycode(cdrcus.getPaycode());
+                        ch.setTermcode(ph.getTermcode());
+                        ch.setSndcodedsc(miscodeBean.findByPK("GD", cdrcus.getSndcode()).getCdesc());
+                        ch.setPaycodedsc(ph.getPaycodedsc());
+                        ch.setTermcodedsc(ph.getTermcodedsc());
+                        // 客户基础资料代值
+                        ch.setPaysepcode(cdrcus.getPaysepcode());
+                        ch.setSeldate1(cdrcus.getSeldate1());
+                        ch.setSeldate2(cdrcus.getSeldate2());
+                        ch.setSeldate3(cdrcus.getSeldate3());
+                        ch.setSeldate4(cdrcus.getSeldate4());
+                        ch.setHandays1(cdrcus.getHandays1());
+                        ch.setHandays2(cdrcus.getHandays2());
+                        ch.setHandays3(cdrcus.getHandays3());
+                        ch.setHandays4(cdrcus.getHandays4());
+                        ch.setTickdays(cdrcus.getTickdays());
+                        ch.setSacode(cdrcus.getSacode());
+                        ch.setAreacode(cdrcus.getAreacode());
+                        ch.setCuycode(cdrcus.getCuycode());
+                        // 设置负责业务
+                        ch.setMancode(secuser.getUserno());
+                        // 计算表头金额税额
+                        switch (ph.getTax()) {
+                            case '1':
+                                if (isTaxChange != null && isTaxChange.equals("Y")) {
+                                    ch.setTax('4');
+                                }
+                                ch.setTramts(tramts);
+                                ch.setTaxamts(tramts.multiply(ch.getTaxrate()));
+                                ch.setTotamts(ch.getTramts().add(ch.getTaxamts()));
+                                break;
+                            case '4':
+                                ch.setTotamts(totamts);
+                                ch.setTramts(
+                                        totamts.divide(ch.getTaxrate().add(BigDecimal.ONE), 2, RoundingMode.HALF_UP));
+                                ch.setTaxamts(totamts.subtract(ch.getTramts()));
+                                break;
+                            default:
+                                ch.setTramts(tramts);
+                                ch.setTaxamts(BigDecimal.ZERO);
+                                ch.setTotamts(tramts);
+                        }
+                        ch.setIndate(indate);
+                        ch.setUserno(contacter.getUserno());
+                        ch.setCuspono(ph.getPurhadPK().getPono());
+                        // 设置订单编号
+                        cdrno = cdrsysBean.getSerialNumber(cc, "", "A", recdate, ph.getDecode(), true, "CDR310");
+                        ch.getCdrhmasPK().setCdrno(cdrno);
+                        cdrhmasBean.setCompany(cc);
+                        cdrdmasBean.setCompany(cc);
+                        cdrhmasBean.persist(ch);
+                        cdrhmasBean.getEntityManager().flush();
+                        for (Cdrdmas e : addedCdrdmas) {
+                            e.getCdrdmasPK().setCdrno(cdrno);
+                            cdrdmasBean.persist(e);
+                        }
+                        ph.setFromcdrno(cdrno);
+                        purhadBean.setCompany(pc);
+                        purhadBean.update(ph);
+                        msgBuilder.append(String.format("<div>执行%s成功：%s公司采购单%s抛转成%s公司订单%s",
+                                "createERPCDR310ByERPPUR410", pc, pono, cc, cdrno)).append("</div>");
+                        msgBuilder.append("<div>来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单")
+                                .append(seq).append("笔明细").append("</div>");
+                    } else {
+                        msgBuilder
+                                .append(String.format("<div>执行%s成功：%s公司采购单%s，PASS", "createERPCDR310ByERPPUR410", pc, pono))
+                                .append("</div>");
+                        ph.setFromcdrno("PASS");
+                        purhadBean.update(ph);
+                    }
+                }
+                log4j.info(msgBuilder.toString());
+            } catch (RuntimeException | ParseException ex) {
+                errorBuilder.append(ex.toString());
+                log4j.error("createERPCDR310ByERPPUR410遇到错误", ex);
+                throw new RuntimeException(errorBuilder.toString());
+            } finally {
+//                if (!eapMailBean.getTo().isEmpty() || !eapMailBean.getCc().isEmpty()) {
+//                    eapMailBean.setMailSubject("ERP系统新订单" + cdrno);
+//                    msgBuilder.append("<div>").append(errorBuilder.toString()).append("</div>");
+//                    eapMailBean.setHTMLMailContent(msgBuilder.toString());
+//                    eapMailBean.notify(new cn.hanbell.eap.comm.MailNotify());
+//                }
+            }
+        }
+    }
+
+    @GET
+    @Path("pur410/cdr310-2")
+    @Consumes({"application/json"})
+    public void createERPCDR310ByERPPUR410NoContacter(@QueryParam("cc") String cc, @QueryParam("cusno") String cusno,
+            @QueryParam("pc") String pc, @QueryParam("vdrno") String vdrno) {
+        Date d;
+        String pricingtype = "00";
+        String beginDate = "20260425";
+        try {
+            d = com.lightshell.comm.BaseLib.getDate("yyyyMMdd", beginDate);
+        } catch (Exception ex) {
+            d = com.lightshell.comm.BaseLib.getDate();
+        }
+        eapMailBean.clearReceivers();
+        purvdrBean.setCompany(pc);
+        purvdrrelBean.setCompany(pc);
+        purhadBean.setCompany(pc);
+        Purvdr purvdr = purvdrBean.findByVdrno(vdrno);
+        if (purvdr == null) {
+            return;
+        }
+        List<Purhad> purhadList = purhadBean.findNeedThrowByVdrno(vdrno, d);
+        if (purhadList != null && !purhadList.isEmpty()) {
+            StringBuilder msgBuilder = new StringBuilder();
+            StringBuilder errorBuilder = new StringBuilder();
+            String temp;
+            Date indate;
+            Date recdate;
+            String cdrno = "";
+            msgBuilder.append("<div>各位好</div>");
+            try {
+                indate = com.lightshell.comm.BaseLib.getDate();
+                recdate = com.lightshell.comm.BaseLib.getDate("yyyy-MM-dd", com.lightshell.comm.BaseLib.formatDate("yyyy-MM-dd", indate));
+                cdrsysBean.setCompany(cc);
+                cdrcusBean.setCompany(cc);
+                cdrcusmanBean.setCompany(cc);
+                cdrhmasBean.setCompany(cc);
+                cdrdmasBean.setCompany(cc);
+                invmasBean.setCompany(cc);
+                miscodeBean.setCompany(cc);
+                secuserBean.setCompany(cc);
+                Cdrcus cdrcus = cdrcusBean.findByCusno(cusno);
+                if (cdrcus == null) {
+                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中" + cusno + "客户不存在";
+                    log4j.error(temp);
+                    errorBuilder.append(temp);
+                    throw new RuntimeException(cc + "公司ERP中" + cusno + "客户不存在");
+                }
+                Cdrcusman cdrcusman = cdrcusmanBean.findByPK(cc, cusno);
+                if (cdrcusman == null) {
+                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中客户对应业务员资料不存在";
+                    log4j.error(temp);
+                    errorBuilder.append(temp);
+                    throw new RuntimeException(cc + "公司ERP中客户对应业务员资料不存在");
+                }
+                Secuser secuser = secuserBean.findByUserno(cdrcusman.getMan());
+                if (secuser == null || secuser.getPdepno() == null || "".equals(secuser.getPdepno())) {
+                    temp = "createERPCDR310ByERPPUR410遇到错误：" + cc + "公司ERP中业务员对应员工资料不存在或不完整";
+                    log4j.error(temp);
+                    errorBuilder.append(temp);
+                    throw new RuntimeException(cc + "公司ERP中业务员对应员工资料不存在或不完整");
+                }
+                String pono = "", judco;
+                BigDecimal tramts = BigDecimal.ZERO;
+                BigDecimal taxamts = BigDecimal.ZERO;
+                BigDecimal totamts = BigDecimal.ZERO;
+                Cdrhmas ch;
+                Cdrdmas cd;
+                Invmas item;
+                List<Cdrdmas> addedCdrdmas = new ArrayList<>();
+                HashMap<SuperEJBForERP, List<?>> detailAdded = new LinkedHashMap<>();
+                detailAdded.put(cdrdmasBean, addedCdrdmas);
+                short seq;
+                for (Purhad ph : purhadList) {
+                    pono = ph.getPurhadPK().getPono();
+                    seq = 0;
+                    List<Purdta> purdtaList = purhadBean.getDetailList(ph.getPurhadPK().getPono());
+                    if (purdtaList == null || purdtaList.isEmpty()) {
+                        continue;
+                    }
+                    addedCdrdmas.clear();
+                    for (Purdta pd : purdtaList) {
+                        if (pd.getDposta().equals("20") || pd.getDposta().equals("30")) {
+                            item = invmasBean.findByItnbr(pd.getItnbr());
+                            if (item == null) {
+                                errorBuilder.append("<div>createERPCDR310ByERPPUR410遇到错误：").append(cc).append("公司ERP中")
+                                        .append(pd.getItnbr()).append("品号不存在").append("</div>");
+                                // continue;
+                                // 没有品号还是抛转，避免自动产生出货信息序号对应错位 C0160 2021/6/17
+                            }
+                            // judco = item.getJudco().substring(1, 1) + item.getJudco().substring(4);
+                            // if (!judco.equals(pd.getJudco())) {
+                            // errorBuilder.append("createERPCDR310ByERPPUR410遇到错误：").append(pd.getItnbr()).append("品号单位设置不一致").append("<br/>");
+                            // continue;
+                            // }
+                            seq++;
+                            cd = new Cdrdmas(cc, "", seq);
+                            cd.setItnbr(pd.getItnbr());
+                            cd.setItnbrcus("");
+                            cd.setProno("1");
+                            cd.setShptrseq(cdrcus.getShptrseq());
+                            cd.setIvotrseq(cdrcus.getIvotrseq());
+                            cd.setCdrqy1(pd.getPoqy1());// 需要处理单位换算问题
+                            cd.setCdrqy2(pd.getPoqy2());
+                            cd.setArmqy(pd.getApmqy());
+                            cd.setUnpris(pd.getUnpris());
+                            cd.setOutdate(pd.getAskdate());
+                            cd.setCdrdate(pd.getAskdate());
+                            cd.setTramts(pd.getTramts());
+                            cd.setDrecsta("10");
+                            cd.setUnprisrccode('1');
+                            addedCdrdmas.add(cd);
+                            // 计算合计金额
+                            tramts = tramts.add(pd.getTramts());
+                            totamts = totamts.add(pd.getTramts());
+                        }
+                    }
+                    if (!addedCdrdmas.isEmpty() || errorBuilder.length() > 0) {
+                        // 设置邮件收件人
+                        if (secuser.getEmail() != null && !"".equals(secuser.getEmail().trim())) {
+                            eapMailBean.addTo(secuser.getEmail());
+                        }
+                        List<cn.hanbell.erp.entity.Purvdrrel> vdrrelList = purvdrrelBean.findByVdrno(vdrno);
+                        if (vdrrelList != null && !vdrrelList.isEmpty()) {
+                            for (cn.hanbell.erp.entity.Purvdrrel r : vdrrelList) {
+                                if (r.getEmail() != null && !"".equals(r.getEmail().trim())) {
+                                    eapMailBean.addTo(r.getEmail());
+                                }
+                            }
+                        }
+                    }
+                    if (!addedCdrdmas.isEmpty()) {
+                        ch = new Cdrhmas(cc, "");
+                        ch.setCusno(cusno);
+                        ch.setCdrcode('A');
+                        ch.setDepno(secuser.getPdepno());
+                        ch.setRecdate(recdate);
+                        ch.setDecode(ph.getDecode());
+                        ch.setShptrseq(cdrcus.getShptrseq());
+                        ch.setIvotrseq(cdrcus.getIvotrseq());
+                        ch.setPricingtype(pricingtype);
+                        ch.setHrecsta('N');
+                        ch.setTax(ph.getTax());
+                        ch.setTaxrate(ph.getTaxrate());
+                        ch.setCoin(ph.getCoin());
+                        ch.setRatio(ph.getRatio());
+                        ch.setSndcode(cdrcus.getSndcode());
+                        ch.setPaycode(cdrcus.getPaycode());
+                        ch.setTermcode(ph.getTermcode());
+                        ch.setSndcodedsc(miscodeBean.findByPK("GD", cdrcus.getSndcode()).getCdesc());
+                        ch.setPaycodedsc(ph.getPaycodedsc());
+                        ch.setTermcodedsc(ph.getTermcodedsc());
+                        // 客户基础资料代值
+                        ch.setPaysepcode(cdrcus.getPaysepcode());
+                        ch.setSeldate1(cdrcus.getSeldate1());
+                        ch.setSeldate2(cdrcus.getSeldate2());
+                        ch.setSeldate3(cdrcus.getSeldate3());
+                        ch.setSeldate4(cdrcus.getSeldate4());
+                        ch.setHandays1(cdrcus.getHandays1());
+                        ch.setHandays2(cdrcus.getHandays2());
+                        ch.setHandays3(cdrcus.getHandays3());
+                        ch.setHandays4(cdrcus.getHandays4());
+                        ch.setTickdays(cdrcus.getTickdays());
+                        ch.setSacode(cdrcus.getSacode());
+                        ch.setAreacode(cdrcus.getAreacode());
+                        ch.setCuycode(cdrcus.getCuycode());
+                        // 设置负责业务
+                        ch.setMancode(cdrcusman.getMan());
+                        // 计算表头金额税额
+                        switch (ph.getTax()) {
+                            case '1':
+                                ch.setTramts(tramts);
+                                ch.setTaxamts(tramts.multiply(ch.getTaxrate()));
+                                ch.setTotamts(ch.getTramts().add(ch.getTaxamts()));
+                                break;
+                            case '4':
+                                ch.setTotamts(totamts);
+                                ch.setTramts(
+                                        totamts.divide(ch.getTaxrate().add(BigDecimal.ONE), 2, RoundingMode.HALF_UP));
+                                ch.setTaxamts(totamts.subtract(ch.getTramts()));
+                                break;
+                            default:
+                                ch.setTramts(tramts);
+                                ch.setTaxamts(BigDecimal.ZERO);
+                                ch.setTotamts(tramts);
+                        }
+                        ch.setIndate(indate);
+                        ch.setUserno(cdrcusman.getMan());
+                        ch.setCuspono(ph.getPurhadPK().getPono());
+                        // 设置订单编号
+                        cdrno = cdrsysBean.getSerialNumber(cc, "", "A", recdate, ph.getDecode(), true, "CDR310");
+                        ch.getCdrhmasPK().setCdrno(cdrno);
+                        cdrhmasBean.setCompany(cc);
+                        cdrdmasBean.setCompany(cc);
+                        cdrhmasBean.persist(ch);
+                        cdrhmasBean.getEntityManager().flush();
+                        for (Cdrdmas e : addedCdrdmas) {
+                            e.getCdrdmasPK().setCdrno(cdrno);
+                            cdrdmasBean.persist(e);
+                        }
+                        ph.setFromcdrno(cdrno);
+                        purhadBean.update(ph);
+                        msgBuilder.append(String.format("<div>执行%s成功：%s公司采购单%s抛转成%s公司订单%s",
+                                "createERPCDR310ByERPPUR410", pc, pono, cc, cdrno)).append("</div>");
+                        msgBuilder.append("<div>来源采购单").append(purdtaList.size()).append("笔明细").append("产生新订单")
+                                .append(seq).append("笔明细").append("</div>");
+                    } else {
+                        msgBuilder
+                                .append(String.format("<div>执行%s成功：%s公司采购单%s，PASS", "createERPCDR310ByERPPUR410", pc, pono))
+                                .append("</div>");
+                        ph.setFromcdrno("PASS");
+                        purhadBean.update(ph);
+                    }
+                }
+                log4j.info(msgBuilder.toString());
+            } catch (RuntimeException | ParseException ex) {
+                errorBuilder.append(ex.toString());
+                log4j.error("createERPCDR310ByERPPUR410遇到错误", ex);
+                throw new RuntimeException(errorBuilder.toString());
+            } finally {
+                if (!eapMailBean.getTo().isEmpty() || !eapMailBean.getCc().isEmpty()) {
+                    eapMailBean.setMailSubject("ERP系统新订单" + cdrno);
+                    msgBuilder.append("<div>").append(errorBuilder.toString()).append("</div>");
+                    eapMailBean.setHTMLMailContent(msgBuilder.toString());
+                    eapMailBean.notify(new cn.hanbell.eap.comm.MailNotify());
+                }
+            }
+        }
+    }
+
+    @GET
     @Path("vhbpur415/cdr310")
     @Consumes({"application/json"})
-    public void createERPCDR310ByVHBPUR415() {
-        String cc = "X";
-        String cusno = "SDC00001";
+    public void createERPCDR310ByVHBPUR415(@QueryParam("cc") String cc, @QueryParam("cusno") String cusno, @QueryParam("pc") String pc, @QueryParam("vdrno") String vdrno) {
+//        String cc = "X";
+//        String cusno = "SDC00001";
         String pricingtype = "00";
-        String pc = "V";
-        String vdrno = "HA001";
+//        String pc = "V";
+//        String vdrno = "HA001";
         String beginDate = "20240901";
         Date d;
         try {
@@ -2620,6 +3270,180 @@ public class TestFacadeREST extends SuperRESTForEFGP<KV> {
             }
         } catch (Exception ex) {
             log4j.error(ex.getCause().getMessage());
+        }
+    }
+
+    @GET
+    @Path("vhtv005/oa")
+    @Consumes({"application/json"})
+    public void createOAVHTV005ByVHBERPAPM820(@QueryParam("company") String company) {
+        VHTV005Model hm;
+        VHTV005DetailModel dm;
+        List<VHTV005DetailModel> detailList = new ArrayList<>();
+        LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
+        details.put("Detail", detailList);
+        try {
+            VHBapmaphBean.setCompany(company);
+            VHBpurvdrBean.setCompany(company);
+            List<vn.hanbell.erp.entity.Apmaph> apmaphList = VHBapmaphBean.findNeedThrow("0");
+            List<vn.hanbell.erp.entity.Apmapd> apmapdList;
+            int i;
+            BigDecimal sumapamtfs;
+            BigDecimal sumapamt;
+            BigDecimal sumtaxfs;
+            BigDecimal sumtax;
+            BigDecimal sumbilnum8fs;
+            BigDecimal sumbilnum8;
+            if (apmaphList != null && !apmaphList.isEmpty()) {
+                for (vn.hanbell.erp.entity.Apmaph h : apmaphList) {
+                    apmapdList = VHBapmaphBean.findNeedThrowDetail(h.getApmaphPK().getFacno(), h.getApmaphPK().getApno(),
+                            h.getApmaphPK().getAptyp());
+                    if (apmapdList != null && !apmapdList.isEmpty()) {
+                        detailList.clear();// 清除前面的资料
+                        i = 0;
+                        sumapamtfs = BigDecimal.ZERO;
+                        sumapamt = BigDecimal.ZERO;
+                        sumtaxfs = BigDecimal.ZERO;
+                        sumtax = BigDecimal.ZERO;
+                        sumbilnum8fs = BigDecimal.ZERO;
+                        sumbilnum8 = BigDecimal.ZERO;
+                        List<String> bilList = new ArrayList<>();
+                        for (vn.hanbell.erp.entity.Apmapd d : apmapdList) {
+                            i++;
+                            dm = new VHTV005DetailModel();
+                            dm.setSeq(String.valueOf(i));
+                            if (d.getApdsc() == null || d.getApdsc().isEmpty() || d.getApdsc().length() == 0
+                                    || d.getApdsc().equals("null")) {
+                                dm.setApdsc("");
+                            } else {
+                                dm.setApdsc(d.getApdsc().replace('&', '/').replace('<', ' ').replace('>', ' '));
+                            }
+                            dm.setBilno(d.getBilno() != null ? d.getBilno() : "");
+                            dm.setCoin(d.getCoin());
+                            dm.setRatio(d.getRatio().toString());
+                            dm.setAcpamt(d.getAcpamt());
+                            dm.setAcpamtfs(d.getAcpamtfs());
+                            dm.setTemamt(d.getTemamt());
+                            dm.setTemamtfs(d.getTemamtfs());
+                            dm.setCom_apamtfs(d.getAcpamtfs().subtract(d.getTemamtfs()));
+                            dm.setCom_apamt(d.getAcpamt().subtract(d.getTemamt()));
+                            // 请款合计金额
+                            sumapamtfs = sumapamtfs.add(d.getApamtfs());
+                            sumapamt = sumapamt.add(d.getApamt());
+                            if (d.getDmark() == null || d.getDmark().isEmpty() || d.getDmark().length() == 0
+                                    || d.getDmark().equals("null")) {
+                                dm.setDmark("");
+                            } else {
+                                dm.setDmark(d.getDmark());
+                            }
+                            dm.setCenterid(d.getCenterid() != null ? d.getCenterid() : "");
+                            VHBmiscodeBean.setCompany(company);
+                            vn.hanbell.erp.entity.Miscode miscode = VHBmiscodeBean.findByPK("9N", dm.getCenterid());
+                            if (miscode == null) {
+                                dm.setCmp_centerid("");
+                            } else {
+                                dm.setCmp_centerid(miscode.getCdesc());
+                            }
+                            dm.setBudgetacc(d.getBudgetacc() != null ? d.getBudgetacc() : "");
+                            VHBbudgetaccBean.setCompany(company);
+                            vn.hanbell.erp.entity.BudgetAcc budgetacc = VHBbudgetaccBean.findByAccno(dm.getBudgetacc());
+                            if (budgetacc == null) {
+                                dm.setCmp_budgetacc("");
+                            } else {
+                                dm.setCmp_budgetacc(budgetacc.getAccname());
+                            }
+                            dm.setPayqty(d.getPayqty());
+                            if (!bilList.contains(d.getBilno())) {
+                                // 计算海关代徵,税额
+                                VHBapmtbilBean.setCompany(company);
+                                vn.hanbell.erp.entity.Apmtbil apmtbil = VHBapmtbilBean.findByPK(company, d.getBilno());
+                                if (null != apmtbil) {
+                                    sumtaxfs = sumtaxfs.add(apmtbil.getBiltaxfs());
+                                    sumtax = sumtax.add(apmtbil.getBiltax());
+                                    if ('8' == apmtbil.getBilnum()) {
+                                        sumbilnum8 = sumbilnum8.add(apmtbil.getBiltax());
+                                        sumbilnum8fs = sumbilnum8fs.add(apmtbil.getBiltaxfs());
+                                    }
+                                }
+                                bilList.add(d.getBilno());
+                            }
+                            detailList.add(dm);
+                        }
+                        workFlowBean.initUserInfo(h.getUserno());
+                        hm = new VHTV005Model();
+                        hm.setFacno(h.getApmaphPK().getFacno());
+                        hm.setApno(h.getApmaphPK().getApno());
+                        hm.setAppdate(h.getApdate());
+                        hm.setAppuser(h.getUserno());
+                        //hm.setAppdept(h.getDepno());
+                        //修正人员部门不对应问题
+                        hm.setAppdept(usersBean.checkDeptno(h.getUserno(), h.getDepno()));
+                        hm.setHdnappDept(workFlowBean.getOrganizationUnit().getOrganizationUnitName());
+                        hm.setAptyp(h.getApmaphPK().getAptyp());
+                        hm.setVdrno(h.getVdrno());
+                        hm.setVdrna(h.getVdrna());
+                        vn.hanbell.erp.entity.Purvdr purvdr = VHBpurvdrBean.findByVdrno(h.getVdrno());
+                        if (null != purvdr) {
+                            hm.setTickdays(String.valueOf(purvdr.getTickdays()));
+                            hm.setBankName(purvdr.getTtbankna() == null ? "" : purvdr.getTtbankna());
+                            hm.setBankAccount(purvdr.getTtname() == null ? "" : purvdr.getTtname());
+                            hm.setVdrds(purvdr.getVdrds().replace('&', '/').replace('<', ' ').replace('>', ' '));
+                            hm.setTel1(purvdr.getTel1() == null ? "" : purvdr.getTel1());
+                        } else {
+                            hm.setTickdays("0");
+                        }
+                        hm.setPyhyn(h.getPyhyn());
+                        hm.setPaytn(h.getPaytn());
+                        hm.setPaydate(com.lightshell.comm.BaseLib.formatDate("yyyy/MM/dd", h.getPayda()));
+                        // 票据到期日 n_pur_apmlib --> uf_getpurdate
+                        hm.setTerdate(com.lightshell.comm.BaseLib.formatDate("yyyy/MM/dd", h.getTerda()));
+                        hm.setApsta(h.getApsta());
+                        hm.setIndate(h.getIndate());
+                        hm.setInuser(h.getUserno());
+                        if (null == h.getHmark()) {
+                            hm.setHmark("");
+                        } else {
+                            hm.setHmark(h.getHmark().replace('&', '/').replace('<', ' ').replace('>', ' '));
+                        }
+                        // 设置默认立账参数
+                        hm.setPayda(h.getPayda());
+                        //hm.setRkd("MR01");
+                        //hm.setConfig(36);
+                        //hm.setAccno("1123");
+                        // 表单下方合计总金额栏位(取2位小数)
+                        hm.setCmp_sum_tax(sumtax.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setTotalfs(sumapamtfs.add(sumtaxfs).subtract(sumbilnum8fs).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        hm.setTotal(sumapamt.add(sumtax).subtract(sumbilnum8).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        //大写金额
+                        hm.setAmountInWords(workFlowBean.number2CNMonetaryUnit(hm.getTotal()));
+                        // 构建表单实例
+                        String formInstance = workFlowBean.buildXmlForEFGP("VH_TV005", hm, details);
+                        String subject = "费用类请款申请：" + hm.getApno() + ",厂商：" + hm.getVdrna() + ",请款金额：" + hm.getTotal();
+                        String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT,
+                                "PKG_VH_TV005", formInstance, subject);
+                        String[] rm = msg.split("\\$");
+                        if (rm != null) {
+                            log4j.info(Arrays.toString(rm));
+                        }
+                        if (rm != null && rm.length == 2 && rm[0].equals("200")) {
+                            // 更新ERP APM820状态
+                            h.setApsta("25");
+                            VHBapmaphBean.update(h);
+                            //VHBapmaphBean.getEntityManager().flush();
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            log4j.error(ex);
+            //加入邮件通知
+            eapMailBean.getTo().clear();
+            eapMailBean.getTo().add("1491@hanbell.com.cn");
+            eapMailBean.setMailSubject("越南" + company + "ERP-APM820抛转OA审批失败");
+            eapMailBean.setMailContent(
+                    company + "公司别 ERP-APM820抛转OA审批申请单" + "抛转失败，异常：" + ex.getCause().getMessage());
+            eapMailBean.notify(new MailNotify());
         }
     }
 }

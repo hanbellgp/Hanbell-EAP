@@ -29,6 +29,7 @@ import cn.hanbell.oa.entity.HKCG007purDetail;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -138,7 +139,8 @@ public class PurhaskBean extends SuperEJBForERP<Purhask> {
             ppk.setProno(prono);
             p.setPurhaskPK(ppk);
             p.setPrkind(q.getPrkind());
-            p.setPrdate(q.getAppDate());
+            String currentDate = LocalDate.now().toString();
+            p.setPrdate(date);
             p.setDepno(q.getDepno());
             String srcString = q.getProcessSerialNumber().substring(4);
             p.setSrcno(srcString);

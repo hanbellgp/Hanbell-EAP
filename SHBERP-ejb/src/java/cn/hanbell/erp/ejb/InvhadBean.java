@@ -124,7 +124,8 @@ public class InvhadBean extends SuperEJBForERP<Invhad> {
             throw new NullPointerException();
         }
         if (h.getPzno() != null && h.getPzno().length() > 5) {
-            throw new NullPointerException("抛转单号已生成，请确认是否已抛转");
+            log4j.info("抛转单号已生成，请确认是否已抛转");
+            return true;
         }
         try {
             String facno = h.getFacno();

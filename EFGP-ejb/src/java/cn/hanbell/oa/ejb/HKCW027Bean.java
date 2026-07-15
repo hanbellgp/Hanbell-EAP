@@ -7,7 +7,9 @@ package cn.hanbell.oa.ejb;
 
 import cn.hanbell.oa.comm.SuperEJBForEFGP;
 import cn.hanbell.oa.entity.HKCW027;
+import cn.hanbell.oa.entity.HKCW027Detail;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -23,8 +25,22 @@ public class HKCW027Bean extends SuperEJBForEFGP<HKCW027> {
     public HKCW027Bean() {
         super(HKCW027.class);
     }
-//根据fromid查是否有OA单子
 
+    @EJB
+    private HKCW027DetailBean hkcw027Detail;
+
+    private List<HKCW027Detail> detailList;
+
+    @Override
+    public void setDetail(Object value) {
+        this.detailList = hkcw027Detail.findByFSN(value); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<HKCW027Detail> getDetailList(Object value) {
+        return hkcw027Detail.findByFSN(value);
+    }
+
+    //根据fromid查是否有OA单子
     public List<HKCW027> getOaFormid(String formid) {
         Query query = getEntityManager().createNativeQuery("Select * from HK_CW027 where formid='" + formid + "'");
         List<HKCW027> lenList = query.getResultList();

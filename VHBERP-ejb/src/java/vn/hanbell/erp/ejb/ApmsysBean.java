@@ -34,6 +34,7 @@ public class ApmsysBean extends SuperEJBForERP<Apmsys> {
         String maxid, newid;
         String prg, code, format, header;
         Integer seqlen, id;
+        apmrnoBean.setCompany(facno);
         Apmsys e = this.findById(facno);
         if (e == null) {
             throw new NullPointerException();

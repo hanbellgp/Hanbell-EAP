@@ -21,8 +21,9 @@ import vn.hanbell.erp.entity.Purhad;
  */
 @Stateless
 @LocalBean
-public class PurhadBean extends SuperEJBForERP<Purhad>{
-   @EJB
+public class PurhadBean extends SuperEJBForERP<Purhad> {
+
+    @EJB
     private PurdtaBean purdtaBean;
 
     List<Purdta> detailList;
@@ -44,6 +45,7 @@ public class PurhadBean extends SuperEJBForERP<Purhad>{
 
     @Override
     public void setDetail(Object value) {
+        purdtaBean.setCompany(this.getCompany());
         detailList = purdtaBean.findByPono(value.toString());
     }
 
@@ -55,6 +57,7 @@ public class PurhadBean extends SuperEJBForERP<Purhad>{
     }
 
     public List<Purdta> getDetailList(Object value) {
+        purdtaBean.setCompany(this.getCompany());
         return purdtaBean.findByPono(value.toString());
     }
 }

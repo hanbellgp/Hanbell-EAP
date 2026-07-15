@@ -33,6 +33,10 @@ import cn.hanbell.oa.entity.SHBERPINV146;
 import cn.hanbell.oa.entity.SHBERPINV146Detail;
 import cn.hanbell.oa.entity.HKCW003;
 import cn.hanbell.oa.entity.HKCW003Detail;
+import cn.hanbell.plm.ejb.PLMItnbrDetailTempBean;
+import cn.hanbell.plm.ejb.PartBean;
+import cn.hanbell.plm.entity.PLMItnbrDetailTemp;
+import cn.hanbell.plm.entity.Part;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -82,12 +86,16 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
     private SyncCQBean syncCQBean;
     @EJB
     private SyncYCBean syncYCBean;
-
     @EJB
     private SyncHYBean syncHYBean;
 
     @EJB
     private WARMBBean warmbBean;
+
+    @EJB
+    private PartBean partBean;
+    @EJB
+    private PLMItnbrDetailTempBean plmdetailTempBean;
 
     public InvmasBean() {
         super(Invmas.class);
@@ -187,7 +195,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     //20221213 加入分类2分类3及机型说明
                     m.setGenre2(detail.getGenre2());
                     m.setGenre3(detail.getGenre3());
-                    m.setGenre4(detail.getGenre4());
+                    m.setGenre4(m.getGenre1());
                     m.setModelDsc1(detail.getModelDsc1());
                     m.setModelDsc2(detail.getModelDsc2().trim());
                     persist(m);
@@ -415,9 +423,7 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
 
             // 表身循环
             for (int i = 0; i < details.size(); i++) {
-
                 SHBERPINV146Detail detail = details.get(i);
-
                 this.setCompany(h.getFacno());
                 Invmas m = findByItnbr(detail.getItnbr());
                 // m.setItcls(detail.getItcls()); //设置品号大类
@@ -514,6 +520,43 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                         this.getEntityManager().flush();
                     }
 
+                    // H与Y公司别件号同步更新
+                    if (h.getFacno().equals("H")) {
+                        this.setCompany("Y");
+                        Invmas ym = this.findByItnbr(detail.getItnbr());
+                        if (ym != null) {
+                            ym.setItdsc(detail.getItdsc()); // 设置中文品名
+                            ym.setSpdsc(detail.getSpdsc()); // 设置中文规格
+                            ym.setEitdsc(detail.getEitdsc()); // 设置英文品名
+                            ym.setEspdsc(detail.getEspdsc()); // 设置英文规格
+                            ym.setSitdsc(detail.getSitdsc()); // 设置品号简名
+                            ym.setItdsc2(detail.getItdsc2());
+                            ym.setSpdsc2(detail.getSpdsc2());
+                            ym.setModdate(BaseLib.getDate());
+                            ym.setModman(h.getApplyuser());
+                            update(ym);
+                            this.getEntityManager().flush();
+                        }
+                    }
+
+                    if (h.getFacno().equals("Y")) {
+                        this.setCompany("H");
+                        Invmas hm = this.findByItnbr(detail.getItnbr());
+                        if (hm != null) {
+                            hm.setItdsc(detail.getItdsc()); // 设置中文品名
+                            hm.setSpdsc(detail.getSpdsc()); // 设置中文规格
+                            hm.setEitdsc(detail.getEitdsc()); // 设置英文品名
+                            hm.setEspdsc(detail.getEspdsc()); // 设置英文规格
+                            hm.setSitdsc(detail.getSitdsc()); // 设置品号简名
+                            hm.setItdsc2(detail.getItdsc2());
+                            hm.setSpdsc2(detail.getSpdsc2());
+                            hm.setModdate(BaseLib.getDate());
+                            hm.setModman(h.getApplyuser());
+                            update(hm);
+                            this.getEntityManager().flush();
+                        }
+                    }
+
                     // 更新CRM件号2017/7/11
                     WARMB warmb = warmbBean.findByMB001(detail.getItnbr());
                     if (warmb != null) {
@@ -535,6 +578,28 @@ public class InvmasBean extends SuperEJBForERP<Invmas> {
                     }
 
                 }
+                //更新PLM及PLM中间表20260106
+                List<PLMItnbrDetailTemp> itnbrs = plmdetailTempBean.findByCitnbr(detail.getItnbr());
+                for (PLMItnbrDetailTemp item : itnbrs) {
+                    item.setCItdsc(detail.getItdsc());
+                    item.setCSpdsc(detail.getSpdsc());
+                    item.setCEitdsc(detail.getEitdsc());
+                    item.setCEspdsc(detail.getEspdsc());
+                    item.setAItdsc(detail.getItdsc());
+                    item.setASpdsc(detail.getSpdsc());
+                    plmdetailTempBean.update(item);
+                }
+                Part p = partBean.findByKeyedName(detail.getItnbr());
+                if (null != p) {
+                    p.setCnNameCn(detail.getItdsc());
+                    p.setCnSpecCn(detail.getSpdsc());
+                    p.setCnNameEn(detail.getEitdsc());
+                    p.setCnSpecEn(detail.getEspdsc());
+                    p.setName(detail.getItdsc());
+                    p.setCnSpecZt(detail.getSpdsc());
+                    partBean.update(p);
+                }
+
             }
             return true;
         } catch (Exception ex) {
