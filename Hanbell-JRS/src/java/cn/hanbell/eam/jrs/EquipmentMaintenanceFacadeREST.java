@@ -47,28 +47,28 @@ import org.json.JSONObject;
 @Stateless
 @Path("shbeam/eqpmaintenance")
 public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAnalyResult> {
-
+    
     @EJB
     private EquipmentAnalyResultBean equipmentAnalyResultBean;
-
+    
     @EJB
     private EquipmentAnalyResultDtaBean equipmentAnalyResultDtaBean;
-
+    
     protected SuperEJB superEJB;
     //生产环境
-    //private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
+       private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
 //F:\C2079\EAM\Hanbell-EAM\web\resources\app\res
-    private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
-
+   //   private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
+    
     @Override
     protected SuperEJB getSuperEJB() {
         return equipmentAnalyResultBean;
     }
-
+    
     public EquipmentMaintenanceFacadeREST() {
         super(EquipmentAnalyResult.class);
     }
-
+    
     @GET
     @Path("autonomous-maintain-tasks/{filters}/{sorts}/{offset}/{pageSize}")
     @Consumes({"application/json"})
@@ -80,7 +80,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             try {
                 Map<String, Object> filterFields = getFilterFieldsMap(filters);
                 Map<String, String> sortFields = getSortFieldsMap(sorts);
-
+                
                 autoMaintainDocListRes = equipmentAnalyResultBean.getEquipmentAnalyResultListByNativeQuery(filterFields, sortFields);
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -90,7 +90,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-
+    
     @GET
     @Path("autonomous-maintain-detailinfo/{filters}/{sorts}/{offset}/{pageSize}")
     @Consumes({"application/json"})
@@ -103,7 +103,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             List<EquipmentAnalyResultDta> autoMaintainDetailList = new ArrayList<>();
             try {
                 Map<String, Object> filterFields = getFilterFieldsMap(filters);
-
+                
                 autoMaintainInfo = equipmentAnalyResultBean.findById(Integer.parseInt(filterFields.get("docId").toString()));
                 if (autoMaintainInfo != null) {
                     Map<String, Object> filterFields_detail = new HashMap<>();
@@ -115,14 +115,14 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                         if (eq.getFilename() != null && eq.getFilename() != "") {
                             // 将字节数组转换为Base64编码
                             java.io.File imageFile = new java.io.File(filePathTemp + eq.getFilename());
-                             if (!imageFile.exists()) {
-                                 continue;
-                             }
+                            if (!imageFile.exists()) {
+                                continue;
+                            }
                             byte[] imageBytes = null;
                             imageBytes = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(imageFile.getPath()));
                             String base64String = java.util.Base64.getEncoder().encodeToString(imageBytes);
                             eq.setImageBase("data:image/png;base64," + base64String);
-
+                            
                         }
                     }
                     initDtaRes.add(autoMaintainInfo);
@@ -136,7 +136,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-
+    
     public boolean GenerateImage(String imgData, String imgFilePath) throws IOException { // 对字节数组字符串进行Base64解码并生成图片
         if (imgData == null) // 图像数据为空
         {
@@ -165,7 +165,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             return true;
         }
     }
-
+    
     @POST
     @Path("autonomous-maintain-start")
     @Consumes({"application/json"})
@@ -175,7 +175,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             if (entity == null) {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
-
+            
             try {
                 Date minOptDate = new Date();
                 EquipmentAnalyResult autoMaintainInfo = equipmentAnalyResultBean.findById(entity.getId());
@@ -203,21 +203,21 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                     }
                     autoMaintainDetail.setException(jsonObject.getString("exception"));
                     autoMaintainDetail.setProblemsolve(jsonObject.getString("problemSolve"));
-
+                    
                     String filepath = jsonObject.getString("filePath");
-                    if (jsonObject.has("imageBase")) {
-                        String imageBase = jsonObject.getString("imageBase");
-                        if (filepath != null && imageBase != null && imageBase != "") {//存在上传图片时进行图片上传
-                            String fileNameTemp = autoMaintainDetail.getPid() + "_" + autoMaintainDetail.getSeq() + "_" + System.currentTimeMillis() + ".jpg";
-                            String relativePath = "../../resources/app/res/" + fileNameTemp;
-                            //保存至服务器本地
-                            GenerateImage(imageBase, filePathTemp + fileNameTemp);
-                            //download(filepath, filePathTemp + fileNameTemp);
-                            autoMaintainDetail.setFilepath(relativePath);
-                            autoMaintainDetail.setFilename(fileNameTemp);
-                        }
+                    String imageBase = jsonObject.getString("imageBase");
+                    if (filepath != null && !filepath.equals("") && !filepath.contains("resources") && imageBase.equals("Y")) {
+                        
+                        String fileNameTemp = autoMaintainDetail.getPid() + "_" + autoMaintainDetail.getSeq() + "_" + System.currentTimeMillis() + ".jpg";
+                        String relativePath = "../../resources/app/res/" + fileNameTemp;
+                        //保存至服务器本地
+                        GenerateImage(filepath, filePathTemp + fileNameTemp);
+                        //download(filepath, filePathTemp + fileNameTemp);
+                        autoMaintainDetail.setFilepath(relativePath);
+                        autoMaintainDetail.setFilename(fileNameTemp);
+                        
                     }
-
+                    
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd  HH:mm");
                     dateStrTemp = jsonObject.getString("sDate");
                     if (dateStrTemp != null && !dateStrTemp.isEmpty()) {
@@ -244,7 +244,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                         completeFlag = false;
                     }
                 }
-
+                
                 if (completeFlag) {
                     autoMaintainInfo.setAnalysisresult(mainResultTemp);
                     autoMaintainInfo.setEnddate(new Date());
@@ -258,7 +258,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                 autoMaintainInfo.setOptdate(new Date());
                 autoMaintainInfo.setOptuser(entity.getOptuser());
                 equipmentAnalyResultBean.update(autoMaintainInfo);
-
+                
                 return new ResponseMessage("200", "状态更新成功");
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误Update失败");
@@ -267,7 +267,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-
+    
     @POST
     @Path("autonomous-maintain-dispatch")
     @Consumes({"application/json"})
@@ -277,7 +277,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             if (entity == null) {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
-
+            
             try {
                 EquipmentAnalyResult autoMaintainInfo = equipmentAnalyResultBean.findById(entity.getId());
                 if (autoMaintainInfo == null) {
@@ -298,10 +298,10 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                     autoMaintainDetail.setAnalysisuser(jsonObject.getString("analysisUser"));
                     autoMaintainDetail.setLastanalysisuser(jsonObject.getString("analysisUserName"));
                 }
-
+                
                 autoMaintainInfo.setOptdate(new Date());
                 autoMaintainInfo.setOptuser(entity.getOptuser());
-
+                
                 return new ResponseMessage("200", "状态更新成功");
             } catch (Exception ex) {
                 return new ResponseMessage("500", "系统错误Update失败");
@@ -310,7 +310,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-
+    
     private HashMap getFilterFieldsMap(PathSegment filters) {
         try {
             MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
@@ -334,7 +334,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
     }
-
+    
     private LinkedHashMap getSortFieldsMap(PathSegment sorts) {
         try {
             MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
@@ -353,5 +353,5 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
     }
-
+    
 }
