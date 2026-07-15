@@ -56,9 +56,9 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
     
     protected SuperEJB superEJB;
     //生产环境
-       private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
+        private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\"; 
 //F:\C2079\EAM\Hanbell-EAM\web\resources\app\res
-   //   private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
+   //  private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
     
     @Override
     protected SuperEJB getSuperEJB() {
@@ -205,7 +205,7 @@ public class EquipmentMaintenanceFacadeREST extends SuperRESTForEAM<EquipmentAna
                     autoMaintainDetail.setProblemsolve(jsonObject.getString("problemSolve"));
                     
                     String filepath = jsonObject.getString("filePath");
-                    String imageBase = jsonObject.getString("imageBase");
+                    String imageBase = jsonObject.optString("imageBase");
                     if (filepath != null && !filepath.equals("") && !filepath.contains("resources") && imageBase.equals("Y")) {
                         
                         String fileNameTemp = autoMaintainDetail.getPid() + "_" + autoMaintainDetail.getSeq() + "_" + System.currentTimeMillis() + ".jpg";
