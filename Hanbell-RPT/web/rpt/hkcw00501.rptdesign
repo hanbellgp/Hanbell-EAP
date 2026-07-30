@@ -163,6 +163,12 @@ return false;]]></method>
                     <property name="dataType">string</property>
                     <property name="allowExport">true</property>
                 </structure>
+                <structure>
+                    <property name="name">color8</property>
+                    <expression name="expression" type="javascript">dataSetRow["stockInvestment"]=="3"?"black":""</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
             <column id="5">
                 <property name="width">1.3cm</property>
@@ -171,7 +177,7 @@ return false;]]></method>
                 <property name="width">1.4cm</property>
             </column>
             <column id="7">
-                <property name="width">10.3cm</property>
+                <property name="width">8cm</property>
             </column>
             <column id="8">
                 <property name="width">1.4cm</property>
@@ -279,6 +285,7 @@ return false;]]></method>
                     <text id="230">
                         <property name="contentType">html</property>
                         <text-property name="content"><![CDATA[<span style='background-color:<VALUE-OF>row["color6"]</VALUE-OF>'> □</span> 国债逆回购
+<span style='background-color:<VALUE-OF>row["color8"]</VALUE-OF>'> □</span> 收益凭证
 <span style='background-color:<VALUE-OF>row["color7"]</VALUE-OF>'> □</span> 其他
 ]]></text-property>
                     </text>

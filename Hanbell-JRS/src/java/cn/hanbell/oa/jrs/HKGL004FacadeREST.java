@@ -5,6 +5,8 @@
  */
 package cn.hanbell.oa.jrs;
 
+import cn.hanbell.eap.ejb.SystemUserBean;
+import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.oa.app.LeaveApplication;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
@@ -20,6 +22,7 @@ import cn.hanbell.oa.entity.Users;
 import cn.hanbell.oa.model.HKGL004Model;
 import cn.hanbell.util.BaseLib;
 import cn.hanbell.wco.ejb.Agent1000002Bean;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,6 +60,8 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
     @EJB
     private HKPB033WorkFlowBean hkpb033WorkFlowBean;
 
+    @EJB
+    private SystemUserBean eapUserBean;
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
         return hkgl004Bean;
@@ -99,22 +104,29 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                     attachment.append("uploadTime", new Date().getTime());
                     files.add(attachment);
                 }
+
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(BaseLib.getDate());
-                if ("Y".equals(entity.getOverdue())) {
-                    calendar.add(Calendar.DATE, -7);
-                } else {
-                    calendar.add(Calendar.DATE, -1);
-                }
-                Date zero = calendar.getTime();
-                Date date1 = BaseLib.getDate("yyyy-MM-dd", entity.getDate1());
-                Date date2 = BaseLib.getDate("yyyy-MM-dd", entity.getDate2());
-                if (zero.getTime() >= date1.getTime()) {
-                    return new ResponseMessage("500", "填单日期晚于实际请假日期不可以申请！");
-                }
-                if (date1.getTime() > date2.getTime()) {
+                calendar.set(Calendar.HOUR_OF_DAY, 0); // 设置小时为0，即午夜12点
+                calendar.set(Calendar.MINUTE, 0); // 设置分钟为0
+                calendar.set(Calendar.SECOND, 0); // 设置秒为0
+                calendar.set(Calendar.MILLISECOND, 0); // 设置毫秒为0
+                calendar.add(Calendar.DATE, -7);
+                Date oneWeekDate = calendar.getTime();
+                calendar.add(Calendar.DATE, 6);
+                Date oneDayDate = calendar.getTime();
+                Date startDate = BaseLib.getDate("yyyy-MM-dd", entity.getDate1());
+                Date endDate = BaseLib.getDate("yyyy-MM-dd", entity.getDate1());
+
+                if (endDate.getTime() < startDate.getTime()) {
                     return new ResponseMessage("500", "开始日期不能大于结束日期！");
                 }
+                if (startDate.getTime() < oneWeekDate.getTime()) {
+                    return new ResponseMessage("500", "请假起始日已经超过7天，无法申请。");
+                }
+                if (startDate.getTime() <= oneDayDate.getTime() && !"Y".equals(entity.getOverdue())) {
+                    return new ResponseMessage("500", "请假已超过一天,[是否逾期]选是");
+                }
+
                 workFlowBean.initUserInfo(entity.getEmployee());
                 HKGL004Model la = new HKGL004Model();
                 la.setApplyDate(BaseLib.getDate());
@@ -124,6 +136,8 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                 la.setHdn_applyDept(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
                 la.setIsWechat("Y");
                 la.setOverdue(entity.getOverdue());
+                SystemUser user = eapUserBean.findByUserId(entity.getEmployee());
+                la.setHdnrank(user == null ? "" : user.getJob());
                 //根据部门编号代出公司编号
                 la.setFacno(workFlowBean.getCompanyByDeptId(la.getApplyDept()));
                 la.setHdn_facno(la.getFacno());
@@ -150,7 +164,6 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                 Matcher m = p.matcher(entity.getReason());
                 String finishedReplaceStr = m.replaceAll("");
                 la.setReason(finishedReplaceStr);
-                Users user = userBean.findById(entity.getEmployee());
                 String formInstance = hkpb033WorkFlowBean.buildXmlForEFGP("HK_GL004", la, files, null);
                 String subject = la.getHdn_employee() + entity.getDate1() + "开始请假" + entity.getLeaveDay() + "天" + entity.getLeaveHour() + "时" + entity.getLeaveMinute() + "分";
                 String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL004", formInstance, subject);
@@ -170,62 +183,4 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-
-    @POST
-    @Path("create")
-    @Consumes({"application/json"})
-    @Produces({"application/json"})
-    public ResponseMessage create(MCHKGL004 entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-        if (entity == null) {
-            throw new WebApplicationException(Response.Status.BAD_REQUEST);
-        }
-        try {
-            //初始化发起人
-            workFlowBean.initUserInfo(entity.getApplyUser());
-            //实例化对象
-            HKGL004Model la = new HKGL004Model();
-            la.setFacno(entity.getCompany());
-            la.setHdn_facno(entity.getCompany());
-            la.setApplyDate(BaseLib.getDate());
-            la.setApplyUser(workFlowBean.getCurrentUser().getId());
-            la.setHdn_applyUser(workFlowBean.getCurrentUser().getUserName());
-            OrganizationUnit ou = workFlowBean.findOrgUnitByDeptno(entity.getApplyDept());
-            if (ou == null) {
-                throw new NullPointerException(entity.getApplyDept() + "不存在");
-            }
-            la.setApplyDept(ou.getId());
-            la.setHdn_applyDept(ou.getOrganizationUnitName());
-            //根据部门编号代出公司编号
-            la.setLeana(entity.getFormType());
-            la.setHdn_leana(entity.getFormTypeDesc());
-            la.setLeano(entity.getFormKind());
-            la.setHdn_leano(entity.getFormKindDesc());
-            la.setLeatp(entity.getWorkType());
-            la.setHdn_leatp(entity.getWorkTypeDesc());
-            la.setEmployee(workFlowBean.getCurrentUser().getId());
-            la.setHdn_employee(workFlowBean.getCurrentUser().getUserName());
-            la.setDate1(BaseLib.getDate("yyyy-MM-dd", entity.getStartDate()));
-            la.setTime1(entity.getStartTime());
-            la.setDate2(BaseLib.getDate("yyyy-MM-dd", entity.getEndDate()));
-            la.setTime2(entity.getEndTime());
-            la.setLeaday1(entity.getLeaveDay());
-            la.setLeaday2(entity.getLeaveHour());
-            la.setLeaday3(entity.getLeaveMinute());
-            la.setUserTitle(workFlowBean.getUserTitle().getTitleDefinition().getTitleDefinitionName());
-            la.setReason(entity.getReason());
-            //发起流程
-            String formInstance = workFlowBean.buildXmlForEFGP("HK_GL004", la, null);
-            String subject = la.getHdn_employee() + entity.getStartDate() + "开始请假" + entity.getLeaveDay() + "天" + entity.getLeaveHour() + "时" + entity.getLeaveMinute() + "分";
-            String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL004", formInstance, subject);
-            String[] rm = msg.split("\\$");
-            if (rm.length == 2) {
-                return new ResponseMessage(rm[0], rm[1]);
-            } else {
-                return new ResponseMessage("200", "Code=200");
-            }
-        } catch (Exception ex) {
-            return new ResponseMessage("500", "系统错误更新失败");
-        }
-    }
-
 }
