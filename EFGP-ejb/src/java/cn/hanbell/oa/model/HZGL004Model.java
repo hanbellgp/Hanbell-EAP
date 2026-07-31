@@ -41,6 +41,8 @@ public class HZGL004Model {
     private String safeplace;
     private String srcno;
     private String overdue;
+    private String hdnrank;
+
     
     //派车单栏位
     private String useCar;
@@ -472,6 +474,14 @@ public class HZGL004Model {
 
     public void setUseCar(String useCar) {
         this.useCar = useCar;
+    }
+
+    public String getHdnrank() {
+        return hdnrank;
+    }
+
+    public void setHdnrank(String hdnrank) {
+        this.hdnrank = hdnrank;
     }
 
 }

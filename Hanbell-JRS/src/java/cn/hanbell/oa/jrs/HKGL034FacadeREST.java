@@ -6,6 +6,8 @@
 package cn.hanbell.oa.jrs;
 
 //import cn.hanbell.crm.ejb.CMSMEBean;
+import cn.hanbell.eap.ejb.SystemUserBean;
+import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.oa.app.OvertimeApplication;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
@@ -64,6 +66,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
     @EJB
     private Agent1000002Bean agent1000002Bean;
 
+    
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
         return hkgl034Bean;
@@ -87,6 +90,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
             List<HKGL034DetailModel> detailList = new ArrayList<>();
             LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
             details.put("Detail", detailList);
+
             try {
                 workFlowBean.initUserInfo(entity.getEmployee());
                 m = new HKGL034Model();
@@ -119,7 +123,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                         return new ResponseMessage("500", "加班起始日已经超过7天，无法申请。");
                     }
                     if (startDate.getTime() <= oneDayDate.getTime() && !"Y".equals(entity.getOverdue())) {
-                        return new ResponseMessage("500", "加班日起始日已超过2天,[是否逾期]选是");
+                        return new ResponseMessage("500", "加班单已超过2天,请选择[逾期]。");
                     }
 
                     d = new HKGL034DetailModel();

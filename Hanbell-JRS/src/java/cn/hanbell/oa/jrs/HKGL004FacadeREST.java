@@ -124,7 +124,7 @@ public class HKGL004FacadeREST extends SuperRESTForEFGP<HKGL004> {
                     return new ResponseMessage("500", "请假起始日已经超过7天，无法申请。");
                 }
                 if (startDate.getTime() <= oneDayDate.getTime() && !"Y".equals(entity.getOverdue())) {
-                    return new ResponseMessage("500", "请假已超过一天,[是否逾期]选是");
+                    return new ResponseMessage("500", "请假已超过一天,请选择[逾期]。");
                 }
 
                 workFlowBean.initUserInfo(entity.getEmployee());
