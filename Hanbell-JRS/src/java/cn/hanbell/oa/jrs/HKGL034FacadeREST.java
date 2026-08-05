@@ -6,6 +6,8 @@
 package cn.hanbell.oa.jrs;
 
 //import cn.hanbell.crm.ejb.CMSMEBean;
+import cn.hanbell.eap.ejb.SystemUserBean;
+import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.oa.app.OvertimeApplication;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
@@ -19,21 +21,36 @@ import cn.hanbell.oa.app.OvertimeApplicationDetail;
 import cn.hanbell.oa.entity.OrganizationUnit;
 import cn.hanbell.util.BaseLib;
 import cn.hanbell.wco.ejb.Agent1000002Bean;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ejb.EJB;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -49,6 +66,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
     @EJB
     private Agent1000002Bean agent1000002Bean;
 
+    
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
         return hkgl034Bean;
@@ -72,6 +90,7 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
             List<HKGL034DetailModel> detailList = new ArrayList<>();
             LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
             details.put("Detail", detailList);
+
             try {
                 workFlowBean.initUserInfo(entity.getEmployee());
                 m = new HKGL034Model();
@@ -88,27 +107,27 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                 m.setHdn_facno(m.getFacno());
                 m.setOverdue(entity.getOverdue());
                 for (OvertimeApplicationDetail oad : entity.getDetailList()) {
-                    //前一天凌晨
+                    
                     Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(BaseLib.getDate());
-                    if ("Y".equals(entity.getOverdue())) {
-                        calendar.add(Calendar.DATE, -7);
-                    } else {
-                        calendar.add(Calendar.DATE, -2);
-                    }
+                    calendar.set(Calendar.HOUR_OF_DAY, 0); // 设置小时为0，即午夜12点
+                    calendar.set(Calendar.MINUTE, 0); // 设置分钟为0
+                    calendar.set(Calendar.SECOND, 0); // 设置秒为0
+                    calendar.set(Calendar.MILLISECOND, 0); // 设置毫秒为0
+                    calendar.add(Calendar.DATE, -7);
+                    Date oneWeekDate = calendar.getTime();
+                    calendar.add(Calendar.DATE, 5);
+                    Date oneDayDate = calendar.getTime();
+                    Date startDate = BaseLib.getDate("yyyy-MM-dd", oad.getDate1());
 
-                    Date zero = calendar.getTime();
-                    Date date1 = BaseLib.getDate("yyyy-MM-dd", oad.getDate1());
-                    if (zero.getTime() >= date1.getTime()) {
-                        return new ResponseMessage("500", "填单日期晚于实际加班日期不可以申请！");
+                    if (startDate.getTime() < oneWeekDate.getTime()) {
+                        return new ResponseMessage("500", "加班起始日已经超过7天，无法申请。");
+                    }
+                    if (startDate.getTime() <= oneDayDate.getTime() && !"Y".equals(entity.getOverdue())) {
+                        return new ResponseMessage("500", "加班单已超过2天,请选择[逾期]。");
                     }
 
                     d = new HKGL034DetailModel();
                     d.setSeq(oad.getSeq());
-//                    d.setDept_txt(workFlowBean.getUserFunction().getOrganizationUnit().getId());
-//                    d.setDept_lbl(workFlowBean.getUserFunction().getOrganizationUnit().getOrganizationUnitName());
-//                    d.setEmployee(workFlowBean.getCurrentUser().getId());
-//                    d.setEmployeeName(workFlowBean.getCurrentUser().getUserName());
                     d.setDept_txt(oad.getDeptName().split("-")[1]);
                     d.setDept_lbl(oad.getDeptId());
                     d.setEmployee(oad.getEmployeeId());
@@ -148,10 +167,6 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
                             users.append(oad.getEmployeeName()).append(",");
                         }
                     }
-//                    if (isSuccess) {
-//                        return new ResponseMessage("500", "表单发起成功，" + users + "消息发送失败");
-//                    }
-
                     return new ResponseMessage(rm[0], rm[1]);
 
                 } else {
@@ -166,82 +181,64 @@ public class HKGL034FacadeREST extends SuperRESTForEFGP<HKGL034> {
         }
     }
 
-    @POST
-    @Path("create")
-    @Consumes({"application/json"})
-    @Produces({"application/json"})
-    public ResponseMessage create(MCHKGL034 entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
-        if (isAuthorized(appid, token)) {
-            if (entity == null || entity.getBody() == null || entity.getBody().isEmpty()) {
-                throw new WebApplicationException(Response.Status.BAD_REQUEST);
-            }
-            HKGL034Model m;
-            HKGL034DetailModel d;
-            List<HKGL034DetailModel> detailList = new ArrayList<>();
-            LinkedHashMap<String, List<?>> details = new LinkedHashMap<>();
-            details.put("Detail", detailList);
-            try {
-                //初始化发起人
-                workFlowBean.initUserInfo(entity.getHead().getId());
-                //实例化对象
-                m = new HKGL034Model();
-                m.setApplyDate(BaseLib.getDate());
-                m.setApplyUser(workFlowBean.getCurrentUser().getId());
-                m.setHdn_applyUser(workFlowBean.getCurrentUser().getUserName());
-                OrganizationUnit ou = workFlowBean.findOrgUnitByDeptno(entity.getHead().getDeptno());
-                if (ou == null) {
-                    throw new NullPointerException(entity.getHead().getDeptno() + "不存在");
-                }
-                m.setApplyDept(ou.getId());
-                m.setHdn_applyDept(ou.getOrganizationUnitName());
-                m.setType(entity.getHead().getFormType());
-                m.setHdn_type(entity.getHead().getFormTypeDesc());
-                //根据部门设置公司
-                m.setFacno(entity.getHead().getCompany());
-                m.setHdn_facno(m.getFacno());
-                int seq = 0;
-                for (cn.hanbell.oa.app.MCHKGL034Detail oad : entity.getBody()) {
-                    seq++;
-                    d = new HKGL034DetailModel();
-                    d.setSeq(String.valueOf(seq));
-                    d.setDept_txt(oad.getDeptName().split("-")[1]);
-                    d.setDept_lbl(oad.getDeptId());
-                    d.setEmployee(oad.getEmployeeId());
-                    d.setEmployeeName(oad.getEmployeeName().split("-")[1]);
-                    d.setContent(oad.getNote());
-                    d.setDate1_txt(oad.getDate());
-                    d.setTime1_txt(oad.getStarttime());
-                    d.setTime2_txt(oad.getEndtime());
-                    d.setHour(oad.getWorktime());
-                    if (oad.getLunch().equals("Y")) {
-                        d.setHdn_lunch("用餐");
-                    } else {
-                        d.setHdn_lunch("不用餐");
-                    }
-                    if (oad.getDinner().equals("Y")) {
-                        d.setHdn_dinner("用餐");
-                    } else {
-                        d.setHdn_dinner("不用餐");
-                    }
-                    detailList.add(d);
-                }
-                //发起流程
-                String formInstance = workFlowBean.buildXmlForEFGP("HK_GL034", m, details);
-                String subject = workFlowBean.getCurrentUser().getUserName() + "加班申请";
-                String msg = workFlowBean.invokeProcess(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, "PKG_HK_GL034", formInstance, subject);
-                String[] rm = msg.split("\\$");
-                if (rm.length == 2) {
-                    return new ResponseMessage(rm[0], rm[1]);
-                } else {
-                    return new ResponseMessage("200", "Code=200");
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return null;
-            }
-        } else {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        }
-    }
-
+    
+//    @POST
+//    @Path("uploadFile")
+//    @Consumes(MediaType.MULTIPART_FORM_DATA)
+//    public String UploadFile( InputStream fileInputStream) {
+//        String fileName = "xxx.jpg";
+//        String filePath = "D:\\" + System.currentTimeMillis() + "_" + fileName;
+//        saveFile(fileInputStream, filePath);
+//        return "";
+//    }
+//
+//    
+//    @POST
+//    @Path("uploadFile2")
+//    @Consumes(MediaType.MULTIPART_FORM_DATA)
+//    public String UploadFile2(@Context HttpServletRequest request) {
+//        if (!ServletFileUpload.isMultipartContent(request)) {
+//            return "";
+//        }
+//        DiskFileItemFactory factory = new DiskFileItemFactory();
+//        ServletFileUpload upload = new ServletFileUpload(factory);
+//
+//        try {
+//            // 解析请求的内容提取文件数据
+//            List<FileItem> formItems = upload.parseRequest(request);
+//
+//            if (formItems != null && formItems.size() > 0) {
+//                // 迭代表单数据
+//                for (FileItem item : formItems) {
+//                    // 处理不在表单中的字段
+//                    if (!item.isFormField()) {
+//                        String fileName = new File(item.getName()).getName();
+//                        String filePath = "D:/" + fileName; // 指定文件保存路径
+//                        File storeFile = new File(filePath);
+//                        // 在控制台输出文件的上传路径
+//                        item.write(storeFile); // 保存文件到硬盘
+//                    }
+//                }
+//            }
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return "";
+//    }
+//    
+//    
+//    private void saveFile(InputStream inputStream, String filePath) {
+//        File targetFile = new File(filePath);
+//        targetFile.getParentFile().mkdirs();
+//
+//        try (FileOutputStream outputStream = new FileOutputStream(targetFile)) {
+//            byte[] buffer = new byte[8192];
+//            int bytesRead;
+//            while ((bytesRead = inputStream.read(buffer)) != -1) {
+//                outputStream.write(buffer, 0, bytesRead);
+//            }
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 }

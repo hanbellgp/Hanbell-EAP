@@ -55,6 +55,8 @@ public class HKGL004Model implements Serializable {
 
     private String overdue;
 
+    private String hdnrank;
+
 
     public HKGL004Model() {
     }
@@ -465,4 +467,11 @@ public class HKGL004Model implements Serializable {
         this.samedays = samedays;
     }
 
+    public String getHdnrank() {
+        return hdnrank;
+    }
+
+    public void setHdnrank(String hdnrank) {
+        this.hdnrank = hdnrank;
+    }
 }

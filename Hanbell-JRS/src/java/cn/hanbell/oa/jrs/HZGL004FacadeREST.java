@@ -5,6 +5,8 @@
  */
 package cn.hanbell.oa.jrs;
 
+import cn.hanbell.eap.ejb.SystemUserBean;
+import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEFGP;
 import cn.hanbell.oa.app.HKGL004FilesApplication;
@@ -55,9 +57,13 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
 
     @EJB
     private Agent1000002Bean agent1000002Bean;
-    
-            @EJB
+
+    @EJB
     private UsersBean userBean;
+    
+    
+    @EJB
+    private SystemUserBean eapUserBean;
 
     @Override
     protected SuperEJBForEFGP getSuperEJB() {
@@ -113,6 +119,8 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             workFlowBean.initUserInfo(entity.getApplyUser());
             //实例化对象
             m = new HZGL004Model();
+            SystemUser eapuser = eapUserBean.findByUserId(entity.getApplyUser());
+            m.setHdnrank(eapuser == null ? "" : eapuser.getJob());
             m.setFacno(entity.getCompany().split("-")[0]);
             m.setApplyDate(BaseLib.getDate());
             m.setApplyUser(workFlowBean.getCurrentUser().getId());
