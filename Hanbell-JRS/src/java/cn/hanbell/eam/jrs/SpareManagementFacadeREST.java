@@ -5,12 +5,14 @@
  */
 package cn.hanbell.eam.jrs;
 
+import cn.hanbell.eam.ejb.AssetCardBean;
 import cn.hanbell.eam.ejb.EquipmentRepairBean;
 import cn.hanbell.eam.ejb.EquipmentSpareBean;
 import cn.hanbell.eam.ejb.EquipmentSpareRecodeBean;
 import cn.hanbell.eam.ejb.EquipmentSpareRecodeDtaBean;
 import cn.hanbell.eam.ejb.EquipmentSpareStockBean;
 import cn.hanbell.eam.ejb.SysCodeBean;
+import cn.hanbell.eam.entity.AssetCard;
 import cn.hanbell.eam.entity.EquipmentRepair;
 import cn.hanbell.eam.entity.EquipmentSpare;
 import cn.hanbell.eam.entity.EquipmentSpareRecode;
@@ -62,45 +64,46 @@ import org.json.JSONObject;
 @Stateless
 @Path("shbeam/sparemanagement")
 public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
+
     @EJB
     private EquipmentRepairBean equipmentRepairBean;
-    
+
     @EJB
     private EquipmentSpareBean equipmentSpareBean;
-    
+
     @EJB
     private EquipmentSpareStockBean equipmentSpareStockBean;
-    
+
     @EJB
     private EquipmentSpareRecodeBean equipmentSpareRecodeBean;
-    
+
     @EJB
     private EquipmentSpareRecodeDtaBean equipmentSpareRecodeDtaBean;
-    
+
     @EJB
     private SysCodeBean sysCodeBean;
-    
+
     @EJB
     private SystemUserBean systemUserBean;
-    
+    @EJB
+    private AssetCardBean assetCardBeam;
     @EJB
     private SystemRoleDetailBean systemRoleDetailBean;
-    
+
     @EJB
     private SystemGrantPrgBean systemGrantPrgBean;
-    
+
     protected SuperEJB superEJB;
-    
+
     @Override
     protected SuperEJB getSuperEJB() {
         return equipmentSpareBean;
     }
-    
 
     public SpareManagementFacadeREST() {
         super(EquipmentSpare.class);
     }
-    
+
     @GET
     @Path("getSpareStockList/{filters}")
     @Consumes({"application/json"})
@@ -112,7 +115,7 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
             try {
                 MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
                 Map<String, Object> filterFields = new HashMap<>();
-                String key, value="";
+                String key, value = "";
                 if (filtersMM != null) {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
@@ -120,24 +123,24 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                         filterFields.put(key, value);
                     }
                 }
-                String company =filterFields.get("company").toString();
-                spareStockList = equipmentSpareStockBean.getEquipmentSpareStockListByNativeQuery(filterFields.get("basicInfo").toString(),company);
-                
+                String company = filterFields.get("company").toString();
+                spareStockList = equipmentSpareStockBean.getEquipmentSpareStockListByNativeQuery(filterFields.get("basicInfo").toString(), company);
+
                 System.out.print(spareStockList);
-                
+
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
-            
-           JSONArray jsonArray = new JSONArray(spareStockList);
-           
-           return jsonArray.toString();
-           
+
+            JSONArray jsonArray = new JSONArray(spareStockList);
+
+            return jsonArray.toString();
+
         } else {
-           throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     @GET
     @Path("getSpareRecodeDocList/{filters}/{sorts}/{offset}/{pageSize}")
     @Consumes({"application/json"})
@@ -151,19 +154,16 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                 MultivaluedMap<String, String> sortsMM = sorts.getMatrixParameters();
                 Map<String, Object> filterFields = new HashMap<>();
                 Map<String, String> sortFields = new LinkedHashMap<>();
-                String key, value="";
+                String key, value = "";
                 if (filtersMM != null) {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
                         value = entrySet.getValue().get(0);
-                        if(key.equals("formdateBegin") || key.equals("formdateEnd"))
-                        {
+                        if (key.equals("formdateBegin") || key.equals("formdateEnd")) {
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                             Date dateFormatParse = sdf.parse(value);
                             filterFields.put(key, dateFormatParse);
-                        }
-                        else
-                        {
+                        } else {
                             filterFields.put(key, value);
                         }
                     }
@@ -177,16 +177,16 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                 }
                 sortFields.put("credate", "DESC");
 
-                spareDocListRes = equipmentSpareRecodeBean.getEquipmentRepairListByNativeQuery(filterFields,sortFields);
+                spareDocListRes = equipmentSpareRecodeBean.getEquipmentRepairListByNativeQuery(filterFields, sortFields);
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
-                return spareDocListRes;
+            return spareDocListRes;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     @GET
     @Path("getRetreatSpareList/{filters}")
     @Consumes({"application/json"})
@@ -198,7 +198,7 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
             try {
                 MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
                 Map<String, Object> filterFields = new HashMap<>();
-                String key, value="";
+                String key, value = "";
                 if (filtersMM != null) {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
@@ -210,18 +210,18 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
-            
-           JSONArray jsonArray = new JSONArray(spareRecodeList);
-           
-           return jsonArray.toString();
-           
+
+            JSONArray jsonArray = new JSONArray(spareRecodeList);
+
+            return jsonArray.toString();
+
         } else {
-           throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     private List<EquipmentSpareRecodeDtaResponse> getEqpRepairRetreatSpareList(String formid, String spareInfo) {
-        List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.getRetreatSpareListByRepairFormId(formid,spareInfo);
+        List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.getRetreatSpareListByRepairFormId(formid, spareInfo);
         //List按照sparenum分组
         Map<EquipmentSpare, List<EquipmentSpareRecodeDta>> groupBySparenumMap = eqpSpareRecodeDtas.stream().collect(Collectors.groupingBy(EquipmentSpareRecodeDta::getSparenum));
 
@@ -239,7 +239,7 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
         });
         return resList;
     }
-    
+
     @GET
     @Path("getSpareDeliveryInfo/{filters}")
     @Consumes({"application/json"})
@@ -256,7 +256,7 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
             try {
                 MultivaluedMap<String, String> filtersMM = filters.getMatrixParameters();
                 Map<String, Object> filterFields = new HashMap<>();
-                String key, value="";
+                String key, value = "";
                 if (filtersMM != null) {
                     for (Map.Entry<String, List<String>> entrySet : filtersMM.entrySet()) {
                         key = entrySet.getKey();
@@ -267,46 +267,45 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                 eqpSpareRecodes = equipmentSpareRecodeBean.findByFormid(filterFields.get("docFormid").toString());
                 currentUser = systemUserBean.findByUserId(filterFields.get("userId").toString());
                 actionName = filterFields.get("actionName").toString();
-                
-                if(eqpSpareRecodes.size() > 0 && currentUser != null){
+
+                if (eqpSpareRecodes.size() > 0 && currentUser != null) {
                     eqpSpareRecodeTemp = eqpSpareRecodes.get(0);
-                }
-                else{
+                } else {
                     throw new WebApplicationException(Response.Status.NOT_FOUND);
                 }
                 eqpSpareRecodeTemp = eqpSpareRecodes.get(0);
-                spareRecodeDtaList = getEqpSpareRecodeDtaResponses(eqpSpareRecodeTemp.getFormid(),eqpSpareRecodeTemp.getCompany());
+                spareRecodeDtaList = getEqpSpareRecodeDtaResponses(eqpSpareRecodeTemp.getFormid(), eqpSpareRecodeTemp.getCompany());
                 verifyAuthFlag = eqpSpareRecodeTemp.getStatus().equals("V") ? false : checkUserAuthority(currentUser.getId(), actionName);
-                
+
                 System.out.print(spareRecodeDtaList);
-                
+
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
-            
+
             resObjects.add(eqpSpareRecodeTemp);
             resObjects.add(spareRecodeDtaList);
             resObjects.add(verifyAuthFlag);
-            
-           JSONArray jsonArray = new JSONArray(resObjects);
-           
-           return jsonArray.toString();
-           
+
+            JSONArray jsonArray = new JSONArray(resObjects);
+
+            return jsonArray.toString();
+
         } else {
-           throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     @POST
     @Path("startSpareDelivery")
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public ResponseMessage startSpareDelivery(EquipmentSpareRecode entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+    public ResponseMessage startSpareDelivery(EquipmentSpareRecode entity, @QueryParam("appid") String appid, @QueryParam("token") String token, @QueryParam("assetCardId") String assetCardId) {
         if (isAuthorized(appid, token)) {
             if (entity == null) {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
-            
+
             try {
                 //插入EquipmentSpareRecode表头
                 String formid = equipmentSpareRecodeBean.getFormId(new Date(), "CK", "YYMM", 4);
@@ -320,12 +319,15 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                 equipmentSpareRecodeTemp.setWarehouseno(entity.getWarehouseno());
                 equipmentSpareRecodeTemp.setSarea(entity.getSarea());
                 equipmentSpareRecodeTemp.setSlocation(entity.getSlocation());
+                AssetCard assetCardTemp = new AssetCard();
+                assetCardTemp = assetCardBeam.findByAssetno(assetCardId);
+
+                equipmentSpareRecodeTemp.setAssetno(assetCardTemp);
                 String acceptTypeTemp = "";
                 //判断报修单是否已经存在出库单,每个报修单只能出库一次
-                if(entity.getRelano() == null || entity.getRelano().trim().equals("")){
+                if (entity.getRelano() == null || entity.getRelano().trim().equals("")) {
                     acceptTypeTemp = "20";
-                }
-                else{
+                } else {
                     acceptTypeTemp = "25";
                     List<EquipmentRepair> eqpRepairCheckList = new ArrayList<>();
                     String repairFormIdTemp = entity.getRelano();
@@ -354,21 +356,22 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                 equipmentSpareRecodeTemp.setCreator(entity.getCreator());
                 equipmentSpareRecodeTemp.setCredate(currentDate);
                 equipmentSpareRecodeBean.persist(equipmentSpareRecodeTemp);
-                
+
                 //插入EquipmentSpareRecodeDta单身
                 JSONArray jsonArray = new JSONArray(entity.getStatus());
                 JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
-                
+
                 JSONObject jsonObj = new JSONObject();
-                for(int i = 0;i<spareUsedList_jsonArray.length();i++)
-                {
-                    jsonObj = (JSONObject)spareUsedList_jsonArray.get(i);
-                    if(jsonObj == null)
+                for (int i = 0; i < spareUsedList_jsonArray.length(); i++) {
+                    jsonObj = (JSONObject) spareUsedList_jsonArray.get(i);
+                    if (jsonObj == null) {
                         continue;
+                    }
                     int spareIdTemp = jsonObj.getJSONObject("sparenum").getInt("id");
                     EquipmentSpare spareObjTemp = equipmentSpareBean.findById(spareIdTemp);
-                    if(spareObjTemp == null)
+                    if (spareObjTemp == null) {
                         continue;
+                    }
                     EquipmentSpareRecodeDta eqpSpareDtaTemp = new EquipmentSpareRecodeDta();
                     eqpSpareDtaTemp.setPid(formid);
                     eqpSpareDtaTemp.setSeq(i + 1);
@@ -386,13 +389,11 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
             } catch (Exception e) {
                 return new ResponseMessage("300", "出库单建单失败,请重试!");
             }
-        }
-        else
-        {
+        } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     @POST
     @Path("startSpareRetreat")
     @Consumes({"application/json"})
@@ -402,42 +403,41 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
             if (entity == null) {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
-            
+
             try {
                 JSONArray jsonArray = new JSONArray(entity.getStatus());
                 JSONArray spareUsedList_jsonArray = jsonArray.getJSONArray(0);
-                
+
                 //JSONArray按照出库单分组
                 Map<String, List<JSONObject>> mapGroupByPid = new HashMap();
                 String tempIdStr = "";
                 List<JSONObject> list = null;
-                for(Object obj : spareUsedList_jsonArray){
+                for (Object obj : spareUsedList_jsonArray) {
                     JSONObject jsonObject = (JSONObject) obj;
                     tempIdStr = jsonObject.getString("pid");
-                    if(mapGroupByPid.containsKey(tempIdStr)){
+                    if (mapGroupByPid.containsKey(tempIdStr)) {
                         list = mapGroupByPid.get(tempIdStr);
                         list.add(jsonObject);
-                    }else{
+                    } else {
                         list = new ArrayList();
                         list.add(jsonObject);
                         mapGroupByPid.put(tempIdStr, list);
                     }
                 }
-                
+
                 StringBuilder allFormidSb = new StringBuilder();
                 Date currentDate = new Date();
                 mapGroupByPid.forEach((key, value) -> {
-                    
+
                     //插入EquipmentSpareRecode表头
                     String formid = equipmentSpareRecodeBean.getFormId(new Date(), "TK", "YYMM", 4);
                     allFormidSb.append(formid).append(",");
                     EquipmentSpareRecode equipmentSpareRecodeTemp = new EquipmentSpareRecode();
                     List<EquipmentSpareRecode> relaSpareRecodeList = equipmentSpareRecodeBean.findByFormid(key);
-                    if(relaSpareRecodeList.size() > 0){
+                    if (relaSpareRecodeList.size() > 0) {
                         equipmentSpareRecodeTemp.setSarea(relaSpareRecodeList.get(0).getSarea());
                         equipmentSpareRecodeTemp.setSlocation(relaSpareRecodeList.get(0).getSlocation());
-                    }
-                    else{
+                    } else {
                         equipmentSpareRecodeTemp.setSarea(entity.getSarea());
                         equipmentSpareRecodeTemp.setSlocation(entity.getSlocation());
                     }
@@ -459,15 +459,16 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
 
                     //插入EquipmentSpareRecodeDta单身
                     JSONObject jsonObj;
-                    for(int i = 0;i< value.size();i++)
-                    {
+                    for (int i = 0; i < value.size(); i++) {
                         jsonObj = value.get(i);
-                        if(jsonObj == null)
+                        if (jsonObj == null) {
                             continue;
+                        }
                         int spareIdTemp = jsonObj.getJSONObject("sparenum").getInt("id");
                         EquipmentSpare spareObjTemp = equipmentSpareBean.findById(spareIdTemp);
-                        if(spareObjTemp == null)
+                        if (spareObjTemp == null) {
                             continue;
+                        }
                         EquipmentSpareRecodeDta eqpSpareDtaTemp = new EquipmentSpareRecodeDta();
                         eqpSpareDtaTemp.setPid(formid);
                         eqpSpareDtaTemp.setSeq(i + 1);
@@ -481,20 +482,18 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
                         eqpSpareDtaTemp.setCredate(currentDate);
                         equipmentSpareRecodeDtaBean.persist(eqpSpareDtaTemp);
                     }
-                    
+
                 });
-                
+
                 return new ResponseMessage("200", allFormidSb.toString().substring(0, allFormidSb.length() - 1));
             } catch (Exception e) {
                 return new ResponseMessage("300", "退库单建单失败,请重试!");
             }
-        }
-        else
-        {
+        } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     @POST
     @Path("verifySpareDelivery")
     @Consumes({"application/json"})
@@ -504,14 +503,13 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
             if (entity == null) {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
-            
+
             try {
                 String acceptTypeTemp = entity.getAccepttype();
-                if(acceptTypeTemp == null){
+                if (acceptTypeTemp == null) {
                     return new ResponseMessage("303", "单据类型异常!");
                 }
-                switch(acceptTypeTemp)
-                {
+                switch (acceptTypeTemp) {
                     case "10":
                         return startVerify_recode(entity);
                     case "20":
@@ -526,30 +524,28 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
             } catch (Exception e) {
                 return new ResponseMessage("300", "出库单建单失败,请重试!");
             }
-        }
-        else
-        {
+        } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
     }
-    
+
     private ResponseMessage startVerify_delivery(EquipmentSpareRecode entity) {
         Date currentDate = new Date();
         List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = new ArrayList<>();
         List<EquipmentSpareStock> eqpSpareStocks = new ArrayList<>();
         List<EquipmentRepair> eqpRepairs = new ArrayList<>();
-        BigDecimal priceSum = BigDecimal.ZERO; 
+        BigDecimal priceSum = BigDecimal.ZERO;
         EquipmentSpareRecode eqpEquipmentSpareRecode = equipmentSpareRecodeBean.findById(entity.getId());
-        if(eqpEquipmentSpareRecode == null){
+        if (eqpEquipmentSpareRecode == null) {
             return new ResponseMessage("303", "出库单资料异常,请联系管理员!");
         }
         String eqpRepairFormId = eqpEquipmentSpareRecode.getRelano();
-        if(eqpRepairFormId != null && eqpRepairFormId != ""){
+        if (eqpRepairFormId != null && eqpRepairFormId != "") {
             eqpRepairs = equipmentRepairBean.findByFormid(eqpRepairFormId);
         }
         eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.findByPId(eqpEquipmentSpareRecode.getFormid());
         for (EquipmentSpareRecodeDta eSpareRecodeDta : eqpSpareRecodeDtas) {
-            EquipmentSpareStock eSpareStock = equipmentSpareStockBean.findBySparenumAndRemark(eSpareRecodeDta.getSparenum().getSparenum(), eSpareRecodeDta.getRemark(),eSpareRecodeDta.getSlocation());
+            EquipmentSpareStock eSpareStock = equipmentSpareStockBean.findBySparenumAndRemark(eSpareRecodeDta.getSparenum().getSparenum(), eSpareRecodeDta.getRemark(), eSpareRecodeDta.getSlocation());
             if (eSpareRecodeDta.getCqty().compareTo(eSpareStock.getQty()) == 1) {
                 return new ResponseMessage("301", "备件库存数量不足,请确认库存!");
             }
@@ -571,13 +567,13 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
         equipmentSpareRecodeDtaBean.update(eqpSpareRecodeDtas);//更新对应字表状态
         equipmentSpareRecodeBean.update(eqpEquipmentSpareRecode);
         //若关联报修单,则更新报修单的备件费用
-        if(eqpRepairs.size() > 0){
+        if (eqpRepairs.size() > 0) {
             eqpRepairs.get(0).setSparecost(priceSum);
             equipmentRepairBean.update(eqpRepairs.get(0));
         }
         return new ResponseMessage("200", "出库核准完成!");
     }
-    
+
     private ResponseMessage startVerify_recode(EquipmentSpareRecode entity) {
         Date currentDate = new Date();
         List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = new ArrayList<>();
@@ -603,7 +599,7 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
             eSpareRecodeDta.setStatus("V");
             equipmentSpareRecodeDtaBean.getEntityManager().clear();
         }
-        
+
         eqpEquipmentSpareRecode.setCfmuser(entity.getCfmuser());
         eqpEquipmentSpareRecode.setCfmdate(currentDate);
         eqpEquipmentSpareRecode.setStatus("V");
@@ -612,16 +608,16 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
         equipmentSpareRecodeBean.update(eqpEquipmentSpareRecode);
         return new ResponseMessage("200", "入库核准完成!");
     }
-    
+
     private ResponseMessage startVerify_retreat(EquipmentSpareRecode entity) {
         Date currentDate = new Date();
         List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = new ArrayList<>();
         List<EquipmentSpareStock> eqpSpareStocks = new ArrayList<>();
         List<EquipmentSpareRecode> eqpSpareRelaList = new ArrayList<>();
         List<EquipmentRepair> eqpRepairs = new ArrayList<>();
-        BigDecimal priceSum = BigDecimal.ZERO; 
+        BigDecimal priceSum = BigDecimal.ZERO;
         EquipmentSpareRecode eqpEquipmentSpareRecode = equipmentSpareRecodeBean.findById(entity.getId());
-        if(eqpEquipmentSpareRecode == null){
+        if (eqpEquipmentSpareRecode == null) {
             return new ResponseMessage("303", "退库单资料异常,请联系管理员!");
         }
         String spareRelaFormId = eqpEquipmentSpareRecode.getRelano();
@@ -631,14 +627,13 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
             if (eqpRepairFormId != null && eqpRepairFormId != "") {
                 eqpRepairs = equipmentRepairBean.findByFormid(eqpRepairFormId);
             }
-        }
-        else{
+        } else {
             return new ResponseMessage("304", "关联出库单资料异常,请联系管理员!");
         }
-        
+
         eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.findByPId(eqpEquipmentSpareRecode.getFormid());
         for (EquipmentSpareRecodeDta eSpareRecodeDta : eqpSpareRecodeDtas) {
-            EquipmentSpareStock eSpareStock = equipmentSpareStockBean.findBySparenumAndRemark(eSpareRecodeDta.getSparenum().getSparenum(), eSpareRecodeDta.getRemark(),eSpareRecodeDta.getSlocation());
+            EquipmentSpareStock eSpareStock = equipmentSpareStockBean.findBySparenumAndRemark(eSpareRecodeDta.getSparenum().getSparenum(), eSpareRecodeDta.getRemark(), eSpareRecodeDta.getSlocation());
             if (eSpareStock == null) {
                 return new ResponseMessage("301", "该备件已被删除!");
             }
@@ -661,7 +656,7 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
         //若关联报修单,则更新报修单的备件费用
         if (eqpRepairs.size() > 0) {
             equipmentSpareRecodeDtaBean.getEntityManager().flush();
-            equipmentSpareRecodeDtaBean.getEntityManager().clear ();
+            equipmentSpareRecodeDtaBean.getEntityManager().clear();
             List<EquipmentSpareRecodeDta> eqpRepairSpareRecodeDtas = new ArrayList<>();
             eqpRepairSpareRecodeDtas = equipmentSpareRecodeDtaBean.getEquipmentSpareRecodeDtaListByRepairFormId(eqpRepairs.get(0).getFormid());
             for (EquipmentSpareRecodeDta rSpareRecodeDta : eqpRepairSpareRecodeDtas) {
@@ -672,47 +667,47 @@ public class SpareManagementFacadeREST extends SuperRESTForEAM<EquipmentSpare> {
         }
         return new ResponseMessage("200", "退库核准完成!");
     }
-    
-    private List<EquipmentSpareRecodeDtaResponse> getEqpSpareRecodeDtaResponses(String formid,String company){
+
+    private List<EquipmentSpareRecodeDtaResponse> getEqpSpareRecodeDtaResponses(String formid, String company) {
         List<EquipmentSpareRecodeDta> eqpSpareRecodeDtas = equipmentSpareRecodeDtaBean.findByPId(formid);
         for (EquipmentSpareRecodeDta esRecodeDta : eqpSpareRecodeDtas) {
-            if (equipmentSpareBean.findBySparenum(esRecodeDta.getSparenum().getSparenum(),company).size()>0) {
-                esRecodeDta.setSparenum(equipmentSpareBean.findBySparenum(esRecodeDta.getSparenum().getSparenum(),company).get(0));
+            if (equipmentSpareBean.findBySparenum(esRecodeDta.getSparenum().getSparenum(), company).size() > 0) {
+                esRecodeDta.setSparenum(equipmentSpareBean.findBySparenum(esRecodeDta.getSparenum().getSparenum(), company).get(0));
             }
         }
         //List按照sparenum分组
-        Map<EquipmentSpare,List<EquipmentSpareRecodeDta>> groupBySparenumMap = eqpSpareRecodeDtas.stream().collect(Collectors.groupingBy(EquipmentSpareRecodeDta::getSparenum));
-        
+        Map<EquipmentSpare, List<EquipmentSpareRecodeDta>> groupBySparenumMap = eqpSpareRecodeDtas.stream().collect(Collectors.groupingBy(EquipmentSpareRecodeDta::getSparenum));
+
         List<EquipmentSpareRecodeDtaResponse> resList = new ArrayList<>();
-        groupBySparenumMap.forEach((key,value) -> {
+        groupBySparenumMap.forEach((key, value) -> {
             BigDecimal qtySum = BigDecimal.ZERO;
             BigDecimal priceSum = BigDecimal.ZERO;
-            for(int i = 0;i< value.size() ;i++){
+            for (int i = 0; i < value.size(); i++) {
                 qtySum = qtySum.add(value.get(i).getCqty());
                 priceSum = priceSum.add(value.get(i).getCqty().multiply(value.get(i).getUprice()));
             }
-            EquipmentSpareRecodeDtaResponse resTemp = new EquipmentSpareRecodeDtaResponse(key,value,qtySum,priceSum);
+            EquipmentSpareRecodeDtaResponse resTemp = new EquipmentSpareRecodeDtaResponse(key, value, qtySum, priceSum);
             resList.add(resTemp);
         });
-        
+
         return resList;
     }
-    
-    private boolean checkUserAuthority(int userid, String apiName){
+
+    private boolean checkUserAuthority(int userid, String apiName) {
         List<SystemRoleDetail> roleList;
         List<SystemGrantPrg> userPrgGrantList;
         List<SystemGrantPrg> rolePrgGrantList;
         roleList = systemRoleDetailBean.findByUserId(userid);
         userPrgGrantList = systemGrantPrgBean.findBySystemNameAndUserId("EAM", userid);
-        for(SystemGrantPrg sysGrantPrg: userPrgGrantList){
-            if(sysGrantPrg.getSysprg().getApi().equals(apiName) && sysGrantPrg.getDocfm()){
+        for (SystemGrantPrg sysGrantPrg : userPrgGrantList) {
+            if (sysGrantPrg.getSysprg().getApi().equals(apiName) && sysGrantPrg.getDocfm()) {
                 return true;
             }
         }
         for (SystemRoleDetail r : roleList) {
             rolePrgGrantList = systemGrantPrgBean.findBySystemNameAndRoleId("EAM", r.getPid());
-            for(SystemGrantPrg roleSysGrantPrg: rolePrgGrantList){
-                if(roleSysGrantPrg.getSysprg().getApi().equals(apiName) && roleSysGrantPrg.getDocfm()){
+            for (SystemGrantPrg roleSysGrantPrg : rolePrgGrantList) {
+                if (roleSysGrantPrg.getSysprg().getApi().equals(apiName) && roleSysGrantPrg.getDocfm()) {
                     return true;
                 }
             }

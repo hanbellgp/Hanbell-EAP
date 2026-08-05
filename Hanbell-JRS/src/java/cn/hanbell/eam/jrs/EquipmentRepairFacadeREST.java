@@ -596,6 +596,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         equipInvenTemp.setAbrasehitch(entity.getAbrasehitch());
                         equipInvenTemp.setHitchtype(entity.getHitchtype());
                         equipInvenTemp.setHitchsort1(entity.getHitchsort1());
+                        equipInvenTemp.setHitchsort1sub(entity.getHitchsort1sub());
+                        equipInvenTemp.setFaultlocation(entity.getFaultlocation());
+                        equipInvenTemp.setFailurerate(entity.getFailurerate());
                         equipInvenTemp.setHitchdesc(entity.getHitchdesc());
                         equipInvenTemp.setHitchalarm(entity.getHitchalarm());
                         equipInvenTemp.setHitchreason(entity.getHitchreason());
@@ -798,6 +801,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         }
                         equipInvenTemp.setHitchtype(entity.getHitchtype());
                         equipInvenTemp.setHitchsort1(entity.getHitchsort1());
+                        equipInvenTemp.setHitchsort1sub(entity.getHitchsort1sub());
+                        equipInvenTemp.setFaultlocation(entity.getFaultlocation());
+                        equipInvenTemp.setFailurerate(entity.getFailurerate());
                         equipInvenTemp.setHitchdesc(entity.getHitchdesc());
                         equipInvenTemp.setHitchalarm(entity.getHitchalarm());
                         equipInvenTemp.setHitchreason(entity.getHitchreason());
@@ -1242,7 +1248,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 if (eqpRepairList.size() > 0) {
                     eqpStopRepairHis = eqpRepairList.get(eqpRepairList.size() - 1);
                     stopDate = eqpStopRepairHis.getCredate();
-                  
+
                     long dateDiff = 0;
                     if (stopDate != null) {
                         dateDiff = startDate.getTime() - stopDate.getTime();
@@ -1910,6 +1916,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<EquipmentSpareRecodeDtaResponse> eqpRepairSpareListRes = new ArrayList<EquipmentSpareRecodeDtaResponse>();
             List<EquipmentRepairHelpers> eqpRepairHelpersListRes = new ArrayList<EquipmentRepairHelpers>();
             List<SysCode> hitchUrgencyListRes = new ArrayList<SysCode>();
+            List<SysCode> hitchSubListRes = new ArrayList<SysCode>();
+            List<SysCode> faultLocationListRes = new ArrayList<SysCode>();
+            List<SysCode> failuRerate = new ArrayList<SysCode>();
             EquipmentRepair equipmentRepairRes = new EquipmentRepair();
             this.superEJB = equipmentTroubleBean;
             try {
@@ -1938,7 +1947,15 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipmentRepairRes = equipmentrepairBean.findById(Integer.parseInt(filterFields.get("docId").toString()));
                 equipmentTroubleListRes = equipmentTroubleBean.findAll();
                 hitchUrgencyListRes = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "hitchurgency");
-
+                faultLocationListRes = sysCodeBean.getTroubleNameList("RD", "faultLocation");
+                failuRerate = sysCodeBean.getTroubleNameList("RD", "failureRate");
+                String hitch = "01";
+                if (equipmentRepairRes.getHitchsort1() != null) {
+                    hitch = equipmentRepairRes.getHitchsort1();
+                }
+                Map<String, Object> filterFields_troubleFrom = new HashMap<>();
+                filterFields_troubleFrom.put("code", "hitchsort1Sub");
+                hitchSubListRes = sysCodeBean.findByFilters(filterFields_troubleFrom);
                 filterFields_eqpFile.put("pid", equipmentRepairRes.getFormid());
                 filterFields_eqpFile.put("filefrom", "维修图片");
                 eqpRepairFileListRes = equipmentrepairfileBean.findByFilters(filterFields_eqpFile);
@@ -1957,7 +1974,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             initDtaRes.add(eqpRepairFileListRes);
             initDtaRes.add(eqpRepairSpareListRes);
             initDtaRes.add(eqpRepairHelpersListRes);
-
+            initDtaRes.add(hitchSubListRes);
+            initDtaRes.add(faultLocationListRes);
+            initDtaRes.add(failuRerate);
             return initDtaRes;
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
@@ -2003,10 +2022,10 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 equipmentRepairRes = equipmentrepairBean.findById(Integer.parseInt(filterFields.get("docId").toString()));
                 eqpRepairTemp = equipmentRepairRes;
                 filterFields_eqpTrouble.put("troubleid", equipmentRepairRes.getHitchsort1());
-                if (equipmentRepairRes.getHitchsort1()!=null) {
-                      equipmentTroubleListRes = equipmentTroubleBean.findByFilters(filterFields_eqpTrouble);
+                if (equipmentRepairRes.getHitchsort1() != null) {
+                    equipmentTroubleListRes = equipmentTroubleBean.findByFilters(filterFields_eqpTrouble);
                 }
-              
+
                 if (equipmentTroubleListRes.size() > 0) {
                     eqpRepairTemp.setHitchsort1(equipmentTroubleListRes.get(0).getTroublename());
                     equipmentrepairBean.getEntityManager().clear();
@@ -2014,10 +2033,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 
                 filterFields_eqpHitchType.put("code", "hitchurgency");
                 filterFields_eqpHitchType.put("cvalue", eqpRepairTemp.getHitchtype());
-                 if (equipmentRepairRes.getHitchtype()!=null) {
-                       eqpSysCodeListRes = sysCodeBean.findByFilters(filterFields_eqpHitchType);
+                if (equipmentRepairRes.getHitchtype() != null) {
+                    eqpSysCodeListRes = sysCodeBean.findByFilters(filterFields_eqpHitchType);
                 }
-             
 
                 if (eqpSysCodeListRes.size() > 0) {
                     eqpRepairTemp.setHitchtype(eqpSysCodeListRes.get(0).getCdesc());
