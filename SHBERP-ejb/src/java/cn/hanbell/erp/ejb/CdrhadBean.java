@@ -275,7 +275,11 @@ public class CdrhadBean extends SuperEJBForERP<Cdrhad> {
                             cdta.setItnbr(d.getItnbr());
                             cdta.setItdsc(m.getItdsc());
                             cdta.setSpdsc(m.getSpdsc());
-                            cdta.setItnbrcus(d.getModel());
+                            if (null == d.getModel() || "null".equals(d.getModel())) {
+                                cdta.setItnbrcus("");
+                            } else {
+                                cdta.setItnbrcus(d.getModel());
+                            }
                             cdta.setProno("1");
                             BigDecimal leftqy1 = cdmas.getCdrqy1().subtract(cdmas.getShpqy1()).subtract(cdmas.getPreqy1());
                             if (BigDecimal.valueOf(Double.parseDouble(d.getQty())).compareTo(leftqy1) > 0) {

@@ -41,7 +41,7 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
-
+    
     @EJB
     private HKFW006Bean hkfw006Bean;
     @EJB
@@ -58,17 +58,17 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
     private CRMHKFW006Bean crmhkfw006Bean;
     @EJB
     private REPTMBean reptmBean;
-
+    
     private List<HKFW006Detail> detailList;
-
+    
     public HKFW006Bean() {
         super(HKFW006.class);
     }
-
+    
     public Boolean updateReptdByOAHKFW006(String psn) {
         return updateReptdByOAHKFW006(psn, "1");
     }
-
+    
     public Boolean updateReptdByOAHKFW006(String psn, String status) {
         try {
             HKFW006 h = hkfw006Bean.findByPSN(psn);
@@ -198,6 +198,24 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                                         String mi003 = "OA反写 " + BaseLib.formatDate("yyyy/MM/dd", BaseLib.getDate());
                                         r.setMi003(mi003);
                                         r.setMi004("Y");
+                                        r.setMi005("N");
+                                        r.setMi011("N");
+                                        r.setMi013("N");
+                                        switch (h.getFacno()) {
+                                            case "F":
+                                                r.setCompany("CXHANBELLCRM");
+                                                break;
+                                            case "H":
+                                            case "Y":
+                                                r.setCompany("HANSONHANBELL");
+                                                break;
+                                            default:
+                                                r.setCompany("SHAHANBELL");
+                                                break;
+                                        }
+                                        r.setCreator(h.getUserno());
+                                        r.setUsrGroup(h.getDepno());
+                                        r.setCreateDate(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
                                         r.setMi006(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
                                         r.setMi007(java.time.LocalDate.now().plusYears(1).format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")));
                                         r.setMi008(BaseLib.formatDate("yyyyMMdd", BaseLib.getDate()));
@@ -207,7 +225,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                                         r.setMi502(detail.getBrowno());
                                         repmiBean.persist(r);
                                     }
-
+                                    
                                 } else if (!repmi.getREPMIPK().getMi001().equals(detail.getItnbr())) {
                                     String company = repmi.getCompany();
                                     String creator = repmi.getCreator();
@@ -304,15 +322,15 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                                     r.setRepmi19(repmi19);
                                     r.setRepmi20(repmi20);
                                     repmiBean.persist(r);
-
+                                    
                                 }
                             }
-
+                            
                         }
                     }
                 }
             }
-
+            
             HKFW006Inv310 hinv310 = hKFW006Inv310Bean.findByPSN(psn);
             if (hinv310 != null) {
                 repmiBean.setCompany(hinv310.getFacno());
@@ -343,7 +361,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                                         r.setMi501(hinv310.getDepname());
                                         repmiBean.persist(r);
                                     }
-
+                                    
                                 } else if (!repmi.getREPMIPK().getMi001().equals(detail.getItnbr())) {
                                     String company = repmi.getCompany();
                                     String creator = repmi.getCreator();
@@ -440,19 +458,19 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                                     r.setRepmi19(repmi19);
                                     r.setRepmi20(repmi20);
                                     repmiBean.persist(r);
-
+                                    
                                 }
                             }
-
+                            
                         }
                     }
                 }
             }
-
+            
             return true;
-
+            
         } catch (Exception ex) {
-
+            
             Logger.getLogger(HKFW006Bean.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
@@ -531,7 +549,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
         } catch (Exception e) {
             return false;
         }
-
+        
     }
 
     //OA 撤销或者终止流程后更新MES
@@ -559,7 +577,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
         } catch (Exception e) {
             return false;
         }
-
+        
     }
 
     /**
@@ -604,7 +622,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
             return BigDecimal.ZERO;
         }
     }
-
+    
     @Override
     public void setDetail(Object value) {
         this.detailList = hkfw006DetailBean.findByFSN(value); //To change body of generated methods, choose Tools | Templates.
@@ -623,7 +641,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
     public void setDetailList(List<HKFW006Detail> detailList) {
         this.detailList = detailList;
     }
-
+    
     public HKFW006StatisticModel BPMStatisticReport(String deptno, String dept, String propertyno, String property, int year) {
         StringBuilder sql = new StringBuilder("SELECT N'");
         sql.append(dept).append("' as dept,N'").append(property).append("' as 'statistic'");
@@ -646,7 +664,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
                 (int) result.get(0)[14]);
         return m;
     }
-
+    
     public static String getFirstDayOfMonth(int year, int month) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);
@@ -656,7 +674,7 @@ public class HKFW006Bean extends SuperEJBForEFGP<HKFW006> {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(cal.getTime());
     }
-
+    
     public static String getLastDayOfMonth(int year, int month) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);

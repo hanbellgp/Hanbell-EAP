@@ -535,7 +535,8 @@ public class ApmbilBean extends SuperEJBForERP<Apmbil> {
                     a.setBilym(atb.getBilym());
                     a.setBilnum(atb.getBilnum().toString());
                     a.setTaxkd(atb.getTaxkd());
-                    a.setApmdat(aph.getApdate());
+                    //a.setApmdat(aph.getApdate());
+                    a.setApmdat(aph.getCfmdate());
                     a.setBildat(atb.getBildat());
                     a.setIvovdr(atb.getVdrno());
                     a.setVdrno(aph.getVdrno());
