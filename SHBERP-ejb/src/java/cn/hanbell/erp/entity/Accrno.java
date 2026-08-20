@@ -37,7 +37,7 @@ public class Accrno implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "finvno")
-    private short finvno;
+    private int finvno;
 
     public Accrno() {
     }
@@ -63,11 +63,11 @@ public class Accrno implements Serializable {
         this.accrnoPK = accrnoPK;
     }
 
-    public short getFinvno() {
+    public int getFinvno() {
         return finvno;
     }
 
-    public void setFinvno(short finvno) {
+    public void setFinvno(int finvno) {
         this.finvno = finvno;
     }
 
