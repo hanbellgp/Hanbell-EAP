@@ -28,9 +28,11 @@ import cn.hanbell.edw.entity.EhsSecure;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEDW;
 import com.lightshell.comm.SuperEJB;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -43,6 +45,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -50,11 +53,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -89,13 +96,13 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
     @EJB
     private EhsSecureBean ehsSecureBean;
     protected SuperEJB superEJB;
-    //生产环境
-    private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
-    //private final String filePathTemp = "D:\\Java\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    // 生产环境s
+     private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+
     //测试环境
-//   private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    //  private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //本地环境
-    //private final String filePathTemp = "E:\\C2079\\EAM\\dist\\gfdeploy\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    // private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -227,7 +234,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                 List<EhsSecure> checkList = new ArrayList<EhsSecure>();
                 Map<String, Object> filterSecure = new HashMap<>();
                 filterSecure.put("position", "月安全课长");
-                filterSecure.put("remark", new Date().getMonth() + 1 + "");
+                filterSecure.put("remark =", new Date().getMonth() + 1 + "");
                 filterSecure.put("company", entity.getCompany());
                 filterSecure.put("area", entity.getArea());//发送给对应厂区的月安全科长
                 checkList = ehsSecureBean.findByFilters(filterSecure);
@@ -330,7 +337,7 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                         switch (hiddenTemp.getRstatus()) {
                             case "10":
                                 if (hiddenTemp.getRectificationType().equals("03")) {//无需整改时节点换成验收
-                                    hiddenTemp.setRstatus("60");
+                                    hiddenTemp.setRstatus("10");
                                     hiddenTemp.setStatus("V");
                                 } else {
                                     hiddenTemp.setRstatus("30");
@@ -588,63 +595,145 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
 
     @POST
     @Path("uploadHiddendImg")
-    @Consumes({"application/json"})
-    @Produces({"application/json"})
-    public ResponseMessage uploadHiddendImg(String jsonRequest) {
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response uploadHiddendImg(@Context HttpServletRequest request,
+            @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
 
-        //return new ResponseMessage("200", "Code=200");
-//              company: 'C',
-//              pid: _this.data.docFormidId,
-//              fileIndex: imageListIndex,
-//              fileDta: obj,
-//              fileMark: _this.data.troubleDetailInfo,
-        EhsHiddenDangerFile hiddenDangerFile = new EhsHiddenDangerFile();
-        List<EhsHiddenDangerFile> ehsHiddenDangerImageList = new ArrayList<>();
         try {
-            JSONObject requestedJSON = new JSONObject(jsonRequest);
-            String companyTemp = requestedJSON.getString("company");
-            String pidTemp = requestedJSON.getString("pid");
-            int fileIndexTemp = requestedJSON.getInt("fileIndex");
-//            String fileMarkTemp = requestedJSON.getString("fileMark");
-            String fileDtaStr = requestedJSON.getString("fileDta");
-            String fileType = requestedJSON.getString("fileType");
-            String fileFrom = requestedJSON.getString("fileFrom");
+            // 2. 判断是否为 multipart 请求
+            if (!ServletFileUpload.isMultipartContent(request)) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"code\":400,\"msg\":\"不是有效的文件上传请求\"}")
+                        .build();
+            }
 
-            ehsHiddenDangerImageList = ehsHiddenDangerFileBean.getPid(pidTemp);
-            int fileIndexMaxTemp = 0;
+            // 3. 创建 FileItem 工厂
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            upload.setFileSizeMax(10 * 1024 * 1024); // 最大 10MB
 
+            // 4. 解析请求
+            List<FileItem> items = upload.parseRequest(request);
+
+            // 5. 提取文件流和业务参数
+            InputStream fileInputStream = null;
+            String originalFilename = null;
+            String company = null;
+            String pid = null;
+            String fileType = null;
+            String fileFrom = null;
+            // fileIndex 前端传来但后台会重新计算，这里可以不接收
+
+            for (FileItem item : items) {
+                if (item.isFormField()) {
+                    String fieldName = item.getFieldName();
+                    String fieldValue = item.getString("UTF-8");
+                    if ("company".equals(fieldName)) {
+                        company = fieldValue;
+                    } else if ("pid".equals(fieldName)) {
+                        pid = fieldValue;
+                    } else if ("fileType".equals(fieldName)) {
+                        fileType = fieldValue;
+                    } else if ("fileFrom".equals(fieldName)) {
+                        fileFrom = fieldValue;
+                    }
+                    // fileIndex 忽略，由后台重新计算
+                } else {
+                    fileInputStream = item.getInputStream();
+                    originalFilename = item.getName();
+                    if (originalFilename != null && originalFilename.contains(File.separator)) {
+                        originalFilename = originalFilename.substring(originalFilename.lastIndexOf(File.separator) + 1);
+                    }
+                }
+            }
+
+            // 6. 校验必填参数
+            if (fileInputStream == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"code\":400,\"msg\":\"未找到文件\"}")
+                        .build();
+            }
+            if (pid == null || pid.isEmpty()) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"code\":400,\"msg\":\"缺少 pid 参数\"}")
+                        .build();
+            }
+
+            // 7. 获取现有图片列表，计算最大 seq
+            EhsHiddenDangerFile hiddenDangerFile = new EhsHiddenDangerFile();
+            List<EhsHiddenDangerFile> ehsHiddenDangerImageList = ehsHiddenDangerFileBean.getPid(pid);
+            int fileIndexTemp;
             if (ehsHiddenDangerImageList == null || ehsHiddenDangerImageList.size() < 1) {
                 fileIndexTemp = 1;
             } else {
-                for (int i = 0; i < ehsHiddenDangerImageList.size(); i++) {
-                    if (ehsHiddenDangerImageList.get(i).getSeq() >= fileIndexMaxTemp) {
-                        fileIndexMaxTemp = ehsHiddenDangerImageList.get(i).getSeq();
+                int fileIndexMaxTemp = 0;
+                for (EhsHiddenDangerFile f : ehsHiddenDangerImageList) {
+                    if (f.getSeq() >= fileIndexMaxTemp) {
+                        fileIndexMaxTemp = f.getSeq();
                     }
                 }
                 fileIndexTemp = fileIndexMaxTemp + 1;
             }
 
-            String fileNameTemp = pidTemp + "_" + fileIndexTemp + "_" + System.currentTimeMillis() + "." + fileType;
-            String relativePath = "../../resources/app/res/" + fileNameTemp;
+            // 8. 生成文件名
+            // 如果前端传了 fileType 则使用，否则从原文件名提取
+            String extension;
+            if (fileType != null && !fileType.isEmpty()) {
+                extension = "." + fileType;
+            } else if (originalFilename != null && originalFilename.contains(".")) {
+                extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            } else {
+                extension = ".jpg"; // 默认扩展名
+            }
+            String fileNameTemp = pid + "_" + fileIndexTemp + "_" + System.currentTimeMillis() + extension;
 
-            //保存至服务器本地
-            GenerateImage(fileDtaStr, filePathTemp + fileNameTemp);
-            hiddenDangerFile.setId(pidTemp + fileIndexTemp);
-            hiddenDangerFile.setCompany(companyTemp);
-            hiddenDangerFile.setPid(pidTemp);
+            // 9. 保存文件（使用已有的 filePathTemp 根路径）
+            String relativePath = "../../resources/app/res/" + fileNameTemp;
+            File targetDir = new File(filePathTemp);
+            if (!targetDir.exists()) {
+                targetDir.mkdirs();
+            }
+            File targetFile = new File(targetDir, fileNameTemp);
+            try (FileOutputStream fos = new FileOutputStream(targetFile)) {
+                byte[] buffer = new byte[8192];
+                int len;
+                while ((len = fileInputStream.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
+                }
+            }
+
+            // 10. 保存记录到数据库
+            hiddenDangerFile.setId(pid + fileIndexTemp);
+            hiddenDangerFile.setCompany(company != null ? company : "C");
+            hiddenDangerFile.setPid(pid);
             hiddenDangerFile.setSeq(fileIndexTemp);
             hiddenDangerFile.setFileName(fileNameTemp);
-            hiddenDangerFile.setFileType(fileFrom);
+            hiddenDangerFile.setFileType(fileFrom != null ? fileFrom : "隐患图片");
             hiddenDangerFile.setFilePath(relativePath);
             hiddenDangerFile.setCreateTime(new Date());
             ehsHiddenDangerFileBean.update(hiddenDangerFile);
 
-        } catch (Exception ex) {
-            return new ResponseMessage("500", "上传失败");
+            // 11. 构造可访问的 URL
+            String contextPath = request.getContextPath();
+            String baseUrl = request.getScheme() + "://" + request.getServerName()
+                    + ":" + request.getServerPort() + contextPath + "/resources/app/res/";
+            String fileUrl = baseUrl + fileNameTemp;
+
+            // 12. 返回 JSON（与 upload/image 格式一致）
+            String jsonResult = String.format(
+                    "{\"code\":200,\"msg\":\"上传成功\",\"data\":{\"url\":\"%s\",\"filename\":\"%s\",\"seq\":%d}}",
+                    fileUrl, fileNameTemp, fileIndexTemp
+            );
+            return Response.ok(jsonResult).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"code\":500,\"msg\":\"上传失败: " + e.getMessage().replace("\"", "\\\"") + "\"}")
+                    .build();
         }
-
-        return new ResponseMessage("200", "文件已经上传成功");
-
     }
 
     public boolean GenerateImage(String imgData, String imgFilePath) throws IOException { // 对字节数组字符串进行Base64解码并生成图片
@@ -952,7 +1041,6 @@ public class HiddenDangerFacadeREST extends SuperRESTForEDW<EhsHiddenDanger> {
                     }
                 }
                 filterFields.put("position", "整改人");
-                filterFields.put("company", "C");
                 sortFields.put("secureId", "ASC");
                 eList = ehsSecureBean.findByFilters(filterFields, offset, pageSize, sortFields);
 

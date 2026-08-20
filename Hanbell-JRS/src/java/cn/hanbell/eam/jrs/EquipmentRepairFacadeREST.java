@@ -39,9 +39,11 @@ import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.jrs.ResponseMessage;
 import cn.hanbell.jrs.SuperRESTForEAM;
 import com.lightshell.comm.SuperEJB;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.security.KeyManagementException;
@@ -63,6 +65,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
@@ -74,6 +77,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -128,9 +136,10 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     protected SuperEJB superEJB;
 
     //生产环境
-    private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+   private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //测试环境
     //  private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+   //    private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -1450,6 +1459,151 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
 
         return new ResponseMessage("200", "文件已经上传成功");
 
+    }
+
+    @POST
+    @Path("uploadEqpRepairPic2")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response uploadEqpRepairPic2(@Context HttpServletRequest request,
+            @QueryParam("appid") String appid,
+            @QueryParam("token") String token) {
+
+    
+
+        try {
+            // 2. 判断是否为 multipart 请求
+            if (!ServletFileUpload.isMultipartContent(request)) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"code\":400,\"msg\":\"不是有效的文件上传请求\"}")
+                        .build();
+            }
+
+            // 3. 创建 FileItem 工厂
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            upload.setFileSizeMax(10 * 1024 * 1024); // 最大 10MB
+
+            // 4. 解析请求
+            List<FileItem> items = upload.parseRequest(request);
+
+            // 5. 提取文件流和业务参数
+            InputStream fileInputStream = null;
+            String originalFilename = null;
+            String company = null;
+            String pid = null;
+            String fileType = null;
+            String fileFrom = null;
+            // fileIndex 前端传来但后台会重新计算，这里可以不接收
+
+            for (FileItem item : items) {
+                if (item.isFormField()) {
+                    String fieldName = item.getFieldName();
+                    String fieldValue = item.getString("UTF-8");
+                    if ("company".equals(fieldName)) {
+                        company = fieldValue;
+                    } else if ("pid".equals(fieldName)) {
+                        pid = fieldValue;
+                    } else if ("fileType".equals(fieldName)) {
+                        fileType = fieldValue;
+                    } else if ("fileFrom".equals(fieldName)) {
+                        fileFrom = fieldValue;
+                    }
+                    // fileIndex 忽略，由后台重新计算
+                } else {
+                    fileInputStream = item.getInputStream();
+                    originalFilename = item.getName();
+                    if (originalFilename != null && originalFilename.contains(File.separator)) {
+                        originalFilename = originalFilename.substring(originalFilename.lastIndexOf(File.separator) + 1);
+                    }
+                }
+            }
+
+            // 6. 校验必填参数
+            if (fileInputStream == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"code\":400,\"msg\":\"未找到文件\"}")
+                        .build();
+            }
+            if (pid == null || pid.isEmpty()) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"code\":400,\"msg\":\"缺少 pid 参数\"}")
+                        .build();
+            }
+
+            // 7. 获取现有图片列表，计算最大 seq
+            EquipmentRepairFile equipmentrepairfile = new EquipmentRepairFile();
+            List<EquipmentRepairFile> eqpRepairImageListRes = equipmentrepairfileBean.findByPId(pid);
+            int fileIndexTemp;
+            if (eqpRepairImageListRes == null || eqpRepairImageListRes.size() < 1) {
+                fileIndexTemp = 1;
+            } else {
+                int fileIndexMaxTemp = 0;
+                for (EquipmentRepairFile f : eqpRepairImageListRes) {
+                    if (f.getSeq() >= fileIndexMaxTemp) {
+                        fileIndexMaxTemp = f.getSeq();
+                    }
+                }
+                fileIndexTemp = fileIndexMaxTemp + 1;
+            }
+
+            // 8. 生成文件名
+            // 如果前端传了 fileType 则使用，否则从原文件名提取
+            String extension;
+            if (fileType != null && !fileType.isEmpty()) {
+                extension = "." + fileType;
+            } else if (originalFilename != null && originalFilename.contains(".")) {
+                extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            } else {
+                extension = ".jpg"; // 默认扩展名
+            }
+            String fileNameTemp = pid + "_" + fileIndexTemp + "_" + System.currentTimeMillis() + extension;
+
+            // 9. 保存文件（使用已有的 filePathTemp 根路径）
+            String relativePath = "../../resources/app/res/" + fileNameTemp;
+            File targetDir = new File(filePathTemp);
+            if (!targetDir.exists()) {
+                targetDir.mkdirs();
+            }
+            File targetFile = new File(targetDir, fileNameTemp);
+            try (FileOutputStream fos = new FileOutputStream(targetFile)) {
+                byte[] buffer = new byte[8192];
+                int len;
+                while ((len = fileInputStream.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
+                }
+            }
+
+            // 10. 保存记录到数据库
+            equipmentrepairfile.setCompany(company != null ? company : "C");
+            equipmentrepairfile.setPid(pid);
+            equipmentrepairfile.setSeq(fileIndexTemp);
+            equipmentrepairfile.setFilefrom(fileFrom != null ? fileFrom : "报修图片");
+            equipmentrepairfile.setFilename(fileNameTemp);
+            equipmentrepairfile.setFilepath(relativePath);
+            equipmentrepairfile.setStatus("Y");
+
+            equipmentrepairfileBean.persist(equipmentrepairfile);
+
+            // 11. 构造可访问的 URL（与 upload/image 一致）
+            String contextPath = request.getContextPath();
+            String baseUrl = request.getScheme() + "://" + request.getServerName()
+                    + ":" + request.getServerPort() + contextPath + "/resources/app/res/";
+            String fileUrl = baseUrl + fileNameTemp;
+
+            // 12. 返回 JSON（与 upload/image 格式一致）
+            String jsonResult = String.format(
+                    "{\"code\":200,\"msg\":\"上传成功\",\"data\":{\"url\":\"%s\",\"filename\":\"%s\",\"seq\":%d}}",
+                    fileUrl, fileNameTemp, fileIndexTemp
+            );
+            return Response.ok(jsonResult).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"code\":500,\"msg\":\"上传失败: " + e.getMessage().replace("\"", "\\\"") + "\"}")
+                    .build();
+        }
     }
 
     @POST
