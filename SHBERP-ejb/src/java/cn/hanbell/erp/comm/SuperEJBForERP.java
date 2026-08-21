@@ -216,6 +216,8 @@ public abstract class SuperEJBForERP<T extends Object> extends SuperEJB<T> {
                 Matcher m = p.matcher(returnStr);
                 returnStr = m.replaceAll(" ");
                 returnStr = returnStr.replaceAll("[\\u200B\\u200C\\u200D\\u2060\\uFEFF]", "");
+                returnStr = returnStr.replaceAll("[‑–—‒]","-");
+                returnStr = returnStr.replaceAll("[\\u00D8\\u0278\\u03A6]", "\u03C6");
                 //returnStr = removeNonAscii(returnStr);
             } catch (Exception ex) {
                 log4j.error(ex);
