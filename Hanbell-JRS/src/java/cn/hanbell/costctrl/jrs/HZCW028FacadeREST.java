@@ -143,7 +143,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
         log4j.info(entity.getSrcno() + "每刻发起报销单检查：" + entity.toString());
         List<HZCW028> hzcw028s = hzcw028Bean.findBySrcno(entity.getSrcno());
         if (hzcw028s != null && hzcw028s.size() > 0) {
-            return new MCResponseData(MessageEnum.Failue_109.getCode(), "OA费用报销单已存在每刻单号：" + entity.getSrcno());
+            return new MCResponseData(MessageEnum.Failue_109.getCode(), "OA费用报销单已存在单号：" + hzcw028s.get(0).getProcessSerialNumber());
         }
         try {
             MCResponseData rs = new MCResponseData();
