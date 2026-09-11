@@ -20,8 +20,11 @@ import cn.hanbell.oa.entity.SHBERPAPM811;
 import cn.hanbell.oa.entity.SHBERPAPM828;
 import cn.hanbell.util.BaseLib;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -214,6 +217,32 @@ public class ApmaphBean extends SuperEJBForERP<Apmaph> {
         } else {
             return true;
         }
+    }
+
+    public boolean checkValueynLast(String facno, String rkd) {
+      
+        accacrBean.setCompany(facno);
+        List<Accacr> accacrList = accacrBean.findBySysnoAndKindAndRkd("APM", "71", rkd);
+
+        // 2. 如果验收明细为空，直接返回 false (费用)
+        if (accacrList == null || accacrList.isEmpty()) {
+            return false;
+        }
+        accspedBean.setCompany(facno);
+        List<Accsped> accspedList = accspedBean.findByConfig((short) 52);
+
+        // 处理科目列表可能为空的情况，防止 NullPointerException
+        Set<String> accno52Set = (accspedList == null || accspedList.isEmpty())
+                ? Collections.emptySet() : accspedList.stream().map(sped -> sped.getAccspedPK().getAccno()).collect(Collectors.toSet());
+        // 4. 遍历验收明细，检查 accno 是否在 HashSet 中
+        for (Accacr acrItem : accacrList) {
+            String accno = acrItem.getAccno();
+            // 只要找到第一个匹配的科目，立即返回 true (存货)
+            if (accno52Set.contains(accno)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean checkExistqty(String facno, String itnbr, String preyrmth, Date startdate, Date endDate) {
