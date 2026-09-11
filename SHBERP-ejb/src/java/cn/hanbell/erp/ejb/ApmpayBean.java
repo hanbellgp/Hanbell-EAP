@@ -233,7 +233,12 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             h.setVouno(accrnoBean.getFormId(facno, date, Boolean.TRUE)); // 设置初稿传票编号
             h.setDepno(b.getAppDept()); // 取得OA预算部门
             h.setRkd("MR01");
-            h.setSumry(b.getSummary()); // 取得OA报销摘要
+            String srcNo = b.getSrcno();
+            if (srcNo != null && !"".equals(srcNo)) {
+                h.setSumry(b.getSummary() + "|每刻单号:" + srcNo);
+            } else {
+                h.setSumry(b.getSummary());
+            }
             h.setUsrno(b.getCreator()); // OA表单输入人员
             // h.setAppuserno(b.getAppUser()); //OA请款人
             h.setTaxym(BaseLib.formatDate("yyyyMM", date)); // 取得OA请款日期设置申报年月
