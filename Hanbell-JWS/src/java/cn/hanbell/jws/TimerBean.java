@@ -513,7 +513,7 @@ public class TimerBean {
                             }
                         }
                         // MES
-                        if (d.equals("1")) {
+                        if (d.equals("1") || d.equals("5")) {
                             cn.hanbell.mes.entity.MDepartment md = mesDepartmentBean.findByDepartmentid(hd.getCode());
                             if (md == null) {
                                 md = new cn.hanbell.mes.entity.MDepartment();

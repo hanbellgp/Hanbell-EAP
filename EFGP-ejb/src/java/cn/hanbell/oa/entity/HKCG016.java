@@ -249,6 +249,9 @@ public class HKCG016 implements Serializable {
     @Size(max = 255)
     @Column(name = "swiftcode")
     private String swiftcode;
+    @Size(max = 255)
+    @Column(name = "scaletype")
+    private String scaletype;
 
     public HKCG016() {
     }
@@ -720,6 +723,14 @@ public class HKCG016 implements Serializable {
 
     public void setSwiftcode(String swiftcode) {
         this.swiftcode = swiftcode;
+    }
+
+    public String getScaletype() {
+        return scaletype;
+    }
+
+    public void setScaletype(String scaletype) {
+        this.scaletype = scaletype;
     }
 
 }
