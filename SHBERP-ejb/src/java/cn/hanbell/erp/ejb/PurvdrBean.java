@@ -283,6 +283,7 @@ public class PurvdrBean extends SuperEJBForERP<Purvdr> {
         erp.setHandays1((short) 30);
         erp.setTtbankadd(oa.getTtbankadd());
         erp.setSwiftcode(oa.getSwiftcode());
+        erp.setScaletype(oa.getScaletype());
 
         // 生成厂商编号
         if (code.length() == 2) {

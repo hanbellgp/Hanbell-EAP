@@ -276,6 +276,8 @@ public class Purvdr implements Serializable {
     @Size(max = 20)
     @Column(name = "swiftcode")
     private String swiftcode;
+    @Column(name = "scaletype")
+    private String scaletype;
 
     public Purvdr() {
         this.shr = "mis";
@@ -773,6 +775,14 @@ public class Purvdr implements Serializable {
     @Override
     public String toString() {
         return "cn.hanbell.erp.entity.Purvdr[ vdrno=" + vdrno + " ]";
+    }
+
+    public String getScaletype() {
+        return scaletype;
+    }
+
+    public void setScaletype(String scaletype) {
+        this.scaletype = scaletype;
     }
 
 }
