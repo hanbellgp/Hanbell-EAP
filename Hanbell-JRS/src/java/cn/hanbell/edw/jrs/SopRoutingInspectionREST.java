@@ -68,6 +68,10 @@ public class SopRoutingInspectionREST extends SuperRESTForEDW<RdpmSubjectUserRep
     private SystemUserBean systemUserBean;
     @EJB
     private SysCodeBean sysCodeBean;
+    //生产环境
+   private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+//F:\C2079\EAM\Hanbell-EAM\web\resources\app\res
+   //     private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -105,6 +109,20 @@ public class SopRoutingInspectionREST extends SuperRESTForEDW<RdpmSubjectUserRep
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 sopDtaList = sopInspectionDtaBean.getSopDtaList(company, post, factory);
                 if (sopDtaList.size() > 0) {
+                    for (SopInspectionDta sop : sopDtaList) {
+                        if (sop.getFilepath() != null && !sop.getFilepath().equals("") ) {
+                            // 将字节数组转换为Base64编码
+                            java.io.File imageFile = new java.io.File(filePathTemp + sop.getFilepath());
+                            if (!imageFile.exists()) {
+                                continue;
+                            }
+                            byte[] imageBytes = null;
+                            imageBytes = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(imageFile.getPath()));
+                            String base64String = java.util.Base64.getEncoder().encodeToString(imageBytes);
+                            sop.setImageBase("data:image/png;base64," + base64String);
+
+                        }
+                    }
                     initDtaRes.add(deptListRes);
                     initDtaRes.add(sopDtaList);
                     return initDtaRes;
@@ -196,6 +214,9 @@ public class SopRoutingInspectionREST extends SuperRESTForEDW<RdpmSubjectUserRep
                     sDta.setMessage(jsonObject.optString("message"));
                     sDta.setPost(jsonObject.optString("post"));
                     sDta.setResult(jsonObject.optString("result"));
+                    sDta.setInspectorId(jsonObject.optString("inspectorId"));
+                    sDta.setFilepath(jsonObject.optString("filePath"));
+                    sDta.setInspectorName(jsonObject.optString("inspectorName"));
                     sDta.setReferencespeciFications(jsonObject.optString("referencespeciFications"));
                     sDtaList.add(sDta);
                 }
