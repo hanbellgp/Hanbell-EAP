@@ -15,6 +15,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -93,6 +94,18 @@ public class SopInspectionDta implements Serializable {
     @Column(name = "UpdateTime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
+    @Size(max = 100)
+    @Column(name = "FilePath")
+    private String filepath;
+    @Size(max = 20)
+    @Column(name = "InspectorId")
+    private String inspectorId;
+
+    @Size(max = 20)
+    @Column(name = "InspectorName")
+    private String inspectorName;
+    @Transient
+    private String imageBase;
 
     public SopInspectionDta() {
     }
@@ -109,6 +122,14 @@ public class SopInspectionDta implements Serializable {
         this.id = id;
     }
 
+    public String getImageBase() {
+        return imageBase;
+    }
+
+    public void setImageBase(String imageBase) {
+        this.imageBase = imageBase;
+    }
+
     public String getCompany() {
         return company;
     }
@@ -123,6 +144,30 @@ public class SopInspectionDta implements Serializable {
 
     public void setReferencespeciFications(String referencespeciFications) {
         this.referencespeciFications = referencespeciFications;
+    }
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+    public String getInspectorId() {
+        return inspectorId;
+    }
+
+    public void setInspectorId(String inspectorId) {
+        this.inspectorId = inspectorId;
+    }
+
+    public String getInspectorName() {
+        return inspectorName;
+    }
+
+    public void setInspectorName(String inspectorName) {
+        this.inspectorName = inspectorName;
     }
 
     public String getDeptName() {
