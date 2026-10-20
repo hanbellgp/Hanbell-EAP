@@ -69,7 +69,7 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             return rs;
         } catch (Exception ex) {
             log4j.error(ex.toString());
-            return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
+            return new MCResponseData(MessageEnum.Failue_109.getCode(), ex.toString());
         }
     }
 
@@ -163,8 +163,8 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             mailBean.setMailContent(
                     "每刻出差申请单抛转异常，申请人 ：" + entity.getApplyUser() + "每刻单号: " + entity.getSrcno() + ",  出现异常：" + ex.toString());
             mailBean.notify(new ErrorMailNotify());
-            ex.printStackTrace();
-            return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
+            //ex.printStackTrace();
+            return new MCResponseData(MessageEnum.Failue_109.getCode(), ex.toString());
         }
     }
 
@@ -242,9 +242,9 @@ public class HZGL004FacadeREST extends SuperRESTForEFGP<HZGL004> {
             }
             return new MCResponseData(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             log4j.error(e.toString());
-            return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
+            return new MCResponseData(MessageEnum.Failue_109.getCode(), e.toString());
         }
     }
 

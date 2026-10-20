@@ -288,6 +288,12 @@ public class HKCW002 implements Serializable {
     @Size(max = 255)
     @Column(name = "creator")
     private String creator;
+    @Size(max = 255)
+    @Column(name = "assessSafety")
+    private String assessSafety;    
+    @Size(max = 255)
+    @Column(name = "des1")
+    private String des1;
 
     public HKCW002() {
     }
@@ -1025,6 +1031,22 @@ public class HKCW002 implements Serializable {
      */
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getAssessSafety() {
+        return assessSafety;
+    }
+
+    public void setAssessSafety(String assessSafety) {
+        this.assessSafety = assessSafety;
+    }
+
+    public String getDes1() {
+        return des1;
+    }
+
+    public void setDes1(String des1) {
+        this.des1 = des1;
     }
 
 }

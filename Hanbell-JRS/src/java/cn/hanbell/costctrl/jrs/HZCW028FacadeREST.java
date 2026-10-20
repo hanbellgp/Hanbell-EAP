@@ -316,7 +316,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
 
         } catch (Exception e) {
             try {
-                e.printStackTrace();
+                //e.printStackTrace();
                 tran.rollback();
                 //加入邮件通知
                 mailBean.clearReceivers();
@@ -680,7 +680,7 @@ public class HZCW028FacadeREST extends SuperRESTForEFGP<HZCW028> {
             //加入分摊部门检查    
             return new MCResponseData(code, msg);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             log4j.error(e.toString());
             return new MCResponseData(MessageEnum.Failue_109.getCode(), MessageEnum.Failue_109.getMsg());
         }
