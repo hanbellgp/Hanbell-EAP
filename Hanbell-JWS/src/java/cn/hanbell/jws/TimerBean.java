@@ -514,6 +514,11 @@ public class TimerBean {
                         }
                         // MES
                         if (d.equals("1") || d.equals("5")) {
+                            if (d.equals("1")) {
+                                mesDepartmentBean.setCompany("C");
+                            } else if (d.equals("5")) {
+                                mesDepartmentBean.setCompany("K");
+                            }
                             cn.hanbell.mes.entity.MDepartment md = mesDepartmentBean.findByDepartmentid(hd.getCode());
                             if (md == null) {
                                 md = new cn.hanbell.mes.entity.MDepartment();
@@ -732,6 +737,7 @@ public class TimerBean {
                         }
                         if ("C".equals(company) || "K".equals(company)) {
                             // MES
+                            mesUserBean.setCompany(company);
                             cn.hanbell.mes.entity.MUser mu = mesUserBean.findByUserid(e.getCode());
                             if (mu == null) {
                                 mu = new cn.hanbell.mes.entity.MUser();
@@ -750,6 +756,7 @@ public class TimerBean {
                                 MuserRole mur2 = new MuserRole(mu.getUserid(), "CS", "QZUSER");
                                 MuserRole mur3 = new MuserRole(mu.getUserid(), "BS", "WEBUSER");
                                 MuserRole mur4 = new MuserRole(mu.getUserid(), "BS", "UQFUSER");
+                                mesUserRoleBean.setCompany(company);
                                 mesUserRoleBean.persist(mur1);
                                 mesUserRoleBean.persist(mur2);
                                 mesUserRoleBean.persist(mur3);

@@ -17,7 +17,12 @@ import javax.persistence.PersistenceContext;
 public abstract class SuperEJBForMES<T> extends SuperEJB<T> {
 
     @PersistenceContext(unitName = "SHBMES-ejbPU")
-    private EntityManager em;
+    private EntityManager em_shp;
+
+    @PersistenceContext(unitName = "COMERMES-ejbPU")
+    private EntityManager em_comer;
+
+    protected String company = "C";
 
     public SuperEJBForMES(Class<T> entityClass) {
         super(entityClass);
@@ -25,7 +30,33 @@ public abstract class SuperEJBForMES<T> extends SuperEJB<T> {
 
     @Override
     public EntityManager getEntityManager() {
-        return em;
+        return getEntityManager(getCompany());
     }
 
+    protected EntityManager getEntityManager(String facno) {
+        switch (facno) {
+            case "C":
+                return em_shp;
+
+            case "K":
+                return em_comer;
+
+            default:
+                return em_shp;
+        }
+    }
+
+    /**
+     * @return the company
+     */
+    public String getCompany() {
+        return company;
+    }
+
+    /**
+     * @param company the company to set
+     */
+    public void setCompany(String company) {
+        this.company = company;
+    }
 }
