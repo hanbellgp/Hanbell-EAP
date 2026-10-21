@@ -4,12 +4,18 @@
         <jta-data-source>jdbc/shbmes</jta-data-source>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <shared-cache-mode>NONE</shared-cache-mode>
-        <properties/>
+        <validation-mode>NONE</validation-mode>
+        <properties>
+            <property name="eclipselink.canonicalmodel.subpackage" value="shb"/>
+        </properties>
     </persistence-unit>    
     <persistence-unit name="COMERMES-ejbPU" transaction-type="JTA">
         <jta-data-source>jdbc/comermes</jta-data-source>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <shared-cache-mode>NONE</shared-cache-mode>
-        <properties/>
+        <validation-mode>NONE</validation-mode>
+        <properties>
+            <property name="eclipselink.canonicalmodel.subpackage" value="comer"/>
+        </properties>
     </persistence-unit>
 </persistence>
