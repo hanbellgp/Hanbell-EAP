@@ -33,6 +33,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -234,10 +235,15 @@ public class ApmpayBean extends SuperEJBForERP<Apmpay> {
             h.setDepno(b.getAppDept()); // 取得OA预算部门
             h.setRkd("MR01");
             String srcNo = b.getSrcno();
+            String summary = Optional.ofNullable(b.getSummary()).orElse("");
             if (srcNo != null && !"".equals(srcNo)) {
-                h.setSumry(b.getSummary() + "|每刻单号:" + srcNo);
+                if (summary.isEmpty()) {
+                    h.setSumry("每刻单号:" + srcNo);
+                } else {
+                    h.setSumry(summary + "|每刻单号:" + srcNo);
+                }
             } else {
-                h.setSumry(b.getSummary());
+                h.setSumry(summary);
             }
             h.setUsrno(b.getCreator()); // OA表单输入人员
             // h.setAppuserno(b.getAppUser()); //OA请款人

@@ -291,9 +291,11 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     m.setProno("1");
                     m.setAppDate(BaseLib.getDate());
                     m.setCreator(aa.getApplyUserno());
-                    m.setApplyDept(aa.getApplyDeptno());
+                    //m.setApplyDept(aa.getApplyDeptno());
+                    m.setApplyDept(usersBean.checkDeptno(aa.getApplyUserno(), aa.getApplyDeptno()));
                     m.setAppuser(aa.getRequireUserno());
-                    m.setDepno(aa.getRequireDeptno());
+                    //m.setDepno(aa.getRequireDeptno());
+                    m.setDepno(usersBean.checkDeptno(aa.getRequireUserno(), aa.getRequireDeptno()));
                     m.setCenterid(aa.getCenterid());
                     m.setPrkind(aa.getPrkind());
                     m.setHmark1(aa.getHmark1());
@@ -356,6 +358,8 @@ public class HKCG007Bean extends SuperEJBForEFGP<HKCG007> {
                     m.setNewqty1(aa.getNewqty1());
                     m.setNewproject2(aa.getNewproject2());
                     m.setNewqty2(aa.getNewqty2());
+                    m.setAssessSafety(aa.getAssessSafety());
+                    m.setDes1(aa.getDes1());
 
                     //重新初始化流程发起人员
                     if (aa.getCreator() != null && !"".equals(aa.getCreator())) {

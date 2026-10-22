@@ -86,6 +86,8 @@ public class HKCG007Model implements Serializable {
     private String newqty1;
     private String newproject2;
     private String newqty2;
+    private String assessSafety;
+    private String des1;
 
     public HKCG007Model() {
     }
@@ -651,6 +653,22 @@ public class HKCG007Model implements Serializable {
 
     public void setDeptPeriod(String deptPeriod) {
         this.deptPeriod = deptPeriod;
+    }
+
+    public String getAssessSafety() {
+        return assessSafety;
+    }
+
+    public void setAssessSafety(String assessSafety) {
+        this.assessSafety = assessSafety;
+    }
+
+    public String getDes1() {
+        return des1;
+    }
+
+    public void setDes1(String des1) {
+        this.des1 = des1;
     }
 
 }
