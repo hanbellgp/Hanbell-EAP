@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:if test="#{hkfw013ManagedQueryBean.currentUserid!=null and  hkfw013ManagedQueryBean.currentUserid!=''}" >
+            <h:form id="formList1">
+                <c:if test="#{hkfw013ManagedQueryBean.islogin}">
+                <p:panelGrid id="plgQuery" styleClass="plgQuery Wid100">
+                     <p:growl id="grow1" showSummary="false" showDetail="true"/>
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="4">查询条件</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column><h:outputLabel value="表单单号" for="queryFSN" /></p:column>
+                        <p:column>
+                            <p:inputText id="queryFSN"  value="#{hkfw013ManagedQueryBean.queryFSN}" title="表单单号" />
+                        </p:column>
+                       <p:column><h:outputLabel value="流程序号" for="queryPSN1" /></p:column>
+                        <p:column>
+                            <p:inputText id="queryPSN1"  value="#{hkfw013ManagedQueryBean.queryCusno}" title="流程序号" />
+                        </p:column>
+                    </p:row>
+                  <p:row>
+                        <p:column><h:outputLabel value="客户代号" for="queryCusno" /></p:column>
+                        <p:column>
+                            <p:inputText id="queryCusno"  value="#{hkfw013ManagedQueryBean.queryCusno}" title="客户代号" />
+                        </p:column>
+                        <p:column><h:outputLabel value="客户名称" for="queryCusna" /></p:column>
+                        <p:column>
+                            <p:inputText id="queryCusna"  value="#{hkfw013ManagedQueryBean.queryCusna}" title="客户名称" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputLabel value="签核开始日期" for="queryDateStart" /></p:column>
+                        <p:column>
+                            <p:calendar id="queryDateStart" value="#{hkfw013ManagedQueryBean.queryDateStart}" title="开始日期" pattern="yyyy/MM/dd"
+                                        requiredMessage="请输入签核开始日期"/>
+                        </p:column>
+                        <p:column><h:outputLabel value="签核截止日期" for="queryDateEnd" /></p:column>
+                        <p:column>
+                            <p:calendar id="queryDateEnd" value="#{hkfw013ManagedQueryBean.queryDateEnd}" title="结束日期" pattern="yyyy/MM/dd"
+                                        requiredMessage="请输入创建截止日期"/>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+                <p:toolbar id="toolbar" styleClass="topToolbar">
+                    <f:facet name="left">
+                        <p:fileUpload id="fileUpload" fileUploadListener="#{hkfw013ManagedQueryBean.handleFileUploadWhenNew}"   styleClass="fileUpload"
+                                      allowTypes="/(\.|\/)(xls)$/"  label="选择文件" uploadLabel="上传文件" cancelLabel="还原" update="formList1"/>
+                        
+                    </f:facet>
+                    <f:facet name="right">
+                        <p:commandButton id="btnLoad" value="刷新" actionListener="#{hkfw013ManagedQueryBean.init()}"  icon="ui-icon-book"  update="formList1"/>
+                        <p:commandButton id="btnPrint" value="导出" actionListener="#{hkfw013ManagedQueryBean.print()}" icon="ui-icon-print"/>
+                        <p:commandButton id="btnReset" value="重置" actionListener="#{hkfw013ManagedQueryBean.reset()}" icon="ui-icon-refresh"
+                                         update="formList1"/>
+                        <p:commandButton id="btnQuery" value="查询" actionListener="#{hkfw013ManagedQueryBean.query()}" icon="ui-icon-sync"
+                                         update="formList1" />
+                    </f:facet>
+                </p:toolbar>
+                <p:dataTable  value="#{hkfw013ManagedQueryBean.entityList}"  var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="15,30,45"   lazy="true"  selection="#{hkfw013ManagedQueryBean.selectList}" rowKey="#{item.formSerialNumber}">
+                    <f:facet name="header">
+                        提货通知单
+                    </f:facet>
+                    <p:column styleClass="Wid15">
+                        <f:facet name="header">
+                            <h:outputText value="流程序号"/>
+                        </f:facet>
+                        <h:outputText value="#{item.processSerialNumber}"/>
+                    </p:column>
+                    <p:column styleClass="Wid15">
+                        <f:facet name="header">
+                            <h:outputText value="表单单号"/>
+                        </f:facet>
+                        <h:outputText value="#{item.formSerialNumber}"/>
+                    </p:column>
+                    <p:column styleClass="Wid15">
+                        <f:facet name="header">
+                            <h:outputText value="申请人"/>
+                        </f:facet>
+                        <h:outputText value="#{item.getUser().id}-#{item.getUser().userName}"/>
+                    </p:column>
+                    <p:column styleClass="Wid15">
+                        <f:facet name="header">
+                            <h:outputText value="客户代号"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cusno}"/>
+                    </p:column>
+                    <p:column styleClass="Wid15">
+                        <f:facet name="header">
+                            <h:outputText value="客户全称"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cusds}"/>
+                    </p:column>
+                    <p:column styleClass="Wid15">
+                        <f:facet name="header">
+                            <h:outputText value="提货公司"/>
+                        </f:facet>
+                        <h:outputText value="#{item.getThCompany()}"/>
+                    </p:column>
+                    <p:column styleClass="Wid15">
+                        <f:facet name="header">
+                            <h:outputText value="运费"/>
+                        </f:facet>
+                        <h:outputText value="#{item.freightCost}"/>
+                    </p:column>
+                         <p:column styleClass="Wid15">
+                        <f:facet name="header">
+                            <h:outputText value="流程状态"/>
+                        </f:facet>
+                        <h:outputText value="#{item.getProcessInstance().getCurrentStateValue()}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+               <p:blockUI id="blockUI" block="formList1" trigger="btnLoad,btnPrint,btnQuery,btnlogin">
+                    <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+                </p:blockUI>
+                 </c:if>
+                    
+           <p:dialog id="dlglogin" widgetVar="dlgDetail" width="25%" visible="#{!hkfw013ManagedQueryBean.islogin}" header="账号验证" modal="true">
+                    <mark style="color:red;font-weight: normal">
+                        链接存在被盗风险
+                        <br/>
+                        为增加安全性,请输入您OA密码，以确认您的身份并继续浏览。
+                    </mark>
+                    <p:panelGrid id="plglogin"  styleClass="plglogin Wid100">
+
+                        <p:row>
+                            <p:column styleClass="Wid20"><h:outputLabel value="工号" for="currentUserid" style="font-size:20px"/></p:column>
+                            <p:column styleClass="Wid30" >
+                                <h:outputText id="currentUserid" value="#{hkfw013ManagedQueryBean.currentUserid}" title="kfno" style="font-size:20px"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column styleClass="Wid20"><h:outputLabel value="密码" for="currentUserid" style="font-size:20px"/></p:column>
+                            <p:column styleClass="Wid30" >
+                                <p:password value="#{hkfw013ManagedQueryBean.password}"  style="font-size:20px" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:toolbar  styleClass="topToolbar">
+                        <f:facet name="right">
+                            <p:commandButton id="btnlogin" value="确定" actionListener="#{hkfw013ManagedQueryBean.login()}" update="formList1">
+                                <f:ajax onevent="handleAjaxEvent"></f:ajax>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:toolbar>
+                </p:dialog>
+            </h:form>
+        </c:if>
+    </ui:define>
+</ui:composition>
