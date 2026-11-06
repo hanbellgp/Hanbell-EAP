@@ -1,0 +1,558 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package cn.hanbell.rpt.control;
+
+import cn.hanbell.eap.ejb.SystemUserBean;
+import cn.hanbell.oa.ejb.FormInstanceBean;
+import cn.hanbell.oa.ejb.HKFW005Bean;
+import cn.hanbell.oa.ejb.HKFW013Bean;
+import cn.hanbell.oa.ejb.WorkFlowBean;
+import cn.hanbell.oa.ejb.WorkItemBean;
+import cn.hanbell.oa.entity.FormInstance;
+import cn.hanbell.oa.entity.HKFW005;
+import cn.hanbell.oa.entity.HKFW013;
+import cn.hanbell.oa.entity.WorkItem;
+import cn.hanbell.rpt.lazy.HKFW005Model;
+import cn.hanbell.rpt.web.SuperQueryBean;
+import com.lightshell.comm.BaseLib;
+import static com.oracle.wls.shaded.org.apache.xalan.xsltc.compiler.sym.error;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.text.Collator;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.http.HttpEntity;
+import org.apache.http.ParseException;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.util.EntityUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+
+/**
+ *
+ * @author C0160
+ */
+@ManagedBean(name = "hkfw013ManagedQueryBean")
+@javax.faces.bean.ViewScoped
+public class HKFW013ManagedQueryBean extends SuperQueryBean<HKFW013> {
+
+    @EJB
+    private WorkFlowBean workFlowBean;
+    @EJB
+    private HKFW013Bean hkfw013Bean;
+    @EJB
+    private FormInstanceBean formInstanceBean;
+    @EJB
+    private WorkItemBean workItemBean;
+    private List<HKFW005> selectList;
+    @EJB
+    private SystemUserBean systemUserBean;
+    private String currentUserName;
+    private String queryFSN;
+    private String queryPSN;
+    private String queryCusno;
+    private String queryCusna;
+    private Date queryDateStart;
+    private Date queryDateEnd;
+    private String currentUserid;
+    private String password;
+    private boolean islogin;
+    
+
+    private final String TMSURL = "http://172.16.10.94:54320/api/TMS_Freight/";
+
+    /**
+     * Creates a new instance of HKFW005QueryBean
+     */
+    public HKFW013ManagedQueryBean() {
+        super(HKFW013.class);
+    }
+
+    @Override
+    public void init() {
+        HttpServletRequest request = (HttpServletRequest) ec.getRequest();
+        if (currentUserid == null || "".equals(currentUserid)) {
+            currentUserid = request.getParameter("userid");
+        }
+        setSuperEJB(hkfw013Bean);
+        this.model = new HKFW005Model(hkfw013Bean);
+        Calendar c = Calendar.getInstance();
+        this.queryDateEnd = c.getTime();
+        c.add(Calendar.MONTH, -1);
+        this.queryDateStart = c.getTime();
+        super.init();
+    }
+
+    @Override
+    public void print() {
+        entityList = hkfw013Bean.findByHKCW013QueryPage(queryDateStart, queryDateEnd, queryFSN, queryPSN, queryCusno, queryCusna, currentUserid);
+        if (entityList == null || entityList.isEmpty()) {
+            return;
+        }
+        fileName = "HKFW013" + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + ".xls";
+        fileFullName = reportOutputPath + fileName;
+        HSSFWorkbook wb = new HSSFWorkbook();
+        CreationHelper createHelper = wb.getCreationHelper();
+        CellStyle headcell = wb.createCellStyle();
+        headcell.setBorderRight(CellStyle.BORDER_THIN);
+        headcell.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        headcell.setBorderLeft(CellStyle.BORDER_THIN);
+        headcell.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        headcell.setBorderTop(CellStyle.BORDER_THIN);
+        headcell.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        headcell.setBorderBottom(CellStyle.BORDER_THIN);
+        headcell.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        HSSFPalette palette = wb.getCustomPalette();
+        HSSFColor color = palette.findColor((byte) 255, (byte) 192, (byte) 0);
+        if (color == null) {
+            palette.setColorAtIndex((short) 30, (byte) 255, (byte) 192, (byte) 0);
+            color = palette.getColor((short) 30);
+        }
+        headcell.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        headcell.setFillForegroundColor(color.getIndex());
+        
+        Font headFont = wb.createFont();
+        headFont.setFontHeightInPoints((short) 12);
+        headFont.setFontName("宋体");
+        headcell.setFont(headFont);
+        CellStyle textcell = wb.createCellStyle();
+        textcell.setBorderRight(CellStyle.BORDER_THIN);
+        textcell.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        textcell.setBorderLeft(CellStyle.BORDER_THIN);
+        textcell.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        textcell.setBorderTop(CellStyle.BORDER_THIN);
+        textcell.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        textcell.setBorderBottom(CellStyle.BORDER_THIN);
+        textcell.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        Font headFont2 = wb.createFont();
+        headFont2.setFontHeightInPoints((short) 12);
+        headFont2.setFontName("宋体");
+        textcell.setFont(headFont2);
+        //创建内容
+        Sheet sheet = wb.createSheet("【HK_CW013】提货通知单");
+        Cell cell;
+        Row row;
+        row = sheet.createRow(0);
+        cell=row.createCell(0);
+        cell.setCellValue("流程序号");
+        cell.setCellStyle(headcell);
+        
+        
+        cell=row.createCell(1);
+        cell.setCellValue("表单单号");
+        cell.setCellStyle(headcell);
+        
+        cell=row.createCell(2);
+        cell.setCellValue("创建时间");
+        cell.setCellStyle(headcell);
+        
+        cell=row.createCell(3);
+        cell.setCellValue("申请人");
+        cell.setCellStyle(headcell);
+        
+        cell=row.createCell(4);
+        cell.setCellValue("客户全称");
+        cell.setCellStyle(headcell);
+        
+        cell=row.createCell(5);
+        cell.setCellValue("提货地址");
+        cell.setCellStyle(headcell);
+        
+        cell=row.createCell(6);
+        cell.setCellValue("送货地址");
+        cell.setCellStyle(headcell);
+        
+        cell=row.createCell(7);
+        cell.setCellValue("物流");
+        cell.setCellStyle(headcell);
+        
+        cell=row.createCell(8);
+        cell.setCellValue("运单号");
+        cell.setCellStyle(headcell);
+        
+        cell=row.createCell(9);
+        cell.setCellValue("运费金额");
+        cell.setCellStyle(headcell);
+        
+        int i = 1;
+        for (HKFW013 item : entityList) {
+            row = sheet.createRow(i);
+            cell = row.createCell(0);
+            cell.setCellValue(item.getProcessSerialNumber());
+            cell.setCellStyle(textcell);
+
+            cell = row.createCell(1);
+            cell.setCellValue(item.getFormSerialNumber());
+            cell.setCellStyle(textcell);
+
+            cell = row.createCell(2);
+            cell.setCellValue(item.getProcessInstance().getCreatedTime());
+            textcell.setDataFormat(createHelper.createDataFormat().getFormat("yyyy/MM/dd"));
+            cell.setCellStyle(textcell);
+
+            cell = row.createCell(3);
+            cell.setCellValue(item.getUser() != null ? String.format("%s-%s", item.getUser().getId(), item.getUser().getUserName()) : "");
+            cell.setCellStyle(textcell);
+
+            cell = row.createCell(4);
+            cell.setCellValue(item.getCusds()!= null ?String.format("%s-%s",  item.getCusno(),item.getCusds()) : "");
+            cell.setCellStyle(textcell);
+
+            cell = row.createCell(5);
+            cell.setCellValue(item.getThcompanyAddress() != null ? item.getThcompanyAddress() : "");
+            cell.setCellStyle(textcell);
+
+            cell = row.createCell(6);
+            cell.setCellValue(item.getShcompanyAddress() != null ? item.getShcompanyAddress() : "");
+            cell.setCellStyle(textcell);
+
+            cell = row.createCell(7);
+            cell.setCellValue(item.getThCompany() != null ? item.getThCompany(): "");
+            cell.setCellStyle(textcell);
+
+            cell = row.createCell(8);
+            cell.setCellValue(item.getWaybillNumber() != null ? item.getWaybillNumber() : "");
+            cell.setCellStyle(textcell);
+
+            cell = row.createCell(9);
+            cell.setCellValue(item.getFreightCost() != null ? item.getFreightCost() : "");
+            cell.setCellStyle(textcell);
+            i++;
+        }
+        for (int c = 0; c < 12; c++) {
+            sheet.autoSizeColumn(c);
+        }
+        OutputStream os = null;
+        try {
+            os = new FileOutputStream(fileFullName);
+            wb.write(os);
+            this.reportViewPath = reportViewContext + fileName;
+            this.preview();
+        } catch (Exception ex) {
+            log4j.error(ex);
+        } finally {
+            try {
+                if (null != os) {
+                    os.flush();
+                    os.close();
+                }
+            } catch (IOException ex) {
+                log4j.error(ex.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public void query() {
+        entityList = hkfw013Bean.findByHKCW013QueryPage(queryDateStart, queryDateEnd, queryFSN, queryPSN, queryCusno, queryCusna, currentUserid);
+    }
+
+    /**
+     * 路径的userid是明文，有被盗风险,此处需要二次验证。
+     */
+    public void login() {
+        try {
+//            if (cn.hanbell.util.BaseLib.ADAuth("172.16.10.190:389", this.currentUserid + "@hanbell.com.cn", this.password)) {
+            if (true) {
+                islogin = true;
+                this.currentUserName = systemUserBean.findByUserId(this.currentUserid).getUsername();
+                query();
+            } else {
+                this.showWarnMsg("", "密码错误");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            this.showWarnMsg("", "登录失败");
+        }
+    }
+
+//    public void sign() {
+//        String errfsn = "";
+//        if (selectList.size() == 0) {
+//            this.showWarnMsg("", "请先选择");
+//            return;
+//        }
+//        try {
+//
+//            for (HKFW005 HKFW005 : selectList) {
+//                errfsn = HKFW005.getFormSerialNumber();
+//                //检查XML里的金额是否为空
+//                FormInstance formInstance = this.formInstanceBean.findBySerialNumber(HKFW005.getFormSerialNumber());
+//                if (formInstance == null) {
+//                    throw new Exception("找不到表单内容");
+//                }
+//                int totalEnd = formInstance.getFieldValues().indexOf("</total>");
+//                if (totalEnd == 0) {
+//                    throw new Exception("表单版本异常,找不到对应栏位");
+//                }
+//                int totalStart = formInstance.getFieldValues().substring(0, totalEnd).lastIndexOf(">");
+//                String total = formInstance.getFieldValues().substring(totalStart + 1, totalEnd);
+//                if ("".equals(total.trim()) || total.trim().length() == 0) {
+//                    throw new Exception(String.format("没有运费", HKFW005.getFormSerialNumber()));
+//                }
+//                if (HKFW005.getTotal() != null) {
+//                    List<WorkItem> works = workItemBean.findByContextOID(HKFW005.getProcessInstance().getContextOID());
+//                    for (WorkItem w : works) {
+//                        if (w.getCompletedTime() == null) {
+//                            w.setCurrentState(1);
+//                            workItemBean.update(w);
+//                            String success = workFlowBean.completeWorkItem(workFlowBean.HOST_ADD, workFlowBean.HOST_PORT, w.getOID(), this.currentUserid, String.format("%s(%s)后台签核", this.currentUserName, this.currentUserid));
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//            entityList = hkfw013Bean.findByHKCW013QueryPage(queryDateBegin, queryDateEnd, queryFSN, queryPSN, queryCusno, queryCusna, currentUserid);
+//            this.showMsg(FacesMessage.SEVERITY_INFO, "", "抛转成功！");
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            this.showWarnMsg("", String.format("%s抛转失败.%s", errfsn, ex.getMessage()));
+//        }
+//    }
+
+    @Override
+    public void reset() {
+        super.reset();
+    }
+
+    public void handleFileUploadWhenNew(FileUploadEvent event) {
+        UploadedFile file1 = event.getFile();
+        Integer a = 0;
+        InputStream inputStream = null;
+        if (file1 != null) {
+            try {
+                inputStream = file1.getInputstream();
+                upload(event);
+                Workbook excel = WorkbookFactory.create(inputStream);
+                Sheet sheet = excel.getSheetAt(0);
+                StringBuffer fileValue = new StringBuffer();
+                for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                    Row row = sheet.getRow(i);
+                    String processsNumber = row.getCell(0).getStringCellValue();
+                    HKFW013 hkfw013 = hkfw013Bean.findByPSN(processsNumber);
+                
+                    if ("".equals(cellToVlaue(row.getCell(9)).trim())) {
+                        throw new Exception(String.format("表单单号:%s,金额不能为空", hkfw013.getFormSerialNumber()));
+                    }
+                    double total = Double.valueOf(cellToVlaue(row.getCell(9)));
+                    hkfw013.setFreightCost(String.valueOf(total));
+                    FormInstance formInstance = this.formInstanceBean.findBySerialNumber(hkfw013.getFormSerialNumber());
+                    if (formInstance == null) {
+                        throw new Exception(String.format("表单单号:%s异常,无表单内容。。", hkfw013.getFormSerialNumber()));
+                    }
+                    int hynoIndex = formInstance.getFieldValues().indexOf("<freightCost id=\"freightCost\" dataType=\"java.lang.String\" perDataProId=\"\">");
+                    if (hynoIndex == 0 ) {
+                        throw new Exception(String.format("表单单号:%s,表单版本异常。", hkfw013.getFormSerialNumber()));
+                    }
+                    fileValue.setLength(0);
+                    fileValue.append(formInstance.getFieldValues().substring(0, hynoIndex)).append("<freightCost id=\"freightCost\" dataType=\"java.lang.String\" perDataProId=\"\">").append(total);
+                    fileValue.append(formInstance.getFieldValues().substring(formInstance.getFieldValues().indexOf("</freightCost>")));
+                    formInstance.setFieldValues(fileValue.toString());
+                    formInstanceBean.update(formInstance);
+                    hkfw013Bean.update(hkfw013);
+                }
+                entityList = hkfw013Bean.findByHKCW013QueryPage(queryDateStart, queryDateEnd, queryFSN, queryPSN, queryCusno, queryCusna, currentUserid);
+                FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "修改成功"));
+            } catch (Exception ex) {
+                FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", String.format("上传失败：%S", ex.getMessage())));
+                ex.printStackTrace();
+            } finally {
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+
+                }
+            }
+        }
+    }
+
+    public String cellToVlaue(Cell cell) {
+        if (cell == null) {
+            return "";
+        }
+        int type = cell.getCellType();
+        switch (type) {
+            case 0:
+                double d = cell.getNumericCellValue();
+                //整数去掉小数点
+                if (d == (int) d) {
+                    return String.valueOf((int) d);
+                }
+                return String.valueOf(cell.getNumericCellValue());
+            case 1:
+                return cell.getStringCellValue();
+            case 2:
+                return cell.getCellFormula();
+            case 3:
+                return "0";
+            case 4:
+                return String.valueOf(cell.getBooleanCellValue());
+            case 5:
+                return String.valueOf(cell.getErrorCellValue());
+        }
+        return "";
+    }
+
+    public boolean upload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        OutputStream output = null;
+        InputStream input = null;
+        UploadedFile file1 = event.getFile();
+        try {
+            input = file1.getInputstream();
+            String finalFilePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+            int index = finalFilePath.indexOf("WEB-INF");
+            String filePath = new String(finalFilePath.substring(1, index));
+            StringBuffer pathString = new StringBuffer(filePath.concat("rpt/"));
+            pathString.append(String.valueOf(new Date().getTime()));
+            pathString.append(".xls");
+            String path = pathString.substring(0, pathString.indexOf("Hanbell-EAP")).concat("FileUploadServer/resources").concat(String.valueOf(new Date().getTime()));
+            StringBuffer url = new StringBuffer(pathString.substring(0, pathString.indexOf("Hanbell-EAP")));
+            url.append("FileUploadServer/resources/").append(String.valueOf(new Date().getTime())).append(".xls");
+            File dest = new File(url.toString());
+            byte[] buf = new byte[1024];
+            int bytesRead;
+            output = new FileOutputStream(dest);
+            while ((bytesRead = input.read(buf)) > 0) {
+                output.write(buf, 0, bytesRead);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            input.close();
+            output.close();
+        }
+        return true;
+    }
+
+ 
+
+    public String getQueryFSN() {
+        return queryFSN;
+    }
+
+    public void setQueryFSN(String queryFSN) {
+        this.queryFSN = queryFSN;
+    }
+
+    public String getQueryPSN() {
+        return queryPSN;
+    }
+
+    public void setQueryPSN(String queryPSN) {
+        this.queryPSN = queryPSN;
+    }
+
+    public String getQueryCusno() {
+        return queryCusno;
+    }
+
+    public void setQueryCusno(String queryCusno) {
+        this.queryCusno = queryCusno;
+    }
+
+    public String getQueryCusna() {
+        return queryCusna;
+    }
+
+    public void setQueryCusna(String queryCusna) {
+        this.queryCusna = queryCusna;
+    }
+
+    public String getCurrentUserid() {
+        return currentUserid;
+    }
+
+    public void setCurrentUserid(String currentUserid) {
+        this.currentUserid = currentUserid;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isIslogin() {
+        return islogin;
+    }
+
+    public void setIslogin(boolean islogin) {
+        this.islogin = islogin;
+    }
+
+    public List<HKFW005> getSelectList() {
+        return selectList;
+    }
+
+    public void setSelectList(List<HKFW005> selectList) {
+        this.selectList = selectList;
+    }
+
+    public Date getQueryDateStart() {
+        return queryDateStart;
+    }
+
+    public void setQueryDateStart(Date queryDateStart) {
+        this.queryDateStart = queryDateStart;
+    }
+
+    public Date getQueryDateEnd() {
+        return queryDateEnd;
+    }
+
+    public void setQueryDateEnd(Date queryDateEnd) {
+        this.queryDateEnd = queryDateEnd;
+    }
+    
+
+}
