@@ -136,10 +136,10 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
     protected SuperEJB superEJB;
 
     //生产环境
-   private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
     //测试环境
     //  private final String filePathTemp = "D:\\Java\\glassfish5.0.1\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
-   //    private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
+    //  private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -450,7 +450,12 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         }
 
                         if ("2".equals(equipInvenTemp.getRepairmethodtype())) {
-                            equipInvenTemp.setRstatus("95");
+                            if (equipInvenTemp.getRepairdeptno().contains("1P5") || equipInvenTemp.getRepairdeptno().contains("1P1")) {
+                                equipInvenTemp.setRstatus("75");//方型和圆型现场自主维修完成维修时节点为现场审核//75为现场审核节点
+                            } else {
+                                equipInvenTemp.setRstatus("95");
+                            }
+
                         } else {
                             equipInvenTemp.setRstatus("30");
                         }
@@ -620,6 +625,9 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         equipInvenTemp.setLaborcost(laborCost);
                         equipInvenTemp.setRemark(entity.getOptuser());
                         equipInvenTemp.setStatus("N");
+                        if (equipInvenTemp.getRepairmethodtype().equals("2")) {
+                            equipInvenTemp.setRstatus("75");//  是现场维修发起的验收直接到现场主管审核节点
+                        }
                         equipmentrepairBean.persist(equipInvenTemp);
 
                         //在辅助人员表中插入维修人自己的信息方便报表开发
@@ -683,7 +691,6 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         }
                     }
                     maxIndex++;
-
                     eqpRepairTemp.setCompany(entity.getCompany());
                     eqpRepairTemp.setPid(entity.getFormid());
                     eqpRepairTemp.setSeq(maxIndex);
@@ -805,7 +812,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                         equipInvenTemp.setExcepttime(entity.getExcepttime());
                         equipInvenTemp.setStopworktime(entity.getStopworktime());
                         equipInvenTemp.setAbrasehitch(entity.getAbrasehitch());
-                        if (!equipInvenTemp.getHitchurgency().equals("03") && equipInvenTemp.getHitchtype() == null && entity.getHitchtype().equals("03")) {
+                        if (!equipInvenTemp.getHitchurgency().equals("03") && equipInvenTemp.getHitchtype() == null && entity.getHitchtype().equals("03") && entity.getCompletetime() == null) {
                             equipInvenTemp.setDowninitiatetime(new Date());
                         }
                         equipInvenTemp.setHitchtype(entity.getHitchtype());
@@ -962,6 +969,63 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 eqpRepairTemp.setPid(entity.getPid());
                 eqpRepairTemp.setSeq(maxIndex);
                 eqpRepairTemp.setCurnode("经理审核");
+                eqpRepairTemp.setUserno(entity.getUserno());
+                eqpRepairTemp.setContenct(entity.getContenct());
+                eqpRepairTemp.setNote(entity.getNote());
+                eqpRepairTemp.setStatus("N");
+                eqpRepairTemp.setCredate(new Date());
+
+                equipmentRepairHisBean.persist(eqpRepairTemp);
+                return new ResponseMessage("200", "状态更新成功");
+            } catch (Exception ex) {
+                return new ResponseMessage("500", "系统错误Insert失败");
+            }
+        } else {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @POST
+    @Path("repairSite")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ResponseMessage repairSite(EquipmentRepairHis entity, @QueryParam("appid") String appid, @QueryParam("token") String token) {
+        if (isAuthorized(appid, token)) {
+            if (entity == null) {
+                throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            }
+
+            try {
+                List<EquipmentRepairHis> eqpRepairList = new ArrayList<EquipmentRepairHis>();
+                EquipmentRepairHis eqpRepairTemp = new EquipmentRepairHis();
+                List<EquipmentRepair> equipInvenList = new ArrayList<EquipmentRepair>();
+                equipInvenList = equipmentrepairBean.findByFormid(entity.getPid());
+                if (equipInvenList.size() > 0) {
+                    if (!entity.getContenct().equals("合格")) {
+                        equipInvenList.get(0).setRstatus("40");
+                    } else {
+                        equipInvenList.get(0).setRstatus("95");
+                    }
+                    equipInvenList.get(0).setRemark(entity.getRemark());
+                    equipInvenList.get(0).setStatus("N");
+                    equipmentrepairBean.persist(equipInvenList.get(0));
+                } else {
+                    return new ResponseMessage("301", "数据库异常");
+                }
+
+                eqpRepairList = equipmentRepairHisBean.findByPId(entity.getPid());
+                int maxIndex = 0;
+                for (int i = 0; i < eqpRepairList.size(); i++) {
+                    if (eqpRepairList.get(i).getSeq() > i) {
+                        maxIndex = eqpRepairList.get(i).getSeq();
+                    }
+                }
+                maxIndex++;
+
+                eqpRepairTemp.setCompany(entity.getCompany());
+                eqpRepairTemp.setPid(entity.getPid());
+                eqpRepairTemp.setSeq(maxIndex);
+                eqpRepairTemp.setCurnode("现场主管审核");
                 eqpRepairTemp.setUserno(entity.getUserno());
                 eqpRepairTemp.setContenct(entity.getContenct());
                 eqpRepairTemp.setNote(entity.getNote());
@@ -1147,7 +1211,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 String currentStatus = "";
                 if (rStatus.compareTo("20") >= 0 && rStatus.compareTo("30") < 0 && (!rStatus.equals("28"))) {
                     currentStatus = "暂维修完成";
-                    equipInvenList.get(0).setRstatus("60");
+                    equipInvenList.get(0).setRstatus("30");
                     equipInvenList.get(0).setStatus("N");
                     equipmentrepairBean.persist(equipInvenList.get(0));
                 } else {
@@ -1469,8 +1533,6 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             @QueryParam("appid") String appid,
             @QueryParam("token") String token) {
 
-    
-
         try {
             // 2. 判断是否为 multipart 请求
             if (!ServletFileUpload.isMultipartContent(request)) {
@@ -1743,6 +1805,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
             List<SysCode> sysCodeList = new ArrayList<SysCode>();
             List<SysCode> repairManagerList = new ArrayList<SysCode>();
             List<SysCode> leaderManagerList = new ArrayList<SysCode>();
+            List<SysCode> siteCheckList = new ArrayList<SysCode>();
             SystemUser repairUserObj = new SystemUser();
             SystemUser serviceUserObj = new SystemUser();
             AssetCard assetCardRes = new AssetCard();
@@ -1810,28 +1873,8 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 if (eqpRepairListRes.size() > 0) {
                     repairManagerList = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairmanager");
                     leaderManagerList = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairHeadmanId");
-//                    repairResTemp.setId(eqpRepairListRes.get(0).getId());
-//                    repairResTemp.setFormid(eqpRepairListRes.get(0).getFormid());
-//                    repairResTemp.setFormdate(eqpRepairListRes.get(0).getFormdate());
-//                    repairResTemp.setCompany(eqpRepairListRes.get(0).getCompany());
-//                    repairResTemp.setItemno(eqpRepairListRes.get(0).getItemno());
-//                    repairResTemp.setAssetno(eqpRepairListRes.get(0).getAssetno());
-//                    repairResTemp.setHitchtime(eqpRepairListRes.get(0).getHitchtime());
-//                    repairResTemp.setRepairdeptno(eqpRepairListRes.get(0).getRepairdeptno());
-//                    repairResTemp.setRepairdeptname(eqpRepairListRes.get(0).getRepairdeptname());
-//                    repairResTemp.setRepairuser(eqpRepairListRes.get(0).getRepairuser());
-//                    repairResTemp.setRepairusername(eqpRepairListRes.get(0).getRepairusername());
-//                    repairResTemp.setHitchurgency(eqpRepairListRes.get(0).getHitchurgency());
-//                    repairResTemp.setTroublefrom(eqpRepairListRes.get(0).getTroublefrom());
-//                    repairResTemp.setServiceuser(eqpRepairListRes.get(0).getServiceuser());
-//                    repairResTemp.setServiceusername(eqpRepairListRes.get(0).getServiceusername());
-//                    repairResTemp.setServicearrivetime(eqpRepairListRes.get(0).getServicearrivetime());
-//                    repairResTemp.setRstatus(eqpRepairListRes.get(0).getRstatus());
-//                    repairResTemp.setHitchdesc(eqpRepairListRes.get(0).getHitchdesc());
-//                    repairResTemp.setHitchtype(eqpRepairListRes.get(0).getHitchtype());
-//                    repairResTemp.setCompletetime(eqpRepairListRes.get(0).getCompletetime());
-//                    repairResTemp.setCredate(eqpRepairListRes.get(0).getCredate());
-
+                    String reDeptno = eqpRepairListRes.get(0).getRepairdeptno();
+                    siteCheckList = sysCodeBean.getTroubleNameList(companyCodeStr, reDeptno, "siteCheck");//现场审核人员
                     String checkUser = userCheckTemp;
                     if (checkUser != "") {
                         if (eqpRepairListRes.get(0).getRstatus().compareTo("40") <= 0) {
@@ -1843,16 +1886,7 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                                 eqpRepairListRes.get(0).setStatus("Y");
                             }
                         } else if (eqpRepairListRes.get(0).getRstatus().equals("60")) {
-//                            sysUserListRes = systemUserBean.findByUserIdOrName(checkUser);
-//                            if(sysUserListRes.size() > 0)
-//                            {
-//                                if(sysUserListRes.get(0).getDeptno().equalsIgnoreCase("1W300"))
-//                                {
-//                                    eqpRepairListRes.get(0).setStatus("Y");
-//                                }
-//                            }
                             sysCodeList = sysCodeBean.getTroubleNameList(companyCodeStr, "RD", "repairleaders");
-
                             for (int i = 0; i < sysCodeList.size(); i++) {
                                 if (sysCodeList.get(i).getCvalue().equalsIgnoreCase(checkUser)) {
                                     eqpRepairListRes.get(0).setStatus("Y");
@@ -1907,7 +1941,15 @@ public class EquipmentRepairFacadeREST extends SuperRESTForEAM<EquipmentRepair> 
                 infoListRes.add(repairManagerList.get(0));
                 infoListRes.add(repairUserObj);
                 infoListRes.add(serviceUserObj);
+                String finalUserCheckTemp = userCheckTemp;
+                boolean siteBool = false;
+                if (eqpRepairListRes.get(0).getRstatus().equals("75")) {
+                    siteBool = siteCheckList.stream()
+                            .anyMatch(e -> e.getCvalue() != null && e.getCvalue().contains(finalUserCheckTemp));//判断是否有现场审核的权限
 
+                }
+                infoListRes.add(siteBool);
+//                infoListRes.add(siteCheckList);
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
