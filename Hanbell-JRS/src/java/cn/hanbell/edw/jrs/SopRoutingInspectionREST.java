@@ -69,9 +69,9 @@ public class SopRoutingInspectionREST extends SuperRESTForEDW<RdpmSubjectUserRep
     @EJB
     private SysCodeBean sysCodeBean;
     //生产环境
-   private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
+    private final String filePathTemp = "D:\\glassfish5\\glassfish\\domains\\domain1\\applications\\EAM\\Hanbell-EAM_war\\resources\\app\\res\\";
 //F:\C2079\EAM\Hanbell-EAM\web\resources\app\res
-   //     private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
+    //     private final String filePathTemp = "F:\\C2079\\EAM\\Hanbell-EAM\\web\\resources\\app\\res\\";
 
     @Override
     protected SuperEJB getSuperEJB() {
@@ -110,7 +110,7 @@ public class SopRoutingInspectionREST extends SuperRESTForEDW<RdpmSubjectUserRep
                 sopDtaList = sopInspectionDtaBean.getSopDtaList(company, post, factory);
                 if (sopDtaList.size() > 0) {
                     for (SopInspectionDta sop : sopDtaList) {
-                        if (sop.getFilepath() != null && !sop.getFilepath().equals("") ) {
+                        if (sop.getFilepath() != null && !sop.getFilepath().equals("")) {
                             // 将字节数组转换为Base64编码
                             java.io.File imageFile = new java.io.File(filePathTemp + sop.getFilepath());
                             if (!imageFile.exists()) {
@@ -146,15 +146,15 @@ public class SopRoutingInspectionREST extends SuperRESTForEDW<RdpmSubjectUserRep
                     sDta.setCreateTime(new Date());
                     sopDtaList.add(sDta);
                 }
-                if (sopDtaList.size() > 0) {
-                    initDtaRes.add(deptListRes);
-                    initDtaRes.add(sopDtaList);
-                    return initDtaRes;
-                }
+
+                initDtaRes.add(deptListRes);
+                initDtaRes.add(sopDtaList);
+                return initDtaRes;
+
             } catch (Exception ex) {
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
-            return initDtaRes;
+   
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
